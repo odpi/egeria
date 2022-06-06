@@ -14,29 +14,27 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DuplicatesRequestBody provides a structure for passing the properties associated with duplicates.
+ * StewardshipRequestBody provides a structure for passing the properties associated with stewardship actions.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DuplicatesRequestBody implements Serializable
+public class StewardshipRequestBody implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private String metadataElement1GUID = null;
-    private String metadataElement2GUID = null;
-    private int    statusIdentifier     = 0;
-    private String steward              = null;
-    private String stewardTypeName      = null;
-    private String stewardPropertyName  = null;
-    private String source               = null;
-    private String notes                = null;
+    private int     statusIdentifier     = 0;
+    private String  steward              = null;
+    private String  stewardTypeName      = null;
+    private String  stewardPropertyName  = null;
+    private String  source               = null;
+    private String  notes                = null;
 
 
     /**
      * Default constructor
      */
-    public DuplicatesRequestBody()
+    public StewardshipRequestBody()
     {
         super();
     }
@@ -47,12 +45,10 @@ public class DuplicatesRequestBody implements Serializable
      *
      * @param template object to copy
      */
-    public DuplicatesRequestBody(DuplicatesRequestBody template)
+    public StewardshipRequestBody(StewardshipRequestBody template)
     {
         if (template != null)
         {
-            metadataElement1GUID = template.getMetadataElement1GUID();
-            metadataElement2GUID = template.getMetadataElement2GUID();
             statusIdentifier = template.getStatusIdentifier();
             steward = template.getSteward();
             stewardTypeName = template.getStewardPropertyName();
@@ -62,45 +58,6 @@ public class DuplicatesRequestBody implements Serializable
         }
     }
 
-
-    /**
-     * Gets metadata element 1 guid.
-     *
-     * @return the metadata element 1 guid
-     */
-    public String getMetadataElement1GUID() {
-        return metadataElement1GUID;
-    }
-
-
-    /**
-     * Sets metadata element 1 guid.
-     *
-     * @param metadataElement1GUID the metadata element 1 guid
-     */
-    public void setMetadataElement1GUID(String metadataElement1GUID) {
-        this.metadataElement1GUID = metadataElement1GUID;
-    }
-
-
-    /**
-     * Gets metadata element 2 guid.
-     *
-     * @return the metadata element 2 guid
-     */
-    public String getMetadataElement2GUID() {
-        return metadataElement2GUID;
-    }
-
-
-    /**
-     * Sets metadata element 2 guid.
-     *
-     * @param metadataElement2GUID the metadata element 2 guid
-     */
-    public void setMetadataElement2GUID(String metadataElement2GUID) {
-        this.metadataElement2GUID = metadataElement2GUID;
-    }
 
     /**
      * Return the status of this duplicate - usable if greater than 0, 0=proposed, negative means invalid
@@ -242,10 +199,8 @@ public class DuplicatesRequestBody implements Serializable
     @Override
     public String toString()
     {
-        return "DuplicatesRequestBody{" +
-                       "metadataElement1GUID=" + metadataElement1GUID +
-                       ", metadataElement2GUID=" + metadataElement2GUID +
-                       ", statusIdentifier=" + statusIdentifier +
+        return "StewardshipRequestBody{" +
+                       "statusIdentifier=" + statusIdentifier +
                        ", steward='" + steward + '\'' +
                        ", stewardTypeName='" + stewardTypeName + '\'' +
                        ", stewardPropertyName='" + stewardPropertyName + '\'' +
@@ -272,15 +227,11 @@ public class DuplicatesRequestBody implements Serializable
         {
             return false;
         }
-        DuplicatesRequestBody that = (DuplicatesRequestBody) objectToCompare;
-        return Objects.equals(metadataElement1GUID, that.metadataElement1GUID) &&
-                       Objects.equals(metadataElement2GUID, that.metadataElement2GUID) &&
-                       statusIdentifier == that.statusIdentifier &&
-                       Objects.equals(steward, that.steward) &&
-                       Objects.equals(stewardTypeName, that.stewardTypeName) &&
-                       Objects.equals(stewardPropertyName, that.stewardPropertyName) &&
-                       Objects.equals(source, that.source) &&
-                       Objects.equals(notes, that.notes);
+        StewardshipRequestBody that = (StewardshipRequestBody) objectToCompare;
+        return statusIdentifier == that.statusIdentifier && Objects.equals(steward, that.steward) && Objects.equals(stewardTypeName,
+                                                                                                                    that.stewardTypeName) && Objects.equals(
+                stewardPropertyName, that.stewardPropertyName) && Objects.equals(source, that.source) && Objects.equals(notes,
+                                                                                                                        that.notes);
     }
 
 
@@ -292,7 +243,6 @@ public class DuplicatesRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(metadataElement1GUID, metadataElement2GUID, statusIdentifier, steward, stewardTypeName,
-                stewardPropertyName, source, notes);
+        return Objects.hash(statusIdentifier, steward, stewardTypeName, stewardPropertyName, source, notes);
     }
 }

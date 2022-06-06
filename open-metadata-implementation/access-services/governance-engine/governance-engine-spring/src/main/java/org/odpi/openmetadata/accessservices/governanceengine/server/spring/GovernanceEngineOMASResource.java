@@ -4,27 +4,8 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.ActionTargetStatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.CompletionStatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.DuplicatesRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionProcessRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.IncidentReportRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.NewClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.NewMetadataElementRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.NewRelatedElementsRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementsResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementListResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementsListResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateStatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.PeerDuplicatesRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -576,6 +557,7 @@ public class GovernanceEngineOMASResource
         return restAPI.createRelatedElementsInStore(serverName, userId, requestBody);
     }
 
+
     /**
      * Create a simple relationship between two elements. If the relationship already exists,
      * the properties are updated.
@@ -590,11 +572,35 @@ public class GovernanceEngineOMASResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/open-metadata-store/related-elements/link-as-peer-duplicate")
-    public VoidResponse linkElementsAsPeerDuplicates(@PathVariable String                        serverName,
-                                                     @PathVariable String                        userId,
-                                                     @RequestBody  DuplicatesRequestBody         requestBody)
+
+    public VoidResponse linkElementsAsPeerDuplicates(@PathVariable String                    serverName,
+                                                     @PathVariable String                    userId,
+                                                     @RequestBody  PeerDuplicatesRequestBody requestBody)
     {
         return restAPI.linkElementsAsDuplicates(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Create a simple relationship between two elements. If the relationship already exists,
+     * the properties are updated.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/open-metadata-store/related-elements/link-as-consolidated-duplicate")
+
+    public VoidResponse linkConsolidatedDuplicate(@PathVariable String                            serverName,
+                                                  @PathVariable String                            userId,
+                                                  @RequestBody  ConsolidatedDuplicatesRequestBody requestBody)
+    {
+        return restAPI.linkConsolidatedDuplicate(serverName, userId, requestBody);
     }
 
 

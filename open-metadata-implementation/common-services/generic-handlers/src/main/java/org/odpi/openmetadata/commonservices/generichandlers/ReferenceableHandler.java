@@ -1643,7 +1643,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
             if (repositoryHelper.getClassificationFromEntity(serviceName,
                                                              entity,
                                                              OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
-                                                             methodName) == null)
+                                                             methodName) != null)
             {
                 classificationNeeded = false;
             }
@@ -1672,6 +1672,63 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
     }
 
+
+    /**
+     * Set up the standard properties for elements related to stewardship
+     *
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
+     * @param methodName calling method
+     */
+    private InstanceProperties createStewardshipProperties(int     statusIdentifier,
+                                                           String  steward,
+                                                           String  stewardTypeName,
+                                                           String  stewardPropertyName,
+                                                           String  source,
+                                                           String  notes,
+                                                           String  methodName)
+    {
+        InstanceProperties properties  = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                                      steward,
+                                                                                      methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                  stewardTypeName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  stewardPropertyName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  source,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                  notes,
+                                                                  methodName);
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                               statusIdentifier,
+                                                               methodName);
+
+        return properties;
+    }
 
     /**
      * Create a simple relationship between two elements in an Asset description (typically the asset itself or
@@ -1752,42 +1809,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         /*
-         * Finally link the entities together.
+         * Finally, link the entities together.
          */
-        InstanceProperties properties  = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                      null,
-                                                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
-                                                                                      steward,
-                                                                                      methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
-                                                                  stewardTypeName,
-                                                                  methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
-                                                                  stewardPropertyName,
-                                                                  methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
-                                                                  source,
-                                                                  methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
-                                                                  notes,
-                                                                  methodName);
-
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                               properties,
-                                                               OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME,
-                                                               statusIdentifier,
-                                                               methodName);
+        InstanceProperties properties = this.createStewardshipProperties(statusIdentifier,
+                                                                         steward,
+                                                                         stewardTypeName,
+                                                                         stewardPropertyName,
+                                                                         source,
+                                                                         notes,
+                                                                         methodName);
 
         this.linkElementToElement(userId,
                                   null,
@@ -1912,6 +1942,160 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     true,
                                                     null,
                                                     methodName);
+        }
+    }
+
+
+    /**
+     * Set the ConsolidatedDuplicate classification on an entity if it is not already set up.
+     *
+     * @param userId calling user
+     * @param entity retrieved entity
+     * @param guidParameterName parameter name to use of the requested GUID
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private void setConsolidatedDuplicateClassification(String       userId,
+                                                        EntityDetail entity,
+                                                        String       guidParameterName,
+                                                        int          statusIdentifier,
+                                                        String       steward,
+                                                        String       stewardTypeName,
+                                                        String       stewardPropertyName,
+                                                        String       source,
+                                                        String       notes,
+                                                        String       methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        InstanceProperties properties = this.createStewardshipProperties(statusIdentifier,
+                                                                             steward,
+                                                                             stewardTypeName,
+                                                                             stewardPropertyName,
+                                                                             source,
+                                                                             notes,
+                                                                             methodName);
+        this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
+                                           entity,
+                                           guidParameterName,
+                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                           OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_GUID,
+                                           OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_NAME,
+                                           properties,
+                                           false,
+                                           true,
+                                           false,
+                                           new Date(),
+                                           methodName);
+    }
+
+
+    /**
+     * Identify an element that acts as a consolidated version for a set of duplicate elements.
+     * (The consolidated element is created using createMetadataElement.)
+     * Creates a simple relationship between the elements. If the ConsolidatedDuplicate
+     * classification already exists, the properties are updated.
+    *
+     * @param userId calling user
+     * @param consolidatedElementGUID unique identifier of the metadata element
+     * @param consolidatedElementGUIDParameter parameter name to use for the requested GUID
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
+     * @param sourceElementGUIDs List of the source elements that must be linked to the consolidated element.  It is assumed that they already
+     *                           have the KnownDuplicateClassification.
+     * @param sourceElementGUIDsParameterName parameter name for the source GUIDs
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void linkConsolidatedDuplicate(String       userId,
+                                          String       consolidatedElementGUID,
+                                          String       consolidatedElementGUIDParameter,
+                                          int          statusIdentifier,
+                                          String       steward,
+                                          String       stewardTypeName,
+                                          String       stewardPropertyName,
+                                          String       source,
+                                          String       notes,
+                                          List<String> sourceElementGUIDs,
+                                          String       sourceElementGUIDsParameterName,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(consolidatedElementGUID, consolidatedElementGUIDParameter, methodName);
+
+        /*
+         * First check the GUIDs are valid.
+         */
+        EntityDetail consolidatedEntity = this.getEntityFromRepository(userId,
+                                                                       consolidatedElementGUID,
+                                                                       consolidatedElementGUIDParameter,
+                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                       null,
+                                                                       null,
+                                                                       false,
+                                                                       true,
+                                                                       supportedZones,
+                                                                       null,
+                                                                       methodName);
+
+        if (consolidatedEntity != null)
+        {
+            this.setConsolidatedDuplicateClassification(userId,
+                                                        consolidatedEntity,
+                                                        consolidatedElementGUIDParameter,
+                                                        statusIdentifier,
+                                                        steward,
+                                                        stewardTypeName,
+                                                        stewardPropertyName,
+                                                        source,
+                                                        notes,
+                                                        methodName);
+
+            if (sourceElementGUIDs != null)
+            {
+                for (String sourceElementGUID : sourceElementGUIDs)
+                {
+                    if (sourceElementGUID != null)
+                    {
+                        this.linkElementToElement(userId,
+                                                  null,
+                                                  null,
+                                                  sourceElementGUID,
+                                                  sourceElementGUIDsParameterName,
+                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  consolidatedElementGUID,
+                                                  consolidatedElementGUIDParameter,
+                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  false,
+                                                  true,
+                                                  supportedZones,
+                                                  OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
+                                                  null,
+                                                  methodName);
+                    }
+                }
+            }
         }
     }
 

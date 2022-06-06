@@ -1687,6 +1687,9 @@ public class OpenMetadataAPIMapper
     public static final String PEER_DUPLICATE_LINK_TYPE_NAME             = "PeerDuplicateLink";
     /* End1 = Referenceable (Oldest); End 2 = Referenceable (Newest) */
 
+    public static final String CONSOLIDATED_DUPLICATE_TYPE_GUID          = "e40e80d7-5a29-482c-9a88-0dc7251f08de";
+    public static final String CONSOLIDATED_DUPLICATE_TYPE_NAME          = "ConsolidatedDuplicate";
+
     public static final String CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID     = "a1fabffd-d6ec-4b2d-bfe4-646f27c07c82";
     public static final String CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME     = "ConsolidatedDuplicateLink";
     /* End1 = Referenceable (Detected Duplicate); End 2 = Referenceable (Result) */

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatu
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -418,19 +419,53 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @param stewardPropertyName property name used to identify steward
      * @param source source of the duplicate detection processing
      * @param notes notes for the steward
+     * @param setKnownDuplicate boolean flag indicating whether the KnownDuplicate classification should be set on the linked entities.
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void linkElementsAsPeerDuplicates(String metadataElement1GUID,
-                                      String metadataElement2GUID,
-                                      int    statusIdentifier,
-                                      String steward,
-                                      String stewardTypeName,
-                                      String stewardPropertyName,
-                                      String source,
-                                      String notes) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException;
+    void linkElementsAsPeerDuplicates(String  metadataElement1GUID,
+                                      String  metadataElement2GUID,
+                                      int     statusIdentifier,
+                                      String  steward,
+                                      String  stewardTypeName,
+                                      String  stewardPropertyName,
+                                      String  source,
+                                      String  notes,
+                                      boolean setKnownDuplicate) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
+
+
+    /**
+     * Identify an element that acts as a consolidated version for a set of duplicate elements.
+     * (The consolidated element is created using createMetadataElement.)
+     * Creates a simple relationship between the elements. If the ConsolidatedDuplicate
+     * classification already exists, the properties are updated.
+     *
+     * @param consolidatedElementGUID unique identifier of the metadata element
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
+     * @param sourceElementGUIDs List of the source elements that must be linked to the consolidated element.  It is assumed that they already
+     *                           have the KnownDuplicateClassification.
+     * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+     *                                    not valid for this type of relationship
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    void linkConsolidatedDuplicate(String       consolidatedElementGUID,
+                                   int          statusIdentifier,
+                                   String       steward,
+                                   String       stewardTypeName,
+                                   String       stewardPropertyName,
+                                   String       source,
+                                   String       notes,
+                                   List<String> sourceElementGUIDs) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 }
