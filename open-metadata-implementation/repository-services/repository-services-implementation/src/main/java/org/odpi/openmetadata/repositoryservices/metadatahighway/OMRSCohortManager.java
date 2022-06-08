@@ -359,6 +359,20 @@ public class OMRSCohortManager
                 cohortInstancesTopicConnector.start();
             }
         }
+        // Topic connector has failed to initialize - retry loop expired - possible network connectivity/DNS issue need to raise exception
+        catch (ConnectorCheckedException   error)
+        {
+            log.debug(actionDescription + " FAILED with connector checked exception");
+
+            /*
+             * Throw runtime exception to indicate that the topic connector is unavailable (server should shut down if this happens).
+             */
+            throw new OMRSConnectorErrorException(OMRSErrorCode.COHORT_STARTUP_ERROR.getMessageDefinition(cohortName),
+                    this.getClass().getName(),
+                    actionDescription,
+                    error);
+
+        }
         catch (Exception error)
         {
             log.error("Unable to initialize event listener", error);
@@ -369,6 +383,7 @@ public class OMRSCohortManager
                                                                                          error.getClass().getName(),
                                                                                          error.getMessage()),
                                   error);
+            throw(error);
         }
 
         /*
