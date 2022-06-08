@@ -38,16 +38,4 @@ public class DataFileEvent extends DataEngineEventHeader {
      */
     @JsonProperty("file")
     private DataFile dataFile;
-
-    /**
-     * Determines if the data file is incomplete or not
-     * -- GETTER --
-     * Returns if the data file is incomplete or not
-     * @return if the data file is incomplete or not
-     *
-     * -- SETTER --
-     * Set up the value that determines if the data file is incomplete or not
-     * @param incomplete the value that determines if the data file is incomplete or not
-     */
-    private boolean incomplete;
 }

@@ -92,8 +92,8 @@ public class DataEngineDataFileHandler {
      * @throws PropertyServerException    if errors in repository
      * @throws UserNotAuthorizedException if user not authorized
      */
-    public String upsertFileAssetIntoCatalog(String fileTypeName, String fileTypeGuid, DataFile file, boolean incomplete,
-                                             SchemaType schemaType, Map<String, Object> extendedProperties, String externalSourceGuid,
+    public String upsertFileAssetIntoCatalog(String fileTypeName, String fileTypeGuid, DataFile file, SchemaType schemaType,
+                                             Map<String, Object> extendedProperties, String externalSourceGuid,
                                              String externalSourceName, String userId, String methodName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
@@ -118,7 +118,7 @@ public class DataEngineDataFileHandler {
         dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(file.getQualifiedName(), fileGuid, fileTypeName,
                 file.getProtocol(), file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId);
 
-        if (incomplete) {
+        if (file.getIncomplete()) {
             fileHandler.setClassificationInRepository(userId, fileGuid, FILE_GUID_PARAMETER_NAME, fileTypeName,
                     INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME, null, methodName);
         }

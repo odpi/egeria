@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.EqualsAndHashCode;
@@ -90,4 +91,16 @@ public class DataFile extends DataStore {
      */
     private String protocol;
 
+    /**
+     * Determines if the file is incomplete
+     * -- GETTER --
+     * Return if the file is incomplete
+     *
+     * @return if the file is incomplete
+     * -- SETTER --
+     * Sets up if the file is incomplete
+     * @param incomplete if the file is incomplete
+     */
+    @JsonProperty("incomplete")
+    private boolean incomplete;
 }

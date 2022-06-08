@@ -117,4 +117,16 @@ public class Database extends DataStore {
      */
     private String networkAddress;
 
+    /**
+     * Determines if the database is incomplete
+     * -- GETTER --
+     * Return if the database is incomplete
+     *
+     * @return if the database is incomplete
+     * -- SETTER --
+     * Sets up if the database is incomplete
+     * @param incomplete if the database is incomplete
+     */
+    @JsonProperty("incomplete")
+    private boolean incomplete;
 }
