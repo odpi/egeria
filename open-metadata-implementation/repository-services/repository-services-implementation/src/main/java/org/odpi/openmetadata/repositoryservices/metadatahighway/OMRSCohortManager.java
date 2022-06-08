@@ -363,7 +363,14 @@ public class OMRSCohortManager
         catch (ConnectorCheckedException   error)
         {
             log.debug(actionDescription + " FAILED with connector checked exception");
+            this.cohortConnectionStatus = CohortConnectionStatus.CONFIGURATION_ERROR;
 
+            // Record to original exception in the audit log to facilitate debugging as this may indicate an infrastructure issue
+            auditLog.logException(actionDescription,
+                    OMRSAuditCode.COHORT_STARTUP_ERROR.getMessageDefinition(cohortName,
+                            error.getClass().getName(),
+                            error.getMessage()),
+                    error);
             /*
              * Throw runtime exception to indicate that the topic connector is unavailable (server should shut down if this happens).
              */
@@ -373,9 +380,10 @@ public class OMRSCohortManager
                     error);
 
         }
+        // Some other kind of initialization error
         catch (Exception error)
         {
-            log.error("Unable to initialize event listener", error);
+            log.debug("Unable to initialize event listener", error);
             this.cohortConnectionStatus = CohortConnectionStatus.CONFIGURATION_ERROR;
 
             auditLog.logException(actionDescription,
