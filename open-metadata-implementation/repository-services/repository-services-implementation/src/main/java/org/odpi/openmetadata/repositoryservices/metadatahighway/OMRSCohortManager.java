@@ -286,6 +286,7 @@ public class OMRSCohortManager
                                                                                          error.getClass().getName(),
                                                                                          error.getMessage()),
                                   error);
+            throw error;
         }
 
         log.debug(actionDescription + " COMPLETE");
