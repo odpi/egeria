@@ -501,7 +501,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 while (count < napCount) {
                    if (auditLog != null)
                    {
-                       auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(String.valueOf(count + 1)));
+                       auditLog.logMessage("waitForBrokers", KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_CONNECTION_RETRY.getMessageDefinition(
+                               connectionProperties.getProperty("bootstrap.servers"),
+                               String.valueOf(count + 1),
+                               String.valueOf(napCount)));
                    }
                     Instant start = Instant.now();
                     if (getRunningBrokers(connectionProperties)) {
