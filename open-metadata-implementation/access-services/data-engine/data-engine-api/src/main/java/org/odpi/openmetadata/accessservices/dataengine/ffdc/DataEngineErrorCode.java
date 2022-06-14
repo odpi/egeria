@@ -84,7 +84,11 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
     TOPIC_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-011",
             "Topic with qualifiedName {0} was not found",
             "The system is unable to create a new event type attached to a topic",
-            "Correct the code in the caller to provide the correct topic qualified name.");
+            "Correct the code in the caller to provide the correct topic qualified name."),
+    SOFTWARE_SERVER_CAPABILITY_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-012",
+                            "Software Server Capability with qualifiedName {0} was not found",
+                            "The system is unable to find the searched Software Server Capability",
+                            "Correct the code in the caller to provide the correct Software Server Capability qualified name.");
 
     private static final long serialVersionUID = 1L;
 

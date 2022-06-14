@@ -165,8 +165,60 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update0015LinkedMediaTypes();
+
+        add0043ProcessingStateClassification();
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * 0043  Add the Processing State Classification
+     */
+    private void add0043ProcessingStateClassification() {
+        this.archiveBuilder.addClassificationDef(addProcessingStateClassification());
+    }
+
+    private ClassificationDef addProcessingStateClassification() {
+
+        final String guid = "261fb0aa-b884-4ee8-87ea-a60510e9751d";
+        final String name = "ProcessingState";
+        final String description = "TODO";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "SoftwareServerCapability";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                name,
+                null,
+                description,
+                descriptionGUID,
+                this.archiveBuilder.getEntityDef(linkedToEntity),
+                true);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute property;
+
+        final String attribute1Name = "syncDatesByKey";
+        final String attribute1Description = "TODO !";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
