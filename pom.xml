@@ -154,20 +154,20 @@
         <surefire.plugin.version>3.0.0-M6</surefire.plugin.version>
         <mockito.version>4.5.1</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
-        <testng.version>7.5</testng.version>
-        <jackson.version>2.13.2</jackson.version>
-        <jackson.databind.version>2.13.2.2</jackson.databind.version>
+        <testng.version>7.6.0</testng.version>
+        <jackson.version>2.13.3</jackson.version>
+        <jackson.databind.version>2.13.3</jackson.databind.version>
         <logback.version>1.2.11</logback.version>
-        <spring-boot.version>2.6.7</spring-boot.version>
-        <netty.version>4.1.76.Final</netty.version>
-        <kafka.version>3.1.0</kafka.version>
+        <kafka.version>3.2.0</kafka.version>
+        <netty.version>4.1.77.Final</netty.version>
+        <spring-boot.version>2.7.0</spring-boot.version>
         <janus.version>0.6.1</janus.version>
-        <tomcat.version>9.0.62</tomcat.version>
-        <spring.ldap.core>2.3.7.RELEASE</spring.ldap.core>
+        <tomcat.version>9.0.63</tomcat.version>
+        <spring.ldap.core>2.4.0</spring.ldap.core>
         <gremlin.version>3.5.2</gremlin.version>
-        <spring-data.version>2.6.4</spring-data.version>
-        <springdoc.version>1.6.8</springdoc.version>
-        <spring-security.version>5.6.4</spring-security.version>
+        <spring-data.version>2.7.0</spring-data.version>
+        <springdoc.version>1.6.9</springdoc.version>
+        <spring-security.version>5.7.1</spring-security.version>
         <spring.version>5.3.20</spring.version>
         <springdoc-plugin.version>1.4</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
@@ -196,7 +196,7 @@
         <json-sanitizer.version>1.2.3</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.14.1</oss.version>
-        <spotbugs-annotations.version>4.6.0</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.7.0</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.14</joda.version>
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
@@ -205,14 +205,14 @@
         <snappy.version>1.1.8.4</snappy.version>
         <swagger.version>2.2.0</swagger.version>
         <snakeyaml.version>1.30</snakeyaml.version>
-        <micrometer-registry-prometheus.version>1.8.5</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.9.0</micrometer-registry-prometheus.version>
         <groovy.version>3.0.10</groovy.version>
-        <classgraph.version>4.8.146</classgraph.version>
+        <classgraph.version>4.8.147</classgraph.version>
         <jcl-over-slf4j.version>1.7.36</jcl-over-slf4j.version>
         <reflections.version>0.10.2</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
-        <javassist.version>3.28.0-GA</javassist.version>
+        <javassist.version>3.29.0-GA</javassist.version>
         <httpcore.version>4.4.15</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
@@ -222,7 +222,7 @@
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <thrift.version>0.16.0</thrift.version>
-        <elasticsearch.version>8.0.1</elasticsearch.version>
+        <elasticsearch.version>8.2.2</elasticsearch.version>
         <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -258,13 +258,13 @@
         <git-commit-plugin.version>4.9.10</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
-        <openlineage.version>0.8.1</openlineage.version>
+        <openlineage.version>0.8.2</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
-        <cassandra.version>4.0.3</cassandra.version>
+        <cassandra.version>4.0.4</cassandra.version>
         <ant.version>1.10.12</ant.version>
         <gson.version>2.9.0</gson.version>
         <jnr.version>3.1.15</jnr.version>
-        <protobuf.version>3.20.1</protobuf.version>
+        <protobuf.version>3.21.1</protobuf.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>

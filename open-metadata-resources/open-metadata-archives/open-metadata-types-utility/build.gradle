@@ -12,7 +12,7 @@ dependencies {
 
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
     implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
-    implementation 'ch.qos.logback:logback-classic'
+    runtimeOnly 'ch.qos.logback:logback-classic'
 }
 
 description = 'Open Metadata Types Utility'

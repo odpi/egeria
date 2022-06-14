@@ -321,7 +321,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, schemaTypeRequestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, schemaTypeRequestBody, methodName);
 
             String externalSourceName = schemaTypeRequestBody.getExternalSourceName();
             String schemasTypeGUID = upsertSchemaType(userId, serverName, null, schemaTypeRequestBody.getSchemaType(),
@@ -350,7 +350,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteSchemaType(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -404,7 +404,7 @@ public class DataEngineRESTServices {
 
         GUIDResponse response = new GUIDResponse();
         try {
-            if (isRequestBodyInvalid(userId, serverName, portImplementationRequestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, portImplementationRequestBody, methodName);
 
             String processGUID = getEntityGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
                     .orElse(null);
@@ -440,7 +440,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, portAliasRequestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, portAliasRequestBody, methodName);
 
             String processGUID = getEntityGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
                     .orElse(null);
@@ -472,7 +472,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deletePort(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(), portType,
                     requestBody.getDeleteSemantic());
@@ -534,7 +534,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, processHierarchyRequestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, processHierarchyRequestBody, methodName);
 
             response.setGUID(addProcessHierarchyToProcess(userId, serverName, processHierarchyRequestBody.getProcessHierarchy(),
                     processHierarchyRequestBody.getExternalSourceName()));
@@ -558,7 +558,7 @@ public class DataEngineRESTServices {
         final String methodName = "upsertProcess";
         GUIDResponse response = new GUIDResponse();
         try {
-            if (isRequestBodyInvalid(userId, serverName, processRequestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, processRequestBody, methodName);
 
             Process process = processRequestBody.getProcess();
             if (process == null) {
@@ -587,7 +587,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteProcess(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -929,7 +929,7 @@ public class DataEngineRESTServices {
 
         GUIDResponse response = new GUIDResponse();
         try {
-            if (!isDatabaseRequestBodyValid(userId, serverName, databaseRequestBody, methodName)) return response;
+            validateDatabaseRequestBody(userId, serverName, databaseRequestBody, methodName);
 
             String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(),
                     databaseRequestBody.getIncomplete(), databaseRequestBody.getExternalSourceName());
@@ -986,9 +986,7 @@ public class DataEngineRESTServices {
 
         GUIDResponse response = new GUIDResponse();
         try {
-            if (!isDatabaseSchemaRequestBodyValid(userId, serverName, databaseSchemaRequestBody, methodName)) {
-                return response;
-            }
+            validateDatabaseSchemaRequestBody(userId, serverName, databaseSchemaRequestBody, methodName);
 
             String databaseGUID = upsertDatabaseSchema(userId, serverName, databaseSchemaRequestBody.getDatabaseQualifiedName(),
                     databaseSchemaRequestBody.getIncomplete(), databaseSchemaRequestBody.getDatabaseSchema(),
@@ -1055,7 +1053,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteDatabase(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1110,7 +1108,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteDatabaseSchema(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(),
                     requestBody.getQualifiedName(), requestBody.getDeleteSemantic());
@@ -1166,9 +1164,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRelationalTableRequestBodyInvalid(userId, serverName, relationalTableRequestBody, methodName)) {
-                return response;
-            }
+            validateRelationalTableRequestBody(userId, serverName, relationalTableRequestBody, methodName);
 
             String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getDatabaseSchemaQualifiedName(),
                     relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName(),
@@ -1227,7 +1223,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteRelationalTable(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1284,9 +1280,7 @@ public class DataEngineRESTServices {
         String guid;
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, dataFileRequestBody, methodName)) {
-                return response;
-            }
+            validateRequestBody(userId, serverName, dataFileRequestBody, methodName);
 
             guid = upsertDataFile(userId, serverName, dataFileRequestBody.getDataFile(), dataFileRequestBody.getIncomplete(),
                     dataFileRequestBody.getExternalSourceName());
@@ -1359,7 +1353,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteDataFile(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1416,7 +1410,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteFolder(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1471,7 +1465,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteConnection(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1530,7 +1524,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteEndpoint(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -1821,55 +1815,42 @@ public class DataEngineRESTServices {
         }
     }
 
-    private boolean isDatabaseRequestBodyValid(String userId, String serverName, DatabaseRequestBody databaseRequestBody, String methodName) throws
+    private void validateDatabaseRequestBody(String userId, String serverName, DatabaseRequestBody databaseRequestBody, String methodName) throws
                                                                                                                                              InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, databaseRequestBody, methodName)) return false;
+        validateRequestBody(userId, serverName, databaseRequestBody, methodName);
 
         if (databaseRequestBody.getDatabase() == null) {
             restExceptionHandler.handleMissingValue(DATABASE_PARAMETER_NAME, methodName);
-            return false;
         }
-        return true;
     }
 
-    private boolean isDatabaseSchemaRequestBodyValid(String userId, String serverName, DatabaseSchemaRequestBody databaseSchemaRequestBody,
-                                                     String methodName) throws InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, databaseSchemaRequestBody, methodName)) {
-            return false;
-        }
+    private void validateDatabaseSchemaRequestBody(String userId, String serverName, DatabaseSchemaRequestBody databaseSchemaRequestBody,
+                                                      String methodName) throws InvalidParameterException {
+        validateRequestBody(userId, serverName, databaseSchemaRequestBody, methodName);
 
         if (databaseSchemaRequestBody.getDatabaseSchema() == null) {
             restExceptionHandler.handleMissingValue(DATABASE_SCHEMA_PARAMETER_NAME, methodName);
-            return false;
         }
-        return true;
     }
 
-    private boolean isRelationalTableRequestBodyInvalid(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody,
-                                                        String methodName) throws InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, relationalTableRequestBody, methodName)) {
-            return true;
-        }
+    private void validateRelationalTableRequestBody(String userId, String serverName, RelationalTableRequestBody relationalTableRequestBody,
+                                                    String methodName) throws InvalidParameterException {
+        validateRequestBody(userId, serverName, relationalTableRequestBody, methodName);
 
         if (relationalTableRequestBody.getRelationalTable() == null) {
             restExceptionHandler.handleMissingValue(RELATIONAL_TABLE_PARAMETER_NAME, methodName);
-            return true;
         }
-        return false;
 
     }
 
-    private boolean isRequestBodyInvalid(String userId, String serverName, DataEngineOMASAPIRequestBody requestBody, String methodName)
+    private void validateRequestBody(String userId, String serverName, DataEngineOMASAPIRequestBody requestBody, String methodName)
             throws InvalidParameterException {
         if (requestBody == null) {
             restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            return true;
         }
         if (StringUtils.isEmpty(requestBody.getExternalSourceName())) {
             restExceptionHandler.handleMissingValue(EXTERNAL_SOURCE_NAME_PARAMETER_NAME, methodName);
-            return true;
         }
-        return false;
     }
 
     private SchemaType getDefaultSchemaTypeIfAbsentAndAddAttributes(DataFile file, SchemaType schemaType, List<Attribute> attributes) {
@@ -2024,7 +2005,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteTopic(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -2158,7 +2139,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            validateRequestBody(userId, serverName, requestBody, methodName);
 
             deleteEventType(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -2200,7 +2181,7 @@ public class DataEngineRESTServices {
 
     private boolean isTopicRequestBodyValid(String userId, String serverName, TopicRequestBody topicRequestBody, String methodName) throws
                                                                                                                                     InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, topicRequestBody, methodName)) return false;
+        validateRequestBody(userId, serverName, topicRequestBody, methodName);
 
         if (topicRequestBody.getTopic() == null) {
             restExceptionHandler.handleMissingValue(TOPIC_PARAMETER_NAME, methodName);
@@ -2211,7 +2192,7 @@ public class DataEngineRESTServices {
 
     private boolean isEventTypeRequestBodyValid(String userId, String serverName, EventTypeRequestBody eventTypeRequestBody, String methodName) throws
                                                                                                                                                 InvalidParameterException {
-        if (isRequestBodyInvalid(userId, serverName, eventTypeRequestBody, methodName)) return false;
+        validateRequestBody(userId, serverName, eventTypeRequestBody, methodName);
 
         if (eventTypeRequestBody.getTopicQualifiedName() == null) {
             restExceptionHandler.handleMissingValue(TOPIC_QUALIFIED_NAME_PARAMETER_NAME, methodName);
