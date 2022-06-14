@@ -16,6 +16,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Governance leadership sample'
