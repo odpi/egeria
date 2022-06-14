@@ -396,12 +396,12 @@ public class ConfigRepositoryServicesResource
                                                       @PathVariable String     serverName,
                                                       @RequestBody  Connection connection)
     {
-        return adminAPI.setRepositoryEventMapper(userId, serverName, connection);
+        return adminAPI.setRepositoryProxyEventMapper(userId, serverName, connection);
     }
 
 
     /**
-     * Provide the connection to a repository's event mapper.  The default value is null which
+     * Provide the connection to a repository proxy's event mapper.  The default value is null which
      * means no event mapper.  An event mapper is needed if the local repository has additional APIs that can change
      * the metadata in the repository without going through the open metadata and governance services.
      *
@@ -422,7 +422,7 @@ public class ConfigRepositoryServicesResource
                                                       @RequestParam                 String               eventSource,
                                                       @RequestBody(required=false)  Map<String, Object>  additionalProperties)
     {
-        return adminAPI.setRepositoryEventMapper(userId, serverName, connectorProvider, eventSource, additionalProperties);
+        return adminAPI.setRepositoryProxyEventMapper(userId, serverName, connectorProvider, eventSource, additionalProperties);
     }
 
 
