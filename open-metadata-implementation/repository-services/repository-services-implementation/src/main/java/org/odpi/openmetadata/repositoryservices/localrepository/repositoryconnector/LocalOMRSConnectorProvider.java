@@ -11,8 +11,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.VirtualConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule;
@@ -152,7 +154,16 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     @Override
     public synchronized Connector getConnector(Connection realLocalConnection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        return this.getConnector(new ConnectionProperties(realLocalConnection));
+        Connector connector;
+        if (realLocalConnection instanceof VirtualConnection)
+        {
+            connector = this.getConnector(new VirtualConnectionProperties((VirtualConnection)realLocalConnection));
+
+        } else
+        {
+            connector = this.getConnector(new ConnectionProperties(realLocalConnection));
+        }
+        return connector;
     }
 
 
