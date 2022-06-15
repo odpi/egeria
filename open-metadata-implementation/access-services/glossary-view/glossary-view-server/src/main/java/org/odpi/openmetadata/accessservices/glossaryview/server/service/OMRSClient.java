@@ -88,8 +88,7 @@ public class OMRSClient {
             OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
                     serverName, methodName);
             entityDetails = entitiesHandler.getAttachedEntities(userId, entityGUID, OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                    entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
-                    0, size, methodName);
+                    entityTypeName, relationshipTypeGUID, relationshipTypeName, null, from, size, methodName);
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         } catch (Exception e){
