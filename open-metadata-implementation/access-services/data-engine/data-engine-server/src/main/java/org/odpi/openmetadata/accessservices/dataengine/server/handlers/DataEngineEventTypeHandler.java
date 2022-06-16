@@ -130,6 +130,7 @@ public class DataEngineEventTypeHandler {
      *
      * @param userId             the name of the calling user
      * @param eventTypeGUID      unique identifier of the event type to be removed
+     * @param qualifiedName      event type's qualified name
      * @param externalSourceName the external data engine name
      * @param deleteSemantic     the delete semantic
      *

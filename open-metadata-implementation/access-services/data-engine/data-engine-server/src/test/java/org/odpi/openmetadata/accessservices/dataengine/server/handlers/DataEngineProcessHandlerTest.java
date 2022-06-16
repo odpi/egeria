@@ -22,7 +22,6 @@ import org.odpi.openmetadata.accessservices.dataengine.server.builders.ProcessPr
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -97,9 +96,6 @@ class DataEngineProcessHandlerTest {
 
         return extendedProperties;
     }
-
-    @Mock
-    private RepositoryHandler repositoryHandler;
 
     @Mock
     private OMRSRepositoryHelper repositoryHelper;
@@ -318,9 +314,8 @@ class DataEngineProcessHandlerTest {
         when(portAlias.getGUID()).thenReturn(PORT_ALIAS_GUID);
 
         Set<EntityDetail> portEntityGUIDs = new HashSet<>(Arrays.asList(portAlias, portImplementation));
-        when(dataEngineCommonHandler.getEntitiesForRelationship(USER, PROCESS_GUID, PROCESS_PORT_TYPE_NAME, PROCESS_TYPE_NAME))
-                .thenReturn(portEntityGUIDs);
-
+        when(dataEngineCommonHandler.getEntitiesForRelationship(USER, PROCESS_GUID, PROCESS_PORT_TYPE_NAME,
+                PORT_IMPLEMENTATION_TYPE_NAME, PROCESS_TYPE_NAME)).thenReturn(portEntityGUIDs);
         Set<EntityDetail> result = processHandler.getPortsForProcess(USER, PROCESS_GUID, PORT_IMPLEMENTATION_TYPE_NAME);
         assertEquals(2, result.size());
         assertTrue(result.contains(portImplementation));
@@ -341,7 +336,8 @@ class DataEngineProcessHandlerTest {
         processHandler.upsertProcessHierarchyRelationship(USER, parentProcess, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, PARENT_GUID, GUID,
-                PROCESS_HIERARCHY_TYPE_NAME, PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null);
+                PROCESS_HIERARCHY_TYPE_NAME, PROCESS_TYPE_NAME, PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                null);
     }
 
     @Test

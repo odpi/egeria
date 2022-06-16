@@ -946,6 +946,7 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param database           the database values
+     * @param incomplete         tells if the database is incomplete
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created database
@@ -1183,6 +1184,7 @@ public class DataEngineRESTServices {
      * @param databaseSchemaQualifiedName the unique name of the database
      * @param relationalTable             the relational table values
      * @param externalSourceName          the unique name of the external source
+     * @param incomplete                  tells if the relational table is incomplete
      *
      * @return the unique identifier (guid) of the created relational table
      *
@@ -1295,6 +1297,7 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param file               the data file properties
+     * @param incomplete         tells if the data file is incomplete
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created data file
@@ -1889,6 +1892,8 @@ public class DataEngineRESTServices {
      * @param userId          user id
      * @param serverName      server name
      * @param findRequestBody contains find criteria
+     *
+     * @return a list of GUIDs
      */
     public GUIDListResponse find(String userId, String serverName, FindRequestBody findRequestBody) {
 
@@ -2068,9 +2073,10 @@ public class DataEngineRESTServices {
     /**
      * Get the unique identifier of a topic
      *
-     * @param serverName    name of the service to route the request to
-     * @param userId        identifier of calling user
+     * @param serverName         name of the service to route the request to
+     * @param userId             identifier of calling user
      * @param topicQualifiedName qualified name of the topic
+     * @param methodName         the name of the calling method
      *
      * @return the unique identifier of the entity
      *
