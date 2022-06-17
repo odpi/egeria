@@ -945,7 +945,6 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param database           the database values
-     * @param incomplete         tells if the database is incomplete
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created database
@@ -1180,7 +1179,6 @@ public class DataEngineRESTServices {
      * @param databaseSchemaQualifiedName the unique name of the database
      * @param relationalTable             the relational table values
      * @param externalSourceName          the unique name of the external source
-     * @param incomplete                  tells if the relational table is incomplete
      *
      * @return the unique identifier (guid) of the created relational table
      *
@@ -1292,7 +1290,6 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param file               the data file properties
-     * @param incomplete         tells if the data file is incomplete
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created data file

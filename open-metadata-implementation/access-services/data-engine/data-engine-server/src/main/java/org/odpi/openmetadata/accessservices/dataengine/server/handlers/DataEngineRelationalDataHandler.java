@@ -193,7 +193,6 @@ public class DataEngineRelationalDataHandler {
      * @param userId             the name of the calling user
      * @param databaseGUID       the unique identifier of the database
      * @param databaseSchema     the values of the database schema
-     * @param incomplete         tells if the database schema is incomplete
      * @param externalSourceName the unique name of the external source
      *
      * @return database schema GUID
@@ -331,7 +330,7 @@ public class DataEngineRelationalDataHandler {
 
             Optional<EntityDetail> originalRelationalColumnEntity = dataEngineCommonHandler.findEntity(userId, column.getQualifiedName(),
                     RELATIONAL_COLUMN_TYPE_NAME);
-            if (!originalRelationalColumnEntity.isPresent()) {
+            if (originalRelationalColumnEntity.isEmpty()) {
                 relationalDataHandler.createDatabaseColumn(userId, externalSourceGUID, externalSourceName, relationalTableGUID,
                         column.getQualifiedName(), column.getDisplayName(), column.getDescription(), column.getExternalTypeGUID(),
                         column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getValidValuesSetGUID(), column.getFormula(),
