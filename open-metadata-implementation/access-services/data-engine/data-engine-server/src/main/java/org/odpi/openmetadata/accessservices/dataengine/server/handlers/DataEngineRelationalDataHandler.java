@@ -60,6 +60,7 @@ public class DataEngineRelationalDataHandler {
      * @param serverName                             name of the local server
      * @param invalidParameterHandler                handler for managing parameter errors
      * @param relationalDataHandler                  provides utilities for manipulating the repository services assets
+     * @param databaseSchemaAssetHandler             provides utilities for manipulating database schema assets
      * @param dataEngineCommonHandler                provides utilities for manipulating entities
      * @param registrationHandler                    creates software server capability entities
      * @param dataEngineConnectionAndEndpointHandler provides utilities specific for manipulating Connections and Endpoints
@@ -192,7 +193,10 @@ public class DataEngineRelationalDataHandler {
      * @param userId             the name of the calling user
      * @param databaseGUID       the unique identifier of the database
      * @param databaseSchema     the values of the database schema
+     * @param incomplete         tells if the database schema is incomplete
      * @param externalSourceName the unique name of the external source
+     *
+     * @return database schema GUID
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -281,7 +285,7 @@ public class DataEngineRelationalDataHandler {
             relationalTableGUID = relationalDataHandler.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
+                    RELATIONAL_TABLE_TYPE_NAME, null, null, null, methodName);
         } else {
             relationalTableGUID = originalRelationalTableEntity.get().getGUID();
             relationalDataHandler.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID,
@@ -335,7 +339,7 @@ public class DataEngineRelationalDataHandler {
                         column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder,
                         column.getMinimumLength(), column.getLength(), column.getPrecision(), column.getIsNullable(), column.getNativeClass(),
                         column.getAliases(), column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null,
-                        null, methodName);
+                        null, null,  methodName);
             } else {
                 relationalDataHandler.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName,
                         originalRelationalColumnEntity.get().getGUID(), column.getQualifiedName(), column.getDisplayName(), column.getDescription(),
@@ -424,8 +428,9 @@ public class DataEngineRelationalDataHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationalTableGUID, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        Optional<EntityDetail> tableEntity = dataEngineCommonHandler.getEntityDetails(userId, relationalTableGUID, RELATIONAL_TABLE_TYPE_NAME);
-        if (!tableEntity.isPresent()) {
+        Optional<EntityDetail> tableEntity = dataEngineCommonHandler.getEntityDetails(userId, relationalTableGUID,
+                RELATIONAL_TABLE_TYPE_NAME);
+        if (tableEntity.isEmpty()) {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, relationalTableGUID);
         }
         String tableQualifiedName = tableEntity.get().getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString();

@@ -54,7 +54,7 @@ public class DataEngineEventProcessor {
     private final AuditLog auditLog;
     private final String serverName;
 
-    private DataEngineRESTServices dataEngineRESTServices = new DataEngineRESTServices();
+    private final DataEngineRESTServices dataEngineRESTServices = new DataEngineRESTServices();
 
     /**
      * The constructor is given the connection to the out topic for Data Engine OMAS
