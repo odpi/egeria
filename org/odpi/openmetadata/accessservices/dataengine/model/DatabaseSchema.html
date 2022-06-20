@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -202,11 +202,25 @@ extends <a href="Asset.html" title="class in org.odpi.openmetadata.accessservice
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIncomplete()">getIncomplete</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return if the database schema is incomplete</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIncomplete(boolean)">setIncomplete</a></span>&#8203;(boolean&nbsp;incomplete)</code></th>
+<td class="colLast">
+<div class="block">Sets up if the database schema is incomplete</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
@@ -304,6 +318,34 @@ extends <a href="Asset.html" title="class in org.odpi.openmetadata.accessservice
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
 <dd><code><a href="Asset.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="Asset.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Asset</a></code></dd>
+</dl>
+</li>
+</ul>
+<a id="getIncomplete()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getIncomplete</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;getIncomplete()</pre>
+<div class="block">Return if the database schema is incomplete</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>if the database schema is incomplete</dd>
+</dl>
+</li>
+</ul>
+<a id="setIncomplete(boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setIncomplete</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setIncomplete&#8203;(boolean&nbsp;incomplete)</pre>
+<div class="block">Sets up if the database schema is incomplete</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>incomplete</code> - if the database schema is incomplete</dd>
 </dl>
 </li>
 </ul>

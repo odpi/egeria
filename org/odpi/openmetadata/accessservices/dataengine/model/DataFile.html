@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -226,67 +226,81 @@ extends <a href="DataStore.html" title="class in org.odpi.openmetadata.accessser
 </td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIncomplete()">getIncomplete</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return if the file is incomplete</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNetworkAddress()">getNetworkAddress</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Gets the network address</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProtocol()">getProtocol</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Get an Endpoint protocol</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="SchemaType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SchemaType</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchema()">getSchema</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Gets the file schema</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setColumns(java.util.List)">setColumns</a></span>&#8203;(java.util.List&lt;<a href="Attribute.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Attribute</a>&gt;&nbsp;columns)</code></th>
 <td class="colLast">
 <div class="block">Sets the file columns</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setFileType(java.lang.String)">setFileType</a></span>&#8203;(java.lang.String&nbsp;fileType)</code></th>
 <td class="colLast">
 <div class="block">Sets the file type</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIncomplete(boolean)">setIncomplete</a></span>&#8203;(boolean&nbsp;incomplete)</code></th>
+<td class="colLast">
+<div class="block">Sets up if the file is incomplete</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setNetworkAddress(java.lang.String)">setNetworkAddress</a></span>&#8203;(java.lang.String&nbsp;networkAddress)</code></th>
 <td class="colLast">
 <div class="block">Sets the network address.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProtocol(java.lang.String)">setProtocol</a></span>&#8203;(java.lang.String&nbsp;protocol)</code></th>
 <td class="colLast">
 <div class="block">Sets the protocol.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSchema(org.odpi.openmetadata.accessservices.dataengine.model.SchemaType)">setSchema</a></span>&#8203;(<a href="SchemaType.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">SchemaType</a>&nbsp;schema)</code></th>
 <td class="colLast">
 <div class="block">Sets the file schema</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
@@ -425,6 +439,20 @@ extends <a href="DataStore.html" title="class in org.odpi.openmetadata.accessser
 </dl>
 </li>
 </ul>
+<a id="getIncomplete()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getIncomplete</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;getIncomplete()</pre>
+<div class="block">Return if the file is incomplete</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>if the file is incomplete</dd>
+</dl>
+</li>
+</ul>
 <a id="setFileType(java.lang.String)">
 <!--   -->
 </a>
@@ -494,6 +522,20 @@ extends <a href="DataStore.html" title="class in org.odpi.openmetadata.accessser
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>protocol</code> - protocol</dd>
+</dl>
+</li>
+</ul>
+<a id="setIncomplete(boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setIncomplete</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setIncomplete&#8203;(boolean&nbsp;incomplete)</pre>
+<div class="block">Sets up if the file is incomplete</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>incomplete</code> - if the file is incomplete</dd>
 </dl>
 </li>
 </ul>

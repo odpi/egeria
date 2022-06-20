@@ -358,28 +358,25 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i24" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDatabase(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Database,boolean)">upsertDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
-              <a href="../model/Database.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Database</a>&nbsp;database,
-              boolean&nbsp;incomplete)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDatabase(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Database)">upsertDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
+              <a href="../model/Database.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Database</a>&nbsp;database)</code></th>
 <td class="colLast">
 <div class="block">Create or update the database entity</div>
 </td>
 </tr>
 <tr id="i25" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDatabaseSchema(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema,java.lang.String,boolean)">upsertDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDatabaseSchema(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema,java.lang.String)">upsertDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     <a href="../model/DatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DatabaseSchema</a>&nbsp;databaseSchema,
-                    java.lang.String&nbsp;databaseQualifiedName,
-                    boolean&nbsp;incomplete)</code></th>
+                    java.lang.String&nbsp;databaseQualifiedName)</code></th>
 <td class="colLast">
 <div class="block">Create or update the database schema entity</div>
 </td>
 </tr>
 <tr id="i26" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDataFile(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DataFile,boolean)">upsertDataFile</a></span>&#8203;(java.lang.String&nbsp;userId,
-              <a href="../model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFile</a>&nbsp;dataFile,
-              boolean&nbsp;incomplete)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertDataFile(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DataFile)">upsertDataFile</a></span>&#8203;(java.lang.String&nbsp;userId,
+              <a href="../model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFile</a>&nbsp;dataFile)</code></th>
 <td class="colLast">
 <div class="block">Create or update the data file entity</div>
 </td>
@@ -395,10 +392,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i28" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertRelationalTable(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable,java.lang.String,boolean)">upsertRelationalTable</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertRelationalTable(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable,java.lang.String)">upsertRelationalTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                      <a href="../model/RelationalTable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">RelationalTable</a>&nbsp;relationalTable,
-                     java.lang.String&nbsp;databaseSchemaQualifiedName,
-                     boolean&nbsp;incomplete)</code></th>
+                     java.lang.String&nbsp;databaseSchemaQualifiedName)</code></th>
 <td class="colLast">
 <div class="block">Create or update the relational table entity</div>
 </td>
@@ -784,15 +780,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="upsertDatabase(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Database,boolean)">
+<a id="upsertDatabase(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.Database)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>upsertDatabase</h4>
 <pre class="methodSignature">java.lang.String&nbsp;upsertDatabase&#8203;(java.lang.String&nbsp;userId,
-                                <a href="../model/Database.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Database</a>&nbsp;database,
-                                boolean&nbsp;incomplete)
+                                <a href="../model/Database.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">Database</a>&nbsp;database)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
@@ -802,8 +797,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>database</code> - the database bean</dd>
-<dd><code>incomplete</code> - determines if the entities inside the database are incomplete or not (database schema
-                      and relational tables)</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of database in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -814,7 +807,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="upsertDatabaseSchema(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema,java.lang.String,boolean)">
+<a id="upsertDatabaseSchema(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DatabaseSchema,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -822,8 +815,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>upsertDatabaseSchema</h4>
 <pre class="methodSignature">java.lang.String&nbsp;upsertDatabaseSchema&#8203;(java.lang.String&nbsp;userId,
                                       <a href="../model/DatabaseSchema.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DatabaseSchema</a>&nbsp;databaseSchema,
-                                      java.lang.String&nbsp;databaseQualifiedName,
-                                      boolean&nbsp;incomplete)
+                                      java.lang.String&nbsp;databaseQualifiedName)
                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
@@ -834,7 +826,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>databaseSchema</code> - the database schema bean</dd>
 <dd><code>databaseQualifiedName</code> - the qualified name of the database, in case it is known</dd>
-<dd><code>incomplete</code> - indicates whether the asset is incomplete or not</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of database schema in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -845,7 +836,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="upsertRelationalTable(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable,java.lang.String,boolean)">
+<a id="upsertRelationalTable(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -853,8 +844,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>upsertRelationalTable</h4>
 <pre class="methodSignature">java.lang.String&nbsp;upsertRelationalTable&#8203;(java.lang.String&nbsp;userId,
                                        <a href="../model/RelationalTable.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">RelationalTable</a>&nbsp;relationalTable,
-                                       java.lang.String&nbsp;databaseSchemaQualifiedName,
-                                       boolean&nbsp;incomplete)
+                                       java.lang.String&nbsp;databaseSchemaQualifiedName)
                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
@@ -865,7 +855,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>relationalTable</code> - the relational table bean</dd>
 <dd><code>databaseSchemaQualifiedName</code> - the qualified name of the database schema to which it will be related</dd>
-<dd><code>incomplete</code> - indicates whether the asset is incomplete or not</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the relational table in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -876,15 +865,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="upsertDataFile(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DataFile,boolean)">
+<a id="upsertDataFile(java.lang.String,org.odpi.openmetadata.accessservices.dataengine.model.DataFile)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>upsertDataFile</h4>
 <pre class="methodSignature">java.lang.String&nbsp;upsertDataFile&#8203;(java.lang.String&nbsp;userId,
-                                <a href="../model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFile</a>&nbsp;dataFile,
-                                boolean&nbsp;incomplete)
+                                <a href="../model/DataFile.html" title="class in org.odpi.openmetadata.accessservices.dataengine.model">DataFile</a>&nbsp;dataFile)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
@@ -894,7 +882,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>dataFile</code> - the data file  bean</dd>
-<dd><code>incomplete</code> - should the incomplete classification be added?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the relational table in the repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
