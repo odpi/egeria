@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TO_COLLECTION_TYPE_NAME;
 
@@ -126,6 +127,6 @@ public class DataEngineCollectionHandler {
             PropertyServerException {
 
         dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, collectionGUID, REFERENCEABLE_TO_COLLECTION_TYPE_NAME,
-                COLLECTION_TYPE_NAME, externalSourceName, null);
+                COLLECTION_TYPE_NAME, PROCESS_TYPE_NAME, externalSourceName, null);
     }
 }
