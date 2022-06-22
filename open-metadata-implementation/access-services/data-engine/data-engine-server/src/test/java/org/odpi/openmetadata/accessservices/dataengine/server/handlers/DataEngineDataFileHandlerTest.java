@@ -108,8 +108,8 @@ class DataEngineDataFileHandlerTest {
         mockDataEngineCommonHandler(false);
         mockDataEngineSchemaTypeHandler();
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile,
-                false, schemaType, getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
+                getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, FILE_TYPE);
         verify(fileHandler, times(1)).
@@ -129,14 +129,15 @@ class DataEngineDataFileHandlerTest {
     @Test
     void insertIncompleteCsvFileToCatalog() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         CSVFile csvFile = getCsvFile();
+        csvFile.setIncomplete(true);
         SchemaType schemaType = getTabularSchema();
         List<Attribute> columns = getTabularColumns();
         schemaType.setAttributeList(columns);
         mockDataEngineCommonHandler(false);
         mockDataEngineSchemaTypeHandler();
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile,
-                true, schemaType, getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
+                getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, FILE_TYPE);
         verify(fileHandler, times(1)).
@@ -167,9 +168,8 @@ class DataEngineDataFileHandlerTest {
         mockRepositoryHelper();
         mockDataEngineSchemaTypeHandler();
 
-        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile,
-                false, schemaType, getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
-                USER, METHOD);
+        String guid = dataEngineDataFileHandler.upsertFileAssetIntoCatalog(CSV_FILE_TYPE_NAME, CSV_FILE_TYPE_GUID, csvFile, schemaType,
+                getExtendedProperties(), EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, USER, METHOD);
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, csvFile.getQualifiedName(), csvFile.getFileType());
         verify(fileHandler, times(1)).

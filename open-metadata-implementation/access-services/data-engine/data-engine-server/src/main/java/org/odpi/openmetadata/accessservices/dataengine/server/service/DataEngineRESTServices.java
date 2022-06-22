@@ -931,8 +931,7 @@ public class DataEngineRESTServices {
         try {
             validateDatabaseRequestBody(userId, serverName, databaseRequestBody, methodName);
 
-            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(),
-                    databaseRequestBody.getIncomplete(), databaseRequestBody.getExternalSourceName());
+            String databaseGUID = upsertDatabase(userId, serverName, databaseRequestBody.getDatabase(), databaseRequestBody.getExternalSourceName());
             response.setGUID(databaseGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -946,7 +945,6 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param database           the database values
-     * @param incomplete         tells if the database is incomplete
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created database
@@ -955,18 +953,19 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDatabase(String userId, String serverName, Database database, boolean incomplete,
-                                 String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String upsertDatabase(String userId, String serverName, Database database, String externalSourceName) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException {
         final String methodName = "upsertDatabase";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, database);
         DatabaseSchema databaseSchema = database.getDatabaseSchema();
         List<RelationalTable> tables = database.getTables();
-        if(databaseSchema != null || CollectionUtils.isNotEmpty(tables)) {
+        if (databaseSchema != null || CollectionUtils.isNotEmpty(tables)) {
             log.debug(UPSERT_METHOD_CALLS_FOR, methodName, databaseSchema, tables);
         }
 
         DataEngineRelationalDataHandler dataEngineRelationalDataHandler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
-        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, incomplete, externalSourceName);
+        String databaseGUID = dataEngineRelationalDataHandler.upsertDatabase(userId, database, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseGUID);
         return databaseGUID;
@@ -988,8 +987,8 @@ public class DataEngineRESTServices {
         try {
             validateDatabaseSchemaRequestBody(userId, serverName, databaseSchemaRequestBody, methodName);
 
-            String databaseGUID = upsertDatabaseSchema(userId, serverName, databaseSchemaRequestBody.getDatabaseQualifiedName(),
-                    databaseSchemaRequestBody.getIncomplete(), databaseSchemaRequestBody.getDatabaseSchema(),
+            DatabaseSchema databaseSchema = databaseSchemaRequestBody.getDatabaseSchema();
+            String databaseGUID = upsertDatabaseSchema(userId, serverName, databaseSchemaRequestBody.getDatabaseQualifiedName(), databaseSchema,
                     databaseSchemaRequestBody.getExternalSourceName());
             response.setGUID(databaseGUID);
         } catch (Exception error) {
@@ -1004,7 +1003,6 @@ public class DataEngineRESTServices {
      * @param userId                the name of the calling user
      * @param serverName            name of server instance to call
      * @param databaseQualifiedName the database entity to which the database schema will be linked, if it exists
-     * @param incomplete            determines if the entity is virtual
      * @param databaseSchema        the database schema values
      * @param externalSourceName    the unique name of the external source
      *
@@ -1014,10 +1012,9 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDatabaseSchema(String userId, String serverName, String databaseQualifiedName, boolean incomplete,
-                                       DatabaseSchema databaseSchema, String externalSourceName) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException {
+    public String upsertDatabaseSchema(String userId, String serverName, String databaseQualifiedName, DatabaseSchema databaseSchema,
+                                       String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException,
+                                                                         PropertyServerException {
 
         final String methodName = "upsertDatabaseSchema";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, databaseSchema);
@@ -1031,8 +1028,7 @@ public class DataEngineRESTServices {
             databaseGUID = databaseEntityOptional.get().getGUID();
         }
 
-        String databaseSchemaGUID = dataEngineRelationalDataHandler.upsertDatabaseSchema(userId, databaseGUID, databaseSchema, incomplete,
-                externalSourceName);
+        String databaseSchemaGUID = dataEngineRelationalDataHandler.upsertDatabaseSchema(userId, databaseGUID, databaseSchema, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, databaseSchemaGUID);
         return databaseSchemaGUID;
@@ -1167,8 +1163,7 @@ public class DataEngineRESTServices {
             validateRelationalTableRequestBody(userId, serverName, relationalTableRequestBody, methodName);
 
             String relationalTableGUID = upsertRelationalTable(userId, serverName, relationalTableRequestBody.getDatabaseSchemaQualifiedName(),
-                    relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName(),
-                    relationalTableRequestBody.getIncomplete());
+                    relationalTableRequestBody.getRelationalTable(), relationalTableRequestBody.getExternalSourceName());
             response.setGUID(relationalTableGUID);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -1184,7 +1179,6 @@ public class DataEngineRESTServices {
      * @param databaseSchemaQualifiedName the unique name of the database
      * @param relationalTable             the relational table values
      * @param externalSourceName          the unique name of the external source
-     * @param incomplete                  tells if the relational table is incomplete
      *
      * @return the unique identifier (guid) of the created relational table
      *
@@ -1193,7 +1187,7 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException    problem accessing the property server
      */
     public String upsertRelationalTable(String userId, String serverName, String databaseSchemaQualifiedName, RelationalTable relationalTable,
-                                        String externalSourceName, boolean incomplete) throws InvalidParameterException,
+                                        String externalSourceName) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException, PropertyServerException {
         final String methodName = "upsertRelationalTable";
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, relationalTable);
@@ -1202,7 +1196,7 @@ public class DataEngineRESTServices {
                 serverName, methodName);
 
         String relationalTableGUID = dataEngineRelationalDataHandler.upsertRelationalTable(userId, databaseSchemaQualifiedName,
-                relationalTable, externalSourceName, incomplete);
+                relationalTable, externalSourceName);
 
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, relationalTableGUID);
         return relationalTableGUID;
@@ -1282,8 +1276,7 @@ public class DataEngineRESTServices {
         try {
             validateRequestBody(userId, serverName, dataFileRequestBody, methodName);
 
-            guid = upsertDataFile(userId, serverName, dataFileRequestBody.getDataFile(), dataFileRequestBody.getIncomplete(),
-                    dataFileRequestBody.getExternalSourceName());
+            guid = upsertDataFile(userId, serverName, dataFileRequestBody.getDataFile(), dataFileRequestBody.getExternalSourceName());
             response.setGUID(guid);
         } catch (Exception error) {
             restExceptionHandler.captureExceptions(response, error, methodName);
@@ -1297,7 +1290,6 @@ public class DataEngineRESTServices {
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
      * @param file               the data file properties
-     * @param incomplete         tells if the data file is incomplete
      * @param externalSourceName the unique name of the external source
      *
      * @return the unique identifier (guid) of the created data file
@@ -1306,8 +1298,9 @@ public class DataEngineRESTServices {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String upsertDataFile(String userId, String serverName, DataFile file, boolean incomplete,
-                                 String externalSourceName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String upsertDataFile(String userId, String serverName, DataFile file, String externalSourceName) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException {
         String methodName = "upsertDataFile";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, file);
@@ -1332,7 +1325,7 @@ public class DataEngineRESTServices {
             });
         }
 
-        String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, incomplete, schemaType,
+        String guid = dataFileHandler.upsertFileAssetIntoCatalog(fileTypeName, fileTypeGuid, file, schemaType,
                 extendedProperties, externalSourceGuid, externalSourceName, userId, methodName);
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, guid);
         return guid;
@@ -2033,7 +2026,7 @@ public class DataEngineRESTServices {
      */
     public void deleteTopic(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                             DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
-                                                                   EntityNotDeletedException, FunctionNotSupportedException {
+                                                                  EntityNotDeletedException, FunctionNotSupportedException {
         final String methodName = "deleteTopic";
 
         DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
@@ -2085,8 +2078,8 @@ public class DataEngineRESTServices {
      * @throws PropertyServerException    problem accessing the property server
      */
     public String getTopicGUID(String userId, String serverName, String topicQualifiedName, String methodName) throws InvalidParameterException,
-                                                                                                                       UserNotAuthorizedException,
-                                                                                                                       PropertyServerException {
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException {
         DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
         DataEngineCommonHandler dataEngineCommonHandler = instanceHandler.getCommonHandler(userId, serverName, methodName);
         Optional<EntityDetail> topicEntity = dataEngineTopicHandler.findTopicEntity(userId, topicQualifiedName);
@@ -2167,8 +2160,8 @@ public class DataEngineRESTServices {
      */
     public void deleteEventType(String userId, String serverName, String externalSourceName, String guid, String qualifiedName,
                                 DeleteSemantic deleteSemantic) throws InvalidParameterException, PropertyServerException,
-                                                                       UserNotAuthorizedException, EntityNotDeletedException,
-                                                                       FunctionNotSupportedException {
+                                                                      UserNotAuthorizedException, EntityNotDeletedException,
+                                                                      FunctionNotSupportedException {
 
         final String methodName = "deleteEventType";
 

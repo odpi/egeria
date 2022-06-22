@@ -38,18 +38,6 @@ public class DatabaseSchemaEvent extends DataEngineEventHeader {
     private DatabaseSchema databaseSchema;
 
     /**
-     * Determines if the database schema is an incomplete asset
-     * -- GETTER --
-     * Return if the database schema is incomplete
-     *
-     * @return boolean - if the database schema is incomplete
-     * -- SETTER --
-     * Sets if the database schema is incomplete or not
-     * @param incomplete determines if the database schema is an incomplete asset
-     */
-    private boolean incomplete;
-
-    /**
      * The database qualified name to which the database schema will be linked, if it exists
      * -- GETTER --
      * Return the database qualified name to which the database schema will be linked, if it exists

@@ -150,7 +150,7 @@ class DataEngineRelationalDataHandlerTest {
                 relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
                 RELATIONAL_TABLE_TYPE_NAME, null, null, null, UPSERT_RELATIONAL_TABLE_METHOD))
                 .thenReturn(TABLE_GUID);
-        String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, false, EXTERNAL_SOURCE_DE_NAME);
+        String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, EXTERNAL_SOURCE_DE_NAME);
 
         assertEquals(DATABASE_GUID, result);
         verifyInvalidParameterHandlerInvocations(methodName);
@@ -181,7 +181,7 @@ class DataEngineRelationalDataHandlerTest {
         mockFindEntity(QUALIFIED_NAME, GUID, DATABASE_TYPE_NAME);
         mockFindEntity(DS_QUALIFIED_NAME, DATABASE_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME);
 
-        String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, false, EXTERNAL_SOURCE_DE_NAME);
+        String result = dataEngineRelationalDataHandler.upsertDatabase(USER, database, EXTERNAL_SOURCE_DE_NAME);
 
         assertEquals(GUID, result);
         verifyInvalidParameterHandlerInvocations(methodName);
@@ -212,7 +212,7 @@ class DataEngineRelationalDataHandlerTest {
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
                 null, methodName)).thenReturn(SCHEMA_GUID);
 
-        String result = dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, DATABASE_GUID, databaseSchema, false,
+        String result = dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, DATABASE_GUID, databaseSchema,
                 EXTERNAL_SOURCE_DE_NAME);
 
         assertEquals(SCHEMA_GUID, result);
@@ -223,6 +223,7 @@ class DataEngineRelationalDataHandlerTest {
     void upsertDatabaseSchema_create_incomplete() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "upsertDatabaseSchema";
         DatabaseSchema databaseSchema = getDatabaseSchema();
+        databaseSchema.setIncomplete(true);
 
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
@@ -238,7 +239,7 @@ class DataEngineRelationalDataHandlerTest {
                 DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
                 null, methodName);
 
-        String result = dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, DATABASE_GUID, databaseSchema, true,
+        String result = dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, DATABASE_GUID, databaseSchema,
                 EXTERNAL_SOURCE_DE_NAME);
 
         verify(databaseSchemaAssetHandler, times(1)).setClassificationInRepository(USER, SCHEMA_GUID,
@@ -263,7 +264,7 @@ class DataEngineRelationalDataHandlerTest {
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                 null, null, methodName);
 
-        String result = dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, DATABASE_GUID, databaseSchema, false,
+        String result = dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, DATABASE_GUID, databaseSchema,
                 EXTERNAL_SOURCE_DE_NAME);
 
         assertEquals(SCHEMA_GUID, result);
@@ -286,7 +287,7 @@ class DataEngineRelationalDataHandlerTest {
                 RELATIONAL_TABLE_TYPE_NAME, null, null, null, methodName)).thenReturn(TABLE_GUID);
 
         String result = dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, relationalTable,
-                EXTERNAL_SOURCE_DE_NAME, false);
+                EXTERNAL_SOURCE_DE_NAME);
 
         assertEquals(TABLE_GUID, result);
         verifyInvalidParameterHandlerInvocations(methodName);
@@ -306,6 +307,7 @@ class DataEngineRelationalDataHandlerTest {
         RelationalTable relationalTable = getRelationalTable();
         RelationalColumn column = getRelationalColumn();
         relationalTable.setColumns(Collections.singletonList(column));
+        relationalTable.setIncomplete(true);
 
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
@@ -321,7 +323,7 @@ class DataEngineRelationalDataHandlerTest {
                 null, methodName);
 
         String result = dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, relationalTable,
-                EXTERNAL_SOURCE_DE_NAME, true);
+                EXTERNAL_SOURCE_DE_NAME);
 
         assertEquals(TABLE_GUID, result);
         verifyInvalidParameterHandlerInvocations(methodName);
@@ -351,8 +353,7 @@ class DataEngineRelationalDataHandlerTest {
         mockFindEntity(QUALIFIED_NAME, TABLE_GUID, RELATIONAL_TABLE_TYPE_NAME);
         mockFindEntity(COLUMN_QUALIFIED_NAME, COLUMN_GUID, RELATIONAL_COLUMN_TYPE_NAME);
 
-        String result = dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, relationalTable,
-                EXTERNAL_SOURCE_DE_NAME, false);
+        String result = dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, relationalTable, EXTERNAL_SOURCE_DE_NAME);
 
         assertEquals(TABLE_GUID, result);
         verifyInvalidParameterHandlerInvocations(methodName);

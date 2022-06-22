@@ -262,10 +262,8 @@ public interface DataEngineClient {
     /**
      * Create or update the database entity
      *
-     * @param userId        the name of the calling user
-     * @param database      the database bean
-     * @param incomplete    determines if the entities inside the database are incomplete or not (database schema
-     *                      and relational tables)
+     * @param userId   the name of the calling user
+     * @param database the database bean
      *
      * @return unique identifier of database in the repository
      *
@@ -274,10 +272,10 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertDatabase(String userId, Database database, boolean incomplete) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException,
-                                                                                       ConnectorCheckedException;
+    String upsertDatabase(String userId, Database database) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException,
+                                                                   ConnectorCheckedException;
 
     /**
      * Create or update the database schema entity
@@ -285,7 +283,6 @@ public interface DataEngineClient {
      * @param userId                the name of the calling user
      * @param databaseSchema        the database schema bean
      * @param databaseQualifiedName the qualified name of the database, in case it is known
-     * @param incomplete            indicates whether the asset is incomplete or not
      *
      * @return unique identifier of database schema in the repository
      *
@@ -294,11 +291,10 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName,
-                                boolean incomplete) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException,
-                                                           ConnectorCheckedException;
+    String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException,
+                                                                                                                   ConnectorCheckedException;
 
     /**
      * Create or update the relational table entity
@@ -306,7 +302,6 @@ public interface DataEngineClient {
      * @param userId                      the name of the calling user
      * @param relationalTable             the relational table bean
      * @param databaseSchemaQualifiedName the qualified name of the database schema to which it will be related
-     * @param incomplete                  indicates whether the asset is incomplete or not
      *
      * @return unique identifier of the relational table in the repository
      *
@@ -315,8 +310,7 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName,
-                                 boolean incomplete)
+    String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, ConnectorCheckedException;
 
     /**
@@ -324,7 +318,6 @@ public interface DataEngineClient {
      *
      * @param userId   the name of the calling user
      * @param dataFile the data file  bean
-     * @param incomplete should the incomplete classification be added?
      *
      * @return unique identifier of the relational table in the repository
      *
@@ -333,10 +326,10 @@ public interface DataEngineClient {
      * @throws PropertyServerException    problem accessing the property server
      * @throws ConnectorCheckedException  internal problem with the connector
      */
-    String upsertDataFile(String userId, DataFile dataFile, boolean incomplete) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException,
-                                                                                       ConnectorCheckedException;
+    String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException,
+                                                                   ConnectorCheckedException;
 
     /**
      * Delete the database
@@ -465,10 +458,10 @@ public interface DataEngineClient {
      *
      * @return list of found entities
      *
-     * @throws InvalidParameterException  the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     * @throws ConnectorCheckedException  problem with the underlying connector (if used)
+     * @throws InvalidParameterException     the bean properties are invalid
+     * @throws UserNotAuthorizedException    user not authorized to issue this request
+     * @throws PropertyServerException       problem accessing the property server
+     * @throws ConnectorCheckedException     problem with the underlying connector (if used)
      * @throws FunctionNotSupportedException this request is not supported in the target repositories
      */
     GUIDListResponse find(String userId, FindRequestBody findRequestBody) throws ConnectorCheckedException,
