@@ -2,6 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.uichassis.springboot;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClient;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
@@ -32,6 +37,19 @@ import org.springframework.core.env.Environment;
                 DemoUsers.class
         }
         )
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Egeria's Spring Boot based UI RESTful web service API",
+                version = "3.10-SNAPSHOT",
+                description = "",
+                license = @License(name = "Apache 2.0 License", url = "https://www.apache.org/licenses/LICENSE-2.0"),
+                contact = @Contact(url = "https://egeria-project.org", name = "Egeria Project",
+                        email = "egeria-technical-discuss@lists.lfaidata.foundation")
+        ),
+
+        externalDocs = @ExternalDocumentation(description = "Egeria documentation",
+                url="https://egeria-project.org")
+)
 public class EgeriaUIPlatform {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIPlatform.class);
