@@ -16,10 +16,10 @@ import java.util.Random;
 
 @Component
 public class DinoViewService extends DinoViewAdmin implements InitializingBean {
-    @Value("${dino.server.name:view-server}")
+    @Value("${viewServiceServerName}")
     private String viewServerName;
 
-    @Value("${view-service.max.page.size:0}")
+    @Value("${viewServiceMaxPageSize:0}")
     private int maxPageSize;
 
     @Autowired

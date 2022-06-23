@@ -16,14 +16,14 @@ import java.util.Random;
 
 @Component
 public class TexViewService extends TexViewAdmin implements InitializingBean {
-    @Value("${tex.server.name:view-server}")
+    @Value("${viewServiceServerName}")
     private String viewServerName;
 
-    @Value("${view-service.max.page.size:0}")
+    @Value("${viewServiceMaxPageSize:0}")
     private int maxPageSize;
 
     @Autowired
-    IntegrationViewServiceConfigComponent integrationViewServiceConfigComponent;
+    IntegrationViewServiceConfigComponent  integrationViewServiceConfigComponent;
 
     @Autowired
     private AuditLogDestinationService auditLogDestinationService;
