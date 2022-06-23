@@ -63,6 +63,16 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'junit:junit'
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    implementation project(':open-metadata-implementation:view-services:tex-view:tex-view-server')
+    implementation project(':open-metadata-implementation:view-services:tex-view:tex-view-spring')
+    implementation project(':open-metadata-implementation:view-services:tex-view:rex-view-server')
+    implementation project(':open-metadata-implementation:view-services:tex-view:rex-view-spring')
+    implementation project(':open-metadata-implementation:view-services:tex-view:dino-view-server')
+    implementation project(':open-metadata-implementation:view-services:tex-view:dino-view-spring')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
+    runtimeOnly 'org.springdoc:springdoc-openapi-ui'
+    implementation 'io.swagger.core.v3:swagger-annotations'
 }
 
 description = 'UI Server Platform Chassis for Spring'
