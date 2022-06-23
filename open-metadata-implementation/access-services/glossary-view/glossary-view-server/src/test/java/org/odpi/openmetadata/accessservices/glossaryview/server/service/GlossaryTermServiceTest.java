@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 import java.util.Arrays;
@@ -14,9 +15,6 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
@@ -30,8 +28,10 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void successfullyGetTerm() throws Exception{
-        when(repositoryHandler.getEntityByGUID(eq(USER_ID), eq(terms.get(0).getGUID()), eq(GUID_PARAM_NAME),
-                eq(TERM_TYPE_NAME), anyString())).thenReturn(terms.get(0));
+        when(entitiesHandler.getEntityFromRepository(USER_ID, terms.get(0).getGUID(),
+                OpenMetadataAPIMapper.GUID_PROPERTY_NAME, TERM_TYPE_NAME, null, null,
+                false, false, null, null, "getTerm"))
+                .thenReturn(terms.get(0));
 
         GlossaryViewEntityDetailResponse response = underTest.getTerm(USER_ID, SERVER_NAME, terms.get(0).getGUID());
 
@@ -41,8 +41,9 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void findNoTerm() throws Exception{
-        when(repositoryHandler.getEntityByGUID(eq(USER_ID), eq(terms.get(0).getGUID()), eq(GUID_PARAM_NAME),
-                eq(TERM_TYPE_NAME), anyString())).thenReturn(terms.get(0));
+        when(entitiesHandler.getEntityFromRepository(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, null, null, false, false,
+                null, null, "getTerm")).thenReturn(terms.get(0));
 
         GlossaryViewEntityDetailResponse response = underTest.getTerm(USER_ID, SERVER_NAME,"no-term-at-this-guid");
 
@@ -51,8 +52,9 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getAllTerms() throws Exception{
-        when(repositoryHandler.getEntitiesByType(eq(USER_ID), eq(TERM_TYPE_GUID),
-                anyInt(), anyInt(), eq("getAllTerms"))).thenReturn(terms);
+        when(entitiesHandler.getEntitiesByType(USER_ID, TERM_TYPE_GUID, TERM_TYPE_NAME, null,
+                false, false, null, 0, 10, null,
+                "getAllTerms")).thenReturn(terms);
 
         GlossaryViewEntityDetailResponse response = underTest.getAllTerms(USER_ID, SERVER_NAME, 0, 10);
 
@@ -74,9 +76,9 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getTermsViaTermAnchorRelationships() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(GLOSSARY_TYPE_NAME),
-                eq(TERM_ANCHOR_RELATIONSHIP_GUID), eq(TERM_ANCHOR_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getTermsViaTermAnchorRelationships"))).thenReturn(terms);
+        when(entitiesHandler.getAttachedEntities(USER_ID, glossaries.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                GLOSSARY_TYPE_NAME, TERM_ANCHOR_RELATIONSHIP_GUID, TERM_ANCHOR_RELATIONSHIP_NAME, null,
+                0, 10000, "getTermsViaTermAnchorRelationships")).thenReturn(terms);
 
         GlossaryViewEntityDetailResponse response = underTest.getTermsViaTermAnchorRelationships(USER_ID, SERVER_NAME,
                 glossaries.get(0).getGUID(), 0, 10000);
@@ -98,9 +100,10 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getTermsViaTermCategorizationRelationships() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(categories.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
-                eq(TERM_CATEGORIZATION_RELATIONSHIP_GUID), eq(TERM_CATEGORIZATION_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getTermsViaTermCategorizationRelationships"))).thenReturn(Arrays.asList(terms.get(0), terms.get(1), terms.get(2)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, categories.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                CATEGORY_TYPE_NAME, TERM_CATEGORIZATION_RELATIONSHIP_GUID, TERM_CATEGORIZATION_RELATIONSHIP_NAME,
+                null, 0, 10000, "getTermsViaTermCategorizationRelationships"))
+                .thenReturn(Arrays.asList(terms.get(0), terms.get(1), terms.get(2)));
 
         GlossaryViewEntityDetailResponse response = underTest.getTermsViaTermCategorizationRelationships(USER_ID, SERVER_NAME,
                 categories.get(0).getGUID(), 0, 10000);
@@ -118,9 +121,10 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getExternalGlossaries() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(LIBRARY_TERM_REFERENCE_RELATIONSHIP_GUID), eq(LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getExternalGlossaryLinks"))).thenReturn(Collections.singletonList(externalGlossaryLink));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, LIBRARY_TERM_REFERENCE_RELATIONSHIP_GUID, LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME,
+                null, 0, 10, "getExternalGlossaryLinks"))
+                .thenReturn(Collections.singletonList(externalGlossaryLink));
 
         GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaryLinks(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
 
@@ -131,11 +135,12 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getRelatedTerms() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(RELATED_TERM_RELATIONSHIP_GUID), eq(RELATED_TERM_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getRelatedTerms"))).thenReturn(Arrays.asList(terms.get(1), terms.get(2)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, RELATED_TERM_RELATIONSHIP_GUID, RELATED_TERM_RELATIONSHIP_NAME, null,
+                0, 10, "getRelatedTerms")).thenReturn(Arrays.asList(terms.get(1), terms.get(2)));
 
-        GlossaryViewEntityDetailResponse response = underTest.getRelatedTerms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getRelatedTerms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
+                0, 10);
 
         assertEquals(2, response.getResult().size());
 
@@ -148,9 +153,9 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getSynonyms() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(SYNONYM_RELATIONSHIP_GUID), eq(SYNONYM_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getSynonyms"))).thenReturn(Arrays.asList(terms.get(2), terms.get(3)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, SYNONYM_RELATIONSHIP_GUID, SYNONYM_RELATIONSHIP_NAME, null,
+                0, 10, "getSynonyms")).thenReturn(Arrays.asList(terms.get(2), terms.get(3)));
 
         GlossaryViewEntityDetailResponse response = underTest.getSynonyms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
 
@@ -165,11 +170,12 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getAntonyms() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(ANTONYM_RELATIONSHIP_GUID), eq(ANTONYM_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getAntonyms"))).thenReturn(Arrays.asList(terms.get(1), terms.get(4)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, ANTONYM_RELATIONSHIP_GUID, ANTONYM_RELATIONSHIP_NAME, null,
+                0, 10, "getAntonyms")).thenReturn(Arrays.asList(terms.get(1), terms.get(4)));
 
-        GlossaryViewEntityDetailResponse response = underTest.getAntonyms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getAntonyms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
+                0, 10);
 
         assertEquals(2, response.getResult().size());
 
@@ -182,9 +188,9 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getPreferredTerms() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(PREFERRED_TERM_RELATIONSHIP_GUID), eq(PREFERRED_TERM_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getPreferredTerms"))).thenReturn(Arrays.asList(terms.get(2), terms.get(3)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, PREFERRED_TERM_RELATIONSHIP_GUID, PREFERRED_TERM_RELATIONSHIP_NAME, null,
+                0, 10, "getPreferredTerms")).thenReturn(Arrays.asList(terms.get(2), terms.get(3)));
 
         GlossaryViewEntityDetailResponse response = underTest.getPreferredTerms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
 
@@ -199,11 +205,13 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getReplacementTerms() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(REPLACEMENT_TERM_RELATIONSHIP_GUID), eq(REPLACEMENT_TERM_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getReplacementTerms"))).thenReturn(Arrays.asList(terms.get(2), terms.get(3)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, REPLACEMENT_TERM_RELATIONSHIP_GUID, REPLACEMENT_TERM_RELATIONSHIP_NAME, null,
+                0, 10, "getReplacementTerms"))
+                .thenReturn(Arrays.asList(terms.get(2), terms.get(3)));
 
-        GlossaryViewEntityDetailResponse response = underTest.getReplacementTerms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getReplacementTerms(USER_ID, SERVER_NAME,
+                terms.get(0).getGUID(),0, 10);
 
         assertEquals(2, response.getResult().size());
 
@@ -216,9 +224,9 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getTranslations() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(TRANSLATION_RELATIONSHIP_GUID), eq(TRANSLATION_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getTranslations"))).thenReturn(Collections.singletonList(terms.get(2)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, TRANSLATION_RELATIONSHIP_GUID, TRANSLATION_RELATIONSHIP_NAME, null,
+                0, 10, "getTranslations")).thenReturn(Collections.singletonList(terms.get(2)));
 
         GlossaryViewEntityDetailResponse response = underTest.getTranslations(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
 
@@ -229,9 +237,9 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getIsA() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(IS_A_RELATIONSHIP_GUID), eq(IS_A_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getIsA"))).thenReturn(Collections.singletonList(terms.get(3)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, IS_A_RELATIONSHIP_GUID, IS_A_RELATIONSHIP_NAME, null,
+                0, 10, "getIsA")).thenReturn(Collections.singletonList(terms.get(3)));
 
         GlossaryViewEntityDetailResponse response = underTest.getIsA(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
 
@@ -242,11 +250,12 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getValidValues() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(VALID_VALUE_RELATIONSHIP_GUID), eq(VALID_VALUE_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getValidValues"))).thenReturn(Arrays.asList(terms.get(1), terms.get(2)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, VALID_VALUE_RELATIONSHIP_GUID, VALID_VALUE_RELATIONSHIP_NAME, null,
+                0, 10, "getValidValues")).thenReturn(Arrays.asList(terms.get(1), terms.get(2)));
 
-        GlossaryViewEntityDetailResponse response = underTest.getValidValues(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getValidValues(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
+                0, 10);
 
         assertEquals(2, response.getResult().size());
 
@@ -259,11 +268,13 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getUsedInContexts() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(USED_IN_CONTEXT_RELATIONSHIP_GUID), eq(USED_IN_CONTEXT_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getUsedInContexts"))).thenReturn(Arrays.asList(terms.get(1), terms.get(2), terms.get(3), terms.get(4)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, USED_IN_CONTEXT_RELATIONSHIP_GUID, USED_IN_CONTEXT_RELATIONSHIP_NAME, null,
+                0, 10, "getUsedInContexts"))
+                .thenReturn(Arrays.asList(terms.get(1), terms.get(2), terms.get(3), terms.get(4)));
 
-        GlossaryViewEntityDetailResponse response = underTest.getUsedInContexts(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getUsedInContexts(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
+                0, 10);
 
         assertEquals(4, response.getResult().size());
 
@@ -280,9 +291,10 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getAssignedElements() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(SEMANTIC_ASSIGNMENT_RELATIONSHIP_GUID), eq(SEMANTIC_ASSIGNMENT_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getAssignedElements"))).thenReturn(Arrays.asList(terms.get(2), terms.get(3)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, SEMANTIC_ASSIGNMENT_RELATIONSHIP_GUID, SEMANTIC_ASSIGNMENT_RELATIONSHIP_NAME,
+                null, 0, 10, "getAssignedElements"))
+                .thenReturn(Arrays.asList(terms.get(2), terms.get(3)));
 
         GlossaryViewEntityDetailResponse response = underTest.getAssignedElements(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
 
@@ -297,11 +309,12 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getAttributes() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(TERM_HAS_A_RELATIONSHIP_GUID), eq(TERM_HAS_A_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getAttributes"))).thenReturn(Collections.singletonList(terms.get(3)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, TERM_HAS_A_RELATIONSHIP_GUID, TERM_HAS_A_RELATIONSHIP_NAME, null,
+                0, 10, "getAttributes")).thenReturn(Collections.singletonList(terms.get(3)));
 
-        GlossaryViewEntityDetailResponse response = underTest.getAttributes(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getAttributes(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
+                0, 10);
 
         assertEquals(1, response.getResult().size());
         assertGlossaryTermProperties(terms.get(3), (GlossaryTerm)response.getResult().get(0));
@@ -310,9 +323,9 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getSubtypes() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(TERM_IS_A_TYPE_OF_RELATIONSHIP_GUID), eq(TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getSubtypes"))).thenReturn(Collections.singletonList(terms.get(4)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, TERM_IS_A_TYPE_OF_RELATIONSHIP_GUID, TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME, null,
+                0, 10, "getSubtypes")).thenReturn(Collections.singletonList(terms.get(4)));
 
         GlossaryViewEntityDetailResponse response = underTest.getSubtypes(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
 
@@ -323,11 +336,12 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getTypes() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
-                eq(TERM_TYPED_BY_RELATIONSHIP_GUID), eq(TERM_TYPED_BY_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getTypes"))).thenReturn(Collections.singletonList(terms.get(1)));
+        when(entitiesHandler.getAttachedEntities(USER_ID, terms.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                TERM_TYPE_NAME, TERM_TYPED_BY_RELATIONSHIP_GUID, TERM_TYPED_BY_RELATIONSHIP_NAME, null,
+                0, 10, "getTypes")).thenReturn(Collections.singletonList(terms.get(1)));
 
-        GlossaryViewEntityDetailResponse response = underTest.getTypes(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getTypes(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
+                0, 10);
 
         assertEquals(1, response.getResult().size());
         assertGlossaryTermProperties(terms.get(1), (GlossaryTerm)response.getResult().get(0));

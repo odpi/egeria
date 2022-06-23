@@ -37,7 +37,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-handler</artifactId>
+            <artifactId>generic-handlers</artifactId>
         </dependency>
 
         <dependency>

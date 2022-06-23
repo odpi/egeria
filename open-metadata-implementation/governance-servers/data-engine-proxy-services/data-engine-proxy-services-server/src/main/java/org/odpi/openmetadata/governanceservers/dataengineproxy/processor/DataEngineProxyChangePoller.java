@@ -42,7 +42,7 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
-    public void start() throws ConnectorCheckedException, UserNotAuthorizedException, InvalidParameterException, PropertyServerException  {
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException, InvalidParameterException, PropertyServerException {
 
         final String methodName = "start";
         this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
@@ -154,7 +154,7 @@ public class DataEngineProxyChangePoller implements Runnable {
     }
 
     /**
-     *  Sleep until the next polling interval comes.
+     * Sleep until the next polling interval comes.
      */
     private void sleep() {
         try {
@@ -202,10 +202,23 @@ public class DataEngineProxyChangePoller implements Runnable {
         if (CollectionUtils.isNotEmpty(changedDataStores)) {
             for (Object changedDataStore : changedDataStores) {
                 if (changedDataStore instanceof DataFile) {
-                    dataEngineOMASClient.upsertDataFile(userId, (DataFile) changedDataStore, true);
+                    dataEngineOMASClient.upsertDataFile(userId, (DataFile) changedDataStore);
                 }
                 if (changedDataStore instanceof Database) {
-                    dataEngineOMASClient.upsertDatabase(userId, (Database) changedDataStore, true);
+                    Database database = (Database) changedDataStore;
+                    // create the database only if it's incomplete
+                    // will also create database schemas and relational table
+                    if (database.getIncomplete()) {
+                        dataEngineOMASClient.upsertDatabase(userId, database);
+                    } else {
+                        // create the database schema only if it's incomplete
+                        if (database.getDatabaseSchema().getIncomplete()) {
+                            dataEngineOMASClient.upsertDatabaseSchema(userId, database.getDatabaseSchema(), database.getQualifiedName());
+                        }
+                        // create the table separately if the database was not created
+                        dataEngineOMASClient.upsertRelationalTable(userId, database.getTables().get(0),
+                                database.getDatabaseSchema().getQualifiedName());
+                    }
                 }
             }
         }

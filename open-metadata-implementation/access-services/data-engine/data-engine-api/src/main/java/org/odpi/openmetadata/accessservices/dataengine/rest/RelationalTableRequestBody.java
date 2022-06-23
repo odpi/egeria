@@ -48,21 +48,6 @@ public class RelationalTableRequestBody  extends DataEngineOMASAPIRequestBody {
      * @param databaseSchemaQualifiedName of the database schema
      */
     private String databaseSchemaQualifiedName;
-
-
-    /**
-     * Determines if the relational table is an incomplete asset
-     * -- GETTER --
-     * Return if the relational table is incomplete
-     *
-     * @return boolean - if the relational table is incomplete
-     * -- SETTER --
-     * Sets if the relational table is incomplete or not
-     * @param incomplete determines if the relational table is an incomplete asset
-     */
-    @JsonProperty("incomplete")
-    private boolean incomplete;
-
 }
 
 
