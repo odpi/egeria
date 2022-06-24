@@ -4,10 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.configs.SubjectAreaConfigClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Config;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -22,12 +19,12 @@ import org.slf4j.LoggerFactory;
  */
 public class ConfigFVT
 {
-    private String serverName = null;
-    private String userId = null;
-    private String url = null;
-    private static Logger log = LoggerFactory.getLogger(ConfigFVT.class);
+    private final String serverName;
+    private final String userId;
+    private final String url;
+    private static final Logger log = LoggerFactory.getLogger(ConfigFVT.class);
 
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         try
         {
@@ -35,15 +32,16 @@ public class ConfigFVT
             runWith2Servers(url);
         } catch (IOException e1)
         {
-            System.out.println("Error getting user input");
+            log.error("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            log.error("ERROR: " + e.getMessage() );
+            log.error("ERROR: ", e );
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: ",e);
+            log.error(" Suggested action: {}", e.getReportedUserAction());
         }
 
     }
-    public ConfigFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public ConfigFVT(String url, String serverName, String userId) {
         if (log.isDebugEnabled()) {
             log.debug("Config FVT");
         }
@@ -56,12 +54,13 @@ public class ConfigFVT
         runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
         runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
-    synchronized public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
+
+    public static synchronized void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
         try {
-            System.out.println("ConfigFVT runIt started");
+            log.info("ConfigFVT runIt started");
             ConfigFVT fvt =new ConfigFVT(url, serverName, userId);
             fvt.run();
-            System.out.println("ConfigFVT runIt stopped");
+            log.info("ConfigFVT runIt stopped");
         }
         catch (Exception error) {
             error.printStackTrace();
