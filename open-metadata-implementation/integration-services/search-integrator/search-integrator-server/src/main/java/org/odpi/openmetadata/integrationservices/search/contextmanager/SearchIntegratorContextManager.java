@@ -56,6 +56,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
      * @param maxPageSize maximum number of results that can be returned on a single REST call
      * @param auditLog logging destination
      */
+    @Override
     public void initializeContextManager(String              partnerOMASServerName,
                                          String              partnerOMASPlatformRootURL,
                                          String              userId,
@@ -80,6 +81,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
      */
     @Override
     public void createClients() throws InvalidParameterException {
+        String methodName = "createClients";
         AssetCatalog restClient;
         if (localServerPassword == null) {
             restClient = new AssetCatalog(partnerOMASServerName, partnerOMASPlatformRootURL);
@@ -102,7 +104,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
         try {
             assetCatalogEventClient.registerListener(localServerUserId, eventListener);
         } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException e) {
-            e.printStackTrace();
+            auditLog.logException(methodName,SearchIntegratorAuditCode.REGISTER_CATALOG_ISTENER.getMessageDefinition(),e);
         }
 
         AssetManagerRESTClient assetManagerRestClient;
