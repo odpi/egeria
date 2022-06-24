@@ -45,7 +45,7 @@ public class CategoryFVT {
      *
      * Note this FVT is called by other FVTs. Who ever constructs the FVT should run deleteRemainingCategories
      */
-    private Set<String> createdCategoriesSet = new HashSet<>();
+    private final Set<String> createdCategoriesSet = new HashSet<>();
 
     public static void main(String[] args) {
         String url;
@@ -53,11 +53,11 @@ public class CategoryFVT {
             url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
         } catch (IOException e1) {
-            System.out.println("Error getting user input");
+            log.error("Error getting user input");
         } catch (SubjectAreaFVTCheckedException e) {
-            log.error("ERROR: " + e.getMessage() );
+            log.error("ERROR: ", e );
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            e.printStackTrace();
+            log.error("CategoryFVT RunAllFVTOn2Servers has thrown an exception ", e);
         }
 
     }
