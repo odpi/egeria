@@ -28,7 +28,7 @@ public class CheckSerializationFVT {
     private final SubjectAreaRelationshipClients subjectAreaRelationship;
     private final SubjectAreaNodeClient<Term> subjectAreaTerm;
     private final SubjectAreaNodeClient<Glossary> subjectAreaGlossary;
-    private static Logger log = LoggerFactory.getLogger(CheckSerializationFVT.class);
+    private static final Logger log = LoggerFactory.getLogger(CheckSerializationFVT.class);
 
     public CheckSerializationFVT(String url, String serverName, String userId) throws InvalidParameterException {
         this.userId = userId;
@@ -44,11 +44,12 @@ public class CheckSerializationFVT {
             String url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
         } catch (IOException e1) {
-            System.out.println("Error getting user input");
+            log.error("Error getting user input", e1);
         } catch (SubjectAreaFVTCheckedException e) {
-            log.error("ERROR: " + e.getMessage());
+            log.error("ERROR: ", e);
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: ", e);
+            log.error(" Suggested action: {}", e.getReportedUserAction());
         }
 
     }
@@ -61,13 +62,13 @@ public class CheckSerializationFVT {
     public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
         try
         {
-            System.out.println("CheckSerializationFVT runIt started");
+            log.info("CheckSerializationFVT runIt started");
             CheckSerializationFVT fvt = new CheckSerializationFVT(url, serverName, userId);
             fvt.run();
-            System.out.println("CheckSerializationFVT runIt stopped");
+            log.info("CheckSerializationFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("CheckSerializationFVT has thrown an exceptrion", error);
             throw error;
         }
     }
@@ -106,7 +107,7 @@ public class CheckSerializationFVT {
 
         createHasA(oneTermGuid, twoTermGuid);
         List<Relationship> hasAList = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
-        hasAList.removeIf(line -> line instanceof TermAnchor);
+        hasAList.removeIf(TermAnchor.class::isInstance);
         HasA hasA = checkCastChild(hasAList.get(0), HasA.class);
         subjectAreaRelationship.hasA().delete(userId, hasA.getGuid());
         if (log.isDebugEnabled()) {
@@ -115,7 +116,7 @@ public class CheckSerializationFVT {
 
         createIsA(oneTermGuid, twoTermGuid);
         List<Relationship> isAList = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
-        isAList.removeIf(line -> line instanceof TermAnchor);
+        isAList.removeIf(TermAnchor.class::isInstance);
         IsA isA = checkCastChild(isAList.get(0), IsA.class);
         subjectAreaRelationship.isA().delete(userId, isA.getGuid());
         if (log.isDebugEnabled()) {
@@ -124,7 +125,7 @@ public class CheckSerializationFVT {
 
         createRelatedTerm(oneTermGuid,twoTermGuid);
         List<Relationship> relatedTerms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
-        relatedTerms.removeIf(line -> line instanceof TermAnchor);
+        relatedTerms.removeIf(TermAnchor.class::isInstance);
         RelatedTerm relatedTerm = checkCastChild(relatedTerms.get(0), RelatedTerm.class);
         subjectAreaRelationship.relatedTerm().delete(userId, relatedTerm.getGuid());
         if (log.isDebugEnabled()) {
@@ -133,7 +134,7 @@ public class CheckSerializationFVT {
 
         createTranslation(oneTermGuid, twoTermGuid);
         List<Relationship> translations = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
-        translations.removeIf(line -> line instanceof TermAnchor);
+        translations.removeIf(TermAnchor.class::isInstance);
         Translation translation = checkCastChild(translations.get(0), Translation.class);
         subjectAreaRelationship.translation().delete(userId, translation.getGuid());
         if (log.isDebugEnabled()) {
@@ -142,7 +143,7 @@ public class CheckSerializationFVT {
 
         createPreferredTerm(oneTermGuid, twoTermGuid);
         List<Relationship> preferredTerms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
-        preferredTerms.removeIf(line -> line instanceof TermAnchor);
+        preferredTerms.removeIf(TermAnchor.class::isInstance);
         PreferredTerm preferredTerm = checkCastChild(preferredTerms.get(0), PreferredTerm.class);
         subjectAreaRelationship.preferredTerm().delete(userId, preferredTerm.getGuid());
         if (log.isDebugEnabled()) {
@@ -151,7 +152,7 @@ public class CheckSerializationFVT {
 
         createSynonym(oneTermGuid, twoTermGuid);
         List<Relationship> synonyms = subjectAreaTerm.getAllRelationships(userId, oneTermGuid);
-        synonyms.removeIf(line -> line instanceof TermAnchor);
+        synonyms.removeIf(TermAnchor.class::isInstance);
         Synonym synonym = checkCastChild(synonyms.get(0), Synonym.class);
         subjectAreaRelationship.synonym().delete(userId, synonym.getGuid());
         if (log.isDebugEnabled()) {
