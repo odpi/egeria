@@ -41,7 +41,7 @@ public class RexViewService extends RexViewAdmin implements InitializingBean {
     private AuditLog getAuditLog(){
         AuditLog auditLog = new AuditLog(
                 auditLogDestinationService,
-                new Random().nextInt(),
+                84433,
                 ComponentDevelopmentStatus.IN_DEVELOPMENT,
                 "rex-view",
                 "Repository explorer view service",

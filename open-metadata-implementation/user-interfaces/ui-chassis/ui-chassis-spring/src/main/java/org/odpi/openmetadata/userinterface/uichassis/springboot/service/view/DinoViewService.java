@@ -41,7 +41,7 @@ public class DinoViewService extends DinoViewAdmin implements InitializingBean {
     private AuditLog getAuditLog(){
         AuditLog auditLog = new AuditLog(
                 auditLogDestinationService,
-                new Random().nextInt(),
+                84431,
                 ComponentDevelopmentStatus.IN_DEVELOPMENT,
                 "dino-view",
                 "dino view service",

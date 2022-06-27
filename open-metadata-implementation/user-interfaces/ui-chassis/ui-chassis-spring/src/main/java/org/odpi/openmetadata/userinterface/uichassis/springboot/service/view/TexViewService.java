@@ -42,7 +42,7 @@ public class TexViewService extends TexViewAdmin implements InitializingBean {
     private AuditLog getAuditLog(){
         AuditLog auditLog = new AuditLog(
                 auditLogDestinationService,
-                new Random().nextInt(),
+                84432,
                 ComponentDevelopmentStatus.IN_DEVELOPMENT,
                 "tex-view",
                 "Type explorer view",
