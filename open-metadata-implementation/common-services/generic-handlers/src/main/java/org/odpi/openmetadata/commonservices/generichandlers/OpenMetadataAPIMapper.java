@@ -746,11 +746,23 @@ public class OpenMetadataAPIMapper
     public static final String NOTE_ENTRY_TYPE_NAME                     = "NoteEntry";              /* from Area 1 */
     /* Referenceable */
 
-    public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_GUID  = "8f798c0c-6769-4a2d-b489-12714d89e0a4";
+    /*
+    The below constants which contain the pattern
+    ..AUTH..="GUID"
+    looks exactly like
+    myAuth = SECURITY_SECRET
+    which is considered a security risk.
+    As both constants are currently unused I've commented them out assuming they are intended to be used in the future.
+    If the contsnats are re enabled in the future they will raise 2 HIGH Security Hotspot errors on SONAR cloud.
+    NB  these warning are not reported by default when running SonarLint locally,currently they are only visible in the cloud version.
+    newly commented out lines will generate new SONAR warnings, hopefully at a lower SEV.
+     */
+
+    /* public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_GUID  = "8f798c0c-6769-4a2d-b489-12714d89e0a4"; */
     public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_NAME  = "NoteLogAuthorship";
     /* End1 = NoteLogAuthor; End 2 = NoteLog */
 
-    public static final String NOTE_LOG_AUTHOR_TYPE_GUID                = "3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3";
+    /* public static final String NOTE_LOG_AUTHOR_TYPE_GUID                = "3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3"; */
     public static final String NOTE_LOG_AUTHOR_TYPE_NAME                = "NoteLogAuthor";              /* from Area 1 */
     /* PersonRole */
 
