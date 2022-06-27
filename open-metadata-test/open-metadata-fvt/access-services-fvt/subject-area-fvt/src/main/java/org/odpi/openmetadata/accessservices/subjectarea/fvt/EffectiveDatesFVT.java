@@ -24,10 +24,10 @@ public class EffectiveDatesFVT
     private static final String DEFAULT_TEST_TERM_NAME = "Test term A";
     private GlossaryFVT glossaryFVT =null;
     private TermFVT termFVT=null;
-    private static Logger log = LoggerFactory.getLogger(EffectiveDatesFVT.class);
+    private static final Logger log = LoggerFactory.getLogger(EffectiveDatesFVT.class);
 
 
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         try
         {
@@ -35,11 +35,12 @@ public class EffectiveDatesFVT
             runWith2Servers(url);
         } catch (IOException e1)
         {
-            System.out.println("Error getting user input");
+            log.error("Error getting user input", e1);
         } catch (SubjectAreaFVTCheckedException e) {
-            log.error("ERROR: " + e.getMessage() );
+            log.error("ERROR: {}", e.getMessage());
         } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
-            log.error("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
+            log.error("ERROR: {}",e.getReportedErrorMessage());
+            log.error(" Suggested action: {}",  e.getReportedUserAction());
         }
 
     }
@@ -58,17 +59,18 @@ public class EffectiveDatesFVT
         runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
         runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
-    synchronized public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
+
+    public static synchronized void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
         try
         {
-            System.out.println("EffectiveDatesFVT runIt started");
+            log.info("EffectiveDatesFVT runIt started");
             EffectiveDatesFVT fvt = new EffectiveDatesFVT(url, serverName, userId);
             fvt.run();
             fvt.deleteRemaining();
-            System.out.println("EffectiveDatesFVT runIt stopped");
+            log.info("EffectiveDatesFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("EffectiveDatesFVT encountered an exception", error);
             throw error;
         }
     }
