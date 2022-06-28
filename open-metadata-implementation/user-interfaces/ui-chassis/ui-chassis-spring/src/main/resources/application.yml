@@ -32,10 +32,10 @@ view-services-resource-endpoints:
       description           : "Egeria Open Metadata platform running on localhost:9443 (https)"
       platformRootURL       : "https://localhost:9443"
       platformName          : "LocalhostPlatform"
+
     - resourceCategory      : "Server"
       description           : "Egeria Open Metadata server running on platform named 'LocalhostPlatform:9443' "
       serverName            : "cocoMDS1"
-      platformName          : "LocalhostPlatform"
 
 
 viewServiceUrlMarker: "uiViewServer"
