@@ -41,7 +41,7 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet {
             "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
                     "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
     /*indent hack*/
-    REGISTER_CATALOG_ISTENER("OMIS-SEARCH-INTEGRATOR-0004",
+    REGISTER_CATALOG_LISTENER("OMIS-SEARCH-INTEGRATOR-0004",
             OMRSAuditLogRecordSeverity.ERROR,
             "An Exception was thrown while Egeria was attempting to register a Asset Catalog event listener",
             "Resolve the issue preventing the registration of the listener",

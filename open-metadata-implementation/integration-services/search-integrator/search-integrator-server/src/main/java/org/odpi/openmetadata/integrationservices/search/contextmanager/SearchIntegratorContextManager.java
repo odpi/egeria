@@ -105,7 +105,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
             assetCatalogEventClient.registerListener(localServerUserId, eventListener);
         } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException e) {
             /* git indent hack */
-            auditLog.logException(methodName,SearchIntegratorAuditCode.REGISTER_CATALOG_ISTENER.getMessageDefinition(),e);
+            auditLog.logException(methodName,SearchIntegratorAuditCode.REGISTER_CATALOG_LISTENER.getMessageDefinition(),e);
         }
 
         AssetManagerRESTClient assetManagerRestClient;
