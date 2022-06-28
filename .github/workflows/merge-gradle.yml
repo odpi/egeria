@@ -33,10 +33,10 @@ jobs:
       # Build first - lombok & other pre-processing may be needed. safer...
       - name: build
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
-        run: './gradlew -x test -x javadoc'
+        run: './gradlew -x test -x javadoc --no-build-cache --no-configure-on-demand --priority normal --no-watch-fs --refresh-dependencies --no-daemon --no-parallel'
       - name: javadoc
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
-        run: './gradlew aggregateJavadoc'
+        run: './gradlew aggregateJavadoc --no-configure-on-demand --priority normal --no-watch-fs --no-daemon --no-parallel'
       - name: publish
         if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
         uses: JamesIves/github-pages-deploy-action@v4.3.3
