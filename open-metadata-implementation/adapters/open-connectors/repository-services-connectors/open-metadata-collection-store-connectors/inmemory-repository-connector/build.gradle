@@ -11,7 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation 'org.testng:testng'
     testImplementation 'org.mockito:mockito-core'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

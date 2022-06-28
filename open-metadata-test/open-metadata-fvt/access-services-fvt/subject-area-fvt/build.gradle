@@ -23,7 +23,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation localGroovy()
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.slf4j:slf4j-api'
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
