@@ -173,7 +173,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 if (auditLog != null)
                 {
                     auditLog.logMessage(actionDescription,
-                                        KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, (String)consumerProperties.get("group.id")));
+                                        KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, serverId));
                 }
             }
             else
