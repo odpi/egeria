@@ -8,15 +8,9 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelp
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttributeStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -166,7 +160,7 @@ public class OpenMetadataTypesArchive
          */
         update0015LinkedMediaTypes();
 
-        add0043ProcessingStateClassification();
+        add0042ProcessingStateClassification();
     }
 
 
@@ -178,18 +172,20 @@ public class OpenMetadataTypesArchive
     /**
      * 0043  Add the Processing State Classification
      */
-    private void add0043ProcessingStateClassification() {
+    private void add0042ProcessingStateClassification()
+    {
         this.archiveBuilder.addClassificationDef(addProcessingStateClassification());
     }
 
-    private ClassificationDef addProcessingStateClassification() {
+    private ClassificationDef addProcessingStateClassification()
+    {
 
         final String guid = "261fb0aa-b884-4ee8-87ea-a60510e9751d";
         final String name = "ProcessingState";
-        final String description = "TODO";
+        final String description = "Stores last sync timestamp for critical elements.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "SoftwareServerCapability";
+        final String linkedToEntity = "SoftwareCapability";
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                 name,
@@ -206,10 +202,10 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute property;
 
         final String attribute1Name = "syncDatesByKey";
-        final String attribute1Description = "TODO !";
+        final String attribute1Description = "The sync dates map of critical elements and sync status.";
         final String attribute1DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+        property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         properties.add(property);

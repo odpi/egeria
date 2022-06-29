@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -65,7 +66,6 @@ class DataEngineRegistrationHandlerTest {
     private static final String GUID = "guid";
     private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
     private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceGUID";
-    public static final String PROCESSING_STATE_QUALIFIED_NAME = "processingStateQualifiedName";
 
     @Mock
     private OMRSRepositoryHelper repositoryHelper;
@@ -77,6 +77,7 @@ class DataEngineRegistrationHandlerTest {
     private InvalidParameterHandler invalidParameterHandler;
 
     @InjectMocks
+    @Spy
     private DataEngineRegistrationHandler registrationHandler;
 
     @BeforeEach
@@ -226,9 +227,6 @@ class DataEngineRegistrationHandlerTest {
         doReturn(GUID).when(registrationHandler).getExternalDataEngine(USER,
                 softwareServerCapability.getQualifiedName());
 
-        when(repositoryHelper.addStringPropertyToInstance(null, properties, QUALIFIED_NAME,
-                processingState.getQualifiedName(), methodName)).thenReturn(properties);
-
         when(repositoryHelper.addLongMapPropertyToInstance(null, properties, SYNC_DATES_BY_KEY,
                 processingState.getSyncDatesByKey(), methodName)).thenReturn(properties);
 
@@ -239,10 +237,6 @@ class DataEngineRegistrationHandlerTest {
         registrationHandler.createDataEngineClassification(USER, processingState, softwareServerCapability.getQualifiedName());
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
-        verify(invalidParameterHandler, times(1)).validateName(processingState.getQualifiedName(),
-                QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        verify(repositoryHelper, times(1)).addStringPropertyToInstance(null, properties,
-                QUALIFIED_NAME, processingState.getQualifiedName(), methodName);
         verify(repositoryHelper, times(1)).addLongMapPropertyToInstance(null, properties,
                 SYNC_DATES_BY_KEY, processingState.getSyncDatesByKey(), methodName);
         verify(softwareServerCapabilityHandler, times(1)).setClassificationInRepository(USER, GUID, GUID,
@@ -265,9 +259,6 @@ class DataEngineRegistrationHandlerTest {
 
         doReturn(GUID).when(registrationHandler).getExternalDataEngine(USER,
                 softwareServerCapability.getQualifiedName());
-
-        when(repositoryHelper.addStringPropertyToInstance(null, properties, QUALIFIED_NAME,
-                processingState.getQualifiedName(), methodName)).thenReturn(properties);
 
         when(repositoryHelper.addLongMapPropertyToInstance(null, properties, SYNC_DATES_BY_KEY,
                 processingState.getSyncDatesByKey(), methodName)).thenReturn(properties);
@@ -301,8 +292,6 @@ class DataEngineRegistrationHandlerTest {
 
     private ProcessingState getProcessingState() {
         ProcessingState processingState = new ProcessingState();
-
-        processingState.setQualifiedName(PROCESSING_STATE_QUALIFIED_NAME);
         processingState.setSyncDatesByKey(Collections.EMPTY_MAP);
         return processingState;
     }

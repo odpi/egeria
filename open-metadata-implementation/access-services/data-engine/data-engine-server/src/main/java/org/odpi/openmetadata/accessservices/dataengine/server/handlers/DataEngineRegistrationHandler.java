@@ -10,9 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.builders.ExternalD
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -27,7 +25,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import java.util.Collections;
 
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.GUID_PROPERTY_NAME;
-import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME;
@@ -41,7 +38,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 public class DataEngineRegistrationHandler {
 
     public static final String SYNC_DATES_BY_KEY = "syncDatesByKey";
-    public static final String QUALIFIED_NAME = "qualifiedName";
     private final String serviceName;
     private final String serverName;
     private final OMRSRepositoryHelper repositoryHelper;
@@ -164,7 +160,6 @@ public class DataEngineRegistrationHandler {
         final String methodName = "createDataEngineClassification";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(processingState.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         String externalEngineGUID = this.getExternalDataEngine(userId, externalSourceName);
         if (externalEngineGUID == null) {
@@ -173,8 +168,6 @@ public class DataEngineRegistrationHandler {
                     messageDefinition.getUserAction());
         }
         InstanceProperties instanceProperties = new InstanceProperties();
-        instanceProperties = repositoryHelper.addStringPropertyToInstance(null, instanceProperties, QUALIFIED_NAME,
-                processingState.getQualifiedName(), methodName);
         instanceProperties = repositoryHelper.addLongMapPropertyToInstance(null, instanceProperties, SYNC_DATES_BY_KEY,
                 processingState.getSyncDatesByKey(), methodName);
         softwareServerCapabilityHandler.setClassificationInRepository(userId, externalEngineGUID, GUID_PROPERTY_NAME,
