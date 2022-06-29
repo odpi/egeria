@@ -748,16 +748,12 @@ public class OpenMetadataAPIMapper
 
 
     /*
-    The below constants which contain the pattern
-    ..AUTH..="GUID"
-    looks exactly like
-    myAuth = SECURITY_SECRET
-    which is considered a security risk.
-    As both constants are currently unused I've commented them out assuming they are intended to be used in the future.
-    If the contsnats are re enabled in the future they will raise 2 HIGH Security Hotspot errors on SONAR cloud.
-    NB  these warning are not reported by default when running SonarLint locally,currently they are only visible in the cloud version.
-    newly commented out lines will generate new SONAR warnings, hopefully at a lower SEV.
-     */
+    Added warning suppression for SonarCloud since the below constants contain the pattern
+         ..AUTH..="GUID"
+         which looks exactly like
+         myAuth = SECURITY_SECRET
+         which is reported as a security risk.
+    */
     @SuppressWarnings("java:S6418")
     public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_GUID  = "8f798c0c-6769-4a2d-b489-12714d89e0a4";
 
