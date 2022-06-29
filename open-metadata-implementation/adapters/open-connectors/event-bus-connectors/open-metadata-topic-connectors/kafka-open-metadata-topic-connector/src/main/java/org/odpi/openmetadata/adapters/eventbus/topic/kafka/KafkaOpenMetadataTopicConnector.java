@@ -25,6 +25,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * KafkaOMRSTopicConnector provides a concrete implementation of the OMRSTopicConnector that
  * uses native Apache Kafka as the event/messaging infrastructure.
@@ -159,14 +161,19 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                  * The consumer group defines which list of events that this connector is processing.  A particular server
                  * wants to keep reading from the same list.  Thus it needs to be passed the group.id it used
                  * the last time it ran.  This is supplied in the connection object as the serverIdProperty.
+                 *
+                 * If explicitly set using the standard kafka property, then use that.  Otherwise, use our default.
                  */
-                serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
-                consumerProperties.put("group.id", serverId);
+
+                if (StringUtils.isEmpty((String)consumerProperties.get("group.id"))) {
+                    serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
+                    consumerProperties.put("group.id", serverId);
+                }
 
                 if (auditLog != null)
                 {
                     auditLog.logMessage(actionDescription,
-                                        KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, serverId));
+                                        KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_INITIALIZING.getMessageDefinition(topicName, (String)consumerProperties.get("group.id")));
                 }
             }
             else
