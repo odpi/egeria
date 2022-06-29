@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 
+import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
@@ -18,6 +19,9 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
+
 
 
 /**
@@ -524,7 +528,11 @@ public class ConnectorConfigurationFactory
             configurationProperties = new HashMap<>();
         }
 
-        configurationProperties.put("local.server.id", serverId);
+        // the serverId is used to set the default topic.id (though this could be overriden in the consumer configuration)
+        // retrieve from the default if needed
+        if (StringUtils.isEmpty((String)configurationProperties.get("local.server.id"))) {
+            configurationProperties.put("local.server.id", serverId);
+        }
 
         Connection connection = new Connection();
 
