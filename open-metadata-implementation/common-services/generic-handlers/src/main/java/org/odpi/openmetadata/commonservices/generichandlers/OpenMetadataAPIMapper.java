@@ -746,10 +746,21 @@ public class OpenMetadataAPIMapper
     public static final String NOTE_ENTRY_TYPE_NAME                     = "NoteEntry";              /* from Area 1 */
     /* Referenceable */
 
+
+    /*
+    Added warning suppression for SonarCloud since the below constants contain the pattern
+         ..AUTH..="GUID"
+         which looks exactly like
+         myAuth = SECURITY_SECRET
+         which is reported as a security risk.
+    */
+    @SuppressWarnings("java:S6418")
     public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_GUID  = "8f798c0c-6769-4a2d-b489-12714d89e0a4";
+
     public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_NAME  = "NoteLogAuthorship";
     /* End1 = NoteLogAuthor; End 2 = NoteLog */
 
+    @SuppressWarnings("java:S6418")
     public static final String NOTE_LOG_AUTHOR_TYPE_GUID                = "3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3";
     public static final String NOTE_LOG_AUTHOR_TYPE_NAME                = "NoteLogAuthor";              /* from Area 1 */
     /* PersonRole */
