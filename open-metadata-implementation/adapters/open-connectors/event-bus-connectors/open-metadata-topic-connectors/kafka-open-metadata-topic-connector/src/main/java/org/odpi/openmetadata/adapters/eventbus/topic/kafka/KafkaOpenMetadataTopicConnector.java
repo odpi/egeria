@@ -160,13 +160,15 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 /*
                  * The consumer group defines which list of events that this connector is processing.  A particular server
                  * wants to keep reading from the same list.  Thus it needs to be passed the group.id it used
-                 * the last time it ran.  This is supplied in the connection object as the serverIdProperty.
+                 * the last time it ran.
+                 * 'local.server.id' is used as the default and  is supplied in the connection object as the serverIdProperty.
                  *
-                 * If explicitly set using the standard kafka property, then use that.  Otherwise, use our default.
+                 * If group.id explicitly set using the standard kafka property, then use that.
                  */
 
+                serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
+
                 if (StringUtils.isEmpty((String)consumerProperties.get("group.id"))) {
-                    serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
                     consumerProperties.put("group.id", serverId);
                 }
 
