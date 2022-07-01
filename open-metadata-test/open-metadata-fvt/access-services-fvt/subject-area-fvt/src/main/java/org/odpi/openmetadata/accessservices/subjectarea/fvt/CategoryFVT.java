@@ -89,7 +89,7 @@ public class CategoryFVT {
         System.out.println("CategoryFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exeption", error);
             throw error;
         }
     }
