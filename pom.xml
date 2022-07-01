@@ -159,7 +159,7 @@
         <jackson.databind.version>2.13.3</jackson.databind.version>
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.2.0</kafka.version>
-        <netty.version>4.1.77.Final</netty.version>
+        <netty.version>4.1.78.Final</netty.version>
         <spring-boot.version>2.7.0</spring-boot.version>
         <janus.version>0.6.1</janus.version>
         <tomcat.version>9.0.64</tomcat.version>
