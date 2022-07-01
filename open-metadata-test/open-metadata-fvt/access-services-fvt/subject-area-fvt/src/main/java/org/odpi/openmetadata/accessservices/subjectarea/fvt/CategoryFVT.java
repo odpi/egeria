@@ -57,7 +57,7 @@ public class CategoryFVT {
         } catch (SubjectAreaFVTCheckedException e) {
             log.error("ERROR: " + e.getMessage() );
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-            e.printStackTrace();
+            log.error("The FVT Encountered an Exeption", e);
         }
 
     }
