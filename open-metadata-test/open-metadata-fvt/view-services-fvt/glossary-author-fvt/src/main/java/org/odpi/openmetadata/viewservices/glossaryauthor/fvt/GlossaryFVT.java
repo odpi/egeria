@@ -88,7 +88,7 @@ public class GlossaryFVT {
             System.out.println("GlossaryFVT runIt finished");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exeption", error);
             throw error;
         }
     }

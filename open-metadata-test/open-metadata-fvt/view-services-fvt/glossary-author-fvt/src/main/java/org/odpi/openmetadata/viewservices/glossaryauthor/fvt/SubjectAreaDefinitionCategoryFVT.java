@@ -117,7 +117,7 @@ public class SubjectAreaDefinitionCategoryFVT
             System.out.println("SubjectAreaDefinitionCategoryFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exeption", error);
             throw error;
         }
     }
