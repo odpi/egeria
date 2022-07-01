@@ -94,7 +94,7 @@ allprojects {
         jakartapersistenceVersion = '3.1.0'
 	    jakartavalidationVersion = '3.0.2'
         janusVersion = '0.6.2'
-        javassistVersion = '3.28.0-GA'
+        javassistVersion = '3.29.0-GA'
         jaxbVersion = '2.3.1'
         jenaVersion = '4.2.0'
         jodatimeVersion = '2.10.14'
@@ -104,7 +104,7 @@ allprojects {
         junitplatformVersion = '1.8.2'
         jwtVersion = '0.9.1'
         kafkaVersion = '3.2.0'
-        lang3Version='3.8.1'
+        lang3Version='3.12.0'
         logbackVersion = '1.2.11'
         lettuceVersion = '6.1.8.RELEASE'
         luceneVersion = '8.11.1'
@@ -126,7 +126,7 @@ allprojects {
         springbootVersion = '2.7.1'
         springdocVersion = '1.6.9'
         springdataVersion = '2.7.1'
-        springldapVersion = '2.4.0'
+        springldapVersion = '2.4.1'
         swaggerVersion = '2.2.1'
         springsecurityVersion = '5.7.2'
         testngVersion = '7.6.1'
@@ -140,6 +140,9 @@ allprojects {
         protobufVersion = '3.21.2'
         jnrVersion = '3.1.15'
         cassandraVersion = '4.0.4'
+        osgiVersion = '8.0.0'
+        log4jVersion = '2.17.2'
+        jacksonjdk8Version = '2.13.3'
     }
 
     dependencies {
@@ -258,6 +261,9 @@ allprojects {
             implementation("com.google.protobuf:protobuf-java:${protobufVersion}")
             implementation("com.google.code.gson:gson:${gsonVersion}")
             implementation("com.github.jnr:jnr-posix:${jnrVersion}")
+            implementation("org.osgi:org.osgi.core:${osgiVersion}")
+            implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")
+            implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
 
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:${testngVersion}")
