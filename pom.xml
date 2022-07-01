@@ -160,7 +160,7 @@
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.2.0</kafka.version>
         <netty.version>4.1.77.Final</netty.version>
-        <spring-boot.version>2.7.0</spring-boot.version>
+        <spring-boot.version>2.7.1</spring-boot.version>
         <janus.version>0.6.1</janus.version>
         <tomcat.version>9.0.63</tomcat.version>
         <spring.ldap.core>2.4.0</spring.ldap.core>
