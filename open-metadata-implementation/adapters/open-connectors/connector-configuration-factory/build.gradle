@@ -21,6 +21,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.apache.commons:commons-lang3'
 
 }
 
