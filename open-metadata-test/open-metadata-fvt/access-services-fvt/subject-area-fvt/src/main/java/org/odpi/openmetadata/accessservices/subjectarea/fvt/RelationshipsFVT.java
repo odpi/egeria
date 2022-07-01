@@ -109,7 +109,7 @@ public class RelationshipsFVT {
             System.out.println("relationshipFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exeption", error);
             throw error;
         }
     }
