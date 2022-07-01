@@ -14,7 +14,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-topic-connectors')
     implementation 'org.springframework:spring-core'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Asset Manager OMAS Client'

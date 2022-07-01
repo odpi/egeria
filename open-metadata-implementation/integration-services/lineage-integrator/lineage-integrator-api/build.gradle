@@ -13,7 +13,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'io.openlineage:openlineage-java'
 }
 

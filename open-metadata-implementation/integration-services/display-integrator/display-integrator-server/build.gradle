@@ -18,7 +18,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation 'org.slf4j:slf4j-api'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Display Integrator OMIS Server-side'

@@ -17,7 +17,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-api')
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-client')
     implementation 'org.slf4j:slf4j-api'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 
