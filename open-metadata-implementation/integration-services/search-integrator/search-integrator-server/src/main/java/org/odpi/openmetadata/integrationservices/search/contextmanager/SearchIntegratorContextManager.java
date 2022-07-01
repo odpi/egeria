@@ -102,7 +102,14 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
         try {
             assetCatalogEventClient.registerListener(localServerUserId, eventListener);
         } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException e) {
-            e.printStackTrace();
+            /*
+            The following snippet turns off the Sonar Security Hotspot alert.
+            Sonar considers the printStackTrace as releasing debugging code
+            The Exception copy is needed as a local variable to scope the @SuppressWarnings locally
+             */
+            @SuppressWarnings("java:S4507")
+            Exception error = e;
+            error.printStackTrace();
         }
 
         AssetManagerRESTClient assetManagerRestClient;
