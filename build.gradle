@@ -130,7 +130,7 @@ allprojects {
         swaggerVersion = '2.2.0'
         springsecurityVersion = '5.7.1'
         springwebVersion = '5.3.20'
-        testngVersion = '7.6.0'
+        testngVersion = '7.6.1'
         thriftVersion = '0.16.0'
         tinkVersion = '1.6.1'
         tomcatVersion = '9.0.63'
