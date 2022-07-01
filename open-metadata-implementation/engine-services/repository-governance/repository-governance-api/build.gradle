@@ -14,6 +14,7 @@ dependencies {
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
     implementation 'org.slf4j:slf4j-api'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Repository Governance OMES API'

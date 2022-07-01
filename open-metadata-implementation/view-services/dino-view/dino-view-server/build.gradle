@@ -20,7 +20,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-api')
     implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-client')
     implementation project(':open-metadata-implementation:repository-services:repository-services-client')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

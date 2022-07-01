@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'javax.xml.bind:jaxb-api'
     implementation 'javax.servlet:javax.servlet-api'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.slf4j:slf4j-api'
     implementation 'org.springframework:spring-core'
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
