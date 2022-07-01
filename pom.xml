@@ -168,7 +168,7 @@
         <spring-data.version>2.7.0</spring-data.version>
         <springdoc.version>1.6.9</springdoc.version>
         <spring-security.version>5.7.1</spring-security.version>
-        <spring.version>5.3.20</spring.version>
+        <spring.version>5.3.21</spring.version>
         <springdoc-plugin.version>1.4</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-cli.version>1.5.0</commons-cli.version>
