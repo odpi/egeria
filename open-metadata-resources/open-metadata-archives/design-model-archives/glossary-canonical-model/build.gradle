@@ -17,7 +17,8 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
     runtimeOnly 'org.apache.jena:jena-arq'
     testImplementation 'org.testng:testng'
-
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.google.code.findbugs:jsr305'
 }
 
 description = 'Glossary Canonical Model'
@@ -28,6 +29,8 @@ java {
 
 test {
     useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }
 
 shadowJar {
