@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -12,6 +13,7 @@ import java.util.*;
  */
 @Service
 @ConfigurationProperties(prefix = "role")
+@EnableConfigurationProperties
 public class ComponentService {
 
     private final Map<String, List<String>> visibleComponents = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);

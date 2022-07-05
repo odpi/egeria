@@ -13,7 +13,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:security-manager:security-manager-api')
     implementation project(':open-metadata-implementation:access-services:security-manager:security-manager-client')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Security Integrator OMIS API'

@@ -9,7 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation 'com.fasterxml.jackson.core:jackson-databind'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     testImplementation 'org.testng:testng'
     testImplementation project(':open-metadata-test:open-metadata-ut')
@@ -25,4 +25,6 @@ java {
 
 test {
     useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

@@ -14,6 +14,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
     implementation project(':open-metadata-resources:open-metadata-archives:content-pack-helpers')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     runtimeOnly 'ch.qos.logback:logback-classic'
 
 }
@@ -26,6 +27,8 @@ java {
 
 test {
     useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }
 
 shadowJar {

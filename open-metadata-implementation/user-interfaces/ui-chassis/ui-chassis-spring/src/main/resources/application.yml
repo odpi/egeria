@@ -20,3 +20,25 @@ lineage-display-config:
         nodeTypesToRemove:
           - TabularSchemaType
 
+view-services-resource-endpoints:
+  resourceEndpointConfigs:
+#    - resourceCategory     : ""    // should be set to { "Platform" | "Server" }
+#      description          : ""    // a descriptive string that describes the endpoint - can be displayed to a UI user
+#      platformRootURL      : ""    // the root URL of the platform - always "platform" whether the resource is a platform or server running on the platform
+#      serverName           : ""    // always null for a platform, but for a server this MUST contain the real server name to use in URL construction
+#      serverInstanceName   : ""    // always null for a platform, but for a server this MUST contain a unique name used as a handle for the server/platform combination
+#      platformName         : ""    // always null for a server, but for a platform this MUST contain a unique name used as a handle for the platform
+    - resourceCategory      : "Platform"
+      description           : "Egeria Open Metadata platform running on localhost:9443 (https)"
+      platformRootURL       : "https://localhost:9443"
+      platformName          : "LocalhostPlatform"
+
+    - resourceCategory      : "Server"
+      description           : "Egeria Open Metadata server running on platform named 'LocalhostPlatform:9443' "
+      serverName            : "cocoMDS1"
+
+
+viewServiceUrlMarker: "uiViewServer"
+viewServiceServerName: "uiViewServer"
+viewServiceFullName: "Egeria UI view-services"
+viewServiceMaxPageSize: 0

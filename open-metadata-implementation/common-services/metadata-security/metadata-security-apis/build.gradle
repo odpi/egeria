@@ -5,7 +5,7 @@
 
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
 }
 

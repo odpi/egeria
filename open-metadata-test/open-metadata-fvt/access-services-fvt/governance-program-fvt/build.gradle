@@ -25,12 +25,12 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
     implementation project(':open-metadata-test:open-metadata-fvt:fvt-utilities')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     compile localGroovy()
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     testImplementation 'org.apache.commons:commons-lang3'
