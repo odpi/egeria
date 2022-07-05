@@ -64,7 +64,7 @@ public class ConfigFVT
             System.out.println("ConfigFVT runIt stopped");
         }
         catch (Exception error) {
-            log.error("The FVT Encountered an Exeption", error);
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }

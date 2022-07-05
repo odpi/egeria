@@ -67,7 +67,7 @@ public class CategoryHierarchyFVT
             System.out.println("CategoryHierarchyFVT runIt stopped");
         }
         catch (Exception error) {
-            log.error("The FVT Encountered an Exeption", error);
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
