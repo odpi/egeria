@@ -93,7 +93,7 @@ public class ProjectFVT
             System.out.println("ProjectFVT runIt stopped");
         }
         catch (Exception error) {
-            log.error("The FVT Encountered an Exeption", error);
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
