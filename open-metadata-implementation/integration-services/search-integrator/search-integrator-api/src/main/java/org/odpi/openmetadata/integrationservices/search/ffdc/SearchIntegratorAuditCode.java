@@ -40,8 +40,15 @@ public enum SearchIntegratorAuditCode implements AuditLogMessageSet {
             "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
             "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
                     "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help."),
-    ;
 
+    REGISTER_CATALOG_LISTENER("OMIS-SEARCH-INTEGRATOR-0004",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Integration connector {0} has an exception while attempting to register a Asset Catalog event listener",
+            "Resolve the issue preventing the registration of the listener",
+            "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
+                    "from the integration daemon and its partner metadata server.  Then contact the Egeria community to get help.")
+
+    ;
 
     AuditLogMessageDefinition messageDefinition;
 

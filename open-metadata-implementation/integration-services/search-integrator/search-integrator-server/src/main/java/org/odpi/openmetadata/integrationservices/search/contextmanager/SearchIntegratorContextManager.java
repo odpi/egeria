@@ -80,6 +80,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
      */
     @Override
     public void createClients() throws InvalidParameterException {
+        final String methodName = "createClients";
         AssetCatalog restClient;
         if (localServerPassword == null) {
             restClient = new AssetCatalog(partnerOMASServerName, partnerOMASPlatformRootURL);
@@ -102,14 +103,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
         try {
             assetCatalogEventClient.registerListener(localServerUserId, eventListener);
         } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException e) {
-            /*
-            The following snippet turns off the Sonar Security Hotspot alert.
-            Sonar considers the printStackTrace as releasing debugging code
-            The Exception copy is needed as a local variable to scope the @SuppressWarnings locally
-             */
-            @SuppressWarnings("java:S4507")
-            Exception error = e;
-            error.printStackTrace();
+            auditLog.logException(methodName,SearchIntegratorAuditCode.REGISTER_CATALOG_LISTENER.getMessageDefinition(IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS.getIntegrationServiceFullName()),e);
         }
 
         AssetManagerRESTClient assetManagerRestClient;
