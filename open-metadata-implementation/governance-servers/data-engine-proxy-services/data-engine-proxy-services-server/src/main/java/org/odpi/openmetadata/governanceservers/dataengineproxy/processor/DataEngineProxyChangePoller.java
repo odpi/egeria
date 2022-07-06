@@ -23,9 +23,11 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngi
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -34,6 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class DataEngineProxyChangePoller implements Runnable {
 
+    private static final String POLL_INTERVAL_IN_SECONDS = "pollIntervalInSeconds";
     private OMRSAuditLog auditLog;
     private DataEngineProxyConfig dataEngineProxyConfig;
     private DataEngineClient dataEngineOMASClient;
@@ -47,17 +50,21 @@ public class DataEngineProxyChangePoller implements Runnable {
         final String methodName = "start";
         this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
 
-
+        int pollIntervalInSeconds = 0;
         // Retrieve the base information from the connector
         if (connector != null) {
             SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
             dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
             dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
+            Map<String, Object> proxyProperties = connector.getConnection().getConfigurationProperties();
+            pollIntervalInSeconds = (int) proxyProperties.getOrDefault(POLL_INTERVAL_IN_SECONDS, 0);
         }
 
-        Thread worker = new Thread(this);
-        worker.setName(DataEngineProxyChangePoller.class.getName());
-        worker.start();
+        if(pollIntervalInSeconds > 0) {
+            Thread worker = new Thread(this);
+            worker.setName(DataEngineProxyChangePoller.class.getName());
+            worker.start();
+        }
     }
 
     public void stop() {
@@ -151,6 +158,22 @@ public class DataEngineProxyChangePoller implements Runnable {
             }
         }
 
+    }
+    public void runWithReports() {
+        final String methodName = "runWithReports";
+        Date now = Date.from(Instant.now());
+        try {
+            ensureSourceNameIsSet();
+            upsertSchemaTypes(now, now);
+            upsertDataStores(now, now);
+            upsertProcesses(now, now);
+            upsertProcessHierarchies(now, now);
+            upsertLineageMappings(now, now);
+        } catch (PropertyServerException e) {
+            this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
+        } catch (UserNotAuthorizedException | InvalidParameterException | ConnectorCheckedException e) {
+            this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
+        }
     }
 
     /**
