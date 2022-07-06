@@ -22,7 +22,7 @@ import java.util.Collections;
 
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENGINE_TYPE_NAME;
 
 /**
  * DataEngineRegistrationHandler manages SoftwareServerCapability objects from external data engines. It runs
@@ -79,7 +79,7 @@ public class DataEngineRegistrationHandler {
         invalidParameterHandler.validateName(externalEngineName, QUALIFIED_NAME_PROPERTY_NAME,
                 methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ENGINE_TYPE_NAME);
 
         String externalEngineGUID = getExternalDataEngine(userId, externalEngineName);
         if (externalEngineGUID == null) {
@@ -118,7 +118,7 @@ public class DataEngineRegistrationHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ENGINE_TYPE_NAME);
         EntityDetail retrievedEntity = softwareServerCapabilityHandler.getEntityByValue(userId, qualifiedName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME),
                 false, false, null, methodName);
