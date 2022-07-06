@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineEventCli
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineRESTConfigurationClient;
 import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEngineInTopicClientConnector;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -21,7 +22,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConne
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyErrorCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
-import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyChangePoller;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyService;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.rest.DataEngineProxyServerInstance;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.ArrayList;
@@ -41,8 +43,9 @@ public class DataEngineProxyOperationalServices {
 
     private OMRSAuditLog auditLog;
     private DataEngineConnectorBase dataEngineConnector;
-    private DataEngineProxyChangePoller changePoller;
+    private DataEngineProxyService changePoller;
     private DataEngineInTopicClientConnector dataEngineTopicConnector;
+    private DataEngineProxyServerInstance dataEngineProxyServerInstance;
 
     /**
      * Constructor used at server startup.
@@ -170,7 +173,7 @@ public class DataEngineProxyOperationalServices {
                 dataEngineConnector.start();
                 // If the config says we should poll for changes, do so via a new thread
                 if (dataEngineConnector.requiresPolling()) {
-                    changePoller = new DataEngineProxyChangePoller(
+                    changePoller = new DataEngineProxyService(
                             dataEngineConnector,
                             localServerUserId,
                             dataEngineProxyConfig,
@@ -178,6 +181,12 @@ public class DataEngineProxyOperationalServices {
                             auditLog
                     );
                     changePoller.start();
+                    this.dataEngineProxyServerInstance = new
+                            DataEngineProxyServerInstance(
+                            localServerName,
+                            GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
+                            100,
+                            changePoller);
                 }
                 // TODO: otherwise we likely need to look for and process events
             } catch (ConnectorCheckedException | ConnectionCheckedException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException  e) {

@@ -23,6 +23,7 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngi
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Class to handle periodically polling a Data Engine for changes, for those data engines that do not
  * provide any event-based mechanism to notify on changes.
  */
-public class DataEngineProxyChangePoller implements Runnable {
+public class DataEngineProxyService implements Runnable {
 
     private OMRSAuditLog auditLog;
     private DataEngineProxyConfig dataEngineProxyConfig;
@@ -54,9 +55,8 @@ public class DataEngineProxyChangePoller implements Runnable {
             dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
             dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
         }
-
         Thread worker = new Thread(this);
-        worker.setName(DataEngineProxyChangePoller.class.getName());
+        worker.setName(DataEngineProxyService.class.getName());
         worker.start();
     }
 
@@ -73,11 +73,11 @@ public class DataEngineProxyChangePoller implements Runnable {
      * @param dataEngineOMASClient  Data Engine OMAS client through which to push any changes into Egeria
      * @param auditLog              audit log through which to record activities
      */
-    public DataEngineProxyChangePoller(DataEngineConnectorBase connector,
-                                       String userId,
-                                       DataEngineProxyConfig dataEngineProxyConfig,
-                                       DataEngineClient dataEngineOMASClient,
-                                       OMRSAuditLog auditLog) {
+    public DataEngineProxyService(DataEngineConnectorBase connector,
+                                  String userId,
+                                  DataEngineProxyConfig dataEngineProxyConfig,
+                                  DataEngineClient dataEngineOMASClient,
+                                  OMRSAuditLog auditLog) {
 
         final String methodName = "DataEngineProxyChangePoller";
 
@@ -86,6 +86,34 @@ public class DataEngineProxyChangePoller implements Runnable {
         this.dataEngineProxyConfig = dataEngineProxyConfig;
         this.dataEngineOMASClient = dataEngineOMASClient;
         this.auditLog = auditLog;
+
+    }
+
+    public void runWithReports() {
+
+        final String methodName = "runWithReports";
+        Date now = Date.from(Instant.now());
+        running.set(true);
+        while (running.get()) {
+            try {
+                ensureSourceNameIsSet();
+                // Send the changes, and ordering here is important
+                upsertSchemaTypes(now, now);
+                upsertDataStores(now, now);
+                upsertProcesses(now, now);
+                upsertProcessHierarchies(now, now);
+                upsertLineageMappings(now, now);
+                running.set(false);
+            } catch (PropertyServerException e) {
+                // Potentially recoverable error. Retry.
+                this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
+                sleep();
+            } catch (UserNotAuthorizedException | InvalidParameterException | ConnectorCheckedException e) {
+                // Interrupt processing and propagate runtime error.
+                this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
+                throw new OCFRuntimeException(DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(), this.getClass().getName(), methodName, e);
+            }
+        }
 
     }
 
@@ -138,7 +166,6 @@ public class DataEngineProxyChangePoller implements Runnable {
                 connector.setChangesLastSynced(changesCutoff);
 
                 // Sleep for the poll interval before continuing with the next poll
-                sleep();
 
             } catch (PropertyServerException e) {
                 // Potentially recoverable error. Retry.
@@ -151,6 +178,12 @@ public class DataEngineProxyChangePoller implements Runnable {
             }
         }
 
+    }
+
+    public void pollProcessChanges(String processId) {
+        /*
+        * TODO
+        * */
     }
 
     /**
