@@ -152,23 +152,24 @@
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
         <surefire.plugin.version>3.0.0-M7</surefire.plugin.version>
-        <mockito.version>4.5.1</mockito.version>
+        <mockito.version>4.6.1</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
-        <testng.version>7.5</testng.version>
+        <testng.version>7.6.1</testng.version>
         <jackson.version>2.13.3</jackson.version>
         <jackson.databind.version>2.13.3</jackson.databind.version>
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.2.0</kafka.version>
-        <netty.version>4.1.77.Final</netty.version>
-        <spring-boot.version>2.7.0</spring-boot.version>
+        <netty.version>4.1.78.Final</netty.version>
+        <tomcat.version>9.0.64</tomcat.version>
+        <spring.ldap.core>2.4.1</spring.ldap.core>
+        <janus.version>0.6.2</janus.version>
+        <spring-boot.version>2.7.1</spring-boot.version>
         <janus.version>0.6.1</janus.version>
-        <tomcat.version>9.0.63</tomcat.version>
-        <spring.ldap.core>2.4.0</spring.ldap.core>
         <gremlin.version>3.5.2</gremlin.version>
-        <spring-data.version>2.7.0</spring-data.version>
+        <spring-data.version>2.7.1</spring-data.version>
         <springdoc.version>1.6.9</springdoc.version>
-        <spring-security.version>5.7.1</spring-security.version>
-        <spring.version>5.3.20</spring.version>
+        <spring.version>5.3.21</spring.version>
+        <spring-security.version>5.7.2</spring-security.version>
         <springdoc-plugin.version>1.4</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
         <commons-cli.version>1.5.0</commons-cli.version>
@@ -178,13 +179,13 @@
         <commons-lang.version>3.12.0</commons-lang.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
-        <jakarta-validation.version>3.0.0</jakarta-validation.version>
+        <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <javax-annotation.version>1.3.2</javax-annotation.version>
-        <jakarta-annotation.version>1.3.5</jakarta-annotation.version>
+        <jakarta-annotation.version>2.1.1</jakarta-annotation.version>
         <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
         <avro.version>1.11.0</avro.version>
-        <plexus.version>3.4.1</plexus.version>
+        <plexus.version>3.4.2</plexus.version>
         <quartz.version>2.3.2</quartz.version>
         <lucene.version>8.11.1</lucene.version>
         <lucene-analyzers-common.version>8.11.1</lucene-analyzers-common.version>
@@ -196,17 +197,17 @@
         <json-sanitizer.version>1.2.3</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.14.1</oss.version>
-        <spotbugs-annotations.version>4.7.0</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.7.1</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.14</joda.version>
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
         <antlr.version>3.5.3</antlr.version>
         <ST4.version>4.3.3</ST4.version>
         <snappy.version>1.1.8.4</snappy.version>
-        <swagger.version>2.2.0</swagger.version>
+        <swagger.version>2.2.1</swagger.version>
         <snakeyaml.version>1.30</snakeyaml.version>
-        <micrometer-registry-prometheus.version>1.9.0</micrometer-registry-prometheus.version>
-        <groovy.version>3.0.10</groovy.version>
+        <micrometer-registry-prometheus.version>1.9.1</micrometer-registry-prometheus.version>
+        <groovy.version>3.0.11</groovy.version>
         <classgraph.version>4.8.147</classgraph.version>
         <jcl-over-slf4j.version>1.7.36</jcl-over-slf4j.version>
         <reflections.version>0.10.2</reflections.version>
@@ -222,8 +223,8 @@
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <thrift.version>0.16.0</thrift.version>
-        <elasticsearch.version>8.2.2</elasticsearch.version>
-        <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
+        <elasticsearch.version>8.3.1</elasticsearch.version>
+        <hibernate-validator.version>6.2.3.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.4.0</maven-javadoc-plugin.version>
@@ -232,21 +233,21 @@
         <maven-site-plugin.version>3.12.0</maven-site-plugin.version>
         <maven-shade.version>3.3.0</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
-        <owasp.version>7.1.0</owasp.version>
+        <owasp.version>7.1.1</owasp.version>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
-        <maven-pmd.version>3.16.0</maven-pmd.version>
+        <maven-pmd.version>3.17.0</maven-pmd.version>
         <maven-compiler.version>3.10.1</maven-compiler.version>
         <maven-download.version>1.6.8</maven-download.version>
-        <spotbugs-maven.version>4.6.0</spotbugs-maven.version>
+        <spotbugs-maven.version>4.7.0.0</spotbugs-maven.version>
         <maven-antrun.version>3.1.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
+        <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <frontend.plugin.version>1.12.1</frontend.plugin.version>
         <exec.plugin.version>3.0.0</exec.plugin.version>
         <resources.plugin.version>3.2.0</resources.plugin.version>
-        <rat-plugin.version>0.13</rat-plugin.version>
+        <rat-plugin.version>0.14</rat-plugin.version>
         <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -254,17 +255,20 @@
         <nexus-staging-maven-plugin>1.6.13</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
         <build-helper.version>3.3.0</build-helper.version>
-        <failsafe-plugin.version>3.0.0-M6</failsafe-plugin.version>
+        <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
         <git-commit-plugin.version>4.9.10</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
-        <openlineage.version>0.8.2</openlineage.version>
+        <openlineage.version>0.10.0</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
         <cassandra.version>4.0.4</cassandra.version>
         <ant.version>1.10.12</ant.version>
         <gson.version>2.9.0</gson.version>
         <jnr.version>3.1.15</jnr.version>
-        <protobuf.version>3.21.1</protobuf.version>
+        <protobuf.version>3.21.2</protobuf.version>
+        <osgi.version>8.0.0</osgi.version>
+        <log4j.version>2.17.2</log4j.version>
+        <jacksonjdk8.version>2.13.3</jacksonjdk8.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -599,6 +603,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>commons-logging</groupId>
                 <artifactId>commons-logging</artifactId>
                 <version>${commons-logging.version}</version>
@@ -636,6 +646,12 @@
                 <artifactId>janusgraph-lucene</artifactId>
                 <version>${janus.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jdk8</artifactId>
+                <version>${jacksonjdk8.version}</version>
             </dependency>
 
             <dependency>
@@ -3283,6 +3299,13 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpcore-osgi</artifactId>
                 <version>${httpcore.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>${osgi.version}</version>
                 <scope>compile</scope>
             </dependency>
 
