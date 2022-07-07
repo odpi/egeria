@@ -8,9 +8,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-connectors</artifactId>
+        <artifactId>data-store-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.11-SNAPSHOT</version>
+        <version>3.9-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -21,18 +21,15 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Data Store Connectors</name>
+    <name>Relational DB Connectors</name>
     <description>
-        Data Store Connectors contain OCF connectors to data stores on different
-        data platforms.
+        Relational DB Connectors contain OCF connectors to relational databases.
     </description>
 
-    <artifactId>data-store-connectors</artifactId>
+    <artifactId>relational-db-connectors</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>file-connectors</module>
-        <module>relational-db-connectors</module>
+        <module>jdbc-connector</module>
     </modules>
-
 
 </project>
