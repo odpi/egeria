@@ -31,7 +31,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>file-connectors</module>
-        <module>relational-db-connectors</module>
     </modules>
 
 
