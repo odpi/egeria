@@ -35,7 +35,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class DataEngineProxyService implements Runnable {
 
-    private static final String POLL_INTERVAL_IN_SECONDS = "pollIntervalInSeconds";
     private OMRSAuditLog auditLog;
     private DataEngineProxyConfig dataEngineProxyConfig;
     private DataEngineClient dataEngineOMASClient;
