@@ -19,10 +19,10 @@ public class DataEngineProxyServicesResource {
 
     DataEngineProxyRestService dataEngineProxyRestService = new DataEngineProxyRestService();
 
-    @PostMapping("/load-processes")
+    @PostMapping("/load")
     public ProcessLoadResponse loadProcesses(@PathVariable("serverName") String serverName,
                                              @PathVariable("userId") String userId) {
-        return dataEngineProxyRestService.getProcessesChanges(serverName, userId);
+        return dataEngineProxyRestService.load(serverName, userId);
     }
 
 /*    @PostMapping("/load-process/{processId}")

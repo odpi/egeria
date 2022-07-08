@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
  * the Data Engine Proxy.
  */
 public class DataEngineProxyException extends OCFCheckedExceptionBase {
-
+    private static final long    serialVersionUID = 1L;
     /**
      * @param httpCode          - http response code to use if this exception flows over a rest call
      * @param className         - name of class reporting error

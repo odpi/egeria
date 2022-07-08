@@ -24,8 +24,8 @@ public class DataEngineProxyServerInstance extends OMAGServerServiceInstance {
      *
      * @return DataEngineProxyService.
      */
-    DataEngineProxyService getDataEngineProxyChangePoller() throws DataEngineProxyException {
-        final String methodName = "getDataEngineProxyChangePoller";
+    DataEngineProxyService getDataEngineProxyService() throws DataEngineProxyException {
+        final String methodName = "getDataEngineProxyService";
         if (this.dataEngineInstanceHandler == null) {
             DataEngineProxyErrorCode errorCode = DataEngineProxyErrorCode.ERROR_INITIALIZING_CONNECTION;
             String errorMessage = errorCode.getMessageDefinition(serverName).toString();

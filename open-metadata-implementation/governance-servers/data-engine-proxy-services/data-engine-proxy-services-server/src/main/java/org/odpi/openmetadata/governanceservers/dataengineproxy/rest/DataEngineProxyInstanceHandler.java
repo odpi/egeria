@@ -45,7 +45,7 @@ class DataEngineProxyInstanceHandler extends OMAGServerServiceInstanceHandler {
         DataEngineProxyServerInstance instance = (DataEngineProxyServerInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null) {
-            return instance.getDataEngineProxyChangePoller();
+            return instance.getDataEngineProxyService();
         }
 
         return null;

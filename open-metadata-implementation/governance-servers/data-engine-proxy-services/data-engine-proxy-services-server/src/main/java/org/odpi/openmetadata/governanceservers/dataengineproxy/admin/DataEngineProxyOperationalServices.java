@@ -43,7 +43,7 @@ public class DataEngineProxyOperationalServices {
 
     private OMRSAuditLog auditLog;
     private DataEngineConnectorBase dataEngineConnector;
-    private DataEngineProxyService changePoller;
+    private DataEngineProxyService dataEngineProxyService;
     private DataEngineInTopicClientConnector dataEngineTopicConnector;
     private DataEngineProxyServerInstance dataEngineProxyServerInstance;
 
@@ -172,22 +172,20 @@ public class DataEngineProxyOperationalServices {
                 dataEngineConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineConnection);
                 dataEngineConnector.start();
                 // If the config says we should poll for changes, do so via a new thread
-                if (dataEngineConnector.requiresPolling()) {
-                    changePoller = new DataEngineProxyService(
-                            dataEngineConnector,
-                            localServerUserId,
-                            dataEngineProxyConfig,
-                            dataEngineClient,
-                            auditLog
-                    );
-                    changePoller.start();
-                    this.dataEngineProxyServerInstance = new
-                            DataEngineProxyServerInstance(
-                            localServerName,
-                            GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                            100,
-                            changePoller);
-                }
+                dataEngineProxyService = new DataEngineProxyService(
+                        dataEngineConnector,
+                        localServerUserId,
+                        dataEngineProxyConfig,
+                        dataEngineClient,
+                        auditLog
+                );
+                dataEngineProxyService.initialize();
+                this.dataEngineProxyServerInstance = new
+                        DataEngineProxyServerInstance(
+                        localServerName,
+                        GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
+                        100,
+                        dataEngineProxyService);
                 // TODO: otherwise we likely need to look for and process events
             } catch (ConnectorCheckedException | ConnectionCheckedException | UserNotAuthorizedException | InvalidParameterException | PropertyServerException  e) {
                 throw new OMAGConfigurationErrorException(
@@ -197,8 +195,8 @@ public class DataEngineProxyOperationalServices {
                         e
                 );
             } finally {
-                if (changePoller != null) {
-                    changePoller.stop();
+                if (dataEngineProxyService != null) {
+                    dataEngineProxyService.stop();
                 }
             }
         }
@@ -224,8 +222,8 @@ public class DataEngineProxyOperationalServices {
         final String methodName = "disconnect";
         try {
             // Stop the change polling thread, if there is one and it is active
-            if (changePoller != null) {
-                changePoller.stop();
+            if (dataEngineProxyService != null) {
+                dataEngineProxyService.stop();
             }
             // Disconnect the data engine connector
             if (dataEngineConnector != null) {

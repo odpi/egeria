@@ -27,7 +27,6 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -45,7 +44,7 @@ public class DataEngineProxyService implements Runnable {
 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
-    public void start() throws ConnectorCheckedException, UserNotAuthorizedException, InvalidParameterException, PropertyServerException {
+    public void initialize() throws ConnectorCheckedException, UserNotAuthorizedException, InvalidParameterException, PropertyServerException {
 
         final String methodName = "start";
         this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
@@ -56,16 +55,12 @@ public class DataEngineProxyService implements Runnable {
             SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
             dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
             dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
-            Map<String, Object> proxyProperties = connector.getConnection().getConfigurationProperties();
-            pollIntervalInSeconds = (int) proxyProperties.getOrDefault(POLL_INTERVAL_IN_SECONDS, 0);
+            if (connector.requiresPolling()) {
+                Thread worker = new Thread(this);
+                worker.setName(DataEngineProxyService.class.getName());
+                worker.start();
+            }
         }
-
-        if (pollIntervalInSeconds > 0) {
-            Thread worker = new Thread(this);
-            worker.setName(DataEngineProxyService.class.getName());
-            worker.start();
-        }
-
     }
 
     public void stop() {
@@ -87,7 +82,7 @@ public class DataEngineProxyService implements Runnable {
                                   DataEngineClient dataEngineOMASClient,
                                   OMRSAuditLog auditLog) {
 
-        final String methodName = "DataEngineProxyChangePoller";
+        final String methodName = "DataEngineProxyService";
 
         this.connector = connector;
         this.userId = userId;
@@ -160,19 +155,18 @@ public class DataEngineProxyService implements Runnable {
 
     }
 
-    public void runWithReports() {
+    public void load() {
         final String methodName = "runWithReports";
         Date now = Date.from(Instant.now());
         try {
             ensureSourceNameIsSet();
+            connector.loadCache();
             upsertSchemaTypes(now, now);
             upsertDataStores(now, now);
             upsertProcesses(now, now);
             upsertProcessHierarchies(now, now);
             upsertLineageMappings(now, now);
-        } catch (PropertyServerException e) {
-            this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
-        } catch (UserNotAuthorizedException | InvalidParameterException | ConnectorCheckedException e) {
+        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException | ConnectorCheckedException e) {
             this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
         }
     }

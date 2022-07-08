@@ -13,13 +13,12 @@ public class DataEngineProxyRestService {
 
     private final DataEngineProxyInstanceHandler instanceHandler = new DataEngineProxyInstanceHandler();
 
-    public ProcessLoadResponse getProcessesChanges(String serverName, String userId) {
+    public ProcessLoadResponse load(String serverName, String userId) {
         String serviceOperationName = "DataEngineProxy";
         try {
             DataEngineProxyService dataEngineProxyService = instanceHandler.getDataEngineProxyService(userId, serverName, serviceOperationName);
-            dataEngineProxyService.runWithReports();
+            dataEngineProxyService.load();
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException | DataEngineProxyException e) {
-            e.printStackTrace();
             ProcessLoadResponse response = new ProcessLoadResponse();
             response.setRelatedHTTPCode(e.getReportedHTTPCode());
             response.setExceptionClassName(e.getClass().getName());
@@ -38,7 +37,6 @@ public class DataEngineProxyRestService {
             DataEngineProxyService dataEngineProxyService = instanceHandler.getDataEngineProxyService(userId, serverName, serviceOperationName);
             dataEngineProxyService.pollProcessChanges(processId);
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException | DataEngineProxyException e) {
-            e.printStackTrace();
             ProcessLoadResponse response = new ProcessLoadResponse();
             response.setRelatedHTTPCode(e.getReportedHTTPCode());
             response.setExceptionClassName(e.getClass().getName());

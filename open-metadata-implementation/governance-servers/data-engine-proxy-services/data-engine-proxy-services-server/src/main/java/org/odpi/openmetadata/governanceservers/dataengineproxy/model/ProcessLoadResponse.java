@@ -7,5 +7,5 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import java.io.Serializable;
 
 public class ProcessLoadResponse extends FFDCResponseBase implements Serializable {
-
+    private static final long    serialVersionUID = 1L;
 }
