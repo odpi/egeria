@@ -49,7 +49,6 @@ public class DataEngineProxyService implements Runnable {
         final String methodName = "start";
         this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
 
-        int pollIntervalInSeconds = 0;
         // Retrieve the base information from the connector
         if (connector != null) {
             SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
@@ -81,9 +80,6 @@ public class DataEngineProxyService implements Runnable {
                                   DataEngineProxyConfig dataEngineProxyConfig,
                                   DataEngineClient dataEngineOMASClient,
                                   OMRSAuditLog auditLog) {
-
-        final String methodName = "DataEngineProxyService";
-
         this.connector = connector;
         this.userId = userId;
         this.dataEngineProxyConfig = dataEngineProxyConfig;
@@ -156,7 +152,7 @@ public class DataEngineProxyService implements Runnable {
     }
 
     public void load() {
-        final String methodName = "runWithReports";
+        final String methodName = "load";
         Date now = Date.from(Instant.now());
         try {
             ensureSourceNameIsSet();
