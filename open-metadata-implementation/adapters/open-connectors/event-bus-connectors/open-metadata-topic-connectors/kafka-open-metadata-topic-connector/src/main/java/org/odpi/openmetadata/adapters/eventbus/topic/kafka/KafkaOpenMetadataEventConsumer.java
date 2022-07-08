@@ -45,7 +45,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     private final long maxMsBetweenPolls;
 
     // Keep track of when an initial rebalance is done
-    private static boolean initialPartitionAssignment = true;
+    private boolean initialPartitionAssignment = true;
 
     
     //If we get close enough to the consumer timeout timestamp, force a poll so that
@@ -516,6 +516,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             this.auditLog = auditLog;
         }
 
+        @Override
         public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
 
             // Check if we need to rewind to handle initial startup case -- but only on first assignment
@@ -557,6 +558,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             }
         }
 
+        @Override
         public void onPartitionsRevoked(Collection<TopicPartition> partitions)
         {
             final String methodName = "onPartitionsRevoked.commitSync";
