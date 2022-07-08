@@ -522,34 +522,43 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             // Check if we need to rewind to handle initial startup case -- but only on first assignment
             try {
                 if (initialPartitionAssignment) {
-                    log.info("Received initial rebalance event");
+                    log.info("Received initial PartitionsAssigned event");
 
                     long partitionCount = partitions.size();
 
                     if (partitionCount != 1) {
-                        log.info("Received rebalance event with " + partitionCount + " partitions.  This is not supported.");
+                        log.info("Received PartitionsAssigned event with " + partitionCount + " partitions.  This is not supported.");
                     } else {
                         // there is only one partition, so we can just grab the first one - and we'll try this once only
                         initialPartitionAssignment = false;
+                        long maxOffsetWanted = 0; // same as 'beginning'
+
                         TopicPartition partition = partitions.iterator().next();
 
-                        // query offset by timestamp (when we started connector)
+                        // query offset by timestamp (when we started connector) - NULL if there are no messages later than this offset
                         OffsetAndTimestamp otByStartTime = consumer.offsetsForTimes(Collections.singletonMap(partition,
                                 KafkaOpenMetadataEventConsumer.this.startTime)).get(partition);
-                        long maxOffsetWanted = otByStartTime.offset();
 
-                        // get the current offset
-                        long currentOffset = consumer.position(partition);
+                        // If null, then we don't have any earlier messages - ie there is no offset found
+                        if (otByStartTime != null) {
+                            // where we want to scoll to - the messages sent since we thought we started
+                            maxOffsetWanted = otByStartTime.offset();
 
-                        // if the current offset is later than the start time we want, rewind to the start time
-                        if (currentOffset > maxOffsetWanted) {
+                            // get the current offset
+                            long currentOffset = consumer.position(partition);
 
-                            log.info("Seeking to {} for partition {} and topic {} as current offset {} is too late", maxOffsetWanted, partition.partition(),
-                                    partition.topic(), currentOffset);
-                            consumer.seek(partition, maxOffsetWanted);
-                        } else
-                            log.info("Not Seeking to {} for partition {} and topic {} as current offset {} is older", maxOffsetWanted, partition.partition(),
-                                    partition.topic(), currentOffset);
+                            // if the current offset is later than the start time we want, rewind to the start time
+                            if (currentOffset > maxOffsetWanted) {
+
+                                log.info("Seeking to {} for partition {} and topic {} as current offset {} is too late", maxOffsetWanted, partition.partition(),
+                                        partition.topic(), currentOffset);
+                                consumer.seek(partition, maxOffsetWanted);
+                            } else
+                                log.info("Not Seeking to {} for partition {} and topic {} as current offset {} is older", maxOffsetWanted, partition.partition(),
+                                        partition.topic(), currentOffset);
+                        }
+                        else
+                            log.info("No missed events found for partition {} and topic {}", partition.partition(), partition.topic());
                     }
                 }
             } catch (Exception e) {
