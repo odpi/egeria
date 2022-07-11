@@ -136,7 +136,7 @@ public class DataEngineProxyService implements Runnable {
                 connector.setChangesLastSynced(changesCutoff);
 
                 // Sleep for the poll interval before continuing with the next poll
-
+                sleep();
             } catch (PropertyServerException e) {
                 // Potentially recoverable error. Retry.
                 this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
