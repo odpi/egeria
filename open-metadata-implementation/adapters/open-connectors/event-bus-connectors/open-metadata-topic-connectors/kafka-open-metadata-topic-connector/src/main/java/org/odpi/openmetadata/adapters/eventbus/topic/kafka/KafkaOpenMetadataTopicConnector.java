@@ -49,9 +49,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private String       topicName          = null;
     private String       serverId           = null;
 
-    // Start time needed for setting topic offset
-    private final long         connectorStartTime = System.currentTimeMillis();
-
     /* this buffer is for consumed events */
     private final List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
 
