@@ -2531,25 +2531,22 @@ public class OpenMetadataAPIGenericHandler<B>
 
                 if (anchorsClassification == null)
                 {
-                    if (anchorGUID != null)
-                    {
-                        repositoryHandler.classifyEntity(localServerUserId,
-                                                         null,
-                                                         null,
-                                                         targetGUID,
-                                                         null,
-                                                         targetGUIDParameterName,
-                                                         targetEntity.getType().getTypeDefName(),
-                                                         OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                         ClassificationOrigin.ASSIGNED,
-                                                         null,
-                                                         anchorsProperties,
-                                                         forLineage,
-                                                         forDuplicateProcessing,
-                                                         effectiveTime,
-                                                         methodName);
-                    }
+                    repositoryHandler.classifyEntity(localServerUserId,
+                                                     null,
+                                                     null,
+                                                     targetGUID,
+                                                     null,
+                                                     targetGUIDParameterName,
+                                                     targetEntity.getType().getTypeDefName(),
+                                                     OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                     ClassificationOrigin.ASSIGNED,
+                                                     null,
+                                                     anchorsProperties,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
                 }
                 else
                 {
