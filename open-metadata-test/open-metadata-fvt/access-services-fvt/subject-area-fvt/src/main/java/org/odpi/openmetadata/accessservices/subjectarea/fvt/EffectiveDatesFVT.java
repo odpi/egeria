@@ -137,7 +137,7 @@ public class EffectiveDatesFVT
             // error
             throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary toTime null but glossaries is not null");
         }
-        if (glossaryFrom != null && termGlossaryFrom != null) {
+        if (glossaryFrom != null) {
             if (glossaryFrom.longValue() != termGlossaryFrom.longValue()) {
                 // error
                 throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary fromTime " + termGlossaryFrom.longValue() + " does not match the glossaries " + glossaryFrom.longValue());
@@ -145,7 +145,7 @@ public class EffectiveDatesFVT
 
         }
 
-        if (glossaryTo != null && termGlossaryTo != null) {
+        if (glossaryTo != null) {
             if (glossaryTo.longValue() != termGlossaryTo.longValue()) {
                 // error
                 throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary toTime " + termGlossaryTo.longValue() + " does not match the glossaries " + glossaryTo.longValue());
