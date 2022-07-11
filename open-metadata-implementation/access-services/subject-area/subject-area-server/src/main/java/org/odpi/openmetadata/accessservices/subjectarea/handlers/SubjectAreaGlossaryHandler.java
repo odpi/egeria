@@ -339,38 +339,34 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(String userId, String guid) {
         final String methodName = "deleteGlossary";
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
-        boolean issueDelete = false;
+
         try {
             // if this is a not a purge then check there are no relationships before deleting,
             // otherwise the deletion could remove all anchored entities.
-            if (genericHandler.isBeanIsolated(userId,
+            if (!genericHandler.isBeanIsolated(userId,
                                               guid,
                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                              methodName)) {
+                                              methodName))  {
 
-                issueDelete = true;
-            } else {
                 throw new EntityNotDeletedException(SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
                                                     className,
                                                     methodName,
                                                     guid);
             }
 
-            if (issueDelete) {
-                genericHandler.deleteBeanInRepository(userId,
-                                                      null,
-                                                      null,
-                                                      guid,
-                                                      "guid",
-                                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,    // true for sub types
-                                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,    // true for sub types
-                                                      null,
-                                                      null,
-                                                      false,
-                                                      false,
-                                                      null,
-                                                      methodName);
-            }
+            genericHandler.deleteBeanInRepository(userId,
+                    null,
+                    null,
+                    guid,
+                    "guid",
+                    OpenMetadataAPIMapper.GLOSSARY_TYPE_GUID,    // true for sub types
+                    OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,    // true for sub types
+                    null,
+                    null,
+                    false,
+                    false,
+                    null,
+                    methodName);
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
