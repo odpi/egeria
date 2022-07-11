@@ -94,14 +94,11 @@ public class PlatformConformanceWorkbench extends OpenMetadataConformanceWorkben
             {
                 List<OpenMetadataPlatformTestCase>   testCases   = this.getTestCases();
 
-                if (testCases != null)
+                for (OpenMetadataPlatformTestCase testCase : testCases)
                 {
-                    for (OpenMetadataPlatformTestCase testCase : testCases)
+                    if (isRunning())
                     {
-                        if (isRunning())
-                        {
-                            testCase.executeTest();
-                        }
+                        testCase.executeTest();
                     }
                 }
             }
