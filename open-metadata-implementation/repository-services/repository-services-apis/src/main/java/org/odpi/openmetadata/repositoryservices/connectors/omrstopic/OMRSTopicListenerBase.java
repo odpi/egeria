@@ -471,7 +471,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
 
         try
         {
-            OMRSInstanceEventType instanceEventType       = instanceEvent.getInstanceEventType();
+            OMRSInstanceEventType instanceEventType       = instanceEvent.getInstanceEventType(); /* can't be null */
             OMRSEventOriginator   instanceEventOriginator = instanceEvent.getEventOriginator();
 
             log.debug("Processing instance event: " + instanceEvent);
@@ -854,10 +854,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
         {
             String eventString = NULL_EVENT;
 
-            if (instanceEvent != null)
-            {
-                eventString = instanceEvent.toString();
-            }
+            eventString = instanceEvent.toString();
 
             this.logUnexpectedException(eventString, error, actionDescription);
         }
