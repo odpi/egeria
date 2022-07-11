@@ -549,21 +549,19 @@ public class OMAGServerAdminStoreServices
     {
         OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
 
-        if (serverConfigStore != null)
+        if (serverConfig != null)
         {
-            if (serverConfig != null)
-            {
-                validateConfigServerName(serverName, serverConfig.getLocalServerName(), methodName);
-                serverConfigStore.saveServerConfig(serverConfig);
-            }
-            else
-            {
-                /*
-                 * If the server config is null we delete the file rather than have an empty file hanging around.
-                 */
-                serverConfigStore.removeServerConfig();
-            }
+            validateConfigServerName(serverName, serverConfig.getLocalServerName(), methodName);
+            serverConfigStore.saveServerConfig(serverConfig);
         }
+        else
+        {
+            /*
+             * If the server config is null we delete the file rather than have an empty file hanging around.
+             */
+            serverConfigStore.removeServerConfig();
+        }
+
     }
 
     /**
