@@ -1404,7 +1404,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
         /*
          * For this testcase we created master instances at the CTS and TUT and ref copies at the TUT - three lists to clean up
          */
-        if (createdEntitiesCTS != null && !createdEntitiesCTS.isEmpty()) {
+        if (!createdEntitiesCTS.isEmpty()) {
 
             /*
              * Instances were created - clean them up.
@@ -1437,7 +1437,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
             }
         }
 
-        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+        if (!createdEntitiesTUT.isEmpty()) {
 
             /*
              * Instances were created - clean them up.
@@ -1470,7 +1470,7 @@ public class TestSupportedEntityReferenceCopyLifecycle extends RepositoryConform
             }
         }
 
-        if (createdEntityRefCopiesTUT != null && !createdEntityRefCopiesTUT.isEmpty()) {
+        if (!createdEntityRefCopiesTUT.isEmpty()) {
 
             /*
              * Instances were created - clean them up.
