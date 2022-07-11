@@ -1371,7 +1371,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
          *   createdRelationshipsTUT
          */
 
-        if (createdRelationshipsTUT != null && !createdRelationshipsTUT.isEmpty()) {
+        if (!createdRelationshipsTUT.isEmpty()) {
 
             /*
              * Instances were created - clean them up.
@@ -1404,7 +1404,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             }
         }
 
-        if (createdEntitiesCTS != null && !createdEntitiesCTS.isEmpty()) {
+        if (!createdEntitiesCTS.isEmpty()) {
 
             /*
              * Instances were created - clean them up.
