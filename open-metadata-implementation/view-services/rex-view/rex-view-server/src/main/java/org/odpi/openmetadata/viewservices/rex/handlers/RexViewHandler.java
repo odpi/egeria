@@ -1664,9 +1664,7 @@ public class RexViewHandler
 
             case "Annotation":
             case "AnnotationReview":
-                if (instanceTypeName != null) {
-                    label = instanceTypeName;  // use the local type name for anything under these types
-                }
+                label = instanceTypeName;  // use the local type name for anything under these types
                 break;
 
             case "LastAttachment":
@@ -1802,10 +1800,7 @@ public class RexViewHandler
 
             case "Annotation":
             case "AnnotationReview":
-                if (instanceTypeName != null) {
-                    label = instanceTypeName;  // use the local type name for anything under these types
-
-                }
+                label = instanceTypeName;  // use the local type name for anything under these types
                 break;
 
             default:
