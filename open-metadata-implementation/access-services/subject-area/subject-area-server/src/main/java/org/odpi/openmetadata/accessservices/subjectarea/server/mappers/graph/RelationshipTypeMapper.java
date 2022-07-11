@@ -42,16 +42,6 @@ public class RelationshipTypeMapper {
                                                 operation,
                                                 invalidPropertyName,
                                                 null);
-        } else  if (omasRelationshipType == null) {
-            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.UNKNOWN_RELATIONSHIPTYPE_REQUESTED_FOR_GRAPH.getMessageDefinition();
-
-            String invalidPropertyName = "relationshipFilter";
-            messageDefinition.setMessageParameters(invalidPropertyName, RelationshipType.Unknown.name());
-            throw new InvalidParameterException(messageDefinition,
-                                                className,
-                                                operation,
-                                                invalidPropertyName,
-                                                RelationshipType.Unknown.name());
         } else {
             String relationshipTypeName = omasRelationshipType.name();
             if (omasRelationshipType.equals(RelationshipType.HasA)) {
