@@ -678,10 +678,8 @@ public class OMAGServerAdminServices
              */
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            if (configStore != null)
-            {
-                response.setConfig(serverConfig.getEventBusConfig());
-            }
+            response.setConfig(serverConfig.getEventBusConfig());
+
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -733,25 +731,22 @@ public class OMAGServerAdminServices
              */
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            if (configStore != null)
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
             {
-                List<String>  configAuditTrail          = serverConfig.getAuditTrail();
-
-                if (configAuditTrail == null)
-                {
-                    configAuditTrail = new ArrayList<>();
-                }
-
-                configAuditTrail.add(new Date().toString() + " " + userId + " deleted configuration for default event bus.");
-
-                serverConfig.setAuditTrail(configAuditTrail);
-                serverConfig.setEventBusConfig(null);
-
-                /*
-                 * Save the config away
-                 */
-                configStore.saveServerConfig(serverName, methodName, serverConfig);
+                configAuditTrail = new ArrayList<>();
             }
+
+            configAuditTrail.add(new Date().toString() + " " + userId + " deleted configuration for default event bus.");
+
+            serverConfig.setAuditTrail(configAuditTrail);
+            serverConfig.setEventBusConfig(null);
+
+            /*
+             * Save the config away
+             */
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException error)
         {
