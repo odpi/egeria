@@ -358,7 +358,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+        if (!createdEntitiesTUT.isEmpty()) {
 
             /*
              * Instances were created - clean them up.
