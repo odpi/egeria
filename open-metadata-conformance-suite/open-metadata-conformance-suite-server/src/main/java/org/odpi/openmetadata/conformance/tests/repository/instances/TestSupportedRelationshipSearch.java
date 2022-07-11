@@ -207,11 +207,8 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
-        if (workPad != null)
-        {
-            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
-            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        }
+        cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+        repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
 
         RelationshipDef knownRelationshipDef = (RelationshipDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), relationshipDef.getName());
         verifyCondition((relationshipDef.equals(knownRelationshipDef)),
