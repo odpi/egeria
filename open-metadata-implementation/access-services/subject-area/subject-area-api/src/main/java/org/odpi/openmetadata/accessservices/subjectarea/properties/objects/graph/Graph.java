@@ -120,9 +120,14 @@ public class Graph implements Serializable {
         if (sb == null) {
             sb = new StringBuilder();
         }
+        /*
+        I removed the vulnerabilities that were conditions that evaluated to always false.
+        The didn't make much sense to the scanner as the param wasn't being checked.
+        I'll open an issue for the functional problems.
+         */
         sb.append("NodeGUID=" + rootNodeGuid + "\n");
-        sb.append(("NodeTypeFilter=" + nodeFilter == null || nodeFilter == "") ? "none" : nodeFilter + "\n");
-        sb.append(("relationshipTypeFilter=" + relationshipFilter == null || relationshipFilter == "") ? "none" : relationshipFilter + "\n");
+        sb.append((nodeFilter == "") ? "none" : nodeFilter + "\n");
+        sb.append((relationshipFilter == "") ? "none" : relationshipFilter + "\n");
         if (nodes != null && !nodes.isEmpty()) {
 
             sb.append("Nodes= [\n");
