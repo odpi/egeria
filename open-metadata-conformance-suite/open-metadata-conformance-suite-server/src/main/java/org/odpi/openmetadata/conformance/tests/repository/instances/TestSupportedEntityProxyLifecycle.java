@@ -1437,7 +1437,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             }
         }
 
-        if (createdEntitiesTUT != null && !createdEntitiesTUT.isEmpty()) {
+        if (!createdEntitiesTUT.isEmpty()) {
 
             /*
              * Instances were created - clean them up.
@@ -1470,7 +1470,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             }
         }
 
-        if (createdEntityRefCopiesTUT != null && !createdEntityRefCopiesTUT.isEmpty()) {
+        if (!createdEntityRefCopiesTUT.isEmpty()) {
 
             /*
              * Instances were created - clean them up.
