@@ -29,6 +29,7 @@
     <modules>
         <module>data-engine-proxy-services-server</module>
         <module>data-engine-proxy-connector</module>
+        <module>data-engine-proxy-services-spring</module>
     </modules>
 
 
