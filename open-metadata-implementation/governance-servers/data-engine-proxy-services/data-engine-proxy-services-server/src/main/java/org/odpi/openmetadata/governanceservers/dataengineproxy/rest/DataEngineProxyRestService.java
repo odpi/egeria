@@ -9,15 +9,24 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngi
 import org.odpi.openmetadata.governanceservers.dataengineproxy.model.ProcessLoadResponse;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyService;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class DataEngineProxyRestService {
 
     private final DataEngineProxyInstanceHandler instanceHandler = new DataEngineProxyInstanceHandler();
+    AtomicBoolean isRunning = new AtomicBoolean(false);
 
     public ProcessLoadResponse load(String serverName, String userId) {
         String serviceOperationName = "DataEngineProxy";
         try {
+            if (isRunning.get()) {
+                return new ProcessLoadResponse();
+            }
             DataEngineProxyService dataEngineProxyService = instanceHandler.getDataEngineProxyService(userId, serverName, serviceOperationName);
-            dataEngineProxyService.load();
+            isRunning.set(true);
+            CompletableFuture.runAsync(dataEngineProxyService::load).thenAccept(result -> isRunning.set(false));
+
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException | DataEngineProxyException e) {
             ProcessLoadResponse response = new ProcessLoadResponse();
             response.setRelatedHTTPCode(e.getReportedHTTPCode());
