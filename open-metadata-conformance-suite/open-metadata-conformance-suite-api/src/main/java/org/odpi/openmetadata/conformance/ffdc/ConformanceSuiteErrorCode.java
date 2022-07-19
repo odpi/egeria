@@ -235,19 +235,6 @@ public enum ConformanceSuiteErrorCode
     }
 
     /**
-     * Returns the string but with any special storage characters changes to underscores
-     *
-     * @return String
-     */
-    private String sanatiseLogString( String str ) {
-        /*
-        quietly change any characters involved in storage hacks to a harmless underscore.
-         */
-        return str.replaceAll("[\n\r\t]", "_");
-    }
-
-
-    /**
      * Returns the error message with the placeholders filled out with the supplied parameters.
      *
      * @param params strings that plug into the placeholders in the errorMessage
@@ -255,13 +242,13 @@ public enum ConformanceSuiteErrorCode
      */
     public String getFormattedErrorMessage(String... params)
     {
-        log.debug(String.format("<== ConformanceSuiteErrorCode.getMessage(%s)", sanatiseLogString(Arrays.toString(params))));
+        log.debug(String.format("<== ConformanceSuiteErrorCode.getMessage(%s)", Arrays.toString(params)));
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
         /* The below code doesn't generate a SONAR vulnerability alert as the param has been formatted */
-        log.debug(String.format("==> ConformanceSuiteErrorCode.getMessage(%s): %s", sanatiseLogString(Arrays.toString(params)), result));
+        log.debug(String.format("==> ConformanceSuiteErrorCode.getMessage(%s): %s", Arrays.toString(params)), result);
 
         return result;
     }
