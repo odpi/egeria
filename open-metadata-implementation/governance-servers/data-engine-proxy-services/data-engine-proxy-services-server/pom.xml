@@ -82,6 +82,14 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-engine-topic-connectors</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>multi-tenant</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
 
     </dependencies>
 

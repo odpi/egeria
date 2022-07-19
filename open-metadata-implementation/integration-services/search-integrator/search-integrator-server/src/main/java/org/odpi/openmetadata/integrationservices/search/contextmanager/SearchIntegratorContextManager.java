@@ -103,7 +103,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
         try {
             assetCatalogEventClient.registerListener(localServerUserId, eventListener);
         } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException e) {
-            auditLog.logException(methodName,SearchIntegratorAuditCode.REGISTER_CATALOG_LISTENER.getMessageDefinition(IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS.getIntegrationServiceFullName()),e);
+            auditLog.logException(methodName,SearchIntegratorAuditCode.REGISTER_CATALOG_LISTENER_ERROR.getMessageDefinition(IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS.getIntegrationServiceFullName()),e);
         }
 
         AssetManagerRESTClient assetManagerRestClient;
