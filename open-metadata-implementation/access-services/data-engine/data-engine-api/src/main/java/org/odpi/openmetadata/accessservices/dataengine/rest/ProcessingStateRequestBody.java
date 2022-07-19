@@ -22,7 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class ProcessingStateRequestBody extends DataEngineOMASAPIRequestBody {
+public class ProcessingStateRequestBody extends DataEngineOMASAPIRequestBody
+{
+    private static final long    serialVersionUID = 1L;
 
     /**
      * The sync state to be created
