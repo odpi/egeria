@@ -18,7 +18,7 @@ dependencies {
     implementation 'commons-io:commons-io'
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation 'org.springframework:spring-web'
 }
@@ -31,4 +31,6 @@ java {
 
 test {
     useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

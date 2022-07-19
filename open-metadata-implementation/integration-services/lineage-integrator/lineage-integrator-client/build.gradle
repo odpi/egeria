@@ -10,7 +10,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:integration-services:lineage-integrator:lineage-integrator-api')
     implementation 'org.springframework:spring-core'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'io.openlineage:openlineage-java'
 
 }

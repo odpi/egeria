@@ -15,7 +15,7 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-api')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation 'org.springframework:spring-web'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 
 }

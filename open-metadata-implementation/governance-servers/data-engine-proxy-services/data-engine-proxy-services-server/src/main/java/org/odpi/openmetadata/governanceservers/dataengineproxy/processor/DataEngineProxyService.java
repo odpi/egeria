@@ -23,6 +23,7 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngi
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Class to handle periodically polling a Data Engine for changes, for those data engines that do not
  * provide any event-based mechanism to notify on changes.
  */
-public class DataEngineProxyChangePoller implements Runnable {
+public class DataEngineProxyService implements Runnable {
 
     private OMRSAuditLog auditLog;
     private DataEngineProxyConfig dataEngineProxyConfig;
@@ -42,22 +43,22 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private final AtomicBoolean running = new AtomicBoolean(false);
 
-    public void start() throws ConnectorCheckedException, UserNotAuthorizedException, InvalidParameterException, PropertyServerException {
+    public void initialize() throws ConnectorCheckedException, UserNotAuthorizedException, InvalidParameterException, PropertyServerException {
 
         final String methodName = "start";
         this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.INIT_POLLING.getMessageDefinition());
-
 
         // Retrieve the base information from the connector
         if (connector != null) {
             SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
             dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
             dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
+            if (connector.requiresPolling()) {
+                Thread worker = new Thread(this);
+                worker.setName(DataEngineProxyService.class.getName());
+                worker.start();
+            }
         }
-
-        Thread worker = new Thread(this);
-        worker.setName(DataEngineProxyChangePoller.class.getName());
-        worker.start();
     }
 
     public void stop() {
@@ -73,14 +74,11 @@ public class DataEngineProxyChangePoller implements Runnable {
      * @param dataEngineOMASClient  Data Engine OMAS client through which to push any changes into Egeria
      * @param auditLog              audit log through which to record activities
      */
-    public DataEngineProxyChangePoller(DataEngineConnectorBase connector,
-                                       String userId,
-                                       DataEngineProxyConfig dataEngineProxyConfig,
-                                       DataEngineClient dataEngineOMASClient,
-                                       OMRSAuditLog auditLog) {
-
-        final String methodName = "DataEngineProxyChangePoller";
-
+    public DataEngineProxyService(DataEngineConnectorBase connector,
+                                  String userId,
+                                  DataEngineProxyConfig dataEngineProxyConfig,
+                                  DataEngineClient dataEngineOMASClient,
+                                  OMRSAuditLog auditLog) {
         this.connector = connector;
         this.userId = userId;
         this.dataEngineProxyConfig = dataEngineProxyConfig;
@@ -139,7 +137,6 @@ public class DataEngineProxyChangePoller implements Runnable {
 
                 // Sleep for the poll interval before continuing with the next poll
                 sleep();
-
             } catch (PropertyServerException e) {
                 // Potentially recoverable error. Retry.
                 this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
@@ -151,6 +148,28 @@ public class DataEngineProxyChangePoller implements Runnable {
             }
         }
 
+    }
+
+    public void load() {
+        final String methodName = "load";
+        Date now = Date.from(Instant.now());
+        try {
+            ensureSourceNameIsSet();
+            connector.loadCache();
+            upsertSchemaTypes(now, now);
+            upsertDataStores(now, now);
+            upsertProcesses(now, now);
+            upsertProcessHierarchies(now, now);
+            upsertLineageMappings(now, now);
+        } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException | ConnectorCheckedException e) {
+            this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
+        }
+    }
+
+    public void pollProcessChanges(String processId) {
+        /*
+         * TODO
+         * */
     }
 
     /**

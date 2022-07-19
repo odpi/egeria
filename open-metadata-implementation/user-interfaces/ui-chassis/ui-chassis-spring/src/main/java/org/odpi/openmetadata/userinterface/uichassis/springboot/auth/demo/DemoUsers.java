@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.demo;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

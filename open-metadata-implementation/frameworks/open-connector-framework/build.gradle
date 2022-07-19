@@ -7,7 +7,7 @@
 dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation 'org.testng:testng'
 }
@@ -20,6 +20,6 @@ java {
 
 test {
     useTestNG()
-    //TODO: Maven build is currently not running these failing tests
-    ignoreFailures = true
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

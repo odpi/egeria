@@ -27,7 +27,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation localGroovy()
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.springframework:spring-core'
     implementation 'org.springframework:spring-web'
 
@@ -91,7 +91,7 @@ task startServer(dependsOn: ['cleanData',':open-metadata-distribution:open-metad
     // - alternatively we need to ensure the server port is unique per test
     standardOutput = layout.buildDirectory.file("chassis.log")
     errorOutput = layout.buildDirectory.file("chassis-error.log")
-    //stopAfter = verify
+    stopAfter = test
     waitForPort = Integer.valueOf(gaport)
     timeout = 180
     //waitForOutput = 'has started'

@@ -29,6 +29,10 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      */
     public DataEngineConnectorBase() { super(); }
 
+    public void loadCache() throws ConnectorCheckedException, PropertyServerException {
+        log.debug("Loading cache is done automatically.");
+    }
+
     /**
      * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
      * (false).

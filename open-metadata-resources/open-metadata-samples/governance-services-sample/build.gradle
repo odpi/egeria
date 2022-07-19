@@ -11,7 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-discovery-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     implementation 'ch.qos.logback:logback-classic'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 
