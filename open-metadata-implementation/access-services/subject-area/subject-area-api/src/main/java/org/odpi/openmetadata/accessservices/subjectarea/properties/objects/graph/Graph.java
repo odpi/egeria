@@ -121,13 +121,13 @@ public class Graph implements Serializable {
             sb = new StringBuilder();
         }
         /*
-        I removed the vulnerabilities that were conditions that evaluated to always false.
-        The didn't make much sense to the scanner as the param wasn't being checked.
-        I'll open an issue for the functional problems.
+        The below code is triggering alerts in a number of scanners
+        It's not clear why only the first string + raised an alert and the two remaining calls didn't ?
+        using Objects.equals was recommended as being null-safe
          */
-        sb.append("NodeGUID=" + rootNodeGuid + "\n");
-        sb.append((nodeFilter == "") ? "none" : nodeFilter + "\n");
-        sb.append((relationshipFilter == "") ? "none" : relationshipFilter + "\n");
+        sb.append("NodeGUID=").append(rootNodeGuid).append("\n");
+        sb.append((Objects.equals(nodeFilter, "")) ? "none" : nodeFilter + "\n");
+        sb.append((Objects.equals(relationshipFilter, "")) ? "none" : relationshipFilter + "\n");
         if (nodes != null && !nodes.isEmpty()) {
 
             sb.append("Nodes= [\n");
