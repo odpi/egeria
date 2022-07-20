@@ -12,61 +12,51 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
  * KafkaOpenMetadataEventProducer manages the sending of events on Apache Kafka.  This is done through called to
  * the Kafka Producer interface.
- *
+ * <p>
  * Kafka is not always running.  When this occurs, the call to publish events hangs and this is disruptive to the
  * rest of the server.  So the role of this class is to manage the sending of events in a separate thread
  * and manage the logging of errors to alert the operations team that Kafka needs restarting.
  */
-public class KafkaOpenMetadataEventProducer implements Runnable
-{
-    private final List<String> sendBuffer = Collections.synchronizedList(new ArrayList<>());
-
+public class KafkaOpenMetadataEventProducer implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataEventProducer.class);
-
-    private static final String       defaultThreadName = "KafkaProducer for topic ";
-
-    private volatile boolean running = true;
-
-    private final AuditLog auditLog;
-    private final String   listenerThreadName;
-    private final String   topicName;
-    private final int sleepTime = 1000;
+    private static final String defaultThreadName = "KafkaProducer for topic ";
     private static final long recoverySleepTimeSec = 10L;
-
-    private final String                          localServerId;
-    private final Properties                      producerProperties;
-    private Producer<String, String>        producer = null;
-
-    private KafkaOpenMetadataTopicConnector connector;
-
-    private long    messageSendCount = 0;
+    private final List<String> sendBuffer = Collections.synchronizedList(new ArrayList<>());
+    private final AuditLog auditLog;
+    private final String listenerThreadName;
+    private final String topicName;
+    private final int sleepTime = 1000;
+    private final String localServerId;
+    private final Properties producerProperties;
+    private final KafkaOpenMetadataTopicConnector connector;
+    private volatile boolean running = true;
+    private Producer<String, String> producer = null;
+    private long messageSendCount = 0;
     private long kafkaSendAttemptCount = 0;
     private long messagePublishRequestCount = 0;
 
 
     /**
-     *
      * Constructor for the event consumer.
      *
-     * @param topicName name of the topic to listen on.
-     * @param localServerId identifier to enable receiver to identify that an event came from this server.
+     * @param topicName          name of the topic to listen on.
+     * @param localServerId      identifier to enable receiver to identify that an event came from this server.
      * @param producerProperties properties for the consumer.
-     * @param connector connector holding the inbound listeners.
-     * @param auditLog  audit log for this component.
+     * @param connector          connector holding the inbound listeners.
+     * @param auditLog           audit log for this component.
      */
-    KafkaOpenMetadataEventProducer(String                          topicName,
-                                   String                          localServerId,
-                                   Properties                      producerProperties,
-                                   KafkaOpenMetadataTopicConnector connector,
-                                   AuditLog                        auditLog)
-    {
+    KafkaOpenMetadataEventProducer(String topicName, String localServerId, Properties producerProperties,
+                                   KafkaOpenMetadataTopicConnector connector, AuditLog auditLog) {
         this.auditLog = auditLog;
         this.topicName = topicName;
         this.localServerId = localServerId;
@@ -74,10 +64,9 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         this.producerProperties = producerProperties;
         this.listenerThreadName = defaultThreadName + topicName;
 
-        final String           actionDescription = "new producer";
+        final String actionDescription = "new producer";
 
-        if (auditLog != null)
-        {
+        if (auditLog != null) {
             auditLog.logMessage(actionDescription,
                                 KafkaOpenMetadataTopicConnectorAuditCode.SERVICE_PRODUCER_PROPERTIES.getMessageDefinition(
                                         Integer.toString(producerProperties.size()), topicName),
@@ -86,49 +75,41 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     }
 
 
-
     /**
      * Sends the supplied event to the topic.  It retries if Kafka is not responding.
      *
      * @param event object containing the event properties.
      * @throws ConnectorCheckedException the connector is not able to communicate with the event bus
      */
-    private void publishEvent(String event) throws ConnectorCheckedException
-    {
+    private void publishEvent(String event) throws ConnectorCheckedException {
         final String methodName = "publishEvent";
 
-        boolean                  eventSent = false;
-        long                     eventRetryCount = 0;
+        boolean eventSent = false;
+        long eventRetryCount = 0;
 
         messagePublishRequestCount++;
         log.info("Metrics: messagePublishRequestCount {}", messagePublishRequestCount);
 
-        if (producer == null)
-        {
-            try
-            {
-                log.debug("Creating new producer for topic {}",topicName);
+        if (producer == null) {
+            try {
+                log.debug("Creating new producer for topic {}", topicName);
                 producer = new KafkaProducer<>(producerProperties);
-            }
-            catch ( Exception error )
-            {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName, KafkaOpenMetadataTopicConnectorAuditCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(topicName), error);
+            } catch (Exception error) {
+                if (auditLog != null) {
+                    auditLog.logException(methodName,
+                                          KafkaOpenMetadataTopicConnectorAuditCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(
+                                                  topicName), error);
                 }
 
-                throw new ConnectorCheckedException( KafkaOpenMetadataTopicConnectorErrorCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(error.getMessage()),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    error);
+                throw new ConnectorCheckedException(
+                        KafkaOpenMetadataTopicConnectorErrorCode.ERROR_CONNECTING_KAFKA_PRODUCER.getMessageDefinition(
+                                error.getMessage()), this.getClass().getName(), methodName, error);
             }
         }
-        while (!eventSent)
-        {
-            try
-            {
+        while (!eventSent) {
+            try {
                 kafkaSendAttemptCount++;
-                log.debug("Sending message {0} try {}",event,0);
+                log.debug("Sending message {0} try {}", event, 0);
                 ProducerRecord<String, String> record = new ProducerRecord<>(topicName, localServerId, event);
                 kafkaSendAttemptCount++;
                 log.info("Metrics: kafkaSendAttemptCount {}", kafkaSendAttemptCount);
@@ -136,16 +117,13 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                 eventSent = true;
                 messageSendCount++;
                 log.info("Metrics: messageSendCount {}", messageSendCount);
-            }
-            catch (ExecutionException error)
-            {
+            } catch (ExecutionException error) {
                 /*
                  * This may be a simple timeout or something else more
                  */
-                log.debug("Kafka had trouble sending event: {} : Exception  message is {}",event,error.getMessage());
+                log.debug("Kafka had trouble sending event: {} : Exception  message is {}", event, error.getMessage());
 
-                if (!isExceptionRetryable(error))
-                {
+                if (!isExceptionRetryable(error)) {
                     /* kafka thinks this isn't a retryable problem */
                     /* so let the caller try */
 
@@ -153,55 +131,41 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                     producer.close();
                     producer = null;
 
-                    throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                          topicName,
-                                                                                                                                          error.getMessage()),
-                                                                                                                                          this.getClass().getName(),
-                                                                                                                                          methodName,
-                                                                                                                                          error);
+                    throw new ConnectorCheckedException(
+                            KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
+                                    error.getClass().getName(), topicName, error.getMessage()),
+                            this.getClass().getName(), methodName, error);
                 }
-                if (eventRetryCount == 10)
-                {
+                if (eventRetryCount == 10) {
                     /* we've retried now let the caller retry */
                     producer.close();
                     producer = null;
-                    log.error("Retryable Exception closed producer after {}",eventRetryCount);
+                    log.error("Retryable Exception closed producer after {}", eventRetryCount);
                     break;
-                }
-                else
-                {
-                    if (eventRetryCount == 0)
-                    {
-                        if (auditLog != null)
-                        {
+                } else {
+                    if (eventRetryCount == 0) {
+                        if (auditLog != null) {
                             auditLog.logMessage(methodName,
-                                                KafkaOpenMetadataTopicConnectorAuditCode.EVENT_SEND_IN_ERROR_LOOP.getMessageDefinition(topicName,
-                                                                                                                                       Long.toString(messageSendCount),
-                                                                                                                                       Long.toString(this.getSendBufferSize()),
-                                                                                                                                       error.getMessage()));
+                                                KafkaOpenMetadataTopicConnectorAuditCode.EVENT_SEND_IN_ERROR_LOOP.getMessageDefinition(
+                                                        topicName, Long.toString(messageSendCount),
+                                                        Long.toString(this.getSendBufferSize()), error.getMessage()));
                         }
                     }
 
                     eventRetryCount++;
                 }
-            }
-            catch (WakeupException error)
-            {
-                log.error("Wake up for shut down " + error.toString());
-            }
-            catch (Exception error)
-            {
+            } catch (WakeupException error) {
+                log.error("Wake up for shut down " + error);
+            } catch (Exception error) {
                 producer.close();
                 producer = null;
                 log.debug("Send Events Throwable catch block closed producer");
-                log.error("Exception in sendEvent " + error.toString());
+                log.error("Exception in sendEvent " + error);
 
-                throw new ConnectorCheckedException(KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                      topicName,
-                                                                                                                                      error.getMessage()),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    error);
+                throw new ConnectorCheckedException(
+                        KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
+                                error.getClass().getName(), topicName, error.getMessage()), this.getClass().getName(),
+                        methodName, error);
             }
         }
 
@@ -212,56 +176,43 @@ public class KafkaOpenMetadataEventProducer implements Runnable
      * This is the method that provides the behaviour of the thread.
      */
     @Override
-    public void run()
-    {
-        final String           actionDescription = listenerThreadName + ":run";
+    public void run() {
+        final String actionDescription = listenerThreadName + ":run";
 
-        if (auditLog != null)
-        {
+        if (auditLog != null) {
             auditLog.logMessage(actionDescription,
-                                KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_START.getMessageDefinition(topicName,
-                                                                                                                   String.valueOf(sendBuffer.size())),
+                                KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_START.getMessageDefinition(
+                                        topicName, String.valueOf(sendBuffer.size())),
                                 this.producerProperties.toString());
         }
 
 
-        while (isRunning())
-        {
-            try
-            {
+        while (isRunning()) {
+            try {
                 String bufferedEvent = this.getEvent();
 
                 /*
                  * If there are no events waiting then sleep
                  */
-                if (bufferedEvent == null)
-                {
+                if (bufferedEvent == null) {
                     TimeUnit.MILLISECONDS.sleep(sleepTime);
-                }
-                else
-                {
+                } else {
                     /*
                      * Send all waiting events
                      */
-                    while (bufferedEvent != null)
-                    {
+                    while (bufferedEvent != null) {
                         publishEvent(bufferedEvent);
                         bufferedEvent = this.getEvent();
                     }
                 }
-            }
-            catch (InterruptedException   error)
-            {
+            } catch (InterruptedException error) {
                 log.info("Woken up from sleep " + error.getMessage());
-            }
-            catch (Exception   error)
-            {
+            } catch (Exception error) {
                 log.error("Bad exception from sending events " + error.getMessage());
 
-                if( isExceptionRetryable(error) ) {
+                if (isExceptionRetryable(error)) {
                     this.recoverAfterError();
-                }
-                else {
+                } else {
 
                     /* This is an unrecoverable error so clean up and shutdown*/
                     break;
@@ -270,19 +221,17 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         }
 
         /* producer may have already closed by exception handler in publishEvent */
-        if(producer != null) {
+        if (producer != null) {
             log.debug("");
             producer.close();
             producer = null;
         }
 
-        if (auditLog != null)
-        {
+        if (auditLog != null) {
             auditLog.logMessage(actionDescription,
-                                KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_SHUTDOWN.getMessageDefinition(topicName,
-                                                                                                                      Integer.toString(getSendBufferSize()),
-                                                                                                                      Long.toString(messageSendCount)),
-                                this.producerProperties.toString());
+                                KafkaOpenMetadataTopicConnectorAuditCode.KAFKA_PRODUCER_SHUTDOWN.getMessageDefinition(
+                                        topicName, Integer.toString(getSendBufferSize()),
+                                        Long.toString(messageSendCount)), this.producerProperties.toString());
         }
     }
 
@@ -290,10 +239,9 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     /**
      * Supports putting events to the in memory OMRS Topic
      *
-     * @param newEvent  event to publish
+     * @param newEvent event to publish
      */
-    private void putEvent(String  newEvent)
-    {
+    private void putEvent(String newEvent) {
         sendBuffer.add(newEvent);
     }
 
@@ -303,8 +251,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
      *
      * @return int
      */
-    private int getSendBufferSize()
-    {
+    private int getSendBufferSize() {
         return sendBuffer.size();
     }
 
@@ -314,10 +261,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable
      *
      * @return list of received events.
      */
-    private String getEvent()
-    {
-        if (sendBuffer.isEmpty())
-        {
+    private String getEvent() {
+        if (sendBuffer.isEmpty()) {
             return null;
         }
 
@@ -328,10 +273,9 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     /**
      * Sends the supplied event to the topic.
      *
-     * @param event  OMRSEvent object containing the event properties.
+     * @param event OMRSEvent object containing the event properties.
      */
-    public void sendEvent(String event)
-    {
+    public void sendEvent(String event) {
         this.putEvent(event);
     }
 
@@ -339,16 +283,12 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     /**
      * Give time for an error to clear.
      */
-    protected void recoverAfterError()
-    {
+    protected void recoverAfterError() {
         log.info(String.format("Waiting %s seconds to recover", recoverySleepTimeSec));
 
-        try
-        {
+        try {
             Thread.sleep(recoverySleepTimeSec * 1000L);
-        }
-        catch (InterruptedException e1)
-        {
+        } catch (InterruptedException e1) {
             log.debug("Interrupted while recovering", e1);
         }
     }
@@ -357,8 +297,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     /**
      * Normal shutdown
      */
-    public void safeCloseProducer()
-    {
+    public void safeCloseProducer() {
         stopRunning();
     }
 
@@ -368,8 +307,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
      *
      * @return boolean
      */
-    private boolean isRunning()
-    {
+    private boolean isRunning() {
         return running;
     }
 
@@ -377,26 +315,24 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     /**
      * Flip the switch to stop the thread.
      */
-    private synchronized void stopRunning()
-    {
+    private synchronized void stopRunning() {
         running = false;
     }
 
-    private boolean isExceptionRetryable( Exception error)
-    {
+    private boolean isExceptionRetryable(Exception error) {
 
         /*
         This code would probably be more elegant if it used Throwables
         however I don't want to add Throwabales to the search and I didn't want to cast
          */
         Throwable nested = null;
-        while ((nested =  error.getCause()) != null) {
-             if( nested instanceof RetriableException) {
-                 return true;
-             }
+        while ((nested = error.getCause()) != null) {
+            if (nested instanceof RetriableException) {
+                return true;
+            }
 
-           error = new Exception(error.getCause());
-       }
+            error = new Exception(error.getCause());
+        }
         return false;
     }
 }
