@@ -29,10 +29,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class KafkaOpenMetadataEventProducer implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataEventProducer.class);
-    private static final String defaultThreadName = "KafkaProducer for topic ";
     private final List<String> sendBuffer = Collections.synchronizedList(new ArrayList<>());
     private final AuditLog auditLog;
-    private final String listenerThreadName;
     private final String topicName;
     private final String localServerId;
     private final Properties producerProperties;
@@ -61,9 +59,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
         this.topicName = topicName;
         this.localServerId = localServerId;
         this.producerProperties = producerProperties;
-        this.listenerThreadName = defaultThreadName + topicName;
 
-        final String actionDescription = "new producer";
+        final String           actionDescription = "new producer";
 
         if (auditLog != null) {
             auditLog.logMessage(actionDescription,
@@ -185,7 +182,13 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
      */
     @Override
     public void run() {
+
+        // Keep as compact a possible. topis is important, and keep id for disambiguation. Kafka producer already in class which is logged
+        String listenerThreadName = topicName + "/" + Thread.currentThread().getName();
+
         final String actionDescription = listenerThreadName + ":run";
+
+        Thread.currentThread().setName(listenerThreadName);
 
         if (auditLog != null) {
             auditLog.logMessage(actionDescription,

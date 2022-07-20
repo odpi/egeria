@@ -81,6 +81,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                                    KafkaOpenMetadataTopicConnector             connector,
                                    AuditLog                                    auditLog)
     {
+
         this.auditLog = auditLog;
         this.consumer = new KafkaConsumer<>(kafkaConsumerProperties);
         this.topicToSubscribe = topicName;
@@ -131,6 +132,10 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     public void run()
     {
         final String           actionDescription = "run";
+
+        // Log templates usually default to end of this text - so keep the id at the end for guaranteed uniqueness
+        Thread.currentThread().setName(this.topicToSubscribe + "/" + Thread.currentThread().getName());
+
 
         while (isRunning())
         {
