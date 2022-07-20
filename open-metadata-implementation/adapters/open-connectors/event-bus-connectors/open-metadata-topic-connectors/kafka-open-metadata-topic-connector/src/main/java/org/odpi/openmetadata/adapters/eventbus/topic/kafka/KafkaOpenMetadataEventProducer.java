@@ -47,6 +47,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable
     private KafkaOpenMetadataTopicConnector connector;
 
     private long    messageSendCount = 0;
+    private long kafkaSendAttemptCount = 0;
+    private long messagePublishRequestCount = 0;
 
 
     /**
@@ -98,10 +100,14 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         boolean                  eventSent = false;
         long                     eventRetryCount = 0;
 
+        messagePublishRequestCount++;
+        log.info("Metrics: messagePublishRequestCount {}", messagePublishRequestCount);
+
         if (producer == null)
         {
             try
             {
+                log.debug("Creating new producer for topic {}",topicName);
                 producer = new KafkaProducer<>(producerProperties);
             }
             catch ( Exception error )
@@ -121,24 +127,29 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         {
             try
             {
-                log.debug("Sending message {0}" + event);
+                kafkaSendAttemptCount++;
+                log.debug("Sending message {0} try {}",event,0);
                 ProducerRecord<String, String> record = new ProducerRecord<>(topicName, localServerId, event);
+                kafkaSendAttemptCount++;
+                log.info("Metrics: kafkaSendAttemptCount {}", kafkaSendAttemptCount);
                 producer.send(record).get();
                 eventSent = true;
                 messageSendCount++;
+                log.info("Metrics: messageSendCount {}", messageSendCount);
             }
             catch (ExecutionException error)
             {
                 /*
                  * This may be a simple timeout or something else more
                  */
-                log.debug("Kafka had trouble sending event: " + event + "exception message is " + error.getMessage());
+                log.debug("Kafka had trouble sending event: {} : Exception  message is {}",event,error.getMessage());
 
                 if (!isExceptionRetryable(error))
                 {
                     /* kafka thinks this isn't a retryable problem */
                     /* so let the caller try */
 
+                    log.debug("Exception not retryable, closing producer");
                     producer.close();
                     producer = null;
 
@@ -154,7 +165,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                     /* we've retried now let the caller retry */
                     producer.close();
                     producer = null;
-                    log.error("Retryable Exception closed producer ");
+                    log.error("Retryable Exception closed producer after {}",eventRetryCount);
                     break;
                 }
                 else
