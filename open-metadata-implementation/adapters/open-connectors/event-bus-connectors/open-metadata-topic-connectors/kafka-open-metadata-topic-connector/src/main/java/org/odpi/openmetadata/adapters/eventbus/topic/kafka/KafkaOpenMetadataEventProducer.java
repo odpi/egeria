@@ -30,20 +30,20 @@ import java.util.concurrent.TimeUnit;
 public class KafkaOpenMetadataEventProducer implements Runnable {
     private static final Logger log = LoggerFactory.getLogger(KafkaOpenMetadataEventProducer.class);
     private static final String defaultThreadName = "KafkaProducer for topic ";
-    private static final long recoverySleepTimeSec = 10L;
     private final List<String> sendBuffer = Collections.synchronizedList(new ArrayList<>());
     private final AuditLog auditLog;
     private final String listenerThreadName;
     private final String topicName;
-    private final int sleepTime = 1000;
     private final String localServerId;
     private final Properties producerProperties;
-    private final KafkaOpenMetadataTopicConnector connector;
     private volatile boolean running = true;
     private Producer<String, String> producer = null;
     private long messageSendCount = 0;
     private long kafkaSendAttemptCount = 0;
     private long messagePublishRequestCount = 0;
+    private long inmemoryPutMessageCount = 0;
+    private int kafkaSendFailCount = 0;
+    private int messageFailedSendCount = 0;
 
 
     /**
@@ -60,7 +60,6 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
         this.auditLog = auditLog;
         this.topicName = topicName;
         this.localServerId = localServerId;
-        this.connector = connector;
         this.producerProperties = producerProperties;
         this.listenerThreadName = defaultThreadName + topicName;
 
@@ -108,8 +107,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
         }
         while (!eventSent) {
             try {
-                kafkaSendAttemptCount++;
-                log.debug("Sending message {0} try {}", event, 0);
+                log.debug("Sending message {} try {} [0 based]", event, eventRetryCount);
                 ProducerRecord<String, String> record = new ProducerRecord<>(topicName, localServerId, event);
                 kafkaSendAttemptCount++;
                 log.info("Metrics: kafkaSendAttemptCount {}", kafkaSendAttemptCount);
@@ -118,6 +116,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                 messageSendCount++;
                 log.info("Metrics: messageSendCount {}", messageSendCount);
             } catch (ExecutionException error) {
+                kafkaSendFailCount++;
+                log.debug("Metrics: kafkaSendFailCount {}", kafkaSendFailCount);
                 /*
                  * This may be a simple timeout or something else more
                  */
@@ -131,6 +131,9 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                     producer.close();
                     producer = null;
 
+                    messageFailedSendCount++;
+                    log.info("Metrics: messageFailedSendCount {}", messageFailedSendCount);
+
                     throw new ConnectorCheckedException(
                             KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
                                     error.getClass().getName(), topicName, error.getMessage()),
@@ -140,10 +143,13 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                     /* we've retried now let the caller retry */
                     producer.close();
                     producer = null;
-                    log.error("Retryable Exception closed producer after {}", eventRetryCount);
+                    messageFailedSendCount++;
+                    log.info("Metrics: messageFailedSendCount {}", messageFailedSendCount);
+                    log.error("Retryable Exception closed producer after {} tries", eventRetryCount);
                     break;
                 } else {
                     if (eventRetryCount == 0) {
+                        log.debug("Retrying event warning - count is {}", eventRetryCount);
                         if (auditLog != null) {
                             auditLog.logMessage(methodName,
                                                 KafkaOpenMetadataTopicConnectorAuditCode.EVENT_SEND_IN_ERROR_LOOP.getMessageDefinition(
@@ -155,12 +161,14 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                     eventRetryCount++;
                 }
             } catch (WakeupException error) {
-                log.error("Wake up for shut down " + error);
+                log.warn("Wake up for shut down " + error);
             } catch (Exception error) {
                 producer.close();
                 producer = null;
-                log.debug("Send Events Throwable catch block closed producer");
-                log.error("Exception in sendEvent " + error);
+                log.warn("Closed producer due to Exception in sendEvent {}",error.getMessage());
+
+                messageFailedSendCount++;
+                log.info("Metrics: messageFailedSendCount {}", messageFailedSendCount);
 
                 throw new ConnectorCheckedException(
                         KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
@@ -186,7 +194,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                                 this.producerProperties.toString());
         }
 
-
+        log.info("Main loop started for topic {}", topicName);
+        int sleepTime = 1000;
         while (isRunning()) {
             try {
                 String bufferedEvent = this.getEvent();
@@ -197,6 +206,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                 if (bufferedEvent == null) {
                     TimeUnit.MILLISECONDS.sleep(sleepTime);
                 } else {
+                    log.debug("Processing buffered events");
                     /*
                      * Send all waiting events
                      */
@@ -208,9 +218,10 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
             } catch (InterruptedException error) {
                 log.info("Woken up from sleep " + error.getMessage());
             } catch (Exception error) {
-                log.error("Bad exception from sending events " + error.getMessage());
+                log.warn("Bad exception from sending events " + error.getMessage());
 
                 if (isExceptionRetryable(error)) {
+                    log.debug("Trying to recover");
                     this.recoverAfterError();
                 } else {
 
@@ -219,6 +230,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                 }
             }
         }
+        log.debug("Exiting main loop for topic {} & cleaning up", topicName);
 
         /* producer may have already closed by exception handler in publishEvent */
         if (producer != null) {
@@ -242,6 +254,9 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
      * @param newEvent event to publish
      */
     private void putEvent(String newEvent) {
+        inmemoryPutMessageCount++;
+        log.info("Metrics: inmemoryPutMessageCount {}", inmemoryPutMessageCount);
+        log.info("Metrics: sendBufferSize {}", sendBuffer.size());
         sendBuffer.add(newEvent);
     }
 
@@ -284,12 +299,13 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
      * Give time for an error to clear.
      */
     protected void recoverAfterError() {
-        log.info(String.format("Waiting %s seconds to recover", recoverySleepTimeSec));
+        long recoverySleepTimeSec = 10L;
+        log.info("Waiting {} seconds to recover", recoverySleepTimeSec);
 
         try {
             Thread.sleep(recoverySleepTimeSec * 1000L);
         } catch (InterruptedException e1) {
-            log.debug("Interrupted while recovering", e1);
+            log.debug("Interrupted while recovering with exception: {}", e1.getMessage());
         }
     }
 
