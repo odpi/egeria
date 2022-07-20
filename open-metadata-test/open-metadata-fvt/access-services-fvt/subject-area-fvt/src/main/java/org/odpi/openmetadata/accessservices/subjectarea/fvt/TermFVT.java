@@ -103,7 +103,7 @@ public class TermFVT {
             System.out.println("TermFVT runIt stopped");
         }
         catch (Exception error) {
-            error.printStackTrace();
+            log.error("The FVT Encountered an Exception", error);
             throw error;
         }
     }
