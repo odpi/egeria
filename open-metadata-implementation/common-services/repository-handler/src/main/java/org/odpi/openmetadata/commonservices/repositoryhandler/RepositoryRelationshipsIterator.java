@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +27,70 @@ public class RepositoryRelationshipsIterator extends RepositoryIterator
 {
     private static final Logger log = LoggerFactory.getLogger(RepositoryRelationshipsIterator.class);
 
-    private String             startingEntityGUID;
-    private String             startingEntityTypeName;
-    private String             relationshipTypeGUID;
-    private String             relationshipTypeName;
+    private final String startingEntityGUID;
+    private final String startingEntityTypeName;
+    private final String relationshipTypeGUID;
+    private final String relationshipTypeName;
+    private final int    selectionEnd;
+
+
     private List<Relationship> relationshipsCache = null;
+    private EntityDetail  startingEntity;
+
+
+    /**
+     * Constructor if entity not already retrieved.  It takes the parameters used to call the repository handler.
+     *
+     * @param repositoryHandler interface to the open metadata repositories.
+     * @param invalidParameterHandler invalid parameter handler
+     * @param userId  user making the request
+     * @param startingEntity  starting entity
+     * @param startingEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing is this retrieve part of duplicate processing?
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return by this iterator.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName  name of calling method
+     * @throws InvalidParameterException when page size or start from parameters do not meet criteria
+     */
+    public RepositoryRelationshipsIterator(RepositoryHandler       repositoryHandler,
+                                           InvalidParameterHandler invalidParameterHandler,
+                                           String                  userId,
+                                           EntityDetail            startingEntity,
+                                           String                  startingEntityTypeName,
+                                           String                  relationshipTypeGUID,
+                                           String                  relationshipTypeName,
+                                           int                     selectionEnd,
+                                           boolean                 forLineage,
+                                           boolean                 forDuplicateProcessing,
+                                           int                     startingFrom,
+                                           int                     pageSize,
+                                           Date                    effectiveTime,
+                                           String                  methodName) throws InvalidParameterException
+    {
+        super(repositoryHandler,
+              invalidParameterHandler,
+              userId,
+              startingFrom,
+              pageSize,
+              forLineage,
+              forDuplicateProcessing,
+              effectiveTime,
+              methodName);
+
+        this.startingEntity         = startingEntity;
+        this.startingEntityGUID     = startingEntity.getGUID();
+        this.startingEntityTypeName = startingEntityTypeName;
+        this.relationshipTypeGUID   = relationshipTypeGUID;
+        this.relationshipTypeName   = relationshipTypeName;
+        this.selectionEnd           = selectionEnd;
+
+        log.debug("RepositoryRelationshipsIterator constructor startingEntityGUID=" + this.startingEntityGUID);
+    }
 
 
     /**
@@ -43,6 +103,8 @@ public class RepositoryRelationshipsIterator extends RepositoryIterator
      * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
+     * @param selectionEnd 0 means either end, 1 means only take from end 1, 2 means only take from end 2
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing is this retrieve part of duplicate processing?
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return by this iterator.
@@ -57,31 +119,32 @@ public class RepositoryRelationshipsIterator extends RepositoryIterator
                                            String                  startingEntityTypeName,
                                            String                  relationshipTypeGUID,
                                            String                  relationshipTypeName,
+                                           int                     selectionEnd,
+                                           boolean                 forLineage,
                                            boolean                 forDuplicateProcessing,
                                            int                     startingFrom,
                                            int                     pageSize,
                                            Date                    effectiveTime,
                                            String                  methodName) throws InvalidParameterException
     {
-
         super(repositoryHandler,
               invalidParameterHandler,
               userId,
               startingFrom,
               pageSize,
+              forLineage,
               forDuplicateProcessing,
               effectiveTime,
               methodName);
 
+        this.startingEntity         = null;
         this.startingEntityGUID     = startingEntityGUID;
         this.startingEntityTypeName = startingEntityTypeName;
         this.relationshipTypeGUID   = relationshipTypeGUID;
         this.relationshipTypeName   = relationshipTypeName;
+        this.selectionEnd           = selectionEnd;
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("RepositoryRelationshipsIterator constructor startingEntityGUID=" + this.startingEntityGUID);
-        }
+        log.debug("RepositoryRelationshipsIterator constructor startingEntityGUID=" + this.startingEntityGUID);
     }
 
 
@@ -89,15 +152,31 @@ public class RepositoryRelationshipsIterator extends RepositoryIterator
      * Determine if there is more to receive.  It will populate the iterator's cache with more content.
      *
      * @return boolean flag
+     * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
      * @throws PropertyServerException there is a problem in the repository
      */
-    public boolean  moreToReceive() throws UserNotAuthorizedException,
+    public boolean  moreToReceive() throws InvalidParameterException,
+                                           UserNotAuthorizedException,
                                            PropertyServerException
     {
+        final String guidParameterName = "startingEntityGUID";
+
         if ((relationshipsCache == null) || (relationshipsCache.isEmpty()))
         {
             relationshipsCache = new ArrayList<>();
+
+            if (this.startingEntity == null)
+            {
+                this.startingEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                        startingEntityGUID,
+                                                                        guidParameterName,
+                                                                        startingEntityTypeName,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
+            }
 
             /*
              * The loop is needed to ensure that another retrieve is attempted if the repository handler returns an empty list.
@@ -106,11 +185,14 @@ public class RepositoryRelationshipsIterator extends RepositoryIterator
             while ((relationshipsCache != null) && (relationshipsCache.isEmpty()))
             {
                 relationshipsCache = repositoryHandler.getRelationshipsByType(userId,
-                                                                              startingEntityGUID,
+                                                                              startingEntity,
                                                                               startingEntityTypeName,
                                                                               relationshipTypeGUID,
                                                                               relationshipTypeName,
+                                                                              selectionEnd,
+                                                                              forLineage,
                                                                               forDuplicateProcessing,
+                                                                              null,
                                                                               startingFrom,
                                                                               pageSize,
                                                                               effectiveTime,
@@ -144,10 +226,12 @@ public class RepositoryRelationshipsIterator extends RepositoryIterator
      * Return the next relationship.  It returns null if nothing left to retrieve.
      *
      * @return relationship or null
+     * @throws InvalidParameterException bad parameter
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
      * @throws PropertyServerException there is a problem in the repository
      */
-    public Relationship  getNext() throws UserNotAuthorizedException,
+    public Relationship  getNext() throws InvalidParameterException,
+                                          UserNotAuthorizedException,
                                           PropertyServerException
     {
         if (moreToReceive())
