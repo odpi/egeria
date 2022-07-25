@@ -73,24 +73,33 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName calling method
      * @return unique identifier of the object or null
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countLikes(String userId,
-                          String elementGUID,
-                          String methodName) throws InvalidParameterException,
-                                                    PropertyServerException,
-                                                    UserNotAuthorizedException
+    public int countLikes(String  userId,
+                          String  elementGUID,
+                          boolean forLineage,
+                          boolean forDuplicateProcessing,
+                          Date    effectiveTime,
+                          String  methodName) throws InvalidParameterException,
+                                                     PropertyServerException,
+                                                     UserNotAuthorizedException
     {
         return super.countAttachments(userId,
                                       elementGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
-                                      null,
+                                      2,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -105,6 +114,9 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones serviceSupportedZones
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName calling method
      * @return list of retrieved objects or null if none found
      * @throws InvalidParameterException  the input properties are invalid
@@ -118,6 +130,9 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                              List<String> serviceSupportedZones,
                              int          startingFrom,
                              int          pageSize,
+                             boolean      forLineage,
+                             boolean      forDuplicateProcessing,
+                             Date         effectiveTime,
                              String       methodName) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
@@ -134,12 +149,12 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
-                                        new Date(),
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -149,11 +164,14 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Add or replace and existing Like for this user.
      *
      * @param userId      userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param elementGUID   unique identifier for the liked entity (Referenceable).
      * @param elementGUIDParameterName parameter supplying the elementGUID
      * @param isPublic   indicates whether the feedback should be shared or only be visible to the originating user
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName calling method
      *
      * @throws InvalidParameterException  the endpoint bean properties are invalid
@@ -166,13 +184,16 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                          String     elementGUID,
                          String     elementGUIDParameterName,
                          boolean    isPublic,
+                         boolean    forLineage,
+                         boolean    forDuplicateProcessing,
+                         Date       effectiveTime,
                          String     methodName) throws InvalidParameterException,
                                                        PropertyServerException,
                                                        UserNotAuthorizedException
     {
         try
         {
-            this.removeLike(userId, externalSourceGUID, externalSourceName, elementGUID, elementGUIDParameterName, methodName);
+            this.removeLike(userId, externalSourceGUID, externalSourceName, elementGUID, elementGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
         catch (Exception error)
         {
@@ -196,6 +217,7 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                       null,
                                                       null,
                                                       builder,
+                                                      effectiveTime,
                                                       methodName);
 
         if (likeGUID != null)
@@ -211,12 +233,15 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       likeGUID,
                                       likeGUIDParameterName,
                                       OpenMetadataAPIMapper.LIKE_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
                                       builder.getRelationshipInstanceProperties(methodName),
+                                      null,
+                                      null,
+                                      effectiveTime,
                                       methodName);
         }
     }
@@ -226,26 +251,30 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Remove the requested like.
      *
      * @param userId       calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param elementGUID    object where rating is attached
      * @param elementGUIDParameterName parameter supplying the elementGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName   calling method
      * @throws InvalidParameterException  the entity guid is not known
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public   void removeLike(String userId,
-                             String externalSourceGUID,
-                             String externalSourceName,
-                             String elementGUID,
-                             String elementGUIDParameterName,
-                             String methodName) throws InvalidParameterException,
-                                                       PropertyServerException,
-                                                       UserNotAuthorizedException
+    public   void removeLike(String  userId,
+                             String  externalSourceGUID,
+                             String  externalSourceName,
+                             String  elementGUID,
+                             String  elementGUIDParameterName,
+                             boolean forLineage,
+                             boolean forDuplicateProcessing,
+                             Date    effectiveTime,
+                             String  methodName) throws InvalidParameterException,
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException
     {
-        Date effectiveTime = new Date();
-
         String ratingGUID = this.unlinkConnectedElement(userId,
                                                         true,
                                                         externalSourceGUID,
@@ -253,8 +282,8 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         elementGUID,
                                                         elementGUIDParameterName,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                        false,
-                                                        false,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         supportedZones,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
@@ -275,8 +304,8 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.LIKE_TYPE_NAME,
                                         null,
                                         null,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         effectiveTime,
                                         methodName);
         }

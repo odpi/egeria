@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * ValidValuesHandler provides the methods to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- * the same attributes and so inherit from ValidValue where all of the attributes are defined.
+ * the same attributes and so inherit from ValidValue where all the attributes are defined.
  * <p>
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
@@ -38,20 +38,20 @@ public class ValidValuesHandler<VALID_VALUE,
                                 REFERENCE_VALUE_ASSIGNMENT,
                                 REFERENCE_VALUE_ASSIGNED_ITEM> extends ReferenceableHandler<VALID_VALUE>
 {
-    private OpenMetadataAPIGenericConverter<VALID_VALUE_ASSIGNMENT>         validValueAssignmentConverter;
-    private Class<VALID_VALUE_ASSIGNMENT>                                   validValueAssignmentClass;
-    private OpenMetadataAPIGenericConverter<VALID_VALUE_ASSIGNMENT_DEF>     validValueAssignmentDefConverter;
-    private Class<VALID_VALUE_ASSIGNMENT_DEF>                               validValueAssignmentDefClass;
-    private OpenMetadataAPIGenericConverter<VALID_VALUE_IMPLEMENTATION>     validValueImplementationConverter;
-    private Class<VALID_VALUE_IMPLEMENTATION>                               validValueImplementationClass;
-    private OpenMetadataAPIGenericConverter<VALID_VALUE_IMPLEMENTATION_DEF> validValueImplementationDefConverter;
-    private Class<VALID_VALUE_IMPLEMENTATION_DEF>                           validValueImplementationDefClass;
-    private OpenMetadataAPIGenericConverter<VALID_VALUE_MAPPING>            validValueMappingConverter;
-    private Class<VALID_VALUE_MAPPING>                                      validValueMappingClass;
-    private OpenMetadataAPIGenericConverter<REFERENCE_VALUE_ASSIGNMENT>     referenceValueAssignmentConverter;
-    private Class<REFERENCE_VALUE_ASSIGNMENT>                               referenceValueAssignmentClass;
-    private OpenMetadataAPIGenericConverter<REFERENCE_VALUE_ASSIGNED_ITEM>  referenceValueAssignedItemConverter;
-    private Class<REFERENCE_VALUE_ASSIGNED_ITEM>                            referenceValueAssignedItemClass;
+    private final OpenMetadataAPIGenericConverter<VALID_VALUE_ASSIGNMENT>         validValueAssignmentConverter;
+    private final Class<VALID_VALUE_ASSIGNMENT>                                   validValueAssignmentClass;
+    private final OpenMetadataAPIGenericConverter<VALID_VALUE_ASSIGNMENT_DEF>     validValueAssignmentDefConverter;
+    private final Class<VALID_VALUE_ASSIGNMENT_DEF>                               validValueAssignmentDefClass;
+    private final OpenMetadataAPIGenericConverter<VALID_VALUE_IMPLEMENTATION>     validValueImplementationConverter;
+    private final Class<VALID_VALUE_IMPLEMENTATION>                               validValueImplementationClass;
+    private final OpenMetadataAPIGenericConverter<VALID_VALUE_IMPLEMENTATION_DEF> validValueImplementationDefConverter;
+    private final Class<VALID_VALUE_IMPLEMENTATION_DEF>                           validValueImplementationDefClass;
+    private final OpenMetadataAPIGenericConverter<VALID_VALUE_MAPPING>            validValueMappingConverter;
+    private final Class<VALID_VALUE_MAPPING>                                      validValueMappingClass;
+    private final OpenMetadataAPIGenericConverter<REFERENCE_VALUE_ASSIGNMENT>     referenceValueAssignmentConverter;
+    private final Class<REFERENCE_VALUE_ASSIGNMENT>                               referenceValueAssignmentClass;
+    private final OpenMetadataAPIGenericConverter<REFERENCE_VALUE_ASSIGNED_ITEM>  referenceValueAssignedItemConverter;
+    private final Class<REFERENCE_VALUE_ASSIGNED_ITEM>                            referenceValueAssignedItemClass;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -149,8 +149,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * created, or they can be attached to a set after they are created.
      *
      * @param userId               calling user.
-     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param externalSourceGUID   guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software capability entity that represented the external source
      * @param qualifiedName        unique name.
      * @param displayName          displayable descriptive name.
      * @param description          further information.
@@ -161,6 +161,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param extendedProperties   properties that need to be populated into a subtype.
      * @param effectiveFrom        starting time for this relationship (null for all time)
      * @param effectiveTo          ending time for this relationship (null for all time)
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName           calling method
      * @return unique identifier for the new set
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -180,6 +181,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                       Map<String, Object> extendedProperties,
                                       Date                effectiveFrom,
                                       Date                effectiveTo,
+                                      Date                effectiveTime,
                                       String              methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -212,6 +214,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -220,8 +223,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * Create a new valid value definition.
      *
      * @param userId               calling user.
-     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param externalSourceGUID   guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software capability entity that represented the external source
      * @param setGUID              unique identifier of the set to attach this to.
      * @param qualifiedName        unique name.
      * @param displayName          displayable descriptive name.
@@ -234,6 +237,9 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param extendedProperties   properties that need to be populated into a subtype.
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName           calling method
      * @return unique identifier for the new definition
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -255,6 +261,9 @@ public class ValidValuesHandler<VALID_VALUE,
                                              Map<String, Object> extendedProperties,
                                              Date                effectiveFrom,
                                              Date                effectiveTo,
+                                             boolean             forLineage,
+                                             boolean             forDuplicateProcessing,
+                                             Date                effectiveTime,
                                              String              methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -289,6 +298,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                             qualifiedName,
                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             builder,
+                                                            effectiveTime,
                                                             methodName);
 
         if ((definitionGUID != null) && (setGUID != null))
@@ -302,12 +312,15 @@ public class ValidValuesHandler<VALID_VALUE,
                                       definitionGUID,
                                       definitionParameter,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                       null,
+                                      effectiveFrom,
+                                      effectiveTo,
+                                      effectiveTime,
                                       methodName);
         }
 
@@ -321,8 +334,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * and pass existing values back on this call if they are not to change.
      *
      * @param userId               calling user.
-     * @param externalSourceGUID   guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName   name of the software server capability entity that represented the external source
+     * @param externalSourceGUID   guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName   name of the software capability entity that represented the external source
      * @param validValueGUID       unique identifier of the valid value.
      * @param qualifiedName        unique name.
      * @param displayName          displayable descriptive name.
@@ -335,6 +348,9 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param extendedProperties   properties that need to be populated into a subtype.
      * @param effectiveFrom        starting time for this relationship (null for all time)
      * @param effectiveTo          ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName           calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -355,6 +371,9 @@ public class ValidValuesHandler<VALID_VALUE,
                                  Map<String, Object> extendedProperties,
                                  Date                effectiveFrom,
                                  Date                effectiveTo,
+                                 boolean             forLineage,
+                                 boolean             forDuplicateProcessing,
+                                 Date                effectiveTime,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -388,12 +407,12 @@ public class ValidValuesHandler<VALID_VALUE,
                                     guidParameter,
                                     OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
                                     OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -402,24 +421,30 @@ public class ValidValuesHandler<VALID_VALUE,
      * Remove the valid value form the repository.  All links to it are deleted too.
      *
      * @param userId             calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param validValueGUID     unique identifier of the value to delete
      * @param qualifiedName      unique name of the value to delete.  This is used to verify that
      *                           the correct valid value is being deleted.
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public void deleteValidValue(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String validValueGUID,
-                                 String qualifiedName,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void deleteValidValue(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  validValueGUID,
+                                 String  qualifiedName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         final String guidParameter = "validValueGUID";
         final String nameParameter = "qualifiedName";
@@ -437,9 +462,9 @@ public class ValidValuesHandler<VALID_VALUE,
                                     OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     qualifiedName,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -449,27 +474,33 @@ public class ValidValuesHandler<VALID_VALUE,
      * value is a member of the set.
      *
      * @param userId             calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param setGUID            unique identifier of the set.
      * @param validValueGUID     unique identifier of the valid value to add to the set.
      * @param effectiveFrom      starting time for this relationship (null for all time)
      * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public void attachValidValueToSet(String userId,
-                                      String externalSourceGUID,
-                                      String externalSourceName,
-                                      String setGUID,
-                                      String validValueGUID,
-                                      Date   effectiveFrom,
-                                      Date   effectiveTo,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void attachValidValueToSet(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  setGUID,
+                                      String  validValueGUID,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String setGUIDParameter        = "setGUID";
         final String validValueGUIDParameter = "validValueGUID";
@@ -483,12 +514,15 @@ public class ValidValuesHandler<VALID_VALUE,
                                   validValueGUID,
                                   validValueGUIDParameter,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -497,25 +531,29 @@ public class ValidValuesHandler<VALID_VALUE,
      * Remove the link between a valid value and a set it is a member of.
      *
      * @param userId             calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param setGUID            owning set
      * @param validValueGUID     unique identifier of the member to be removed.
-     * @param effectiveTime      the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public void detachValidValueFromSet(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String setGUID,
-                                        String validValueGUID,
-                                        Date   effectiveTime,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void detachValidValueFromSet(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  setGUID,
+                                        String  validValueGUID,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         final String setGUIDParameter        = "setGUID";
         final String validValueGUIDParameter = "validValueGUID";
@@ -531,8 +569,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                       validValueGUIDParameter,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
@@ -541,12 +579,12 @@ public class ValidValuesHandler<VALID_VALUE,
 
 
     /**
-     * Link a valid value to an asset that provides the implementation.  Typically this method is
+     * Link a valid value to an asset that provides the implementation.  Typically, this method is
      * used to link a valid value set to a code table.
      *
      * @param userId              calling user.
-     * @param externalSourceGUID  guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName  name of the software server capability entity that represented the external source
+     * @param externalSourceGUID  guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName  name of the software capability entity that represented the external source
      * @param validValueGUID      unique identifier of the valid value.
      * @param assetGUID           unique identifier of the asset that implements the valid value.
      * @param symbolicName        lookup name for valid value
@@ -554,6 +592,9 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param additionalValues    additional values stored under the symbolic name
      * @param effectiveFrom       starting time for this relationship (null for all time)
      * @param effectiveTo         ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName          calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -569,6 +610,9 @@ public class ValidValuesHandler<VALID_VALUE,
                                                Map<String, String> additionalValues,
                                                Date                effectiveFrom,
                                                Date                effectiveTo,
+                                               boolean             forLineage,
+                                               boolean             forDuplicateProcessing,
+                                               Date                effectiveTime,
                                                String              methodName) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -614,12 +658,15 @@ public class ValidValuesHandler<VALID_VALUE,
                                   assetGUID,
                                   assetGUIDParameter,
                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME,
                                   setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -628,25 +675,29 @@ public class ValidValuesHandler<VALID_VALUE,
      * Remove the link between a valid value and an implementing asset.
      *
      * @param userId             calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param validValueGUID     unique identifier of the valid value.
      * @param assetGUID          unique identifier of the asset that used to implement the valid value.
-     * @param effectiveTime      the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public void unlinkValidValueFromImplementation(String userId,
-                                                   String externalSourceGUID,
-                                                   String externalSourceName,
-                                                   String validValueGUID,
-                                                   String assetGUID,
-                                                   Date   effectiveTime,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void unlinkValidValueFromImplementation(String  userId,
+                                                   String  externalSourceGUID,
+                                                   String  externalSourceName,
+                                                   String  validValueGUID,
+                                                   String  assetGUID,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String validValueGUIDParameter = "validValueGUID";
         final String assetGUIDParameter      = "assetGUID";
@@ -662,8 +713,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                       assetGUIDParameter,
                                       OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
@@ -676,13 +727,16 @@ public class ValidValuesHandler<VALID_VALUE,
      * the valid values.
      *
      * @param userId             calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param validValueGUID     unique identifier of the valid value.
      * @param consumerGUID       unique identifier of the element to link to.
      * @param strictRequirement  the valid values defines the only values that are permitted.
      * @param effectiveFrom      starting time for this relationship (null for all time)
      * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -696,6 +750,9 @@ public class ValidValuesHandler<VALID_VALUE,
                                            boolean strictRequirement,
                                            Date    effectiveFrom,
                                            Date    effectiveTo,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
                                            String  methodName) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
@@ -718,12 +775,15 @@ public class ValidValuesHandler<VALID_VALUE,
                                   validValueGUID,
                                   validValueGUIDParameter,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -732,25 +792,29 @@ public class ValidValuesHandler<VALID_VALUE,
      * Remove the link between a valid value and a consumer.
      *
      * @param userId             calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param validValueGUID     unique identifier of the valid value.
      * @param consumerGUID       unique identifier of the element to remove the link from.
-     * @param effectiveTime      the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public void unassignValidValueFromConsumer(String userId,
-                                               String externalSourceGUID,
-                                               String externalSourceName,
-                                               String validValueGUID,
-                                               String consumerGUID,
-                                               Date   effectiveTime,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void unassignValidValueFromConsumer(String  userId,
+                                               String  externalSourceGUID,
+                                               String  externalSourceName,
+                                               String  validValueGUID,
+                                               String  consumerGUID,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String validValueGUIDParameter = "validValueGUID";
         final String consumerGUIDParameter   = "consumerGUID";
@@ -766,8 +830,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                       validValueGUIDParameter,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
@@ -781,8 +845,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * grouping the referenceable.
      *
      * @param userId             calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param validValueGUID     unique identifier of the valid value.
      * @param referenceableGUID  unique identifier of the element to link to.
      * @param confidence         how confident is the steward that this mapping is correct (0-100).
@@ -790,24 +854,30 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param notes              additional notes from the steward
      * @param effectiveFrom      starting time for this relationship (null for all time)
      * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public void assignReferenceValueToItem(String userId,
-                                           String externalSourceGUID,
-                                           String externalSourceName,
-                                           String validValueGUID,
-                                           String referenceableGUID,
-                                           int    confidence,
-                                           String steward,
-                                           String notes,
-                                           Date   effectiveFrom,
-                                           Date   effectiveTo,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void assignReferenceValueToItem(String  userId,
+                                           String  externalSourceGUID,
+                                           String  externalSourceName,
+                                           String  validValueGUID,
+                                           String  referenceableGUID,
+                                           int     confidence,
+                                           String  steward,
+                                           String  notes,
+                                           Date    effectiveFrom,
+                                           Date    effectiveTo,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String validValueGUIDParameter    = "validValueGUID";
         final String referenceableGUIDParameter = "referenceableGUID";
@@ -849,12 +919,15 @@ public class ValidValuesHandler<VALID_VALUE,
                                   validValueGUID,
                                   validValueGUIDParameter,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                   this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -863,25 +936,29 @@ public class ValidValuesHandler<VALID_VALUE,
      * Remove the reference value link between a valid value and a referenceable (item).
      *
      * @param userId             calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param validValueGUID     unique identifier of the valid value.
      * @param referenceableGUID  unique identifier of the element to remove the link from.
-     * @param effectiveTime      time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public void unassignReferenceValueFromItem(String userId,
-                                               String externalSourceGUID,
-                                               String externalSourceName,
-                                               String validValueGUID,
-                                               String referenceableGUID,
-                                               Date   effectiveTime,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void unassignReferenceValueFromItem(String  userId,
+                                               String  externalSourceGUID,
+                                               String  externalSourceName,
+                                               String  validValueGUID,
+                                               String  referenceableGUID,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String validValueGUIDParameter    = "validValueGUID";
         final String referenceableGUIDParameter = "referenceableGUID";
@@ -897,8 +974,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                       validValueGUIDParameter,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
@@ -910,8 +987,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * Link together 2 valid values from different sets that have equivalent values/meanings.
      *
      * @param userId                 calling user.
-     * @param externalSourceGUID     guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName     name of the software server capability entity that represented the external source
+     * @param externalSourceGUID     guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName     name of the software capability entity that represented the external source
      * @param validValue1GUID        unique identifier of the valid value.
      * @param validValue2GUID        unique identifier of the other valid value to link to.
      * @param associationDescription how are the valid values related?
@@ -920,25 +997,31 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param notes                  additional notes from the steward
      * @param effectiveFrom          starting time for this relationship (null for all time)
      * @param effectiveTo            ending time for this relationship (null for all time)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName             calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public void mapValidValues(String userId,
-                               String externalSourceGUID,
-                               String externalSourceName,
-                               String validValue1GUID,
-                               String validValue2GUID,
-                               String associationDescription,
-                               int    confidence,
-                               String steward,
-                               String notes,
-                               Date   effectiveFrom,
-                               Date   effectiveTo,
-                               String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void mapValidValues(String  userId,
+                               String  externalSourceGUID,
+                               String  externalSourceName,
+                               String  validValue1GUID,
+                               String  validValue2GUID,
+                               String  associationDescription,
+                               int     confidence,
+                               String  steward,
+                               String  notes,
+                               Date    effectiveFrom,
+                               Date    effectiveTo,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         final String validValue1GUIDParameter = "validValue1GUID";
         final String validValue2GUIDParameter = "validValue2GUID";
@@ -985,12 +1068,15 @@ public class ValidValuesHandler<VALID_VALUE,
                                   validValue1GUID,
                                   validValue1GUIDParameter,
                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID,
                                   this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -999,25 +1085,29 @@ public class ValidValuesHandler<VALID_VALUE,
      * Remove the reference value link between a valid value and a referenceable (item).
      *
      * @param userId             calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param validValue1GUID    unique identifier of the valid value.
      * @param validValue2GUID    unique identifier of the other valid value element to remove the link from.
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName         calling method
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public void unmapValidValues(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String validValue1GUID,
-                                 String validValue2GUID,
-                                 Date   effectiveTime,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void unmapValidValues(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  validValue1GUID,
+                                 String  validValue2GUID,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         final String validValue1GUIDParameter = "validValue1GUID";
         final String validValue2GUIDParameter = "validValue2GUID";
@@ -1033,8 +1123,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                       validValue1GUIDParameter,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID,
                                       effectiveTime,
@@ -1048,19 +1138,23 @@ public class ValidValuesHandler<VALID_VALUE,
      *
      * @param userId         calling user
      * @param validValueGUID unique identifier of the valid value.
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      * @return Valid value bean
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public VALID_VALUE getValidValueByGUID(String userId,
-                                           String validValueGUID,
-                                           Date   effectiveTime,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public VALID_VALUE getValidValueByGUID(String  userId,
+                                           String  validValueGUID,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String validValueGUIDParameter = "validValueGUID";
 
@@ -1071,8 +1165,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                           validValueGUID,
                                           validValueGUIDParameter,
                                           OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           effectiveTime,
                                           methodName);
@@ -1088,22 +1182,26 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param nameParameterName property that provided the name
      * @param startFrom         starting element (used in paging through large result sets)
      * @param pageSize          maximum number of results to return
-     * @param effectiveTime     the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName        calling method
      * @return Valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public List<VALID_VALUE> getValidValueByName(String userId,
-                                                 String name,
-                                                 String nameParameterName,
-                                                 int    startFrom,
-                                                 int    pageSize,
-                                                 Date   effectiveTime,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<VALID_VALUE> getValidValueByName(String  userId,
+                                                 String  name,
+                                                 String  nameParameterName,
+                                                 int     startFrom,
+                                                 int     pageSize,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -1118,8 +1216,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -1138,28 +1236,35 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param searchStringParameterName name of parameter providing search string
      * @param startFrom                 paging starting point
      * @param pageSize                  maximum number of return values.
-     * @param effectiveTime             the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public List<VALID_VALUE> findValidValues(String userId,
-                                             String searchString,
-                                             String searchStringParameterName,
-                                             int    startFrom,
-                                             int    pageSize,
-                                             Date   effectiveTime,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public List<VALID_VALUE> findValidValues(String  userId,
+                                             String  searchString,
+                                             String  searchStringParameterName,
+                                             int     startFrom,
+                                             int     pageSize,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
                               OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
                               OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                              forLineage,
+                              forDuplicateProcessing,
+                              supportedZones,
                               null,
                               startFrom,
                               pageSize,
@@ -1176,22 +1281,26 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param validValueSetGUIDParameter name of parameter providing the validValueSetGUID
      * @param startFrom                  paging starting point
      * @param pageSize                   maximum number of return values.
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                 calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public List<VALID_VALUE> getValidValueSetMembers(String userId,
-                                                     String validValueSetGUID,
-                                                     String validValueSetGUIDParameter,
-                                                     int    startFrom,
-                                                     int    pageSize,
-                                                     Date   effectiveTime,
-                                                     String methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<VALID_VALUE> getValidValueSetMembers(String  userId,
+                                                     String  validValueSetGUID,
+                                                     String  validValueSetGUIDParameter,
+                                                     int     startFrom,
+                                                     int     pageSize,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         null,
@@ -1205,8 +1314,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                         null,
                                         null,
                                         2,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         startFrom,
                                         pageSize,
@@ -1223,22 +1332,26 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param validValueGUIDParameter parameter name providing the validValueGUID
      * @param startFrom               paging starting point
      * @param pageSize                maximum number of return values.
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName              calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public List<VALID_VALUE> getSetsForValidValue(String userId,
-                                                  String validValueGUID,
-                                                  String validValueGUIDParameter,
-                                                  int    startFrom,
-                                                  int    pageSize,
-                                                  Date   effectiveTime,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<VALID_VALUE> getSetsForValidValue(String  userId,
+                                                  String  validValueGUID,
+                                                  String  validValueGUIDParameter,
+                                                  int     startFrom,
+                                                  int     pageSize,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         null,
@@ -1252,8 +1365,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                         null,
                                         null,
                                         1,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         startFrom,
                                         pageSize,
@@ -1271,7 +1384,9 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param serviceSupportedZones   list of zones that define which assets can be retrieved.
      * @param startFrom               paging starting point
      * @param pageSize                maximum number of return values.
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName              calling method
      * @return list of valid value consumer beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1284,6 +1399,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                           List<String> serviceSupportedZones,
                                                                           int          startFrom,
                                                                           int          pageSize,
+                                                                          boolean      forLineage,
+                                                                          boolean      forDuplicateProcessing,
                                                                           Date         effectiveTime,
                                                                           String       methodName) throws InvalidParameterException,
                                                                                                           UserNotAuthorizedException,
@@ -1293,17 +1410,6 @@ public class ValidValuesHandler<VALID_VALUE,
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
-
-        this.validateAnchorEntity(userId,
-                                  validValueGUID,
-                                  validValueGUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                  false,
-                                  false,
-                                  false,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
@@ -1315,7 +1421,12 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                   null,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   1,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   serviceSupportedZones,
                                                                    startFrom,
                                                                    pageSize,
                                                                    effectiveTime,
@@ -1341,8 +1452,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         end1.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                        false,
-                                                                                        false,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
                                                                                         effectiveTime,
                                                                                         methodName);
 
@@ -1352,8 +1463,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   consumerEntity,
                                                   guidParameterName,
                                                   false,
-                                                  false,
-                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
                                                   serviceSupportedZones,
                                                   effectiveTime,
                                                   methodName);
@@ -1394,20 +1505,24 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param referenceableGUIDParameter name of parameter for referenceableGUID
      * @param startFrom         paging starting point
      * @param pageSize          maximum number of return values.
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName        calling method
      * @return list of valid value consumer beans
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public List<VALID_VALUE_ASSIGNMENT_DEF> getValidValuesAssignmentDefinition(String userId,
-                                                                               String referenceableGUID,
-                                                                               String referenceableGUIDParameter,
-                                                                               int    startFrom,
-                                                                               int    pageSize,
-                                                                               Date   effectiveTime,
-                                                                               String methodName) throws InvalidParameterException,
+    public List<VALID_VALUE_ASSIGNMENT_DEF> getValidValuesAssignmentDefinition(String  userId,
+                                                                               String  referenceableGUID,
+                                                                               String  referenceableGUIDParameter,
+                                                                               int     startFrom,
+                                                                               int     pageSize,
+                                                                               boolean forLineage,
+                                                                               boolean forDuplicateProcessing,
+                                                                               Date    effectiveTime,
+                                                                               String  methodName) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
@@ -1416,16 +1531,6 @@ public class ValidValuesHandler<VALID_VALUE,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(referenceableGUID, referenceableGUIDParameter, methodName);
 
-        this.validateAnchorEntity(userId,
-                                  referenceableGUID,
-                                  referenceableGUIDParameter,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                  false,
-                                  false,
-                                  false,
-                                  supportedZones,
-                                  effectiveTime,
-                                  methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
@@ -1437,7 +1542,12 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                   null,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                   2,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
                                                                    startFrom,
                                                                    pageSize,
                                                                    effectiveTime,
@@ -1463,8 +1573,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         end2.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                                                        false,
-                                                                                        false,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
                                                                                         effectiveTime,
                                                                                         methodName);
 
@@ -1474,8 +1584,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   consumerEntity,
                                                   guidParameterName,
                                                   false,
-                                                  false,
-                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
                                                   supportedZones,
                                                   effectiveTime,
                                                   methodName);
@@ -1517,7 +1627,9 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param serviceSupportedZones list of zones that define which assets can be retrieved.
      * @param startFrom      paging starting point
      * @param pageSize       maximum number of return values.
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -1530,6 +1642,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                List<String> serviceSupportedZones,
                                                                                int          startFrom,
                                                                                int          pageSize,
+                                                                               boolean      forLineage,
+                                                                               boolean      forDuplicateProcessing,
                                                                                Date         effectiveTime,
                                                                                String       methodName) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
@@ -1539,17 +1653,6 @@ public class ValidValuesHandler<VALID_VALUE,
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
-
-        this.validateAnchorEntity(userId,
-                                  validValueGUID,
-                                  validValueGUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                  false,
-                                  false,
-                                  false,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
@@ -1561,7 +1664,12 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME,
+                                                                   null,
                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                   2,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   serviceSupportedZones,
                                                                    startFrom,
                                                                    pageSize,
                                                                    effectiveTime,
@@ -1587,8 +1695,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         end2.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                                        false,
-                                                                                        false,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
                                                                                         effectiveTime,
                                                                                         methodName);
 
@@ -1598,8 +1706,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   consumerEntity,
                                                   guidParameterName,
                                                   false,
-                                                  false,
-                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
                                                   serviceSupportedZones,
                                                   effectiveTime,
                                                   methodName);
@@ -1641,38 +1749,31 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param assetGUIDParameter parameter providing the assetGUID value
      * @param startFrom  paging starting point
      * @param pageSize   maximum number of return values.
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public List<VALID_VALUE_IMPLEMENTATION_DEF> getValidValuesImplementationDefinitions(String userId,
-                                                                                        String assetGUID,
-                                                                                        String assetGUIDParameter,
-                                                                                        int    startFrom,
-                                                                                        int    pageSize,
-                                                                                        Date   effectiveTime,
-                                                                                        String methodName) throws InvalidParameterException,
-                                                                                                                  UserNotAuthorizedException,
-                                                                                                                  PropertyServerException
+    public List<VALID_VALUE_IMPLEMENTATION_DEF> getValidValuesImplementationDefinitions(String  userId,
+                                                                                        String  assetGUID,
+                                                                                        String  assetGUIDParameter,
+                                                                                        int     startFrom,
+                                                                                        int     pageSize,
+                                                                                        boolean forLineage,
+                                                                                        boolean forDuplicateProcessing,
+                                                                                        Date    effectiveTime,
+                                                                                        String  methodName) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
     {
         final String guidParameterName = "relationship.end2.guid";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
-
-        this.validateAnchorEntity(userId,
-                                  assetGUID,
-                                  assetGUIDParameter,
-                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                  false,
-                                  false,
-                                  false,
-                                  supportedZones,
-                                  effectiveTime,
-                                  methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
@@ -1684,7 +1785,12 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME,
+                                                                   null,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                   1,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
                                                                    startFrom,
                                                                    pageSize,
                                                                    effectiveTime,
@@ -1710,8 +1816,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         end1.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                                                        false,
-                                                                                        false,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
                                                                                         effectiveTime,
                                                                                         methodName);
 
@@ -1721,8 +1827,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   consumerEntity,
                                                   guidParameterName,
                                                   false,
-                                                  false,
-                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
                                                   supportedZones,
                                                   effectiveTime,
                                                   methodName);
@@ -1764,50 +1870,57 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param validValueGUIDParameter name of parameter supplying the validValueGUID
      * @param startFrom      paging starting point
      * @param pageSize       maximum number of return values.
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      * @return list of mappings to other valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public List<VALID_VALUE_MAPPING> getValidValueMappings(String userId,
-                                                           String validValueGUID,
-                                                           String validValueGUIDParameter,
-                                                           int    startFrom,
-                                                           int    pageSize,
-                                                           Date   effectiveTime,
-                                                           String methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<VALID_VALUE_MAPPING> getValidValueMappings(String  userId,
+                                                           String  validValueGUID,
+                                                           String  validValueGUIDParameter,
+                                                           int     startFrom,
+                                                           int     pageSize,
+                                                           boolean forLineage,
+                                                           boolean forDuplicateProcessing,
+                                                           Date    effectiveTime,
+                                                           String  methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String guidParameterName = "relationship.end1.guid";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
-        this.validateAnchorEntity(userId,
-                                  validValueGUID,
-                                  validValueGUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                  false,
-                                  false,
-                                  false,
-                                  supportedZones,
-                                  effectiveTime,
-                                  methodName);
+        EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                        validValueGUID,
+                                                                        validValueGUIDParameter,
+                                                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                        forLineage,
+                                                                        forDuplicateProcessing,
+                                                                        effectiveTime,
+                                                                        methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
          * Relationships are returned so that the isPublic property from the relationship can be retrieved.
          */
         List<Relationship> relationships = this.getAttachmentLinks(userId,
-                                                                   validValueGUID,
+                                                                   startingEntity,
                                                                    validValueGUIDParameter,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.VALID_VALUES_MAP_RELATIONSHIP_TYPE_NAME,
+                                                                   null,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                   0,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
                                                                    startFrom,
                                                                    pageSize,
                                                                    effectiveTime,
@@ -1824,9 +1937,10 @@ public class ValidValuesHandler<VALID_VALUE,
         {
             if (relationship != null)
             {
-                EntityProxy proxy = repositoryHandler.getOtherEnd(validValueGUID,
+                EntityProxy proxy = repositoryHandler.getOtherEnd(startingEntity.getGUID(),
                                                                   OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                   relationship,
+                                                                  0,
                                                                   methodName);
                 if (proxy != null)
                 {
@@ -1836,8 +1950,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         proxy.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                                                        false,
-                                                                                        false,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
                                                                                         effectiveTime,
                                                                                         methodName);
 
@@ -1847,8 +1961,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   consumerEntity,
                                                   guidParameterName,
                                                   false,
-                                                  false,
-                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
                                                   supportedZones,
                                                   effectiveTime,
                                                   methodName);
@@ -1890,7 +2004,9 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param serviceSupportedZones list of zones that define which assets can be retrieved
      * @param startFrom      paging starting point
      * @param pageSize       maximum number of return values
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName     calling method
      * @return list of referenceable beans
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1903,6 +2019,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                               List<String> serviceSupportedZones,
                                                                               int          startFrom,
                                                                               int          pageSize,
+                                                                              boolean      forLineage,
+                                                                              boolean      forDuplicateProcessing,
                                                                               Date         effectiveTime,
                                                                               String       methodName) throws InvalidParameterException,
                                                                                                               UserNotAuthorizedException,
@@ -1912,17 +2030,6 @@ public class ValidValuesHandler<VALID_VALUE,
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
-
-        this.validateAnchorEntity(userId,
-                                  validValueGUID,
-                                  validValueGUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                  false,
-                                  false,
-                                  false,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
@@ -1934,7 +2041,12 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                   null,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   1,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   serviceSupportedZones,
                                                                    startFrom,
                                                                    pageSize,
                                                                    effectiveTime,
@@ -1971,8 +2083,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   consumerEntity,
                                                   guidParameterName,
                                                   false,
-                                                  false,
-                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
                                                   serviceSupportedZones,
                                                   effectiveTime,
                                                   methodName);
@@ -2013,38 +2125,31 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param referenceableGUIDParameterName name of parameter for referenceableGUID
      * @param startFrom         paging starting point
      * @param pageSize          maximum number of return values.
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName        calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    the repository is not available or not working properly.
      */
-    public List<REFERENCE_VALUE_ASSIGNMENT> getReferenceValueAssignments(String userId,
-                                                                         String referenceableGUID,
-                                                                         String referenceableGUIDParameterName,
-                                                                         int    startFrom,
-                                                                         int    pageSize,
-                                                                         Date   effectiveTime,
-                                                                         String methodName) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public List<REFERENCE_VALUE_ASSIGNMENT> getReferenceValueAssignments(String  userId,
+                                                                         String  referenceableGUID,
+                                                                         String  referenceableGUIDParameterName,
+                                                                         int     startFrom,
+                                                                         int     pageSize,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing,
+                                                                         Date    effectiveTime,
+                                                                         String  methodName) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String guidParameterName = "relationship.end2.guid";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(referenceableGUID, referenceableGUIDParameterName, methodName);
-
-        this.validateAnchorEntity(userId,
-                                  referenceableGUID,
-                                  referenceableGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                  false,
-                                  false,
-                                  false,
-                                  supportedZones,
-                                  effectiveTime,
-                                  methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
@@ -2056,7 +2161,12 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                    OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                   null,
                                                                    OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                   2,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
                                                                    startFrom,
                                                                    pageSize,
                                                                    effectiveTime,
@@ -2082,8 +2192,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                                                         end2.getGUID(),
                                                                                         guidParameterName,
                                                                                         OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                                                        false,
-                                                                                        false,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
                                                                                         effectiveTime,
                                                                                         methodName);
 
@@ -2093,8 +2203,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                                   consumerEntity,
                                                   guidParameterName,
                                                   false,
-                                                  false,
-                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
                                                   supportedZones,
                                                   effectiveTime,
                                                   methodName);

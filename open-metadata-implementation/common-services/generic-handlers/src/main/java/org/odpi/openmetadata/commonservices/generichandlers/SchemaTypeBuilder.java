@@ -403,11 +403,13 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.SCHEMA_DISPLAY_NAME_PROPERTY_NAME,
                                                                   displayName,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.SCHEMA_DESCRIPTION_PROPERTY_NAME,
                                                                   description,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.VERSION_NUMBER_PROPERTY_NAME,
@@ -425,37 +427,42 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.AUTHOR_PROPERTY_NAME,
                                                                   author,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.SCHEMA_USAGE_PROPERTY_NAME,
                                                                   usage,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.ENCODING_STANDARD_PROPERTY_NAME,
                                                                   encodingStandard,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.NAMESPACE_PROPERTY_NAME,
                                                                   namespace,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.DATA_TYPE_PROPERTY_NAME,
                                                                   dataType,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.DEFAULT_VALUE_PROPERTY_NAME,
                                                                   defaultValue,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.FIXED_VALUE_PROPERTY_NAME,
                                                                   fixedValue,
                                                                   methodName);
-
         return properties;
     }
 

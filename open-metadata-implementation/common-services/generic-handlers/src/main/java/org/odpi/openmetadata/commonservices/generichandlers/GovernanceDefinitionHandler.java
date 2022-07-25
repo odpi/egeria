@@ -98,6 +98,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a definition
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a definition subtype
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new definition object
@@ -125,6 +128,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                              Map<String, String> additionalProperties,
                                              String              suppliedTypeName,
                                              Map<String, Object> extendedProperties,
+                                             Date                effectiveFrom,
+                                             Date                effectiveTo,
+                                             Date                effectiveTime,
                                              String              methodName) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
@@ -168,6 +174,8 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                               serviceName,
                                                                               serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return this.createBeanInRepository(userId,
                                            null,
                                            null,
@@ -176,6 +184,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
     
@@ -206,7 +215,13 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a governance definition
      * @param suppliedTypeName type of term
      * @param extendedProperties  properties for a governance definition subtype
-     * @param isMergeUpdate should the supplied properties be merged with the existing or replace them
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -236,6 +251,11 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                            String              suppliedTypeName,
                                            Map<String, Object> extendedProperties,
                                            boolean             isMergeUpdate,
+                                           Date                effectiveFrom,
+                                           Date                effectiveTo,
+                                           boolean             forLineage,
+                                           boolean             forDuplicateProcessing,
+                                           Date                effectiveTime,
                                            String              methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -283,6 +303,8 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                               serviceName,
                                                                               serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     null,
                                     null,
@@ -290,18 +312,18 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     definitionGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
 
     /**
-     * Create a parent-child relationship between two definitions - for example, between a governance policy and an governance control.  
+     * Create a parent-child relationship between two definitions - for example, between a governance policy and a governance control.
      * The rationale explains why they are linked.
      *
      * @param userId calling user
@@ -314,25 +336,35 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
      * @param rationale why are these definitions linked
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupDelegationRelationship(String userId,
-                                            String definitionParentGUID,
-                                            String definitionParentGUIDParameterName,
-                                            String definitionParentTypeName,
-                                            String definitionChildGUID,
-                                            String definitionChildGUIDParameterName,
-                                            String definitionChildTypeName,
-                                            String relationshipTypeGUID,
-                                            String relationshipTypeName,
-                                            String rationale,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void setupDelegationRelationship(String  userId,
+                                            String  definitionParentGUID,
+                                            String  definitionParentGUIDParameterName,
+                                            String  definitionParentTypeName,
+                                            String  definitionChildGUID,
+                                            String  definitionChildGUIDParameterName,
+                                            String  definitionChildTypeName,
+                                            String  relationshipTypeGUID,
+                                            String  relationshipTypeName,
+                                            String  rationale,
+                                            Date    effectiveFrom,
+                                            Date    effectiveTo,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
@@ -349,12 +381,15 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                   definitionChildGUID,
                                   definitionChildGUIDParameterName,
                                   definitionChildTypeName,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   relationshipTypeGUID,
                                   relationshipTypeName,
                                   properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -373,25 +408,35 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
      * @param description why are these definitions linked
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupPeerRelationship(String userId,
-                                      String definitionParentGUID,
-                                      String definitionParentGUIDParameterName,
-                                      String definitionParentTypeName,
-                                      String definitionChildGUID,
-                                      String definitionChildGUIDParameterName,
-                                      String definitionChildTypeName,
-                                      String relationshipTypeGUID,
-                                      String relationshipTypeName,
-                                      String description,
-                                      String methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void setupPeerRelationship(String  userId,
+                                      String  definitionParentGUID,
+                                      String  definitionParentGUIDParameterName,
+                                      String  definitionParentTypeName,
+                                      String  definitionChildGUID,
+                                      String  definitionChildGUIDParameterName,
+                                      String  definitionChildTypeName,
+                                      String  relationshipTypeGUID,
+                                      String  relationshipTypeName,
+                                      String  description,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
@@ -408,12 +453,15 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                   definitionChildGUID,
                                   definitionChildGUIDParameterName,
                                   definitionChildTypeName,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   relationshipTypeGUID,
                                   relationshipTypeName,
                                   properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -431,25 +479,31 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param definitionChildTypeName type name of the sub-definition
      * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearDefinitionRelationship(String userId,
-                                            String definitionParentGUID,
-                                            String definitionParentGUIDParameterName,
-                                            String definitionParentTypeName,
-                                            String definitionChildGUID,
-                                            String definitionChildGUIDParameterName,
-                                            String definitionChildTypeGUID,
-                                            String definitionChildTypeName,
-                                            String relationshipTypeGUID,
-                                            String relationshipTypeName,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void clearDefinitionRelationship(String  userId,
+                                            String  definitionParentGUID,
+                                            String  definitionParentGUIDParameterName,
+                                            String  definitionParentTypeName,
+                                            String  definitionChildGUID,
+                                            String  definitionChildGUIDParameterName,
+                                            String  definitionChildTypeGUID,
+                                            String  definitionChildTypeName,
+                                            String  relationshipTypeGUID,
+                                            String  relationshipTypeName,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -462,11 +516,11 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                       definitionChildGUIDParameterName,
                                       definitionChildTypeGUID,
                                       definitionChildTypeName,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       relationshipTypeGUID,
                                       relationshipTypeName,
-                                      new Date(),
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -477,18 +531,24 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param definitionGUID unique identifier of the metadata element to remove
      * @param definitionGUIDParameterName parameter for definitionGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeGovernanceDefinition(String userId,
-                                           String definitionGUID,
-                                           String definitionGUIDParameterName,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void removeGovernanceDefinition(String  userId,
+                                           String  definitionGUID,
+                                           String  definitionGUIDParameterName,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     null,
@@ -499,9 +559,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -517,6 +577,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -525,16 +588,19 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> findGovernanceDefinitions(String userId,
-                                             String typeGUID,
-                                             String typeName,
-                                             String searchString,
-                                             String searchStringParameterName,
-                                             int    startFrom,
-                                             int    pageSize,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public List<B> findGovernanceDefinitions(String  userId,
+                                             String  typeGUID,
+                                             String  typeName,
+                                             String  searchString,
+                                             String  searchStringParameterName,
+                                             int     startFrom,
+                                             int     pageSize,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         return this.findBeans(userId,
                               searchString,
@@ -544,7 +610,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
-                              new Date(),
+                              forLineage,
+                              forDuplicateProcessing,
+                              effectiveTime,
                               methodName);
     }
 
@@ -561,6 +629,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param targetElementType type of the target element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of metadata elements describing the definitions associated with the requested definition
@@ -569,18 +640,21 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getLinkedDefinitions(String userId,
-                                          String definitionGUID,
-                                          String definitionGUIDParameterName,
-                                          String definitionTypeName,
-                                          String relationshipTypeGUID,
-                                          String relationshipTypeName,
-                                          String targetElementType,
-                                          int    startFrom,
-                                          int    pageSize,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public List<B>   getLinkedDefinitions(String  userId,
+                                          String  definitionGUID,
+                                          String  definitionGUIDParameterName,
+                                          String  definitionTypeName,
+                                          String  relationshipTypeGUID,
+                                          String  relationshipTypeName,
+                                          String  targetElementType,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         null,
@@ -594,12 +668,12 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         startFrom,
                                         pageSize,
-                                        new Date(),
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -611,7 +685,10 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param typeGUID GUID of the type of governance definition
      * @param typeName name of the type of governance definition
      * @param startFrom position in the list (used when there are so many reports that paging is needed
-     * @param pageSize maximum number of elements to return an this call
+     * @param pageSize maximum number of elements to return on this call
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return properties of the governance definitions
@@ -620,25 +697,28 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<B> getGovernanceDefinitions(String userId,
-                                            String typeGUID,
-                                            String typeName,
-                                            int    startFrom,
-                                            int    pageSize,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public List<B> getGovernanceDefinitions(String  userId,
+                                            String  typeGUID,
+                                            String  typeName,
+                                            int     startFrom,
+                                            int     pageSize,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         return this.getBeansByType(userId,
                                    typeGUID,
                                    typeName,
                                    null,
-                                   false,
-                                   false,
+                                   forLineage,
+                                   forDuplicateProcessing,
                                    supportedZones,
                                    startFrom,
                                    pageSize,
-                                   new Date(),
+                                   effectiveTime,
                                    methodName);
     }
 
@@ -651,7 +731,10 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param typeName name of the type of governance definition
      * @param domainIdentifier identifier of domain - 0 is for all domains
      * @param startFrom position in the list (used when there are so many reports that paging is needed
-     * @param pageSize maximum number of elements to return an this call
+     * @param pageSize maximum number of elements to return on this call
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return properties of the governance zone
@@ -660,31 +743,42 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<B> getGovernanceDefinitionsByDomain(String userId,
-                                                    String typeGUID,
-                                                    String typeName,
-                                                    int    domainIdentifier,
-                                                    int    startFrom,
-                                                    int    pageSize,
-                                                    String methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public List<B> getGovernanceDefinitionsByDomain(String  userId,
+                                                    String  typeGUID,
+                                                    String  typeName,
+                                                    int     domainIdentifier,
+                                                    int     startFrom,
+                                                    int     pageSize,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime,
+                                                    String  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         if (domainIdentifier == 0)
         {
-            return this.getGovernanceDefinitions(userId, typeGUID, typeName, startFrom, pageSize, methodName);
+            return this.getGovernanceDefinitions(userId,
+                                                 typeGUID,
+                                                 typeName,
+                                                 startFrom,
+                                                 pageSize,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
+                                                 methodName);
         }
 
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              typeGUID,
                                                              typeName,
                                                              null,
-                                                             false,
-                                                             false,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
                                                              supportedZones,
                                                              startFrom,
                                                              pageSize,
-                                                             new Date(),
+                                                             effectiveTime,
                                                              methodName);
 
         List<B> results = new ArrayList<>();
@@ -731,6 +825,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching governance definitions
@@ -739,16 +836,19 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getGovernanceDefinitionsByName(String userId,
-                                                    String typeGUID,
-                                                    String typeName,
-                                                    String name,
-                                                    String nameParameterName,
-                                                    int    startFrom,
-                                                    int    pageSize,
-                                                    String methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public List<B>   getGovernanceDefinitionsByName(String  userId,
+                                                    String  typeGUID,
+                                                    String  typeName,
+                                                    String  name,
+                                                    String  nameParameterName,
+                                                    int     startFrom,
+                                                    int     pageSize,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime,
+                                                    String  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -766,13 +866,13 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -790,6 +890,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param parameterPropertyName property name in entity to search in
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching governance definitions
@@ -798,17 +901,20 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getGovernanceDefinitionsByStringParameter(String userId,
-                                                             String typeGUID,
-                                                             String typeName,
-                                                             String parameterValue,
-                                                             String parameterParameterName,
-                                                             String parameterPropertyName,
-                                                             int    startFrom,
-                                                             int    pageSize,
-                                                             String methodName) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public List<B> getGovernanceDefinitionsByStringParameter(String  userId,
+                                                             String  typeGUID,
+                                                             String  typeName,
+                                                             String  parameterValue,
+                                                             String  parameterParameterName,
+                                                             String  parameterPropertyName,
+                                                             int     startFrom,
+                                                             int     pageSize,
+                                                             boolean forLineage,
+                                                             boolean forDuplicateProcessing,
+                                                             Date    effectiveTime,
+                                                             String  methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(parameterValue, parameterParameterName, methodName);
@@ -825,13 +931,13 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -846,6 +952,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param elementTypeName name of the type of the starting element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of relationships
@@ -854,16 +963,19 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<Relationship> getGoverningDefinitionLinks(String userId,
-                                                          String elementGUID,
-                                                          String elementGUIDParameterName,
-                                                          String elementTypeName,
-                                                          String governanceDefinitionTypeName,
-                                                          int    startFrom,
-                                                          int    pageSize,
-                                                          String methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public List<Relationship> getGoverningDefinitionLinks(String  userId,
+                                                          String  elementGUID,
+                                                          String  elementGUIDParameterName,
+                                                          String  elementTypeName,
+                                                          String  governanceDefinitionTypeName,
+                                                          int     startFrom,
+                                                          int     pageSize,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing,
+                                                          Date    effectiveTime,
+                                                          String  methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         String typeName = OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME;
 
@@ -873,19 +985,21 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         }
 
         return this.getAttachmentLinks(userId,
-                                        elementGUID,
-                                        elementGUIDParameterName,
-                                        elementTypeName,
-                                        OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
-                                        OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
-                                        null,
-                                        typeName,
-                                        1,
-                                        false,
-                                        startFrom,
-                                        pageSize,
-                                       new Date(),
-                                        methodName);
+                                       elementGUID,
+                                       elementGUIDParameterName,
+                                       elementTypeName,
+                                       OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                       OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                       null,
+                                       typeName,
+                                       1,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       startFrom,
+                                       pageSize,
+                                       effectiveTime,
+                                       methodName);
     }
 
 
@@ -899,6 +1013,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param elementTypeName name of the type of the starting element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of governance definition element
@@ -907,16 +1024,19 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getGoverningDefinitions(String userId,
-                                           String elementGUID,
-                                           String elementGUIDParameterName,
-                                           String elementTypeName,
-                                           String governanceDefinitionTypeName,
-                                           int    startFrom,
-                                           int    pageSize,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public List<B> getGoverningDefinitions(String  userId,
+                                           String  elementGUID,
+                                           String  elementGUIDParameterName,
+                                           String  elementTypeName,
+                                           String  governanceDefinitionTypeName,
+                                           int     startFrom,
+                                           int     pageSize,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         elementGUID,
@@ -928,11 +1048,11 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         1,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startFrom,
                                         pageSize,
-                                        new Date(),
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -943,6 +1063,9 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      * @param guidParameterName parameter name of guid
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -951,21 +1074,24 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getGovernanceDefinitionByGUID(String userId,
-                                           String guid,
-                                           String guidParameterName,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public B getGovernanceDefinitionByGUID(String  userId,
+                                           String  guid,
+                                           String  guidParameterName,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
 
     }

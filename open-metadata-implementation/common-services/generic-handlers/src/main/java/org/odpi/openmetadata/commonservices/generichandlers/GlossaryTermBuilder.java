@@ -64,6 +64,8 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         this.displayName = displayName;
         this.description = description;
     }
+
+
     /**
      * Constructor when basic properties are known.
      *
@@ -79,15 +81,15 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     public GlossaryTermBuilder(String        qualifiedName,
-                        String               displayName,
-                        String               description,
-                        String               summary,
-                        String               examples,
-                        String               abbreviation,
-                        String               usage,
-                        OMRSRepositoryHelper repositoryHelper,
-                        String               serviceName,
-                        String               serverName)
+                               String               displayName,
+                               String               description,
+                               String               summary,
+                               String               examples,
+                               String               abbreviation,
+                               String               usage,
+                               OMRSRepositoryHelper repositoryHelper,
+                               String               serviceName,
+                               String               serverName)
     {
         super(qualifiedName, repositoryHelper, serviceName, serverName);
 
@@ -118,18 +120,18 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     public GlossaryTermBuilder(String                   qualifiedName,
-                        String                   displayName,
-                        String                   summary,
-                        String                   description,
-                        String                   examples,
-                        String                   abbreviation,
-                        String                   usage,
-                        Map<String, String>      additionalProperties,
-                        Map<String, Object>      extendedProperties,
-                        InstanceStatus           initialStatus,
-                        OMRSRepositoryHelper     repositoryHelper,
-                        String                   serviceName,
-                        String                   serverName)
+                               String                   displayName,
+                               String                   summary,
+                               String                   description,
+                               String                   examples,
+                               String                   abbreviation,
+                               String                   usage,
+                               Map<String, String>      additionalProperties,
+                               Map<String, Object>      extendedProperties,
+                               InstanceStatus           initialStatus,
+                               OMRSRepositoryHelper     repositoryHelper,
+                               String                   serviceName,
+                               String                   serverName)
     {
         super(qualifiedName,
               additionalProperties,
@@ -213,20 +215,26 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
     InstanceProperties getActivityTypeProperties(int    activityType,
                                                  String methodName) throws InvalidParameterException
     {
+        InstanceProperties properties;
+
         try
         {
-            return repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                              null,
-                                                              OpenMetadataAPIMapper.ACTIVITY_TYPE_PROPERTY_NAME,
-                                                              OpenMetadataAPIMapper.ACTIVITY_TYPE_ENUM_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.ACTIVITY_TYPE_ENUM_TYPE_NAME,
-                                                              activityType,
-                                                              methodName);
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    null,
+                                                                    OpenMetadataAPIMapper.ACTIVITY_TYPE_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.ACTIVITY_TYPE_ENUM_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.ACTIVITY_TYPE_ENUM_TYPE_NAME,
+                                                                    activityType,
+                                                                    methodName);
         }
         catch (TypeErrorException error)
         {
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTIVITY_TYPE_PROPERTY_NAME);
         }
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
@@ -238,13 +246,12 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
      * @param scope the scope of where the context applies
      * @param methodName name of the calling method
      * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
      */
     InstanceProperties getContextDescriptionProperties(String description,
                                                        String scope,
-                                                       String methodName) throws InvalidParameterException
+                                                       String methodName)
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties;
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
@@ -257,6 +264,8 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
+
+        setEffectivityDates(properties);
 
         return properties;
     }
@@ -275,13 +284,13 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
                                                        int    relationshipStatus,
                                                        String methodName) throws InvalidParameterException
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties;
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
         try
         {
@@ -297,6 +306,8 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         {
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTIVITY_TYPE_PROPERTY_NAME);
         }
+
+        setEffectivityDates(properties);
 
         return properties;
     }
@@ -320,25 +331,21 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
                                                      String source,
                                                      String methodName) throws InvalidParameterException
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties;
 
-        if (expression != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  null,
+                                                                  OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME,
+                                                                  expression,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
 
         try
         {
@@ -355,23 +362,21 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.ACTIVITY_TYPE_PROPERTY_NAME);
         }
 
-        if (steward != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                  steward,
+                                                                  methodName);
 
-        if (source != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  source,
+                                                                  methodName);
+
+
+        setEffectivityDates(properties);
 
         return properties;
     }

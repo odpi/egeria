@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * GovernanceZoneHandler provides the exchange of metadata about governance zones between the repository and
  * the OMAS.  There is no support for effectivity dating because just too difficult to manage the zone look up for Assets.
- * They are also supposed to be long lived.
+ * They are also supposed to be long-lived.
  */
 public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {
@@ -76,12 +76,12 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
      * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
+     * and how they are set up.  In addition, the qualified names of zones can be added to Asset definitions
      * to indicate which zone(s) they belong to.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param qualifiedName unique name for the zone - used in other configuration
      * @param displayName short display name for the zone
      * @param description description of the governance zone
@@ -91,6 +91,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param additionalProperties additional properties for a governance zone
      * @param suppliedTypeName type name of the zone definition (null for GovernanceZone)
      * @param extendedProperties  properties for a governance zone subtype
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new zone
@@ -111,6 +112,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        Map<String, String> additionalProperties,
                                        String              suppliedTypeName,
                                        Map<String, Object> extendedProperties,
+                                       Date                effectiveTime,
                                        String              methodName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
@@ -150,6 +152,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -157,12 +160,12 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
      * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
+     * and how they are set up.  In addition, the qualified names of zones can be added to Asset definitions
      * to indicate which zone(s) they belong to.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param zoneGUID unique identifier for the zone to change
      * @param zoneGUIDParameterName parameter supplying the zoneGUID
      * @param qualifiedName unique name for the zone - used in other configuration
@@ -174,7 +177,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param additionalProperties additional properties for a governance zone
      * @param suppliedTypeName type name of the zone definition (null for GovernanceZone)
      * @param extendedProperties  properties for a governance zone subtype
-     * @param isMergeUpdate should supplied properties be merged with or replace existing properties
+     * @param isMergeUpdate should the supplied properties be merged with or replace existing properties
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -310,6 +313,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                             1,
                                             false,
+                                            false,
                                             new Date(),
                                             methodName);
     }
@@ -346,6 +350,8 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        OpenMetadataAPIMapper.ZONE_TYPE_NAME,
                                        2,
                                        false,
+                                       false,
+                                       supportedZones,
                                        0,
                                        0,
                                        new Date(),
@@ -358,7 +364,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param startFrom position in the list (used when there are so many reports that paging is needed
-     * @param pageSize maximum number of elements to return an this call
+     * @param pageSize maximum number of elements to return on this call
      * @param methodName calling method
      *
      * @return properties of the governance zone
@@ -394,7 +400,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param domainIdentifier identifier of domain - 0 is for all domains
      * @param startFrom position in the list (used when there are so many reports that paging is needed
-     * @param pageSize maximum number of elements to return an this call
+     * @param pageSize maximum number of elements to return on this call
      * @param methodName calling method
      *
      * @return properties of the governance zone

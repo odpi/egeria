@@ -4,7 +4,7 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 /**
  * OpenMetadataAPIMapper provides property name mapping for the generic builder, handler and converter.
- * It includes identifiers for all of the types that need specialist processing at this level in the stack
+ * It includes identifiers for all the types that need specialist processing at this level in the stack
  */
 public class OpenMetadataAPIMapper
 {
@@ -1166,7 +1166,7 @@ public class OpenMetadataAPIMapper
 
     public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_GUID       = "58520015-ce6e-47b7-a1fd-864030544819";
     public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME       = "ElementSupplement";   /* from Area 3 */
-    /* Project */
+    /* Referencable */
 
     public static final String SUPPLEMENTARY_PROPERTIES_TYPE_GUID                = "2bb10ba5-7aa2-456a-8b3a-8fdbd75c95cd";
     public static final String SUPPLEMENTARY_PROPERTIES_TYPE_NAME                = "SupplementaryProperties";  /* from Area 3 */
@@ -2480,6 +2480,10 @@ public class OpenMetadataAPIMapper
     /* ============================================================================================================================*/
     /* Area 7 - Lineage                                                                                                            */
     /* ============================================================================================================================*/
+
+    public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_GUID = "bf02c703-57a2-4ab7-b6db-f49b57b05985";
+    public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_NAME = "SolutionPortSchema";
+    /* End1 = SolutionPort; End 2 = SchemaType */
 
     public static final String DATA_FLOW_TYPE_GUID                  = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
     public static final String DATA_FLOW_TYPE_NAME                  = "DataFlow";

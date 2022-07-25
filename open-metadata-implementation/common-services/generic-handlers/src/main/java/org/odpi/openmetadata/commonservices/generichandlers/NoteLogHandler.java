@@ -11,12 +11,12 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * NoteLogHandler manages NoteLog objects.  It runs server-side in
  * the OMAG Server Platform and retrieves NoteEntry entities through the OMRSRepositoryConnector.
- * There is no support for effectivity dates.
  */
 public class NoteLogHandler<B> extends ReferenceableHandler<B>
 {
@@ -72,24 +72,33 @@ public class NoteLogHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the endpoint bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countAttachedNoteLogs(String   userId,
-                                     String   elementGUID,
-                                     String   methodName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public int countAttachedNoteLogs(String  userId,
+                                     String  elementGUID,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         return super.countAttachments(userId,
                                       elementGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_NOTE_LOG_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_NOTE_LOG_TYPE_NAME,
-                                      null,
+                                      2,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -109,6 +118,9 @@ public class NoteLogHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -124,6 +136,9 @@ public class NoteLogHandler<B> extends ReferenceableHandler<B>
                                         List<String> serviceSupportedZones,
                                         int          startingFrom,
                                         int          pageSize,
+                                        boolean      forLineage,
+                                        boolean      forDuplicateProcessing,
+                                        Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
