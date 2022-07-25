@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 /**
  * OMRSAuditingComponent provides identifying and background information about the components writing log records
- * to the OMRS Audit log.  This is to help someone reading the OMRS Audit Log understand the records.
+ * to the OMRS Audit log.  This is to help a consumer understand the OMRS Audit Log records.
  */
 public enum OMRSAuditingComponent implements ComponentDescription
 {
@@ -79,11 +79,11 @@ public enum OMRSAuditingComponent implements ComponentDescription
     REST_SERVICES (11,
                    ComponentDevelopmentStatus.STABLE,
                    "Repository REST Services",
-                   "Provides the server-side support the the OMRS Repository Services REST API.",
+                   "Provides the server-side support of the OMRS Repository Services REST API.",
                    "https://egeria-project.org/services/omrs/component-descriptions/omrs-rest-services/"),
 
     REST_REPOSITORY_CONNECTOR (12,
-                               ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                               ComponentDevelopmentStatus.STABLE,
                                "REST Repository Connector",
                                "Supports an OMRS Repository Connector for calling the OMRS Repository REST API in a remote open metadata repository.",
                                "https://egeria-project.org/concepts/repository-connector"),
@@ -107,7 +107,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
                     "https://egeria-project.org/services/omrs/component-descriptions/cohort-registry/"),
 
     REGISTRY_STORE  (16,
-                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     ComponentDevelopmentStatus.STABLE,
                      "Registry Store",
                      "Stores information about the repositories registered in the open metadata repository cohort.",
                      "https://egeria-project.org/concepts/cohort-registry-store-connector/"),
@@ -125,7 +125,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
                      "https://egeria-project.org/services/omrs/component-descriptions/event-listener/"),
 
     OMRS_TOPIC_CONNECTOR(19,
-                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         ComponentDevelopmentStatus.STABLE,
                          "OMRS Topic Connector",
                          "Provides access to the OMRS Topic that is used to exchange events between members of a cohort, " +
                                  "or to notify Open Metadata Access Services (OMASs) of changes to " +
@@ -133,13 +133,13 @@ public enum OMRSAuditingComponent implements ComponentDescription
                          "https://egeria-project.org/services/omrs/component-descriptions/connectors/omrs-topic-connector/"),
 
     OPEN_METADATA_TOPIC_CONNECTOR(20,
-                                  ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                  ComponentDevelopmentStatus.STABLE,
                                   "Open Metadata Topic Connector",
                                   "Provides access to an event bus to exchange events with participants in the open metadata ecosystem.",
                                   "https://egeria-project.org/concepts/open-metadata-topic-connector/"),
 
     LOCAL_REPOSITORY_EVENT_MAPPER(21,
-                                  ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                  ComponentDevelopmentStatus.STABLE,
                                   "Local Repository Event Mapper Connector",
                                   "Provides access to an event bus to process events from a specific local repository.",
                                   "https://egeria-project.org/concepts/event-mapper-connector/"),
@@ -151,7 +151,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
                             "https://egeria-project.org/concepts/open-metadata-archive-store-connector/"),
 
     REMOTE_REPOSITORY_CONNECTOR(23,
-                                ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                ComponentDevelopmentStatus.STABLE,
                                 "Cohort Member Client Open Metadata Repository Connector",
                                 "Provides access to open metadata located in a remote repository for remote members of a cohort.",
                                 "https://egeria-project.org/concepts/cohort-member-client-connector/"),
@@ -176,13 +176,13 @@ public enum OMRSAuditingComponent implements ComponentDescription
                               "https://egeria-project.org/concepts/cohort-events/"),
 
     REPOSITORY_CONNECTOR(27,
-                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         ComponentDevelopmentStatus.STABLE,
                          "OMRS Repository Connector",
                          "Maps open metadata calls to a metadata repository.",
                          "https://egeria-project.org/concepts/repository-connector/"),
 
     OPEN_DISCOVERY_SERVICE_CONNECTOR(28,
-                                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                     ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                      "Open Discovery Service Connector",
                                      "A connector that analyzing the contents of a digital resource.",
                                      "https://egeria-project.org/guides/developer/open-discovery-services/overview/"),
@@ -219,11 +219,11 @@ public enum OMRSAuditingComponent implements ComponentDescription
     ;
 
 
-    private  int                        componentId;
-    private  ComponentDevelopmentStatus componentDevelopmentStatus;
-    private  String                     componentName;
-    private  String                     componentDescription;
-    private  String                     componentWikiURL;
+    private  final int                        componentId;
+    private  final ComponentDevelopmentStatus componentDevelopmentStatus;
+    private  final String                     componentName;
+    private  final String                     componentDescription;
+    private  final String                     componentWikiURL;
 
 
     /**
@@ -232,7 +232,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      * @param componentId code number for the component.
      * @param componentName name of the component used in the audit log record.
      * @param componentDescription short description of the component.
-     * @param componentWikiURL URL link to the description of the component.
+     * @param componentWikiURL URL  to the description of the component.
      */
     OMRSAuditingComponent(int                        componentId,
                           ComponentDevelopmentStatus componentDevelopmentStatus,
@@ -283,7 +283,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
 
     /**
      * Return the short description of the component. This is an English description.  Natural language support for
-     * these values can be added to UIs using a resource bundle indexed with the component Id.  This value is
+     * these values can be added to UIs using a resource bundle indexed with the component id.  This value is
      * provided as a default if the resource bundle is not available.
      *
      * @return String description
@@ -293,8 +293,9 @@ public enum OMRSAuditingComponent implements ComponentDescription
         return componentDescription;
     }
 
+
     /**
-     * URL link to the wiki page that describes this component.  This provides more information to the log reader
+     * URL to the wiki page that describes this component.  This provides more information to the log reader
      * on the operation of the component.
      *
      * @return String URL

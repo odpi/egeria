@@ -885,7 +885,7 @@ public class OMRSOperationalServices
                                                                                             auditLog.createNewAuditLog(OMRSAuditingComponent.METADATA_HIGHWAY_MANAGER));
 
         /*
-         * The metadata highway manager is initialize with the details specific to each cohort.
+         * The metadata highway manager is initialized with the details specific to each cohort.
          */
         metadataHighwayManager.initialize(cohortConfigList);
 
