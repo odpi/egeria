@@ -359,7 +359,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 int postLength = post.length();
                 Set<String> matchedFolderNames = listOfFolders.map(x -> x.toString())
                         .filter(f -> doesStringStartAndEndMatch(f, pre, post)).collect(Collectors.toSet());
-                // for each folder name we need to amend to bring the folder name up to the the file name.
+                // for each folder name we need to amend to bring the folder name up to the file name.
                 // find the last / in the whole string and see if it is further in that the folder we have just matched, if so there are
                 // folder(s) we need to add to the folder Names we have matched
 

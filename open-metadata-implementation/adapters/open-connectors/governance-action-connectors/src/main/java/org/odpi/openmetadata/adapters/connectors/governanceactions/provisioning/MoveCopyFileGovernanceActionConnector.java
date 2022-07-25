@@ -52,7 +52,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
     /**
      * Generate a destination file name based on the input.
      *
-     * @param previousDestinationFileName the file name tried on a previous iteration of the the loop
+     * @param previousDestinationFileName the file name tried on a previous iteration of the loop
      * @param destinationFolderName folder name where the file is to be copied to
      * @param sourceFile File object pointing to the source file
      * @param fileNamePattern pattern to generate the destination filename (or null to use the source file name)
@@ -454,7 +454,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
 
     /**
-     * Extract the path name located in the properties of the the supplied asset metadata element (either a FileFolder or DataFile).
+     * Extract the path name located in the properties of the supplied asset metadata element (either a FileFolder or DataFile).
      * It looks first in the linked connection endpoint.  If this is not available then the qualified name of the asset is used.
      *
      * @param asset metadata element
@@ -690,7 +690,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
     /**
      * Create the lineage mapping for the provisioning process.  This governance action service supports a number of lineage patterns.
-     * It assumes the source file / folder is catalogued.  It attaches it to the the metadata element that represents this process
+     * It assumes the source file / folder is catalogued.  It attaches it to the metadata element that represents this process
      * (if needed) and the destination file / folder.
      *
      * @param destinationFilePathName name of the file that was created
