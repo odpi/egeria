@@ -6,31 +6,29 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataFlowProperties describe the properties for a data flow relationship.
+ * LineageMappingProperties describe the properties for a lineage mapping relationship.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataFlowProperties extends ConfigurationItemRelationshipProperties
+public class LineageMappingProperties extends ConfigurationItemRelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
     private String               qualifiedName = null;
     private String               description   = null;
-    private String               formula       = null;
 
 
     /**
      * Default constructor
      */
-    public DataFlowProperties()
+    public LineageMappingProperties()
     {
         super();
     }
@@ -41,13 +39,12 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
      *
      * @param template element to copy
      */
-    public DataFlowProperties(DataFlowProperties template)
+    public LineageMappingProperties(LineageMappingProperties template)
     {
         if (template != null)
         {
             qualifiedName = template.getQualifiedName();
             description   = template.getDescription();
-            formula       = template.getFormula();
         }
     }
 
@@ -98,28 +95,6 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
 
 
     /**
-     * Return the formula of the relationship.
-     *
-     * @return string formula
-     */
-    public String getFormula()
-    {
-        return formula;
-    }
-
-
-    /**
-     * Set up the formula of the relationship.
-     *
-     * @param formula string name
-     */
-    public void setFormula(String formula)
-    {
-        this.formula = formula;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -127,12 +102,11 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
     @Override
     public String toString()
     {
-        return "DataFlowProperties{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", formula='" + formula + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
+        return "LineageMappingProperties{" +
+                       "effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
+                       ", qualifiedName='" + qualifiedName + '\'' +
+                       ", description='" + description + '\'' +
                        '}';
     }
 
@@ -154,10 +128,9 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
         {
             return false;
         }
-        DataFlowProperties that = (DataFlowProperties) objectToCompare;
+        LineageMappingProperties that = (LineageMappingProperties) objectToCompare;
         return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getFormula(), that.getFormula());
+                       Objects.equals(getDescription(), that.getDescription());
     }
 
 
@@ -169,6 +142,6 @@ public class DataFlowProperties extends ConfigurationItemRelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, description, formula);
+        return Objects.hash(qualifiedName, description);
     }
 }

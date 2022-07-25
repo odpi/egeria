@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties;
 
 import java.util.Objects;
 
@@ -15,22 +15,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * DataFlowRequestBody describes the request body used when linking elements within processes.
+ * LineageMappingRequestBody describes the request body used when adding a lineage mapping.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataFlowRequestBody extends EffectiveTimeMetadataSourceRequestBody
+public class LineageMappingRequestBody extends EffectiveTimeMetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private DataFlowProperties properties = null;
+    private LineageMappingProperties properties = null;
 
 
     /**
      * Default constructor
      */
-    public DataFlowRequestBody()
+    public LineageMappingRequestBody()
     {
         super();
     }
@@ -41,7 +41,7 @@ public class DataFlowRequestBody extends EffectiveTimeMetadataSourceRequestBody
      *
      * @param template object to copy
      */
-    public DataFlowRequestBody(DataFlowRequestBody template)
+    public LineageMappingRequestBody(LineageMappingRequestBody template)
     {
         super(template);
 
@@ -57,7 +57,7 @@ public class DataFlowRequestBody extends EffectiveTimeMetadataSourceRequestBody
      *
      * @return properties object
      */
-    public DataFlowProperties getProperties()
+    public LineageMappingProperties getProperties()
     {
         return properties;
     }
@@ -68,7 +68,7 @@ public class DataFlowRequestBody extends EffectiveTimeMetadataSourceRequestBody
      *
      * @param properties properties object
      */
-    public void setProperties(DataFlowProperties properties)
+    public void setProperties(LineageMappingProperties properties)
     {
         this.properties = properties;
     }
@@ -82,9 +82,9 @@ public class DataFlowRequestBody extends EffectiveTimeMetadataSourceRequestBody
     @Override
     public String toString()
     {
-        return "DataFlowRequestBody{" +
-                       "properties=" + properties +
-                       ", effectiveTime=" + getEffectiveTime() +
+        return "LineageMappingRequestBody{" +
+                       "effectiveTime=" + getEffectiveTime() +
+                       ", properties=" + properties +
                        ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
@@ -112,7 +112,7 @@ public class DataFlowRequestBody extends EffectiveTimeMetadataSourceRequestBody
         {
             return false;
         }
-        DataFlowRequestBody that = (DataFlowRequestBody) objectToCompare;
+        LineageMappingRequestBody that = (LineageMappingRequestBody) objectToCompare;
         return Objects.equals(getProperties(), that.getProperties());
     }
 
