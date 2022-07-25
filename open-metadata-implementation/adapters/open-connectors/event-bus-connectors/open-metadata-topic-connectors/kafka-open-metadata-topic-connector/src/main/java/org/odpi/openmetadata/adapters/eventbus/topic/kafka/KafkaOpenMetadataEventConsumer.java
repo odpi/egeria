@@ -169,7 +169,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                 final Duration pollDuration = Duration.ofMillis(pollTimeout);
                 final ConsumerRecords<String, String> records = consumer.poll(pollDuration);
                 
-                log.debug("Found records: " + records.count());
+                log.debug("Found records: {}", records.count());
                 for (ConsumerRecord<String, String> record : records)
                 {
                     String json = record.value();
