@@ -45,16 +45,15 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
 
 
     /**
-     * Constructor for the event consumer.
+     * Constructor for the event producer.
      *
      * @param topicName          name of the topic to listen on.
      * @param localServerId      identifier to enable receiver to identify that an event came from this server.
      * @param producerProperties properties for the consumer.
-     * @param connector          connector holding the inbound listeners.
      * @param auditLog           audit log for this component.
      */
     KafkaOpenMetadataEventProducer(String topicName, String localServerId, Properties producerProperties,
-                                   KafkaOpenMetadataTopicConnector connector, AuditLog auditLog) {
+                                   AuditLog auditLog) {
         this.auditLog = auditLog;
         this.topicName = topicName;
         this.localServerId = localServerId;
