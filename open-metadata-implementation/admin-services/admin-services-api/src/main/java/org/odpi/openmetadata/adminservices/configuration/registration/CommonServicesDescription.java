@@ -28,14 +28,14 @@ public enum CommonServicesDescription implements Serializable
                                       "https://egeria-project.org/services/admin-services/overview"),
 
     OCF_METADATA_MANAGEMENT          (182,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Connected Asset Services",
                                       "connected-asset",
                                       "Common metadata services for the Open Connector Framework (OCF)",
                                       "https://egeria-project.org/services/ocf-metadata-management"),
 
     OPEN_METADATA_SECURITY           (183,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Open Metadata Security Services",
                                       null,
                                       "Authorization services for Open Metadata and Governance",
@@ -44,12 +44,12 @@ public enum CommonServicesDescription implements Serializable
 
     private static final long     serialVersionUID    = 1L;
 
-    private int                        serviceCode;
-    private ComponentDevelopmentStatus serviceDevelopmentStatus;
-    private String                     serviceName;
-    private String                     serviceURLMarker;
-    private String                     serviceDescription;
-    private String                     serviceWiki;
+    private final int                        serviceCode;
+    private final ComponentDevelopmentStatus serviceDevelopmentStatus;
+    private final String                     serviceName;
+    private final String                     serviceURLMarker;
+    private final String                     serviceDescription;
+    private final String                     serviceWiki;
 
 
     /**
@@ -156,7 +156,7 @@ public enum CommonServicesDescription implements Serializable
     /**
      * Return the URL for the wiki page describing this access service.
      *
-     * @return String URL name for the wiki page
+     * @return String URL for the wiki page
      */
     public String getServiceWiki()
     {
