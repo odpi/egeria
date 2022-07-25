@@ -28,6 +28,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -215,7 +216,7 @@ public class DataEngineCommonHandler {
         invalidParameterHandler.validateGUID(entityDetailGUID, CommonMapper.GUID_PROPERTY_NAME, methodName);
 
         return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, entityDetailGUID, CommonMapper.GUID_PROPERTY_NAME, entityTypeName,
-                methodName));
+                 false, false, null, methodName));
     }
 
     /**

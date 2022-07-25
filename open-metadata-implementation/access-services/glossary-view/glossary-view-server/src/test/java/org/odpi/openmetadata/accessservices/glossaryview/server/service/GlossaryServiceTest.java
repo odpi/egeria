@@ -14,6 +14,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -31,8 +32,8 @@ public class GlossaryServiceTest extends GlossaryViewOmasBase {
     @Test
     public void getGlossary() throws Exception{
 
-        when(repositoryHandler.getEntityByGUID(USER_ID, glossaries.get(0).getGUID(), GUID,
-                GLOSSARY_TYPE_NAME, "getGlossary")).thenReturn(glossaries.get(0));
+        when(repositoryHandler.getEntityByGUID(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(GUID),
+                eq(GLOSSARY_TYPE_NAME), eq(false), eq(false), any(), eq("getGlossary"))).thenReturn(glossaries.get(0));
 
         GlossaryViewEntityDetailResponse response = underTest.getGlossary(USER_ID, SERVER_NAME, glossaries.get(0).getGUID());
 
@@ -103,8 +104,8 @@ public class GlossaryServiceTest extends GlossaryViewOmasBase {
         PropertyServerException exception = new PropertyServerException(501, "className-getEntityByGUID", "actionDescription-getEntityByGUID",
                 "errorMessage-getEntityByGUID", null, null, "systemAction-getEntityByGUID", "userAction-getEntityByGUID", null, null);
 
-        when(repositoryHandler.getEntityByGUID(USER_ID, glossaries.get(0).getGUID(), GUID,
-                GLOSSARY_TYPE_NAME, "getGlossary")).thenThrow(exception);
+        when(repositoryHandler.getEntityByGUID(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(GUID),
+                eq(GLOSSARY_TYPE_NAME), eq(false), eq(false), any(), eq("getGlossary"))).thenThrow(exception);
 
         GlossaryViewEntityDetailResponse response = underTest.getGlossary(USER_ID, SERVER_NAME, glossaries.get(0).getGUID());
 

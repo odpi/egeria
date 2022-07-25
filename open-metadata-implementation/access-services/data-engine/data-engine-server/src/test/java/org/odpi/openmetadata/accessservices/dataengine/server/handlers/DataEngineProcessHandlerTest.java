@@ -132,7 +132,7 @@ class DataEngineProcessHandlerTest {
                 process.getQualifiedName(), process.getName(), process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 process.getOwnerType().getOpenTypeOrdinal(), process.getOriginOrganizationGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
-                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, InstanceStatus.DRAFT, methodName)).thenReturn(GUID);
+                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, null, null, InstanceStatus.DRAFT, null, methodName)).thenReturn(GUID);
 
         String result = processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
@@ -157,7 +157,7 @@ class DataEngineProcessHandlerTest {
                 process.getQualifiedName(), process.getName(), process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 process.getOwnerType().getOpenTypeOrdinal(), process.getOriginOrganizationGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
-                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, InstanceStatus.DRAFT, methodName);
+                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, null, null, InstanceStatus.DRAFT, null, methodName);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 processHandler.createProcess(USER, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -187,8 +187,9 @@ class DataEngineProcessHandlerTest {
         processHandler.updateProcess(USER, mockedOriginalProcessEntity, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(assetHandler, times(1)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                PROCESS_GUID, "processGUID", process.getQualifiedName(), process.getName(), process.getDescription(),
-                process.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, methodName);
+                                                   PROCESS_GUID, "processGUID", process.getQualifiedName(), process.getName(), process.getDescription(),
+                                                   process.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties,
+                                                   null, null, true, false, false, null, methodName);
 
     }
 
@@ -215,7 +216,8 @@ class DataEngineProcessHandlerTest {
 
         verify(assetHandler, times(0)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 PROCESS_GUID, CommonMapper.GUID_PROPERTY_NAME, process.getQualifiedName(), process.getName(), process.getDescription(),
-                process.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, "updateProcess");
+                process.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties,
+                null,null,  true,false, false, null, "updateProcess");
     }
 
     @Test
@@ -249,7 +251,8 @@ class DataEngineProcessHandlerTest {
 
         doThrow(mockedException).when(assetHandler).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 PROCESS_GUID, "processGUID", process.getQualifiedName(), process.getName(), process.getDescription(),
-                process.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, methodName);
+                process.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, null, null,
+                true,false, false, null, methodName);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () -> processHandler.updateProcess(USER,
                 mockedOriginalProcessEntity, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -296,8 +299,9 @@ class DataEngineProcessHandlerTest {
         verify(invalidParameterHandler, times(1)).validateGUID(PROCESS_GUID, "guid", methodName);
 
         verify(assetHandler, times(1)).updateBeanStatusInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, "processGUID", PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, InstanceStatus.ACTIVE,
-                "processStatus", methodName);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, "processGUID", PROCESS_TYPE_GUID, PROCESS_TYPE_NAME,
+                false, false, InstanceStatus.ACTIVE,
+                "processStatus", null, methodName);
     }
 
     @Test
@@ -367,7 +371,7 @@ class DataEngineProcessHandlerTest {
         processHandler.removeProcess(USER, PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
 
         verify(assetHandler, times(1)).deleteBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                PROCESS_GUID, "processGUID", PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, "removeProcess");
+                PROCESS_GUID, "processGUID", PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, false, false, null, "removeProcess");
     }
 
 

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
@@ -20,6 +21,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -133,7 +135,7 @@ public class DataEngineFolderHierarchyHandler {
     }
 
     private void deleteExistingNestedFileRelationships(String fileGuid, String externalSourceGuid, String externalSourceName, String userId,
-                                                       String methodName) throws UserNotAuthorizedException, PropertyServerException {
+                                                       String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         Optional<List<Relationship>> optionalRelationships =
                 Optional.ofNullable(repositoryHandler.getRelationshipsByType(userId, fileGuid, DATA_FILE_TYPE_NAME,
                         NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, methodName));
@@ -154,10 +156,11 @@ public class DataEngineFolderHierarchyHandler {
         }
 
         return folderHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
-                folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
-                folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
-                null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
-                FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null, methodName);
+                   folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
+                   folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
+                   null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
+                   FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME,  null,null, null, InstanceStatus.ACTIVE,
+                   null, methodName);
     }
 
     /**

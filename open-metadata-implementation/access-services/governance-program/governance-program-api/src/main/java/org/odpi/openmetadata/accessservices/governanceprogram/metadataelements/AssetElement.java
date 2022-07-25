@@ -108,7 +108,7 @@ public class AssetElement implements MetadataElement, Serializable
 
 
     /**
-     * Set up the the description of the asset.
+     * Set up the description of the asset.
      *
      * @param properties of external references
      */

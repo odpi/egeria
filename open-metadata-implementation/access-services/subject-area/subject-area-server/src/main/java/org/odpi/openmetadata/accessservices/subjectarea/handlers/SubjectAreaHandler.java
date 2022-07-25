@@ -212,6 +212,8 @@ public abstract class SubjectAreaHandler {
                                                         findRequest.getSequencingProperty(),
                                                         findRequest.getStartingFrom(),
                                                         findRequest.getPageSize(),
+                                                        false,
+                                                        false,
                                                         null, // any effective date
                                                         methodName);
         }
@@ -285,6 +287,10 @@ public abstract class SubjectAreaHandler {
                                                   null,
                                                   null,
                                                   null,
+                                                  null,
+                                                  0,
+                                                  false,
+                                                  false,
                                                   findRequest.getStartingFrom(),
                                                   findRequest.getPageSize(),
                                                   null, // any effective time
@@ -332,7 +338,11 @@ public abstract class SubjectAreaHandler {
                                                   entityTypeName,
                                                   attachmentRelationshipTypeGUID,
                                                   attachmentRelationshipTypeName,
+                                                  null,
                                                   attachmentEntityTypeName,
+                                                  0,
+                                                  false,
+                                                  false,
                                                   findRequest.getStartingFrom(),
                                                   findRequest.getPageSize(),
                                                   null, // any effective time
@@ -495,6 +505,7 @@ public abstract class SubjectAreaHandler {
                                        false,
                                        effectiveFrom,
                                        effectiveTo,
+                                       null,
                                        methodName);
         }
     }
@@ -530,6 +541,9 @@ public abstract class SubjectAreaHandler {
                                                       typeName,
                                                       effectiveFrom,
                                                       effectiveTo,
+                                                      false,
+                                                      false,
+                                                      null,
                                                       methodName);
 
         }

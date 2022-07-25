@@ -24,11 +24,11 @@ import java.util.Date;
  */
 public class AssetConsumerRESTServices
 {
-    private static AssetConsumerInstanceHandler   instanceHandler      = new AssetConsumerInstanceHandler();
-    private        RESTExceptionHandler           restExceptionHandler = new RESTExceptionHandler();
+    private static final AssetConsumerInstanceHandler   instanceHandler      = new AssetConsumerInstanceHandler();
+    private        final RESTExceptionHandler           restExceptionHandler = new RESTExceptionHandler();
 
-    private static RESTCallLogger                 restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetConsumerRESTServices.class),
-                                                                                            instanceHandler.getServiceName());
+    private static final RESTCallLogger                 restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetConsumerRESTServices.class),
+                                                                                                  instanceHandler.getServiceName());
 
     /**
      * Default constructor
@@ -114,7 +114,13 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUID(handler.getAssetForConnectionName(userId, connectionName, connectionNameParameterName, methodName));
+            response.setGUID(handler.getAssetForConnectionName(userId,
+                                                               connectionName,
+                                                               connectionNameParameterName,
+                                                               false,
+                                                               false,
+                                                               new Date(),
+                                                               methodName));
         }
         catch (Exception error)
         {
@@ -161,7 +167,15 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.findAssetGUIDs(userId, searchString, searchStringParameter, startFrom, pageSize, new Date(), methodName));
+            response.setGUIDs(handler.findAssetGUIDs(userId,
+                                                     searchString,
+                                                     searchStringParameter,
+                                                     startFrom,
+                                                     pageSize,
+                                                     false,
+                                                     false,
+                                                     new Date(),
+                                                     methodName));
         }
         catch (Exception error)
         {
@@ -213,6 +227,8 @@ public class AssetConsumerRESTServices
                                                           nameParameterName,
                                                           startFrom,
                                                           pageSize,
+                                                          false,
+                                                          false,
                                                           new Date(),
                                                           methodName));
         }
@@ -282,6 +298,9 @@ public class AssetConsumerRESTServices
                                    starRating,
                                    requestBody.getReview(),
                                    requestBody.isPublic(),
+                                   false,
+                                   false,
+                                   new Date(),
                                    methodName);
 
             }
@@ -338,6 +357,9 @@ public class AssetConsumerRESTServices
                                  null,
                                  guid,
                                  guidParameterName,
+                                 false,
+                                 false,
+                                 new Date(),
                                  methodName);
         }
         catch (Exception error)
@@ -390,6 +412,9 @@ public class AssetConsumerRESTServices
                                  guid,
                                  guidParameterName,
                                  requestBody.getIsPublic(),
+                                 false,
+                                 false,
+                                 new Date(),
                                  methodName);
             }
             else
@@ -445,6 +470,9 @@ public class AssetConsumerRESTServices
                                null,
                                guid,
                                guidParameterName,
+                               false,
+                               false,
+                               new Date(),
                                methodName);
         }
         catch (Exception error)
@@ -506,6 +534,11 @@ public class AssetConsumerRESTServices
                                                            commentType,
                                                            requestBody.getCommentText(),
                                                            requestBody.getIsPublic(),
+                                                           null,
+                                                           null,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName));
             }
             else
@@ -575,6 +608,11 @@ public class AssetConsumerRESTServices
                                                           commentType,
                                                           requestBody.getCommentText(),
                                                           requestBody.getIsPublic(),
+                                                          null,
+                                                          null,
+                                                          false,
+                                                          false,
+                                                          new Date(),
                                                           methodName));
             }
             else
@@ -643,6 +681,11 @@ public class AssetConsumerRESTServices
                                       commentType,
                                       requestBody.getCommentText(),
                                       requestBody.getIsPublic(),
+                                      null,
+                                      null,
+                                      false,
+                                      false,
+                                      new Date(),
                                       methodName);
             }
             else
@@ -700,6 +743,9 @@ public class AssetConsumerRESTServices
                                              null,
                                              commentGUID,
                                              guidParameterName,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
         }
         catch (Exception error)
@@ -749,7 +795,13 @@ public class AssetConsumerRESTServices
             GlossaryTermHandler<MeaningElement> glossaryTermHandler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setMeaning(glossaryTermHandler.getTerm(userId, guid, guidParameterName, methodName));
+            response.setMeaning(glossaryTermHandler.getTerm(userId,
+                                                            guid,
+                                                            guidParameterName,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -799,6 +851,9 @@ public class AssetConsumerRESTServices
                                                                     nameParameterName,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -850,6 +905,9 @@ public class AssetConsumerRESTServices
                                                                nameParameterName,
                                                                startFrom,
                                                                pageSize,
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -1032,6 +1090,9 @@ public class AssetConsumerRESTServices
                                                    requestBody.getName(),
                                                    requestBody.getDescription(),
                                                    (!requestBody.getIsPrivateTag()),
+                                                   null,
+                                                   null,
+                                                   new Date(),
                                                    methodName));
             }
             else
@@ -1088,6 +1149,11 @@ public class AssetConsumerRESTServices
                                              tagGUID,
                                              tagGUIDParameterName,
                                              requestBody.getDescription(),
+                                             null,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
             }
             else
@@ -1106,7 +1172,7 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Removes a tag from the repository.  All of the relationships to referenceables are lost.
+     * Removes a tag from the repository.  All the relationships to referenceables are lost.
      *
      * @param serverName   name of the server instances for this request
      * @param userId    userId of user making request.
@@ -1142,6 +1208,9 @@ public class AssetConsumerRESTServices
                               null,
                               tagGUID,
                               tagGUIDParameterName,
+                              false,
+                              false,
+                              new Date(),
                               methodName);
         }
         catch (Exception error)
@@ -1186,6 +1255,9 @@ public class AssetConsumerRESTServices
             response.setTag(handler.getTag(userId,
                                            guid,
                                            guidParameterName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName));
         }
         catch (Exception error)
@@ -1236,6 +1308,9 @@ public class AssetConsumerRESTServices
                                                    nameParameterName,
                                                    startFrom,
                                                    pageSize,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -1287,6 +1362,9 @@ public class AssetConsumerRESTServices
                                                      nameParameterName,
                                                      startFrom,
                                                      pageSize,
+                                                     false,
+                                                     false,
+                                                     new Date(),
                                                      methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -1338,6 +1416,9 @@ public class AssetConsumerRESTServices
                                               nameParameterName,
                                               startFrom,
                                               pageSize,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -1389,6 +1470,9 @@ public class AssetConsumerRESTServices
                                                 nameParameterName,
                                                 startFrom,
                                                 pageSize,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -1453,6 +1537,11 @@ public class AssetConsumerRESTServices
                                     tagGUIDParameterName,
                                     instanceHandler.getSupportedZones(userId, serverName, methodName),
                                     isPublic,
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
         }
         catch (Exception error)
@@ -1516,6 +1605,11 @@ public class AssetConsumerRESTServices
                                     tagGUID,
                                     tagGUIDParameterName,
                                     isPublic,
+                                    null,
+                                    null,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
         }
         catch (Exception error)
@@ -1573,6 +1667,9 @@ public class AssetConsumerRESTServices
                                          tagGUID,
                                          tagGUIDParameterName,
                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
         }
         catch (Exception error)
@@ -1631,6 +1728,9 @@ public class AssetConsumerRESTServices
                                          tagGUID,
                                          tagGUIDParameterName,
                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
         }
         catch (Exception error)
@@ -1682,6 +1782,8 @@ public class AssetConsumerRESTServices
                                                          tagGUIDParameterName,
                                                          startFrom,
                                                          pageSize,
+                                                         false,
+                                                         false,
                                                          new Date(),
                                                          methodName));
         }

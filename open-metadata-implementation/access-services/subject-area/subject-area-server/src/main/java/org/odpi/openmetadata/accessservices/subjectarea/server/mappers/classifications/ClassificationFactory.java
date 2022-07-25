@@ -79,7 +79,7 @@ public class ClassificationFactory {
         return null;
     }
     /**
-     * Get an OMRS Classification based on the the supplied omas classification.
+     * Get an OMRS Classification based on the supplied omas classification.
      * @param omasClassification the supplied omas classification to map
      * @return the omas classification, null if not known.
      */

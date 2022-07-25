@@ -142,10 +142,6 @@ public class ConnectionConverter<B> extends DataManagerOMASConverter<B>
                         bean.setEmbeddedConnections(embeddedConnections);
                     }
                 }
-                else
-                {
-                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.RELATIONSHIP_DEF, methodName);
-                }
             }
 
             return returnBean;

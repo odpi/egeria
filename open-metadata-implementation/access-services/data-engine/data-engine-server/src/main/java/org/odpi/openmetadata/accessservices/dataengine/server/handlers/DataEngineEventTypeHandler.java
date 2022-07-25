@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,13 +89,15 @@ public class DataEngineEventTypeHandler {
             eventTypeGUID = eventTypeHandler.createEventType(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
-                    eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null, methodName);
+                    eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null,
+                    null, null, false, false, null, methodName);
         } else {
             eventTypeGUID = originalEventTypeEntity.get().getGUID();
             eventTypeHandler.updateEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, EVENT_TYPE_GUID_PARAMETER_NAME,
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
-                    eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null, true, methodName);
+                    eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null,
+                    null, null, true,false, false, null, methodName);
         }
 
         List<Attribute> attributeList = eventType.getAttributeList();
@@ -147,6 +150,6 @@ public class DataEngineEventTypeHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         eventTypeHandler.removeEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, EVENT_TYPE_GUID_PARAMETER_NAME, qualifiedName,
-                methodName);
+              false, false, null, methodName);
     }
 }

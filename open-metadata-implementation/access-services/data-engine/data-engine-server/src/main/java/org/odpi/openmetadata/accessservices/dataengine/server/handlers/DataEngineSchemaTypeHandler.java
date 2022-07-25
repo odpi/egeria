@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -107,7 +108,8 @@ public class DataEngineSchemaTypeHandler {
 
         String schemaTypeGUID;
         if (originalSchemaTypeEntity.isEmpty()) {
-            schemaTypeGUID = schemaTypeHandler.addSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeBuilder, methodName);
+            schemaTypeGUID = schemaTypeHandler.addSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeBuilder,
+                      null, null, false, false, null, methodName);
         } else {
             schemaTypeGUID = originalSchemaTypeEntity.get().getGUID();
             EntityDetail updatedSchemaTypeEntity = buildSchemaTypeEntityDetail(schemaTypeGUID, schemaType);
@@ -116,7 +118,7 @@ public class DataEngineSchemaTypeHandler {
 
             if (entityDetailDifferences.hasInstancePropertiesDifferences()) {
                 schemaTypeHandler.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME,
-                        schemaTypeBuilder);
+                        schemaTypeBuilder, true, false, false, null, methodName);
             }
         }
 

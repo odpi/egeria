@@ -7,12 +7,21 @@ import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.EnumTypePropertyValue;
+import org.odpi.openmetadata.frameworks.governanceaction.search.MapTypePropertyValue;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.governanceaction.search.StructTypePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +36,8 @@ import java.util.Map;
  */
 abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
 {
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMASConverter.class);
+
     PropertyHelper propertyHelper = new PropertyHelper();
 
 
@@ -384,10 +395,6 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
                         case 13:
                             governanceActionStatus = GovernanceActionStatus.FAILED;
                             break;
-
-                        case 99:
-                            governanceActionStatus = GovernanceActionStatus.OTHER;
-                            break;
                     }
                 }
             }
@@ -534,6 +541,101 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
     /**
      * Fill out the properties for the GAF Open Metadata Element bean with values from an OMRS entity.
      *
+     * @param instanceProperties retrieve properties
+     * @return  properties mapped to GAF
+     */
+    private ElementProperties mapElementProperties(InstanceProperties instanceProperties)
+    {
+        if (instanceProperties != null)
+        {
+            if (instanceProperties.getInstanceProperties() != null)
+            {
+                ElementProperties                  gafElementProperties = new ElementProperties();
+                Map<String, InstancePropertyValue> omrsProperties       = instanceProperties.getInstanceProperties();
+
+                for (String propertyName : omrsProperties.keySet())
+                {
+                    log.debug("=================================");
+                    log.debug("Processing property: " + propertyName);
+                    InstancePropertyValue omrsPropertyValue = omrsProperties.get(propertyName);
+
+                    if (omrsPropertyValue != null)
+                    {
+                        log.debug("OMRS Property value: " + omrsPropertyValue);
+                        log.debug("OMRS Property category: " + omrsPropertyValue.getInstancePropertyCategory());
+
+                        switch (omrsPropertyValue.getInstancePropertyCategory())
+                        {
+                            case PRIMITIVE:
+                                PrimitivePropertyValue omrsPrimitivePropertyValue = (PrimitivePropertyValue) omrsPropertyValue;
+                                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+
+                                primitiveTypePropertyValue.setTypeName(omrsPrimitivePropertyValue.getTypeName());
+                                primitiveTypePropertyValue.setPrimitiveValue(omrsPrimitivePropertyValue.getPrimitiveValue());
+                                primitiveTypePropertyValue.setPrimitiveTypeCategory(mapPrimitiveDefCategory(omrsPrimitivePropertyValue.getPrimitiveDefCategory()));
+
+                                gafElementProperties.setProperty(propertyName, primitiveTypePropertyValue);
+                                break;
+
+                            case ENUM:
+                                EnumPropertyValue omrsEnumPropertyValue = (EnumPropertyValue) omrsPropertyValue;
+                                EnumTypePropertyValue enumTypePropertyValue = new EnumTypePropertyValue();
+
+                                enumTypePropertyValue.setTypeName(omrsEnumPropertyValue.getTypeName());
+                                enumTypePropertyValue.setSymbolicName(omrsEnumPropertyValue.getSymbolicName());
+
+                                gafElementProperties.setProperty(propertyName, enumTypePropertyValue);
+                                break;
+
+                            case MAP:
+                                MapPropertyValue omrsMapPropertyValue = (MapPropertyValue) omrsPropertyValue;
+                                MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+
+                                mapTypePropertyValue.setTypeName(omrsMapPropertyValue.getTypeName());
+                                mapTypePropertyValue.setMapValues(this.mapElementProperties(omrsMapPropertyValue.getMapValues()));
+
+                                gafElementProperties.setProperty(propertyName, mapTypePropertyValue);
+                                break;
+
+                            case ARRAY:
+                                ArrayPropertyValue omrsArrayPropertyValue = (ArrayPropertyValue) omrsPropertyValue;
+                                ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
+
+                                arrayTypePropertyValue.setTypeName(omrsArrayPropertyValue.getTypeName());
+                                arrayTypePropertyValue.setArrayValues(this.mapElementProperties(omrsArrayPropertyValue.getArrayValues()));
+
+                                gafElementProperties.setProperty(propertyName, arrayTypePropertyValue);
+                                break;
+
+                            case STRUCT:
+                                StructPropertyValue omrsStructPropertyValue = (StructPropertyValue) omrsPropertyValue;
+                                StructTypePropertyValue structTypePropertyValue = new StructTypePropertyValue();
+
+                                structTypePropertyValue.setTypeName(omrsStructPropertyValue.getTypeName());
+                                structTypePropertyValue.setAttributes(this.mapElementProperties(omrsStructPropertyValue.getAttributes()));
+
+                                gafElementProperties.setProperty(propertyName, structTypePropertyValue);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        log.debug("Ignoring property: " + propertyName);
+                    }
+                }
+
+                log.debug("GAF properties: " + gafElementProperties);
+                return gafElementProperties;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Fill out the properties for the GAF Open Metadata Element bean with values from an OMRS entity.
+     *
      * @param bean bean to fill
      * @param entity values from repositories
      */
@@ -552,10 +654,63 @@ abstract class GovernanceEngineOMASConverter<B> extends OCFConverter<B>
         {
             bean.setEffectiveFromTime(instanceProperties.getEffectiveFromTime());
             bean.setEffectiveToTime(instanceProperties.getEffectiveToTime());
+            log.debug("OMRS properties: " + instanceProperties);
 
-            Map<String, Object> propertyMap = repositoryHelper.getInstancePropertiesAsMap(instanceProperties);
+            ElementProperties elementProperties = this.mapElementProperties(instanceProperties);
 
-            bean.setElementProperties(propertyHelper.addPropertyMap(new ElementProperties(), propertyMap));
+            log.debug("GAF properties: " + elementProperties);
+            bean.setElementProperties(elementProperties);
         }
+    }
+
+
+    /**
+     * Convert OMRS value in GAF value.
+     *
+     * @param primitiveDefCategory OMRS value
+     * @return gaf equivalent
+     */
+    private PrimitiveTypeCategory mapPrimitiveDefCategory(PrimitiveDefCategory primitiveDefCategory)
+    {
+        switch (primitiveDefCategory)
+        {
+            case OM_PRIMITIVE_TYPE_INT:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_INT;
+
+            case OM_PRIMITIVE_TYPE_BYTE:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BYTE;
+
+            case OM_PRIMITIVE_TYPE_CHAR:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_CHAR;
+
+            case OM_PRIMITIVE_TYPE_DATE:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE;
+
+            case OM_PRIMITIVE_TYPE_LONG:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG;
+
+            case OM_PRIMITIVE_TYPE_FLOAT:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT;
+
+            case OM_PRIMITIVE_TYPE_SHORT:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_SHORT;
+
+            case OM_PRIMITIVE_TYPE_DOUBLE:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DOUBLE;
+
+            case OM_PRIMITIVE_TYPE_STRING:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING;
+
+            case OM_PRIMITIVE_TYPE_BOOLEAN:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BOOLEAN;
+
+            case OM_PRIMITIVE_TYPE_BIGDECIMAL:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL;
+
+            case OM_PRIMITIVE_TYPE_BIGINTEGER:
+                return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGINTEGER;
+        }
+
+        return PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
     }
 }

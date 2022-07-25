@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -145,22 +146,22 @@ public class DataEngineSchemaAttributeHandler {
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         schemaAttributeHandler.createNestedSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaTypeGUID,
-                SCHEMA_TYPE_GUID_PARAMETER_NAME, attribute.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, attribute.getDisplayName(),
-                attribute.getDescription(), attribute.getExternalTypeGUID(), attribute.getDataType(), attribute.getDefaultValue(),
-                attribute.getFixedValue(), attribute.getValidValuesSetGUID(), null, attribute.getIsDeprecated(), attribute.getPosition(),
-                attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
-                attribute.getDefaultValueOverride(), dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(),
-                attribute.getLength(), attribute.getPrecision(), attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(),
-                attribute.getAdditionalProperties(), attribute.getTypeName() != null ? attribute.getTypeName() : TABULAR_COLUMN_TYPE_NAME,
-                null, null, methodName);
+                 SCHEMA_TYPE_GUID_PARAMETER_NAME, attribute.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, attribute.getDisplayName(),
+                 attribute.getDescription(), attribute.getExternalTypeGUID(), attribute.getDataType(), attribute.getDefaultValue(),
+                 attribute.getFixedValue(), attribute.getValidValuesSetGUID(), null, attribute.getIsDeprecated(), attribute.getPosition(),
+                 attribute.getMinCardinality(), attribute.getMaxCardinality(), attribute.getAllowsDuplicateValues(), attribute.getOrderedValues(),
+                 attribute.getDefaultValueOverride(), dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(),
+                 attribute.getLength(), attribute.getPrecision(), attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(),
+                 attribute.getAdditionalProperties(), attribute.getTypeName() != null ? attribute.getTypeName() : TABULAR_COLUMN_TYPE_NAME,
+                 null, null, null, false, false, null, methodName);
     }
 
     private void updateSchemaAttribute(String userId, String externalSourceGUID, String externalSourceName, String schemaAttributeGUID,
                                        Attribute attribute) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        final String methodName = "createSchemaAttribute";
+        final String methodName = "updateSchemaAttribute";
 
         SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
         schemaAttributeHandler.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID,
-                schemaAttributeBuilder.getInstanceProperties(methodName));
+                schemaAttributeBuilder.getInstanceProperties(methodName), false, false, null, methodName);
     }
 }

@@ -31,6 +31,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -132,7 +133,8 @@ class DataEngineRelationalDataHandlerTest {
                 database.getOtherOriginValues(), database.getPathName(), database.getCreateTime(), database.getModifiedTime(),
                 database.getEncodingType(), database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(),
                 database.getDatabaseType(), database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
-                database.getAdditionalProperties(), DATABASE_TYPE_NAME, null, null, methodName))
+                database.getAdditionalProperties(), DATABASE_TYPE_NAME, null, null, null, null,
+                                                  false, false, null, methodName))
                 .thenReturn(DATABASE_GUID);
 
         EntityDetail entityDetail = mock(EntityDetail.class);
@@ -147,6 +149,7 @@ class DataEngineRelationalDataHandlerTest {
                 databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                 databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
+                null, null, null, false, false,
                 null, UPSERT_DATABASE_SCHEMA_METHOD)).thenReturn(SCHEMA_GUID);
 
         when(relationalDataHandler.createDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, DATABASE_SCHEMA_GUID,
@@ -166,7 +169,8 @@ class DataEngineRelationalDataHandlerTest {
                 databaseSchema.getDescription(), databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(),
                 databaseSchema.getOriginOrganizationGUID(), databaseSchema.getOriginBusinessCapabilityGUID(),
                 databaseSchema.getOtherOriginValues(), databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                null, null, UPSERT_DATABASE_SCHEMA_METHOD);
+                null, null, null, null,
+                false, false, null, UPSERT_DATABASE_SCHEMA_METHOD);
         verify(relationalDataHandler, times(1)).createDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_NAME, DATABASE_SCHEMA_GUID, relationalTable.getQualifiedName(), relationalTable.getDisplayName(),
                 relationalTable.getDescription(), relationalTable.getIsDeprecated(), relationalTable.getAliases(),
@@ -195,7 +199,8 @@ class DataEngineRelationalDataHandlerTest {
                 database.getOriginBusinessCapabilityGUID(), database.getOtherOriginValues(), database.getCreateTime(), database.getModifiedTime(),
                 database.getEncodingType(), database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(),
                 database.getDatabaseType(), database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
-                database.getAdditionalProperties(), DATABASE_TYPE_NAME, null, null, methodName);
+                database.getAdditionalProperties(), DATABASE_TYPE_NAME, null, null, null, null,
+                true, false, false, null, methodName);
 
         verify(dataEngineConnectionAndEndpointHandler, times(1)).upsertConnectionAndEndpoint(QUALIFIED_NAME,
                 GUID, DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER);
@@ -214,7 +219,8 @@ class DataEngineRelationalDataHandlerTest {
                 databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                 databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
-                null, methodName)).thenReturn(SCHEMA_GUID);
+                null, null, null,
+                false, false, null, methodName)).thenReturn(SCHEMA_GUID);
 
         String result = dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, DATABASE_GUID, databaseSchema, false,
                 EXTERNAL_SOURCE_DE_NAME);
@@ -236,18 +242,21 @@ class DataEngineRelationalDataHandlerTest {
                 databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                 databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
-                null, methodName)).thenReturn(SCHEMA_GUID);
+                null, null, null,
+                false, false, null, methodName)).thenReturn(SCHEMA_GUID);
 
-        doNothing().when(databaseSchemaAssetHandler).setClassificationInRepository(USER, SCHEMA_GUID, DATABASE_SCHEMA_GUID,
-                DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
-                null, methodName);
+        doNothing().when(databaseSchemaAssetHandler).setClassificationInRepository(USER, null, null, SCHEMA_GUID,
+                DATABASE_SCHEMA_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
+                null, null, false, false, true,null,
+                 null, methodName);
 
         String result = dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, DATABASE_GUID, databaseSchema, true,
                 EXTERNAL_SOURCE_DE_NAME);
 
-        verify(databaseSchemaAssetHandler, times(1)).setClassificationInRepository(USER, SCHEMA_GUID,
-                DATABASE_SCHEMA_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID,
-                INCOMPLETE_CLASSIFICATION_TYPE_NAME, null, methodName);
+        verify(databaseSchemaAssetHandler, times(1)).setClassificationInRepository(USER, null,
+                null, SCHEMA_GUID, DATABASE_SCHEMA_GUID, DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID,
+                INCOMPLETE_CLASSIFICATION_TYPE_NAME, null, true, false,
+                false, null, methodName);
         assertEquals(SCHEMA_GUID, result);
     }
 
@@ -265,7 +274,8 @@ class DataEngineRelationalDataHandlerTest {
                 databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                 databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                null, null, methodName);
+                null, null, null, null, true,
+                false, false, null, methodName);
 
         String result = dataEngineRelationalDataHandler.upsertDatabaseSchema(USER, DATABASE_GUID, databaseSchema, false,
                 EXTERNAL_SOURCE_DE_NAME);
@@ -320,9 +330,9 @@ class DataEngineRelationalDataHandlerTest {
                 relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
                 RELATIONAL_TABLE_TYPE_NAME, null, null, methodName)).thenReturn(TABLE_GUID);
 
-        doNothing().when(databaseSchemaAssetHandler).setClassificationInRepository(USER, TABLE_GUID, RELATIONAL_TABLE_TYPE_GUID,
-                RELATIONAL_TABLE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
-                null, methodName);
+        doNothing().when(databaseSchemaAssetHandler).setClassificationInRepository(USER, null, null,
+                TABLE_GUID, RELATIONAL_TABLE_TYPE_GUID, RELATIONAL_TABLE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
+                null, null, false, false, true,null, null, methodName);
 
         String result = dataEngineRelationalDataHandler.upsertRelationalTable(USER, QUALIFIED_NAME, relationalTable,
                 EXTERNAL_SOURCE_DE_NAME, true);
@@ -338,9 +348,9 @@ class DataEngineRelationalDataHandlerTest {
                 column.getIsNullable(), column.getNativeClass(), column.getAliases(), column.getAdditionalProperties(),
                 RELATIONAL_COLUMN_TYPE_NAME, null, null, "upsertRelationalColumns");
 
-        verify(databaseSchemaAssetHandler, times(1)).setClassificationInRepository(USER, TABLE_GUID, RELATIONAL_TABLE_TYPE_GUID,
-                RELATIONAL_TABLE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
-                null, methodName);
+        verify(databaseSchemaAssetHandler, times(1)).setClassificationInRepository(USER, null, null,
+                TABLE_GUID, RELATIONAL_TABLE_TYPE_GUID, RELATIONAL_TABLE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
+                null, true, false, false, null, methodName);
     }
 
     @Test
@@ -363,15 +373,16 @@ class DataEngineRelationalDataHandlerTest {
         verify(relationalDataHandler, times(1)).updateDatabaseTable(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, TABLE_GUID,
                 relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                 relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                RELATIONAL_TABLE_TYPE_NAME, null, null, methodName);
+                RELATIONAL_TABLE_TYPE_NAME, null, null, null,
+                null, true, false, false, null, methodName);
         verify(relationalDataHandler, times(1)).updateDatabaseColumn(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
                 COLUMN_GUID, column.getQualifiedName(), column.getDisplayName(), column.getDescription(),
                 column.getDataType(), column.getDefaultValue(), column.getFixedValue(), column.getFormula(), column.getIsDeprecated(),
                 column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                 column.getOrderedValues(), column.getDefaultValueOverride(), column.getSortOrder().getOpenTypeOrdinal(), column.getMinimumLength(),
                 column.getLength(), column.getPrecision(), column.getIsNullable(), column.getNativeClass(), column.getAliases(),
-                column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null, null,
-                "upsertRelationalColumns");
+                column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null, null,null,
+                null, true, false, false, null, "upsertRelationalColumns");
     }
 
     @Test
@@ -392,7 +403,7 @@ class DataEngineRelationalDataHandlerTest {
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
 
         verify(relationalDataHandler, times(1)).removeDatabase(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
-                GUID, QUALIFIED_NAME, methodName);
+                GUID, QUALIFIED_NAME, false, false, null, methodName);
     }
 
     @Test
@@ -420,7 +431,7 @@ class DataEngineRelationalDataHandlerTest {
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
 
         verify(relationalDataHandler, times(1)).removeDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_NAME, SCHEMA_GUID, QUALIFIED_NAME, methodName);
+                EXTERNAL_SOURCE_DE_NAME, SCHEMA_GUID, QUALIFIED_NAME, false, false, null, methodName);
     }
 
     @Test
@@ -439,7 +450,8 @@ class DataEngineRelationalDataHandlerTest {
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, methodName);
 
         verify(relationalDataHandler, times(1)).removeDatabaseTable(USER,
-                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, GUID, GUID, QUALIFIED_NAME, methodName);
+                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, GUID, GUID, QUALIFIED_NAME,
+                false, false, null, methodName);
     }
 
     private EntityDetail mockEntityDetail(String guid) {

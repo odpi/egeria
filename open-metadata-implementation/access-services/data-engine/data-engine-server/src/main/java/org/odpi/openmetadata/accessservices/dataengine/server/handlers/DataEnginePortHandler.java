@@ -23,6 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.Date;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
@@ -179,7 +180,8 @@ public class DataEnginePortHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         return portHandler.createPort(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME, port.getQualifiedName(),
-                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTpeName, null, methodName);
+               port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTpeName,
+              null, null, null, false, false, null, methodName);
     }
 
     /**
@@ -212,7 +214,8 @@ public class DataEnginePortHandler {
         }
 
         portHandler.updatePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, port.getQualifiedName(),
-                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTypeName, null, methodName);
+                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTypeName, null,
+                null, null, false, false, null, methodName);
     }
 
     /**
@@ -241,7 +244,8 @@ public class DataEnginePortHandler {
                 .isPresent()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
             portHandler.setupPortSchemaType(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME,
-                    schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, methodName);
+                    schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME,
+                    null, null, false, false, null, methodName);
         }
     }
 
@@ -300,7 +304,7 @@ public class DataEnginePortHandler {
         if (!dataEngineCommonHandler.findRelationship(userId, portGUID, delegatedPortGUID, PORT_TYPE_NAME, PORT_DELEGATION_TYPE_NAME).isPresent()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
             portHandler.setupPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, delegatedPortGUID,
-                    PORT_GUID_PARAMETER_NAME, methodName);
+                    PORT_GUID_PARAMETER_NAME, null, null, false, false, null, methodName);
         }
     }
 
@@ -325,7 +329,8 @@ public class DataEnginePortHandler {
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, methodName);
+        portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME,
+                 false, false, null, methodName);
     }
 
     /**

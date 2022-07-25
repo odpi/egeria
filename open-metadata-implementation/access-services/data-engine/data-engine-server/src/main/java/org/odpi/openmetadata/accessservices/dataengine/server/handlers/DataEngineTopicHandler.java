@@ -11,8 +11,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -82,14 +84,15 @@ public class DataEngineTopicHandler {
             topicHandler.verifyExternalSourceIdentity(userId, externalSourceGUID, externalSourceName,
                     false, false, null, methodName);
             topicGUID = topicHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, topic.getQualifiedName(),
-                    topic.getDisplayName(), topic.getDescription(), topic.getZoneMembership(), topic.getOwner(), ownerTypeOrdinal,
-                    topic.getOriginOrganizationGUID(), topic.getOriginBusinessCapabilityGUID(), topic.getOtherOriginValues(),
-                    topic.getAdditionalProperties(), TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, extendedProperties, methodName);
+                     topic.getDisplayName(), topic.getDescription(), topic.getZoneMembership(), topic.getOwner(), ownerTypeOrdinal,
+                     topic.getOriginOrganizationGUID(), topic.getOriginBusinessCapabilityGUID(), topic.getOtherOriginValues(),
+                     topic.getAdditionalProperties(), TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, extendedProperties,
+                     null, null, InstanceStatus.ACTIVE, null, methodName);
         } else {
             topicGUID = originalTopicEntity.get().getGUID();
             topicHandler.updateAsset(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME, topic.getQualifiedName(),
-                    topic.getDisplayName(), topic.getDescription(), topic.getAdditionalProperties(), TOPIC_TYPE_GUID, TOPIC_TYPE_NAME,
-                    extendedProperties, methodName);
+                                     topic.getDisplayName(), topic.getDescription(), topic.getAdditionalProperties(), TOPIC_TYPE_GUID, TOPIC_TYPE_NAME,
+                                     extendedProperties, null, null, true, false, false, null, methodName);
         }
 
         return topicGUID;
@@ -152,6 +155,6 @@ public class DataEngineTopicHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         topicHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
-                TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, null, null, methodName);
+                TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, null, null, false, false, null, methodName);
     }
 }

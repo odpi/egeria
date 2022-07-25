@@ -137,7 +137,7 @@ public class GovernanceEngineRESTServices
      * @param effectiveTime milliseconds since epoch or 0 to mean null (any time)
      * @return date object or null
      */
-    private Date getEffectIveTimeFromLong(long effectiveTime)
+    private Date getEffectiveTimeFromLong(long effectiveTime)
     {
         Date result = null;
 
@@ -192,7 +192,7 @@ public class GovernanceEngineRESTServices
                                                                  elementGUID,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
-                                                                 this.getEffectIveTimeFromLong(effectiveTime),
+                                                                 this.getEffectiveTimeFromLong(effectiveTime),
                                                                  methodName));
         }
         catch (Exception error)
@@ -248,7 +248,7 @@ public class GovernanceEngineRESTServices
                                                                            requestBody.getNamePropertyName(),
                                                                            forLineage,
                                                                            forDuplicateProcessing,
-                                                                           this.getEffectIveTimeFromLong(effectiveTime),
+                                                                           this.getEffectiveTimeFromLong(effectiveTime),
                                                                            methodName));
             }
             else
@@ -309,7 +309,7 @@ public class GovernanceEngineRESTServices
                                                                             requestBody.getNamePropertyName(),
                                                                             forLineage,
                                                                             forDuplicateProcessing,
-                                                                            this.getEffectIveTimeFromLong(effectiveTime),
+                                                                            this.getEffectiveTimeFromLong(effectiveTime),
                                                                             methodName));
             }
             else
@@ -374,7 +374,7 @@ public class GovernanceEngineRESTServices
                                                                                requestBody.getSearchString(),
                                                                                forLineage,
                                                                                forDuplicateProcessing,
-                                                                               this.getEffectIveTimeFromLong(effectiveTime),
+                                                                               this.getEffectiveTimeFromLong(effectiveTime),
                                                                                startFrom,
                                                                                pageSize,
                                                                                methodName));
@@ -444,7 +444,7 @@ public class GovernanceEngineRESTServices
                                                                        relationshipTypeName,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
-                                                                       this.getEffectIveTimeFromLong(effectiveTime),
+                                                                       this.getEffectiveTimeFromLong(effectiveTime),
                                                                        startFrom,
                                                                        pageSize,
                                                                        methodName));
@@ -506,11 +506,12 @@ public class GovernanceEngineRESTServices
                                                                      requestBody.getSearchProperties(),
                                                                      requestBody.getLimitResultsByStatus(),
                                                                      requestBody.getMatchClassifications(),
+                                                                     requestBody.getAsOfTime(),
                                                                      requestBody.getSequencingProperty(),
                                                                      requestBody.getSequencingOrder(),
                                                                      forLineage,
                                                                      forDuplicateProcessing,
-                                                                     this.getEffectIveTimeFromLong(effectiveTime),
+                                                                     this.getEffectiveTimeFromLong(effectiveTime),
                                                                      startFrom,
                                                                      pageSize,
                                                                      methodName));
@@ -575,11 +576,13 @@ public class GovernanceEngineRESTServices
                 response.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
                                                                                          requestBody.getMetadataElementTypeName(),
                                                                                          requestBody.getSearchProperties(),
+                                                                                         requestBody.getLimitResultsByStatus(),
+                                                                                         requestBody.getAsOfTime(),
                                                                                          requestBody.getSequencingProperty(),
                                                                                          requestBody.getSequencingOrder(),
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
-                                                                                         this.getEffectIveTimeFromLong(effectiveTime),
+                                                                                         this.getEffectiveTimeFromLong(effectiveTime),
                                                                                          startFrom,
                                                                                          pageSize,
                                                                                          methodName));
@@ -641,6 +644,7 @@ public class GovernanceEngineRESTServices
                                                                       requestBody.getEffectiveTo(),
                                                                       requestBody.getProperties(),
                                                                       requestBody.getTemplateGUID(),
+                                                                      requestBody.getEffectiveTime(),
                                                                       methodName));
             }
             else
@@ -720,8 +724,7 @@ public class GovernanceEngineRESTServices
 
     /**
      * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.  The effectivity dates control the visibility of the element
-     * through specific APIs.
+     * assigned when it was created.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
@@ -759,10 +762,66 @@ public class GovernanceEngineRESTServices
                                                            requestBody.getNewStatus(),
                                                            requestBody.getForLineage(),
                                                            requestBody.getForDuplicateProcessing(),
-                                                           requestBody.getEffectiveFrom(),
-                                                           requestBody.getEffectiveTo(),
                                                            requestBody.getEffectiveTime(),
                                                            methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the effectivity dates control the visibility of the element through specific APIs.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public VoidResponse updateMetadataElementEffectivityInStore(String                            serverName,
+                                                                String                            userId,
+                                                                String                            metadataElementGUID,
+                                                                UpdateEffectivityDatesRequestBody requestBody)
+    {
+        final String methodName = "updateMetadataElementEffectivityInStore";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                handler.updateMetadataElementEffectivityInStore(userId,
+                                                                metadataElementGUID,
+                                                                requestBody.getForLineage(),
+                                                                requestBody.getForDuplicateProcessing(),
+                                                                requestBody.getEffectiveFrom(),
+                                                                requestBody.getEffectiveTo(),
+                                                                requestBody.getEffectiveTime(),
+                                                                methodName);
             }
             else
             {
@@ -979,11 +1038,11 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse updateClassificationStatusInStore(String                            serverName,
-                                                          String                            userId,
-                                                          String                            metadataElementGUID,
-                                                          String                            classificationName,
-                                                          UpdateEffectivityDatesRequestBody requestBody)
+    public VoidResponse updateClassificationEffectivityInStore(String                            serverName,
+                                                               String                            userId,
+                                                               String                            metadataElementGUID,
+                                                               String                            classificationName,
+                                                               UpdateEffectivityDatesRequestBody requestBody)
     {
         final String methodName = "updateClassificationStatusInStore";
 
@@ -1317,7 +1376,10 @@ public class GovernanceEngineRESTServices
                 handler.updateRelatedElementsInStore(userId,
                                                      relationshipGUID,
                                                      requestBody.getReplaceProperties(),
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
                                                      requestBody.getProperties(),
+                                                     requestBody.getEffectiveTime(),
                                                      methodName);
             }
             else
@@ -1350,10 +1412,10 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse updateRelatedElementsStatusInStore(String                            serverName,
-                                                           String                            userId,
-                                                           String                            relationshipGUID,
-                                                           UpdateEffectivityDatesRequestBody requestBody)
+    public VoidResponse updateRelatedElementsEffectivityInStore(String                            serverName,
+                                                                String                            userId,
+                                                                String                            relationshipGUID,
+                                                                UpdateEffectivityDatesRequestBody requestBody)
     {
         final String methodName = "updateRelatedElementsStatusInStore";
 
@@ -1374,6 +1436,9 @@ public class GovernanceEngineRESTServices
                                                            relationshipGUID,
                                                            requestBody.getEffectiveFrom(),
                                                            requestBody.getEffectiveTo(),
+                                                           requestBody.getForLineage(),
+                                                           requestBody.getForDuplicateProcessing(),
+                                                           requestBody.getEffectiveTime(),
                                                            methodName);
             }
             else
@@ -1405,10 +1470,10 @@ public class GovernanceEngineRESTServices
      *  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      *  PropertyServerException there is a problem with the metadata store
      */
-    public VoidResponse deleteRelatedElementsInStore(String          serverName,
-                                                     String          userId,
-                                                     String          relationshipGUID,
-                                                     NullRequestBody requestBody)
+    public VoidResponse deleteRelatedElementsInStore(String            serverName,
+                                                     String            userId,
+                                                     String            relationshipGUID,
+                                                     UpdateRequestBody requestBody)
     {
         final String methodName = "deleteRelatedElementsInStore";
 
@@ -1425,7 +1490,12 @@ public class GovernanceEngineRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                handler.deleteRelatedElementsInStore(userId, relationshipGUID, methodName);
+                handler.deleteRelatedElementsInStore(userId,
+                                                     relationshipGUID,
+                                                     requestBody.getForLineage(),
+                                                     requestBody.getForDuplicateProcessing(),
+                                                     requestBody.getEffectiveTime(),
+                                                     methodName);
             }
             else
             {
@@ -1564,7 +1634,7 @@ public class GovernanceEngineRESTServices
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
@@ -1769,7 +1839,7 @@ public class GovernanceEngineRESTServices
      * @return unique identifier of the resulting incident report or
      *
      *  InvalidParameterException null or non-unique qualified name for the incident report
-     *  UserNotAuthorizedException this governance action service is not authorized to create a incident report
+     *  UserNotAuthorizedException this governance action service is not authorized to create an incident report
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse createIncidentReport(String                    serverName,

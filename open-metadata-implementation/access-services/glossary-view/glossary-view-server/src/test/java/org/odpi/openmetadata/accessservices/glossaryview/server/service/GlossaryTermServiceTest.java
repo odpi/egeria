@@ -14,6 +14,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -31,7 +32,7 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
     @Test
     public void successfullyGetTerm() throws Exception{
         when(repositoryHandler.getEntityByGUID(eq(USER_ID), eq(terms.get(0).getGUID()), eq(GUID_PARAM_NAME),
-                eq(TERM_TYPE_NAME), anyString())).thenReturn(terms.get(0));
+                eq(TERM_TYPE_NAME), eq(false), eq(false), any(), anyString())).thenReturn(terms.get(0));
 
         GlossaryViewEntityDetailResponse response = underTest.getTerm(USER_ID, SERVER_NAME, terms.get(0).getGUID());
 
@@ -42,7 +43,7 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBase {
     @Test
     public void findNoTerm() throws Exception{
         when(repositoryHandler.getEntityByGUID(eq(USER_ID), eq(terms.get(0).getGUID()), eq(GUID_PARAM_NAME),
-                eq(TERM_TYPE_NAME), anyString())).thenReturn(terms.get(0));
+                eq(TERM_TYPE_NAME), eq(false), eq(false), eq(null), anyString())).thenReturn(terms.get(0));
 
         GlossaryViewEntityDetailResponse response = underTest.getTerm(USER_ID, SERVER_NAME,"no-term-at-this-guid");
 

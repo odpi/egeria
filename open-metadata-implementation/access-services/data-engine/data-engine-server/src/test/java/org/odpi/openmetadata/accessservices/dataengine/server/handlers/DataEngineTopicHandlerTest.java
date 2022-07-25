@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
-import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Topic;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
@@ -18,9 +17,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -68,9 +67,9 @@ class DataEngineTopicHandlerTest {
         dataEngineTopicHandler.upsertTopic(USER, topic, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(topicHandler, times(1)).createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, null,
-                0, null, null, null, null,
-                TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, new HashMap<>(), "upsertTopic");
+               EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, null,
+               0, null, null, null, null,
+               TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, new HashMap<>(), null, null, InstanceStatus.ACTIVE, null, "upsertTopic");
     }
 
     @Test
@@ -82,8 +81,9 @@ class DataEngineTopicHandlerTest {
         dataEngineTopicHandler.upsertTopic(USER, topic, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(topicHandler, times(1)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME,
-                null, null, TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, new HashMap<>(), "upsertTopic");
+                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME,
+                 null, null, TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, new HashMap<>(), null, null,
+                 true, false, false, null, "upsertTopic");
     }
 
     @Test
@@ -103,7 +103,7 @@ class DataEngineTopicHandlerTest {
 
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, "removeTopic");
         verify(topicHandler, times(1)).deleteBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                GUID, TOPIC_GUID_PARAMETER_NAME, TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, null, null, "removeTopic");
+                GUID, TOPIC_GUID_PARAMETER_NAME, TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, null, null, false, false, null,"removeTopic");
     }
 
     private Topic getTopic() {

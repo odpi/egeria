@@ -204,7 +204,7 @@ public class ElementHeader implements Serializable
     @Override
     public String toString()
     {
-        return "ElementHeader{" +
+        return "ElementBase{" +
                        "guid='" + guid + '\'' +
                        ", type=" + type +
                        ", origin=" + origin +

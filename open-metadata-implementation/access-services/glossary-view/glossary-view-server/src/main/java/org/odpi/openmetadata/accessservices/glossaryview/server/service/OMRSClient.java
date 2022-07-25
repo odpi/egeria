@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +44,8 @@ public class OMRSClient {
         Optional<EntityDetail> entityDetail ;
         try {
             entityDetail = Optional.ofNullable( instanceHandler.getRepositoryHandler(userId, serverName, methodName)
-                    .getEntityByGUID(userId, guid, "guid", entityTypeName, methodName) );
+                    .getEntityByGUID(userId, guid, "guid", entityTypeName, false, false, new Date(),
+                    methodName) );
         }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         } catch (Exception e){

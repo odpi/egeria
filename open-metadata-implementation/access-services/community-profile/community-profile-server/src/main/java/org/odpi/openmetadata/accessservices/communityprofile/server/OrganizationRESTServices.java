@@ -56,13 +56,13 @@ import java.util.List;
  */
 public class OrganizationRESTServices
 {
-    static private CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
+    static private final CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OrganizationRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OrganizationRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
 
-    private RESTExceptionHandler   restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler   restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -74,7 +74,7 @@ public class OrganizationRESTServices
 
 
     /**
-     * Create a definition of a actor profile.  This could be for the whole organization, a team, a person or a system.
+     * Create a definition of an actor profile.  This could be for the whole organization, a team, a person or a system.
      *
      * @param serverName called server
      * @param userId calling user
@@ -117,6 +117,7 @@ public class OrganizationRESTServices
                                                                 requestBody.getProperties().getExtendedProperties(),
                                                                 requestBody.getProperties().getEffectiveFrom(),
                                                                 requestBody.getProperties().getEffectiveTo(),
+                                                                new Date(),
                                                                 methodName);
 
                 if (requestBody.getContributionRecord() != null)
@@ -132,6 +133,12 @@ public class OrganizationRESTServices
                                                          null,
                                                          null,
                                                          null,
+                                                         true,
+                                                         null,
+                                                         null,
+                                                         false,
+                                                         false,
+                                                         new Date(),
                                                          methodName);
                 }
 
@@ -202,6 +209,9 @@ public class OrganizationRESTServices
                                            isMergeUpdate,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
 
                 if (requestBody.getContributionRecord() != null)
@@ -217,6 +227,12 @@ public class OrganizationRESTServices
                                                          null,
                                                          null,
                                                          null,
+                                                         true,
+                                                         null,
+                                                         null,
+                                                         false,
+                                                         false,
+                                                         new Date(),
                                                          methodName);
                 }
             }
@@ -275,6 +291,9 @@ public class OrganizationRESTServices
                                            requestBody.getExternalSourceName(),
                                            actorProfileGUID,
                                            guidParameterName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -342,6 +361,11 @@ public class OrganizationRESTServices
                                             contactType,
                                             requestBody.getProperties().getService(),
                                             requestBody.getProperties().getValue(),
+                                            null,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
             else
@@ -485,6 +509,9 @@ public class OrganizationRESTServices
                                           delegationEscalationAuthority,
                                           requestBody.getEffectiveFrom(),
                                           requestBody.getEffectiveTo(),
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
             }
             else
@@ -546,7 +573,9 @@ public class OrganizationRESTServices
                                             profileGUIDParameterName,
                                             subTeamProfileGUID,
                                             subTeamGUIDParameterName,
-                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
             else
@@ -598,7 +627,9 @@ public class OrganizationRESTServices
                                                               actorProfileGUID,
                                                               guidParameterName,
                                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                              null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -645,7 +676,9 @@ public class OrganizationRESTServices
                                                                actorProfileUserId,
                                                                nameParameterName,
                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                               null,
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName));
         }
         catch (Exception error)
@@ -699,7 +732,9 @@ public class OrganizationRESTServices
                                                                 OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
         }
         catch (Exception error)
@@ -753,7 +788,9 @@ public class OrganizationRESTServices
                                                            OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                            startFrom,
                                                            pageSize,
-                                                           null,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName));
         }
         catch (Exception error)
@@ -812,6 +849,7 @@ public class OrganizationRESTServices
                                                               requestBody.getProperties().getExtendedProperties(),
                                                               requestBody.getProperties().getEffectiveFrom(),
                                                               requestBody.getProperties().getEffectiveTo(),
+                                                              new Date(),
                                                               methodName);
                 response.setGUID(profileGUID);
             }
@@ -888,6 +926,9 @@ public class OrganizationRESTServices
                                            isMergeUpdate,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -1028,6 +1069,9 @@ public class OrganizationRESTServices
                                                                  requestBody.getProperties().getIsPublic(),
                                                                  requestBody.getProperties().getEffectiveFrom(),
                                                                  requestBody.getProperties().getEffectiveTo(),
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName);
                 response.setGUID(profileGUID);
             }
@@ -1096,8 +1140,9 @@ public class OrganizationRESTServices
                                                                                              OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                                              1,
                                                                                              false,
-                                                                                             0,
-                                                                                             0,
+                                                                                             false,
+                                                                                             startFrom,
+                                                                                             pageSize,
                                                                                              requestBody.getEffectiveTime(),
                                                                                              methodName);
                 if (appointmentRelationships != null)
@@ -1231,7 +1276,9 @@ public class OrganizationRESTServices
                                                                                relationship.getEntityOneProxy().getGUID(),
                                                                                profileGUIDParameterName,
                                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                                                              null,
+                                                                               false,
+                                                                               false,
+                                                                               new Date(),
                                                                                methodName);
 
             appointee.setProfile(profile);
@@ -1294,6 +1341,7 @@ public class OrganizationRESTServices
                                           requestBody.getProperties().getEffectiveFrom(),
                                           requestBody.getProperties().getEffectiveTo(),
                                           isMergeUpdate,
+                                          false, false, new Date(),
                                           methodName);
             }
             else
@@ -1347,16 +1395,17 @@ public class OrganizationRESTServices
             if (requestBody != null)
             {
                 handler.relievePersonFromRole(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          null,
-                                          null,
-                                          null,
-                                          null,
-                                          appointmentGUID,
-                                          appointmentGUIDParameterName,
-                                          new Date(),
-                                          methodName);
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
+                                              null,
+                                              null,
+                                              null,
+                                              null,
+                                              appointmentGUID,
+                                              appointmentGUIDParameterName,
+                                              new Date(),
+                                              new Date(),
+                                              methodName);
             }
             else
             {
@@ -1369,6 +1418,7 @@ public class OrganizationRESTServices
                                               null,
                                               appointmentGUID,
                                               appointmentGUIDParameterName,
+                                              new Date(),
                                               new Date(),
                                               methodName);
             }
@@ -1433,6 +1483,9 @@ public class OrganizationRESTServices
                                           requestBody.getPosition(),
                                           null,
                                           null,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
                 }
                 else
@@ -1447,6 +1500,9 @@ public class OrganizationRESTServices
                                           requestBody.getPosition(),
                                           null,
                                           null,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
                 }
             }
@@ -1506,26 +1562,30 @@ public class OrganizationRESTServices
                 if (requestBody.getIsLeadershipRole())
                 {
                     handler.removeTeamLeader(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          teamRoleGUID,
-                                          teamRoleGUIDParameterName,
-                                          teamProfileGUID,
-                                          teamProfileGUIDParameterName,
-                                          new Date(),
-                                          methodName);
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             teamRoleGUID,
+                                             teamRoleGUIDParameterName,
+                                             teamProfileGUID,
+                                             teamProfileGUIDParameterName,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
                 }
                 else
                 {
                     handler.removeTeamMember(userId,
-                                          requestBody.getExternalSourceGUID(),
-                                          requestBody.getExternalSourceName(),
-                                          teamRoleGUID,
-                                          teamRoleGUIDParameterName,
-                                          teamProfileGUID,
-                                          teamProfileGUIDParameterName,
-                                          new Date(),
-                                          methodName);
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             teamRoleGUID,
+                                             teamRoleGUIDParameterName,
+                                             teamProfileGUID,
+                                             teamProfileGUIDParameterName,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
                 }
             }
             else
@@ -1576,7 +1636,13 @@ public class OrganizationRESTServices
             PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElement(handler.getPersonRoleByGUID(userId, personRoleGUID, guidParameterName, null, methodName));
+            response.setElement(handler.getPersonRoleByGUID(userId,
+                                                            personRoleGUID,
+                                                            guidParameterName,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -1622,7 +1688,15 @@ public class OrganizationRESTServices
             PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElements(handler.getPersonRolesByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, null, methodName));
+            response.setElements(handler.getPersonRolesByName(userId,
+                                                              requestBody.getName(),
+                                                              nameParameterName,
+                                                              startFrom,
+                                                              pageSize,
+                                                              false,
+                                                              false,
+                                                              new Date(),
+                                                              methodName));
         }
         catch (Exception error)
         {
@@ -1668,7 +1742,14 @@ public class OrganizationRESTServices
             PersonRoleHandler<PersonRoleElement> handler = instanceHandler.getPersonRoleHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElements(handler.findPersonRoles(userId, requestBody.getSearchString(), searchStringParameterName, startFrom, pageSize, null, methodName));
+            response.setElements(handler.findPersonRoles(userId,
+                                                         requestBody.getSearchString(),
+                                                         searchStringParameterName,
+                                                         startFrom,
+                                                         pageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(), methodName));
         }
         catch (Exception error)
         {

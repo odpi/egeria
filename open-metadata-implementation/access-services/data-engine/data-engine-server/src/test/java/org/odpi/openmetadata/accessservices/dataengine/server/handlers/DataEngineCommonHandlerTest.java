@@ -38,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -278,8 +279,8 @@ class DataEngineCommonHandlerTest {
     void getEntityDetails() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "getEntityDetails";
         EntityDetail mockedEntity = mock(EntityDetail.class);
-        when(repositoryHandler.getEntityByGUID(USER, GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME, methodName))
-                .thenReturn(mockedEntity);
+        when(repositoryHandler.getEntityByGUID(USER, GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME,
+                false, false, null, methodName)).thenReturn(mockedEntity);
 
         Optional<EntityDetail> result = dataEngineCommonHandler.getEntityDetails(USER, GUID, ENTITY_TYPE_NAME);
         assertTrue(result.isPresent());
@@ -291,8 +292,8 @@ class DataEngineCommonHandlerTest {
     @Test
     void getEntityDetails_noEntity() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "getEntityDetails";
-        when(repositoryHandler.getEntityByGUID(USER, GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME, methodName))
-                .thenReturn(null);
+        when(repositoryHandler.getEntityByGUID(USER, GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME,
+                false, false, null, methodName)).thenReturn(null);
 
         Optional<EntityDetail> result = dataEngineCommonHandler.getEntityDetails(USER, GUID, ENTITY_TYPE_NAME);
         assertFalse(result.isPresent());
