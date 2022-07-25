@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
 
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -16,17 +15,18 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 
+
 /**
  * DataAssetExchangeRESTServices is the server-side implementation of the Asset Manager OMAS's
  * support for relational databases.  It matches the DataAssetExchangeClient.
  */
 public class DataAssetExchangeRESTServices
 {
-    private static AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
-    private static RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(DataAssetExchangeRESTServices.class),
-                                                                                    instanceHandler.getServiceName());
+    private static final AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
+    private static final RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(DataAssetExchangeRESTServices.class),
+                                                                                          instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -77,6 +77,9 @@ public class DataAssetExchangeRESTServices
                                                          requestBody.getMetadataCorrelationProperties(),
                                                          assetManagerIsHome,
                                                          requestBody.getElementProperties(),
+                                                         false,
+                                                         false,
+                                                         requestBody.getEffectiveTime(),
                                                          methodName));
             }
             else
@@ -161,6 +164,8 @@ public class DataAssetExchangeRESTServices
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for this element
      *
      * @return void or
@@ -172,6 +177,8 @@ public class DataAssetExchangeRESTServices
                                         String               userId,
                                         String               assetGUID,
                                         boolean              isMergeUpdate,
+                                        boolean              forLineage,
+                                        boolean              forDuplicateProcessing,
                                         DataAssetRequestBody requestBody)
     {
         final String methodName = "updateDataAsset";
@@ -194,6 +201,9 @@ public class DataAssetExchangeRESTServices
                                         assetGUID,
                                         isMergeUpdate,
                                         requestBody.getElementProperties(),
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        requestBody.getEffectiveTime(),
                                         methodName);
             }
             else
@@ -220,6 +230,8 @@ public class DataAssetExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to publish
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -231,7 +243,9 @@ public class DataAssetExchangeRESTServices
     public VoidResponse publishDataAsset(String                             serverName,
                                          String                             userId,
                                          String                             assetGUID,
-                                         AssetManagerIdentifiersRequestBody requestBody)
+                                         boolean               forLineage,
+                                         boolean               forDuplicateProcessing,
+                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "publishDataAsset";
 
@@ -246,7 +260,12 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.publishDataAsset(userId, assetGUID, methodName);
+            handler.publishDataAsset(userId,
+                                     assetGUID,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     requestBody.getEffectiveTime(),
+                                     methodName);
         }
         catch (Exception error)
         {
@@ -267,6 +286,8 @@ public class DataAssetExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to withdraw
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -275,10 +296,12 @@ public class DataAssetExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse withdrawDataAsset(String                             serverName,
-                                          String                             userId,
-                                          String                             assetGUID,
-                                          AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse withdrawDataAsset(String                        serverName,
+                                          String                        userId,
+                                          String                        assetGUID,
+                                          boolean                       forLineage,
+                                          boolean                       forDuplicateProcessing,
+                                          EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "withdrawDataAsset";
 
@@ -293,7 +316,12 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.withdrawDataAsset(userId, assetGUID, methodName);
+            handler.withdrawDataAsset(userId,
+                                      assetGUID,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      requestBody.getEffectiveTime(),
+                                      methodName);
         }
         catch (Exception error)
         {
@@ -313,6 +341,8 @@ public class DataAssetExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -320,10 +350,12 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeDataAsset(String                        serverName,
-                                        String                        userId,
-                                        String                        assetGUID,
-                                        MetadataCorrelationProperties requestBody)
+    public VoidResponse removeDataAsset(String            serverName,
+                                        String            userId,
+                                        String            assetGUID,
+                                        boolean           forLineage,
+                                        boolean           forDuplicateProcessing,
+                                        UpdateRequestBody requestBody)
     {
         final String methodName = "removeDataAsset";
 
@@ -338,7 +370,20 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.removeDataAsset(userId, requestBody, assetGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.removeDataAsset(userId,
+                                        requestBody.getMetadataCorrelationProperties(),
+                                        assetGUID,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        requestBody.getEffectiveTime(),
+                                        methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -357,6 +402,8 @@ public class DataAssetExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -365,10 +412,12 @@ public class DataAssetExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse setDataAssetAsReferenceData(String                        serverName,
-                                                    String                        userId,
-                                                    String                        assetGUID,
-                                                    MetadataCorrelationProperties requestBody)
+    public VoidResponse setDataAssetAsReferenceData(String            serverName,
+                                                    String            userId,
+                                                    String            assetGUID,
+                                                    boolean           forLineage,
+                                                    boolean           forDuplicateProcessing,
+                                                    UpdateRequestBody requestBody)
     {
         final String methodName = "setDataAssetAsReferenceData";
 
@@ -383,7 +432,19 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.setDataAssetAsReferenceData(userId, assetGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.setDataAssetAsReferenceData(userId,
+                                                    assetGUID,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    requestBody.getEffectiveTime(),
+                                                    methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -402,6 +463,8 @@ public class DataAssetExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return void or
@@ -410,10 +473,12 @@ public class DataAssetExchangeRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse clearDataAssetAsReferenceData(String                        serverName,
-                                                      String                        userId,
-                                                      String                        assetGUID,
-                                                      MetadataCorrelationProperties requestBody)
+    public VoidResponse clearDataAssetAsReferenceData(String            serverName,
+                                                      String            userId,
+                                                      String            assetGUID,
+                                                      boolean           forLineage,
+                                                      boolean           forDuplicateProcessing,
+                                                      UpdateRequestBody requestBody)
     {
         final String methodName = "clearDataAssetAsReferenceData";
 
@@ -428,7 +493,436 @@ public class DataAssetExchangeRESTServices
 
             DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-            handler.clearDataAssetAsReferenceData(userId, assetGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.clearDataAssetAsReferenceData(userId,
+                                                      assetGUID,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      requestBody.getEffectiveTime(),
+                                                      methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Link two asset together.
+     * Use information from the relationship type definition to ensure the fromAssetGUID and toAssetGUID are the right way around.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier for this relationship
+     *
+     * @return unique identifier of the relationship or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse setupRelatedDataAsset(String                  serverName,
+                                              String                  userId,
+                                              boolean                 assetManagerIsHome,
+                                              String                  relationshipTypeName,
+                                              String                  fromAssetGUID,
+                                              String                  toAssetGUID,
+                                              boolean                 forLineage,
+                                              boolean                 forDuplicateProcessing,
+                                              RelationshipRequestBody requestBody)
+    {
+        final String methodName  = "setupRelatedDataAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.setupRelatedDataAsset(userId,
+                                                               requestBody.getAssetManagerGUID(),
+                                                               requestBody.getAssetManagerName(),
+                                                               assetManagerIsHome,
+                                                               relationshipTypeName,
+                                                               fromAssetGUID,
+                                                               toAssetGUID,
+                                                               requestBody.getProperties(),
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               requestBody.getEffectiveTime(),
+                                                               methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to create
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody optional date for effective time of the query.  Null means any effective time
+     *
+     * @return unique identifier and properties of the relationship or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelationshipElementResponse getAssetRelationship(String                        serverName,
+                                                            String                        userId,
+                                                            String                        relationshipTypeName,
+                                                            String                        fromAssetGUID,
+                                                            String                        toAssetGUID,
+                                                            boolean                       forLineage,
+                                                            boolean                       forDuplicateProcessing,
+                                                            EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getAssetRelationship";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RelationshipElementResponse response = new RelationshipElementResponse();
+        AuditLog                    auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElement(handler.getAssetRelationship(userId,
+                                                                 requestBody.getAssetManagerGUID(),
+                                                                 requestBody.getAssetManagerName(),
+                                                                 relationshipTypeName,
+                                                                 fromAssetGUID,
+                                                                 toAssetGUID,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to update
+     * @param relationshipGUID unique identifier of the relationship
+     * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody description and/or purpose of the relationship
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateAssetRelationship(String                  serverName,
+                                                String                  userId,
+                                                String                  relationshipTypeName,
+                                                String                  relationshipGUID,
+                                                boolean                 isMergeUpdate,
+                                                boolean                 forLineage,
+                                                boolean                 forDuplicateProcessing,
+                                                RelationshipRequestBody requestBody)
+    {
+        final String methodName = "updateAssetRelationship";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
+
+                handler.updateAssetRelationship(userId,
+                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getAssetManagerName(),
+                                                relationshipTypeName,
+                                                relationshipGUID,
+                                                isMergeUpdate,
+                                                requestBody.getProperties(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the relationship between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param relationshipGUID unique identifier of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody external source ids
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearAssetRelationship(String                        serverName,
+                                               String                        userId,
+                                               String                        relationshipTypeName,
+                                               String                        relationshipGUID,
+                                               boolean                       forLineage,
+                                               boolean                       forDuplicateProcessing,
+                                               EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "clearAssetRelationship";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
+
+                handler.clearAssetRelationship(userId,
+                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getAssetManagerName(),
+                                               relationshipTypeName,
+                                               relationshipGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the requested relationships linked from a specific element at end 2.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param fromAssetGUID unique identifier of the asset at end 1 of the relationship
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier and properties of the relationships or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelationshipElementsResponse getRelatedAssetsAtEnd2(String                        serverName,
+                                                               String                        userId,
+                                                               String                        relationshipTypeName,
+                                                               String                        fromAssetGUID,
+                                                               int                           startingFrom,
+                                                               int                           pageSize,
+                                                               boolean                       forLineage,
+                                                               boolean                       forDuplicateProcessing,
+                                                               EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName  = "getRelatedAssetsAtEnd2";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RelationshipElementsResponse response = new RelationshipElementsResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.getRelatedAssetsAtEnd2(userId,
+                                                                       requestBody.getAssetManagerGUID(),
+                                                                       requestBody.getAssetManagerName(),
+                                                                       relationshipTypeName,
+                                                                       fromAssetGUID,
+                                                                       startingFrom,
+                                                                       pageSize,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       requestBody.getEffectiveTime(),
+                                                                       methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the relationships linked from a specific element at end 2 of the relationship.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param relationshipTypeName type name of relationship to delete
+     * @param toAssetGUID unique identifier of the asset at end 2 of the relationship
+     * @param startingFrom start position for results
+     * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @return unique identifier and properties of the relationships or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelationshipElementsResponse getRelatedAssetsAtEnd1(String                        serverName,
+                                                               String                        userId,
+                                                               String                        relationshipTypeName,
+                                                               String                        toAssetGUID,
+                                                               int                           startingFrom,
+                                                               int                           pageSize,
+                                                               boolean                       forLineage,
+                                                               boolean                       forDuplicateProcessing,
+                                                               EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getRelatedAssetsAtEnd1";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RelationshipElementsResponse response = new RelationshipElementsResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
+
+                response.setElementList(handler.getRelatedAssetsAtEnd1(userId,
+                                                                       requestBody.getAssetManagerGUID(),
+                                                                       requestBody.getAssetManagerName(),
+                                                                       relationshipTypeName,
+                                                                       toAssetGUID,
+                                                                       startingFrom,
+                                                                       pageSize,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       requestBody.getEffectiveTime(),
+                                                                       methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -449,6 +943,8 @@ public class DataAssetExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search parameter and correlation properties
      *
      * @return list of matching metadata elements or
@@ -460,6 +956,8 @@ public class DataAssetExchangeRESTServices
                                                     String                  userId,
                                                     int                     startFrom,
                                                     int                     pageSize,
+                                                    boolean                 forLineage,
+                                                    boolean                 forDuplicateProcessing,
                                                     SearchStringRequestBody requestBody)
     {
         final String methodName = "findDataAssets";
@@ -483,6 +981,9 @@ public class DataAssetExchangeRESTServices
                                                                requestBody.getSearchString(),
                                                                startFrom,
                                                                pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               requestBody.getEffectiveTime(),
                                                                methodName));
             }
             else
@@ -508,6 +1009,8 @@ public class DataAssetExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search parameter and correlation properties
      *
      * @return list of matching metadata elements or
@@ -515,11 +1018,13 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataAssetElementsResponse scanDataAssets(String                             serverName,
-                                                    String                             userId,
-                                                    int                                startFrom,
-                                                    int                                pageSize,
-                                                    AssetManagerIdentifiersRequestBody requestBody)
+    public DataAssetElementsResponse scanDataAssets(String                        serverName,
+                                                    String                        userId,
+                                                    int                           startFrom,
+                                                    int                           pageSize,
+                                                    boolean                       forLineage,
+                                                    boolean                       forDuplicateProcessing,
+                                                    EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "scanDataAssets";
 
@@ -541,6 +1046,9 @@ public class DataAssetExchangeRESTServices
                                                                requestBody.getAssetManagerName(),
                                                                startFrom,
                                                                pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               requestBody.getEffectiveTime(),
                                                                methodName));
             }
             else
@@ -567,6 +1075,8 @@ public class DataAssetExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search parameter and correlation properties
      *
      * @return list of matching metadata elements or
@@ -578,6 +1088,8 @@ public class DataAssetExchangeRESTServices
                                                          String          userId,
                                                          int             startFrom,
                                                          int             pageSize,
+                                                         boolean         forLineage,
+                                                         boolean         forDuplicateProcessing,
                                                          NameRequestBody requestBody)
     {
         final String methodName = "getDataAssetsByName";
@@ -601,6 +1113,9 @@ public class DataAssetExchangeRESTServices
                                                                     requestBody.getName(),
                                                                     startFrom,
                                                                     pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
                                                                     methodName));
             }
             else
@@ -626,6 +1141,8 @@ public class DataAssetExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search parameters and correlation properties
      *
      * @return list of matching metadata elements or
@@ -633,11 +1150,13 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataAssetElementsResponse getDataAssetsForAssetManager(String                             serverName,
-                                                                  String                             userId,
-                                                                  int                                startFrom,
-                                                                  int                                pageSize,
-                                                                  AssetManagerIdentifiersRequestBody requestBody)
+    public DataAssetElementsResponse getDataAssetsForAssetManager(String                        serverName,
+                                                                  String                        userId,
+                                                                  int                           startFrom,
+                                                                  int                           pageSize,
+                                                                  boolean                       forLineage,
+                                                                  boolean                       forDuplicateProcessing,
+                                                                  EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getDataAssetsForAssetManager";
 
@@ -659,6 +1178,9 @@ public class DataAssetExchangeRESTServices
                                                                              requestBody.getAssetManagerName(),
                                                                              startFrom,
                                                                              pageSize,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             requestBody.getEffectiveTime(),
                                                                              methodName));
             }
             else
@@ -683,6 +1205,8 @@ public class DataAssetExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody correlation properties
      *
      * @return matching metadata element or
@@ -690,10 +1214,12 @@ public class DataAssetExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataAssetElementResponse getDataAssetByGUID(String                             serverName,
-                                                       String                             userId,
-                                                       String                             assetGUID,
-                                                       AssetManagerIdentifiersRequestBody requestBody)
+    public DataAssetElementResponse getDataAssetByGUID(String                        serverName,
+                                                       String                        userId,
+                                                       String                        assetGUID,
+                                                       boolean                       forLineage,
+                                                       boolean                       forDuplicateProcessing,
+                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getDataAssetByGUID";
 
@@ -714,6 +1240,9 @@ public class DataAssetExchangeRESTServices
                                                                requestBody.getAssetManagerGUID(),
                                                                requestBody.getAssetManagerName(),
                                                                assetGUID,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               requestBody.getEffectiveTime(),
                                                                methodName));
             }
             else
@@ -722,6 +1251,9 @@ public class DataAssetExchangeRESTServices
                                                                null,
                                                                null,
                                                                assetGUID,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               null,
                                                                methodName));
             }
         }

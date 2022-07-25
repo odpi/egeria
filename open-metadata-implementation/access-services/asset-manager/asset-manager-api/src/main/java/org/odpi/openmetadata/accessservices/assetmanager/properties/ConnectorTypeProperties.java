@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,17 +14,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The ConnectorType describe the implementation details of a particular type of OCF connector.
+ * The ConnectorTypeProperties describe the implementation details of a particular type of connector.
  * The properties for a connector type are defined in model 0201.
  * They include:
  *
  * <ul>
  *     <li>
  *         guid - Globally unique identifier for the connector type.
- *     </li>
- *     <li>
- *         url - External link address for the connector type properties in the metadata repository.  This URL can be
- *         stored as a property in another entity to create an explicit link to this connector type.
  *     </li>
  *     <li>
  *         qualifiedName - The official (unique) name for the connector type. This is often defined by the IT
@@ -43,9 +36,36 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         along with usage and versioning information.
  *     </li>
  *     <li>
+ *         supportedAssetTypeName - the type of asset that the connector implementation supports.
+ *     </li>
+ *     <li>
+ *         expectedDataFormat - the format of the data that the connector supports - null for "any".
+ *     </li>
+ *     <li>
  *         connectorProviderClassName - The connector provider is the factory for a particular type of connector.
  *         This property defines the class name for the connector provider that the Connector Broker should use to request
  *         new connector instances.
+ *     </li>
+ *     <li>
+ *         connectorFrameworkName - name of the connector framework that the connector implements - default Open Connector Framework (OCF).
+ *     </li>
+ *     <li>
+ *         connectorInterfaceLanguage - the language that the connector is implemented in - default Java.
+ *     </li>
+ *     <li>
+ *         connectorInterfaces - list of interfaces that the connector supports.
+ *     </li>
+ *     <li>
+ *         targetTechnologySource - the organization that supplies the target technology that the connector implementation connects to.
+ *     </li>
+ *     <li>
+ *         targetTechnologyName - the name of the target technology that the connector implementation connects to.
+ *     </li>
+ *     <li>
+ *         targetTechnologyInterfaces - the names of the interfaces in the target technology that the connector calls.
+ *     </li>
+ *     <li>
+ *         targetTechnologyVersions - the versions of the target technology that the connector supports.
  *     </li>
  *     <li>
  *         recognizedAdditionalProperties - these are the Connection additional properties recognized by the connector implementation
@@ -75,41 +95,22 @@ public class ConnectorTypeProperties extends ReferenceableProperties
     /*
      * Attributes of a connector type
      */
-    protected String       displayName                       = null;
-    protected String       description                       = null;
-    protected String       connectorProviderClassName        = null;
-    protected List<String> recognizedAdditionalProperties    = null;
-    protected List<String> recognizedConfigurationProperties = null;
-    protected List<String> recognizedSecuredProperties       = null;
+    private String       displayName                       = null;
+    private String       description                       = null;
+    private String       supportedAssetTypeName            = null;
+    private String       expectedDataFormat                = null;
+    private String       connectorProviderClassName        = null;
+    private String       connectorFrameworkName            = null;
+    private String       connectorInterfaceLanguage        = null;
+    private List<String> connectorInterfaces               = null;
+    private String       targetTechnologySource            = null;
+    private String       targetTechnologyName              = null;
+    private List<String> targetTechnologyInterfaces        = null;
+    private List<String> targetTechnologyVersions          = null;
+    private List<String> recognizedAdditionalProperties    = null;
+    private List<String> recognizedConfigurationProperties = null;
+    private List<String> recognizedSecuredProperties       = null;
 
-
-    /**
-     * Return the standard type for a connector type.
-     *
-     * @return ElementType object
-     */
-    public static ElementType getConnectorTypeType()
-    {
-        final String        elementTypeId                   = "954421eb-33a6-462d-a8ca-b5709a1bd0d4";
-        final String        elementTypeName                 = "ConnectorType";
-        final long          elementTypeVersion              = 1;
-        final String        elementTypeDescription          = "A set of properties describing a type of connector.";
-        final String        elementAccessServiceURL         = null;
-        final ElementOrigin elementOrigin                   = ElementOrigin.LOCAL_COHORT;
-        final String        elementHomeMetadataCollectionId = null;
-
-        ElementType elementType = new ElementType();
-
-        elementType.setElementTypeId(elementTypeId);
-        elementType.setElementTypeName(elementTypeName);
-        elementType.setElementTypeVersion(elementTypeVersion);
-        elementType.setElementTypeDescription(elementTypeDescription);
-        elementType.setElementSourceServer(elementAccessServiceURL);
-        elementType.setElementOrigin(elementOrigin);
-        elementType.setElementMetadataCollectionId(elementHomeMetadataCollectionId);
-
-        return elementType;
-    }
 
 
     /**
@@ -134,13 +135,21 @@ public class ConnectorTypeProperties extends ReferenceableProperties
         {
             displayName = template.getDisplayName();
             description = template.getDescription();
+            supportedAssetTypeName = template.getSupportedAssetTypeName();
+            expectedDataFormat = template.getExpectedDataFormat();
             connectorProviderClassName = template.getConnectorProviderClassName();
+            connectorFrameworkName = template.getConnectorFrameworkName();
+            connectorInterfaceLanguage = template.getConnectorInterfaceLanguage();
+            connectorInterfaces = template.getConnectorInterfaces();
+            targetTechnologySource = template.getTargetTechnologySource();
+            targetTechnologyName = template.getTargetTechnologyName();
+            targetTechnologyInterfaces = template.getTargetTechnologyInterfaces();
+            targetTechnologyVersions = template.getTargetTechnologyVersions();
             recognizedAdditionalProperties = template.getRecognizedAdditionalProperties();
             recognizedConfigurationProperties = template.getRecognizedConfigurationProperties();
             recognizedSecuredProperties = template.getRecognizedSecuredProperties();
         }
     }
-
 
     /**
      * Set up the display name for UIs and reports.
@@ -189,6 +198,50 @@ public class ConnectorTypeProperties extends ReferenceableProperties
 
 
     /**
+     * Return the type of asset that the connector implementation supports.
+     *
+     * @return string name
+     */
+    public String getSupportedAssetTypeName()
+    {
+        return supportedAssetTypeName;
+    }
+
+
+    /**
+     * Set up the type of asset that the connector implementation supports.
+     *
+     * @param supportedAssetTypeName string name
+     */
+    public void setSupportedAssetTypeName(String supportedAssetTypeName)
+    {
+        this.supportedAssetTypeName = supportedAssetTypeName;
+    }
+
+
+    /**
+     * Return the format of the data that the connector supports - null for "any".
+     *
+     * @return string name
+     */
+    public String getExpectedDataFormat()
+    {
+        return expectedDataFormat;
+    }
+
+
+    /**
+     * Set up the format of the data that the connector supports - null for "any".
+     *
+     * @param expectedDataFormat string name
+     */
+    public void setExpectedDataFormat(String expectedDataFormat)
+    {
+        this.expectedDataFormat = expectedDataFormat;
+    }
+
+
+    /**
      * The name of the connector provider class name.
      *
      * @param connectorProviderClassName String class name
@@ -212,12 +265,166 @@ public class ConnectorTypeProperties extends ReferenceableProperties
 
 
     /**
+     * Return name of the connector framework that the connector implements - default Open Connector Framework (OCF).
+     *
+     * @return string name
+     */
+    public String getConnectorFrameworkName()
+    {
+        return connectorFrameworkName;
+    }
+
+
+    /**
+     * Set up name of the connector framework that the connector implements - default Open Connector Framework (OCF).
+     *
+     * @param connectorFrameworkName string name
+     */
+    public void setConnectorFrameworkName(String connectorFrameworkName)
+    {
+        this.connectorFrameworkName = connectorFrameworkName;
+    }
+
+
+    /**
+     * Return the language that the connector is implemented in - default Java.
+     *
+     * @return string name
+     */
+    public String getConnectorInterfaceLanguage()
+    {
+        return connectorInterfaceLanguage;
+    }
+
+
+    /**
+     * Set up the language that the connector is implemented in - default Java.
+     *
+     * @param connectorInterfaceLanguage string name
+     */
+    public void setConnectorInterfaceLanguage(String connectorInterfaceLanguage)
+    {
+        this.connectorInterfaceLanguage = connectorInterfaceLanguage;
+    }
+
+
+    /**
+     * Return list of interfaces that the connector supports.
+     *
+     * @return list of names
+     */
+    public List<String> getConnectorInterfaces()
+    {
+        return connectorInterfaces;
+    }
+
+
+    /**
+     * Set up list of interfaces that the connector supports.
+     *
+     * @param connectorInterfaces list of names
+     */
+    public void setConnectorInterfaces(List<String> connectorInterfaces)
+    {
+        this.connectorInterfaces = connectorInterfaces;
+    }
+
+
+    /**
+     * Return the name of the organization that supplies the target technology that the connector implementation connects to.
+     *
+     * @return string name
+     */
+    public String getTargetTechnologySource()
+    {
+        return targetTechnologySource;
+    }
+
+
+    /**
+     * Set up the name of the organization that supplies the target technology that the connector implementation connects to.
+     *
+     * @param targetTechnologySource list of names
+     */
+    public void setTargetTechnologySource(String targetTechnologySource)
+    {
+        this.targetTechnologySource = targetTechnologySource;
+    }
+
+
+    /**
+     * Return the name of the target technology that the connector implementation connects to.
+     *
+     * @return string name
+     */
+    public String getTargetTechnologyName()
+    {
+        return targetTechnologyName;
+    }
+
+
+    /**
+     * Set up the name of the target technology that the connector implementation connects to.
+     *
+     * @param targetTechnologyName string name
+     */
+    public void setTargetTechnologyName(String targetTechnologyName)
+    {
+        this.targetTechnologyName = targetTechnologyName;
+    }
+
+
+    /**
+     * Return the names of the interfaces in the target technology that the connector calls.
+     *
+     * @return list of interface names
+     */
+    public List<String> getTargetTechnologyInterfaces()
+    {
+        return targetTechnologyInterfaces;
+    }
+
+
+    /**
+     * Set up the names of the interfaces in the target technology that the connector calls.
+     *
+     * @param targetTechnologyInterfaces list of interface names
+     */
+    public void setTargetTechnologyInterfaces(List<String> targetTechnologyInterfaces)
+    {
+        this.targetTechnologyInterfaces = targetTechnologyInterfaces;
+    }
+
+
+    /**
+     * Return the versions of the target technology that the connector supports.
+     *
+     * @return list of version identifiers
+     */
+    public List<String> getTargetTechnologyVersions()
+    {
+        return targetTechnologyVersions;
+    }
+
+
+    /**
+     * Set up the versions of the target technology that the connector supports.
+     *
+     * @param targetTechnologyVersions list of version identifiers
+     */
+    public void setTargetTechnologyVersions(List<String> targetTechnologyVersions)
+    {
+        this.targetTechnologyVersions = targetTechnologyVersions;
+    }
+
+
+    /**
      * Set up the list of property names that this connector/connector provider implementation looks for
      * in the Connection object's additionalProperties.
      *
      * @param recognizedAdditionalProperties  list of property names
      */
-    public void setRecognizedAdditionalProperties(List<String>   recognizedAdditionalProperties)
+    public void setRecognizedAdditionalProperties(List<String> recognizedAdditionalProperties)
     {
         this.recognizedAdditionalProperties = recognizedAdditionalProperties;
     }
@@ -241,7 +448,7 @@ public class ConnectorTypeProperties extends ReferenceableProperties
         }
         else
         {
-            return new ArrayList<>(recognizedAdditionalProperties);
+            return recognizedAdditionalProperties;
         }
     }
 
@@ -277,7 +484,7 @@ public class ConnectorTypeProperties extends ReferenceableProperties
         }
         else
         {
-            return new ArrayList<>(recognizedConfigurationProperties);
+            return recognizedConfigurationProperties;
         }
     }
 
@@ -312,7 +519,7 @@ public class ConnectorTypeProperties extends ReferenceableProperties
         }
         else
         {
-            return new ArrayList<>(recognizedSecuredProperties);
+            return recognizedSecuredProperties;
         }
     }
 
@@ -328,14 +535,23 @@ public class ConnectorTypeProperties extends ReferenceableProperties
         return "ConnectorTypeProperties{" +
                        "displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
+                       ", supportedAssetTypeName='" + supportedAssetTypeName + '\'' +
+                       ", expectedDataFormat='" + expectedDataFormat + '\'' +
                        ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
+                       ", connectorFrameworkName='" + connectorFrameworkName + '\'' +
+                       ", connectorInterfaceLanguage='" + connectorInterfaceLanguage + '\'' +
+                       ", connectorInterfaces=" + connectorInterfaces +
+                       ", targetTechnologySource='" + targetTechnologySource + '\'' +
+                       ", targetTechnologyName='" + targetTechnologyName + '\'' +
+                       ", targetTechnologyInterfaces=" + targetTechnologyInterfaces +
+                       ", targetTechnologyVersions=" + targetTechnologyVersions +
                        ", recognizedAdditionalProperties=" + recognizedAdditionalProperties +
                        ", recognizedConfigurationProperties=" + recognizedConfigurationProperties +
                        ", recognizedSecuredProperties=" + recognizedSecuredProperties +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
@@ -360,17 +576,26 @@ public class ConnectorTypeProperties extends ReferenceableProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ConnectorTypeProperties that = (ConnectorTypeProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
-                       Objects.equals(getConnectorProviderClassName(), that.getConnectorProviderClassName()) &&
-                       Objects.equals(getRecognizedAdditionalProperties(), that.getRecognizedAdditionalProperties()) &&
-                       Objects.equals(getRecognizedConfigurationProperties(), that.getRecognizedConfigurationProperties()) &&
-                       Objects.equals(getRecognizedSecuredProperties(), that.getRecognizedSecuredProperties());
+        return Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(supportedAssetTypeName, that.supportedAssetTypeName) &&
+                       Objects.equals(expectedDataFormat, that.expectedDataFormat) &&
+                       Objects.equals(connectorProviderClassName, that.connectorProviderClassName) &&
+                       Objects.equals(connectorFrameworkName, that.connectorFrameworkName) &&
+                       Objects.equals(connectorInterfaceLanguage, that.connectorInterfaceLanguage) &&
+                       Objects.equals(connectorInterfaces, that.connectorInterfaces) &&
+                       Objects.equals(targetTechnologySource, that.targetTechnologySource) &&
+                       Objects.equals(targetTechnologyName, that.targetTechnologyName) &&
+                       Objects.equals(targetTechnologyInterfaces, that.targetTechnologyInterfaces) &&
+                       Objects.equals(targetTechnologyVersions, that.targetTechnologyVersions) &&
+                       Objects.equals(recognizedAdditionalProperties, that.recognizedAdditionalProperties) &&
+                       Objects.equals(recognizedConfigurationProperties, that.recognizedConfigurationProperties) &&
+                       Objects.equals(recognizedSecuredProperties, that.recognizedSecuredProperties);
     }
 
 
@@ -382,8 +607,9 @@ public class ConnectorTypeProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getConnectorProviderClassName(),
-                            getRecognizedAdditionalProperties(),
-                            getRecognizedConfigurationProperties(), getRecognizedSecuredProperties());
+        return Objects.hash(super.hashCode(), displayName, description, supportedAssetTypeName, expectedDataFormat, connectorProviderClassName,
+                            connectorFrameworkName, connectorInterfaceLanguage, connectorInterfaces, targetTechnologySource, targetTechnologyName,
+                            targetTechnologyInterfaces, targetTechnologyVersions, recognizedAdditionalProperties, recognizedConfigurationProperties,
+                            recognizedSecuredProperties);
     }
 }
