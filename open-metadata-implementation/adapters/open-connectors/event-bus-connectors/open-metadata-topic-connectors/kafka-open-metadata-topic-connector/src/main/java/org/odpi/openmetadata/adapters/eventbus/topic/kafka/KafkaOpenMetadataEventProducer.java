@@ -40,8 +40,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
     private long kafkaSendAttemptCount = 0;
     private long messagePublishRequestCount = 0;
     private long inmemoryPutMessageCount = 0;
-    private int kafkaSendFailCount = 0;
-    private int messageFailedSendCount = 0;
+    private long kafkaSendFailCount = 0;
+    private long messageFailedSendCount = 0;
 
 
     /**
