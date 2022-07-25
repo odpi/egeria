@@ -396,7 +396,7 @@ public interface FilesAndFoldersInterface
 
     /**
      * Move a data file from its current parent folder to a new parent folder - this changes the file's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param userId calling user
      * @param fileManagerCapabilityGUID unique identifier of the software server capability representing an owning external file manager or null
@@ -419,7 +419,7 @@ public interface FilesAndFoldersInterface
 
     /**
      * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param userId calling user
      * @param fileManagerCapabilityGUID unique identifier of the software server capability representing an owning external file manager or null

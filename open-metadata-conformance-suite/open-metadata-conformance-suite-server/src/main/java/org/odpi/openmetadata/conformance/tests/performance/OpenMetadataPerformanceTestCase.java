@@ -268,7 +268,7 @@ public abstract class OpenMetadataPerformanceTestCase extends OpenMetadataTestCa
      * @param propertyType type of the property
      * @param attrUnique whether this property value should be distinct (or common)
      * @param instanceCount counter to be used in customisation of distinct values
-     * @return PrimitivePropertyValue object
+     * @return PrimitiveTypePropertyValue object
      */
     protected PrimitivePropertyValue getPrimitivePropertyValue(String        propertyName,
                                                                PrimitiveDef  propertyType,

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ITAssetResource
 {
-    private static ITAssetRESTService restAPI = new ITAssetRESTService();
+    private static final ITAssetRESTService restAPI = new ITAssetRESTService();
 
     /**
      * Default constructor
@@ -51,7 +51,7 @@ public class ITAssetResource
      */
 
     /**
-     * Create a new metadata element to represent a asset.
+     * Create a new metadata element to represent an asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -76,7 +76,7 @@ public class ITAssetResource
 
 
     /**
-     * Create a new metadata element to represent a asset using an existing metadata element as a template.
+     * Create a new metadata element to represent an asset using an existing metadata element as a template.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -103,7 +103,7 @@ public class ITAssetResource
 
 
     /**
-     * Update the metadata element representing a asset.
+     * Update the metadata element representing an asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -156,7 +156,7 @@ public class ITAssetResource
 
 
     /**
-     * Create a relationship between a asset and a asseted asset.
+     * Create a relationship between an asset and a related asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -197,7 +197,7 @@ public class ITAssetResource
      * @param userId calling user
      * @param relationshipTypeName name of the relationship type
      * @param relationshipGUID unique identifier of the asset
-     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param requestBody new properties
      *
@@ -221,7 +221,7 @@ public class ITAssetResource
     }
 
     /**
-     * Remove a relationship between a asset and a related asset.
+     * Remove a relationship between an asset and a related asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -285,14 +285,14 @@ public class ITAssetResource
 
 
     /**
-     * Update the properties of a classification for a asset.
+     * Update the properties of a classification for an asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
      * @param assetTypeName name of type for the asset
      * @param assetGUID unique identifier of the asset
      * @param classificationName name of the classification type
-     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param requestBody properties
      *
@@ -346,7 +346,7 @@ public class ITAssetResource
 
 
     /**
-     * Update the zones for the asset asset so that it becomes visible to consumers.
+     * Update the zones for the asset so that it becomes visible to consumers.
      * (The zones are set to the list of zones in the publishedZones option configured for each
      * instance of the IT Infrastructure OMAS).
      *
@@ -374,7 +374,7 @@ public class ITAssetResource
 
 
     /**
-     * Update the zones for the asset asset so that it is no longer visible to consumers.
+     * Update the zones for the asset so that it is no longer visible to consumers.
      * (The zones are set to the list of zones in the defaultZones option configured for each
      * instance of the IT Infrastructure OMAS.  This is the setting when the asset is first created).
      *
@@ -401,7 +401,7 @@ public class ITAssetResource
 
 
     /**
-     * Remove the metadata element representing a asset.
+     * Remove the metadata element representing an asset.
      *
      * @param serverName name of the server to route the request to.
      * @param userId calling user
@@ -730,11 +730,13 @@ public class ITAssetResource
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -747,18 +749,22 @@ public class ITAssetResource
     public DataFlowElementsResponse getDataFlowConsumers(@PathVariable String                   serverName,
                                                          @PathVariable String                   userId,
                                                          @PathVariable String                   dataSupplierGUID,
+                                                         @RequestParam int                      startFrom,
+                                                         @RequestParam int                      pageSize,
                                                          @RequestBody  EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getDataFlowConsumers(serverName, userId, dataSupplierGUID, requestBody);
+        return restAPI.getDataFlowConsumers(serverName, userId, dataSupplierGUID, startFrom, pageSize, requestBody);
     }
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -771,9 +777,11 @@ public class ITAssetResource
     public DataFlowElementsResponse getDataFlowSuppliers(@PathVariable String                   serverName,
                                                          @PathVariable String                   userId,
                                                          @PathVariable String                   dataConsumerGUID,
+                                                         @RequestParam int                      startFrom,
+                                                         @RequestParam int                      pageSize,
                                                          @RequestBody  EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getDataFlowSuppliers(serverName, userId, dataConsumerGUID, requestBody);
+        return restAPI.getDataFlowSuppliers(serverName, userId, dataConsumerGUID, startFrom, pageSize, requestBody);
     }
 
 
@@ -882,11 +890,13 @@ public class ITAssetResource
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param requestBody null request body
      *
      * @return unique identifier and properties of the relationship or
@@ -899,19 +909,23 @@ public class ITAssetResource
     public ControlFlowElementsResponse getControlFlowNextSteps(@PathVariable String                   serverName,
                                                                @PathVariable String                   userId,
                                                                @PathVariable String                   currentStepGUID,
+                                                               @RequestParam int                      startFrom,
+                                                               @RequestParam int                      pageSize,
                                                                @RequestBody  EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getControlFlowNextSteps(serverName, userId, currentStepGUID, requestBody);
+        return restAPI.getControlFlowNextSteps(serverName, userId, currentStepGUID, startFrom, pageSize, requestBody);
     }
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param currentStepGUID unique identifier of the previous step
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return unique identifier and properties of the relationship or
      * InvalidParameterException  one of the parameters is invalid
@@ -923,9 +937,11 @@ public class ITAssetResource
     public ControlFlowElementsResponse getControlFlowPreviousSteps(@PathVariable String                   serverName,
                                                                    @PathVariable String                   userId,
                                                                    @PathVariable String                   currentStepGUID,
+                                                                   @RequestParam int                      startFrom,
+                                                                   @RequestParam int                      pageSize,
                                                                    @RequestBody  EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getControlFlowPreviousSteps(serverName, userId, currentStepGUID, requestBody);
+        return restAPI.getControlFlowPreviousSteps(serverName, userId, currentStepGUID, startFrom, pageSize, requestBody);
     }
 
 
@@ -1034,11 +1050,13 @@ public class ITAssetResource
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -1051,18 +1069,22 @@ public class ITAssetResource
     public ProcessCallElementsResponse getProcessCalled(@PathVariable String                   serverName,
                                                         @PathVariable String                   userId,
                                                         @PathVariable String                   callerGUID,
+                                                        @RequestParam int                      startFrom,
+                                                        @RequestParam int                      pageSize,
                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getProcessCalled(serverName, userId, callerGUID, requestBody);
+        return restAPI.getProcessCalled(serverName, userId, callerGUID, startFrom, pageSize, requestBody);
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -1075,15 +1097,17 @@ public class ITAssetResource
     public ProcessCallElementsResponse getProcessCallers(@PathVariable String                   serverName,
                                                          @PathVariable String                   userId,
                                                          @PathVariable String                   calledGUID,
+                                                         @RequestParam int                      startFrom,
+                                                         @RequestParam int                      pageSize,
                                                          @RequestBody  EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getProcessCallers(serverName, userId, calledGUID, requestBody);
+        return restAPI.getProcessCallers(serverName, userId, calledGUID, startFrom, pageSize, requestBody);
     }
 
 
     /**
      * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param serverName name of the server to route the request to
@@ -1103,9 +1127,37 @@ public class ITAssetResource
                                             @PathVariable String                    userId,
                                             @PathVariable String                    sourceElementGUID,
                                             @PathVariable String                    destinationElementGUID,
-                                            @RequestBody  EffectiveDatesRequestBody requestBody)
+                                            @RequestBody  LineageMappingRequestBody requestBody)
     {
         return restAPI.setupLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one process call relationships between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param sourceElementGUID unique identifier of the source
+     * @param destinationElementGUID unique identifier of the destination
+     * @param requestBody unique identifier for this relationship
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/lineage-mappings/sources/{sourceElementGUID}/destinations/{destinationElementGUID}/retrieve")
+
+    public LineageMappingElementResponse getLineageMapping(@PathVariable String          serverName,
+                                                           @PathVariable String          userId,
+                                                           @PathVariable String          sourceElementGUID,
+                                                           @PathVariable String          destinationElementGUID,
+                                                           @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, requestBody);
     }
 
 
@@ -1114,8 +1166,7 @@ public class ITAssetResource
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param sourceElementGUID unique identifier of the source
-     * @param destinationElementGUID unique identifier of the destination
+     * @param lineageMappingGUID unique identifier of the relationship
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -1123,24 +1174,25 @@ public class ITAssetResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/lineage-mappings/sources/{sourceElementGUID}/destinations/{destinationElementGUID}/remove")
+    @PostMapping(path = "/lineage-mappings/{lineageMappingGUID}/remove")
 
     public VoidResponse clearLineageMapping(@PathVariable String                                 serverName,
                                             @PathVariable String                                 userId,
-                                            @PathVariable String                                 sourceElementGUID,
-                                            @PathVariable String                                 destinationElementGUID,
+                                            @PathVariable String                                 lineageMappingGUID,
                                             @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
     {
-        return restAPI.clearLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, requestBody);
+        return restAPI.clearLineageMapping(serverName, userId, lineageMappingGUID, requestBody);
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -1153,18 +1205,22 @@ public class ITAssetResource
     public LineageMappingElementsResponse getDestinationLineageMappings(@PathVariable String                   serverName,
                                                                         @PathVariable String                   userId,
                                                                         @PathVariable String                   sourceElementGUID,
+                                                                        @RequestParam int                      startFrom,
+                                                                        @RequestParam int                      pageSize,
                                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getDestinationLineageMappings(serverName, userId, sourceElementGUID, requestBody);
+        return restAPI.getDestinationLineageMappings(serverName, userId, sourceElementGUID, startFrom, pageSize, requestBody);
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -1177,8 +1233,10 @@ public class ITAssetResource
     public LineageMappingElementsResponse getSourceLineageMappings(@PathVariable String                   serverName,
                                                                    @PathVariable String                   userId,
                                                                    @PathVariable String                   destinationElementGUID,
+                                                                   @RequestParam int                      startFrom,
+                                                                   @RequestParam int                      pageSize,
                                                                    @RequestBody  EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getSourceLineageMappings(serverName, userId, destinationElementGUID, requestBody);
+        return restAPI.getSourceLineageMappings(serverName, userId, destinationElementGUID, startFrom, pageSize, requestBody);
     }
 }

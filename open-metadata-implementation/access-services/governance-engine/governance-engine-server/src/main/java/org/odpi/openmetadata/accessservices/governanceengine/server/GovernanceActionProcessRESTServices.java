@@ -38,10 +38,10 @@ import java.util.Map;
  */
 public class GovernanceActionProcessRESTServices
 {
-    private static GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
+    private static final GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceEngineRESTServices.class),
-                                                                                  instanceHandler.getServiceName());
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceEngineRESTServices.class),
+                                                                                        instanceHandler.getServiceName());
 
     private final RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -96,6 +96,8 @@ public class GovernanceActionProcessRESTServices
                 extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, processProperties.getFormula());
                 extendedProperties.put(OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
 
+                Date effectiveTime = new Date();
+
                 response.setGUID(handler.createAssetInRepository(userId,
                                                                  null,
                                                                  null,
@@ -106,12 +108,19 @@ public class GovernanceActionProcessRESTServices
                                                                  OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                  extendedProperties,
                                                                  this.getProcessStatus(requestBody.getProcessStatus()),
+                                                                 null,
+                                                                 null,
+                                                                 effectiveTime,
                                                                  methodName));
+
+                final String guidParameter = "processGUID";
 
                 if (response.getGUID() != null)
                 {
                     handler.maintainSupplementaryProperties(userId,
                                                             response.getGUID(),
+                                                            guidParameter,
+                                                            OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                             processProperties.getQualifiedName(),
                                                             processProperties.getDisplayName(),
                                                             processProperties.getSummary(),
@@ -119,6 +128,9 @@ public class GovernanceActionProcessRESTServices
                                                             processProperties.getAbbreviation(),
                                                             processProperties.getUsage(),
                                                             false,
+                                                            false,
+                                                            false,
+                                                            effectiveTime,
                                                             methodName);
                 }
             }
@@ -210,6 +222,8 @@ public class GovernanceActionProcessRESTServices
                 extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, processProperties.getFormula());
                 extendedProperties.put(OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
 
+                Date effectiveTime = new Date();
+
                 handler.updateAsset(userId,
                                     null,
                                     null,
@@ -222,7 +236,12 @@ public class GovernanceActionProcessRESTServices
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
                                     OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                     extendedProperties,
+                                    null,
+                                    null,
                                     requestBody.getMergeUpdate(),
+                                    false,
+                                    false,
+                                    effectiveTime,
                                     methodName);
 
                 if (requestBody.getProcessStatus() != null)
@@ -238,12 +257,14 @@ public class GovernanceActionProcessRESTServices
                                                          false,
                                                          this.getProcessStatus(requestBody.getProcessStatus()),
                                                          newStatusParameterName,
-                                                         new Date(),
+                                                         effectiveTime,
                                                          methodName);
                 }
 
                 handler.maintainSupplementaryProperties(userId,
                                                         processGUID,
+                                                        processGUIDParameterName,
+                                                        OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                         processProperties.getQualifiedName(),
                                                         processProperties.getDisplayName(),
                                                         processProperties.getSummary(),
@@ -251,6 +272,9 @@ public class GovernanceActionProcessRESTServices
                                                         processProperties.getAbbreviation(),
                                                         processProperties.getUsage(),
                                                         requestBody.getMergeUpdate(),
+                                                        false,
+                                                        false,
+                                                        effectiveTime,
                                                         methodName);
             }
             else
@@ -303,7 +327,7 @@ public class GovernanceActionProcessRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<GovernanceActionProcessElement> handler = instanceHandler.getGovernanceActionProcessHandler(userId, serverName, methodName);
 
-            handler.publishAsset(userId, processGUID, processGUIDParameterName, methodName);
+            handler.publishAsset(userId, processGUID, processGUIDParameterName, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -349,7 +373,7 @@ public class GovernanceActionProcessRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AssetHandler<GovernanceActionProcessElement> handler = instanceHandler.getGovernanceActionProcessHandler(userId, serverName, methodName);
 
-            handler.withdrawAsset(userId, processGUID, processGUIDParameterName, methodName);
+            handler.withdrawAsset(userId, processGUID, processGUIDParameterName, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -463,7 +487,9 @@ public class GovernanceActionProcessRESTServices
                                                         searchStringParameterName,
                                                         startFrom,
                                                         pageSize,
-                                                        null,
+                                                        false,
+                                                        false,
+                                                        new Date(),
                                                         methodName));
             }
             else
@@ -527,7 +553,9 @@ public class GovernanceActionProcessRESTServices
                                                               nameParameterName,
                                                               startFrom,
                                                               pageSize,
-                                                              null,
+                                                              false,
+                                                              false,
+                                                              requestBody.getEffectiveTime(),
                                                               methodName));
             }
             else
@@ -645,6 +673,9 @@ public class GovernanceActionProcessRESTServices
                                                                     requestBody.getRequestParameters(),
                                                                     null,
                                                                     null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
             }
             else
@@ -716,6 +747,9 @@ public class GovernanceActionProcessRESTServices
                                                    properties.getRequestParameters(),
                                                    null,
                                                    null,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
             }
             else
@@ -766,7 +800,7 @@ public class GovernanceActionProcessRESTServices
                                                                                                                               serverName,
                                                                                                                               methodName);
 
-            handler.removeGovernanceActionType(userId, actionTypeGUID, methodName);
+            handler.removeGovernanceActionType(userId, actionTypeGUID, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -827,7 +861,9 @@ public class GovernanceActionProcessRESTServices
                                                                        searchStringParameterName,
                                                                        startFrom,
                                                                        pageSize,
-                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
             }
             else
@@ -956,7 +992,7 @@ public class GovernanceActionProcessRESTServices
 
 
     /**
-     * Set up a link between an governance action process and a governance action type.  This defines the first
+     * Set up a link between a governance action process and a governance action type.  This defines the first
      * step in the process.
      *
      * @param serverName name of the service to route the request to
@@ -991,7 +1027,7 @@ public class GovernanceActionProcessRESTServices
                                                                                                                               serverName,
                                                                                                                               methodName);
 
-            handler.setupFirstActionType(userId, processGUID, actionTypeGUID, requestBody, null, null, methodName);
+            handler.setupFirstActionType(userId, processGUID, actionTypeGUID, requestBody, null, null, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -1135,6 +1171,9 @@ public class GovernanceActionProcessRESTServices
                                                              requestBody.getIgnoreMultipleTriggers(),
                                                              null,
                                                              null,
+                                                             false,
+                                                             false,
+                                                             new Date(),
                                                              methodName));
             }
             else
@@ -1293,7 +1332,7 @@ public class GovernanceActionProcessRESTServices
 
 
     /**
-     * Remove a follow on step from a governance action process.
+     * Remove a follow-on step from a governance action process.
      *
      * @param serverName name of the service to route the request to
      * @param userId calling user

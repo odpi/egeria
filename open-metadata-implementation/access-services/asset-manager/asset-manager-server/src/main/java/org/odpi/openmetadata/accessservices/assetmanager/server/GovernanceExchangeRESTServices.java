@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Govern
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceActionProcessElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceActionTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NextGovernanceActionTypeElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionProcessElementResponse;
@@ -15,30 +14,23 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionPr
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionTypeElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionTypeElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NextGovernanceActionTypeElementsResponse;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -47,13 +39,12 @@ import java.util.Map;
  */
 public class GovernanceExchangeRESTServices
 {
-    private static AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
+    private static final AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceExchangeRESTServices.class),
-                                                                                  instanceHandler.getServiceName());
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceExchangeRESTServices.class),
+                                                                                        instanceHandler.getServiceName());
 
     private final RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
     /**
@@ -68,38 +59,6 @@ public class GovernanceExchangeRESTServices
      * A governance action process describes a well defined series of steps that gets something done.
      * The steps are defined using GovernanceActionTypes.
      */
-
-    /**
-     * Translate the Process Status into a Repository Services' InstanceStatus.
-     *
-     * @param processStatus value from the caller
-     * @return InstanceStatus enum
-     */
-    private InstanceStatus getProcessStatus(ProcessStatus processStatus)
-    {
-        if (processStatus != null)
-        {
-            switch (processStatus)
-            {
-                case UNKNOWN:
-                    return InstanceStatus.UNKNOWN;
-
-                case DRAFT:
-                    return InstanceStatus.DRAFT;
-
-                case PROPOSED:
-                    return InstanceStatus.PROPOSED;
-
-                case APPROVED:
-                    return InstanceStatus.APPROVED;
-
-                case ACTIVE:
-                    return InstanceStatus.ACTIVE;
-            }
-        }
-
-        return InstanceStatus.ACTIVE;
-    }
 
 
     /**
@@ -147,7 +106,9 @@ public class GovernanceExchangeRESTServices
                                                         searchStringParameterName,
                                                         startFrom,
                                                         pageSize,
-                                                        null,
+                                                        false,
+                                                        false,
+                                                        requestBody.getEffectiveTime(),
                                                         methodName));
             }
             else
@@ -211,7 +172,9 @@ public class GovernanceExchangeRESTServices
                                                               nameParameterName,
                                                               startFrom,
                                                               pageSize,
-                                                              null,
+                                                              false,
+                                                              false,
+                                                              requestBody.getEffectiveTime(),
                                                               methodName));
             }
             else
@@ -331,7 +294,9 @@ public class GovernanceExchangeRESTServices
                                                                        searchStringParameterName,
                                                                        startFrom,
                                                                        pageSize,
-                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       requestBody.getEffectiveTime(),
                                                                        methodName));
             }
             else

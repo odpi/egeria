@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class AssetHandler<B> extends ReferenceableHandler<B>
 {
-    private ConnectionHandler<OpenMetadataAPIDummyBean> connectionHandler;
+    private final ConnectionHandler<OpenMetadataAPIDummyBean> connectionHandler;
 
     /**
      * Construct the handler with information needed to work with B objects.
@@ -140,11 +140,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     }
 
 
-
     /**
      * The externalSource identifier is supplied on the APIs that supply external source identifiers for two purposes.
      * The first is the standard mechanism to control the ownership/provenance of the resulting elements.
-     * The second is to enable a relationship between an asset and the software server capability to be created.
+     * The second is to enable a relationship between an asset and the software capability to be created.
      * The externalSourceIsHome boolean determines whether the identifier is used to control ownership or not.
      * The relationship is set up if the externalSourceGUID is not null.
      *
@@ -168,30 +167,40 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * Save any associated Connection.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter passing the assetGUID
      * @param assetSummary short description of the asset
      * @param connectionGUID unique identifier of the connection
      * @param connectionGUIDParameterName name of parameter for the connectionGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName calling method
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private void attachConnectionToAsset(String userId,
-                                         String externalSourceGUID,
-                                         String externalSourceName,
-                                         String assetGUID,
-                                         String assetGUIDParameterName,
-                                         String assetSummary,
-                                         String connectionGUID,
-                                         String connectionGUIDParameterName,
-                                         String methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    private void attachConnectionToAsset(String  userId,
+                                         String  externalSourceGUID,
+                                         String  externalSourceName,
+                                         String  assetGUID,
+                                         String  assetGUIDParameterName,
+                                         String  assetSummary,
+                                         String  connectionGUID,
+                                         String  connectionGUIDParameterName,
+                                         Date    effectiveFrom,
+                                         Date    effectiveTo,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         /*
          * The asset summary property is stored in the relationship between the asset and the connection.
@@ -216,27 +225,35 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   connectionGUID,
                                   connectionGUIDParameterName,
                                   OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                   properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
 
     /**
-     * Link the schema type and asset.  This is called from outside of AssetHandler.  The assetGUID is checked to ensure the
+     * Link the schema type and asset.  This is called from outside the AssetHandler.  The assetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
      * @param assetGUID unique identifier of the asset to connect the schema to
      * @param assetGUIDParameterName parameter providing the assetGUID
      * @param schemaTypeGUID identifier for schema Type object
      * @param schemaTypeGUIDParameterName parameter providing the schemaTypeGUID
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -249,6 +266,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                          String  assetGUIDParameterName,
                                          String  schemaTypeGUID,
                                          String  schemaTypeGUIDParameterName,
+                                         Date    effectiveFrom,
+                                         Date    effectiveTo,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
                                          String  methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -261,6 +283,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                    externalSourceName,
                                    assetGUID,
                                    assetGUIDParameterName,
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   effectiveTime,
                                    methodName);
 
         this.linkElementToElement(userId,
@@ -272,38 +297,47 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   schemaTypeGUID,
                                   schemaTypeGUIDParameterName,
                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                   OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                   null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
 
     /**
-     * Remove any associated schema type.  This may be called from outside of AssetHandler.  The assetGUID is checked to ensure the
+     * Remove any associated schema type.  This may be called from outside the AssetHandler.  The assetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is a schema attached, it is deleted.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
      * @param assetGUID unique identifier of the asset to connect the schema to
      * @param assetGUIDParameterName parameter providing the assetGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void removeAssociatedSchemaType(String userId,
-                                           String externalSourceGUID,
-                                           String externalSourceName,
-                                           String assetGUID,
-                                           String assetGUIDParameterName,
-                                           String methodName) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public void removeAssociatedSchemaType(String  userId,
+                                           String  externalSourceGUID,
+                                           String  externalSourceName,
+                                           String  assetGUID,
+                                           String  assetGUIDParameterName,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
         this.unlinkAllElements(userId,
                                false,
@@ -312,27 +346,32 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                assetGUID,
                                assetGUIDParameterName,
                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                               false,
-                               false,
+                               forLineage,
+                               forDuplicateProcessing,
                                supportedZones,
                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                               new Date(),
+                               effectiveTime,
                                methodName);
     }
 
 
     /**
-     * Link the asset to the associated software server capability if supplied.  This is called from outside of AssetHandler.
+     * Link the asset to the associated software capability if supplied.  This is called from outside the AssetHandler.
      * The assetGUID and softwareServerCapabilityGUID are checked to ensure they are not null snd if all is well, the relationship is established.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
      * @param assetGUID unique identifier of the asset to connect the schema to
      * @param assetGUIDParameterName parameter providing the assetGUID
      * @param softwareServerCapabilityGUID identifier for schema Type object
      * @param softwareServerCapabilityGUIDParameterName parameter providing the softwareServerCapabilityGUID
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -345,6 +384,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                        String  assetGUIDParameterName,
                                                        String  softwareServerCapabilityGUID,
                                                        String  softwareServerCapabilityGUIDParameterName,
+                                                       Date    effectiveFrom,
+                                                       Date    effectiveTo,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime,
                                                        String  methodName) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
@@ -360,26 +404,32 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       assetGUID,
                                       assetGUIDParameterName,
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                       null,
+                                      effectiveFrom,
+                                      effectiveTo,
+                                      effectiveTime,
                                       methodName);
         }
     }
 
 
     /**
-     * Remove any associated schema type.  This may be called from outside of AssetHandler.  The assetGUID is checked to ensure the
+     * Remove any associated schema type.  This may be called from outside the AssetHandler.  The assetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is a schema attached, it is deleted.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
      * @param assetGUID unique identifier of the asset to connect the schema to
      * @param assetGUIDParameterName parameter providing the assetGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return guid of previously attached schema type or null if there is no schema
@@ -387,14 +437,17 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String detachSchemaTypeFromAsset(String userId,
-                                            String externalSourceGUID,
-                                            String externalSourceName,
-                                            String assetGUID,
-                                            String assetGUIDParameterName,
-                                            String methodName) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
+    public String detachSchemaTypeFromAsset(String  userId,
+                                            String  externalSourceGUID,
+                                            String  externalSourceName,
+                                            String  assetGUID,
+                                            String  assetGUIDParameterName,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
         return this.unlinkConnectedElement(userId,
                                            false,
@@ -403,61 +456,14 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            assetGUID,
                                            assetGUIDParameterName,
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                           false,
-                                           false,
+                                           forLineage,
+                                           forDuplicateProcessing,
                                            supportedZones,
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
                                            OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                            OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                           null,
+                                           effectiveTime,
                                            methodName);
-    }
-
-
-    /**
-     * Create relationships between the identified glossary terms and an Asset.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
-     * @param beanGUID unique identifier of the referenceable that is being described
-     * @param beanGUIDParameter parameter supply the beanGUID
-     * @param glossaryTermGUIDs list of unique identifiers of the glossary terms
-     * @param glossaryTermGUIDsParameter parameter supplying the list of GlossaryTermGUIDs
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException the guid properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public void  saveSemanticAssignments(String         userId,
-                                         String         externalSourceGUID,
-                                         String         externalSourceName,
-                                         String         beanGUID,
-                                         String         beanGUIDParameter,
-                                         List<String>   glossaryTermGUIDs,
-                                         String         glossaryTermGUIDsParameter,
-                                         String         methodName)  throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
-    {
-        if (glossaryTermGUIDs != null)
-        {
-            for (String glossaryTermGUID : glossaryTermGUIDs)
-            {
-                if (glossaryTermGUID != null)
-                {
-                    this.saveSemanticAssignment(userId,
-                                                externalSourceGUID,
-                                                externalSourceName,
-                                                beanGUID,
-                                                beanGUIDParameter,
-                                                glossaryTermGUID,
-                                                glossaryTermGUIDsParameter,
-                                                methodName);
-                }
-            }
-        }
     }
 
 
@@ -466,8 +472,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * zone membership and latest change are filled in with default values.
      *
      * @param userId calling userId
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateGUIDParameterName name of parameter providing the templateGUID
      * @param expectedTypeGUID unique identifier of type (or super type of asset identified by templateGUID)
@@ -477,6 +483,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param displayName the stored display name property for the database - if null, the value from the template is used
      * @param description the stored description property associated with the database - if null, the value from the template is used
      * @param networkAddress if there is a connection object for this asset - update the endpoint network address
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the asset in the repository.  If a connection or schema object is provided,
@@ -486,27 +495,28 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String addAssetFromTemplate(String userId,
-                                       String externalSourceGUID,
-                                       String externalSourceName,
-                                       String templateGUID,
-                                       String templateGUIDParameterName,
-                                       String expectedTypeGUID,
-                                       String expectedTypeName,
-                                       String qualifiedName,
-                                       String qualifiedNameParameterName,
-                                       String displayName,
-                                       String description,
-                                       String networkAddress,
-                                       String methodName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public String addAssetFromTemplate(String  userId,
+                                       String  externalSourceGUID,
+                                       String  externalSourceName,
+                                       String  templateGUID,
+                                       String  templateGUIDParameterName,
+                                       String  expectedTypeGUID,
+                                       String  expectedTypeName,
+                                       String  qualifiedName,
+                                       String  qualifiedNameParameterName,
+                                       String  displayName,
+                                       String  description,
+                                       String  networkAddress,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        Date effectiveTime = null;
 
         AssetBuilder builder = new AssetBuilder(qualifiedName,
                                                 displayName,
@@ -538,7 +548,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                                       OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                                       OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                                                      false,
+                                                                                                      1,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing,
                                                                                                       effectiveTime,
                                                                                                       methodName);
 
@@ -551,7 +563,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                              OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                                                              OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                                                                                              OpenMetadataAPIMapper.CONNECTION_ENDPOINT_TYPE_NAME,
-                                                                                                             false,
+                                                                                                             1,
+                                                                                                             forLineage,
+                                                                                                             forDuplicateProcessing,
                                                                                                              effectiveTime,
                                                                                                              methodName);
                 if (connectionEndpointRelationship != null)
@@ -566,8 +580,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
                                                                                null,
                                                                                null,
-                                                                               false,
-                                                                               false,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
                                                                                supportedZones,
                                                                                effectiveTime,
                                                                                methodName);
@@ -606,8 +620,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * zone membership and latest change are filled in with default values.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name for this asset
      * @param technicalName the stored display name property for the asset
      * @param technicalDescription the stored description property associated with the asset
@@ -621,76 +635,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param typeGUID identifier of the type that is a subtype of asset - or null to create standard type
      * @param typeName name of the type that is a subtype of asset - or null to create standard type
      * @param extendedProperties properties from any subtype
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new asset
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public String  createAssetInRepository(String               userId,
-                                           String               externalSourceGUID,
-                                           String               externalSourceName,
-                                           String               qualifiedName,
-                                           String               technicalName,
-                                           String               technicalDescription,
-                                           List<String>         zoneMembership,
-                                           String               owner,
-                                           int                  ownerType,
-                                           String               originOrganizationCapabilityGUID,
-                                           String               originBusinessCapabilityGUID,
-                                           Map<String, String>  otherOriginValues,
-                                           Map<String, String>  additionalProperties,
-                                           String               typeGUID,
-                                           String               typeName,
-                                           Map<String, Object>  extendedProperties,
-                                           String               methodName) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
-    {
-        return this.createAssetInRepository(userId,
-                                            externalSourceGUID,
-                                            externalSourceName,
-                                            qualifiedName,
-                                            technicalName,
-                                            technicalDescription,
-                                            zoneMembership,
-                                            owner,
-                                            ownerType,
-                                            originOrganizationCapabilityGUID,
-                                            originBusinessCapabilityGUID,
-                                            otherOriginValues,
-                                            additionalProperties,
-                                            typeGUID,
-                                            typeName,
-                                            extendedProperties,
-                                            InstanceStatus.ACTIVE,
-                                            methodName);
-    }
-
-
-    /**
-     * Add a simple asset description to the metadata repository.  Null values for requested typename, ownership,
-     * zone membership and latest change are filled in with default values.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
-     * @param qualifiedName unique name for this asset
-     * @param technicalName the stored display name property for the asset
-     * @param technicalDescription the stored description property associated with the asset
-     * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
-     * @param owner identifier of the owner
-     * @param ownerType is the owner identifier a user id, personal profile or team profile
-     * @param originOrganizationCapabilityGUID unique identifier of originating organization
-     * @param originBusinessCapabilityGUID unique identifier of originating business capability
-     * @param otherOriginValues the properties that characterize where this asset is from
-     * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeGUID identifier of the type that is a subtype of asset - or null to create standard type
-     * @param typeName name of the type that is a subtype of asset - or null to create standard type
-     * @param extendedProperties properties from any subtype
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param instanceStatus initial status of the Asset in the metadata repository
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new asset
@@ -715,7 +663,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String               typeGUID,
                                            String               typeName,
                                            Map<String, Object>  extendedProperties,
+                                           Date                 effectiveFrom,
+                                           Date                 effectiveTo,
                                            InstanceStatus       instanceStatus,
+                                           Date                 effectiveTime,
                                            String               methodName) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
@@ -763,6 +714,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                otherOriginValues,
                                methodName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -771,6 +724,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -780,8 +734,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * zone membership and latest change are filled in with default values.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name for this asset
      * @param technicalName the stored display name property for the asset
      * @param technicalDescription the stored description property associated with the asset
@@ -789,6 +743,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param typeName name of the type that is a subtype of asset - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param instanceStatus initial status of the Asset in the metadata repository
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new asset
@@ -807,6 +764,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String               typeName,
                                            Map<String, Object>  extendedProperties,
                                            InstanceStatus       instanceStatus,
+                                           Date                 effectiveFrom,
+                                           Date                 effectiveTo,
+                                           Date                 effectiveTime,
                                            String               methodName) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
@@ -836,6 +796,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 serviceName,
                                                 serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         if (defaultZones != null)
         {
             builder.setAssetZones(userId, defaultZones, methodName);
@@ -849,9 +811,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
-
 
 
     /**
@@ -859,8 +821,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * zone membership and latest change are filled in with default values.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUIDParameterName parameter name of the resulting asset's GUID
      * @param assetQualifiedName unique name for this asset
      * @param technicalName the stored display name property for the asset
@@ -876,6 +838,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param networkAddress the network address (typically the URL but this depends on the protocol)
      * @param protocol the name of the protocol to use to connect to the endpoint
      * @param encryptionMethod encryption method to use when passing data to this endpoint
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return unique identifier of the new asset
@@ -901,6 +868,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                              String              networkAddress,
                                              String              protocol,
                                              String              encryptionMethod,
+                                             Date                effectiveFrom,
+                                             Date                effectiveTo,
+                                             boolean             forLineage,
+                                             boolean             forDuplicateProcessing,
+                                             Date                effectiveTime,
                                              String              methodName) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
@@ -915,6 +887,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                         assetTypeName,
                                                         extendedProperties,
                                                         instanceStatus,
+                                                        effectiveFrom,
+                                                        effectiveTo,
+                                                        effectiveTime,
                                                         methodName);
 
         if (assetGUID != null)
@@ -932,8 +907,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                  networkAddress,
                                                  protocol,
                                                  encryptionMethod,
-                                                 null,
-                                                 null,
+                                                 effectiveFrom,
+                                                 effectiveTo,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
                                                  methodName);
         }
 
@@ -946,8 +924,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * Update an asset's properties.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this database
@@ -956,7 +934,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
      * @param extendedProperties properties from any subtype
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
      * @param isMergeUpdate should the new properties be merged with the existing properties of overlay them?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -974,7 +957,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             Map<String, String>  additionalProperties,
                             String               typeName,
                             Map<String, Object>  extendedProperties,
+                            Date                 effectiveFrom,
+                            Date                 effectiveTo,
                             boolean              isMergeUpdate,
+                            boolean              forLineage,
+                            boolean              forDuplicateProcessing,
+                            Date                 effectiveTime,
                             String               methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -998,7 +986,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          typeName,
                          supportedZones,
                          extendedProperties,
+                         effectiveFrom,
+                         effectiveTo,
                          isMergeUpdate,
+                         forLineage,
+                         forDuplicateProcessing,
+                         effectiveTime,
                          methodName);
     }
 
@@ -1007,8 +1000,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * Update an asset's properties.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this database
@@ -1017,63 +1010,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeGUID identifier of the type that is a subtype of Database - or null to create standard type
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
-     * @param extendedProperties properties from any subtype
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateAsset(String               userId,
-                            String               externalSourceGUID,
-                            String               externalSourceName,
-                            String               assetGUID,
-                            String               assetGUIDParameterName,
-                            String               qualifiedName,
-                            String               technicalName,
-                            String               technicalDescription,
-                            Map<String, String>  additionalProperties,
-                            String               typeGUID,
-                            String               typeName,
-                            Map<String, Object>  extendedProperties,
-                            String               methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
-       this.updateAsset(userId,
-                        externalSourceGUID,
-                        externalSourceName,
-                        assetGUID,
-                        assetGUIDParameterName,
-                        qualifiedName,
-                        technicalName,
-                        technicalDescription,
-                        additionalProperties,
-                        typeGUID,
-                        typeName,
-                        supportedZones,
-                        extendedProperties,
-                        false,
-                        methodName);
-    }
-
-
-    /**
-     * Update an asset's properties.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
-     * @param assetGUID unique identifier of the metadata element to update
-     * @param assetGUIDParameterName parameter name that supplied the assetGUID
-     * @param qualifiedName unique name for this database
-     * @param technicalName the stored display name property for the asset
-     * @param technicalDescription the stored description property associated with the asset
-     * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeGUID identifier of the type that is a subtype of Database - or null to create standard type
-     * @param typeName name of the type that is a subtype of Database - or null to create standard type
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
      * @param isMergeUpdate indicates whether supplied properties should replace
      * @param extendedProperties properties from any subtype
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1092,7 +1035,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               typeGUID,
                             String               typeName,
                             Map<String, Object>  extendedProperties,
+                            Date                 effectiveFrom,
+                            Date                 effectiveTo,
                             boolean              isMergeUpdate,
+                            boolean              forLineage,
+                            boolean              forDuplicateProcessing,
+                            Date                 effectiveTime,
                             String               methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -1110,7 +1058,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          typeName,
                          supportedZones,
                          extendedProperties,
+                         effectiveFrom,
+                         effectiveTo,
                          isMergeUpdate,
+                         forLineage,
+                         forDuplicateProcessing,
+                         effectiveTime,
                          methodName);
     }
 
@@ -1119,8 +1072,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * Update an asset's properties.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this database
@@ -1131,7 +1084,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param typeName name of the type that is a subtype of Asset - or null to create standard type
      * @param suppliedSupportedZones supported zones that are specific to the caller
      * @param extendedProperties properties from any subtype
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
      * @param isMergeUpdate should the new properties be merged with the existing properties of overlay them?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1151,7 +1109,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               typeName,
                             List<String>         suppliedSupportedZones,
                             Map<String, Object>  extendedProperties,
+                            Date                 effectiveFrom,
+                            Date                 effectiveTo,
                             boolean              isMergeUpdate,
+                            boolean              forLineage,
+                            boolean              forDuplicateProcessing,
+                            Date                 effectiveTime,
                             String               methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -1167,6 +1130,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 serviceName,
                                                 serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -1174,21 +1139,22 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     assetGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     suppliedSupportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
+
 
     /**
      * Update an asset's properties.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this database
@@ -1198,8 +1164,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param typeGUID identifier of the type that is a subtype of Database - or null to create standard type
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
      * @param extendedProperties properties from any subtype
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
      * @param connection connection associated with the asset
      * @param assetSummary description of the asset from the perspective of the connection
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1218,8 +1189,13 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                           String               typeGUID,
                                           String               typeName,
                                           Map<String, Object>  extendedProperties,
+                                          Date                 effectiveFrom,
+                                          Date                 effectiveTo,
                                           String               assetSummary,
                                           Connection           connection,
+                                          boolean              forLineage,
+                                          boolean              forDuplicateProcessing,
+                                          Date                 effectiveTime,
                                           String               methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -1236,15 +1212,22 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          typeGUID,
                          typeName,
                          extendedProperties,
+                         effectiveFrom,
+                         effectiveTo,
+                         false,
+                         forLineage,
+                         forDuplicateProcessing,
+                         effectiveTime,
                          methodName);
 
-        Date          effectiveTime = new Date();
         Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                                   assetGUID,
-                                                                                                  OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                                                  false,
+                                                                                                  1,
+                                                                                                  forLineage,
+                                                                                                  forDuplicateProcessing,
                                                                                                   effectiveTime,
                                                                                                   methodName);
         if (connection == null)
@@ -1256,8 +1239,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         assetGUID,
                                         assetGUIDParameterName,
                                         typeName,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                         OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
@@ -1276,6 +1259,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                       typeName,
                                                                       connection,
                                                                       assetSummary,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      effectiveTime,
                                                                       methodName);
 
             InstanceProperties relationshipProperties = null;
@@ -1313,7 +1299,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
                                                                  relationshipProperties,
-                                                                 false,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
                                                                  effectiveTime,
                                                                  methodName);
             }
@@ -1328,16 +1315,22 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user.
      * @param assetGUID unique identifier of the asset that contains reference data.
      * @param assetGUIDParameterName name of parameter providing assetGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public void  classifyAssetAsReferenceData(String userId,
-                                              String assetGUID,
-                                              String assetGUIDParameterName,
-                                              String methodName) throws InvalidParameterException,
+    public void  classifyAssetAsReferenceData(String  userId,
+                                              String  assetGUID,
+                                              String  assetGUIDParameterName,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
@@ -1351,9 +1344,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
                                            null,
                                            false,
-                                           false,
-                                           false,
-                                           new Date(),
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1365,18 +1358,24 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user.
      * @param assetGUID unique identifier of asset.
      * @param assetGUIDParameterName name of parameter providing assetGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public void  declassifyAssetAsReferenceData(String userId,
-                                                String assetGUID,
-                                                String assetGUIDParameterName,
-                                                String methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public void  declassifyAssetAsReferenceData(String  userId,
+                                                String  assetGUID,
+                                                String  assetGUIDParameterName,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
                                                 null,
@@ -1386,9 +1385,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                 OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
-                                                false,
-                                                false,
-                                                new Date(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -1405,8 +1404,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param businessCapabilityGUID  Unique identifier (GUID) of the business capability where this asset originated from.
      * @param businessCapabilityGUIDParameterName parameter name supplying businessCapabilityGUID
      * @param otherOriginValues Descriptive labels describing origin of the asset
-     * @param effectiveFromTime the time that the elements must be effective from (null for any time)
-     * @param effectiveToTime the time that the elements must be effective from (null for any time)
+     * @param effectiveFrom the time that the elements must be effective from (null for any time)
+     * @param effectiveTo the time that the elements must be effective from (null for any time)
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
@@ -1421,14 +1424,18 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                 String                businessCapabilityGUID,
                                 String                businessCapabilityGUIDParameterName,
                                 Map<String, String>   otherOriginValues,
-                                Date                  effectiveFromTime,
-                                Date                  effectiveToTime,
+                                Date                  effectiveFrom,
+                                Date                  effectiveTo,
+                                boolean               isMergeUpdate,
+                                boolean               forLineage,
+                                boolean               forDuplicateProcessing,
+                                Date                  effectiveTime,
                                 String                methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
         /*
-         * Validate the the organization and the business capability exist.
+         * Validate the organization and the business capability exist.
          */
         if (organizationGUID  != null)
         {
@@ -1437,10 +1444,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       organizationGUIDParameterName,
                                       OpenMetadataAPIMapper.ORGANIZATION_TYPE_NAME,
                                       false,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
-                                      effectiveFromTime,
+                                      effectiveFrom,
                                       methodName);
         }
 
@@ -1451,10 +1458,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       businessCapabilityGUIDParameterName,
                                       OpenMetadataAPIMapper.BUSINESS_CAPABILITY_TYPE_NAME,
                                       false,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
-                                      effectiveFromTime,
+                                      effectiveFrom,
                                       methodName);
         }
 
@@ -1467,8 +1474,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                     otherOriginValues,
                                                                     methodName);
 
-        properties.setEffectiveFromTime(effectiveFromTime);
-        properties.setEffectiveToTime(effectiveToTime);
+        this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo);
 
         this.setClassificationInRepository(userId,
                                            null,
@@ -1479,10 +1485,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
                                            OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
                                            properties,
-                                           false,
-                                           false,
-                                           false,
-                                           new Date(),
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1493,17 +1499,23 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param assetGUID unique identifier of asset
      * @param assetGUIDParameterName parameter name supplying assetGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeAssetOrigin(String userId,
-                                   String assetGUID,
-                                   String assetGUIDParameterName,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void  removeAssetOrigin(String  userId,
+                                   String  assetGUID,
+                                   String  assetGUIDParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
                                                 null,
@@ -1513,9 +1525,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                 OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
                                                 OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
-                                                false,
-                                                false,
-                                                new Date(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -1526,20 +1538,26 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
      * @param assetGUIDParameterName parameter name supplying assetGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException guid or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void publishAsset(String userId,
-                             String assetGUID,
-                             String assetGUIDParameterName,
-                             String methodName) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException
+    public void publishAsset(String  userId,
+                             String  assetGUID,
+                             String  assetGUIDParameterName,
+                             boolean forLineage,
+                             boolean forDuplicateProcessing,
+                             Date    effectiveTime,
+                             String  methodName) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
     {
-        updateAssetZones(userId, assetGUID, assetGUIDParameterName, publishZones, methodName);
+        updateAssetZones(userId, assetGUID, assetGUIDParameterName, publishZones, true, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
@@ -1549,20 +1567,26 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
      * @param assetGUIDParameterName parameter name supplying assetGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException guid or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void withdrawAsset(String userId,
-                              String assetGUID,
-                              String assetGUIDParameterName,
-                              String methodName) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void withdrawAsset(String  userId,
+                              String  assetGUID,
+                              String  assetGUIDParameterName,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing,
+                              Date    effectiveTime,
+                              String  methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
-        updateAssetZones(userId, assetGUID,  assetGUIDParameterName, defaultZones, methodName);
+        updateAssetZones(userId, assetGUID,  assetGUIDParameterName, defaultZones, true, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
@@ -1575,6 +1599,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUIDParameterName parameter name supplying assetGUID
      * @param assetZones list of zones for the asset - these values override the current values - null means belongs
      *                   to all zones.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException guid or userId is null
@@ -1585,6 +1613,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                  String        assetGUID,
                                  String        assetGUIDParameterName,
                                  List<String>  assetZones,
+                                 boolean       isMergeUpdate,
+                                 boolean       forLineage,
+                                 boolean       forDuplicateProcessing,
+                                 Date          effectiveTime,
                                  String        methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
@@ -1603,10 +1635,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_GUID,
                                            OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME,
                                            builder.getZoneMembershipProperties(assetZones, methodName),
-                                           false,
-                                           false,
-                                           false,
-                                           null,
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1618,7 +1650,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier for the asset to update
      * @param assetGUIDParameterName parameter name supplying assetGUID
      * @param ownerId userId or profileGUID of the owner - or null to clear the field
-     * @param ownerType indicator of the type of Id provides above - or null to clear the field
+     * @param ownerType indicator of the type of id provided above - or null to clear the field
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException userId is null
@@ -1631,6 +1666,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                  String    assetGUIDParameterName,
                                  String    ownerId,
                                  int       ownerType,
+                                 boolean   forLineage,
+                                 boolean   forDuplicateProcessing,
+                                 Date      effectiveTime,
                                  String    methodName) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
@@ -1653,6 +1691,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                       ownerId,
                       ownerTypeName,
                       null,
+                      forLineage,
+                      forDuplicateProcessing,
+                      effectiveTime,
                       methodName);
     }
 
@@ -1664,6 +1705,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param connectionGUID  unique identifier for the connection
      * @param connectionGUIDParameterName name of parameter supplying connectionGUID
      * @param serviceSupportedZones list of supported zones for any connected asset
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of asset.
@@ -1676,6 +1720,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                          String       connectionGUID,
                                          String       connectionGUIDParameterName,
                                          List<String> serviceSupportedZones,
+                                         boolean      forLineage,
+                                         boolean      forDuplicateProcessing,
+                                         Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -1688,10 +1735,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                            0,
-                                           false,
-                                           false,
+                                           forLineage,
+                                           forDuplicateProcessing,
                                            serviceSupportedZones,
-                                           null,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1700,10 +1747,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * Remove any data sets connected to the asset by the DataContentForDataSet relationship.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUID unique identifier for asset
      * @param assetTypeName type of asset
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -1711,15 +1760,17 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void removeLinkedDataSet(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String assetGUID,
-                                    String assetTypeName,
-                                    Date   effectiveTime,
-                                    String methodName) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
+    public void removeLinkedDataSets(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  assetGUID,
+                                     String  assetTypeName,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         RepositoryRelationshipsIterator iterator = new RepositoryRelationshipsIterator(repositoryHandler,
                                                                                        invalidParameterHandler,
@@ -1728,7 +1779,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                        assetTypeName,
                                                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
                                                                                        OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
-                                                                                       false,
+                                                                                       2,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
                                                                                        0,
                                                                                        0,
                                                                                        effectiveTime,
@@ -1751,9 +1804,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             OpenMetadataAPIMapper.DATA_SET_TYPE_NAME,
                                             null,
                                             null,
-                                            false,
-                                            false,
-                                            new Date(),
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            effectiveTime,
                                             methodName);
             }
         }
@@ -1766,6 +1819,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param userId           userId of user making request.
      * @param connectionName   this may be the qualifiedName or displayName of the connection.
      * @param connectionNameParameter name of parameter supplying
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName       calling method
      *
      * @return unique identifier of asset.
@@ -1774,30 +1830,37 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String  getAssetForConnectionName(String userId,
-                                             String connectionName,
-                                             String connectionNameParameter,
-                                             String methodName) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
+    public String  getAssetForConnectionName(String  userId,
+                                             String  connectionName,
+                                             String  connectionNameParameter,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
 
-        List<String> connectionGUIDs = this.getBeanGUIDsByValue(userId,
-                                                                connectionName,
-                                                                connectionNameParameter,
-                                                                OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
-                                                                specificMatchPropertyNames,
-                                                                true,
-                                                                supportedZones,
-                                                                null,
-                                                                0,
-                                                                invalidParameterHandler.getMaxPagingSize(),
-                                                                null,
-                                                                methodName);
+        List<String> connectionGUIDs = this.getEntityGUIDsByValue(userId,
+                                                                  connectionName,
+                                                                  connectionNameParameter,
+                                                                  OpenMetadataAPIMapper.CONNECTION_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                                  specificMatchPropertyNames,
+                                                                  true,
+                                                                  null,
+                                                                  null,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  supportedZones,
+                                                                  null,
+                                                                  0,
+                                                                  invalidParameterHandler.getMaxPagingSize(),
+                                                                  effectiveTime,
+                                                                  methodName);
 
         if (connectionGUIDs != null)
         {
@@ -1805,7 +1868,14 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             {
                 if (connectionGUID != null)
                 {
-                    return this.getAssetForConnection(userId, connectionGUID, connectionNameParameter, supportedZones, methodName);
+                    return this.getAssetForConnection(userId,
+                                                      connectionGUID,
+                                                      connectionNameParameter,
+                                                      supportedZones,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      effectiveTime,
+                                                      methodName);
                 }
             }
         }
@@ -1821,21 +1891,25 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName name of parameter supplying assetGUID
      * @param assetTypeName type name of asset
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return an asset bean (with embedded connection details if available)
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public B getAssetWithConnection(String userId,
-                                    String assetGUID,
-                                    String assetGUIDParameterName,
-                                    String assetTypeName,
-                                    Date   effectiveTime,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public B getAssetWithConnection(String  userId,
+                                    String  assetGUID,
+                                    String  assetGUIDParameterName,
+                                    String  assetTypeName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         EntityDetail assetEntity = this.getEntityFromRepository(userId,
                                                                 assetGUID,
@@ -1843,15 +1917,20 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                 assetTypeName,
                                                                 null,
                                                                 null,
-                                                                false,
-                                                                false,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
                                                                 supportedZones,
                                                                 effectiveTime,
                                                                 methodName);
 
         if (assetEntity != null)
         {
-            return this.getAssetWithConnectionBean(userId, assetEntity, effectiveTime, methodName);
+            return this.getAssetWithConnectionBean(userId,
+                                                   assetEntity,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
         }
 
         return null;
@@ -1866,22 +1945,26 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName name of parameter supplying name
      * @param assetTypeGUID type identifier of asset
      * @param assetTypeName type name of asset
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return an asset bean (with embedded connection details if available)
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public B getAssetByNameWithConnection(String userId,
-                                          String name,
-                                          String nameParameterName,
-                                          String assetTypeGUID,
-                                          String assetTypeName,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public B getAssetByNameWithConnection(String  userId,
+                                          String  name,
+                                          String  nameParameterName,
+                                          String  assetTypeGUID,
+                                          String  assetTypeName,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -1896,6 +1979,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                              true,
                                                              null,
                                                              null,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             supportedZones,
                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
@@ -1904,7 +1990,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         if ((results != null) && (results.size() == 1))
         {
-            return getAssetWithConnectionBean(userId, results.get(0), effectiveTime, methodName);
+            return getAssetWithConnectionBean(userId,
+                                              results.get(0),
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              effectiveTime,
+                                              methodName);
         }
         else
         {
@@ -1923,7 +2014,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetTypeName subtype of asset required
      * @param startFrom initial position in the stored list
      * @param pageSize maximum number of definitions to return on this call
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of beans.
@@ -1932,22 +2025,24 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service definitions.
      */
-    public List<B> getAllAssetsWithConnection(String userId,
-                                              String assetTypeGUID,
-                                              String assetTypeName,
-                                              int    startFrom,
-                                              int    pageSize,
-                                              Date   effectiveTime,
-                                              String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<B> getAllAssetsWithConnection(String  userId,
+                                              String  assetTypeGUID,
+                                              String  assetTypeName,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              assetTypeGUID,
                                                              assetTypeName,
                                                              null,
-                                                             false,
-                                                             false,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
                                                              supportedZones,
                                                              startFrom,
                                                              pageSize,
@@ -1962,7 +2057,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             {
                 if (entity != null)
                 {
-                    B bean = this.getAssetWithConnectionBean(userId, entity, effectiveTime, methodName);
+                    B bean = this.getAssetWithConnectionBean(userId,
+                                                             entity,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             effectiveTime,
+                                                             methodName);
                     if (bean != null)
                     {
                         results.add(bean);
@@ -1987,7 +2087,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param assetEntity entity for root connection object
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return connection object
      * @throws InvalidParameterException the parameters are invalid
@@ -1996,6 +2098,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      */
     private B getAssetWithConnectionBean(String       userId,
                                          EntityDetail assetEntity,
+                                         boolean      forLineage,
+                                         boolean      forDuplicateProcessing,
                                          Date         effectiveTime,
                                          String       methodName) throws InvalidParameterException,
                                                                          PropertyServerException,
@@ -2009,7 +2113,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                   assetEntity.getType().getTypeDefName(),
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                                                                   OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                                                  false,
+                                                                                                  1,
+                                                                                                  forLineage,
+                                                                                                  forDuplicateProcessing,
                                                                                                   effectiveTime,
                                                                                                   methodName);
 
@@ -2027,8 +2133,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                     OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
                                                                     null,
                                                                     null,
-                                                                    false,
-                                                                    false,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
                                                                     supportedZones,
                                                                     effectiveTime,
                                                                     methodName);
@@ -2049,7 +2155,12 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                 supplementaryEntities.add(connectionEntity);
                 supplementaryRelationships.add(relationshipToConnection);
 
-                List<Relationship> connectionRelationships = this.getEmbeddedConnectionRelationships(userId, connectionEntity, effectiveTime, methodName);
+                List<Relationship> connectionRelationships = this.getEmbeddedConnectionRelationships(userId,
+                                                                                                     connectionEntity,
+                                                                                                     forLineage,
+                                                                                                     forDuplicateProcessing,
+                                                                                                     effectiveTime,
+                                                                                                     methodName);
 
                 if (connectionRelationships != null)
                 {
@@ -2085,8 +2196,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                 entityProxy.getType().getTypeDefName(),
                                                                                                 null,
                                                                                                 null,
-                                                                                                false,
-                                                                                                false,
+                                                                                                forLineage,
+                                                                                                forDuplicateProcessing,
                                                                                                 supportedZones,
                                                                                                 effectiveTime,
                                                                                                 methodName);
@@ -2123,7 +2234,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param connectionEntity entity for root connection object
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of relationships
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -2131,6 +2244,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      */
     private List<Relationship> getEmbeddedConnectionRelationships(String        userId,
                                                                   EntitySummary connectionEntity,
+                                                                  boolean       forLineage,
+                                                                  boolean       forDuplicateProcessing,
                                                                   Date          effectiveTime,
                                                                   String        methodName) throws PropertyServerException,
                                                                                                    UserNotAuthorizedException,
@@ -2147,7 +2262,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                            connectionEntity.getType().getTypeDefName(),
                                                                                            null,
                                                                                            null,
-                                                                                           false,
+                                                                                           2,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing,
                                                                                            0,
                                                                                            invalidParameterHandler.getMaxPagingSize(),
                                                                                            effectiveTime,
@@ -2183,6 +2300,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                         {
                             List<Relationship> embeddedConnectionRelationships = this.getEmbeddedConnectionRelationships(userId,
                                                                                                                          embeddedConnectionEnd,
+                                                                                                                         forLineage,
+                                                                                                                         forDuplicateProcessing,
                                                                                                                          effectiveTime,
                                                                                                                          methodName);
 
@@ -2214,6 +2333,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param subTypeName type of asset to scan for (null for all asset types)
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
@@ -2227,6 +2348,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         String       subTypeName,
                                         int          startFrom,
                                         int          pageSize,
+                                        boolean      forLineage,
+                                        boolean      forDuplicateProcessing,
                                         Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
@@ -2239,6 +2362,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       supportedZones,
                                       startFrom,
                                       pageSize,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       effectiveTime,
                                       methodName);
     }
@@ -2254,6 +2379,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param suppliedSupportedZones list of supported zones from calling service
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
@@ -2268,6 +2395,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         List<String> suppliedSupportedZones,
                                         int          startFrom,
                                         int          pageSize,
+                                        boolean      forLineage,
+                                        boolean      forDuplicateProcessing,
                                         Date         effectiveTime,
                                         String       methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
@@ -2280,6 +2409,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                       suppliedSupportedZones,
                                       startFrom,
                                       pageSize,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       effectiveTime,
                                       methodName);
     }
@@ -2294,6 +2425,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param subTypeName type of asset to scan for (null for all asset types)
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
@@ -2307,6 +2440,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                               String       subTypeName,
                               int          startFrom,
                               int          pageSize,
+                              boolean      forLineage,
+                              boolean      forDuplicateProcessing,
                               Date         effectiveTime,
                               String       methodName) throws InvalidParameterException,
                                                               PropertyServerException,
@@ -2319,6 +2454,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   supportedZones,
                                   startFrom,
                                   pageSize,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   effectiveTime,
                                   methodName);
     }
@@ -2334,7 +2471,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
      * @param suppliedSupportedZones list of supported zones from calling service
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
      *
@@ -2348,6 +2487,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                               List<String> suppliedSupportedZones,
                               int          startFrom,
                               int          pageSize,
+                              boolean      forLineage,
+                              boolean      forDuplicateProcessing,
                               Date         effectiveTime,
                               String       methodName) throws InvalidParameterException,
                                                               PropertyServerException,
@@ -2360,6 +2501,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   suppliedSupportedZones,
                                   startFrom,
                                   pageSize,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   effectiveTime,
                                   methodName);
     }
@@ -2377,6 +2520,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param suppliedSupportedZones list of supported zones from calling service
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of matching assets
@@ -2392,6 +2537,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                   List<String> suppliedSupportedZones,
                                   int          startFrom,
                                   int          pageSize,
+                                  boolean      forLineage,
+                                  boolean      forDuplicateProcessing,
                                   Date         effectiveTime,
                                   String       methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
@@ -2423,8 +2570,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
                                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                                 false,
-                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
                                                                                  startFrom,
                                                                                  queryPageSize,
                                                                                  effectiveTime,
@@ -2472,7 +2619,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param suppliedSupportedZones list of supported zones from calling service
      * @param startFrom scan pointer
      * @param pageSize maximum number of results
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of GUIDs for matching assets
      *
@@ -2487,6 +2636,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            List<String> suppliedSupportedZones,
                                            int          startFrom,
                                            int          pageSize,
+                                           boolean      forLineage,
+                                           boolean      forDuplicateProcessing,
                                            Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
@@ -2518,8 +2669,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
                                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                                 false,
-                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
                                                                                  startFrom,
                                                                                  queryPageSize,
                                                                                  effectiveTime,
@@ -2566,7 +2717,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName property that provided the name
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2582,6 +2735,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     String   nameParameterName,
                                     int      startFrom,
                                     int      pageSize,
+                                    boolean  forLineage,
+                                    boolean  forDuplicateProcessing,
                                     Date     effectiveTime,
                                     String   methodName) throws InvalidParameterException,
                                                                 PropertyServerException,
@@ -2595,6 +2750,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                      supportedZones,
                                      startFrom,
                                      pageSize,
+                                     forLineage,
+                                     forDuplicateProcessing,
                                      effectiveTime,
                                      methodName);
     }
@@ -2611,6 +2768,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2628,6 +2787,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     List<String>  serviceSupportedZones,
                                     int           startFrom,
                                     int           pageSize,
+                                    boolean       forLineage,
+                                    boolean       forDuplicateProcessing,
                                     Date          effectiveTime,
                                     String        methodName) throws InvalidParameterException,
                                                                      PropertyServerException,
@@ -2658,8 +2819,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     serviceSupportedZones,
                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     startFrom,
@@ -2680,7 +2841,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName property that provided the name
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2696,6 +2859,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             String   nameParameterName,
                                             int      startFrom,
                                             int      pageSize,
+                                            boolean  forLineage,
+                                            boolean  forDuplicateProcessing,
                                             Date     effectiveTime,
                                             String   methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
@@ -2709,6 +2874,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         supportedZones,
                                         startFrom,
                                         pageSize,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         effectiveTime,
                                         methodName);
     }
@@ -2726,7 +2893,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2743,6 +2912,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             List<String> serviceSupportedZones,
                                             int          startFrom,
                                             int          pageSize,
+                                            boolean      forLineage,
+                                            boolean      forDuplicateProcessing,
                                             Date         effectiveTime,
                                             String       methodName) throws InvalidParameterException,
                                                                             PropertyServerException,
@@ -2764,19 +2935,23 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
 
-        return this.getBeanGUIDsByValue(userId,
-                                        name,
-                                        nameParameterName,
-                                        resultTypeGUID,
-                                        resultTypeName,
-                                        specificMatchPropertyNames,
-                                        true,
-                                        serviceSupportedZones,
-                                        null,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
+        return this.getEntityGUIDsByValue(userId,
+                                          name,
+                                          nameParameterName,
+                                          resultTypeGUID,
+                                          resultTypeName,
+                                          specificMatchPropertyNames,
+                                          true,
+                                          null,
+                                          null,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          serviceSupportedZones,
+                                          null,
+                                          startFrom,
+                                          pageSize,
+                                          effectiveTime,
+                                          methodName);
     }
 
 
@@ -2791,6 +2966,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName property that provided the name
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2807,6 +2984,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                    String   nameParameterName,
                                    int      startFrom,
                                    int      pageSize,
+                                   boolean  forLineage,
+                                   boolean  forDuplicateProcessing,
                                    Date     effectiveTime,
                                    String   methodName) throws InvalidParameterException,
                                                                PropertyServerException,
@@ -2820,6 +2999,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     supportedZones,
                                     startFrom,
                                     pageSize,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     effectiveTime,
                                     methodName);
     }
@@ -2837,7 +3018,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of B beans
@@ -2854,6 +3037,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                    List<String> serviceSupportedZones,
                                    int          startFrom,
                                    int          pageSize,
+                                   boolean      forLineage,
+                                   boolean      forDuplicateProcessing,
                                    Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
@@ -2884,8 +3069,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     serviceSupportedZones,
                                     null,
                                     startFrom,
@@ -2905,6 +3090,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param metadataCollectionIdParameterName parameter providing the metadata collection id
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -2921,6 +3108,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             String   metadataCollectionIdParameterName,
                                             int      startFrom,
                                             int      pageSize,
+                                            boolean  forLineage,
+                                            boolean  forDuplicateProcessing,
                                             Date     effectiveTime,
                                             String   methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
@@ -2953,8 +3142,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -2972,6 +3161,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param networkAddressParameterName parameter name supplying networkAddress
      * @param startFrom place to start in query
      * @param pageSize number of results to return
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of unique identifiers for matching assets
@@ -2980,15 +3171,17 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    public  List<String> getAssetGUIDsByEndpoint(String userId,
-                                                 String networkAddress,
-                                                 String networkAddressParameterName,
-                                                 int    startFrom,
-                                                 int    pageSize,
-                                                 Date   effectiveTime,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    public  List<String> getAssetGUIDsByEndpoint(String  userId,
+                                                 String  networkAddress,
+                                                 String  networkAddressParameterName,
+                                                 int     startFrom,
+                                                 int     pageSize,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         int queryPageSize      = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
         int maxPageSize        = invalidParameterHandler.getMaxPagingSize();
@@ -3007,19 +3200,23 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         while (moreResultsAvailable && ((queryPageSize == 0) || (resultGUIDs.size() < queryPageSize)))
         {
-            List<String> endpointGUIDs = this.getBeanGUIDsByValue(userId,
-                                                                  networkAddress,
-                                                                  networkAddressParameterName,
-                                                                  OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
-                                                                  specificMatchPropertyNames,
-                                                                  true,
-                                                                  supportedZones,
-                                                                  null,
-                                                                  startNextQueryFrom,
-                                                                  maxPageSize,
-                                                                  effectiveTime,
-                                                                  methodName);
+            List<String> endpointGUIDs = this.getEntityGUIDsByValue(userId,
+                                                                    networkAddress,
+                                                                    networkAddressParameterName,
+                                                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                    specificMatchPropertyNames,
+                                                                    true,
+                                                                    null,
+                                                                    null,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    supportedZones,
+                                                                    null,
+                                                                    startNextQueryFrom,
+                                                                    maxPageSize,
+                                                                    effectiveTime,
+                                                                    methodName);
 
 
             if (endpointGUIDs == null)
@@ -3103,7 +3300,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param suppliedTypeName name of asset subtype to validate
      * @param startFrom place to start in query
      * @param pageSize number of results to return
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of  matching assets
      *
@@ -3111,16 +3310,18 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    public  List<B> getAssetsByEndpoint(String userId,
-                                        String networkAddress,
-                                        String networkAddressParameterName,
-                                        String suppliedTypeName,
-                                        int    startFrom,
-                                        int    pageSize,
-                                        Date   effectiveTime,
-                                        String methodName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+    public  List<B> getAssetsByEndpoint(String  userId,
+                                        String  networkAddress,
+                                        String  networkAddressParameterName,
+                                        String  suppliedTypeName,
+                                        int     startFrom,
+                                        int     pageSize,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         String assetTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
 
@@ -3134,6 +3335,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                networkAddressParameterName,
                                                                startFrom,
                                                                pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
                                                                effectiveTime,
                                                                methodName);
 
@@ -3153,8 +3356,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                         assetGUID,
                                                         networkAddressParameterName,
                                                         assetTypeName,
-                                                        false,
-                                                        false,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         supportedZones,
                                                         effectiveTime,
                                                         methodName);
@@ -3182,7 +3385,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameter name of parameter supplying the search string
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for assets that match the search string.
@@ -3196,6 +3401,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         String   searchStringParameter,
                                         int      startFrom,
                                         int      pageSize,
+                                        boolean  forLineage,
+                                        boolean  forDuplicateProcessing,
                                         Date     effectiveTime,
                                         String   methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
@@ -3208,6 +3415,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                    searchStringParameter,
                                    startFrom,
                                    pageSize,
+                                   forLineage,
+                                   forDuplicateProcessing,
                                    effectiveTime,
                                    methodName);
     }
@@ -3224,7 +3433,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameter parameter providing search string
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifiers for assets that match the search string.
@@ -3240,6 +3451,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         String   searchStringParameter,
                                         int      startFrom,
                                         int      pageSize,
+                                        boolean  forLineage,
+                                        boolean  forDuplicateProcessing,
                                         Date     effectiveTime,
                                         String   methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
@@ -3257,19 +3470,23 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             resultTypeName = typeName;
         }
 
-        return this.getBeanGUIDsByValue(userId,
-                                        searchString,
-                                        searchStringParameter,
-                                        resultTypeGUID,
-                                        resultTypeName,
-                                        null,
-                                        false,
-                                        supportedZones,
-                                        null,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
+        return this.getEntityGUIDsByValue(userId,
+                                          searchString,
+                                          searchStringParameter,
+                                          resultTypeGUID,
+                                          resultTypeName,
+                                          null,
+                                          false,
+                                          null,
+                                          null,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          supportedZones,
+                                          null,
+                                          startFrom,
+                                          pageSize,
+                                          effectiveTime,
+                                          methodName);
     }
 
 
@@ -3282,7 +3499,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameter parameter providing search string
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of assets that match the search string.
@@ -3296,6 +3515,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                String   searchStringParameter,
                                int      startFrom,
                                int      pageSize,
+                               boolean  forLineage,
+                               boolean  forDuplicateProcessing,
                                Date     effectiveTime,
                                String   methodName) throws InvalidParameterException,
                                                            PropertyServerException,
@@ -3308,6 +3529,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                searchStringParameter,
                                startFrom,
                                pageSize,
+                               forLineage,
+                               forDuplicateProcessing,
                                effectiveTime,
                                methodName);
     }
@@ -3324,6 +3547,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameter parameter providing search string
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3333,17 +3558,19 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    public List<B>  findAssets(String userId,
-                               String typeGUID,
-                               String typeName,
-                               String searchString,
-                               String searchStringParameter,
-                               int    startFrom,
-                               int    pageSize,
-                               Date   effectiveTime,
-                               String methodName) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
+    public List<B>  findAssets(String  userId,
+                               String  typeGUID,
+                               String  typeName,
+                               String  searchString,
+                               String  searchStringParameter,
+                               int     startFrom,
+                               int     pageSize,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          PropertyServerException,
+                                                          UserNotAuthorizedException
     {
         String resultTypeGUID = OpenMetadataAPIMapper.ASSET_TYPE_GUID;
         String resultTypeName = OpenMetadataAPIMapper.ASSET_TYPE_NAME;
@@ -3365,6 +3592,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                               searchStringParameter,
                               resultTypeGUID,
                               resultTypeName,
+                              forLineage,
+                              forDuplicateProcessing,
+                              supportedZones,
                               null,
                               startFrom,
                               pageSize,
@@ -3382,6 +3612,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param tagGUIDParameterName name of parameter supplying the GUID
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3390,15 +3622,17 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<String> getAssetGUIDsByTag(String userId,
-                                           String tagGUID,
-                                           String tagGUIDParameterName,
-                                           int    startFrom,
-                                           int    pageSize,
-                                           Date   effectiveTime,
-                                           String methodName) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public List<String> getAssetGUIDsByTag(String  userId,
+                                           String  tagGUID,
+                                           String  tagGUIDParameterName,
+                                           int     startFrom,
+                                           int     pageSize,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
         return this.getAttachedElementGUIDs(userId,
                                             tagGUID,
@@ -3407,8 +3641,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                             OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             supportedZones,
                                             startFrom,
                                             pageSize,
@@ -3426,7 +3660,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param tagGUIDParameterName name of parameter supplying the GUID
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return asset guid list
@@ -3434,15 +3670,17 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getAssetsByTag(String userId,
-                                  String tagGUID,
-                                  String tagGUIDParameterName,
-                                  int    startFrom,
-                                  int    pageSize,
-                                  Date   effectiveTime,
-                                  String methodName) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+    public List<B> getAssetsByTag(String  userId,
+                                  String  tagGUID,
+                                  String  tagGUIDParameterName,
+                                  int     startFrom,
+                                  int     pageSize,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
                                         null,
@@ -3456,8 +3694,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         startFrom,
                                         pageSize,
@@ -3475,7 +3713,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param keywordGUIDParameterName name of parameter supplying the guid
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
-     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return asset guid list
@@ -3483,15 +3723,17 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<String> getAssetGUIDsByKeyword(String userId,
-                                               String keywordGUID,
-                                               String keywordGUIDParameterName,
-                                               int    startFrom,
-                                               int    pageSize,
-                                               Date   effectiveTime,
-                                               String methodName) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public List<String> getAssetGUIDsByKeyword(String  userId,
+                                               String  keywordGUID,
+                                               String  keywordGUIDParameterName,
+                                               int     startFrom,
+                                               int     pageSize,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
         return this.getAttachedElementGUIDs(userId,
                                             keywordGUID,
@@ -3500,8 +3742,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_GUID,
                                             OpenMetadataAPIMapper.SEARCH_KEYWORD_TO_RELATED_KEYWORD_TYPE_NAME,
                                             OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                            false,
-                                            false,
+                                            forLineage,
+                                            forDuplicateProcessing,
                                             supportedZones,
                                             startFrom,
                                             pageSize,
@@ -3518,6 +3760,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param keywordGUIDParameterName name of parameter supplying the guid
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3526,15 +3770,17 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<B> getAssetsByKeyword(String userId,
-                                      String keywordGUID,
-                                      String keywordGUIDParameterName,
-                                      int    startFrom,
-                                      int    pageSize,
-                                      Date   effectiveTime,
-                                      String methodName) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    public List<B> getAssetsByKeyword(String  userId,
+                                      String  keywordGUID,
+                                      String  keywordGUIDParameterName,
+                                      int     startFrom,
+                                      int     pageSize,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
                                         null,
@@ -3548,8 +3794,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         startFrom,
                                         pageSize,
@@ -3566,6 +3812,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param termGUIDParameterName name of parameter supplying the guid
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
@@ -3579,6 +3827,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String       termGUIDParameterName,
                                            int          startFrom,
                                            int          pageSize,
+                                           boolean      forLineage,
+                                           boolean      forDuplicateProcessing,
                                            Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
@@ -3596,8 +3846,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         startFrom,
                                         pageSize,

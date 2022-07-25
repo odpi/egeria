@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * ExternalReferenceLinkHandler manages retrieval of ExternalReference objects attached to a specific element.  Thus it includes
+ * ExternalReferenceLinkHandler manages retrieval of ExternalReference objects attached to a specific element.  Thus, it includes
  * the relationship properties and entity properties in the bean.  It runs server-side in
  * the OMAG Server Platform and retrieves ExternalReference entities through the OMRSRepositoryConnector.
  */
@@ -81,6 +81,8 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      * @return count of attached objects or null if none found
@@ -90,6 +92,8 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      */
     public int countExternalReferences(String   userId,
                                        String   elementGUID,
+                                       boolean  forLineage,
+                                       boolean  forDuplicateProcessing,
                                        Date     effectiveTime,
                                        String   methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
@@ -100,6 +104,9 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                      2,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       effectiveTime,
                                       methodName);
     }
@@ -110,8 +117,8 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      * Create a relationship between a host and an operating platform.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param referenceableGUID unique identifier of the referenceable
      * @param referenceableGUIDParameterName parameter supplying the referenceableGUID
      * @param externalReferenceGUID unique identifier of the external reference
@@ -120,6 +127,9 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      * @param referenceDescription  short description for the link (think hover text)
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of relationship
@@ -128,20 +138,23 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String setupExternalReferenceLink(String userId,
-                                             String externalSourceGUID,
-                                             String externalSourceName,
-                                             String referenceableGUID,
-                                             String referenceableGUIDParameterName,
-                                             String externalReferenceGUID,
-                                             String externalReferenceGUIDParameterName,
-                                             String referenceId,
-                                             String referenceDescription,
-                                             Date   effectiveFrom,
-                                             Date   effectiveTo,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public String setupExternalReferenceLink(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  referenceableGUID,
+                                             String  referenceableGUIDParameterName,
+                                             String  externalReferenceGUID,
+                                             String  externalReferenceGUIDParameterName,
+                                             String  referenceId,
+                                             String  referenceDescription,
+                                             Date    effectiveFrom,
+                                             Date    effectiveTo,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         ExternalReferenceBuilder builder = new ExternalReferenceBuilder(repositoryHelper,
                                                                         serviceName,
@@ -158,13 +171,13 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                               externalReferenceGUID,
                                               externalReferenceGUIDParameterName,
                                               OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
-                                              false,
-                                              false,
+                                              forLineage,
+                                              forDuplicateProcessing,
                                               supportedZones,
                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_GUID,
                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
                                               setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
-                                              null,
+                                              effectiveTime,
                                               methodName);
     }
 
@@ -173,32 +186,38 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      * Create a relationship between a host and an operating platform.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param relationshipGUID unique identifier of relationship
      * @param relationshipGUIDParameterName parameter supplying the relationshipGUID
      * @param referenceId local identifier for the reference
      * @param referenceDescription  short description for the link (think hover text)
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateExternalReferenceLink(String userId,
-                                            String externalSourceGUID,
-                                            String externalSourceName,
-                                            String relationshipGUID,
-                                            String relationshipGUIDParameterName,
-                                            String referenceId,
-                                            String referenceDescription,
-                                            Date   effectiveFrom,
-                                            Date   effectiveTo,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void updateExternalReferenceLink(String  userId,
+                                            String  externalSourceGUID,
+                                            String  externalSourceName,
+                                            String  relationshipGUID,
+                                            String  relationshipGUIDParameterName,
+                                            String  referenceId,
+                                            String  referenceDescription,
+                                            Date    effectiveFrom,
+                                            Date    effectiveTo,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         ExternalReferenceBuilder builder = new ExternalReferenceBuilder(repositoryHelper,
                                                                         serviceName,
@@ -212,11 +231,12 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                         relationshipGUID,
                                         relationshipGUIDParameterName,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         false,
                                         setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -225,10 +245,12 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      * Remove a relationship between a host and an operating platform..
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param relationshipGUID unique identifier of the referenceable
      * @param relationshipGUIDParameterName parameter supplying the relationshipGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -238,15 +260,17 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public Relationship clearExternalReferenceLink(String userId,
-                                                   String externalSourceGUID,
-                                                   String externalSourceName,
-                                                   String relationshipGUID,
-                                                   String relationshipGUIDParameterName,
-                                                   Date   effectiveTime,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public Relationship clearExternalReferenceLink(String  userId,
+                                                   String  externalSourceGUID,
+                                                   String  externalSourceName,
+                                                   String  relationshipGUID,
+                                                   String  relationshipGUIDParameterName,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String referenceableGUIDParameterName     = "relationship.getEntityOneProxy().getGUID()";
         final String externalReferenceGUIDParameterName = "relationship.getEntityTwoProxy().getGUID()";
@@ -269,10 +293,11 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                       externalReferenceGUIDParameterName,
                                       OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
                                       OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
                                       relationship,
+                                      effectiveTime,
                                       methodName);
 
         return relationship;
@@ -289,6 +314,8 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -305,6 +332,8 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                           List<String> serviceSupportedZones,
                                           int          startingFrom,
                                           int          pageSize,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
                                           Date         effectiveTime,
                                           String       methodName) throws InvalidParameterException,
                                                                           PropertyServerException,
@@ -313,17 +342,6 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingGUID, startingGUIDParameterName, methodName);
-
-        this.validateAnchorEntity(userId,
-                                  startingGUID,
-                                  startingGUIDParameterName,
-                                  startingTypeName,
-                                  false,
-                                  false,
-                                  false,
-                                  serviceSupportedZones,
-                                  effectiveTime,
-                                  methodName);
 
         /*
          * Validates the parameters and retrieves the links to attached keywords that are visible to this user.
@@ -338,7 +356,9 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                                                     null,
                                                                     OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
                                                                     2,
-                                                                    false,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    serviceSupportedZones,
                                                                     startingFrom,
                                                                     pageSize,
                                                                     effectiveTime,
@@ -365,8 +385,9 @@ public class ExternalReferenceLinkHandler<B> extends ReferenceableHandler<B>
                                                                        OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
                                                                        null,
                                                                        null,
-                                                                       false,
-                                                                       false,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       serviceSupportedZones,
                                                                        effectiveTime,
                                                                        methodName);
 

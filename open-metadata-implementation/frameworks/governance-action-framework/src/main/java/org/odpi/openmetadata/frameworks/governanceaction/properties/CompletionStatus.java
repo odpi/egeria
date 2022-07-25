@@ -29,11 +29,11 @@ public enum CompletionStatus implements Serializable
     private static final String ENUM_TYPE_GUID  = "a6e698b0-a4f7-4a39-8c80-db0bb0f972e";
     private static final String ENUM_TYPE_NAME  = "GovernanceActionStatus";
 
-    private String statusName;
-    private String statusDescription;
-    private int    statusCode;
+    private final String statusName;
+    private final String statusDescription;
+    private final int    statusCode;
 
-    private int openTypeOrdinal;
+    private final int openTypeOrdinal;
 
     /**
      * Typical Constructor
@@ -123,11 +123,6 @@ public enum CompletionStatus implements Serializable
     @Override
     public String toString()
     {
-        return "CompletionStatus{" +
-                "statusName='" + statusName + '\'' +
-                ", statusDescription='" + statusDescription + '\'' +
-                ", statusCode=" + statusCode +
-                ", openTypeOrdinal=" + openTypeOrdinal +
-                '}';
+        return "CompletionStatus{" + statusName + "}";
     }
 }

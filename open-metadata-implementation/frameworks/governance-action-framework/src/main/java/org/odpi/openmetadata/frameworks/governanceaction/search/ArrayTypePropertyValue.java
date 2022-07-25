@@ -14,14 +14,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ArrayPropertyValue stores the values of an array within an entity or relationship properties.
+ * ArrayTypePropertyValue stores the values of an array within an entity or relationship properties.
  * The elements of the array are stored in an ElementProperties map where the property name is set to the element
  * number and the property value is set to the value of the element in the array.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ArrayPropertyValue extends PropertyValue
+public class ArrayTypePropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
@@ -32,7 +32,7 @@ public class ArrayPropertyValue extends PropertyValue
     /**
      * Default constructor sets the array to empty.
      */
-    public ArrayPropertyValue()
+    public ArrayTypePropertyValue()
     {
         super();
     }
@@ -41,9 +41,9 @@ public class ArrayPropertyValue extends PropertyValue
     /**
      * Copy/clone constructor set up the array using the supplied template.
      *
-     * @param template ArrayPropertyValue
+     * @param template ArrayTypePropertyValue
      */
-    public ArrayPropertyValue(ArrayPropertyValue template)
+    public ArrayTypePropertyValue(ArrayTypePropertyValue template)
     {
         super(template);
 
@@ -62,7 +62,7 @@ public class ArrayPropertyValue extends PropertyValue
      */
     public PropertyValue cloneFromSubclass()
     {
-        return new ArrayPropertyValue(this);
+        return new ArrayTypePropertyValue(this);
     }
 
 
@@ -71,9 +71,7 @@ public class ArrayPropertyValue extends PropertyValue
      *
      * @return string value
      */
-    public String valueAsString() {
-        return mapValuesAsString(arrayValues.getInstanceProperties()).toString();
-    }
+    public String valueAsString() { return mapValuesAsString(arrayValues.getPropertyValueMap()).toString(); }
 
 
     /**
@@ -82,7 +80,7 @@ public class ArrayPropertyValue extends PropertyValue
      * @return object value
      */
     public Object valueAsObject() {
-        return mapValuesAsObject(arrayValues.getInstanceProperties());
+        return mapValuesAsObject(arrayValues.getPropertyValueMap());
     }
 
 
@@ -171,7 +169,7 @@ public class ArrayPropertyValue extends PropertyValue
      */
     @Override
     public String toString() {
-        return "ArrayPropertyValue{" +
+        return "ArrayTypePropertyValue{" +
                 "arrayCount=" + arrayCount +
                 ", arrayValues=" + arrayValues +
                 ", typeName='" + getTypeName() + '\'' +
@@ -196,7 +194,7 @@ public class ArrayPropertyValue extends PropertyValue
         {
             return false;
         }
-        ArrayPropertyValue that = (ArrayPropertyValue) objectToCompare;
+        ArrayTypePropertyValue that = (ArrayTypePropertyValue) objectToCompare;
         return arrayCount == that.arrayCount &&
                 Objects.equals(arrayValues, that.arrayValues);
     }

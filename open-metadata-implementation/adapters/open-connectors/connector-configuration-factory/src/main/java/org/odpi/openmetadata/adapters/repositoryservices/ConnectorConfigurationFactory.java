@@ -410,6 +410,8 @@ public class ConnectorConfigurationFactory
      * @throws ClassNotFoundException when the provided class cannot be found
      * @throws InstantiationException when the provided class cannot be instantiated
      * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
+     * @throws NoSuchMethodException the default constructor of the connector provider is not implemented
+     * @throws InvocationTargetException the default constructor of the connector provider can not be called
      */
     public Connection getRepositoryConnection(String              connectorProviderClassName,
                                               String              url,
@@ -775,6 +777,8 @@ public class ConnectorConfigurationFactory
      * @throws ClassNotFoundException when the provided class cannot be found
      * @throws InstantiationException when the provided class cannot be instantiated
      * @throws IllegalAccessException when there is insufficient access to instantiate the provided class
+     * @throws NoSuchMethodException the default constructor of the connector provider is not implemented
+     * @throws InvocationTargetException the default constructor of the connector provider can not be called
      */
     public Connection getRepositoryEventMapperConnection(String              connectorProviderClassName,
                                                          Map<String, Object> configurationProperties,

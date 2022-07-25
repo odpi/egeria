@@ -131,7 +131,7 @@ public class DatabaseProperties extends DataStoreProperties
 
 
     /**
-     *  Set up the the source (typically connection name) of the database information.
+     *  Set up the source (typically connection name) of the database information.
      *
      * @param databaseImportedFrom source name
      */

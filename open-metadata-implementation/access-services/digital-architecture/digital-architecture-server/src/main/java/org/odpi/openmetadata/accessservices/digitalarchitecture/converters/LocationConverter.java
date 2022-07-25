@@ -137,7 +137,7 @@ public class LocationConverter<B> extends DigitalArchitectureOMASConverter<B>
 
             locationProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
             locationProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-            locationProperties.setDisplayName(this.removeName(instanceProperties));
+            locationProperties.setDisplayName(this.removeDisplayName(instanceProperties));
             locationProperties.setDescription(this.removeDescription(instanceProperties));
 
             /*

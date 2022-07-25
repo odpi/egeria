@@ -74,24 +74,33 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countTags(String userId,
-                         String elementGUID,
-                         String methodName) throws InvalidParameterException,
-                                                   PropertyServerException,
-                                                   UserNotAuthorizedException
+    public int countTags(String  userId,
+                         String  elementGUID,
+                         boolean forLineage,
+                         boolean forDuplicateProcessing,
+                         Date    effectiveTime,
+                         String  methodName) throws InvalidParameterException,
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException
     {
         return this.countAttachments(userId,
                                      elementGUID,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
-                                     null,
+                                     2,
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime,
                                      methodName);
     }
 
@@ -105,6 +114,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param elementTypeName name of the type of object being attached to
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -119,6 +131,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     String       elementTypeName,
                                     int          startingFrom,
                                     int          pageSize,
+                                    boolean      forLineage,
+                                    boolean      forDuplicateProcessing,
+                                    Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -135,12 +150,12 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         supportedZones,
                                         startingFrom,
                                         pageSize,
-                                        new Date(),
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -155,6 +170,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom start position for results
      * @param pageSize     maximum number of results
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -170,6 +188,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     List<String> serviceSupportedZones,
                                     int          startingFrom,
                                     int          pageSize,
+                                    boolean      forLineage,
+                                    boolean      forDuplicateProcessing,
+                                    Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -186,12 +207,12 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,
-                                        new Date(),
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -200,12 +221,15 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Creates a new informal tag and returns the unique identifier for it.
      *
      * @param userId           userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param tagName          name of the tag.
      * @param tagDescription  (optional) description of the tag.  Setting a description, particularly in a public tag
      *                        makes the tag more valuable to other users and can act as an embryonic glossary term.
      * @param isPublic         flag indicating whether the attachment of the tag is public or not
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return GUID for new tag.
@@ -220,6 +244,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                             String  tagName,
                             String  tagDescription,
                             boolean isPublic,
+                            Date    effectiveFrom,
+                            Date    effectiveTo,
+                            Date    effectiveTime,
                             String  methodName) throws InvalidParameterException,
                                                        PropertyServerException,
                                                        UserNotAuthorizedException
@@ -236,6 +263,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             serviceName,
                                                             serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -244,6 +273,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            null,
                                            null,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -252,27 +282,37 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Updates the description of an existing tag (either private of public).  Private tags can only be updated by their creator.
      *
      * @param userId          userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param tagGUID         unique identifier for the tag.
      * @param tagGUIDParameterName name of parameter supplying the GUID
      * @param tagDescription  description of the tag.  Setting a description, particularly in a public tag
      *                        makes the tag more valuable to other users and can act as an embryonic glossary term.
+     * @param effectiveFrom       starting time for this relationship (null for all time)
+     * @param effectiveTo         ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName      calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateTagDescription(String userId,
-                                     String externalSourceGUID,
-                                     String externalSourceName,
-                                     String tagGUID,
-                                     String tagGUIDParameterName,
-                                     String tagDescription,
-                                     String methodName) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
+    public void updateTagDescription(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  tagGUID,
+                                     String  tagGUIDParameterName,
+                                     String  tagDescription,
+                                     Date    effectiveFrom,
+                                     Date    effectiveTo,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
@@ -287,41 +327,47 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     tagGUIDParameterName,
                                     OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
                                     OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
-                                    properties,
+                                    this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                     true,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
 
     /**
      * Removes a tag from the repository.
-     * A private tag can be deleted by its creator and all of the references are lost;
+     * A private tag can be deleted by its creator and all the references are lost;
      * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
      * This method is sufficiently special that it does not use the generic handler
      *
      * @param userId    userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param tagGUID   unique id for the tag.
      * @param tagGUIDParameterName name of parameter supplying the GUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   deleteTag(String userId,
-                            String externalSourceGUID,
-                            String externalSourceName,
-                            String tagGUID,
-                            String tagGUIDParameterName,
-                            String methodName) throws InvalidParameterException,
-                                                      PropertyServerException,
-                                                      UserNotAuthorizedException
+    public void   deleteTag(String  userId,
+                            String  externalSourceGUID,
+                            String  externalSourceName,
+                            String  tagGUID,
+                            String  tagGUIDParameterName,
+                            boolean forLineage,
+                            boolean forDuplicateProcessing,
+                            Date    effectiveTime,
+                            String  methodName) throws InvalidParameterException,
+                                                       PropertyServerException,
+                                                       UserNotAuthorizedException
     {
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
@@ -332,26 +378,29 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
 
     /**
      * Removes a tag from the repository.
-     * A private tag can be deleted by its creator and all of the references are lost;
+     * A private tag can be deleted by its creator and all the references are lost;
      * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
      * This method is sufficiently special that it does not use the generic handler
      *
      * @param userId    userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param tagGUID   unique id for the tag.
      * @param tagGUIDParameterName name of parameter supplying the GUID
      * @param serviceSupportedZones supported zones for calling service
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -364,6 +413,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                             String       tagGUID,
                             String       tagGUIDParameterName,
                             List<String> serviceSupportedZones,
+                            boolean      forLineage,
+                            boolean      forDuplicateProcessing,
+                            Date         effectiveTime,
                             String       methodName) throws InvalidParameterException,
                                                             PropertyServerException,
                                                             UserNotAuthorizedException
@@ -377,10 +429,10 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     serviceSupportedZones,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -392,6 +444,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId userId of the user making the request
      * @param guid unique identifier of the tag
      * @param guidParameterName name of the parameter supplying the guid
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return tag
@@ -402,6 +457,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public B getTag(String       userId,
                     String       guid,
                     String       guidParameterName,
+                    boolean      forLineage,
+                    boolean      forDuplicateProcessing,
+                    Date         effectiveTime,
                     String       methodName) throws InvalidParameterException,
                                                     PropertyServerException,
                                                     UserNotAuthorizedException
@@ -410,10 +468,10 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -426,6 +484,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param guid unique identifier of the tag.
      * @param guidParameterName name of the parameter supplying the guid
      * @param serviceSupportedZones list of zones that assets can be retrieved from
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return tag
@@ -437,6 +498,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     String       guid,
                     String       guidParameterName,
                     List<String> serviceSupportedZones,
+                    boolean      forLineage,
+                    boolean      forDuplicateProcessing,
+                    Date         effectiveTime,
                     String       methodName) throws InvalidParameterException,
                                                     PropertyServerException,
                                                     UserNotAuthorizedException
@@ -445,10 +509,10 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           serviceSupportedZones,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
     }
 
@@ -463,6 +527,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param nameParameterName name of the parameter supplying the tag name
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return tag list
@@ -475,6 +542,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  String       nameParameterName,
                                  int          startFrom,
                                  int          pageSize,
+                                 boolean      forLineage,
+                                 boolean      forDuplicateProcessing,
+                                 Date         effectiveTime,
                                  String       methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
@@ -492,13 +562,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -511,6 +581,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param nameParameterName name of the parameter supplying the tag name
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return tag list
@@ -523,6 +596,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    String       nameParameterName,
                                    int          startFrom,
                                    int          pageSize,
+                                   boolean      forLineage,
+                                   boolean      forDuplicateProcessing,
+                                   Date         effectiveTime,
                                    String       methodName) throws InvalidParameterException,
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
@@ -538,13 +614,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                       propertyNames,
                                       true,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       null,
                                       startFrom,
                                       pageSize,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -557,6 +633,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return tag list
@@ -569,6 +648,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                             String       searchStringParameterName,
                             int          startFrom,
                             int          pageSize,
+                            boolean      forLineage,
+                            boolean      forDuplicateProcessing,
+                            Date         effectiveTime,
                             String       methodName) throws InvalidParameterException,
                                                             PropertyServerException,
                                                             UserNotAuthorizedException
@@ -582,13 +664,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     false,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -601,6 +683,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return tag list
@@ -613,6 +698,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                               String       searchStringParameterName,
                               int          startFrom,
                               int          pageSize,
+                              boolean      forLineage,
+                              boolean      forDuplicateProcessing,
+                              Date         effectiveTime,
                               String       methodName) throws InvalidParameterException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
@@ -624,13 +712,13 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
                                       null,
                                       false,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       null,
                                       startFrom,
                                       pageSize,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -639,14 +727,19 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Adds a tag (either private of public) to the requested element.
      *
      * @param userId           userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param elementGUID       unique id for the element.
      * @param elementGUIDParameterName name of the parameter supplying the elementGUID
      * @param elementType       type of the element.
      * @param tagGUID          unique id of the tag.
      * @param tagGUIDParameterName name of the parameter supplying the tagGUID
      * @param isPublic         flag indicating whether the attachment of the tag is public or not
+     * @param effectiveFrom       starting time for this relationship (null for all time)
+     * @param effectiveTo         ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName       calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -662,6 +755,11 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 String        tagGUID,
                                 String        tagGUIDParameterName,
                                 boolean       isPublic,
+                                Date          effectiveFrom,
+                                Date          effectiveTo,
+                                boolean       forLineage,
+                                boolean       forDuplicateProcessing,
+                                Date          effectiveTime,
                                 String        methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
@@ -676,6 +774,11 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                              tagGUIDParameterName,
                              supportedZones,
                              isPublic,
+                             effectiveFrom,
+                             effectiveTo,
+                             forLineage,
+                             forDuplicateProcessing,
+                             effectiveTime,
                              methodName);
     }
 
@@ -684,8 +787,8 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Adds a tag (either private of public) to the requested element.
      *
      * @param userId           userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param elementGUID       unique id for the element.
      * @param elementGUIDParameterName name of the parameter supplying the elementGUID
      * @param elementType       type of the element.
@@ -693,6 +796,11 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param tagGUIDParameterName name of the parameter supplying the tagGUID
      * @param suppliedSupportedZones    list of zones supported by this service
      * @param isPublic         flag indicating whether the attachment of the tag is public or not
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime what is the effective time for related queries needed to do the update
      * @param methodName       calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -709,6 +817,11 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 String        tagGUIDParameterName,
                                 List<String>  suppliedSupportedZones,
                                 boolean       isPublic,
+                                Date          effectiveFrom,
+                                Date          effectiveTo,
+                                boolean       forLineage,
+                                boolean       forDuplicateProcessing,
+                                Date          effectiveTime,
                                 String        methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
@@ -718,6 +831,7 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                       OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
                                                                                       isPublic,
                                                                                       methodName);
+
         this.linkElementToElement(userId,
                                   externalSourceGUID,
                                   externalSourceName,
@@ -727,12 +841,15 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   tagGUID,
                                   tagGUIDParameterName,
                                   OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   suppliedSupportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
-                                  properties,
+                                  this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -741,14 +858,17 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Removes a tag from the element.
      *
      * @param userId    userId of user making request.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param elementGUID unique id for the element to unlink from tag
      * @param elementGUIDParameterName name of the parameter supplying the elementGUID
      * @param elementType type of the element.
      * @param tagGUID   unique id for the tag.
      * @param tagGUIDParameterName name of the parameter supplying the tagGUID
      * @param suppliedSupportedZones    list of zones supported by this service
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -764,6 +884,9 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      String        tagGUID,
                                      String        tagGUIDParameterName,
                                      List<String>  suppliedSupportedZones,
+                                     boolean       forLineage,
+                                     boolean       forDuplicateProcessing,
+                                     Date          effectiveTime,
                                      String        methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
@@ -779,12 +902,12 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       tagGUIDParameterName,
                                       OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
                                       OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       suppliedSupportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_TAG_TYPE_NAME,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 }

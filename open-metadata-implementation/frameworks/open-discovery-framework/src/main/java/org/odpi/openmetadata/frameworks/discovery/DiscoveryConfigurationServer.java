@@ -310,7 +310,7 @@ public abstract class DiscoveryConfigurationServer
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
      * @param discoveryRequestType discovery request type that this discovery service is able to process.
-     * @param defaultAnalysisParameters list of analysis parameters that are passed the the discovery service (via
+     * @param defaultAnalysisParameters list of analysis parameters that are passed to the discovery service (via
      *                                  the discovery context).  These values can be overridden on the actual discovery request.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.

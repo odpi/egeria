@@ -68,7 +68,7 @@ public class NoteLog extends Referenceable
 
 
     /**
-     * Set up the the stored display name property for the note log.
+     * Set up the stored display name property for the note log.
      *
      * @param displayName - String name
      */

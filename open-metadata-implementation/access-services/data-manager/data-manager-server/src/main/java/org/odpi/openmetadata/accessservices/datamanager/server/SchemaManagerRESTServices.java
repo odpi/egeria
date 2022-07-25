@@ -25,6 +25,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.slf4j.LoggerFactory;
@@ -39,11 +40,11 @@ import java.util.List;
  */
 public class SchemaManagerRESTServices
 {
-    private static DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
-    private static RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(SchemaManagerRESTServices.class),
+    private static final DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
+    private static final RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(SchemaManagerRESTServices.class),
                                                                                    instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -105,11 +106,19 @@ public class SchemaManagerRESTServices
                                                                        requestBody.getAdditionalProperties(),
                                                                        requestBody.getTypeName(),
                                                                        requestBody.getExtendedProperties(),
+                                                                       null,
+                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName);
 
                 handler.setVendorProperties(userId,
                                             schemaTypeGUID,
                                             requestBody.getVendorProperties(),
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
 
                 response.setGUID(schemaTypeGUID);
@@ -178,11 +187,19 @@ public class SchemaManagerRESTServices
                                                                      requestBody.getAdditionalProperties(),
                                                                      requestBody.getTypeName(),
                                                                      requestBody.getExtendedProperties(),
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName);
 
                 handler.setVendorProperties(userId,
                                             schemaTypeGUID,
                                             requestBody.getVendorProperties(),
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
 
                 response.setGUID(schemaTypeGUID);
@@ -254,11 +271,19 @@ public class SchemaManagerRESTServices
                                                                   requestBody.getAdditionalProperties(),
                                                                   requestBody.getTypeName(),
                                                                   requestBody.getExtendedProperties(),
+                                                                  null,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName);
 
                 handler.setVendorProperties(userId,
                                             schemaTypeGUID,
                                             requestBody.getVendorProperties(),
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
 
                 response.setGUID(schemaTypeGUID);
@@ -328,6 +353,8 @@ public class SchemaManagerRESTServices
                                                                     nameParameterName,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    false,
+                                                                    false,
                                                                     new Date(),
                                                                     methodName));
             }
@@ -396,6 +423,8 @@ public class SchemaManagerRESTServices
                                                                 searchStringParameterName,
                                                                 startFrom,
                                                                 pageSize,
+                                                                false,
+                                                                false,
                                                                 new Date(),
                                                                 methodName));
             }
@@ -461,11 +490,19 @@ public class SchemaManagerRESTServices
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getTypeName(),
                                                                     requestBody.getExtendedProperties(),
+                                                                    null,
+                                                                    null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName);
 
                 handler.setVendorProperties(userId,
                                             schemaTypeGUID,
                                             requestBody.getVendorProperties(),
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
 
                 response.setGUID(schemaTypeGUID);
@@ -532,11 +569,19 @@ public class SchemaManagerRESTServices
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getTypeName(),
                                                                     requestBody.getExtendedProperties(),
+                                                                    null,
+                                                                    null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName);
 
                 handler.setVendorProperties(userId,
                                             schemaTypeGUID,
                                             requestBody.getVendorProperties(),
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
 
                 response.setGUID(schemaTypeGUID);
@@ -562,8 +607,8 @@ public class SchemaManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
-     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
+     * @param mapFromSchemaTypeGUID unique identifier of the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the range of the map
      * @param requestBody properties about the schema type to store
      *
      * @return unique identifier of the new schema type or
@@ -609,11 +654,19 @@ public class SchemaManagerRESTServices
                                                                  requestBody.getAdditionalProperties(),
                                                                  requestBody.getTypeName(),
                                                                  requestBody.getExtendedProperties(),
+                                                                 null,
+                                                                 null,
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName);
 
                 handler.setVendorProperties(userId,
                                             schemaTypeGUID,
                                             requestBody.getVendorProperties(),
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
 
                 response.setGUID(schemaTypeGUID);
@@ -746,7 +799,12 @@ public class SchemaManagerRESTServices
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getTypeName(),
                                          requestBody.getExtendedProperties(),
+                                         null,
+                                         null,
                                          isMergeUpdate,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -754,6 +812,9 @@ public class SchemaManagerRESTServices
                     handler.setVendorProperties(userId,
                                                 schemaTypeGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -810,6 +871,9 @@ public class SchemaManagerRESTServices
                                          requestBody.getExternalSourceGUID(),
                                          requestBody.getExternalSourceName(),
                                          schemaTypeGUID,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -871,6 +935,8 @@ public class SchemaManagerRESTServices
                                                                           requestBody.getSearchString(),
                                                                           startFrom,
                                                                           pageSize,
+                                                                          false,
+                                                                          false,
                                                                           new Date(),
                                                                           methodName);
 
@@ -926,6 +992,8 @@ public class SchemaManagerRESTServices
             SchemaTypeElement result = handler.getSchemaTypeForElement(userId,
                                                                        parentElementGUID,
                                                                        parentElementTypeName,
+                                                                       false,
+                                                                       false,
                                                                        new Date(),
                                                                        methodName);
 
@@ -985,6 +1053,8 @@ public class SchemaManagerRESTServices
                                                                               requestBody.getName(),
                                                                               startFrom,
                                                                               pageSize,
+                                                                              false,
+                                                                              false,
                                                                               new Date(),
                                                                               methodName);
 
@@ -1039,6 +1109,8 @@ public class SchemaManagerRESTServices
             SchemaTypeElement result = handler.getSchemaType(userId,
                                                              schemaTypeGUID,
                                                              guidParameterName,
+                                                             false,
+                                                             false,
                                                              new Date(),
                                                              methodName);
 
@@ -1098,6 +1170,7 @@ public class SchemaManagerRESTServices
                                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                           1,
                                                                           false,
+                                                                          false,
                                                                           0,
                                                                           2,
                                                                           new Date(),
@@ -1117,6 +1190,7 @@ public class SchemaManagerRESTServices
                                                            null,
                                                            OpenMetadataAPIMapper.PORT_TYPE_NAME,
                                                            1,
+                                                           false,
                                                            false,
                                                            0,
                                                            2,
@@ -1222,6 +1296,10 @@ public class SchemaManagerRESTServices
                                                                                  requestBody.getAdditionalProperties(),
                                                                                  requestBody.getTypeName(),
                                                                                  requestBody.getExtendedProperties(),
+                                                                                 null,
+                                                                                 null,
+                                                                                 false,
+                                                                                 false,
                                                                                  new Date(),
                                                                                  methodName);
 
@@ -1230,6 +1308,9 @@ public class SchemaManagerRESTServices
                     handler.setVendorProperties(userId,
                                                 schemaAttributeGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
 
@@ -1297,6 +1378,10 @@ public class SchemaManagerRESTServices
                                                                                   requestBody.getQualifiedName(),
                                                                                   requestBody.getDisplayName(),
                                                                                   requestBody.getDescription(),
+                                                                                  null,
+                                                                                  null,
+                                                                                  false,
+                                                                                  false,
                                                                                   new Date(),
                                                                                   methodName);
 
@@ -1378,7 +1463,10 @@ public class SchemaManagerRESTServices
                                                      false,
                                                      relationshipTypeDef.getGUID(),
                                                      relationshipTypeDef.getName(),
+                                                     (InstanceProperties) null,
                                                      null,
+                                                     null,
+                                                     new Date(),
                                                      methodName);
                     }
                 }
@@ -1443,6 +1531,9 @@ public class SchemaManagerRESTServices
                                           requestBody.getExternalSourceName(),
                                           schemaAttributeGUID,
                                           schemaAttributeGUIDParameterName,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
             }
             else
@@ -1538,12 +1629,23 @@ public class SchemaManagerRESTServices
                                               requestBody.getAdditionalProperties(),
                                               requestBody.getTypeName(),
                                               requestBody.getExtendedProperties(),
+                                              null,
+                                              null,
                                               isMergeUpdate,
+                                              false,
+                                              false,
+                                              new Date(),
                                               methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    handler.setVendorProperties(userId, schemaAttributeGUID, requestBody.getVendorProperties(), methodName);
+                    handler.setVendorProperties(userId,
+                                                schemaAttributeGUID,
+                                                requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
                 }
             }
             else
@@ -1679,6 +1781,8 @@ public class SchemaManagerRESTServices
                                                                                     null,
                                                                                     startFrom,
                                                                                     pageSize,
+                                                                                    false,
+                                                                                    false,
                                                                                     new Date(),
                                                                                     methodName);
 
@@ -1737,6 +1841,8 @@ public class SchemaManagerRESTServices
                                                                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                        startFrom,
                                                                                        pageSize,
+                                                                                       false,
+                                                                                       false,
                                                                                        new Date(),
                                                                                        methodName);
 
@@ -1804,7 +1910,9 @@ public class SchemaManagerRESTServices
                                                                                              null,
                                                                                              startFrom,
                                                                                              pageSize,
-                                                                                             new Date (),
+                                                                                             false,
+                                                                                             false,
+                                                                                             new Date(),
                                                                                              methodName);
 
                     response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
@@ -1863,6 +1971,8 @@ public class SchemaManagerRESTServices
                                                                        OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                        null,
                                                                        null,
+                                                                       false,
+                                                                       false,
                                                                        new Date(),
                                                                        methodName);
 
@@ -2053,6 +2163,11 @@ public class SchemaManagerRESTServices
                                                  requestBody.getQuery(),
                                                  queryTargetGUID,
                                                  queryTargetGUIDParameterName,
+                                                 null,
+                                                 null,
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
         }
         catch (Exception error)
@@ -2112,6 +2227,12 @@ public class SchemaManagerRESTServices
                                                   requestBody.getQuery(),
                                                   queryTargetGUID,
                                                   queryTargetGUIDParameterName,
+                                                  null,
+                                                  null,
+                                                  true,
+                                                  false,
+                                                  false,
+                                                  new Date(),
                                                   methodName);
         }
         catch (Exception error)
@@ -2250,6 +2371,9 @@ public class SchemaManagerRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -2323,6 +2447,9 @@ public class SchemaManagerRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 

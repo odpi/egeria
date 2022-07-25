@@ -239,7 +239,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
-     * @param relationshipTypeGUID String GUID of the the type of relationship required (null for all).
+     * @param relationshipTypeGUID String GUID of the type of relationship required (null for all).
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -4123,7 +4123,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *

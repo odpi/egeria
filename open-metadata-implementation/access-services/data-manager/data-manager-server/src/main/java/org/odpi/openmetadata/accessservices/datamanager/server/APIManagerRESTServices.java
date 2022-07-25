@@ -28,6 +28,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.LoggerFactory;
 
@@ -41,11 +42,11 @@ import java.util.List;
  */
 public class APIManagerRESTServices
 {
-    private static DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
-    private static RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(APIManagerRESTServices.class),
-                                                                                   instanceHandler.getServiceName());
+    private static final DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
+    private static final RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(APIManagerRESTServices.class),
+                                                                                         instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -112,6 +113,9 @@ public class APIManagerRESTServices
                                                           typeName,
                                                           requestBody.getExtendedProperties(),
                                                           InstanceStatus.ACTIVE,
+                                                          null,
+                                                          null,
+                                                          new Date(),
                                                           methodName);
 
                 if (apiGUID != null)
@@ -123,11 +127,19 @@ public class APIManagerRESTServices
                                                                   apiGUIDParameterName,
                                                                   requestBody.getExternalSourceGUID(),
                                                                   apiManagerGUIDParameterName,
+                                                                  null,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName);
 
                     handler.setVendorProperties(userId,
                                                 apiGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
 
                     if (endpointGUID != null)
@@ -145,7 +157,10 @@ public class APIManagerRESTServices
                                                      false,
                                                      OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
                                                      OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
+                                                     (InstanceProperties) null,
                                                      null,
+                                                     null,
+                                                     new Date(),
                                                      methodName);
                     }
                 }
@@ -222,6 +237,9 @@ public class APIManagerRESTServices
                                                               requestBody.getDisplayName(),
                                                               requestBody.getDescription(),
                                                               requestBody.getNetworkAddress(),
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName);
 
                 handler.attachAssetToSoftwareServerCapability(userId,
@@ -231,6 +249,11 @@ public class APIManagerRESTServices
                                                               apiGUIDParameterName,
                                                               requestBody.getExternalSourceGUID(),
                                                               apiManagerGUIDParameterName,
+                                                              null,
+                                                              null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName);
 
                 if (endpointGUID != null)
@@ -248,7 +271,10 @@ public class APIManagerRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
+                                                 (InstanceProperties)null,
                                                  null,
+                                                 null,
+                                                 new Date(),
                                                  methodName);
                 }
 
@@ -324,7 +350,12 @@ public class APIManagerRESTServices
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     requestBody.getExtendedProperties(),
+                                    null,
+                                    null,
                                     isMergeUpdate,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -332,6 +363,9 @@ public class APIManagerRESTServices
                     handler.setVendorProperties(userId,
                                                 apiGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -386,7 +420,13 @@ public class APIManagerRESTServices
 
             AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
-            handler.publishAsset(userId, apiGUID, apiGUIDParameterName, methodName);
+            handler.publishAsset(userId,
+                                 apiGUID,
+                                 apiGUIDParameterName,
+                                 false,
+                                 false,
+                                 new Date(),
+                                 methodName);
         }
         catch (Exception error)
         {
@@ -434,7 +474,13 @@ public class APIManagerRESTServices
 
             AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
-            handler.withdrawAsset(userId, apiGUID, apiGUIDParameterName, methodName);
+            handler.withdrawAsset(userId,
+                                  apiGUID,
+                                  apiGUIDParameterName,
+                                  false,
+                                  false,
+                                  new Date(),
+                                  methodName);
         }
         catch (Exception error)
         {
@@ -448,7 +494,7 @@ public class APIManagerRESTServices
 
 
     /**
-     * Remove the metadata element representing a api.
+     * Remove the metadata element representing an api.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -557,6 +603,8 @@ public class APIManagerRESTServices
                                                                   searchStringParameterName,
                                                                   startFrom,
                                                                   pageSize,
+                                                                  false,
+                                                                  false,
                                                                   new Date(),
                                                                   methodName);
 
@@ -627,6 +675,8 @@ public class APIManagerRESTServices
                                                                        nameParameterName,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       false,
+                                                                       false,
                                                                        new Date(),
                                                                        methodName);
 
@@ -898,6 +948,11 @@ public class APIManagerRESTServices
                                                                      requestBody.getAdditionalProperties(),
                                                                      requestBody.getTypeName(),
                                                                      requestBody.getExtendedProperties(),
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName);
 
                 if (requestBody.getVendorProperties() != null)
@@ -905,6 +960,9 @@ public class APIManagerRESTServices
                     handler.setVendorProperties(userId,
                                                 apiGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
 
@@ -923,7 +981,7 @@ public class APIManagerRESTServices
 
 
     /**
-     * Create a new metadata element to represent a API operation using an existing metadata element as a template.
+     * Create a new metadata element to represent an API operation using an existing metadata element as a template.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -967,6 +1025,11 @@ public class APIManagerRESTServices
                                                                         requestBody.getQualifiedName(),
                                                                         requestBody.getDisplayName(),
                                                                         requestBody.getDescription(),
+                                                                        null,
+                                                                        null,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
                                                                         methodName));
             }
             else
@@ -1038,7 +1101,12 @@ public class APIManagerRESTServices
                                            requestBody.getAdditionalProperties(),
                                            requestBody.getTypeName(),
                                            requestBody.getExtendedProperties(),
+                                           null,
+                                           null,
                                            isMergeUpdate,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -1046,6 +1114,9 @@ public class APIManagerRESTServices
                     handler.setVendorProperties(userId,
                                                 apiOperationGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -1107,6 +1178,9 @@ public class APIManagerRESTServices
                                            apiOperationGUID,
                                            apiOperationGUIDParameterName,
                                            qualifiedName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -1167,6 +1241,9 @@ public class APIManagerRESTServices
                                                                                searchStringParameterName,
                                                                                startFrom,
                                                                                pageSize,
+                                                                               false,
+                                                                               false,
+                                                                               new Date(),
                                                                                methodName);
 
                 /*
@@ -1229,6 +1306,8 @@ public class APIManagerRESTServices
                                                                                 apiGUIDParameterName,
                                                                                 startFrom,
                                                                                 pageSize,
+                                                                                false,
+                                                                                false,
                                                                                 new Date(),
                                                                                 methodName);
 
@@ -1290,6 +1369,8 @@ public class APIManagerRESTServices
                                                                                     nameParameterName,
                                                                                     startFrom,
                                                                                     pageSize,
+                                                                                    false,
+                                                                                    false,
                                                                                     new Date(),
                                                                                     methodName);
 
@@ -1347,6 +1428,8 @@ public class APIManagerRESTServices
             APIOperationElement element = handler.getAPIOperationByGUID(userId,
                                                                         guid,
                                                                         apiOperationGUIDParameterName,
+                                                                        false,
+                                                                        false,
                                                                         new Date(),
                                                                         methodName);
 
@@ -1424,6 +1507,11 @@ public class APIManagerRESTServices
                                                                              requestBody.getTypeName(),
                                                                              requestBody.getExtendedProperties(),
                                                                              this.getRelationshipType(parameterListType),
+                                                                             null,
+                                                                             null,
+                                                                             false,
+                                                                             false,
+                                                                             new Date(),
                                                                              methodName);
 
                 if (requestBody.getVendorProperties() != null)
@@ -1431,6 +1519,9 @@ public class APIManagerRESTServices
                     handler.setVendorProperties(userId,
                                                 apiOperationGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
 
@@ -1472,7 +1563,7 @@ public class APIManagerRESTServices
 
 
     /**
-     * Create a new metadata element to represent a API parameter list using an existing metadata element as a template.
+     * Create a new metadata element to represent an API parameter list using an existing metadata element as a template.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -1519,6 +1610,11 @@ public class APIManagerRESTServices
                                                                             requestBody.getDisplayName(),
                                                                             requestBody.getDescription(),
                                                                             this.getRelationshipType(parameterListType),
+                                                                            null,
+                                                                            null,
+                                                                            false,
+                                                                            false,
+                                                                            new Date(),
                                                                             methodName));
             }
             else
@@ -1538,7 +1634,7 @@ public class APIManagerRESTServices
 
 
     /**
-     * Update the metadata element representing a API parameter list.
+     * Update the metadata element representing an API parameter list.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -1591,7 +1687,12 @@ public class APIManagerRESTServices
                                                requestBody.getAdditionalProperties(),
                                                requestBody.getTypeName(),
                                                requestBody.getExtendedProperties(),
+                                               null,
+                                               null,
                                                isMergeUpdate,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -1599,6 +1700,9 @@ public class APIManagerRESTServices
                     handler.setVendorProperties(userId,
                                                 apiParameterListGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -1619,7 +1723,7 @@ public class APIManagerRESTServices
 
 
     /**
-     * Remove the metadata element representing a API parameter list.
+     * Remove the metadata element representing an API parameter list.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -1660,6 +1764,9 @@ public class APIManagerRESTServices
                                                apiParameterListGUID,
                                                apiParameterListGUIDParameterName,
                                                qualifiedName,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
             }
             else
@@ -1721,6 +1828,9 @@ public class APIManagerRESTServices
                                                                                        searchStringParameterName,
                                                                                        startFrom,
                                                                                        pageSize,
+                                                                                       false,
+                                                                                       false,
+                                                                                       new Date(),
                                                                                        methodName);
 
                 /*
@@ -1783,6 +1893,9 @@ public class APIManagerRESTServices
                                                                                               apiOperationGUIDParameterName,
                                                                                               startFrom,
                                                                                               pageSize,
+                                                                                              false,
+                                                                                              false,
+                                                                                              new Date(),
                                                                                               methodName);
 
             /*
@@ -1838,7 +1951,15 @@ public class APIManagerRESTServices
             {
                 APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
 
-                List<APIParameterListElement> elements = handler.getAPIParameterListsByName(userId, requestBody.getName(), nameParameterName, startFrom, pageSize, methodName);
+                List<APIParameterListElement> elements = handler.getAPIParameterListsByName(userId,
+                                                                                            requestBody.getName(),
+                                                                                            nameParameterName,
+                                                                                            startFrom,
+                                                                                            pageSize,
+                                                                                            false,
+                                                                                            false,
+                                                                                            new Date(),
+                                                                                            methodName);
 
                 /*
                  * Set up the vendor properties before adding results to response
@@ -1891,7 +2012,13 @@ public class APIManagerRESTServices
 
             APIParameterListHandler<APIParameterListElement> handler = instanceHandler.getAPIParameterListHandler(userId, serverName, methodName);
 
-            APIParameterListElement element = handler.getAPIParameterListByGUID(userId, guid, apiParameterListGUIDParameterName, methodName);
+            APIParameterListElement element = handler.getAPIParameterListByGUID(userId,
+                                                                                guid,
+                                                                                apiParameterListGUIDParameterName,
+                                                                                false,
+                                                                                false,
+                                                                                new Date(),
+                                                                                methodName);
 
             /*
              * Set up the vendor properties before adding results to response
@@ -1975,6 +2102,9 @@ public class APIManagerRESTServices
             apiProperties.setVendorProperties(handler.getVendorProperties(userId,
                                                                           element.getElementHeader().getGUID(),
                                                                           elementGUIDParameterName,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
                                                                           methodName));
         }
 
@@ -2048,6 +2178,9 @@ public class APIManagerRESTServices
             apiProperties.setVendorProperties(handler.getVendorProperties(userId,
                                                                           element.getElementHeader().getGUID(),
                                                                           elementGUIDParameterName,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
                                                                           methodName));
         }
 
@@ -2121,6 +2254,9 @@ public class APIManagerRESTServices
             apiProperties.setVendorProperties(handler.getVendorProperties(userId,
                                                                           element.getElementHeader().getGUID(),
                                                                           elementGUIDParameterName,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
                                                                           methodName));
         }
 

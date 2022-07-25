@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +46,7 @@ public class OMRSClient {
 
         Optional<EntityDetail> entityDetail;
         try {
+
             OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
                     serverName, methodName);
             entityDetail = Optional.ofNullable(entitiesHandler.getEntityFromRepository(userId, guid,
@@ -88,7 +90,8 @@ public class OMRSClient {
             OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler = instanceHandler.getEntitiesHandler(userId,
                     serverName, methodName);
             entityDetails = entitiesHandler.getAttachedEntities(userId, entityGUID, OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
-                    entityTypeName, relationshipTypeGUID, relationshipTypeName, null, from, size, methodName);
+                    entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
+                    null, null, 0, false, false, from, size, null, methodName);
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw e;
         } catch (Exception e){

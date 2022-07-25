@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 /**
- * DigitalArchitectureOMASConverter provides the generic methods for the Data Manager beans converters.  Generic classes
+ * OCFConverter provides the generic methods for the OCF beans converters.  Generic classes
  * have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Data Manager bean.
@@ -46,13 +46,13 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     /**
      * Extract the properties from the entity.
      *
-     * @param elementHeader the header for the bean
+     * @param elementBase the header for the bean
      * @param entity entity containing the properties
      * @param expectedTypeName type that the entity must match (or it may be a subtype)
      * @param methodName calling method
      * @throws PropertyServerException the supplied entity is not of the expected type
      */
-    protected void setUpElementHeader(ElementHeader elementHeader,
+    protected void setUpElementHeader(ElementBase  elementBase,
                                       EntityDetail  entity,
                                       String        expectedTypeName,
                                       String        methodName) throws PropertyServerException
@@ -60,18 +60,18 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         if (entity != null)
         {
             super.validateInstanceType(expectedTypeName,
-                                       elementHeader.getClass().getName(),
+                                       elementBase.getClass().getName(),
                                        entity,
                                        methodName);
 
-            elementHeader.setGUID(entity.getGUID());
-            elementHeader.setType(this.getElementType(entity));
-            elementHeader.setURL(entity.getInstanceURL());
-            elementHeader.setClassifications(this.getEntityClassifications(entity));
+            elementBase.setGUID(entity.getGUID());
+            elementBase.setType(this.getElementType(entity));
+            elementBase.setURL(entity.getInstanceURL());
+            elementBase.setClassifications(this.getEntityClassifications(entity));
         }
         else
         {
-            super.handleMissingMetadataInstance(elementHeader.getClass().getName(),
+            super.handleMissingMetadataInstance(elementBase.getClass().getName(),
                                                 TypeDefCategory.ENTITY_DEF,
                                                 methodName);
         }
@@ -81,27 +81,27 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     /**
      * Extract the properties from the entity.
      *
-     * @param elementHeader the header for the bean
+     * @param elementBase the header for the bean
      * @param instanceHeader header of entity
      * @param classifications classifications from the entity
      * @param methodName calling method
      * @throws PropertyServerException the supplied entity is not of the expected type
      */
-    protected void setUpElementHeader(ElementHeader        elementHeader,
+    protected void setUpElementHeader(ElementBase          elementBase,
                                       InstanceHeader       instanceHeader,
                                       List<Classification> classifications,
                                       String               methodName) throws PropertyServerException
     {
         if (instanceHeader != null)
         {
-            elementHeader.setGUID(instanceHeader.getGUID());
-            elementHeader.setType(this.getElementType(instanceHeader));
-            elementHeader.setURL(instanceHeader.getInstanceURL());
-            elementHeader.setClassifications(this.getEntityClassifications(classifications));
+            elementBase.setGUID(instanceHeader.getGUID());
+            elementBase.setType(this.getElementType(instanceHeader));
+            elementBase.setURL(instanceHeader.getInstanceURL());
+            elementBase.setClassifications(this.getEntityClassifications(classifications));
         }
         else
         {
-            super.handleMissingMetadataInstance(elementHeader.getClass().getName(),
+            super.handleMissingMetadataInstance(elementBase.getClass().getName(),
                                                 TypeDefCategory.ENTITY_DEF,
                                                 methodName);
         }
@@ -584,7 +584,6 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
              */
             if ((relationships == null) || (relationships.isEmpty()))
             {
-                handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.RELATIONSHIP_DEF, methodName);
                 return null;
             }
 
@@ -857,7 +856,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
         connectorType.setQualifiedName(this.removeQualifiedName(instanceProperties));
         connectorType.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-        connectorType.setDisplayName(this.removeName(instanceProperties));
+        connectorType.setDisplayName(this.removeDisplayName(instanceProperties));
         connectorType.setDescription(this.removeDescription(instanceProperties));
         connectorType.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
         connectorType.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));

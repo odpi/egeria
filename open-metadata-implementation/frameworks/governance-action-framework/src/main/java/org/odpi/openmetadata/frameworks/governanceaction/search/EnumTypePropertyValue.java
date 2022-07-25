@@ -12,12 +12,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * An EnumPropertyValue stores the value for an enum property.
+ * An EnumTypePropertyValue stores the value for an enum property.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EnumPropertyValue extends PropertyValue
+public class EnumTypePropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
@@ -27,7 +27,7 @@ public class EnumPropertyValue extends PropertyValue
     /**
      * Default constructor initializes an empty enum value
      */
-    public EnumPropertyValue()
+    public EnumTypePropertyValue()
     {
         super();
     }
@@ -36,9 +36,9 @@ public class EnumPropertyValue extends PropertyValue
     /**
      * Copy/clone constructor initializes the enum with the values from the template.
      *
-     * @param template EnumPropertyValue to copy
+     * @param template EnumTypePropertyValue to copy
      */
-    public EnumPropertyValue(EnumPropertyValue template)
+    public EnumTypePropertyValue(EnumTypePropertyValue template)
     {
         super(template);
 
@@ -56,7 +56,7 @@ public class EnumPropertyValue extends PropertyValue
      */
     public PropertyValue cloneFromSubclass()
     {
-        return new EnumPropertyValue(this);
+        return new EnumTypePropertyValue(this);
     }
 
 
@@ -106,7 +106,7 @@ public class EnumPropertyValue extends PropertyValue
     @Override
     public String toString()
     {
-        return "EnumPropertyValue{" +
+        return "EnumTypePropertyValue{" +
                 "symbolicName='" + symbolicName + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
@@ -126,7 +126,7 @@ public class EnumPropertyValue extends PropertyValue
         {
             return true;
         }
-        if (!(objectToCompare instanceof EnumPropertyValue))
+        if (!(objectToCompare instanceof EnumTypePropertyValue))
         {
             return false;
         }
@@ -134,7 +134,7 @@ public class EnumPropertyValue extends PropertyValue
         {
             return false;
         }
-        EnumPropertyValue that = (EnumPropertyValue) objectToCompare;
+        EnumTypePropertyValue that = (EnumTypePropertyValue) objectToCompare;
         return Objects.equals(getSymbolicName(), that.getSymbolicName());
     }
 

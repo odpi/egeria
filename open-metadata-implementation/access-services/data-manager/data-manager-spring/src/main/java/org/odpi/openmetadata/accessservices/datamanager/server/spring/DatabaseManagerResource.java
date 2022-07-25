@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class DatabaseManagerResource
 {
-    private DatabaseManagerRESTServices restAPI = new DatabaseManagerRESTServices();
+    private final DatabaseManagerRESTServices restAPI = new DatabaseManagerRESTServices();
 
     /**
      * Default constructor
@@ -621,7 +621,7 @@ public class DatabaseManagerResource
 
 
     /**
-     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * Link the schema type and asset.  This is called from outside the AssetHandler.  The databaseAssetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
      *
      * @param serverName name of the service to route the request to.

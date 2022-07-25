@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * ElementHeader provides the common identifier and type information for all properties objects
+ * ElementBase provides the common identifier and type information for all properties objects
  * that link off of the asset and have a guid associated with them.  This typically means it is
  * represented by an entity in the metadata repository.
  */
@@ -20,7 +20,7 @@ public abstract class AssetElementHeader extends AssetPropertyBase
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeaderBean = null;
+    private ElementBase elementBaseBean = null;
 
 
     /**
@@ -37,19 +37,19 @@ public abstract class AssetElementHeader extends AssetPropertyBase
     /**
      * Bean constructor
      *
-     * @param elementHeaderBean bean containing all to the properties
+     * @param elementBaseBean bean containing all to the properties
      */
-    protected AssetElementHeader(ElementHeader elementHeaderBean)
+    protected AssetElementHeader(ElementBase elementBaseBean)
     {
         super(null);
 
-        if (elementHeaderBean == null)
+        if (elementBaseBean == null)
         {
-            this.elementHeaderBean = new ElementHeader();
+            this.elementBaseBean = new ElementBase();
         }
         else
         {
-            this.elementHeaderBean = elementHeaderBean;
+            this.elementBaseBean = elementBaseBean;
         }
     }
 
@@ -58,20 +58,20 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      * Bean constructor with parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param elementHeaderBean bean containing properties
+     * @param elementBaseBean bean containing properties
      */
     protected AssetElementHeader(AssetDescriptor parentAsset,
-                                 ElementHeader elementHeaderBean)
+                                 ElementBase elementBaseBean)
     {
         super(parentAsset);
 
-        if (elementHeaderBean == null)
+        if (elementBaseBean == null)
         {
-            this.elementHeaderBean = new ElementHeader();
+            this.elementBaseBean = new ElementBase();
         }
         else
         {
-            this.elementHeaderBean = elementHeaderBean;
+            this.elementBaseBean = elementBaseBean;
         }
     }
 
@@ -88,11 +88,11 @@ public abstract class AssetElementHeader extends AssetPropertyBase
 
         if (assetElementHeader == null)
         {
-            elementHeaderBean = new ElementHeader();
+            elementBaseBean = new ElementBase();
         }
         else
         {
-            this.elementHeaderBean = assetElementHeader.getElementHeaderBean();
+            this.elementBaseBean = assetElementHeader.getElementHeaderBean();
         }
     }
 
@@ -100,11 +100,11 @@ public abstract class AssetElementHeader extends AssetPropertyBase
     /**
      * Set up the bean that contains the properties of the element header.
      *
-     * @param elementHeaderBean bean containing all of the properties
+     * @param elementBaseBean bean containing all of the properties
      */
-    protected void  setBean(ElementHeader elementHeaderBean)
+    protected void  setBean(ElementBase elementBaseBean)
     {
-        this.elementHeaderBean = elementHeaderBean;
+        this.elementBaseBean = elementBaseBean;
     }
 
 
@@ -113,9 +113,9 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      *
      * @return bean
      */
-    protected ElementHeader getElementHeaderBean()
+    protected ElementBase getElementHeaderBean()
     {
-        return elementHeaderBean;
+        return elementBaseBean;
     }
 
 
@@ -127,12 +127,12 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      */
     public AssetElementType getType()
     {
-        if (elementHeaderBean == null)
+        if (elementBaseBean == null)
         {
             return null;
         }
 
-        ElementType elementTypeBean = elementHeaderBean.getType();
+        ElementType elementTypeBean = elementBaseBean.getType();
 
         if (elementTypeBean == null)
         {
@@ -152,12 +152,12 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      */
     public String getGUID()
     {
-        if (elementHeaderBean == null)
+        if (elementBaseBean == null)
         {
             return null;
         }
 
-        return elementHeaderBean.getGUID();
+        return elementBaseBean.getGUID();
     }
 
 
@@ -169,12 +169,12 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      */
     public String getURL()
     {
-        if (elementHeaderBean == null)
+        if (elementBaseBean == null)
         {
             return null;
         }
 
-        return elementHeaderBean.getURL();
+        return elementBaseBean.getURL();
     }
 
 
@@ -185,12 +185,12 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      */
     public List<AssetClassification> getAssetClassifications()
     {
-        if (elementHeaderBean == null)
+        if (elementBaseBean == null)
         {
             return null;
         }
 
-        List<ElementClassification> classifications = elementHeaderBean.getClassifications();
+        List<ElementClassification> classifications = elementBaseBean.getClassifications();
 
         if (classifications == null)
         {
@@ -228,12 +228,12 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      */
     public Map<String, Object> getExtendedProperties()
     {
-        if (elementHeaderBean == null)
+        if (elementBaseBean == null)
         {
             return null;
         }
 
-        return elementHeaderBean.getExtendedProperties();
+        return elementBaseBean.getExtendedProperties();
     }
 
 
@@ -246,12 +246,12 @@ public abstract class AssetElementHeader extends AssetPropertyBase
     @Override
     public String toString()
     {
-        if (elementHeaderBean == null)
+        if (elementBaseBean == null)
         {
-            return new ElementHeader().toString();
+            return new ElementBase().toString();
         }
 
-        return elementHeaderBean.toString();
+        return elementBaseBean.toString();
     }
 
 
@@ -288,11 +288,11 @@ public abstract class AssetElementHeader extends AssetPropertyBase
     @Override
     public int hashCode()
     {
-        if (elementHeaderBean == null)
+        if (elementBaseBean == null)
         {
-            return new ElementHeader().hashCode();
+            return new ElementBase().hashCode();
         }
 
-        return elementHeaderBean.hashCode();
+        return elementBaseBean.hashCode();
     }
 }

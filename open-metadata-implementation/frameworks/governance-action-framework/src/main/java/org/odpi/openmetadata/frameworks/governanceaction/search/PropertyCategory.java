@@ -29,9 +29,9 @@ public enum PropertyCategory implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private int            typeCode;
-    private String         typeName;
-    private String         typeDescription;
+    private final int            typeCode;
+    private final String         typeName;
+    private final String         typeDescription;
 
 
     /**
@@ -93,10 +93,6 @@ public enum PropertyCategory implements Serializable
     @Override
     public String toString()
     {
-        return "PropertyCategory{" +
-                "typeCode=" + typeCode +
-                ", typeName='" + typeName + '\'' +
-                ", typeDescription='" + typeDescription + '\'' +
-                '}';
+        return "PropertyCategory{" + typeName + "}";
     }
 }

@@ -561,7 +561,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
     /* ======================================================
      * The methods that follow are used by the subclasses to extract specific properties from the instance properties.
-     * They are used vor all properties except enums which need a specific method in the OMAS converters.
+     * They are used for all properties except enums which need a specific method in the OMAS converters.
      */
 
     /**
@@ -803,6 +803,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the keyword property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeKeyword(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeKeyword";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.KEYWORD_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -1455,7 +1477,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the coordinates property from the supplied instance properties.
+     * Extract and delete the "coordinates" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string text or null
@@ -1815,7 +1837,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the recognized additional properties property from the supplied instance properties.
+     * Extract and delete the recognizedAdditionalProperties property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string list or null
@@ -1837,7 +1859,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the recognized secured properties property from the supplied instance properties.
+     * Extract and delete the recognizedSecuredProperties property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string list or null
@@ -1882,7 +1904,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the secured properties property from the supplied instance properties.
+     * Extract and delete the securedProperties property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string list or null
@@ -2014,7 +2036,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract the arguments property from the supplied instance properties.
+     * Extract the "arguments" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string text or null
@@ -2305,7 +2327,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract the groups property from the supplied instance properties.
+     * Extract the "groups" property from the supplied instance properties.
      *
      * @param instanceProperties properties from classification
      * @return string map or null
@@ -3517,7 +3539,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the significant digits property from the supplied instance properties.
+     * Extract and delete the precision/significantDigits property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return integer - default 0
@@ -3615,7 +3637,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the aliases property from the supplied instance properties.
+     * Extract and delete the "aliases" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string text or null
@@ -3930,7 +3952,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and remove the examples property from the supplied instance properties.
+     * Extract and remove the "examples" property from the supplied instance properties.
      *
      * @param instanceProperties properties from governance entities
      * @return string property or null
@@ -4084,7 +4106,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the implications property from the supplied instance properties.
+     * Extract and delete the "implications" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string list or null
@@ -4106,7 +4128,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the outcomes property from the supplied instance properties.
+     * Extract and delete the "outcomes" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string list or null
@@ -4128,7 +4150,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the results property from the supplied instance properties.
+     * Extract and delete the "results" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string list or null
@@ -4194,7 +4216,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the details property from the supplied instance properties.
+     * Extract and delete the "details" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string text or null
@@ -4999,7 +5021,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract the conditions property from the supplied instance properties.
+     * Extract the "conditions" property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return string text or null
@@ -5222,7 +5244,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract the notes property from the supplied instance properties.
+     * Extract the "notes" property from the supplied instance properties.
      *
      * @param instanceProperties properties from GovernanceRuleImplementation, GovernanceProcessImplementation,
      *                           ReferenceValueAssignment or ValidValuesMapping relationship

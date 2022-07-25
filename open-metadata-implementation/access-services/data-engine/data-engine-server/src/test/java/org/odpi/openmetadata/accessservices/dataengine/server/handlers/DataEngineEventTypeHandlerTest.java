@@ -22,6 +22,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,6 +74,7 @@ class DataEngineEventTypeHandlerTest {
         when(eventTypeHandler.createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 TOPIC_GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
+                null, null, false, false, null,
                 "upsertEventType")).thenReturn(GUID);
         EventType eventType = getEventType();
         List<Attribute> attributeList = Collections.singletonList(getAttribute());
@@ -83,6 +85,7 @@ class DataEngineEventTypeHandlerTest {
         verify(eventTypeHandler, times(1)).createEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 TOPIC_GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
+                null, null, false, false, null,
                 "upsertEventType");
         verify(dataEngineSchemaAttributeHandler, Mockito.times(1)).upsertSchemaAttributes(USER, attributeList,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
@@ -103,7 +106,8 @@ class DataEngineEventTypeHandlerTest {
         verify(eventTypeHandler, times(1)).updateEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 GUID, EVENT_TYPE_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, false,
                 null, null, null, null, null, EVENT_TYPE_TYPE_NAME, null,
-                true, "upsertEventType");
+                null, null, true,false, false, null,
+                "upsertEventType");
         verify(dataEngineSchemaAttributeHandler, Mockito.times(1)).upsertSchemaAttributes(USER, attributeList,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
     }
@@ -116,7 +120,7 @@ class DataEngineEventTypeHandlerTest {
 
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, "removeEventType");
         verify(eventTypeHandler, times(1)).removeEventType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                GUID, EVENT_TYPE_GUID_PARAMETER_NAME, QUALIFIED_NAME, "removeEventType");
+                GUID, EVENT_TYPE_GUID_PARAMETER_NAME, QUALIFIED_NAME, false, false, null, "removeEventType");
     }
 
     private EventType getEventType() {

@@ -22,7 +22,7 @@ import java.util.Map;
  * AssetManagerOMASConverter provides the generic methods for the Asset Manager beans' converters.  Generic classes
  * have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
- * and initializing a Asset Manager bean.
+ * and initializing an Asset Manager bean.
  */
 public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter<B>
 {

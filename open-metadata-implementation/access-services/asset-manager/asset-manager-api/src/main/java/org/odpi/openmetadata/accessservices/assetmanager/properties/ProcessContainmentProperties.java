@@ -1,46 +1,46 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetmanager.rest;
+package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentType;
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-
 /**
- * ProcessContainmentTypeRequestBody is the request body structure used on OMAG REST API calls that passes a ProcessContainmentType enum.
+ * ProcessContainmentProperties when linking processes in a parent-child hierarchy.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProcessContainmentTypeRequestBody extends AssetManagerIdentifiersRequestBody
+public class ProcessContainmentProperties extends RelationshipProperties
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long     serialVersionUID = 1L;
 
     private ProcessContainmentType processContainmentType = null;
+
+
 
 
     /**
      * Default constructor
      */
-    public ProcessContainmentTypeRequestBody()
+    public ProcessContainmentProperties()
     {
         super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.
      *
-     * @param template object to copy
+     * @param template template to copy.
      */
-    public ProcessContainmentTypeRequestBody(ProcessContainmentTypeRequestBody template)
+    public ProcessContainmentProperties(ProcessContainmentProperties template)
     {
         super(template);
 
@@ -72,7 +72,6 @@ public class ProcessContainmentTypeRequestBody extends AssetManagerIdentifiersRe
         this.processContainmentType = processContainmentType;
     }
 
-
     /**
      * Standard toString method.
      *
@@ -81,10 +80,11 @@ public class ProcessContainmentTypeRequestBody extends AssetManagerIdentifiersRe
     @Override
     public String toString()
     {
-        return "ProcessContainmentTypeRequestBody{" +
+        return "ProcessContainmentProperties{" +
                        "processContainmentType=" + processContainmentType +
-                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
-                       ", assetManagerName='" + getAssetManagerName() + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -110,7 +110,7 @@ public class ProcessContainmentTypeRequestBody extends AssetManagerIdentifiersRe
         {
             return false;
         }
-        ProcessContainmentTypeRequestBody that = (ProcessContainmentTypeRequestBody) objectToCompare;
+        ProcessContainmentProperties that = (ProcessContainmentProperties) objectToCompare;
         return processContainmentType == that.processContainmentType;
     }
 

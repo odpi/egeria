@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum PrimitiveDefCategory implements Serializable
+public enum PrimitiveTypeCategory implements Serializable
 {
     OM_PRIMITIVE_TYPE_UNKNOWN   (0,  "object",     "java.lang.Object",      "1c4b21f4-0b67-41a7-a6ed-2af185eb9b3b"),
     OM_PRIMITIVE_TYPE_BOOLEAN   (1,  "boolean",    "java.lang.Boolean",     "3863f010-611c-41fe-aaae-5d4d427f863b"),
@@ -37,10 +37,10 @@ public enum PrimitiveDefCategory implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private  int         code;
-    private  String      name;
-    private  String      javaClassName;
-    private  String      guid;
+    private final int         code;
+    private final String      name;
+    private final String      javaClassName;
+    private final String      guid;
 
 
     /**
@@ -51,7 +51,7 @@ public enum PrimitiveDefCategory implements Serializable
      * @param javaClassName String name of the class that stores the primitive attribute.
      * @param guid unique identifier of the primitive type
      */
-    PrimitiveDefCategory(int   code, String name, String javaClassName, String guid)
+    PrimitiveTypeCategory(int   code, String name, String javaClassName, String guid)
     {
         this.code = code;
         this.name = name;
@@ -105,11 +105,6 @@ public enum PrimitiveDefCategory implements Serializable
     @Override
     public String toString()
     {
-        return "PrimitiveDefCategory{" +
-                "code=" + code +
-                ", name='" + name + '\'' +
-                ", javaClassName='" + javaClassName + '\'' +
-                ", guid='" + guid + '\'' +
-                '}';
+        return "PrimitiveTypeCategory{" + name + "}";
     }
 }

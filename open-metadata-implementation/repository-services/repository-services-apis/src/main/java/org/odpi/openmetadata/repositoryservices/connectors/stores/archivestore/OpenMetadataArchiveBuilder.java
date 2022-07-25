@@ -203,12 +203,21 @@ public interface OpenMetadataArchiveBuilder
 
 
     /**
-     * Retrieve an entity from the archive.
+     * Retrieve an entity from the archive.   Throw an exception if not present.
      *
      * @param guid unique identifier
      * @return requested entity
      */
     EntityDetail getEntity(String   guid);
+
+
+    /**
+     * Retrieve an entity from the archive if available.
+     *
+     * @param guid unique identifier
+     * @return requested entity
+     */
+    EntityDetail queryEntity(String   guid);
 
 
     /**
@@ -220,12 +229,21 @@ public interface OpenMetadataArchiveBuilder
 
 
     /**
-     * Retrieve a relationship from the archive.
+     * Retrieve a relationship from the archive.  Throw an exception if not present.
      *
      * @param guid unique identifier
      * @return requested relationship
      */
      Relationship getRelationship(String   guid);
+
+
+    /**
+     * Retrieve a relationship from the archive if it exists.
+     *
+     * @param guid unique identifier
+     * @return requested relationship
+     */
+    Relationship queryRelationship(String   guid);
 
 
     /**
@@ -237,7 +255,7 @@ public interface OpenMetadataArchiveBuilder
 
 
     /**
-     * Retrieve a classification extension from the archive.
+     * Retrieve a classification extension from the archive.   Throw an exception if not present.
      *
      * @param entityGUID unique identifier of entity
      * @param classificationName name of the classification
@@ -245,4 +263,15 @@ public interface OpenMetadataArchiveBuilder
      */
     ClassificationEntityExtension getClassification(String entityGUID,
                                                     String classificationName);
+
+
+    /**
+     * Retrieve a classification extension from the archive if it exists.
+     *
+     * @param entityGUID unique identifier of entity
+     * @param classificationName name of the classification
+     * @return requested classification extension
+     */
+    ClassificationEntityExtension queryClassification(String entityGUID,
+                                                      String classificationName);
 }

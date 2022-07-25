@@ -4,8 +4,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.testng.annotations.Test;
 
@@ -19,7 +19,7 @@ import static org.testng.Assert.assertTrue;
  * Tests the getters and setters of AssetElementHeader.  This is an abstract class and so
  * it uses the MockAssetElement object as the concrete class.
  */
-public class TestAssetElementHeader
+public class TestAssetElementBase
 {
     private ElementType                 type            = new ElementType();
     private List<ElementClassification> classifications = new ArrayList<>();
@@ -28,7 +28,7 @@ public class TestAssetElementHeader
     /**
      * Constructor
      */
-    public TestAssetElementHeader()
+    public TestAssetElementBase()
     {
         type.setElementTypeName("TestTypeName");
 
@@ -46,7 +46,7 @@ public class TestAssetElementHeader
      */
     private MockAssetElement getTestObject()
     {
-        ElementHeader testObject = new ElementHeader();
+        ElementBase testObject = new ElementBase();
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
@@ -64,7 +64,7 @@ public class TestAssetElementHeader
      */
     private MockAssetElement getDifferentObject()
     {
-        ElementHeader testObject = new ElementHeader();
+        ElementBase testObject = new ElementBase();
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
@@ -82,7 +82,7 @@ public class TestAssetElementHeader
      */
     private MockAssetElement getAnotherDifferentObject()
     {
-        ElementHeader testObject = new ElementHeader();
+        ElementBase testObject = new ElementBase();
 
         testObject.setType(type);
         testObject.setGUID("TestDifferentGUID");
@@ -123,10 +123,10 @@ public class TestAssetElementHeader
         classification.setClassificationName("TestClassification");
         classificationList.add(classification);
 
-        ElementHeader elementHeaderBean = new ElementHeader();
-        elementHeaderBean.setClassifications(classificationList);
+        ElementBase elementBaseBean = new ElementBase();
+        elementBaseBean.setClassifications(classificationList);
 
-        MockAssetElement testObject = new MockAssetElement(elementHeaderBean);
+        MockAssetElement testObject = new MockAssetElement(elementBaseBean);
 
         List<AssetClassification> assetClassifications = testObject.getAssetClassifications();
         AssetClassification       assetClassification  = assetClassifications.get(0);
@@ -142,18 +142,18 @@ public class TestAssetElementHeader
 
         classificationList = new ArrayList<>();
 
-        elementHeaderBean = new ElementHeader();
-        elementHeaderBean.setClassifications(classificationList);
-        testObject = new MockAssetElement(elementHeaderBean);
+        elementBaseBean = new ElementBase();
+        elementBaseBean.setClassifications(classificationList);
+        testObject = new MockAssetElement(elementBaseBean);
         assetClassifications = testObject.getAssetClassifications();
 
         assertTrue(assetClassifications == null);
 
         classificationList.add(null);
 
-        elementHeaderBean = new ElementHeader();
-        elementHeaderBean.setClassifications(classificationList);
-        testObject = new MockAssetElement(elementHeaderBean);
+        elementBaseBean = new ElementBase();
+        elementBaseBean.setClassifications(classificationList);
+        testObject = new MockAssetElement(elementBaseBean);
         assetClassifications = testObject.getAssetClassifications();
 
         assertTrue(assetClassifications == null);
@@ -184,9 +184,9 @@ public class TestAssetElementHeader
     @Test public void testToString()
     {
         AssetElementHeader testObject = getTestObject();
-        assertTrue(testObject.toString().contains("ElementHeader"));
+        assertTrue(testObject.toString().contains("ElementBase"));
         testObject.setBean(null);
-        assertTrue(testObject.toString().contains("ElementHeader"));
+        assertTrue(testObject.toString().contains("ElementBase"));
     }
 
 

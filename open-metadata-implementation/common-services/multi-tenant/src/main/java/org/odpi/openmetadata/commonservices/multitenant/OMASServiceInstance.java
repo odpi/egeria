@@ -67,8 +67,8 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      *
      * @param serviceName name of this service
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
-     * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
+     * @param supportedZones list of zones that access service is allowed to serve Assets from.
+     * @param defaultZones list of zones that access service should set in all new Assets.
      * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
@@ -103,8 +103,8 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      *
      * @param serviceName name of this service
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
-     * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
+     * @param supportedZones list of zones that access service is allowed to serve Assets from.
+     * @param defaultZones list of zones that access service should set in all new Assets.
      * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions

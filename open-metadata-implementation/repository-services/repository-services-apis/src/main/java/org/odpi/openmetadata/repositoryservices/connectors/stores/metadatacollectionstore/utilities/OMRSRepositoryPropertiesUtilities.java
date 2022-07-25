@@ -772,7 +772,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties.toString());
+                log.debug("Properties left: " + properties);
             }
         }
 
@@ -807,12 +807,31 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
                         {
                             PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
+
                             resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
                         }
                         else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ENUM)
                         {
                             EnumPropertyValue  enumPropertyValue = (EnumPropertyValue) actualPropertyValue;
                             resultingMap.put(mapPropertyName, enumPropertyValue.getSymbolicName());
+                        }
+                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.MAP)
+                        {
+                            MapPropertyValue  mapPropertyValue = (MapPropertyValue) actualPropertyValue;
+
+                            resultingMap.put(mapPropertyName, mapPropertyValue.valueAsObject());
+                        }
+                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ARRAY)
+                        {
+                            ArrayPropertyValue  arrayPropertyValue = (ArrayPropertyValue) actualPropertyValue;
+
+                            resultingMap.put(mapPropertyName, arrayPropertyValue.valueAsObject());
+                        }
+                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.STRUCT)
+                        {
+                            StructPropertyValue structPropertyValue = (StructPropertyValue) actualPropertyValue;
+
+                            resultingMap.put(mapPropertyName, structPropertyValue);
                         }
                         else
                         {

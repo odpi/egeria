@@ -462,8 +462,8 @@ public class SchemaTypeConverter<B> extends AssetManagerOMASConverter<B>
     private void updateBasicSchemaTypeProperties(SchemaTypeProperties bean,
                                                  InstanceProperties  instanceProperties)
     {
-        bean.setDisplayName(this.removeDisplayName(instanceProperties));
-        bean.setDescription(this.removeDescription(instanceProperties));
+        bean.setTechnicalName(this.removeDisplayName(instanceProperties));
+        bean.setTechnicalDescription(this.removeDescription(instanceProperties));
         bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
         bean.setVersionNumber(this.removeVersionNumber(instanceProperties));
         bean.setAuthor(this.removeAuthor(instanceProperties));

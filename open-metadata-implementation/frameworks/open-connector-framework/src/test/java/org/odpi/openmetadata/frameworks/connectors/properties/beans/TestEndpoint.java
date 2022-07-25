@@ -223,11 +223,11 @@ public class TestEndpoint
         /*
          * Through superclass
          */
-        ElementHeader elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -236,7 +236,7 @@ public class TestEndpoint
 
         try
         {
-            validateResultObject((Endpoint) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((Endpoint) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

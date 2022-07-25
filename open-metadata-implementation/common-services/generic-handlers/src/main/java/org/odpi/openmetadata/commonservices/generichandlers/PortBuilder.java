@@ -11,12 +11,12 @@ import java.util.Map;
 
 
 /**
- * SearchKeywordBuilder is able to build the properties for a SearchKeyword entity.
+ * PortBuilder is able to build the properties for a Port entity.
  */
 public class PortBuilder extends ReferenceableBuilder
 {
-    private String displayName;
-    private int    portType;
+    private final String displayName;
+    private final int    portType;
 
 
     /**
@@ -70,14 +70,12 @@ public class PortBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
+
 
         try
         {

@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetmanager.rest;
+package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerIdentifiersRequestBody;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,12 +16,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The EmbeddedConnectionRequestBody is used within a VirtualConnection to link to the embedded connections.
+ * The EmbeddedConnectionProperties is used within a VirtualConnection to link to the embedded connections.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EmbeddedConnectionRequestBody extends AssetManagerIdentifiersRequestBody
+public class EmbeddedConnectionProperties extends RelationshipProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class EmbeddedConnectionRequestBody extends AssetManagerIdentifiersReques
     /**
      * Default constructor
      */
-    public EmbeddedConnectionRequestBody()
+    public EmbeddedConnectionProperties()
     {
         super();
     }
@@ -47,7 +47,7 @@ public class EmbeddedConnectionRequestBody extends AssetManagerIdentifiersReques
      *
      * @param template element to copy
      */
-    public EmbeddedConnectionRequestBody(EmbeddedConnectionRequestBody template)
+    public EmbeddedConnectionProperties(EmbeddedConnectionProperties template)
     {
         super (template);
 
@@ -145,12 +145,13 @@ public class EmbeddedConnectionRequestBody extends AssetManagerIdentifiersReques
     @Override
     public String toString()
     {
-        return "EmbeddedConnectionRequestBody{" +
+        return "EmbeddedConnectionProperties{" +
                        "position=" + position +
                        ", displayName='" + displayName + '\'' +
                        ", arguments=" + arguments +
-                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
-                       ", assetManagerName='" + getAssetManagerGUID() + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -172,10 +173,13 @@ public class EmbeddedConnectionRequestBody extends AssetManagerIdentifiersReques
         {
             return false;
         }
-        EmbeddedConnectionRequestBody that = (EmbeddedConnectionRequestBody) objectToCompare;
-        return position == that.position &&
-                       Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(arguments, that.arguments);
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+        EmbeddedConnectionProperties that = (EmbeddedConnectionProperties) objectToCompare;
+        return position == that.position && Objects.equals(displayName, that.displayName) && Objects.equals(arguments,
+                                                                                                            that.arguments);
     }
 
 
@@ -187,6 +191,6 @@ public class EmbeddedConnectionRequestBody extends AssetManagerIdentifiersReques
     @Override
     public int hashCode()
     {
-        return Objects.hash(position, displayName, arguments);
+        return Objects.hash(super.hashCode(), position, displayName, arguments);
     }
 }

@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.LoggerFactory;
 
@@ -39,11 +40,11 @@ import java.util.Map;
  */
 public class DisplayApplicationRESTServices
 {
-    private static DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
-    private static RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(DisplayApplicationRESTServices.class),
-                                                                                   instanceHandler.getServiceName());
+    private static final DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
+    private static final RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(DisplayApplicationRESTServices.class),
+                                                                                         instanceHandler.getServiceName());
 
-    private RESTExceptionHandler  restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler  restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -54,7 +55,7 @@ public class DisplayApplicationRESTServices
 
 
     /* ========================================================
-     * The form, report and query are the top level assets for a application
+     * The form, report and query are the top level assets for an application
      */
 
     /**
@@ -109,6 +110,9 @@ public class DisplayApplicationRESTServices
                                                                   typeName,
                                                                   requestBody.getExtendedProperties(),
                                                                   InstanceStatus.ACTIVE,
+                                                                  null,
+                                                                  null,
+                                                                  new Date(),
                                                                   methodName);
 
                 if (formGUID != null)
@@ -120,11 +124,19 @@ public class DisplayApplicationRESTServices
                                                                   formGUIDParameterName,
                                                                   requestBody.getExternalSourceGUID(),
                                                                   applicationGUIDParameterName,
+                                                                  null,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName);
 
                     handler.setVendorProperties(userId,
                                                 formGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
 
@@ -197,6 +209,9 @@ public class DisplayApplicationRESTServices
                                                                requestBody.getDisplayName(),
                                                                requestBody.getDescription(),
                                                                requestBody.getNetworkAddress(),
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName);
 
                 if (formGUID != null)
@@ -208,6 +223,11 @@ public class DisplayApplicationRESTServices
                                                                   formGUIDParameterName,
                                                                   requestBody.getExternalSourceGUID(),
                                                                   applicationGUIDParameterName,
+                                                                  null,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName);
                 }
 
@@ -283,7 +303,12 @@ public class DisplayApplicationRESTServices
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     requestBody.getExtendedProperties(),
+                                    null,
+                                    null,
                                     isMergeUpdate,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
@@ -291,6 +316,9 @@ public class DisplayApplicationRESTServices
                     handler.setVendorProperties(userId,
                                                 formGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
             }
@@ -345,7 +373,7 @@ public class DisplayApplicationRESTServices
 
             AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
 
-            handler.publishAsset(userId, formGUID, formGUIDParameterName, methodName);
+            handler.publishAsset(userId, formGUID, formGUIDParameterName, false, false, new Date(),methodName);
         }
         catch (Exception error)
         {
@@ -393,7 +421,7 @@ public class DisplayApplicationRESTServices
 
             AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
 
-            handler.withdrawAsset(userId, formGUID, formGUIDParameterName, methodName);
+            handler.withdrawAsset(userId, formGUID, formGUIDParameterName, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -512,6 +540,8 @@ public class DisplayApplicationRESTServices
                                                                   searchStringParameterName,
                                                                   startFrom,
                                                                   pageSize,
+                                                                  false,
+                                                                  false,
                                                                   new Date(),
                                                                   methodName);
 
@@ -577,6 +607,8 @@ public class DisplayApplicationRESTServices
                                                                        nameParameterName,
                                                                        startFrom,
                                                                        pageSize,
+                                                                       false,
+                                                                       false,
                                                                        new Date(),
                                                                        methodName);
 
@@ -642,6 +674,11 @@ public class DisplayApplicationRESTServices
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                        OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                        OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                                       null,
+                                                                       null,
+                                                                       0,
+                                                                       false,
+                                                                       false,
                                                                        startFrom,
                                                                        pageSize,
                                                                        new Date(),
@@ -806,6 +843,9 @@ public class DisplayApplicationRESTServices
                                                                     typeName,
                                                                     extendedProperties,
                                                                     InstanceStatus.ACTIVE,
+                                                                    null,
+                                                                    null,
+                                                                    new Date(),
                                                                     methodName);
 
                 if ((reportGUID != null) && (requestBody.getExternalSourceGUID() != null))
@@ -823,7 +863,10 @@ public class DisplayApplicationRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 (InstanceProperties) null,
                                                  null,
+                                                 null,
+                                                 new Date(),
                                                  methodName);
                 }
 
@@ -834,6 +877,9 @@ public class DisplayApplicationRESTServices
                         handler.setVendorProperties(userId,
                                                     reportGUID,
                                                     requestBody.getVendorProperties(),
+                                                    false,
+                                                    false,
+                                                    new Date(),
                                                     methodName);
                     }
                 }
@@ -907,6 +953,9 @@ public class DisplayApplicationRESTServices
                                                                  requestBody.getDisplayName(),
                                                                  requestBody.getDescription(),
                                                                  requestBody.getNetworkAddress(),
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName);
 
                 if ((reportGUID != null) && (requestBody.getExternalSourceGUID() != null))
@@ -924,7 +973,10 @@ public class DisplayApplicationRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 (InstanceProperties) null,
                                                  null,
+                                                 null,
+                                                 new Date(),
                                                  methodName);
                 }
 
@@ -1042,12 +1094,23 @@ public class DisplayApplicationRESTServices
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     extendedProperties,
+                                    null,
+                                    null,
                                     isMergeUpdate,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    handler.setVendorProperties(userId, reportGUID, requestBody.getVendorProperties(), methodName);
+                    handler.setVendorProperties(userId,
+                                                reportGUID,
+                                                requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
                 }
             }
             else
@@ -1101,7 +1164,7 @@ public class DisplayApplicationRESTServices
 
             AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
 
-            handler.publishAsset(userId, reportGUID, reportGUIDParameterName, methodName);
+            handler.publishAsset(userId, reportGUID, reportGUIDParameterName, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -1149,7 +1212,7 @@ public class DisplayApplicationRESTServices
 
             AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
 
-            handler.withdrawAsset(userId, reportGUID, reportGUIDParameterName, methodName);
+            handler.withdrawAsset(userId, reportGUID, reportGUIDParameterName, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -1268,6 +1331,8 @@ public class DisplayApplicationRESTServices
                                                                       searchStringParameterName,
                                                                       startFrom,
                                                                       pageSize,
+                                                                      false,
+                                                                      false,
                                                                       new Date(),
                                                                       methodName);
 
@@ -1333,6 +1398,8 @@ public class DisplayApplicationRESTServices
                                                                            nameParameterName,
                                                                            startFrom,
                                                                            pageSize,
+                                                                           false,
+                                                                           false,
                                                                            new Date(),
                                                                            methodName);
 
@@ -1398,6 +1465,11 @@ public class DisplayApplicationRESTServices
                                                                            OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                            OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                            OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                           null,
+                                                                           null,
+                                                                           0,
+                                                                           false,
+                                                                           false,
                                                                            startFrom,
                                                                            pageSize,
                                                                            new Date(),
@@ -1520,6 +1592,9 @@ public class DisplayApplicationRESTServices
                                                                    typeName,
                                                                    requestBody.getExtendedProperties(),
                                                                    InstanceStatus.ACTIVE,
+                                                                   null,
+                                                                   null,
+                                                                   new Date(),
                                                                    methodName);
 
                 if ((queryGUID != null) && (requestBody.getExternalSourceGUID() != null))
@@ -1537,7 +1612,10 @@ public class DisplayApplicationRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 (InstanceProperties) null,
                                                  null,
+                                                 null,
+                                                 new Date(),
                                                  methodName);
                 }
 
@@ -1548,6 +1626,9 @@ public class DisplayApplicationRESTServices
                         handler.setVendorProperties(userId,
                                                     queryGUID,
                                                     requestBody.getVendorProperties(),
+                                                    false,
+                                                    false,
+                                                    new Date(),
                                                     methodName);
                     }
                 }
@@ -1621,6 +1702,9 @@ public class DisplayApplicationRESTServices
                                                                 requestBody.getDisplayName(),
                                                                 requestBody.getDescription(),
                                                                 requestBody.getNetworkAddress(),
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName);
 
                 if ((queryGUID != null) && (requestBody.getExternalSourceGUID() != null))
@@ -1638,7 +1722,10 @@ public class DisplayApplicationRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 (InstanceProperties) null,
                                                  null,
+                                                 null,
+                                                 new Date(),
                                                  methodName);
                 }
 
@@ -1714,12 +1801,23 @@ public class DisplayApplicationRESTServices
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     requestBody.getExtendedProperties(),
+                                    null,
+                                    null,
                                     isMergeUpdate,
+                                    false,
+                                    false,
+                                    new Date(),
                                     methodName);
 
                 if ((!isMergeUpdate) || (requestBody.getVendorProperties() != null))
                 {
-                    handler.setVendorProperties(userId, queryGUID, requestBody.getVendorProperties(), methodName);
+                    handler.setVendorProperties(userId,
+                                                queryGUID,
+                                                requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
                 }
             }
             else
@@ -1773,7 +1871,7 @@ public class DisplayApplicationRESTServices
 
             AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
 
-            handler.publishAsset(userId, queryGUID, queryGUIDParameterName, methodName);
+            handler.publishAsset(userId, queryGUID, queryGUIDParameterName, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -1821,7 +1919,7 @@ public class DisplayApplicationRESTServices
 
             AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
 
-            handler.withdrawAsset(userId, queryGUID, queryGUIDParameterName, methodName);
+            handler.withdrawAsset(userId, queryGUID, queryGUIDParameterName, false, false, new Date(), methodName);
         }
         catch (Exception error)
         {
@@ -1937,6 +2035,8 @@ public class DisplayApplicationRESTServices
                                                                     searchStringParameterName,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    false,
+                                                                    false,
                                                                     new Date(),
                                                                     methodName);
 
@@ -2002,6 +2102,8 @@ public class DisplayApplicationRESTServices
                                                                          nameParameterName,
                                                                          startFrom,
                                                                          pageSize,
+                                                                         false,
+                                                                         false,
                                                                          new Date(),
                                                                          methodName);
 
@@ -2067,6 +2169,11 @@ public class DisplayApplicationRESTServices
                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                         null,
+                                                                         null,
+                                                                         0,
+                                                                         false,
+                                                                         false,
                                                                          startFrom,
                                                                          pageSize,
                                                                          new Date(),
@@ -2202,6 +2309,10 @@ public class DisplayApplicationRESTServices
                                                                 typeName,
                                                                 requestBody.getExtendedProperties(),
                                                                 requestBody.getVendorProperties(),
+                                                                null,
+                                                                null,
+                                                                false,
+                                                                false,
                                                                 new Date(),
                                                                 methodName);
                 }
@@ -2222,6 +2333,10 @@ public class DisplayApplicationRESTServices
                                                                 typeName,
                                                                 requestBody.getExtendedProperties(),
                                                                 requestBody.getVendorProperties(),
+                                                                null,
+                                                                null,
+                                                                false,
+                                                                false,
                                                                 new Date(),
                                                                 methodName);
                 }
@@ -2231,6 +2346,9 @@ public class DisplayApplicationRESTServices
                     handler.setVendorProperties(userId,
                                                 parentGUID,
                                                 requestBody.getVendorProperties(),
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
                 }
 
@@ -2295,6 +2413,10 @@ public class DisplayApplicationRESTServices
                                                                              requestBody.getQualifiedName(),
                                                                              requestBody.getDisplayName(),
                                                                              requestBody.getDescription(),
+                                                                             null,
+                                                                             null,
+                                                                             false,
+                                                                             false,
                                                                              new Date(),
                                                                              methodName));
                 }
@@ -2308,6 +2430,10 @@ public class DisplayApplicationRESTServices
                                                                              requestBody.getQualifiedName(),
                                                                              requestBody.getDisplayName(),
                                                                              requestBody.getDescription(),
+                                                                             null,
+                                                                             null,
+                                                                             false,
+                                                                             false,
                                                                              new Date(),
                                                                              methodName));
                 }
@@ -2375,7 +2501,12 @@ public class DisplayApplicationRESTServices
                                             requestBody.getTypeName(),
                                             requestBody.getExtendedProperties(),
                                             requestBody.getVendorProperties(),
+                                            null,
+                                            null,
                                             isMergeUpdate,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
             else
@@ -2436,6 +2567,9 @@ public class DisplayApplicationRESTServices
                                             dataContainerGUID,
                                             dataFieldGUIDParameterName,
                                             qualifiedName,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
             }
             else
@@ -2496,6 +2630,8 @@ public class DisplayApplicationRESTServices
                                                                                  requestBody.getSearchString(),
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 false,
+                                                                                 false,
                                                                                  new Date(),
                                                                                  methodName);
 
@@ -2551,9 +2687,15 @@ public class DisplayApplicationRESTServices
             DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> handler = instanceHandler.getDisplayDataContainerHandler(userId, serverName, methodName);
 
             List<DataContainerElement> elements = handler.getContainersForParent(userId,
+                                                                                 null,
+                                                                                 null,
                                                                                  parentGUID,
                                                                                  startFrom,
                                                                                  pageSize,
+                                                                                 null,
+                                                                                 null,
+                                                                                 false,
+                                                                                 false,
                                                                                  new Date(),
                                                                                  methodName);
 
@@ -2608,7 +2750,14 @@ public class DisplayApplicationRESTServices
                                                                                                                                               serverName,
                                                                                                                                               methodName);
 
-                List<DataContainerElement> elements = handler.getDataContainersByName(userId, requestBody.getName(), startFrom, pageSize, new Date(), methodName);
+                List<DataContainerElement> elements = handler.getDataContainersByName(userId,
+                                                                                      requestBody.getName(),
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      false,
+                                                                                      false,
+                                                                                      new Date(),
+                                                                                      methodName);
 
                 response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
             }
@@ -2657,7 +2806,12 @@ public class DisplayApplicationRESTServices
 
             DisplayDataContainerHandler<DataContainerElement, SchemaTypeElement> handler = instanceHandler.getDisplayDataContainerHandler(userId, serverName, methodName);
 
-            DataContainerElement element = handler.getDataContainerByGUID(userId, guid, new Date(), methodName);
+            DataContainerElement element = handler.getDataContainerByGUID(userId,
+                                                                          guid,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
+                                                                          methodName);
 
             response.setElement(setUpVendorProperties(userId, element, handler, methodName));
         }
@@ -2739,6 +2893,9 @@ public class DisplayApplicationRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -2813,6 +2970,9 @@ public class DisplayApplicationRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -2887,6 +3047,9 @@ public class DisplayApplicationRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 
@@ -2960,6 +3123,9 @@ public class DisplayApplicationRESTServices
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),
                                                                        elementGUIDParameterName,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
 

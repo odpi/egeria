@@ -12,9 +12,9 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the ElementHeader bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the ElementBase bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
-public class TestElementHeader
+public class TestElementBase
 {
     private ElementType                 type            = new ElementType();
     private List<ElementClassification> classifications = new ArrayList<>();
@@ -24,7 +24,7 @@ public class TestElementHeader
     /**
      * Default constructor
      */
-    public TestElementHeader()
+    public TestElementBase()
     {
         classifications.add(new ElementClassification());
         superTypes.add("Referenceable");
@@ -38,9 +38,9 @@ public class TestElementHeader
      *
      * @return filled in object
      */
-    private ElementHeader getTestObject()
+    private ElementBase getTestObject()
     {
-        ElementHeader testObject = new ElementHeader();
+        ElementBase testObject = new ElementBase();
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
@@ -56,7 +56,7 @@ public class TestElementHeader
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(ElementHeader resultObject)
+    private void validateResultObject(ElementBase resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -70,21 +70,21 @@ public class TestElementHeader
      */
     @Test public void testNullObject()
     {
-        ElementHeader nullObject = new ElementHeader();
+        ElementBase nullObject = new ElementBase();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
         assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
-        nullObject = new ElementHeader(null);
+        nullObject = new ElementBase(null);
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
         assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
-        nullObject = new ElementHeader();
+        nullObject = new ElementBase();
 
         nullObject.setClassifications(new ArrayList<>());
 
@@ -102,10 +102,10 @@ public class TestElementHeader
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        ElementHeader sameObject = getTestObject();
+        ElementBase sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        ElementHeader differentObject = getTestObject();
+        ElementBase differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -125,7 +125,7 @@ public class TestElementHeader
      */
     @Test public void testClone()
     {
-        validateResultObject(new ElementHeader(getTestObject()));
+        validateResultObject(new ElementBase(getTestObject()));
     }
 
 
@@ -152,7 +152,7 @@ public class TestElementHeader
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject(objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {
@@ -175,7 +175,7 @@ public class TestElementHeader
 
         try
         {
-            validateResultObject((ElementHeader) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateResultObject((ElementBase) objectMapper.readValue(jsonString, PropertyBase.class));
         }
         catch (Throwable  exc)
         {
@@ -189,6 +189,6 @@ public class TestElementHeader
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("ElementHeader"));
+        assertTrue(getTestObject().toString().contains("ElementBase"));
     }
 }

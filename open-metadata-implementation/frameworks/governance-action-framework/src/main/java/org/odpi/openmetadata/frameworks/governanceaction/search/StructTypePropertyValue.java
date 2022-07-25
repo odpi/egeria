@@ -13,40 +13,40 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MapPropertyValue stores the values of a map within an entity, struct or relationship properties.
- * The elements of the map are stored in an ElementProperties map.
+ * StructTypePropertyValue supports the value part of property that is defined as a complex structure.
+ * It manages a list of properties that cover the fields in the structure.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MapPropertyValue extends PropertyValue
+public class StructTypePropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
-    private ElementProperties mapValues = null;
+    private ElementProperties attributes = null;
 
 
     /**
-     * Default constructor sets the map to empty.
+     * Default constructor set StructTypePropertyValue to null.
      */
-    public MapPropertyValue()
+    public StructTypePropertyValue()
     {
         super();
     }
 
 
     /**
-     * Copy/clone constructor set up the map using the supplied template.
+     * Copy/clone constructor sets up the values based on the template.
      *
-     * @param template ArrayPropertyValue
+     * @param template StructTypePropertyValue to copy.
      */
-    public MapPropertyValue(MapPropertyValue template)
+    public StructTypePropertyValue(StructTypePropertyValue template)
     {
         super(template);
 
         if (template != null)
         {
-            mapValues = template.getMapValues();
+            attributes = template.getAttributes();
         }
     }
 
@@ -58,7 +58,7 @@ public class MapPropertyValue extends PropertyValue
      */
     public PropertyValue cloneFromSubclass()
     {
-        return new MapPropertyValue(this);
+        return new StructTypePropertyValue(this);
     }
 
 
@@ -69,7 +69,7 @@ public class MapPropertyValue extends PropertyValue
      */
     public String valueAsString()
     {
-      return mapValuesAsString(mapValues.getInstanceProperties()).toString();
+        return mapValuesAsString(attributes.getPropertyValueMap()).toString();
     }
 
 
@@ -80,71 +80,34 @@ public class MapPropertyValue extends PropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(mapValues.getInstanceProperties());
-    }
-
-
-
-    /**
-     * Return the number of elements in the map.
-     *
-     * @return int map size
-     */
-    public int getMapElementCount()
-    {
-        if (mapValues == null)
-        {
-            return 0;
-        }
-        else
-        {
-            return mapValues.getPropertyCount();
-        }
+        return mapValuesAsObject(attributes.getPropertyValueMap());
     }
 
 
     /**
-     * Return a copy of the map elements.
+     * Return the attributes that make up the fields of the struct.
      *
-     * @return ElementProperties containing the map elements
+     * @return attributes ElementProperties iterator
      */
-    public ElementProperties getMapValues()
+    public ElementProperties getAttributes()
     {
-        if (mapValues == null)
+        if (attributes == null)
         {
             return null;
         }
         else
         {
-            return new ElementProperties(mapValues);
+            return new ElementProperties(attributes);
         }
     }
 
 
     /**
-     * Add or update an element in the map.
-     * If a null is supplied for the property name, an OMRS runtime exception is thrown.
-     * If a null is supplied for the property value, the property is removed.
+     * Set up the attributes that make up the fields of the struct.
      *
-     * @param propertyName String name
-     * @param propertyValue PropertyValue value to store
+     * @param attributes ElementProperties iterator
      */
-    public void setMapValue(String  propertyName, PropertyValue propertyValue)
-    {
-        if (mapValues == null)
-        {
-            mapValues = new ElementProperties();
-        }
-        mapValues.setProperty(propertyName, propertyValue);
-    }
-
-
-    /**
-     * Set up the map elements in one call.
-     *
-     * @param mapValues ElementProperties containing the array elements
-     */
-    public void setMapValues(ElementProperties mapValues) { this.mapValues = mapValues; }
+    public void setAttributes(ElementProperties attributes) { this.attributes = attributes; }
 
 
     /**
@@ -155,9 +118,8 @@ public class MapPropertyValue extends PropertyValue
     @Override
     public String toString()
     {
-        return "MapPropertyValue{" +
-                "mapValues=" + mapValues +
-                ", mapElementCount=" + getMapElementCount() +
+        return "StructTypePropertyValue{" +
+                "attributes=" + attributes +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
     }
@@ -180,8 +142,8 @@ public class MapPropertyValue extends PropertyValue
         {
             return false;
         }
-        MapPropertyValue that = (MapPropertyValue) objectToCompare;
-        return Objects.equals(mapValues, that.mapValues);
+        StructTypePropertyValue that = (StructTypePropertyValue) objectToCompare;
+        return Objects.equals(attributes, that.attributes);
     }
 
 
@@ -193,7 +155,6 @@ public class MapPropertyValue extends PropertyValue
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(mapValues);
+        return Objects.hash(attributes);
     }
 }

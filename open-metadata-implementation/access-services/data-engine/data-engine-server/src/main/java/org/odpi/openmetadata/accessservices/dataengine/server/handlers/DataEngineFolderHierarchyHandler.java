@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
@@ -23,6 +24,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -143,15 +145,15 @@ public class DataEngineFolderHierarchyHandler {
                                                        String methodName) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
         List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, fileGuid, CommonMapper.GUID_PROPERTY_NAME,
-                DATA_FILE_TYPE_NAME, NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, null,
-                0, invalidParameterHandler.getMaxPagingSize(), null, methodName);
+                DATA_FILE_TYPE_NAME, NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, null, null, 2,
+               false, false,0, invalidParameterHandler.getMaxPagingSize(),  null, methodName);
 
         if (CollectionUtils.isEmpty(relationships)) {
             return;
         }
         for (Relationship relationship : relationships) {
             genericHandler.deleteRelationship(userId, externalSourceGuid, externalSourceName, relationship.getGUID(),
-                    CommonMapper.GUID_PROPERTY_NAME, relationship.getType().getTypeDefName(), null, methodName);
+                    CommonMapper.GUID_PROPERTY_NAME, relationship.getType().getTypeDefName(), false, false,null, methodName);
         }
     }
 
@@ -164,10 +166,11 @@ public class DataEngineFolderHierarchyHandler {
         }
 
         return folderHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
-                folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
-                folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
-                null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
-                FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null, methodName);
+                   folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
+                   folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
+                   null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
+                   FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME,  null,null, null, InstanceStatus.ACTIVE,
+                   null, methodName);
     }
 
     /**

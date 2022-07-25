@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UpdateStatusRequestBody extends UpdateEffectivityDatesRequestBody
+public class UpdateStatusRequestBody extends UpdateRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -85,8 +85,6 @@ public class UpdateStatusRequestBody extends UpdateEffectivityDatesRequestBody
     {
         return "UpdateStatusRequestBody{" +
                        "newStatus=" + newStatus +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
                        ", forLineage=" + getForLineage() +
                        ", forDuplicateProcessing=" + getForDuplicateProcessing() +
                        ", effectiveTime=" + getEffectiveTime() +
