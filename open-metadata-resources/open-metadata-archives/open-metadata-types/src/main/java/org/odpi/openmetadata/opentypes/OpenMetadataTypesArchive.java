@@ -161,10 +161,95 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        update0010BaseModel();
         update04xxMultiLinkGovernanceActionTypes();
         update07xxImplementationRelationships();
+        add0735SolutionPortSchemaRelationship();
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0010BaseModel()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateDataSet());
+        this.archiveBuilder.addTypeDefPatch(updateDataContentForDataSet());
+    }
+
+    private TypeDefPatch updateDataSet()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataSet";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "formula";
+        final String attribute1Description     = "Formula used to create the data set - can reference query identifiers located in DataContentForDataSet relationships.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateDataContentForDataSet()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataContentForDataSet";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "queryId";
+        final String attribute1Description     = "Identifier for placeholder in data set's formula.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "query";
+        final String attribute2Description     = "Details of how the value(s) is/are retrieved.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -175,11 +260,46 @@ public class OpenMetadataTypesArchive
      */
     private void update04xxMultiLinkGovernanceActionTypes()
     {
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcess());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceActionFlowRelationship());
         this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionTypeRelationship());
         this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionRelationship());
         this.archiveBuilder.addTypeDefPatch(updateTargetForActionRelationship());
     }
+
+
+    private TypeDefPatch updateGovernanceActionProcess()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GovernanceActionProcess";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "domainIdentifier";
+        final String attribute1Description     = "Identifier of the governance domain that recognizes this process.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
+                                                        attribute1Description,
+                                                        attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
     private TypeDefPatch updateGovernanceActionFlowRelationship()
     {
@@ -443,6 +563,69 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0735SolutionPortSchemaRelationship()
+    {
+        this.archiveBuilder.addRelationshipDef(getSolutionPortSchemaRelationship());
+    }
+
+
+    private RelationshipDef getSolutionPortSchemaRelationship()
+    {
+        final String guid            = "bf02c703-57a2-4ab7-b6db-f49b57b05985";
+        final String name            = "SolutionPortSchema";
+        final String description     = "Identifies the structure of data passed through a solution port.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "SolutionPort";
+        final String                     end1AttributeName            = "describesSolutionPortData";
+        final String                     end1AttributeDescription     = "Port that uses the schema type.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "SchemaType";
+        final String                     end2AttributeName            = "solutionPortSchema";
+        final String                     end2AttributeDescription     = "Structure of the solution port's data.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
     }
 
     /*
