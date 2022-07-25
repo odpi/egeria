@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.glossaryview.server.admin;
 
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -14,6 +16,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class GlossaryViewServiceInstance extends OMASServiceInstance
 {
+
+    private final OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls, registers this OMAS in the
@@ -32,6 +36,16 @@ public class GlossaryViewServiceInstance extends OMASServiceInstance
 
         super(AccessServiceDescription.GLOSSARY_VIEW_OMAS.getAccessServiceFullName(),
               omrsRepositoryConnector, null, null, null, auditLog, localServerUserId, maxPageSize);
+
+        entitiesHandler = new OpenMetadataAPIGenericHandler<>(
+                new GlossaryViewEntityDetailConverter<>(repositoryHelper, serviceName, serverName),
+                GlossaryViewEntityDetail.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+    }
+
+    public OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> getEntitiesHandler() {
+        return entitiesHandler;
     }
 
 }

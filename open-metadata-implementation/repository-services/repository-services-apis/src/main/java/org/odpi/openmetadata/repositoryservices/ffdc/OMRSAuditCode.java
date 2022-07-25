@@ -237,6 +237,13 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                "Verify that the local repository is receiving inbound events - or at least there are no errors reported " +
                                        "related to incoming events"),
 
+    COHORT_STARTUP_ERROR("OMRS-AUDIT-0027",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The local server is unable to initiate a connection to the cohort {0} when starting up, exception {1} was caught with error message: {2}",
+            "The local server will now cancel startup, and shutdown.",
+            "Review the exception and resolve the issue it documents. " +
+                    "Then try starting the server again."),
+
     INITIALIZING_EVENT_MANAGER("OMRS-AUDIT-0029",
                                OMRSAuditLogRecordSeverity.STARTUP,
                                "The {0} event manager is initializing",

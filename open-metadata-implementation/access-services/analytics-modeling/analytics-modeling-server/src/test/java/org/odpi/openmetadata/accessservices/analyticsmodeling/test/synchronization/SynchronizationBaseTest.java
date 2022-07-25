@@ -113,7 +113,7 @@ public class SynchronizationBaseTest extends InMemoryRepositoryTest
 			
 			String master = TestUtilities.readJsonFile(FOLDER_MASTER, fileMaster);
 
-			// todo assertEquals(output, master);
+			assertEquals(output, master);
 		
 		} catch (AnalyticsModelingCheckedException e) {
 			fail(e.getLocalizedMessage());

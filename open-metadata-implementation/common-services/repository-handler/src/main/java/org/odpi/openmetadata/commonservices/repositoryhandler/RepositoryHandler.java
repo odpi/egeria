@@ -103,7 +103,6 @@ public class RepositoryHandler
     }
 
 
-
     /**
      * Validate that the supplied GUID is for a real entity and map exceptions if not.
      *
@@ -406,7 +405,6 @@ public class RepositoryHandler
 
         return null;
     }
-
 
 
     /**
@@ -2632,36 +2630,6 @@ public class RepositoryHandler
         return notDeDupRelationships;
     }
 
-
-    /**
-     * Return the list of entities by the requested classification type.
-     *
-     * @param userId               user making the request
-     * @param entityEntityTypeGUID starting entity's GUID
-     * @param classificationName   type name for the classification to follow
-     * @param startingFrom         initial position in the stored list.
-     * @param pageSize             maximum number of definitions to return on this call.
-     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName           name of calling method
-     *
-     * @return retrieved entities or null
-     *
-     * @throws PropertyServerException    problem accessing the property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<EntityDetail> getEntitiesForClassificationType(String userId,
-                                                               String entityEntityTypeGUID,
-                                                               String classificationName,
-                                                               int    startingFrom,
-                                                               int    pageSize,
-                                                               Date   effectiveTime,
-                                                               String methodName) throws UserNotAuthorizedException,
-                                                                                         PropertyServerException
-    {
-        return this.getEntitiesForClassificationType(userId, entityEntityTypeGUID, classificationName, false, false, startingFrom, pageSize, effectiveTime, methodName);
-    }
-
-
     /**
      * Return the list of entities by the requested classification type.
      *
@@ -3015,33 +2983,6 @@ public class RepositoryHandler
         throw new PropertyServerException(RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED.getMessageDefinition(entityTypeName, guid, localMethodName, methodName, userId),
                                           this.getClass().getName(),
                                           methodName);
-    }
-
-
-    /**
-     * Test whether an entity is of a particular type or not.
-     *
-     * @param userId calling user
-     * @param guid unique identifier of the entity.
-     * @param guidParameterName name of the parameter containing the guid.
-     * @param entityTypeName name of the type to test for
-     * @param methodName calling method
-     *
-     * @return boolean flag
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
-     */
-    public boolean isEntityATypeOf(String userId,
-                                   String guid,
-                                   String guidParameterName,
-                                   String entityTypeName,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
-    {
-        return isEntityATypeOf(userId, guid, guidParameterName, entityTypeName, new Date(), methodName);
     }
 
 
@@ -4228,8 +4169,6 @@ public class RepositoryHandler
 
         return null;
     }
-
-
 
 
     /**

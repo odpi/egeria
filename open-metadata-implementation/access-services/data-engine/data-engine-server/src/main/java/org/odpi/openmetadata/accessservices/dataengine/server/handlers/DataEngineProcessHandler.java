@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME;
@@ -213,11 +212,8 @@ public class DataEngineProcessHandler {
     public Set<EntityDetail> getPortsForProcess(String userId, String processGUID, String portTypeName) throws InvalidParameterException,
                                                                                                                UserNotAuthorizedException,
                                                                                                                PropertyServerException {
-
-        Set<EntityDetail> entities = dataEngineCommonHandler.getEntitiesForRelationship(userId, processGUID, PROCESS_PORT_TYPE_NAME,
-                PROCESS_TYPE_NAME);
-        return entities.parallelStream().filter(entityDetail -> entityDetail.getType().getTypeDefName().equalsIgnoreCase(portTypeName)).
-                collect(Collectors.toSet());
+        return dataEngineCommonHandler.getEntitiesForRelationship(userId, processGUID, PROCESS_PORT_TYPE_NAME,
+                portTypeName, PROCESS_TYPE_NAME);
     }
 
     private void validateProcessParameters(String userId, String qualifiedName, String methodName) throws InvalidParameterException {
@@ -244,8 +240,8 @@ public class DataEngineProcessHandler {
 
         Optional<EntityDetail> parentProcessEntity = findProcessEntity(userId, parentProcess.getQualifiedName());
         if (parentProcessEntity.isPresent()) {
-            dataEngineCommonHandler.upsertExternalRelationship(userId, parentProcessEntity.get().getGUID(), processGUID, PROCESS_HIERARCHY_TYPE_NAME,
-                    PROCESS_TYPE_NAME, externalSourceName, relationshipProperties);
+            dataEngineCommonHandler.upsertExternalRelationship(userId, parentProcessEntity.get().getGUID(), processGUID,
+                    PROCESS_HIERARCHY_TYPE_NAME, PROCESS_TYPE_NAME, PROCESS_TYPE_NAME, externalSourceName, relationshipProperties);
         } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND, methodName,
                     parentProcess.getQualifiedName());

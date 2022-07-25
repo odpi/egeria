@@ -23,14 +23,14 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Cache Gradle packages
-        uses: actions/cache@v3.0.3
+        uses: actions/cache@v3.0.4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       - name: Build with Gradle
         # For a build machine environment, force a more clean build 
-        run: ./gradlew clean build --no-build-cache --no-configure-on-demand --priority normal --no-watch-fs --refresh-dependencies --no-daemon
+        run: ./gradlew clean build --no-build-cache --no-configure-on-demand --priority normal --no-watch-fs --refresh-dependencies --no-daemon --no-parallel
       - name: Upload Test coverage report
         uses: actions/upload-artifact@v3
         with:

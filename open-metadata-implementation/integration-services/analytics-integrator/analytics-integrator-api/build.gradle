@@ -12,7 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-client')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Analytics Integrator OMIS API'

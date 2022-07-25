@@ -292,14 +292,12 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public String upsertDatabase(String userId, Database database, boolean incomplete) throws InvalidParameterException,
-            ConnectorCheckedException {
+    public String upsertDatabase(String userId, Database database) throws InvalidParameterException, ConnectorCheckedException {
         DatabaseEvent event = new DatabaseEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setDataEngineEventType(DataEngineEventType.DATABASE_EVENT);
         event.setDatabase(database);
-        event.setIncomplete(incomplete);
 
         topicConnector.sendEvent(event);
 
@@ -311,15 +309,14 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName,
-                                       boolean incomplete) throws InvalidParameterException, ConnectorCheckedException {
+    public String upsertDatabaseSchema(String userId, DatabaseSchema databaseSchema, String databaseQualifiedName) throws InvalidParameterException,
+                                                                                                                          ConnectorCheckedException {
         DatabaseSchemaEvent event = new DatabaseSchemaEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setDataEngineEventType(DataEngineEventType.DATABASE_SCHEMA_EVENT);
         event.setDatabaseSchema(databaseSchema);
         event.setDatabaseQualifiedName(databaseQualifiedName);
-        event.setIncomplete(incomplete);
 
         topicConnector.sendEvent(event);
 
@@ -331,15 +328,14 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName,
-                                        boolean incomplete)
-            throws InvalidParameterException, ConnectorCheckedException {
+    public String upsertRelationalTable(String userId, RelationalTable relationalTable, String databaseSchemaQualifiedName) throws
+                                                                                                                            InvalidParameterException,
+                                                                                                                            ConnectorCheckedException {
         RelationalTableEvent event = new RelationalTableEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setDataEngineEventType(DataEngineEventType.RELATIONAL_TABLE_EVENT);
         event.setRelationalTable(relationalTable);
-        event.setIncomplete(incomplete);
         event.setDatabaseSchemaQualifiedName(databaseSchemaQualifiedName);
 
         topicConnector.sendEvent(event);
@@ -352,13 +348,12 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public String upsertDataFile(String userId, DataFile dataFile, boolean incomplete) throws InvalidParameterException, ConnectorCheckedException {
+    public String upsertDataFile(String userId, DataFile dataFile) throws InvalidParameterException, ConnectorCheckedException {
         DataFileEvent event = new DataFileEvent();
         event.setUserId(userId);
         event.setExternalSourceName(externalSource);
         event.setDataEngineEventType(DataEngineEventType.DATA_FILE_EVENT);
         event.setDataFile(dataFile);
-        event.setIncomplete(incomplete);
 
         topicConnector.sendEvent(event);
 

@@ -16,6 +16,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.EventType;
 import org.odpi.openmetadata.accessservices.dataengine.model.FileFolder;
 import org.odpi.openmetadata.accessservices.dataengine.model.Port;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalColumn;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
@@ -34,6 +35,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.converters.EventTy
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.FileFolderConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.PortConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.ProcessConverter;
+import org.odpi.openmetadata.accessservices.dataengine.server.converters.ReferenceableConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaAttributeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.SchemaTypeConverter;
 import org.odpi.openmetadata.accessservices.dataengine.server.converters.TopicConverter;
@@ -303,11 +305,16 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 EventType.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId,
                 securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
-        dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+        final OpenMetadataAPIGenericHandler<Referenceable> referenceableHandler =
+                new OpenMetadataAPIGenericHandler<>(new ReferenceableConverter<>(repositoryHelper, serviceName, serverName),
+                        Referenceable.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                        repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
+
+        dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler,
                 repositoryHelper, softwareServerCapabilityHandler);
 
         dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
-                repositoryHandler, repositoryHelper, dataEngineRegistrationHandler);
+                referenceableHandler, repositoryHelper, dataEngineRegistrationHandler);
 
         final ConnectionHandler<org.odpi.openmetadata.accessservices.dataengine.model.Connection> connectionHandler =
                 new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
@@ -339,25 +346,27 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEngineCollectionHandler = new DataEngineCollectionHandler(serviceName, serverName, invalidParameterHandler,
                 repositoryHelper, collectionOpenMetadataAPIGenericHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
 
-        dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
+        dataEnginePortHandler = new DataEnginePortHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper,
                 dataEngineCommonHandler, portHandler, dataEngineRegistrationHandler);
         dataEngineRelationalDataHandler = new DataEngineRelationalDataHandler(serviceName, serverName, invalidParameterHandler,
-                relationalDataHandler, databaseSchemaAssetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler, dataEngineConnectionAndEndpointHandler);
+                relationalDataHandler, databaseSchemaAssetHandler, dataEngineRegistrationHandler, dataEngineCommonHandler,
+                dataEngineConnectionAndEndpointHandler);
 
         final AssetHandler<FileFolder> folderHandler = new AssetHandler<>(new FileFolderConverter<>(repositoryHelper, serviceName, serverName),
                 FileFolder.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                 localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
-        dataEngineFolderHierarchyHandler = new DataEngineFolderHierarchyHandler(invalidParameterHandler, repositoryHandler, dataEngineCommonHandler,
-                folderHandler);
+        dataEngineFolderHierarchyHandler = new DataEngineFolderHierarchyHandler(invalidParameterHandler, referenceableHandler,
+                dataEngineCommonHandler, folderHandler);
+
         final AssetHandler<DataFile> fileHandler = new AssetHandler<>(new DataFileConverter<>(repositoryHelper, serviceName, serverName),
                 DataFile.class, serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
                 localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
         dataEngineDataFileHandler = new DataEngineDataFileHandler(invalidParameterHandler, repositoryHelper,
-                repositoryHandler, dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler, dataEngineFolderHierarchyHandler,
+                dataEngineCommonHandler, fileHandler, dataEngineSchemaTypeHandler, dataEngineFolderHierarchyHandler,
                 dataEngineConnectionAndEndpointHandler);
 
-        dataEngineFindHandler = new DataEngineFindHandler(invalidParameterHandler, repositoryHelper, repositoryHandler,
-                serviceName, serverName, dataEngineCommonHandler );
+        dataEngineFindHandler = new DataEngineFindHandler(invalidParameterHandler, repositoryHelper, referenceableHandler,
+                serviceName, serverName);
 
         dataEngineTopicHandler = new DataEngineTopicHandler(invalidParameterHandler, topicHandler,
                 dataEngineRegistrationHandler, dataEngineCommonHandler);
