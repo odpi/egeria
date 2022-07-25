@@ -5104,7 +5104,7 @@ public class OpenMetadataAPIGenericHandler<B>
                             // skip entities that are not visible to this user
                             if (log.isDebugEnabled())
                             {
-                                log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                                log.debug("Skipping inaccessible entity: " + inaccessibleEntity);
                             }
                         }
                     }
@@ -8091,7 +8091,7 @@ public class OpenMetadataAPIGenericHandler<B>
                         // skip entities that are not visible to this user
                         if (log.isDebugEnabled())
                         {
-                            log.debug("Skipping entity", nonAccessibleEntity);
+                            log.debug("Skipping entity: " + nonAccessibleEntity);
                         }
                     }
                 }
@@ -8286,7 +8286,7 @@ public class OpenMetadataAPIGenericHandler<B>
                         // skip entities that are not visible to this user
                         if (log.isDebugEnabled())
                         {
-                            log.debug("Skipping entity", nonAccessibleEntity);
+                            log.debug("Skipping entity: " + nonAccessibleEntity);
                         }
                     }
                 }
@@ -8579,7 +8579,7 @@ public class OpenMetadataAPIGenericHandler<B>
                     // skip entities that are not visible to this user
                     if (log.isDebugEnabled())
                     {
-                        log.debug("Skipping inaccessible entity", inaccessibleEntity);
+                        log.debug("Skipping inaccessible entity: " + inaccessibleEntity);
                     }
                 }
             }
@@ -9021,7 +9021,7 @@ public class OpenMetadataAPIGenericHandler<B>
                         }
                     }
 
-                    log.debug("getAttachedFilteredEntities - while  relatedEntity guid="+relatedEntity.getGUID() + ",displayName=" + displayName + ",qualifiedName="+ qualifiedName);
+                    log.debug("getAttachedFilteredEntities - while  relatedEntity guid=" + relatedEntity.getGUID() + ",displayName=" + displayName + ",qualifiedName=" + qualifiedName);
                 }
 
                 Relationship parentRelationship = null;
@@ -12420,7 +12420,6 @@ public class OpenMetadataAPIGenericHandler<B>
             if (existingRelationships.size() == 1)
             {
                 actionDescriptionTemplate = "Updating link from %s %s to %s %s";
-                log.debug(actionDescriptionTemplate);
                 actionOrdinal = OpenMetadataAPIMapper.UPDATED_LATEST_CHANGE_ACTION_ORDINAL;
 
                 newRelationship = repositoryHandler.updateRelationshipProperties(userId,
@@ -12477,7 +12476,6 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             actionDescriptionTemplate = "Linking %s %s to %s %s";
             actionOrdinal = OpenMetadataAPIMapper.CREATED_LATEST_CHANGE_ACTION_ORDINAL;
-            log.debug(actionDescriptionTemplate);
 
             newRelationship = repositoryHandler.createRelationship(userId,
                                                                    attachmentTypeGUID,
