@@ -129,6 +129,7 @@ public class SimpleCatalogArchiveHelper
     private static final String SOFTWARE_CAPABILITY_TYPE_NAME            = "SoftwareCapability";
 
     private static final String ASSET_TYPE_NAME                          = "Asset";
+    private static final String PROCESS_TYPE_NAME                        = "Process";
     private static final String CONNECTION_TO_ASSET_TYPE_NAME            = "ConnectionToAsset";
     private static final String DATA_CONTENT_FOR_DATA_SET_TYPE_NAME      = "DataContentForDataSet";
     private static final String ASSET_SCHEMA_TYPE_TYPE_NAME              = "AssetSchemaType";
@@ -158,14 +159,15 @@ public class SimpleCatalogArchiveHelper
     /*
      * Properties
      */
-    private static final String QUALIFIED_NAME_PROPERTY                      = "qualifiedName";
-    private static final String ADDITIONAL_PROPERTIES_PROPERTY               = "additionalProperties";
+    protected static final String QUALIFIED_NAME_PROPERTY                      = "qualifiedName";
+    protected static final String ADDITIONAL_PROPERTIES_PROPERTY               = "additionalProperties";
 
-    private static final String NAME_PROPERTY                                = "name";
+    protected static final String NAME_PROPERTY                                = "name";
+    protected static final String DISPLAY_NAME_PROPERTY                        = "displayName";
+    protected static final String DESCRIPTION_PROPERTY                         = "description";
+
     private static final String ATTRIBUTE_NAME_PROPERTY                      = "attributeName";
-    private static final String DISPLAY_NAME_PROPERTY                        = "displayName";
     private static final String TECHNICAL_NAME_PROPERTY                      = "technicalName";
-    private static final String DESCRIPTION_PROPERTY                         = "description";
     private static final String DECORATION_PROPERTY                          = "decoration";
     private static final String VERSION_NUMBER_PROPERTY                      = "versionNumber";
     private static final String AUTHOR_PROPERTY                              = "author";
@@ -239,7 +241,7 @@ public class SimpleCatalogArchiveHelper
     private static final String DEFAULT_VALUE_PROPERTY                       = "defaultValue";
     private static final String FIXED_VALUE_PROPERTY                         = "fixedValue";
 
-    private static final String DOMAIN_IDENTIFIER_PROPERTY                   = "domainIdentifier";
+    protected static final String DOMAIN_IDENTIFIER_PROPERTY                 = "domainIdentifier";
     private static final String SUMMARY_PROPERTY                             = "summary";
     private static final String EXAMPLES_PROPERTY                            = "examples";
     private static final String ABBREVIATION_PROPERTY                        = "abbreviation";
@@ -979,6 +981,57 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Create an process entity.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param displayName display name for the asset
+     * @param description description about the asset
+     * @param formula description of the logic that this process performs
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     * @param classifications list of classifications (if any)
+     *
+     * @return id for the asset
+     */
+    public String addProcess(String               typeName,
+                             String               qualifiedName,
+                             String               displayName,
+                             String               description,
+                             String               formula,
+                             Map<String, String>  additionalProperties,
+                             Map<String, Object>  extendedProperties,
+                             List<Classification> classifications)
+    {
+        final String methodName = "addProcess";
+
+        String processTypeName = PROCESS_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            processTypeName = typeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, FORMULA_PROPERTY, formula, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail assetEntity = archiveHelper.getEntityDetail(processTypeName,
+                                                                 idToGUIDMap.getGUID(qualifiedName),
+                                                                 properties,
+                                                                 InstanceStatus.ACTIVE,
+                                                                 classifications);
+
+        archiveBuilder.addEntity(assetEntity);
+
+        return assetEntity.getGUID();
+    }
+
+
+    /**
      * Create an asset entity.
      *
      * @param typeName name of asset subtype to use - default is Asset
@@ -986,7 +1039,7 @@ public class SimpleCatalogArchiveHelper
      * @param displayName display name for the asset
      * @param description description about the asset
      * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the sub type
+     * @param extendedProperties additional properties defined in the subtype
      *
      * @return id for the asset
      */
@@ -1010,7 +1063,7 @@ public class SimpleCatalogArchiveHelper
      * @param description description about the asset
      * @param governanceZones list of zones to add to the asset
      * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the sub type
+     * @param extendedProperties additional properties defined in the subtype
      *
      * @return id for the asset
      */
