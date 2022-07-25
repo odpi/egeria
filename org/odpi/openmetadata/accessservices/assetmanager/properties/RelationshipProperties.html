@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -135,13 +135,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="CapabilityDeploymentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">CapabilityDeploymentProperties</a></code>, <code><a href="ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ControlFlowProperties</a></code>, <code><a href="DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFlowProperties</a></code>, <code><a href="DeploymentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DeploymentProperties</a></code>, <code><a href="ExternalGlossaryElementLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalGlossaryElementLinkProperties</a></code>, <code><a href="ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a></code>, <code><a href="ServerAssetUseProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ServerAssetUseProperties</a></code></dd>
+<dd><code><a href="AssetConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">AssetConnectionProperties</a></code>, <code><a href="CapabilityDeploymentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">CapabilityDeploymentProperties</a></code>, <code><a href="ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ControlFlowProperties</a></code>, <code><a href="DataContentForDataSetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataContentForDataSetProperties</a></code>, <code><a href="DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFlowProperties</a></code>, <code><a href="DeploymentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DeploymentProperties</a></code>, <code><a href="EmbeddedConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">EmbeddedConnectionProperties</a></code>, <code><a href="ExternalGlossaryElementLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalGlossaryElementLinkProperties</a></code>, <code><a href="ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a></code>, <code><a href="ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a></code>, <code><a href="GlossaryTermCategorization.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermCategorization</a></code>, <code><a href="GlossaryTermRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GlossaryTermRelationship</a></code>, <code><a href="LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a></code>, <code><a href="ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessCallProperties</a></code>, <code><a href="ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessContainmentProperties</a></code>, <code><a href="ServerAssetUseProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ServerAssetUseProperties</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">RelationshipProperties</span>
 extends java.lang.Object
 implements java.io.Serializable</pre>
-<div class="block">ConfigurationItemProperties provides the base class for infrastructure items.  This extends referenceable with the ability to
+<div class="block">RelationshipProperties provides the base class for relationships items.  This provides extended properties with the ability to
  set effectivity dates.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
@@ -218,27 +218,43 @@ implements java.io.Serializable</pre>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExtendedProperties()">getExtendedProperties</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the properties that have been defined for a subtype of this object that are not supported explicitly
+ by this bean.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return has code based on properties.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a></span>&#8203;(java.util.Date&nbsp;effectiveFrom)</code></th>
 <td class="colLast">
 <div class="block">Set up the date/time that this element is effective from (null means effective from the epoch).</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEffectiveTo(java.util.Date)">setEffectiveTo</a></span>&#8203;(java.util.Date&nbsp;effectiveTo)</code></th>
 <td class="colLast">
 <div class="block">Set the date/time that element is effective to (null means that it is effective indefinitely into the future).</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExtendedProperties(java.util.Map)">setExtendedProperties</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties)</code></th>
+<td class="colLast">
+<div class="block">Set up the properties that have been defined for a subtype of this object that are not supported explicitly
+ by this bean.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -286,7 +302,7 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>RelationshipProperties</h4>
 <pre>public&nbsp;RelationshipProperties&#8203;(<a href="RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;template)</pre>
-<div class="block">Copy/clone constructor.  Retrieves values from the supplied template</div>
+<div class="block">Copy/clone constructor.  Retrieve values from the supplied template</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>template</code> - element to copy</dd>
@@ -356,6 +372,36 @@ implements java.io.Serializable</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>effectiveTo</code> - date object</dd>
+</dl>
+</li>
+</ul>
+<a id="getExtendedProperties()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getExtendedProperties</h4>
+<pre class="methodSignature">public&nbsp;java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;getExtendedProperties()</pre>
+<div class="block">Return the properties that have been defined for a subtype of this object that are not supported explicitly
+ by this bean.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>property map</dd>
+</dl>
+</li>
+</ul>
+<a id="setExtendedProperties(java.util.Map)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setExtendedProperties</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setExtendedProperties&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties)</pre>
+<div class="block">Set up the properties that have been defined for a subtype of this object that are not supported explicitly
+ by this bean.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>extendedProperties</code> - property map</dd>
 </dl>
 </li>
 </ul>

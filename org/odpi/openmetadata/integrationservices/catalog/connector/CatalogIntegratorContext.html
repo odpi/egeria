@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -198,13 +198,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">addExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;openMetadataElementGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">addExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;openMetadataElementGUID,
                      java.lang.String&nbsp;openMetadataElementTypeName,
-                     java.lang.String&nbsp;externalIdentifier,
-                     java.lang.String&nbsp;externalIdentifierName,
-                     java.lang.String&nbsp;externalIdentifierUsage,
-                     <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)</code></th>
+                     <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)</code></th>
 <td class="colLast">
 <div class="block">Add a new external identifier to an existing open metadata element.</div>
 </td>
@@ -219,104 +215,104 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetManagerName()">getAssetManagerName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the qualified name of the asset manager that is supplied in the configuration
+ document.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="CollaborationExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">CollaborationExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCollaborationExchangeService()">getCollaborationExchangeService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging collaboration information (comments, likes, reviews, tags).</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="ConnectionExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ConnectionExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionExchangeService()">getConnectionExchangeService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging connection information (connections, connector types, endpoints).</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="DataAssetExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">DataAssetExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataAssetExchangeService()">getDataAssetExchangeService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging data asset information (assets, schemas, connections).</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="ExternalReferenceExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ExternalReferenceExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferenceService()">getExternalReferenceService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging data asset information (assets, schemas, connections).</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="GlossaryExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">GlossaryExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGlossaryExchangeService()">getGlossaryExchangeService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging glossary information (glossaries, with categories, terms and relationships)</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="GovernanceExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">GovernanceExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceExchangeService()">getGovernanceExchangeService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging governance information (policies, rules, ...)</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="InfrastructureExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">InfrastructureExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getInfrastructureExchangeService()">getInfrastructureExchangeService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging infrastructure information (servers, applications, hosts etc).</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="LineageExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">LineageExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLineageExchangeService()">getLineageExchangeService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging lineage information (processes, ports, schemas, lineage linkage etc).</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="StewardshipExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">StewardshipExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getStewardshipExchangeService()">getStewardshipExchangeService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging stewardship information.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="ValidValuesExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">ValidValuesExchangeService</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValuesExchangeService()">getValidValuesExchangeService</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the interface for exchanging valid values and reference data information.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerListener(org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener)">registerListener</a></span>&#8203;(<a href="../../../accessservices/assetmanager/api/AssetManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerEventListener</a>&nbsp;listener)</code></th>
 <td class="colLast">
 <div class="block">Register a listener object that will be passed each of the events published by the Asset Manager OMAS.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">removeExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;openMetadataElementGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String)">removeExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;openMetadataElementGUID,
                         java.lang.String&nbsp;openMetadataElementTypeName,
-                        java.lang.String&nbsp;externalIdentifier,
-                        java.lang.String&nbsp;externalIdentifierName,
-                        java.lang.String&nbsp;externalIdentifierUsage,
-                        <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                        java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)</code></th>
+                        java.lang.String&nbsp;externalIdentifier)</code></th>
 <td class="colLast">
 <div class="block">Remove a new external identifier from an existing open metadata element.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">updateExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;openMetadataElementGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">updateExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;openMetadataElementGUID,
                         java.lang.String&nbsp;openMetadataElementTypeName,
-                        java.lang.String&nbsp;externalIdentifier,
-                        java.lang.String&nbsp;externalIdentifierName,
-                        java.lang.String&nbsp;externalIdentifierUsage,
-                        <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                        java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)</code></th>
+                        <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)</code></th>
 <td class="colLast">
 <div class="block">Update the description of a specific external identifier.</div>
 </td>
@@ -407,6 +403,21 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getAssetManagerName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAssetManagerName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getAssetManagerName()</pre>
+<div class="block">Return the qualified name of the asset manager that is supplied in the configuration
+ document.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string name</dd>
+</dl>
+</li>
+</ul>
 <a id="registerListener(org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener)">
 <!--   -->
 </a>
@@ -433,7 +444,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">
+<a id="addExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -441,11 +452,7 @@ extends java.lang.Object</pre>
 <h4>addExternalIdentifier</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addExternalIdentifier&#8203;(java.lang.String&nbsp;openMetadataElementGUID,
                                   java.lang.String&nbsp;openMetadataElementTypeName,
-                                  java.lang.String&nbsp;externalIdentifier,
-                                  java.lang.String&nbsp;externalIdentifierName,
-                                  java.lang.String&nbsp;externalIdentifierUsage,
-                                  <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                                  java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)
+                                  <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -454,11 +461,7 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>openMetadataElementGUID</code> - unique identifier (GUID) of the element in the open metadata ecosystem</dd>
 <dd><code>openMetadataElementTypeName</code> - type name for the open metadata element</dd>
-<dd><code>externalIdentifier</code> - unique identifier of this element in the third party asset manager</dd>
-<dd><code>externalIdentifierName</code> - name of the identifier in the third party asset manager</dd>
-<dd><code>externalIdentifierUsage</code> - description of how the open metadata element maps to the identifier</dd>
-<dd><code>keyPattern</code> - style of the external identifier</dd>
-<dd><code>mappingProperties</code> - additional mapping properties</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
@@ -466,7 +469,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">
+<a id="updateExternalIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -474,11 +477,7 @@ extends java.lang.Object</pre>
 <h4>updateExternalIdentifier</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateExternalIdentifier&#8203;(java.lang.String&nbsp;openMetadataElementGUID,
                                      java.lang.String&nbsp;openMetadataElementTypeName,
-                                     java.lang.String&nbsp;externalIdentifier,
-                                     java.lang.String&nbsp;externalIdentifierName,
-                                     java.lang.String&nbsp;externalIdentifierUsage,
-                                     <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)
+                                     <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)
                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -487,11 +486,7 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>openMetadataElementGUID</code> - unique identifier (GUID) of the element in the open metadata ecosystem</dd>
 <dd><code>openMetadataElementTypeName</code> - type name for the open metadata element</dd>
-<dd><code>externalIdentifier</code> - unique identifier of this element in the external asset manager</dd>
-<dd><code>externalIdentifierName</code> - name of the identifier in the third party asset manager</dd>
-<dd><code>externalIdentifierUsage</code> - description of how the open metadata element maps to the identifier</dd>
-<dd><code>keyPattern</code> - style of the external identifier</dd>
-<dd><code>mappingProperties</code> - additional mapping properties</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
@@ -499,7 +494,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">
+<a id="removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -507,11 +502,7 @@ extends java.lang.Object</pre>
 <h4>removeExternalIdentifier</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;removeExternalIdentifier&#8203;(java.lang.String&nbsp;openMetadataElementGUID,
                                      java.lang.String&nbsp;openMetadataElementTypeName,
-                                     java.lang.String&nbsp;externalIdentifier,
-                                     java.lang.String&nbsp;externalIdentifierName,
-                                     java.lang.String&nbsp;externalIdentifierUsage,
-                                     <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)
+                                     java.lang.String&nbsp;externalIdentifier)
                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -522,10 +513,6 @@ extends java.lang.Object</pre>
 <dd><code>openMetadataElementGUID</code> - unique identifier (GUID) of the element in the open metadata ecosystem</dd>
 <dd><code>openMetadataElementTypeName</code> - type name for the open metadata element</dd>
 <dd><code>externalIdentifier</code> - unique identifier of this element in the third party asset manager</dd>
-<dd><code>externalIdentifierName</code> - name of the identifier in the third party asset manager</dd>
-<dd><code>externalIdentifierUsage</code> - description of how the open metadata element maps to the identifier</dd>
-<dd><code>keyPattern</code> - style of the external identifier</dd>
-<dd><code>mappingProperties</code> - additional mapping properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>

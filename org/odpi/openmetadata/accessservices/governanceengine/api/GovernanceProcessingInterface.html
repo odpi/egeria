@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -157,21 +157,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createIncidentReport(java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">createIncidentReport</a></span>&#8203;(java.lang.String&nbsp;userId,
-                    java.lang.String&nbsp;qualifiedName,
-                    int&nbsp;domainIdentifier,
-                    java.lang.String&nbsp;background,
-                    java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentImpactedElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentImpactedElement</a>&gt;&nbsp;impactedResources,
-                    java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentDependency.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentDependency</a>&gt;&nbsp;previousIncidents,
-                    java.util.Map&lt;java.lang.String,&#8203;java.lang.Integer&gt;&nbsp;incidentClassifiers,
-                    java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
-                    java.lang.String&nbsp;originatorGUID)</code></th>
-<td class="colLast">
-<div class="block">Create an incident report to capture the situation detected by this governance action service.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveClaimedGovernanceActions(java.lang.String,java.lang.String,int,int)">getActiveClaimedGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;governanceEngineGUID,
@@ -181,7 +166,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the governance actions that are still in process and that have been claimed by this caller's userId.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActiveGovernanceActions(java.lang.String,int,int)">getActiveGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;userId,
                           int&nbsp;startFrom,
@@ -190,7 +175,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the governance actions that are still in process.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceAction(java.lang.String,java.lang.String)">getGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;governanceActionGUID)</code></th>
@@ -198,7 +183,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Request the status of an executing governance action request.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceActions(java.lang.String,int,int)">getGovernanceActions</a></span>&#8203;(java.lang.String&nbsp;userId,
                     int&nbsp;startFrom,
@@ -207,7 +192,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the governance actions that are known to the server.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceAction(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Date,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceAction</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;qualifiedName,
@@ -228,7 +213,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  associated with the supplied request type.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#initiateGovernanceActionProcess(java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.Date,java.util.Map,java.lang.String,java.lang.String)">initiateGovernanceActionProcess</a></span>&#8203;(java.lang.String&nbsp;userId,
                                java.lang.String&nbsp;processQualifiedName,
@@ -242,7 +227,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Using the named governance action process as a template, initiate a chain of governance actions.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recordCompletionStatus(java.lang.String,java.lang.String,java.util.Map,org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus,java.util.List,java.util.List)">recordCompletionStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;governanceActionGUID,
@@ -254,7 +239,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Declare that all of the processing for the governance action service is finished and the status of the work.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus,java.util.Date,java.util.Date)">updateActionTargetStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;actionTargetGUID,
@@ -265,7 +250,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the status of a specific action target.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus)">updateGovernanceActionStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;governanceActionGUID,
@@ -375,46 +360,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - null or unrecognized qualified name of the process</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create a governance action process</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="createIncidentReport(java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>createIncidentReport</h4>
-<pre class="methodSignature">java.lang.String&nbsp;createIncidentReport&#8203;(java.lang.String&nbsp;userId,
-                                      java.lang.String&nbsp;qualifiedName,
-                                      int&nbsp;domainIdentifier,
-                                      java.lang.String&nbsp;background,
-                                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentImpactedElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentImpactedElement</a>&gt;&nbsp;impactedResources,
-                                      java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/IncidentDependency.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IncidentDependency</a>&gt;&nbsp;previousIncidents,
-                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.Integer&gt;&nbsp;incidentClassifiers,
-                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties,
-                                      java.lang.String&nbsp;originatorGUID)
-                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create an incident report to capture the situation detected by this governance action service.
- This incident report will be processed by other governance activities.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>qualifiedName</code> - unique identifier to give this new incident report</dd>
-<dd><code>domainIdentifier</code> - governance domain associated with this action (0=ALL)</dd>
-<dd><code>background</code> - description of the situation</dd>
-<dd><code>impactedResources</code> - details of the resources impacted by this situation</dd>
-<dd><code>previousIncidents</code> - links to previous incident reports covering this situation</dd>
-<dd><code>incidentClassifiers</code> - initial classifiers for the incident report</dd>
-<dd><code>additionalProperties</code> - additional arbitrary properties for the incident reports</dd>
-<dd><code>originatorGUID</code> - the unique identifier of the person or process that created the incident</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of the resulting incident report</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - null or non-unique qualified name for the incident report</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - this governance action service is not authorized to create a incident report</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
 </dl>
 </li>

@@ -230,98 +230,103 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearColumnAsPrimaryKey</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">clearColumnAsPrimaryKey</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
                        java.lang.String&nbsp;assetManagerName,
                        java.lang.String&nbsp;schemaAttributeGUID,
-                       java.lang.String&nbsp;schemaAttributeExternalIdentifier)</code></th>
+                       java.lang.String&nbsp;schemaAttributeExternalIdentifier,
+                       java.util.Date&nbsp;effectiveTime,
+                       boolean&nbsp;forLineage,
+                       boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Remove the primary key designation from the schema attribute.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">clearForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;assetManagerGUID,
                            java.lang.String&nbsp;assetManagerName,
                            java.lang.String&nbsp;primaryKeyGUID,
-                           java.lang.String&nbsp;foreignKeyGUID)</code></th>
+                           java.lang.String&nbsp;foreignKeyGUID,
+                           java.util.Date&nbsp;effectiveTime,
+                           boolean&nbsp;forLineage,
+                           boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Remove the foreign key relationship between two schema elements.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearSchemaElementAsCalculatedValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">clearSchemaElementAsCalculatedValue</a></span>&#8203;(java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;assetManagerGUID,
                                    java.lang.String&nbsp;assetManagerName,
                                    java.lang.String&nbsp;schemaElementGUID,
-                                   java.lang.String&nbsp;schemaElementExternalIdentifier)</code></th>
+                                   java.lang.String&nbsp;schemaElementExternalIdentifier,
+                                   java.util.Date&nbsp;effectiveTime,
+                                   boolean&nbsp;forLineage,
+                                   boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Remove the calculated value designation from the schema element.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">clearSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;assetManagerGUID,
                      java.lang.String&nbsp;assetManagerName,
                      java.lang.String&nbsp;schemaTypeGUID,
                      java.lang.String&nbsp;parentElementGUID,
-                     java.lang.String&nbsp;parentElementTypeName)</code></th>
+                     java.lang.String&nbsp;parentElementTypeName,
+                     java.util.Date&nbsp;effectiveTime,
+                     boolean&nbsp;forLineage,
+                     boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Remove the relationship between a schema type and its parent data asset, process or port.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties)">createSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date,boolean,boolean)">createSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;assetManagerGUID,
                      java.lang.String&nbsp;assetManagerName,
                      boolean&nbsp;assetManagerIsHome,
                      java.lang.String&nbsp;schemaElementGUID,
-                     java.lang.String&nbsp;schemaAttributeExternalIdentifier,
-                     java.lang.String&nbsp;schemaAttributeExternalIdentifierName,
-                     java.lang.String&nbsp;schemaAttributeExternalIdentifierUsage,
-                     java.lang.String&nbsp;schemaAttributeExternalIdentifierSource,
-                     <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;schemaAttributeExternalIdentifierKeyPattern,
-                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
-                     <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties)</code></th>
+                     <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
+                     <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+                     java.util.Date&nbsp;effectiveTime,
+                     boolean&nbsp;forLineage,
+                     boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a schema attribute.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttributeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createSchemaAttributeFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttributeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,java.util.Date,boolean,boolean)">createSchemaAttributeFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;assetManagerGUID,
                                  java.lang.String&nbsp;assetManagerName,
                                  boolean&nbsp;assetManagerIsHome,
                                  java.lang.String&nbsp;schemaElementGUID,
                                  java.lang.String&nbsp;templateGUID,
-                                 java.lang.String&nbsp;schemaAttributeExternalIdentifier,
-                                 java.lang.String&nbsp;schemaAttributeExternalIdentifierName,
-                                 java.lang.String&nbsp;schemaAttributeExternalIdentifierUsage,
-                                 java.lang.String&nbsp;schemaAttributeExternalIdentifierSource,
-                                 <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;schemaAttributeExternalIdentifierKeyPattern,
-                                 java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
-                                 <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
+                                 <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
+                                 <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties,
+                                 java.util.Date&nbsp;effectiveTime,
+                                 boolean&nbsp;forLineage,
+                                 boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a schema attribute using an existing metadata element as a template.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaType(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">createSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaType(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">createSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetManagerGUID,
                 java.lang.String&nbsp;assetManagerName,
                 boolean&nbsp;assetManagerIsHome,
-                java.lang.String&nbsp;schemaTypeExternalIdentifier,
-                java.lang.String&nbsp;schemaTypeExternalIdentifierName,
-                java.lang.String&nbsp;schemaTypeExternalIdentifierUsage,
-                java.lang.String&nbsp;schemaTypeExternalIdentifierSource,
-                <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;schemaTypeExternalIdentifierKeyPattern,
-                java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
+                boolean&nbsp;forLineage,
+                boolean&nbsp;forDuplicateProcessing,
                 <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a schema type.</div>
@@ -329,17 +334,12 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaTypeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createSchemaTypeFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaTypeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createSchemaTypeFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;assetManagerGUID,
                             java.lang.String&nbsp;assetManagerName,
                             boolean&nbsp;assetManagerIsHome,
                             java.lang.String&nbsp;templateGUID,
-                            java.lang.String&nbsp;schemaTypeExternalIdentifier,
-                            java.lang.String&nbsp;schemaTypeExternalIdentifierName,
-                            java.lang.String&nbsp;schemaTypeExternalIdentifierUsage,
-                            java.lang.String&nbsp;schemaTypeExternalIdentifierSource,
-                            <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;schemaTypeExternalIdentifierKeyPattern,
-                            java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                            <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                             <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a schema type using an existing metadata element as a template.</div>
@@ -347,214 +347,269 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">findSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">findSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;assetManagerGUID,
                     java.lang.String&nbsp;assetManagerName,
                     java.lang.String&nbsp;searchString,
                     int&nbsp;startFrom,
-                    int&nbsp;pageSize)</code></th>
+                    int&nbsp;pageSize,
+                    java.util.Date&nbsp;effectiveTime,
+                    boolean&nbsp;forLineage,
+                    boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of schema attribute metadata elements that contain the search string.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaTypeElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">findSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">findSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;assetManagerGUID,
               java.lang.String&nbsp;assetManagerName,
               java.lang.String&nbsp;searchString,
               int&nbsp;startFrom,
-              int&nbsp;pageSize)</code></th>
+              int&nbsp;pageSize,
+              java.util.Date&nbsp;effectiveTime,
+              boolean&nbsp;forLineage,
+              boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of schema type metadata elements that contain the search string.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getNestedSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getNestedSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;assetManagerGUID,
                          java.lang.String&nbsp;assetManagerName,
                          java.lang.String&nbsp;parentSchemaElementGUID,
                          int&nbsp;startFrom,
-                         int&nbsp;pageSize)</code></th>
+                         int&nbsp;pageSize,
+                         java.util.Date&nbsp;effectiveTime,
+                         boolean&nbsp;forLineage,
+                         boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of schema attributes associated with a schema element.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaAttributeElement</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSchemaAttributeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getSchemaAttributeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;assetManagerGUID,
                         java.lang.String&nbsp;assetManagerName,
-                        java.lang.String&nbsp;schemaAttributeGUID)</code></th>
+                        java.lang.String&nbsp;schemaAttributeGUID,
+                        java.util.Date&nbsp;effectiveTime,
+                        boolean&nbsp;forLineage,
+                        boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the schema attribute metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getSchemaAttributesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getSchemaAttributesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;assetManagerGUID,
                          java.lang.String&nbsp;assetManagerName,
                          java.lang.String&nbsp;name,
                          int&nbsp;startFrom,
-                         int&nbsp;pageSize)</code></th>
+                         int&nbsp;pageSize,
+                         java.util.Date&nbsp;effectiveTime,
+                         boolean&nbsp;forLineage,
+                         boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of schema attribute metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaTypeElement</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSchemaTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getSchemaTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;assetManagerGUID,
                    java.lang.String&nbsp;assetManagerName,
-                   java.lang.String&nbsp;schemaTypeGUID)</code></th>
+                   java.lang.String&nbsp;schemaTypeGUID,
+                   java.util.Date&nbsp;effectiveTime,
+                   boolean&nbsp;forLineage,
+                   boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the schema type metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaTypeElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getSchemaTypeByName</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getSchemaTypeByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;assetManagerGUID,
                    java.lang.String&nbsp;assetManagerName,
                    java.lang.String&nbsp;name,
                    int&nbsp;startFrom,
-                   int&nbsp;pageSize)</code></th>
+                   int&nbsp;pageSize,
+                   java.util.Date&nbsp;effectiveTime,
+                   boolean&nbsp;forLineage,
+                   boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of schema type metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaTypeElement</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeForElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSchemaTypeForElement</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeForElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getSchemaTypeForElement</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
                        java.lang.String&nbsp;assetManagerName,
                        java.lang.String&nbsp;parentElementGUID,
-                       java.lang.String&nbsp;parentElementTypeName)</code></th>
+                       java.lang.String&nbsp;parentElementTypeName,
+                       java.util.Date&nbsp;effectiveTime,
+                       boolean&nbsp;forLineage,
+                       boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Return the schema type associated with a specific open metadata element (data asset, process or port).</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;assetManagerGUID,
                    java.lang.String&nbsp;assetManagerName,
-                   java.lang.String&nbsp;schemaTypeGUID)</code></th>
+                   java.lang.String&nbsp;schemaTypeGUID,
+                   java.util.Date&nbsp;effectiveTime,
+                   boolean&nbsp;forLineage,
+                   boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 </td>
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">removeSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;assetManagerGUID,
                      java.lang.String&nbsp;assetManagerName,
                      java.lang.String&nbsp;schemaAttributeGUID,
-                     java.lang.String&nbsp;schemaAttributeExternalIdentifier)</code></th>
+                     java.lang.String&nbsp;schemaAttributeExternalIdentifier,
+                     java.util.Date&nbsp;effectiveTime,
+                     boolean&nbsp;forLineage,
+                     boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a schema attribute.</div>
 </td>
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">removeSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetManagerGUID,
                 java.lang.String&nbsp;assetManagerName,
                 java.lang.String&nbsp;schemaTypeGUID,
-                java.lang.String&nbsp;schemaTypeExternalIdentifier)</code></th>
+                java.lang.String&nbsp;schemaTypeExternalIdentifier,
+                java.util.Date&nbsp;effectiveTime,
+                boolean&nbsp;forLineage,
+                boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a schema type.</div>
 </td>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String)">setSchemaElementAsCalculatedValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">setSchemaElementAsCalculatedValue</a></span>&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;assetManagerGUID,
                                  java.lang.String&nbsp;assetManagerName,
                                  boolean&nbsp;assetManagerIsHome,
                                  java.lang.String&nbsp;schemaElementGUID,
                                  java.lang.String&nbsp;schemaElementExternalIdentifier,
-                                 java.lang.String&nbsp;formula)</code></th>
+                                 java.lang.String&nbsp;formula,
+                                 java.util.Date&nbsp;effectiveTime,
+                                 boolean&nbsp;forLineage,
+                                 boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern)">setupColumnAsPrimaryKey</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Date,boolean,boolean)">setupColumnAsPrimaryKey</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
                        java.lang.String&nbsp;assetManagerName,
                        boolean&nbsp;assetManagerIsHome,
                        java.lang.String&nbsp;schemaAttributeGUID,
                        java.lang.String&nbsp;schemaAttributeExternalIdentifier,
                        java.lang.String&nbsp;primaryKeyName,
-                       <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;primaryKeyPattern)</code></th>
+                       <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;primaryKeyPattern,
+                       java.util.Date&nbsp;effectiveTime,
+                       boolean&nbsp;forLineage,
+                       boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Classify the column schema attribute to indicate that it describes a primary key.</div>
 </td>
 </tr>
 <tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties)">setupForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date,boolean,boolean)">setupForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;assetManagerGUID,
                            java.lang.String&nbsp;assetManagerName,
                            boolean&nbsp;assetManagerIsHome,
                            java.lang.String&nbsp;primaryKeyGUID,
                            java.lang.String&nbsp;foreignKeyGUID,
-                           <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties)</code></th>
+                           <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+                           java.util.Date&nbsp;effectiveTime,
+                           boolean&nbsp;forLineage,
+                           boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Link two schema attributes together to show a foreign key relationship.</div>
 </td>
 </tr>
 <tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String)">setupSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties)">setupSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;assetManagerGUID,
                      java.lang.String&nbsp;assetManagerName,
                      boolean&nbsp;assetManagerIsHome,
                      java.lang.String&nbsp;schemaTypeGUID,
                      java.lang.String&nbsp;parentElementGUID,
-                     java.lang.String&nbsp;parentElementTypeName)</code></th>
+                     java.lang.String&nbsp;parentElementTypeName,
+                     java.util.Date&nbsp;effectiveTime,
+                     boolean&nbsp;forLineage,
+                     boolean&nbsp;forDuplicateProcessing,
+                     <a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Connect a schema type to a data asset, process or port.</div>
 </td>
 </tr>
 <tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties)">updateForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date,boolean,boolean)">updateForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;assetManagerGUID,
                             java.lang.String&nbsp;assetManagerName,
                             java.lang.String&nbsp;primaryKeyGUID,
                             java.lang.String&nbsp;foreignKeyGUID,
-                            <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties)</code></th>
+                            <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+                            java.util.Date&nbsp;effectiveTime,
+                            boolean&nbsp;forLineage,
+                            boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Update the relationship properties for the query target.</div>
 </td>
 </tr>
 <tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date,boolean,boolean)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;assetManagerGUID,
                      java.lang.String&nbsp;assetManagerName,
                      java.lang.String&nbsp;schemaAttributeGUID,
                      java.lang.String&nbsp;schemaAttributeExternalIdentifier,
                      boolean&nbsp;isMergeUpdate,
-                     <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties)</code></th>
+                     <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+                     java.util.Date&nbsp;effectiveTime,
+                     boolean&nbsp;forLineage,
+                     boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Update the properties of the metadata element representing a schema attribute.</div>
 </td>
 </tr>
 <tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">updateSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,java.util.Date,boolean,boolean)">updateSchemaType</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetManagerGUID,
                 java.lang.String&nbsp;assetManagerName,
                 java.lang.String&nbsp;schemaTypeGUID,
                 java.lang.String&nbsp;schemaTypeExternalIdentifier,
                 boolean&nbsp;isMergeUpdate,
-                <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></th>
+                <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
+                java.util.Date&nbsp;effectiveTime,
+                boolean&nbsp;forLineage,
+                boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a schema type.</div>
 </td>
@@ -713,7 +768,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createSchemaType(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">
+<a id="createSchemaType(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -723,12 +778,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                          java.lang.String&nbsp;assetManagerGUID,
                                          java.lang.String&nbsp;assetManagerName,
                                          boolean&nbsp;assetManagerIsHome,
-                                         java.lang.String&nbsp;schemaTypeExternalIdentifier,
-                                         java.lang.String&nbsp;schemaTypeExternalIdentifierName,
-                                         java.lang.String&nbsp;schemaTypeExternalIdentifierUsage,
-                                         java.lang.String&nbsp;schemaTypeExternalIdentifierSource,
-                                         <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;schemaTypeExternalIdentifierKeyPattern,
-                                         java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                         <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
+                                         boolean&nbsp;forLineage,
+                                         boolean&nbsp;forDuplicateProcessing,
                                          <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)
                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -736,19 +788,16 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <div class="block">Create a new metadata element to represent a schema type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#createSchemaType(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">createSchemaType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#createSchemaType(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">createSchemaType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this schema element</dd>
-<dd><code>schemaTypeExternalIdentifier</code> - unique identifier of the schema type in the external asset manager</dd>
-<dd><code>schemaTypeExternalIdentifierName</code> - name of property for the external identifier in the external asset manager</dd>
-<dd><code>schemaTypeExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external asset manager</dd>
-<dd><code>schemaTypeExternalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>schemaTypeExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external asset manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>schemaTypeProperties</code> - properties about the schema type to store</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new schema type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -758,7 +807,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="createSchemaTypeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
+<a id="createSchemaTypeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -769,12 +818,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                                      java.lang.String&nbsp;assetManagerName,
                                                      boolean&nbsp;assetManagerIsHome,
                                                      java.lang.String&nbsp;templateGUID,
-                                                     java.lang.String&nbsp;schemaTypeExternalIdentifier,
-                                                     java.lang.String&nbsp;schemaTypeExternalIdentifierName,
-                                                     java.lang.String&nbsp;schemaTypeExternalIdentifierUsage,
-                                                     java.lang.String&nbsp;schemaTypeExternalIdentifierSource,
-                                                     <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;schemaTypeExternalIdentifierKeyPattern,
-                                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                                     <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                                      <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)
                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -782,20 +826,14 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <div class="block">Create a new metadata element to represent a schema type using an existing metadata element as a template.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#createSchemaTypeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createSchemaTypeFromTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#createSchemaTypeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createSchemaTypeFromTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this schema element</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>schemaTypeExternalIdentifier</code> - unique identifier of the schema type in the external asset manager</dd>
-<dd><code>schemaTypeExternalIdentifierName</code> - name of property for the external identifier in the external asset manager</dd>
-<dd><code>schemaTypeExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external asset manager</dd>
-<dd><code>schemaTypeExternalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>schemaTypeExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external asset manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the
-                          external asset manager and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new schema type</dd>
@@ -806,7 +844,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="updateSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">
+<a id="updateSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -818,14 +856,17 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                              java.lang.String&nbsp;schemaTypeGUID,
                              java.lang.String&nbsp;schemaTypeExternalIdentifier,
                              boolean&nbsp;isMergeUpdate,
-                             <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)
+                             <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
+                             java.util.Date&nbsp;effectiveTime,
+                             boolean&nbsp;forLineage,
+                             boolean&nbsp;forDuplicateProcessing)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the metadata element representing a schema type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#updateSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">updateSchemaType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#updateSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,java.util.Date,boolean,boolean)">updateSchemaType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -833,6 +874,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>schemaTypeGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>schemaTypeExternalIdentifier</code> - unique identifier of the schema type in the external asset manager</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>schemaTypeProperties</code> - new properties for the metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
@@ -841,7 +885,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="setupSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String)">
+<a id="setupSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -853,14 +897,18 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                   boolean&nbsp;assetManagerIsHome,
                                   java.lang.String&nbsp;schemaTypeGUID,
                                   java.lang.String&nbsp;parentElementGUID,
-                                  java.lang.String&nbsp;parentElementTypeName)
+                                  java.lang.String&nbsp;parentElementTypeName,
+                                  java.util.Date&nbsp;effectiveTime,
+                                  boolean&nbsp;forLineage,
+                                  boolean&nbsp;forDuplicateProcessing,
+                                  <a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Connect a schema type to a data asset, process or port.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#setupSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String)">setupSchemaTypeParent</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#setupSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties)">setupSchemaTypeParent</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -869,6 +917,10 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>schemaTypeGUID</code> - unique identifier of the schema type to connect</dd>
 <dd><code>parentElementGUID</code> - unique identifier of the open metadata element that this schema type is to be connected to</dd>
 <dd><code>parentElementTypeName</code> - unique type name of the open metadata element that this schema type is to be connected to</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
+<dd><code>properties</code> - properties for the relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -876,7 +928,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="clearSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -887,14 +939,17 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                   java.lang.String&nbsp;assetManagerName,
                                   java.lang.String&nbsp;schemaTypeGUID,
                                   java.lang.String&nbsp;parentElementGUID,
-                                  java.lang.String&nbsp;parentElementTypeName)
+                                  java.lang.String&nbsp;parentElementTypeName,
+                                  java.util.Date&nbsp;effectiveTime,
+                                  boolean&nbsp;forLineage,
+                                  boolean&nbsp;forDuplicateProcessing)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the relationship between a schema type and its parent data asset, process or port.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#clearSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearSchemaTypeParent</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#clearSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">clearSchemaTypeParent</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -902,6 +957,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>schemaTypeGUID</code> - unique identifier of the schema type to connect</dd>
 <dd><code>parentElementGUID</code> - unique identifier of the open metadata element that this schema type is to be connected to</dd>
 <dd><code>parentElementTypeName</code> - unique type name of the open metadata element that this schema type is to be connected to</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -909,7 +967,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="removeSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -919,20 +977,26 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                              java.lang.String&nbsp;assetManagerGUID,
                              java.lang.String&nbsp;assetManagerName,
                              java.lang.String&nbsp;schemaTypeGUID,
-                             java.lang.String&nbsp;schemaTypeExternalIdentifier)
+                             java.lang.String&nbsp;schemaTypeExternalIdentifier,
+                             java.util.Date&nbsp;effectiveTime,
+                             boolean&nbsp;forLineage,
+                             boolean&nbsp;forDuplicateProcessing)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the metadata element representing a schema type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#removeSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeSchemaType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#removeSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">removeSchemaType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the metadata element to remove</dd>
 <dd><code>schemaTypeExternalIdentifier</code> - unique identifier of the schema type in the external asset manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -940,7 +1004,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="findSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="findSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -951,7 +1015,10 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                                         java.lang.String&nbsp;assetManagerName,
                                                         java.lang.String&nbsp;searchString,
                                                         int&nbsp;startFrom,
-                                                        int&nbsp;pageSize)
+                                                        int&nbsp;pageSize,
+                                                        java.util.Date&nbsp;effectiveTime,
+                                                        boolean&nbsp;forLineage,
+                                                        boolean&nbsp;forDuplicateProcessing)
                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -959,7 +1026,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
  The search string is treated as a regular expression.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#findSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">findSchemaType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#findSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">findSchemaType</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -967,6 +1034,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>searchString</code> - string to find in the properties</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -976,7 +1046,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getSchemaTypeForElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="getSchemaTypeForElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -986,20 +1056,26 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                                  java.lang.String&nbsp;assetManagerGUID,
                                                  java.lang.String&nbsp;assetManagerName,
                                                  java.lang.String&nbsp;parentElementGUID,
-                                                 java.lang.String&nbsp;parentElementTypeName)
+                                                 java.lang.String&nbsp;parentElementTypeName,
+                                                 java.util.Date&nbsp;effectiveTime,
+                                                 boolean&nbsp;forLineage,
+                                                 boolean&nbsp;forDuplicateProcessing)
                                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the schema type associated with a specific open metadata element (data asset, process or port).</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaTypeForElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSchemaTypeForElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaTypeForElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getSchemaTypeForElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>parentElementGUID</code> - unique identifier of the open metadata element that this schema type is to be connected to</dd>
 <dd><code>parentElementTypeName</code> - unique type name of the open metadata element that this schema type is to be connected to</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>metadata element describing the schema type associated with the requested parent element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1009,7 +1085,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getSchemaTypeByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getSchemaTypeByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1020,7 +1096,10 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                                              java.lang.String&nbsp;assetManagerName,
                                                              java.lang.String&nbsp;name,
                                                              int&nbsp;startFrom,
-                                                             int&nbsp;pageSize)
+                                                             int&nbsp;pageSize,
+                                                             java.util.Date&nbsp;effectiveTime,
+                                                             boolean&nbsp;forLineage,
+                                                             boolean&nbsp;forDuplicateProcessing)
                                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1028,7 +1107,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
  There are no wildcards supported on this request.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaTypeByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getSchemaTypeByName</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaTypeByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getSchemaTypeByName</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1036,6 +1115,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>name</code> - name to search for</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1045,7 +1127,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getSchemaTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="getSchemaTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1054,19 +1136,25 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <pre class="methodSignature">public&nbsp;<a href="../metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaTypeElement</a>&nbsp;getSchemaTypeByGUID&#8203;(java.lang.String&nbsp;userId,
                                              java.lang.String&nbsp;assetManagerGUID,
                                              java.lang.String&nbsp;assetManagerName,
-                                             java.lang.String&nbsp;schemaTypeGUID)
+                                             java.lang.String&nbsp;schemaTypeGUID,
+                                             java.util.Date&nbsp;effectiveTime,
+                                             boolean&nbsp;forLineage,
+                                             boolean&nbsp;forDuplicateProcessing)
                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the schema type metadata element with the supplied unique identifier.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSchemaTypeByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getSchemaTypeByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the requested metadata element</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>requested metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1076,7 +1164,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1085,19 +1173,25 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <pre class="methodSignature">public&nbsp;<a href="../metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a>&nbsp;getSchemaTypeParent&#8203;(java.lang.String&nbsp;userId,
                                          java.lang.String&nbsp;assetManagerGUID,
                                          java.lang.String&nbsp;assetManagerName,
-                                         java.lang.String&nbsp;schemaTypeGUID)
+                                         java.lang.String&nbsp;schemaTypeGUID,
+                                         java.util.Date&nbsp;effectiveTime,
+                                         boolean&nbsp;forLineage,
+                                         boolean&nbsp;forDuplicateProcessing)
                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSchemaTypeParent</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getSchemaTypeParent</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>schemaTypeGUID</code> - unique identifier of the requested metadata element</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>header for parent element (data asset, process, port)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1107,7 +1201,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="createSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties)">
+<a id="createSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1118,34 +1212,29 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                               java.lang.String&nbsp;assetManagerName,
                                               boolean&nbsp;assetManagerIsHome,
                                               java.lang.String&nbsp;schemaElementGUID,
-                                              java.lang.String&nbsp;schemaAttributeExternalIdentifier,
-                                              java.lang.String&nbsp;schemaAttributeExternalIdentifierName,
-                                              java.lang.String&nbsp;schemaAttributeExternalIdentifierUsage,
-                                              java.lang.String&nbsp;schemaAttributeExternalIdentifierSource,
-                                              <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;schemaAttributeExternalIdentifierKeyPattern,
-                                              java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
-                                              <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties)
+                                              <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
+                                              <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+                                              java.util.Date&nbsp;effectiveTime,
+                                              boolean&nbsp;forLineage,
+                                              boolean&nbsp;forDuplicateProcessing)
                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a new metadata element to represent a schema attribute.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#createSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties)">createSchemaAttribute</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#createSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date,boolean,boolean)">createSchemaAttribute</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this schema attribute</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to</dd>
-<dd><code>schemaAttributeExternalIdentifier</code> - unique identifier of the schema attribute in the external asset manager</dd>
-<dd><code>schemaAttributeExternalIdentifierName</code> - name of property for the external identifier in the external asset manager</dd>
-<dd><code>schemaAttributeExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external asset manager</dd>
-<dd><code>schemaAttributeExternalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>schemaAttributeExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external asset manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the
-                          external asset manager and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>schemaAttributeProperties</code> - properties for the schema attribute</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the schema attribute</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1155,7 +1244,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="createSchemaAttributeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
+<a id="createSchemaAttributeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1167,20 +1256,18 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                                           boolean&nbsp;assetManagerIsHome,
                                                           java.lang.String&nbsp;schemaElementGUID,
                                                           java.lang.String&nbsp;templateGUID,
-                                                          java.lang.String&nbsp;schemaAttributeExternalIdentifier,
-                                                          java.lang.String&nbsp;schemaAttributeExternalIdentifierName,
-                                                          java.lang.String&nbsp;schemaAttributeExternalIdentifierUsage,
-                                                          java.lang.String&nbsp;schemaAttributeExternalIdentifierSource,
-                                                          <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;schemaAttributeExternalIdentifierKeyPattern,
-                                                          java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
-                                                          <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)
+                                                          <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
+                                                          <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties,
+                                                          java.util.Date&nbsp;effectiveTime,
+                                                          boolean&nbsp;forLineage,
+                                                          boolean&nbsp;forDuplicateProcessing)
                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Create a new metadata element to represent a schema attribute using an existing metadata element as a template.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#createSchemaAttributeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createSchemaAttributeFromTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#createSchemaAttributeFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties,java.util.Date,boolean,boolean)">createSchemaAttributeFromTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1188,14 +1275,11 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this schema attribute</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>schemaAttributeExternalIdentifier</code> - unique identifier of the schema attribute in the external asset manager</dd>
-<dd><code>schemaAttributeExternalIdentifierName</code> - name of property for the external identifier in the external asset manager</dd>
-<dd><code>schemaAttributeExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external asset manager</dd>
-<dd><code>schemaAttributeExternalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>schemaAttributeExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external asset manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the
-                          external asset manager and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the schema attribute</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1205,7 +1289,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties)">
+<a id="updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1217,14 +1301,17 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                   java.lang.String&nbsp;schemaAttributeGUID,
                                   java.lang.String&nbsp;schemaAttributeExternalIdentifier,
                                   boolean&nbsp;isMergeUpdate,
-                                  <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties)
+                                  <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+                                  java.util.Date&nbsp;effectiveTime,
+                                  boolean&nbsp;forLineage,
+                                  boolean&nbsp;forDuplicateProcessing)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the properties of the metadata element representing a schema attribute.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties)">updateSchemaAttribute</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date,boolean,boolean)">updateSchemaAttribute</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1233,6 +1320,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>schemaAttributeExternalIdentifier</code> - unique identifier of the schema attribute in the external asset manager</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>schemaAttributeProperties</code> - new properties for the schema attribute</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1240,7 +1330,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String)">
+<a id="setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1252,14 +1342,17 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                               boolean&nbsp;assetManagerIsHome,
                                               java.lang.String&nbsp;schemaElementGUID,
                                               java.lang.String&nbsp;schemaElementExternalIdentifier,
-                                              java.lang.String&nbsp;formula)
+                                              java.lang.String&nbsp;formula,
+                                              java.util.Date&nbsp;effectiveTime,
+                                              boolean&nbsp;forLineage,
+                                              boolean&nbsp;forDuplicateProcessing)
                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Classify the schema type (or attribute if type is embedded) to indicate that it is a calculated value.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String)">setSchemaElementAsCalculatedValue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#setSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">setSchemaElementAsCalculatedValue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1267,6 +1360,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this classification</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>schemaElementExternalIdentifier</code> - unique identifier of the schema element in the external asset manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>formula</code> - description of the logic that maps data values to</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
@@ -1275,7 +1371,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="clearSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1285,20 +1381,26 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                                 java.lang.String&nbsp;assetManagerGUID,
                                                 java.lang.String&nbsp;assetManagerName,
                                                 java.lang.String&nbsp;schemaElementGUID,
-                                                java.lang.String&nbsp;schemaElementExternalIdentifier)
+                                                java.lang.String&nbsp;schemaElementExternalIdentifier,
+                                                java.util.Date&nbsp;effectiveTime,
+                                                boolean&nbsp;forLineage,
+                                                boolean&nbsp;forDuplicateProcessing)
                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the calculated value designation from the schema element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#clearSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearSchemaElementAsCalculatedValue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#clearSchemaElementAsCalculatedValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">clearSchemaElementAsCalculatedValue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>schemaElementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>schemaElementExternalIdentifier</code> - unique identifier of the schema element in the external asset manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1306,7 +1408,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="setupColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern)">
+<a id="setupColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1319,14 +1421,17 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                     java.lang.String&nbsp;schemaAttributeGUID,
                                     java.lang.String&nbsp;schemaAttributeExternalIdentifier,
                                     java.lang.String&nbsp;primaryKeyName,
-                                    <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;primaryKeyPattern)
+                                    <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;primaryKeyPattern,
+                                    java.util.Date&nbsp;effectiveTime,
+                                    boolean&nbsp;forLineage,
+                                    boolean&nbsp;forDuplicateProcessing)
                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Classify the column schema attribute to indicate that it describes a primary key.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#setupColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern)">setupColumnAsPrimaryKey</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#setupColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Date,boolean,boolean)">setupColumnAsPrimaryKey</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1336,6 +1441,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>schemaAttributeExternalIdentifier</code> - unique identifier of the schema attribute in the external asset manager</dd>
 <dd><code>primaryKeyName</code> - name of the primary key (if different from the column name)</dd>
 <dd><code>primaryKeyPattern</code> - key pattern used to maintain the primary key</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1343,7 +1451,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="clearColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1353,20 +1461,26 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                     java.lang.String&nbsp;assetManagerGUID,
                                     java.lang.String&nbsp;assetManagerName,
                                     java.lang.String&nbsp;schemaAttributeGUID,
-                                    java.lang.String&nbsp;schemaAttributeExternalIdentifier)
+                                    java.lang.String&nbsp;schemaAttributeExternalIdentifier,
+                                    java.util.Date&nbsp;effectiveTime,
+                                    boolean&nbsp;forLineage,
+                                    boolean&nbsp;forDuplicateProcessing)
                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the primary key designation from the schema attribute.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#clearColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearColumnAsPrimaryKey</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#clearColumnAsPrimaryKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">clearColumnAsPrimaryKey</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>schemaAttributeExternalIdentifier</code> - unique identifier of the schema attribute in the external asset manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1374,7 +1488,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties)">
+<a id="setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1386,14 +1500,17 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                         boolean&nbsp;assetManagerIsHome,
                                         java.lang.String&nbsp;primaryKeyGUID,
                                         java.lang.String&nbsp;foreignKeyGUID,
-                                        <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties)
+                                        <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+                                        java.util.Date&nbsp;effectiveTime,
+                                        boolean&nbsp;forLineage,
+                                        boolean&nbsp;forDuplicateProcessing)
                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link two schema attributes together to show a foreign key relationship.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties)">setupForeignKeyRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date,boolean,boolean)">setupForeignKeyRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1402,6 +1519,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>primaryKeyGUID</code> - unique identifier of the derived schema element</dd>
 <dd><code>foreignKeyGUID</code> - unique identifier of the query target schema element</dd>
 <dd><code>foreignKeyProperties</code> - properties for the foreign key relationship</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1409,7 +1529,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties)">
+<a id="updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1420,14 +1540,17 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                          java.lang.String&nbsp;assetManagerName,
                                          java.lang.String&nbsp;primaryKeyGUID,
                                          java.lang.String&nbsp;foreignKeyGUID,
-                                         <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties)
+                                         <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+                                         java.util.Date&nbsp;effectiveTime,
+                                         boolean&nbsp;forLineage,
+                                         boolean&nbsp;forDuplicateProcessing)
                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the relationship properties for the query target.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties)">updateForeignKeyRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date,boolean,boolean)">updateForeignKeyRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1435,6 +1558,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>primaryKeyGUID</code> - unique identifier of the derived schema element</dd>
 <dd><code>foreignKeyGUID</code> - unique identifier of the query target schema element</dd>
 <dd><code>foreignKeyProperties</code> - properties for the foreign key relationship</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1442,7 +1568,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="clearForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1452,20 +1578,26 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                         java.lang.String&nbsp;assetManagerGUID,
                                         java.lang.String&nbsp;assetManagerName,
                                         java.lang.String&nbsp;primaryKeyGUID,
-                                        java.lang.String&nbsp;foreignKeyGUID)
+                                        java.lang.String&nbsp;foreignKeyGUID,
+                                        java.util.Date&nbsp;effectiveTime,
+                                        boolean&nbsp;forLineage,
+                                        boolean&nbsp;forDuplicateProcessing)
                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the foreign key relationship between two schema elements.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#clearForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearForeignKeyRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#clearForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">clearForeignKeyRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>primaryKeyGUID</code> - unique identifier of the derived schema element</dd>
 <dd><code>foreignKeyGUID</code> - unique identifier of the query target schema element</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1473,7 +1605,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="removeSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1483,20 +1615,26 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                   java.lang.String&nbsp;assetManagerGUID,
                                   java.lang.String&nbsp;assetManagerName,
                                   java.lang.String&nbsp;schemaAttributeGUID,
-                                  java.lang.String&nbsp;schemaAttributeExternalIdentifier)
+                                  java.lang.String&nbsp;schemaAttributeExternalIdentifier,
+                                  java.util.Date&nbsp;effectiveTime,
+                                  boolean&nbsp;forLineage,
+                                  boolean&nbsp;forDuplicateProcessing)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the metadata element representing a schema attribute.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#removeSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeSchemaAttribute</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#removeSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">removeSchemaAttribute</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the metadata element to remove</dd>
 <dd><code>schemaAttributeExternalIdentifier</code> - unique identifier of the schema attribute in the external asset manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1504,7 +1642,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="findSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="findSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1515,7 +1653,10 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                                                    java.lang.String&nbsp;assetManagerName,
                                                                    java.lang.String&nbsp;searchString,
                                                                    int&nbsp;startFrom,
-                                                                   int&nbsp;pageSize)
+                                                                   int&nbsp;pageSize,
+                                                                   java.util.Date&nbsp;effectiveTime,
+                                                                   boolean&nbsp;forLineage,
+                                                                   boolean&nbsp;forDuplicateProcessing)
                                                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1523,7 +1664,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
  The search string is treated as a regular expression.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#findSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">findSchemaAttributes</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#findSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">findSchemaAttributes</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1531,6 +1672,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>searchString</code> - string to find in the properties</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1540,7 +1684,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getNestedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getNestedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1551,14 +1695,17 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                                                         java.lang.String&nbsp;assetManagerName,
                                                                         java.lang.String&nbsp;parentSchemaElementGUID,
                                                                         int&nbsp;startFrom,
-                                                                        int&nbsp;pageSize)
+                                                                        int&nbsp;pageSize,
+                                                                        java.util.Date&nbsp;effectiveTime,
+                                                                        boolean&nbsp;forLineage,
+                                                                        boolean&nbsp;forDuplicateProcessing)
                                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the list of schema attributes associated with a schema element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#getNestedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getNestedSchemaAttributes</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#getNestedSchemaAttributes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getNestedSchemaAttributes</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1566,6 +1713,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>parentSchemaElementGUID</code> - unique identifier of the schema element of interest</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of associated metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1575,7 +1725,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getSchemaAttributesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getSchemaAttributesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1586,7 +1736,10 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
                                                                         java.lang.String&nbsp;assetManagerName,
                                                                         java.lang.String&nbsp;name,
                                                                         int&nbsp;startFrom,
-                                                                        int&nbsp;pageSize)
+                                                                        int&nbsp;pageSize,
+                                                                        java.util.Date&nbsp;effectiveTime,
+                                                                        boolean&nbsp;forLineage,
+                                                                        boolean&nbsp;forDuplicateProcessing)
                                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1594,7 +1747,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
  There are no wildcards supported on this request.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaAttributesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getSchemaAttributesByName</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaAttributesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getSchemaAttributesByName</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1602,6 +1755,9 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <dd><code>name</code> - name to search for</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1611,7 +1767,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getSchemaAttributeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="getSchemaAttributeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -1620,19 +1776,25 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <pre class="methodSignature">public&nbsp;<a href="../metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">SchemaAttributeElement</a>&nbsp;getSchemaAttributeByGUID&#8203;(java.lang.String&nbsp;userId,
                                                        java.lang.String&nbsp;assetManagerGUID,
                                                        java.lang.String&nbsp;assetManagerName,
-                                                       java.lang.String&nbsp;schemaAttributeGUID)
+                                                       java.lang.String&nbsp;schemaAttributeGUID,
+                                                       java.util.Date&nbsp;effectiveTime,
+                                                       boolean&nbsp;forLineage,
+                                                       boolean&nbsp;forDuplicateProcessing)
                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the schema attribute metadata element with the supplied unique identifier.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaAttributeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getSchemaAttributeByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
+<dd><code><a href="../api/SchemaExchangeInterface.html#getSchemaAttributeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getSchemaAttributeByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/SchemaExchangeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">SchemaExchangeInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>schemaAttributeGUID</code> - unique identifier of the requested metadata element</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>matching metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

@@ -204,8 +204,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteRelatedElementsInStore(java.lang.String,java.lang.String)">deleteRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;relationshipGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">deleteRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;relationshipGUID,
+                            boolean&nbsp;forLineage,
+                            boolean&nbsp;forDuplicateProcessing,
+                            java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Delete a relationship between two metadata elements.</div>
 </td>
@@ -310,21 +313,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">linkElementsAsPeerDuplicates</a></span>&#8203;(java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;metadataElement1GUID,
-                            java.lang.String&nbsp;metadataElement2GUID,
-                            int&nbsp;statusIdentifier,
-                            java.lang.String&nbsp;steward,
-                            java.lang.String&nbsp;stewardTypeName,
-                            java.lang.String&nbsp;stewardPropertyName,
-                            java.lang.String&nbsp;source,
-                            java.lang.String&nbsp;notes)</code></th>
-<td class="colLast">
-<div class="block">Link elements as peer duplicates.</div>
-</td>
-</tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">reclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;metadataElementGUID,
                                 java.lang.String&nbsp;classificationName,
@@ -337,7 +325,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">unclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;metadataElementGUID,
@@ -349,18 +337,31 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the named classification from a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationStatusInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateClassificationStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
-                                 java.lang.String&nbsp;metadataElementGUID,
-                                 java.lang.String&nbsp;classificationName,
-                                 boolean&nbsp;forLineage,
-                                 boolean&nbsp;forDuplicateProcessing,
-                                 java.util.Date&nbsp;effectiveFrom,
-                                 java.util.Date&nbsp;effectiveTo,
-                                 java.util.Date&nbsp;effectiveTime)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateClassificationEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                      java.lang.String&nbsp;metadataElementGUID,
+                                      java.lang.String&nbsp;classificationName,
+                                      boolean&nbsp;forLineage,
+                                      boolean&nbsp;forDuplicateProcessing,
+                                      java.util.Date&nbsp;effectiveFrom,
+                                      java.util.Date&nbsp;effectiveTo,
+                                      java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
+</td>
+</tr>
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateMetadataElementEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                       java.lang.String&nbsp;metadataElementGUID,
+                                       boolean&nbsp;forLineage,
+                                       boolean&nbsp;forDuplicateProcessing,
+                                       java.util.Date&nbsp;effectiveFrom,
+                                       java.util.Date&nbsp;effectiveTo,
+                                       java.util.Date&nbsp;effectiveTime)</code></th>
+<td class="colLast">
+<div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
@@ -378,13 +379,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus,java.util.Date,java.util.Date,java.util.Date)">updateMetadataElementStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus,java.util.Date)">updateMetadataElementStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;metadataElementGUID,
                                   boolean&nbsp;forLineage,
                                   boolean&nbsp;forDuplicateProcessing,
                                   <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;newElementStatus,
-                                  java.util.Date&nbsp;effectiveFrom,
-                                  java.util.Date&nbsp;effectiveTo,
                                   java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update the status of specific metadata element.</div>
@@ -392,22 +391,28 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">updateRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;relationshipGUID,
-                            boolean&nbsp;replaceProperties,
-                            org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateRelatedElementsEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                       java.lang.String&nbsp;relationshipGUID,
+                                       boolean&nbsp;forLineage,
+                                       boolean&nbsp;forDuplicateProcessing,
+                                       java.util.Date&nbsp;effectiveFrom,
+                                       java.util.Date&nbsp;effectiveTo,
+                                       java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Update the properties associated with a relationship.</div>
+<div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
 </td>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsStatusInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateRelatedElementsStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
-                                  java.lang.String&nbsp;relationshipGUID,
-                                  java.util.Date&nbsp;effectiveFrom,
-                                  java.util.Date&nbsp;effectiveTo)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">updateRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;relationshipGUID,
+                            boolean&nbsp;replaceProperties,
+                            boolean&nbsp;forLineage,
+                            boolean&nbsp;forDuplicateProcessing,
+                            org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
+                            java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
+<div class="block">Update the properties associated with a relationship.</div>
 </td>
 </tr>
 </table>
@@ -719,7 +724,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>effectiveFrom</code> - the date when this element is active - null for active on creation</dd>
 <dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
 <dd><code>properties</code> - properties of the new metadata element</dd>
-<dd><code>templateGUID</code> - the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
+<dd><code>templateGUID</code> - the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
                      connection etc)</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element</dd>
@@ -757,8 +762,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                           the individual properties specified on the request.</dd>
 <dd><code>forLineage</code> - the retrieved elements are for lineage processing so include archived elements</dd>
 <dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
-<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
 <dd><code>properties</code> - new properties for the metadata element</dd>
+<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the properties are invalid in some way</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
@@ -766,7 +771,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="updateMetadataElementStatusInStore(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus,java.util.Date,java.util.Date,java.util.Date)">
+<a id="updateMetadataElementStatusInStore(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -777,15 +782,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                         boolean&nbsp;forLineage,
                                         boolean&nbsp;forDuplicateProcessing,
                                         <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;newElementStatus,
-                                        java.util.Date&nbsp;effectiveFrom,
-                                        java.util.Date&nbsp;effectiveTo,
                                         java.util.Date&nbsp;effectiveTime)
                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
- assigned when it was created.  The effectivity dates control the visibility of the element
- through specific APIs.</div>
+ assigned when it was created.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
@@ -793,6 +795,37 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
 <dd><code>newElementStatus</code> - new status value - or null to leave as is</dd>
+<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateMetadataElementEffectivityInStore</h4>
+<pre class="methodSignature">void&nbsp;updateMetadataElementEffectivityInStore&#8203;(java.lang.String&nbsp;userId,
+                                             java.lang.String&nbsp;metadataElementGUID,
+                                             boolean&nbsp;forLineage,
+                                             boolean&nbsp;forDuplicateProcessing,
+                                             java.util.Date&nbsp;effectiveFrom,
+                                             java.util.Date&nbsp;effectiveTo,
+                                             java.util.Date&nbsp;effectiveTime)
+                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
+<dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
 <dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
 <dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
@@ -909,23 +942,23 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="updateClassificationStatusInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">
+<a id="updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>updateClassificationStatusInStore</h4>
-<pre class="methodSignature">void&nbsp;updateClassificationStatusInStore&#8203;(java.lang.String&nbsp;userId,
-                                       java.lang.String&nbsp;metadataElementGUID,
-                                       java.lang.String&nbsp;classificationName,
-                                       boolean&nbsp;forLineage,
-                                       boolean&nbsp;forDuplicateProcessing,
-                                       java.util.Date&nbsp;effectiveFrom,
-                                       java.util.Date&nbsp;effectiveTo,
-                                       java.util.Date&nbsp;effectiveTime)
-                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<h4>updateClassificationEffectivityInStore</h4>
+<pre class="methodSignature">void&nbsp;updateClassificationEffectivityInStore&#8203;(java.lang.String&nbsp;userId,
+                                            java.lang.String&nbsp;metadataElementGUID,
+                                            java.lang.String&nbsp;classificationName,
+                                            boolean&nbsp;forLineage,
+                                            boolean&nbsp;forDuplicateProcessing,
+                                            java.util.Date&nbsp;effectiveFrom,
+                                            java.util.Date&nbsp;effectiveTo,
+                                            java.util.Date&nbsp;effectiveTime)
+                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.
  The effectivity dates control the visibility of the classification through specific APIs.</div>
 <dl>
@@ -1020,46 +1053,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>linkElementsAsPeerDuplicates</h4>
-<pre class="methodSignature">void&nbsp;linkElementsAsPeerDuplicates&#8203;(java.lang.String&nbsp;userId,
-                                  java.lang.String&nbsp;metadataElement1GUID,
-                                  java.lang.String&nbsp;metadataElement2GUID,
-                                  int&nbsp;statusIdentifier,
-                                  java.lang.String&nbsp;steward,
-                                  java.lang.String&nbsp;stewardTypeName,
-                                  java.lang.String&nbsp;stewardPropertyName,
-                                  java.lang.String&nbsp;source,
-                                  java.lang.String&nbsp;notes)
-                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Link elements as peer duplicates. Create a simple relationship between two elements.
- If the relationship already exists, the properties are updated.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - caller's userId</dd>
-<dd><code>metadataElement1GUID</code> - unique identifier of the metadata element at end 1 of the relationship</dd>
-<dd><code>metadataElement2GUID</code> - unique identifier of the metadata element at end 2 of the relationship</dd>
-<dd><code>statusIdentifier</code> - what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)</dd>
-<dd><code>steward</code> - identifier of the steward</dd>
-<dd><code>stewardTypeName</code> - type of element used to identify the steward</dd>
-<dd><code>stewardPropertyName</code> - property name used to identify steward</dd>
-<dd><code>source</code> - source of the duplicate detection processing</dd>
-<dd><code>notes</code> - notes for the steward</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier's of the metadata elements are null or invalid in some way; the properties are
-                                    not valid for this type of relationship</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of relationship</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
-</dl>
-</li>
-</ul>
-<a id="updateRelatedElementsInStore(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<a id="updateRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1068,7 +1062,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;updateRelatedElementsInStore&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;relationshipGUID,
                                   boolean&nbsp;replaceProperties,
-                                  org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties)
+                                  boolean&nbsp;forLineage,
+                                  boolean&nbsp;forDuplicateProcessing,
+                                  org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
+                                  java.util.Date&nbsp;effectiveTime)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1079,7 +1076,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
 <dd><code>replaceProperties</code> - flag to indicate whether to completely replace the existing properties with the new properties, or just update
                           the individual properties specified on the request.</dd>
+<dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
+<dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
 <dd><code>properties</code> - new properties for the relationship</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way; the properties are
                                     not valid for this type of relationship</dd>
@@ -1088,27 +1088,33 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="updateRelatedElementsStatusInStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<a id="updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>updateRelatedElementsStatusInStore</h4>
-<pre class="methodSignature">void&nbsp;updateRelatedElementsStatusInStore&#8203;(java.lang.String&nbsp;userId,
-                                        java.lang.String&nbsp;relationshipGUID,
-                                        java.util.Date&nbsp;effectiveFrom,
-                                        java.util.Date&nbsp;effectiveTo)
-                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<h4>updateRelatedElementsEffectivityInStore</h4>
+<pre class="methodSignature">void&nbsp;updateRelatedElementsEffectivityInStore&#8203;(java.lang.String&nbsp;userId,
+                                             java.lang.String&nbsp;relationshipGUID,
+                                             boolean&nbsp;forLineage,
+                                             boolean&nbsp;forDuplicateProcessing,
+                                             java.util.Date&nbsp;effectiveFrom,
+                                             java.util.Date&nbsp;effectiveTo,
+                                             java.util.Date&nbsp;effectiveTime)
+                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the effectivity dates of a specific relationship between metadata elements.
  The effectivity dates control the visibility of the classification through specific APIs.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
+<dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
+<dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
 <dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - either the unique identifier or the status are invalid in some way</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update this element</dd>
@@ -1116,14 +1122,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="deleteRelatedElementsInStore(java.lang.String,java.lang.String)">
+<a id="deleteRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>deleteRelatedElementsInStore</h4>
 <pre class="methodSignature">void&nbsp;deleteRelatedElementsInStore&#8203;(java.lang.String&nbsp;userId,
-                                  java.lang.String&nbsp;relationshipGUID)
+                                  java.lang.String&nbsp;relationshipGUID,
+                                  boolean&nbsp;forLineage,
+                                  boolean&nbsp;forDuplicateProcessing,
+                                  java.util.Date&nbsp;effectiveTime)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1132,6 +1141,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>relationshipGUID</code> - unique identifier of the relationship to delete</dd>
+<dd><code>forLineage</code> - the query is to support lineage retrieval</dd>
+<dd><code>forDuplicateProcessing</code> - the query is for duplicate processing and so must not deduplicate</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier of the relationship is null or invalid in some way</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to delete this relationship</dd>

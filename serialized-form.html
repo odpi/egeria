@@ -1681,6 +1681,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre><a href="org/odpi/openmetadata/accessservices/assetmanager/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a> lineageMappingHeader</pre>
 </li>
 <li class="blockList">
+<h4>lineageMappingProperties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a> lineageMappingProperties</pre>
+</li>
+<li class="blockList">
 <h4>sourceElement</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/assetmanager/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a> sourceElement</pre>
 </li>
@@ -1827,6 +1831,38 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>processProperties</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a> processProperties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelationshipElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelationshipElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>end1GUID</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a> end1GUID</pre>
+</li>
+<li class="blockList">
+<h4>end2GUID</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a> end2GUID</pre>
+</li>
+<li class="blockList">
+<h4>relationshipHeader</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a> relationshipHeader</pre>
+</li>
+<li class="blockListLast">
+<h4>relationshipProperties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> relationshipProperties</pre>
 </li>
 </ul>
 </li>
@@ -1983,6 +2019,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <section role="region">
 <h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.assetmanager.properties</h2>
 <ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.AssetConnectionProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/AssetConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.AssetConnectionProperties</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>assetSummary</h4>
+<pre>java.lang.String assetSummary</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties">
 <!--   -->
 </a>
@@ -2129,6 +2185,18 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
+<h4>connectorFrameworkName</h4>
+<pre>java.lang.String connectorFrameworkName</pre>
+</li>
+<li class="blockList">
+<h4>connectorInterfaceLanguage</h4>
+<pre>java.lang.String connectorInterfaceLanguage</pre>
+</li>
+<li class="blockList">
+<h4>connectorInterfaces</h4>
+<pre>java.util.List&lt;java.lang.String&gt; connectorInterfaces</pre>
+</li>
+<li class="blockList">
 <h4>connectorProviderClassName</h4>
 <pre>java.lang.String connectorProviderClassName</pre>
 </li>
@@ -2141,6 +2209,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>java.lang.String displayName</pre>
 </li>
 <li class="blockList">
+<h4>expectedDataFormat</h4>
+<pre>java.lang.String expectedDataFormat</pre>
+</li>
+<li class="blockList">
 <h4>recognizedAdditionalProperties</h4>
 <pre>java.util.List&lt;java.lang.String&gt; recognizedAdditionalProperties</pre>
 </li>
@@ -2148,9 +2220,29 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>recognizedConfigurationProperties</h4>
 <pre>java.util.List&lt;java.lang.String&gt; recognizedConfigurationProperties</pre>
 </li>
-<li class="blockListLast">
+<li class="blockList">
 <h4>recognizedSecuredProperties</h4>
 <pre>java.util.List&lt;java.lang.String&gt; recognizedSecuredProperties</pre>
+</li>
+<li class="blockList">
+<h4>supportedAssetTypeName</h4>
+<pre>java.lang.String supportedAssetTypeName</pre>
+</li>
+<li class="blockList">
+<h4>targetTechnologyInterfaces</h4>
+<pre>java.util.List&lt;java.lang.String&gt; targetTechnologyInterfaces</pre>
+</li>
+<li class="blockList">
+<h4>targetTechnologyName</h4>
+<pre>java.lang.String targetTechnologyName</pre>
+</li>
+<li class="blockList">
+<h4>targetTechnologySource</h4>
+<pre>java.lang.String targetTechnologySource</pre>
+</li>
+<li class="blockListLast">
+<h4>targetTechnologyVersions</h4>
+<pre>java.util.List&lt;java.lang.String&gt; targetTechnologyVersions</pre>
 </li>
 </ul>
 </li>
@@ -2224,6 +2316,30 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.DataContentForDataSetProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/DataContentForDataSetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.DataContentForDataSetProperties</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>query</h4>
+<pre>java.lang.String query</pre>
+</li>
+<li class="blockListLast">
+<h4>queryId</h4>
+<pre>java.lang.String queryId</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.DataFlowProperties">
 <!--   -->
 </a>
@@ -2260,6 +2376,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
 </dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>formula</h4>
+<pre>java.lang.String formula</pre>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.DataStoreProperties">
 <!--   -->
@@ -2336,6 +2463,34 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>deploymentTime</h4>
 <pre>java.util.Date deploymentTime</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.EmbeddedConnectionProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/EmbeddedConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.EmbeddedConnectionProperties</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>arguments</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; arguments</pre>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+</li>
+<li class="blockListLast">
+<h4>position</h4>
+<pre>int position</pre>
 </li>
 </ul>
 </li>
@@ -2437,6 +2592,54 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
 </dl>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>externalIdentifier</h4>
+<pre>java.lang.String externalIdentifier</pre>
+</li>
+<li class="blockList">
+<h4>externalIdentifierName</h4>
+<pre>java.lang.String externalIdentifierName</pre>
+</li>
+<li class="blockList">
+<h4>externalIdentifierSource</h4>
+<pre>java.lang.String externalIdentifierSource</pre>
+</li>
+<li class="blockList">
+<h4>externalIdentifierUsage</h4>
+<pre>java.lang.String externalIdentifierUsage</pre>
+</li>
+<li class="blockList">
+<h4>keyPattern</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a> keyPattern</pre>
+</li>
+<li class="blockList">
+<h4>mappingProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; mappingProperties</pre>
+</li>
+<li class="blockList">
+<h4>synchronizationDescription</h4>
+<pre>java.lang.String synchronizationDescription</pre>
+</li>
+<li class="blockListLast">
+<h4>synchronizationDirection</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/properties/SynchronizationDirection.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">SynchronizationDirection</a> synchronizationDirection</pre>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties">
 <!--   -->
@@ -2557,7 +2760,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -2649,7 +2852,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/GlossaryTermCategorization.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/GlossaryTermCategorization.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -2737,7 +2940,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/GlossaryTermRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/GlossaryTermRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -3026,6 +3229,30 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockListLast">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.LiteralSchemaTypeProperties">
 <!--   -->
 </a>
@@ -3101,7 +3328,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -3114,41 +3341,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>assetManagerGUID</h4>
 <pre>java.lang.String assetManagerGUID</pre>
 </li>
-<li class="blockList">
+<li class="blockListLast">
 <h4>assetManagerName</h4>
 <pre>java.lang.String assetManagerName</pre>
-</li>
-<li class="blockList">
-<h4>externalIdentifier</h4>
-<pre>java.lang.String externalIdentifier</pre>
-</li>
-<li class="blockList">
-<h4>externalIdentifierName</h4>
-<pre>java.lang.String externalIdentifierName</pre>
-</li>
-<li class="blockList">
-<h4>externalIdentifierSource</h4>
-<pre>java.lang.String externalIdentifierSource</pre>
-</li>
-<li class="blockList">
-<h4>externalIdentifierUsage</h4>
-<pre>java.lang.String externalIdentifierUsage</pre>
-</li>
-<li class="blockList">
-<h4>keyPattern</h4>
-<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a> keyPattern</pre>
-</li>
-<li class="blockList">
-<h4>mappingProperties</h4>
-<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; mappingProperties</pre>
-</li>
-<li class="blockList">
-<h4>synchronizationDescription</h4>
-<pre>java.lang.String synchronizationDescription</pre>
-</li>
-<li class="blockListLast">
-<h4>synchronizationDirection</h4>
-<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/properties/SynchronizationDirection.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">SynchronizationDirection</a> synchronizationDirection</pre>
 </li>
 </ul>
 </li>
@@ -3214,7 +3409,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -3234,6 +3429,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>qualifiedName</h4>
 <pre>java.lang.String qualifiedName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentProperties</a> extends <a href="org/odpi/openmetadata/accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>processContainmentType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/assetmanager/properties/ProcessContainmentType.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessContainmentType</a> processContainmentType</pre>
 </li>
 </ul>
 </li>
@@ -3351,9 +3566,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>effectiveFrom</h4>
 <pre>java.util.Date effectiveFrom</pre>
 </li>
-<li class="blockListLast">
+<li class="blockList">
 <h4>effectiveTo</h4>
 <pre>java.util.Date effectiveTo</pre>
+</li>
+<li class="blockListLast">
+<h4>extendedProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; extendedProperties</pre>
 </li>
 </ul>
 </li>
@@ -3510,10 +3729,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>queries</h4>
 <pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/assetmanager/properties/QueryTargetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">QueryTargetProperties</a>&gt; queries</pre>
-</li>
-<li class="blockList">
-<h4>usage</h4>
-<pre>java.lang.String usage</pre>
 </li>
 <li class="blockListLast">
 <h4>versionNumber</h4>
@@ -7897,7 +8112,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>databaseImportedFrom</h4>
 <pre>java.lang.String databaseImportedFrom</pre>
-<div class="block">The the source (typically connection name) of the database information</div>
+<div class="block">The  source (typically connection name) of the database information</div>
 </li>
 <li class="blockList">
 <h4>databaseInstance</h4>
@@ -18202,6 +18417,30 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>1L</dd>
 </dl>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/itinfrastructure/properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties</a> extends <a href="org/odpi/openmetadata/accessservices/itinfrastructure/properties/ConfigurationItemRelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ConfigurationItemRelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockListLast">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.itinfrastructure.properties.PlatformDeploymentProperties">
 <!--   -->
 </a>
@@ -24590,7 +24829,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.LastAttachment">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/properties/LastAttachment.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.LastAttachment</a> extends org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/commonservices/ocf/metadatamanagement/properties/LastAttachment.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.LastAttachment</a> extends org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -25253,8 +25492,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockListLast">
-<h4>elementHeaderBean</h4>
-<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader elementHeaderBean</pre>
+<h4>elementBaseBean</h4>
+<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase elementBaseBean</pre>
 </li>
 </ul>
 </li>

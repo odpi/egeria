@@ -226,176 +226,202 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createExternalReference(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">createExternalReference</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createExternalReference(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">createExternalReference</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
                        java.lang.String&nbsp;assetManagerName,
                        boolean&nbsp;assetManagerIsHome,
-                       java.lang.String&nbsp;referenceExternalIdentifier,
-                       java.lang.String&nbsp;referenceExternalIdentifierName,
-                       java.lang.String&nbsp;referenceExternalIdentifierUsage,
-                       java.lang.String&nbsp;referenceExternalIdentifierSource,
-                       <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;referenceExternalIdentifierKeyPattern,
-                       java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                       <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                        java.lang.String&nbsp;anchorGUID,
                        <a href="../properties/ExternalReferenceProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
-<div class="block">Create a definition of a external reference.</div>
+<div class="block">Create a definition of an external reference.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">deleteExternalReference</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">deleteExternalReference</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
                        java.lang.String&nbsp;assetManagerName,
                        java.lang.String&nbsp;externalReferenceGUID,
-                       java.lang.String&nbsp;referenceExternalIdentifier)</code></th>
+                       java.lang.String&nbsp;referenceExternalIdentifier,
+                       java.util.Date&nbsp;effectiveTime,
+                       boolean&nbsp;forLineage,
+                       boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
-<div class="block">Remove the definition of a external reference.</div>
+<div class="block">Remove the definition of an external reference.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">findExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">findExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;assetManagerGUID,
                       java.lang.String&nbsp;assetManagerName,
                       java.lang.String&nbsp;searchString,
-                      java.util.Date&nbsp;effectiveTime,
                       int&nbsp;startFrom,
-                      int&nbsp;pageSize)</code></th>
+                      int&nbsp;pageSize,
+                      java.util.Date&nbsp;effectiveTime,
+                      boolean&nbsp;forLineage,
+                      boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Find the external references that contain the search string - which may contain wildcards.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceElement</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getExternalReferenceByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getExternalReferenceByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;assetManagerGUID,
                           java.lang.String&nbsp;assetManagerName,
                           java.lang.String&nbsp;externalReferenceGUID,
-                          java.util.Date&nbsp;effectiveTime)</code></th>
+                          java.util.Date&nbsp;effectiveTime,
+                          boolean&nbsp;forLineage,
+                          boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Return information about a specific external reference.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferences(java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;assetManagerGUID,
                      java.lang.String&nbsp;assetManagerName,
-                     java.util.Date&nbsp;effectiveTime,
                      int&nbsp;startFrom,
-                     int&nbsp;pageSize)</code></th>
+                     int&nbsp;pageSize,
+                     java.util.Date&nbsp;effectiveTime,
+                     boolean&nbsp;forLineage,
+                     boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external references sorted in open metadata.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesById</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferencesById</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;assetManagerGUID,
                          java.lang.String&nbsp;assetManagerName,
                          java.lang.String&nbsp;resourceId,
-                         java.util.Date&nbsp;effectiveTime,
                          int&nbsp;startFrom,
-                         int&nbsp;pageSize)</code></th>
+                         int&nbsp;pageSize,
+                         java.util.Date&nbsp;effectiveTime,
+                         boolean&nbsp;forLineage,
+                         boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external references for this resourceId.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferencesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;assetManagerGUID,
                            java.lang.String&nbsp;assetManagerName,
                            java.lang.String&nbsp;name,
-                           java.util.Date&nbsp;effectiveTime,
                            int&nbsp;startFrom,
-                           int&nbsp;pageSize)</code></th>
+                           int&nbsp;pageSize,
+                           java.util.Date&nbsp;effectiveTime,
+                           boolean&nbsp;forLineage,
+                           boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external references for this name.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesByURL</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferencesByURL</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;assetManagerGUID,
                           java.lang.String&nbsp;assetManagerName,
                           java.lang.String&nbsp;url,
-                          java.util.Date&nbsp;effectiveTime,
                           int&nbsp;startFrom,
-                          int&nbsp;pageSize)</code></th>
+                          int&nbsp;pageSize,
+                          java.util.Date&nbsp;effectiveTime,
+                          boolean&nbsp;forLineage,
+                          boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external references for this URL.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesForAssetManager</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferencesForAssetManager</a></span>&#8203;(java.lang.String&nbsp;userId,
                                     java.lang.String&nbsp;assetManagerGUID,
                                     java.lang.String&nbsp;assetManagerName,
-                                    java.util.Date&nbsp;effectiveTime,
                                     int&nbsp;startFrom,
-                                    int&nbsp;pageSize)</code></th>
+                                    int&nbsp;pageSize,
+                                    java.util.Date&nbsp;effectiveTime,
+                                    boolean&nbsp;forLineage,
+                                    boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external reference created on behalf of the named asset manager.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">linkExternalReferenceToElement</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties,java.util.Date,boolean,boolean)">linkExternalReferenceToElement</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;assetManagerGUID,
                               java.lang.String&nbsp;assetManagerName,
                               boolean&nbsp;assetManagerIsHome,
                               java.lang.String&nbsp;attachedToGUID,
                               java.lang.String&nbsp;externalReferenceGUID,
-                              <a href="../properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a>&nbsp;linkProperties)</code></th>
+                              <a href="../properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a>&nbsp;linkProperties,
+                              java.util.Date&nbsp;effectiveTime,
+                              boolean&nbsp;forLineage,
+                              boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Link an external reference to an object.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ExternalReferenceLinkElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceLinkElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">retrieveAttachedExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">retrieveAttachedExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;assetManagerGUID,
                                   java.lang.String&nbsp;assetManagerName,
                                   java.lang.String&nbsp;attachedToGUID,
-                                  java.util.Date&nbsp;effectiveTime,
                                   int&nbsp;startFrom,
-                                  int&nbsp;pageSize)</code></th>
+                                  int&nbsp;pageSize,
+                                  java.util.Date&nbsp;effectiveTime,
+                                  boolean&nbsp;forLineage,
+                                  boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of external references attached to the supplied object.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">unlinkExternalReferenceFromElement</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">unlinkExternalReferenceFromElement</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;assetManagerGUID,
                                   java.lang.String&nbsp;assetManagerName,
-                                  java.lang.String&nbsp;externalReferenceLinkGUID)</code></th>
+                                  java.lang.String&nbsp;externalReferenceLinkGUID,
+                                  java.util.Date&nbsp;effectiveTime,
+                                  boolean&nbsp;forLineage,
+                                  boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
-<div class="block">Remove the link between a external reference and an element.</div>
+<div class="block">Remove the link between an external reference and an element.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">updateExternalReference</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties,java.util.Date,boolean,boolean)">updateExternalReference</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
                        java.lang.String&nbsp;assetManagerName,
                        java.lang.String&nbsp;externalReferenceGUID,
                        java.lang.String&nbsp;referenceExternalIdentifier,
                        boolean&nbsp;isMergeUpdate,
-                       <a href="../properties/ExternalReferenceProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceProperties</a>&nbsp;properties)</code></th>
+                       <a href="../properties/ExternalReferenceProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceProperties</a>&nbsp;properties,
+                       java.util.Date&nbsp;effectiveTime,
+                       boolean&nbsp;forLineage,
+                       boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
-<div class="block">Update the definition of a external reference.</div>
+<div class="block">Update the definition of an external reference.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalReferenceToElementLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">updateExternalReferenceToElementLink</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalReferenceToElementLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties,java.util.Date,boolean,boolean)">updateExternalReferenceToElementLink</a></span>&#8203;(java.lang.String&nbsp;userId,
                                     java.lang.String&nbsp;assetManagerGUID,
                                     java.lang.String&nbsp;assetManagerName,
                                     java.lang.String&nbsp;externalReferenceLinkGUID,
-                                    <a href="../properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a>&nbsp;linkProperties)</code></th>
+                                    <a href="../properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a>&nbsp;linkProperties,
+                                    java.util.Date&nbsp;effectiveTime,
+                                    boolean&nbsp;forLineage,
+                                    boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Update the link between an external reference to an object.</div>
 </td>
@@ -554,7 +580,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createExternalReference(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">
+<a id="createExternalReference(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -564,35 +590,25 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                                 java.lang.String&nbsp;assetManagerGUID,
                                                 java.lang.String&nbsp;assetManagerName,
                                                 boolean&nbsp;assetManagerIsHome,
-                                                java.lang.String&nbsp;referenceExternalIdentifier,
-                                                java.lang.String&nbsp;referenceExternalIdentifierName,
-                                                java.lang.String&nbsp;referenceExternalIdentifierUsage,
-                                                java.lang.String&nbsp;referenceExternalIdentifierSource,
-                                                <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;referenceExternalIdentifierKeyPattern,
-                                                java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                                <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                                 java.lang.String&nbsp;anchorGUID,
                                                 <a href="../properties/ExternalReferenceProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceProperties</a>&nbsp;properties)
                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create a definition of a external reference.</div>
+<div class="block">Create a definition of an external reference.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#createExternalReference(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">createExternalReference</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#createExternalReference(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">createExternalReference</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this asset</dd>
-<dd><code>referenceExternalIdentifier</code> - unique identifier of the external reference in the external asset manager</dd>
-<dd><code>referenceExternalIdentifierName</code> - name of property for the external identifier in the external asset manager</dd>
-<dd><code>referenceExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external asset manager</dd>
-<dd><code>referenceExternalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>referenceExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external asset manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>anchorGUID</code> - optional element to link the external reference to that will act as an anchor - that is, this external reference
                    will be deleted when the element is deleted (once the external reference is linked to the anchor).</dd>
-<dd><code>properties</code> - properties for a external reference</dd>
+<dd><code>properties</code> - properties for an external reference</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the external reference</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -602,7 +618,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="updateExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">
+<a id="updateExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -614,14 +630,17 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                     java.lang.String&nbsp;externalReferenceGUID,
                                     java.lang.String&nbsp;referenceExternalIdentifier,
                                     boolean&nbsp;isMergeUpdate,
-                                    <a href="../properties/ExternalReferenceProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceProperties</a>&nbsp;properties)
+                                    <a href="../properties/ExternalReferenceProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceProperties</a>&nbsp;properties,
+                                    java.util.Date&nbsp;effectiveTime,
+                                    boolean&nbsp;forLineage,
+                                    boolean&nbsp;forDuplicateProcessing)
                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Update the definition of a external reference.</div>
+<div class="block">Update the definition of an external reference.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#updateExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties)">updateExternalReference</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#updateExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties,java.util.Date,boolean,boolean)">updateExternalReference</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -630,6 +649,9 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 <dd><code>referenceExternalIdentifier</code> - unique identifier of the external reference in the external asset manager</dd>
 <dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or replaced with null?</dd>
 <dd><code>properties</code> - properties to change</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -637,7 +659,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="deleteExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="deleteExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -647,20 +669,26 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                     java.lang.String&nbsp;assetManagerGUID,
                                     java.lang.String&nbsp;assetManagerName,
                                     java.lang.String&nbsp;externalReferenceGUID,
-                                    java.lang.String&nbsp;referenceExternalIdentifier)
+                                    java.lang.String&nbsp;referenceExternalIdentifier,
+                                    java.util.Date&nbsp;effectiveTime,
+                                    boolean&nbsp;forLineage,
+                                    boolean&nbsp;forDuplicateProcessing)
                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Remove the definition of a external reference.</div>
+<div class="block">Remove the definition of an external reference.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#deleteExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">deleteExternalReference</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#deleteExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">deleteExternalReference</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>externalReferenceGUID</code> - unique identifier of external reference</dd>
 <dd><code>referenceExternalIdentifier</code> - unique identifier of the external reference in the external asset manager</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid or userId is null; guid is not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -668,7 +696,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">
+<a id="linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -680,14 +708,17 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                                        boolean&nbsp;assetManagerIsHome,
                                                        java.lang.String&nbsp;attachedToGUID,
                                                        java.lang.String&nbsp;externalReferenceGUID,
-                                                       <a href="../properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a>&nbsp;linkProperties)
+                                                       <a href="../properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a>&nbsp;linkProperties,
+                                                       java.util.Date&nbsp;effectiveTime,
+                                                       boolean&nbsp;forLineage,
+                                                       boolean&nbsp;forDuplicateProcessing)
                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Link an external reference to an object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">linkExternalReferenceToElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties,java.util.Date,boolean,boolean)">linkExternalReferenceToElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -696,6 +727,9 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 <dd><code>attachedToGUID</code> - object linked to external references.</dd>
 <dd><code>linkProperties</code> - description for the reference from the perspective of the object that the reference is being attached to.</dd>
 <dd><code>externalReferenceGUID</code> - unique identifier (guid) of the external reference details.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Unique identifier for new relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -705,7 +739,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="updateExternalReferenceToElementLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">
+<a id="updateExternalReferenceToElementLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -715,20 +749,26 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                                  java.lang.String&nbsp;assetManagerGUID,
                                                  java.lang.String&nbsp;assetManagerName,
                                                  java.lang.String&nbsp;externalReferenceLinkGUID,
-                                                 <a href="../properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a>&nbsp;linkProperties)
+                                                 <a href="../properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalReferenceLinkProperties</a>&nbsp;linkProperties,
+                                                 java.util.Date&nbsp;effectiveTime,
+                                                 boolean&nbsp;forLineage,
+                                                 boolean&nbsp;forDuplicateProcessing)
                                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Update the link between an external reference to an object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#updateExternalReferenceToElementLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties)">updateExternalReferenceToElementLink</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#updateExternalReferenceToElementLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties,java.util.Date,boolean,boolean)">updateExternalReferenceToElementLink</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>linkProperties</code> - description for the reference from the perspective of the object that the reference is being attached to.</dd>
 <dd><code>externalReferenceLinkGUID</code> - unique identifier (guid) of the external reference details.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - problem with the GUID or the external references are not correctly specified, or are null.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the server is not available.</dd>
@@ -736,7 +776,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -745,19 +785,25 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 <pre class="methodSignature">public&nbsp;void&nbsp;unlinkExternalReferenceFromElement&#8203;(java.lang.String&nbsp;userId,
                                                java.lang.String&nbsp;assetManagerGUID,
                                                java.lang.String&nbsp;assetManagerName,
-                                               java.lang.String&nbsp;externalReferenceLinkGUID)
+                                               java.lang.String&nbsp;externalReferenceLinkGUID,
+                                               java.util.Date&nbsp;effectiveTime,
+                                               boolean&nbsp;forLineage,
+                                               boolean&nbsp;forDuplicateProcessing)
                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Remove the link between a external reference and an element.  If the element is its anchor, the external reference is removed.</div>
+<div class="block">Remove the link between an external reference and an element.  If the element is its anchor, the external reference is removed.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">unlinkExternalReferenceFromElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">unlinkExternalReferenceFromElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>externalReferenceLinkGUID</code> - identifier of the external reference relationship.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - problem with the GUID or the external references are not correctly specified, or are null.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the server is not available.</dd>
@@ -765,7 +811,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="getExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
+<a id="getExternalReferences(java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -774,23 +820,27 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceElement</a>&gt;&nbsp;getExternalReferences&#8203;(java.lang.String&nbsp;userId,
                                                                       java.lang.String&nbsp;assetManagerGUID,
                                                                       java.lang.String&nbsp;assetManagerName,
-                                                                      java.util.Date&nbsp;effectiveTime,
                                                                       int&nbsp;startFrom,
-                                                                      int&nbsp;pageSize)
+                                                                      int&nbsp;pageSize,
+                                                                      java.util.Date&nbsp;effectiveTime,
+                                                                      boolean&nbsp;forLineage,
+                                                                      boolean&nbsp;forDuplicateProcessing)
                                                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Retrieve the list of external references sorted in open metadata.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferences</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferences(java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferences</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>links to addition information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -800,7 +850,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
+<a id="getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -810,24 +860,28 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                                                           java.lang.String&nbsp;assetManagerGUID,
                                                                           java.lang.String&nbsp;assetManagerName,
                                                                           java.lang.String&nbsp;resourceId,
-                                                                          java.util.Date&nbsp;effectiveTime,
                                                                           int&nbsp;startFrom,
-                                                                          int&nbsp;pageSize)
+                                                                          int&nbsp;pageSize,
+                                                                          java.util.Date&nbsp;effectiveTime,
+                                                                          boolean&nbsp;forLineage,
+                                                                          boolean&nbsp;forDuplicateProcessing)
                                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Retrieve the list of external references for this resourceId.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesById</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferencesById(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferencesById</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>resourceId</code> - unique reference id assigned by the resource owner (supports wildcards). This is the qualified name of the entity</dd>
-<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>links to addition information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -837,7 +891,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
+<a id="getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -847,24 +901,28 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                                                            java.lang.String&nbsp;assetManagerGUID,
                                                                            java.lang.String&nbsp;assetManagerName,
                                                                            java.lang.String&nbsp;url,
-                                                                           java.util.Date&nbsp;effectiveTime,
                                                                            int&nbsp;startFrom,
-                                                                           int&nbsp;pageSize)
+                                                                           int&nbsp;pageSize,
+                                                                           java.util.Date&nbsp;effectiveTime,
+                                                                           boolean&nbsp;forLineage,
+                                                                           boolean&nbsp;forDuplicateProcessing)
                                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Retrieve the list of external references for this URL.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesByURL</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferencesByURL(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferencesByURL</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>url</code> - URL of the external resource.</dd>
-<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>links to addition information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -874,7 +932,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="getExternalReferencesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
+<a id="getExternalReferencesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -884,24 +942,28 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                                                             java.lang.String&nbsp;assetManagerGUID,
                                                                             java.lang.String&nbsp;assetManagerName,
                                                                             java.lang.String&nbsp;name,
-                                                                            java.util.Date&nbsp;effectiveTime,
                                                                             int&nbsp;startFrom,
-                                                                            int&nbsp;pageSize)
+                                                                            int&nbsp;pageSize,
+                                                                            java.util.Date&nbsp;effectiveTime,
+                                                                            boolean&nbsp;forLineage,
+                                                                            boolean&nbsp;forDuplicateProcessing)
                                                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Retrieve the list of external references for this name.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferencesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesByName</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferencesByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferencesByName</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>name</code> - qualifiedName or displayName of the external resource.</dd>
-<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>links to addition information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -911,7 +973,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
+<a id="getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -920,23 +982,27 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ExternalReferenceElement</a>&gt;&nbsp;getExternalReferencesForAssetManager&#8203;(java.lang.String&nbsp;userId,
                                                                                      java.lang.String&nbsp;assetManagerGUID,
                                                                                      java.lang.String&nbsp;assetManagerName,
-                                                                                     java.util.Date&nbsp;effectiveTime,
                                                                                      int&nbsp;startFrom,
-                                                                                     int&nbsp;pageSize)
+                                                                                     int&nbsp;pageSize,
+                                                                                     java.util.Date&nbsp;effectiveTime,
+                                                                                     boolean&nbsp;forLineage,
+                                                                                     boolean&nbsp;forDuplicateProcessing)
                                                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the list of external reference created on behalf of the named asset manager.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getExternalReferencesForAssetManager</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferencesForAssetManager(java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getExternalReferencesForAssetManager</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -946,7 +1012,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
+<a id="findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -956,24 +1022,28 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                                                        java.lang.String&nbsp;assetManagerGUID,
                                                                        java.lang.String&nbsp;assetManagerName,
                                                                        java.lang.String&nbsp;searchString,
-                                                                       java.util.Date&nbsp;effectiveTime,
                                                                        int&nbsp;startFrom,
-                                                                       int&nbsp;pageSize)
+                                                                       int&nbsp;pageSize,
+                                                                       java.util.Date&nbsp;effectiveTime,
+                                                                       boolean&nbsp;forLineage,
+                                                                       boolean&nbsp;forDuplicateProcessing)
                                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Find the external references that contain the search string - which may contain wildcards.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">findExternalReferences</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#findExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">findExternalReferences</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>searchString</code> - regular expression (RegEx) to search for</dd>
-<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>links to addition information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -983,7 +1053,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">
+<a id="retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -993,24 +1063,28 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                                                                        java.lang.String&nbsp;assetManagerGUID,
                                                                                        java.lang.String&nbsp;assetManagerName,
                                                                                        java.lang.String&nbsp;attachedToGUID,
-                                                                                       java.util.Date&nbsp;effectiveTime,
                                                                                        int&nbsp;startFrom,
-                                                                                       int&nbsp;pageSize)
+                                                                                       int&nbsp;pageSize,
+                                                                                       java.util.Date&nbsp;effectiveTime,
+                                                                                       boolean&nbsp;forLineage,
+                                                                                       boolean&nbsp;forDuplicateProcessing)
                                                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Retrieve the list of external references attached to the supplied object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">retrieveAttachedExternalReferences</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#retrieveAttachedExternalReferences(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">retrieveAttachedExternalReferences</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>attachedToGUID</code> - object linked to external reference.</dd>
-<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>links to addition information.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1020,7 +1094,7 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
 </dl>
 </li>
 </ul>
-<a id="getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
+<a id="getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -1030,20 +1104,24 @@ implements <a href="../api/ExternalReferencesInterface.html" title="interface in
                                                            java.lang.String&nbsp;assetManagerGUID,
                                                            java.lang.String&nbsp;assetManagerName,
                                                            java.lang.String&nbsp;externalReferenceGUID,
-                                                           java.util.Date&nbsp;effectiveTime)
+                                                           java.util.Date&nbsp;effectiveTime,
+                                                           boolean&nbsp;forLineage,
+                                                           boolean&nbsp;forDuplicateProcessing)
                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return information about a specific external reference.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getExternalReferenceByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
+<dd><code><a href="../api/ExternalReferencesInterface.html#getExternalReferenceByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getExternalReferenceByGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ExternalReferencesInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">ExternalReferencesInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>externalReferenceGUID</code> - unique identifier for the external reference</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the external reference</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

@@ -188,16 +188,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties)">createGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties)">createGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;assetManagerGUID,
                           java.lang.String&nbsp;assetManagerName,
                           java.lang.String&nbsp;typeName,
-                          java.lang.String&nbsp;definitionExternalIdentifier,
-                          java.lang.String&nbsp;definitionExternalIdentifierName,
-                          java.lang.String&nbsp;definitionExternalIdentifierUsage,
-                          java.lang.String&nbsp;definitionExternalIdentifierSource,
-                          <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;definitionExternalIdentifierKeyPattern,
-                          java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                          <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                           <a href="../properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceDefinitionProperties</a>&nbsp;definitionProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new definition.</div>
@@ -421,7 +416,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties)">
+<a id="createGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -431,12 +426,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                             java.lang.String&nbsp;assetManagerGUID,
                                             java.lang.String&nbsp;assetManagerName,
                                             java.lang.String&nbsp;typeName,
-                                            java.lang.String&nbsp;definitionExternalIdentifier,
-                                            java.lang.String&nbsp;definitionExternalIdentifierName,
-                                            java.lang.String&nbsp;definitionExternalIdentifierUsage,
-                                            java.lang.String&nbsp;definitionExternalIdentifierSource,
-                                            <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;definitionExternalIdentifierKeyPattern,
-                                            java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                            <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                             <a href="../properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">GovernanceDefinitionProperties</a>&nbsp;definitionProperties)
                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -445,14 +435,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>definitionExternalIdentifier</code> - unique identifier of the definition in the external asset manager</dd>
-<dd><code>definitionExternalIdentifierName</code> - name of property for the external identifier in the external asset manager</dd>
-<dd><code>definitionExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external asset manager</dd>
-<dd><code>definitionExternalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>definitionExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external asset manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>typeName</code> - type of definition</dd>
 <dd><code>definitionProperties</code> - properties of the definition</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -483,8 +468,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>definitionGUID</code> - unique identifier of the definition to update</dd>
 <dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or replaced with null?</dd>
 <dd><code>definitionProperties</code> - properties to update</dd>
@@ -512,8 +497,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>definitionGUID</code> - unique identifier of the definition to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid is null or not known</dd>
@@ -542,8 +527,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>definitionOneGUID</code> - unique identifier of the first definition</dd>
 <dd><code>definitionTwoGUID</code> - unique identifier of the second definition</dd>
 <dd><code>description</code> - description of their relationship</dd>
@@ -572,8 +557,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>definitionOneGUID</code> - unique identifier of the first definition</dd>
 <dd><code>definitionTwoGUID</code> - unique identifier of the second definition</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -603,8 +588,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
 <dd><code>delegatedToDefinitionGUID</code> - unique identifier of the governance definition that is delegated to</dd>
 <dd><code>rationale</code> - description of how the delegation supports the definition</dd>
@@ -633,8 +618,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
 <dd><code>delegatedToDefinitionGUID</code> - unique identifier of the governance definition that is delegated to</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -661,8 +646,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>definitionGUID</code> - identifier of the governance definition to retrieve</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the matching definition</dd>
@@ -690,8 +675,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>documentIdentifier</code> - identifier to search for</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties of the matching definition</dd>
@@ -721,8 +706,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>definitionGUID</code> - identifier of the governance definition to link</dd>
 <dd><code>elementGUID</code> - unique identifier of the metadata element to link</dd>
 <dd><code>methodName</code> - calling method</dd>
@@ -752,8 +737,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>definitionGUID</code> - identifier of the governance definition to link</dd>
 <dd><code>elementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>methodName</code> - calling method</dd>
@@ -784,8 +769,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>elementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>elementExternalIdentifier</code> - unique identifier of the element in the external asset manager</dd>
 <dd><code>subjectAreaName</code> - qualified name of subject area</dd>
@@ -816,8 +801,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>elementGUID</code> - unique identifier of the metadata element to update</dd>
 <dd><code>externalElementIdentifier</code> - unique identifier of the equivalent element in the external asset manager</dd>
 <dd><code>methodName</code> - calling method</dd>

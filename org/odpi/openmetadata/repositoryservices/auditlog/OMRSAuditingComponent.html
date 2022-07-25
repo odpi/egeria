@@ -143,7 +143,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 extends java.lang.Enum&lt;<a href="OMRSAuditingComponent.html" title="enum in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditingComponent</a>&gt;
 implements <a href="../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></pre>
 <div class="block">OMRSAuditingComponent provides identifying and background information about the components writing log records
- to the OMRS Audit log.  This is to help someone reading the OMRS Audit Log understand the records.</div>
+ to the OMRS Audit log.  This is to help a consumer understand the OMRS Audit Log records.</div>
 </li>
 </ul>
 </div>
@@ -345,7 +345,7 @@ implements <a href="../../frameworks/auditlog/ComponentDescription.html" title="
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getComponentWikiURL()">getComponentWikiURL</a></span>()</code></th>
 <td class="colLast">
-<div class="block">URL link to the wiki page that describes this component.</div>
+<div class="block">URL to the wiki page that describes this component.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
@@ -806,7 +806,7 @@ not permitted.)</div>
 <h4>getComponentType</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getComponentType()</pre>
 <div class="block">Return the short description of the component. This is an English description.  Natural language support for
- these values can be added to UIs using a resource bundle indexed with the component Id.  This value is
+ these values can be added to UIs using a resource bundle indexed with the component id.  This value is
  provided as a default if the resource bundle is not available.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -823,7 +823,7 @@ not permitted.)</div>
 <li class="blockList">
 <h4>getComponentWikiURL</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getComponentWikiURL()</pre>
-<div class="block">URL link to the wiki page that describes this component.  This provides more information to the log reader
+<div class="block">URL to the wiki page that describes this component.  This provides more information to the log reader
  on the operation of the component.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>

@@ -150,27 +150,25 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">attachValidValueToSet</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">attachValidValueToSet</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;assetManagerGUID,
                      java.lang.String&nbsp;assetManagerName,
                      java.lang.String&nbsp;setGUID,
-                     java.lang.String&nbsp;validValueGUID)</code></th>
+                     java.lang.String&nbsp;validValueGUID,
+                     java.util.Date&nbsp;effectiveTime,
+                     boolean&nbsp;forLineage,
+                     boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Create a link between a valid value set or definition and a set.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createValidValueDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">createValidValueDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createValidValueDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">createValidValueDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;setGUID,
                           java.lang.String&nbsp;assetManagerGUID,
                           java.lang.String&nbsp;assetManagerName,
-                          java.lang.String&nbsp;validValueExternalIdentifier,
-                          java.lang.String&nbsp;validValueExternalIdentifierName,
-                          java.lang.String&nbsp;validValueExternalIdentifierUsage,
-                          java.lang.String&nbsp;validValueExternalIdentifierSource,
-                          <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;validValueExternalIdentifierKeyPattern,
-                          java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                          <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                           <a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new valid value definition.</div>
@@ -178,15 +176,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createValidValueSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">createValidValueSet</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createValidValueSet(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">createValidValueSet</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;assetManagerGUID,
                    java.lang.String&nbsp;assetManagerName,
-                   java.lang.String&nbsp;validValueExternalIdentifier,
-                   java.lang.String&nbsp;validValueExternalIdentifierName,
-                   java.lang.String&nbsp;validValueExternalIdentifierUsage,
-                   java.lang.String&nbsp;validValueExternalIdentifierSource,
-                   <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;validValueExternalIdentifierKeyPattern,
-                   java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                   <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                    <a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new valid value set.</div>
@@ -194,93 +187,117 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#detachValidValueFromSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">detachValidValueFromSet</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#detachValidValueFromSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">detachValidValueFromSet</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
                        java.lang.String&nbsp;assetManagerName,
                        java.lang.String&nbsp;setGUID,
-                       java.lang.String&nbsp;validValueGUID)</code></th>
+                       java.lang.String&nbsp;validValueGUID,
+                       java.util.Date&nbsp;effectiveTime,
+                       boolean&nbsp;forLineage,
+                       boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Remove the link between a valid value and a set it is a member of.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ValidValueElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findValidValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">findValidValues</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findValidValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">findValidValues</a></span>&#8203;(java.lang.String&nbsp;userId,
                java.lang.String&nbsp;assetManagerGUID,
                java.lang.String&nbsp;assetManagerName,
                java.lang.String&nbsp;searchString,
                int&nbsp;startFrom,
-               int&nbsp;pageSize)</code></th>
+               int&nbsp;pageSize,
+               java.util.Date&nbsp;effectiveTime,
+               boolean&nbsp;forLineage,
+               boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Locate valid values that match the search string.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ValidValueElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSetsForValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getSetsForValidValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSetsForValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getSetsForValidValue</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;assetManagerGUID,
                     java.lang.String&nbsp;assetManagerName,
                     java.lang.String&nbsp;validValueGUID,
                     int&nbsp;startFrom,
-                    int&nbsp;pageSize)</code></th>
+                    int&nbsp;pageSize,
+                    java.util.Date&nbsp;effectiveTime,
+                    boolean&nbsp;forLineage,
+                    boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Page through the list of valid value sets that a valid value definition/set belongs to.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ValidValueElement</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getValidValueByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getValidValueByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;assetManagerGUID,
                    java.lang.String&nbsp;assetManagerName,
-                   java.lang.String&nbsp;validValueGUID)</code></th>
+                   java.lang.String&nbsp;validValueGUID,
+                   java.util.Date&nbsp;effectiveTime,
+                   boolean&nbsp;forLineage,
+                   boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve a specific valid value from the repository.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ValidValueElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getValidValueByName</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getValidValueByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;assetManagerGUID,
                    java.lang.String&nbsp;assetManagerName,
                    java.lang.String&nbsp;validValueName,
                    int&nbsp;startFrom,
-                   int&nbsp;pageSize)</code></th>
+                   int&nbsp;pageSize,
+                   java.util.Date&nbsp;effectiveTime,
+                   boolean&nbsp;forLineage,
+                   boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Retrieve a specific valid value from the repository.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ValidValueElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueSetMembers(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">getValidValueSetMembers</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueSetMembers(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">getValidValueSetMembers</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;assetManagerGUID,
                        java.lang.String&nbsp;assetManagerName,
                        java.lang.String&nbsp;validValueSetGUID,
                        int&nbsp;startFrom,
-                       int&nbsp;pageSize)</code></th>
+                       int&nbsp;pageSize,
+                       java.util.Date&nbsp;effectiveTime,
+                       boolean&nbsp;forLineage,
+                       boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Page through the members of a valid value set.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeValidValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">removeValidValue</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetManagerGUID,
                 java.lang.String&nbsp;assetManagerName,
                 java.lang.String&nbsp;validValueGUID,
-                java.lang.String&nbsp;validValueExternalIdentifier)</code></th>
+                java.lang.String&nbsp;validValueExternalIdentifier,
+                java.util.Date&nbsp;effectiveTime,
+                boolean&nbsp;forLineage,
+                boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Remove the valid value form the repository.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">updateValidValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties,java.util.Date,boolean,boolean)">updateValidValue</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetManagerGUID,
                 java.lang.String&nbsp;assetManagerName,
                 java.lang.String&nbsp;validValueGUID,
                 java.lang.String&nbsp;validValueExternalIdentifier,
                 boolean&nbsp;isMergeUpdate,
-                <a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)</code></th>
+                <a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ValidValueProperties</a>&nbsp;validValueProperties,
+                java.util.Date&nbsp;effectiveTime,
+                boolean&nbsp;forLineage,
+                boolean&nbsp;forDuplicateProcessing)</code></th>
 <td class="colLast">
 <div class="block">Update the properties of the valid value.</div>
 </td>
@@ -302,7 +319,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createValidValueSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">
+<a id="createValidValueSet(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -311,12 +328,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">java.lang.String&nbsp;createValidValueSet&#8203;(java.lang.String&nbsp;userId,
                                      java.lang.String&nbsp;assetManagerGUID,
                                      java.lang.String&nbsp;assetManagerName,
-                                     java.lang.String&nbsp;validValueExternalIdentifier,
-                                     java.lang.String&nbsp;validValueExternalIdentifierName,
-                                     java.lang.String&nbsp;validValueExternalIdentifierUsage,
-                                     java.lang.String&nbsp;validValueExternalIdentifierSource,
-                                     <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;validValueExternalIdentifierKeyPattern,
-                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                     <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                      <a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)
                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -326,14 +338,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>validValueExternalIdentifier</code> - unique identifier of the valid value in the external asset manager</dd>
-<dd><code>validValueExternalIdentifierName</code> - name of property for the external identifier in the external asset manager</dd>
-<dd><code>validValueExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external asset manager</dd>
-<dd><code>validValueExternalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>validValueExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external asset manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>validValueProperties</code> - properties to store</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier for the new set</dd>
@@ -344,7 +351,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="createValidValueDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">
+<a id="createValidValueDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -354,12 +361,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                             java.lang.String&nbsp;setGUID,
                                             java.lang.String&nbsp;assetManagerGUID,
                                             java.lang.String&nbsp;assetManagerName,
-                                            java.lang.String&nbsp;validValueExternalIdentifier,
-                                            java.lang.String&nbsp;validValueExternalIdentifierName,
-                                            java.lang.String&nbsp;validValueExternalIdentifierUsage,
-                                            java.lang.String&nbsp;validValueExternalIdentifierSource,
-                                            <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;validValueExternalIdentifierKeyPattern,
-                                            java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                            <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                             <a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)
                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -369,14 +371,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user.</dd>
 <dd><code>setGUID</code> - unique identifier of the set to attach this to.</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>validValueExternalIdentifier</code> - unique identifier of the valid value in the external asset manager</dd>
-<dd><code>validValueExternalIdentifierName</code> - name of property for the external identifier in the external asset manager</dd>
-<dd><code>validValueExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external asset manager</dd>
-<dd><code>validValueExternalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>validValueExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external asset manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>validValueProperties</code> - properties to store</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier for the new definition</dd>
@@ -387,7 +384,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="updateValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties)">
+<a id="updateValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -399,7 +396,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                       java.lang.String&nbsp;validValueGUID,
                       java.lang.String&nbsp;validValueExternalIdentifier,
                       boolean&nbsp;isMergeUpdate,
-                      <a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)
+                      <a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ValidValueProperties</a>&nbsp;validValueProperties,
+                      java.util.Date&nbsp;effectiveTime,
+                      boolean&nbsp;forLineage,
+                      boolean&nbsp;forDuplicateProcessing)
                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -409,12 +409,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user.</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>validValueGUID</code> - unique identifier of the valid value.</dd>
 <dd><code>validValueExternalIdentifier</code> - unique identifier of the valid value in the external asset manager</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>validValueProperties</code> - properties to store</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
@@ -422,7 +425,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="removeValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -432,7 +435,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                       java.lang.String&nbsp;assetManagerGUID,
                       java.lang.String&nbsp;assetManagerName,
                       java.lang.String&nbsp;validValueGUID,
-                      java.lang.String&nbsp;validValueExternalIdentifier)
+                      java.lang.String&nbsp;validValueExternalIdentifier,
+                      java.util.Date&nbsp;effectiveTime,
+                      boolean&nbsp;forLineage,
+                      boolean&nbsp;forDuplicateProcessing)
                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -440,10 +446,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>validValueGUID</code> - unique identifier of the valid value.</dd>
 <dd><code>validValueExternalIdentifier</code> - unique identifier of the valid value in the external asset manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
@@ -451,7 +460,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -461,7 +470,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                            java.lang.String&nbsp;assetManagerGUID,
                            java.lang.String&nbsp;assetManagerName,
                            java.lang.String&nbsp;setGUID,
-                           java.lang.String&nbsp;validValueGUID)
+                           java.lang.String&nbsp;validValueGUID,
+                           java.util.Date&nbsp;effectiveTime,
+                           boolean&nbsp;forLineage,
+                           boolean&nbsp;forDuplicateProcessing)
                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -470,10 +482,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user.</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>setGUID</code> - unique identifier of the set.</dd>
 <dd><code>validValueGUID</code> - unique identifier of the valid value to add to the set.</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
@@ -481,7 +496,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="detachValidValueFromSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="detachValidValueFromSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -491,7 +506,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                              java.lang.String&nbsp;assetManagerGUID,
                              java.lang.String&nbsp;assetManagerName,
                              java.lang.String&nbsp;setGUID,
-                             java.lang.String&nbsp;validValueGUID)
+                             java.lang.String&nbsp;validValueGUID,
+                             java.util.Date&nbsp;effectiveTime,
+                             boolean&nbsp;forLineage,
+                             boolean&nbsp;forDuplicateProcessing)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -499,10 +517,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>setGUID</code> - owning set</dd>
 <dd><code>validValueGUID</code> - unique identifier of the member to be removed.</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
@@ -510,7 +531,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getValidValueByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="getValidValueByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -519,7 +540,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature"><a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ValidValueElement</a>&nbsp;getValidValueByGUID&#8203;(java.lang.String&nbsp;userId,
                                       java.lang.String&nbsp;assetManagerGUID,
                                       java.lang.String&nbsp;assetManagerName,
-                                      java.lang.String&nbsp;validValueGUID)
+                                      java.lang.String&nbsp;validValueGUID,
+                                      java.util.Date&nbsp;effectiveTime,
+                                      boolean&nbsp;forLineage,
+                                      boolean&nbsp;forDuplicateProcessing)
                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -527,9 +551,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>validValueGUID</code> - unique identifier of the valid value.</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Valid value bean</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -539,7 +566,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getValidValueByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getValidValueByName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -550,7 +577,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                       java.lang.String&nbsp;assetManagerName,
                                                       java.lang.String&nbsp;validValueName,
                                                       int&nbsp;startFrom,
-                                                      int&nbsp;pageSize)
+                                                      int&nbsp;pageSize,
+                                                      java.util.Date&nbsp;effectiveTime,
+                                                      boolean&nbsp;forLineage,
+                                                      boolean&nbsp;forDuplicateProcessing)
                                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -559,11 +589,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>validValueName</code> - qualified name of the valid value.</dd>
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Valid value beans</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -573,7 +606,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="findValidValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="findValidValues(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -584,7 +617,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                   java.lang.String&nbsp;assetManagerName,
                                                   java.lang.String&nbsp;searchString,
                                                   int&nbsp;startFrom,
-                                                  int&nbsp;pageSize)
+                                                  int&nbsp;pageSize,
+                                                  java.util.Date&nbsp;effectiveTime,
+                                                  boolean&nbsp;forLineage,
+                                                  boolean&nbsp;forDuplicateProcessing)
                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -593,11 +629,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>searchString</code> - string value to look for - may contain RegEx characters.</dd>
 <dd><code>startFrom</code> - paging starting point</dd>
 <dd><code>pageSize</code> - maximum number of return values.</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of valid value beans</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -607,7 +646,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getValidValueSetMembers(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getValidValueSetMembers(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -618,7 +657,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                           java.lang.String&nbsp;assetManagerName,
                                                           java.lang.String&nbsp;validValueSetGUID,
                                                           int&nbsp;startFrom,
-                                                          int&nbsp;pageSize)
+                                                          int&nbsp;pageSize,
+                                                          java.util.Date&nbsp;effectiveTime,
+                                                          boolean&nbsp;forLineage,
+                                                          boolean&nbsp;forDuplicateProcessing)
                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -626,11 +668,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user.</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>validValueSetGUID</code> - unique identifier of the valid value set.</dd>
 <dd><code>startFrom</code> - paging starting point</dd>
 <dd><code>pageSize</code> - maximum number of return values.</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of valid value beans</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -640,7 +685,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getSetsForValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int)">
+<a id="getSetsForValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Date,boolean,boolean)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -651,7 +696,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                                        java.lang.String&nbsp;assetManagerName,
                                                        java.lang.String&nbsp;validValueGUID,
                                                        int&nbsp;startFrom,
-                                                       int&nbsp;pageSize)
+                                                       int&nbsp;pageSize,
+                                                       java.util.Date&nbsp;effectiveTime,
+                                                       boolean&nbsp;forLineage,
+                                                       boolean&nbsp;forDuplicateProcessing)
                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -659,11 +707,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user.</dd>
-<dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
-<dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>assetManagerGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>assetManagerName</code> - unique name of software capability representing the caller</dd>
 <dd><code>validValueGUID</code> - unique identifier of valid value to query</dd>
 <dd><code>startFrom</code> - paging starting point</dd>
 <dd><code>pageSize</code> - maximum number of return values.</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
+<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of valid value beans</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

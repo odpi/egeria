@@ -263,7 +263,7 @@ implements <a href="../api/ServerPurposeManagerInterface.html" title="interface 
                    boolean&nbsp;isMergeUpdate,
                    java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;classificationProperties)</code></th>
 <td class="colLast">
-<div class="block">Update the properties of a classification for a asset.</div>
+<div class="block">Update the properties of a classification for an asset.</div>
 </td>
 </tr>
 </table>
@@ -348,7 +348,7 @@ implements <a href="../api/ServerPurposeManagerInterface.html" title="interface 
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Update the properties of a classification for a asset.</div>
+<div class="block">Update the properties of a classification for an asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/ServerPurposeManagerInterface.html#updateServerPurpose(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean,java.util.Map)">updateServerPurpose</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ServerPurposeManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ServerPurposeManagerInterface</a></code></dd>
@@ -361,7 +361,7 @@ implements <a href="../api/ServerPurposeManagerInterface.html" title="interface 
 <dd><code>classificationName</code> - name of the classification type</dd>
 <dd><code>effectiveFrom</code> - when should relationship be effective - null means immediately</dd>
 <dd><code>effectiveTo</code> - when should relationship no longer be effective - null means never</dd>
-<dd><code>isMergeUpdate</code> - should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+<dd><code>isMergeUpdate</code> - should the supplied properties be merged with existing properties (true) by replacing just the properties with
                                   matching names, or should the entire properties of the instance be replaced?</dd>
 <dd><code>classificationProperties</code> - properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -465,7 +465,7 @@ implements <a href="../api/ServerPurposeManagerInterface.html" title="interface 
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the infrastructure manager</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the infrastructure manager</dd>
 <dd><code>deploymentGUID</code> - unique identifier of the relationship</dd>
-<dd><code>isMergeUpdate</code> - should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+<dd><code>isMergeUpdate</code> - should the supplied properties be merged with existing properties (true) by replacing just the properties with
                                   matching names, or should the entire properties of the instance be replaced?</dd>
 <dd><code>deploymentProperties</code> - properties for the relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

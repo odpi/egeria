@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -132,8 +132,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">ConnectionExchangeService</span>
 extends java.lang.Object</pre>
-<div class="block">ConnectionExchangeService is the context for managing connections and associated elements such as connector types and
- endpoints.</div>
+<div class="block">ConnectionExchangeService is the context for managing connections and associated elements such as connector types and endpoints.</div>
 </li>
 </ul>
 </div>
@@ -156,56 +155,56 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearAssetConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearAssetConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearAssetConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearAssetConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;externalSourceGUID,
                     java.lang.String&nbsp;externalSourceName,
                     java.lang.String&nbsp;assetGUID,
-                    java.lang.String&nbsp;connectionGUID)</code></th>
+                    java.lang.String&nbsp;connectionGUID,
+                    java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove a relationship between an asset and its connection.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;externalSourceGUID,
                   java.lang.String&nbsp;externalSourceName,
                   java.lang.String&nbsp;connectionGUID,
-                  java.lang.String&nbsp;connectorTypeGUID)</code></th>
+                  java.lang.String&nbsp;connectorTypeGUID,
+                  java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove a relationship between a connection and a connector type.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearEmbeddedConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearEmbeddedConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearEmbeddedConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearEmbeddedConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;externalSourceGUID,
                        java.lang.String&nbsp;externalSourceName,
                        java.lang.String&nbsp;connectionGUID,
-                       java.lang.String&nbsp;embeddedConnectionGUID)</code></th>
+                       java.lang.String&nbsp;embeddedConnectionGUID,
+                       java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove a relationship between a virtual connection and an embedded connection.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;externalSourceGUID,
              java.lang.String&nbsp;externalSourceName,
              java.lang.String&nbsp;connectionGUID,
-             java.lang.String&nbsp;endpointGUID)</code></th>
+             java.lang.String&nbsp;endpointGUID,
+             java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove a relationship between a connection and an endpoint.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnection(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties)">createConnection</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
-                java.lang.String&nbsp;connectionExternalIdentifier,
-                java.lang.String&nbsp;connectionExternalIdentifierName,
-                java.lang.String&nbsp;connectionExternalIdentifierUsage,
-                <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;connectionExternalIdentifierKeyPattern,
-                java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnection(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties)">createConnection</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
+                <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                 <a href="../../../accessservices/assetmanager/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a>&nbsp;connectionProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent the root of a connection.</div>
@@ -213,26 +212,18 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnectionFromTemplate(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createConnectionFromTemplate</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnectionFromTemplate(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createConnectionFromTemplate</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
                             java.lang.String&nbsp;templateGUID,
-                            java.lang.String&nbsp;connectionExternalIdentifier,
-                            java.lang.String&nbsp;connectionExternalIdentifierName,
-                            java.lang.String&nbsp;connectionExternalIdentifierUsage,
-                            <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;connectionExternalIdentifierKeyPattern,
-                            java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                            <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                             <a href="../../../accessservices/assetmanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
 <td class="colLast">
-<div class="block">Create a new metadata element to represent an connection using an existing metadata element as a template.</div>
+<div class="block">Create a new metadata element to represent a connection using an existing metadata element as a template.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnectorType(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties)">createConnectorType</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
-                   java.lang.String&nbsp;connectorTypeExternalIdentifier,
-                   java.lang.String&nbsp;connectorTypeExternalIdentifierName,
-                   java.lang.String&nbsp;connectorTypeExternalIdentifierUsage,
-                   <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;connectorTypeExternalIdentifierKeyPattern,
-                   java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnectorType(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties)">createConnectorType</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
+                   <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                    <a href="../../../accessservices/assetmanager/properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent the root of a connector type.</div>
@@ -240,13 +231,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnectorTypeFromTemplate(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createConnectorTypeFromTemplate</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnectorTypeFromTemplate(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createConnectorTypeFromTemplate</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
                                java.lang.String&nbsp;templateGUID,
-                               java.lang.String&nbsp;connectorTypeExternalIdentifier,
-                               java.lang.String&nbsp;connectorTypeExternalIdentifierName,
-                               java.lang.String&nbsp;connectorTypeExternalIdentifierUsage,
-                               <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;connectorTypeExternalIdentifierKeyPattern,
-                               java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                               <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                <a href="../../../accessservices/assetmanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a connector type using an existing metadata element as a template.</div>
@@ -254,12 +241,8 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEndpoint(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties)">createEndpoint</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
-              java.lang.String&nbsp;endpointExternalIdentifier,
-              java.lang.String&nbsp;endpointExternalIdentifierName,
-              java.lang.String&nbsp;endpointExternalIdentifierUsage,
-              <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;endpointExternalIdentifierKeyPattern,
-              java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEndpoint(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties)">createEndpoint</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
+              <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
               <a href="../../../accessservices/assetmanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">EndpointProperties</a>&nbsp;endpointProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent the root of an endpoint.</div>
@@ -267,13 +250,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEndpointFromTemplate(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createEndpointFromTemplate</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEndpointFromTemplate(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">createEndpointFromTemplate</a></span>&#8203;(boolean&nbsp;externalSourceIsHome,
                           java.lang.String&nbsp;templateGUID,
-                          java.lang.String&nbsp;endpointExternalIdentifier,
-                          java.lang.String&nbsp;endpointExternalIdentifierName,
-                          java.lang.String&nbsp;endpointExternalIdentifierUsage,
-                          <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;endpointExternalIdentifierKeyPattern,
-                          java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                          <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                           <a href="../../../accessservices/assetmanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent an endpoint using an existing metadata element as a template.</div>
@@ -281,230 +260,268 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectionElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findConnections(java.lang.String,int,int)">findConnections</a></span>&#8203;(java.lang.String&nbsp;searchString,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findConnections(java.lang.String,int,int,java.util.Date)">findConnections</a></span>&#8203;(java.lang.String&nbsp;searchString,
                int&nbsp;startFrom,
-               int&nbsp;pageSize)</code></th>
+               int&nbsp;pageSize,
+               java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of connection metadata elements that contain the search string.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectorTypeElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findConnectorTypes(java.lang.String,int,int)">findConnectorTypes</a></span>&#8203;(java.lang.String&nbsp;searchString,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findConnectorTypes(java.lang.String,int,int,java.util.Date)">findConnectorTypes</a></span>&#8203;(java.lang.String&nbsp;searchString,
                   int&nbsp;startFrom,
-                  int&nbsp;pageSize)</code></th>
+                  int&nbsp;pageSize,
+                  java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of connectorType metadata elements that contain the search string.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EndpointElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findEndpoints(java.lang.String,int,int)">findEndpoints</a></span>&#8203;(java.lang.String&nbsp;searchString,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findEndpoints(java.lang.String,int,int,java.util.Date)">findEndpoints</a></span>&#8203;(java.lang.String&nbsp;searchString,
              int&nbsp;startFrom,
-             int&nbsp;pageSize)</code></th>
+             int&nbsp;pageSize,
+             java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of endpoint metadata elements that contain the search string.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/assetmanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectionElement</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getConnectionByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getConnectionByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;externalSourceGUID,
                    java.lang.String&nbsp;externalSourceName,
-                   java.lang.String&nbsp;connectionGUID)</code></th>
+                   java.lang.String&nbsp;connectionGUID,
+                   java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the connection metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectionElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionsByName(java.lang.String,int,int)">getConnectionsByName</a></span>&#8203;(java.lang.String&nbsp;name,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionsByName(java.lang.String,int,int,java.util.Date)">getConnectionsByName</a></span>&#8203;(java.lang.String&nbsp;name,
                     int&nbsp;startFrom,
-                    int&nbsp;pageSize)</code></th>
+                    int&nbsp;pageSize,
+                    java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of connection metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectionElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionsForAssetManager(int,int)">getConnectionsForAssetManager</a></span>&#8203;(int&nbsp;startFrom,
-                             int&nbsp;pageSize)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionsForAssetManager(int,int,java.util.Date)">getConnectionsForAssetManager</a></span>&#8203;(int&nbsp;startFrom,
+                             int&nbsp;pageSize,
+                             java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of connections created on behalf of the named external source.</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/assetmanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectorTypeElement</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getConnectorTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getConnectorTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;externalSourceGUID,
                       java.lang.String&nbsp;externalSourceName,
-                      java.lang.String&nbsp;dataAssetGUID)</code></th>
+                      java.lang.String&nbsp;dataAssetGUID,
+                      java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the connectorType metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
 <tr id="i17" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectorTypeElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypesByName(java.lang.String,int,int)">getConnectorTypesByName</a></span>&#8203;(java.lang.String&nbsp;name,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypesByName(java.lang.String,int,int,java.util.Date)">getConnectorTypesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                        int&nbsp;startFrom,
-                       int&nbsp;pageSize)</code></th>
+                       int&nbsp;pageSize,
+                       java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of connectorType metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
 <tr id="i18" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectorTypeElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypesForAssetManager(int,int)">getConnectorTypesForAssetManager</a></span>&#8203;(int&nbsp;startFrom,
-                                int&nbsp;pageSize)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypesForAssetManager(int,int,java.util.Date)">getConnectorTypesForAssetManager</a></span>&#8203;(int&nbsp;startFrom,
+                                int&nbsp;pageSize,
+                                java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of connectorTypes created on behalf of the named connectorType manager.</div>
 </td>
 </tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/assetmanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EndpointElement</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getEndpointByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getEndpointByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;externalSourceGUID,
                  java.lang.String&nbsp;externalSourceName,
-                 java.lang.String&nbsp;endpointGUID)</code></th>
+                 java.lang.String&nbsp;endpointGUID,
+                 java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the endpoint metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EndpointElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointsByName(java.lang.String,int,int)">getEndpointsByName</a></span>&#8203;(java.lang.String&nbsp;name,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointsByName(java.lang.String,int,int,java.util.Date)">getEndpointsByName</a></span>&#8203;(java.lang.String&nbsp;name,
                   int&nbsp;startFrom,
-                  int&nbsp;pageSize)</code></th>
+                  int&nbsp;pageSize,
+                  java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of endpoint metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
 <tr id="i21" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EndpointElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointsForAssetManager(int,int)">getEndpointsForAssetManager</a></span>&#8203;(int&nbsp;startFrom,
-                           int&nbsp;pageSize)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointsForAssetManager(int,int,java.util.Date)">getEndpointsForAssetManager</a></span>&#8203;(int&nbsp;startFrom,
+                           int&nbsp;pageSize,
+                           java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of endpoints created on behalf of the named external source.</div>
 </td>
 </tr>
 <tr id="i22" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
-                java.lang.String&nbsp;externalSourceGUID,
-                java.lang.String&nbsp;externalSourceName,
-                java.lang.String&nbsp;connectionGUID,
-                java.lang.String&nbsp;connectionExternalIdentifier)</code></th>
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isForLineage()">isForLineage</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Remove the metadata element representing an connection.</div>
+<div class="block">Return whether retrieval requests from this service are to include elements with the Memento classification attached or not.</div>
 </td>
 </tr>
 <tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
-                   java.lang.String&nbsp;externalSourceGUID,
-                   java.lang.String&nbsp;externalSourceName,
-                   java.lang.String&nbsp;connectorTypeGUID,
-                   java.lang.String&nbsp;connectorTypeExternalIdentifier)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">removeConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
+                java.lang.String&nbsp;externalSourceGUID,
+                java.lang.String&nbsp;externalSourceName,
+                java.lang.String&nbsp;connectionGUID,
+                java.lang.String&nbsp;connectionExternalIdentifier,
+                java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Remove the metadata element representing a connector type.</div>
+<div class="block">Remove the metadata element representing a connection.</div>
 </td>
 </tr>
 <tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
-              java.lang.String&nbsp;externalSourceGUID,
-              java.lang.String&nbsp;externalSourceName,
-              java.lang.String&nbsp;connectorTypeGUID,
-              java.lang.String&nbsp;endpointExternalIdentifier)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">removeConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   java.lang.String&nbsp;externalSourceGUID,
+                   java.lang.String&nbsp;externalSourceName,
+                   java.lang.String&nbsp;connectorTypeGUID,
+                   java.lang.String&nbsp;connectorTypeExternalIdentifier,
+                   java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a connector type.</div>
 </td>
 </tr>
 <tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupAssetConnection(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String)">setupAssetConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
-                    java.lang.String&nbsp;externalSourceGUID,
-                    java.lang.String&nbsp;externalSourceName,
-                    boolean&nbsp;externalSourceIsHome,
-                    java.lang.String&nbsp;assetGUID,
-                    java.lang.String&nbsp;assetSummary,
-                    java.lang.String&nbsp;connectionGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">removeEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
+              java.lang.String&nbsp;externalSourceGUID,
+              java.lang.String&nbsp;externalSourceName,
+              java.lang.String&nbsp;connectorTypeGUID,
+              java.lang.String&nbsp;endpointExternalIdentifier,
+              java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Create a relationship between an asset and its connection.</div>
+<div class="block">Remove the metadata element representing a connector type.</div>
 </td>
 </tr>
 <tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupConnectorType(java.lang.String,boolean,java.lang.String,java.lang.String)">setupConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
-                  boolean&nbsp;externalSourceIsHome,
-                  java.lang.String&nbsp;connectionGUID,
-                  java.lang.String&nbsp;connectorTypeGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setForLineage(boolean)">setForLineage</a></span>&#8203;(boolean&nbsp;forLineage)</code></th>
 <td class="colLast">
-<div class="block">Create a relationship between a connection and a connector type.</div>
+<div class="block">Set up whether retrieval requests from this service are to include elements with the Memento classification attached or not.</div>
 </td>
 </tr>
 <tr id="i27" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupEmbeddedConnection(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String)">setupEmbeddedConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
-                       java.lang.String&nbsp;externalSourceGUID,
-                       java.lang.String&nbsp;externalSourceName,
-                       boolean&nbsp;externalSourceIsHome,
-                       java.lang.String&nbsp;connectionGUID,
-                       int&nbsp;position,
-                       java.lang.String&nbsp;displayName,
-                       java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;arguments,
-                       java.lang.String&nbsp;embeddedConnectionGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupAssetConnection(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.AssetConnectionProperties,java.util.Date)">setupAssetConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;externalSourceGUID,
+                    java.lang.String&nbsp;externalSourceName,
+                    boolean&nbsp;externalSourceIsHome,
+                    java.lang.String&nbsp;assetGUID,
+                    java.lang.String&nbsp;connectionGUID,
+                    <a href="../../../accessservices/assetmanager/properties/AssetConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">AssetConnectionProperties</a>&nbsp;properties,
+                    java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Create a relationship between a virtual connection and an embedded connection.</div>
+<div class="block">Create a relationship between an asset and its connection.</div>
 </td>
 </tr>
 <tr id="i28" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupEndpoint(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String)">setupEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
-             java.lang.String&nbsp;externalSourceGUID,
-             java.lang.String&nbsp;externalSourceName,
-             boolean&nbsp;externalSourceIsHome,
-             java.lang.String&nbsp;connectionGUID,
-             java.lang.String&nbsp;endpointGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupConnectorType(java.lang.String,boolean,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.util.Date)">setupConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
+                  boolean&nbsp;externalSourceIsHome,
+                  java.lang.String&nbsp;connectionGUID,
+                  java.lang.String&nbsp;connectorTypeGUID,
+                  java.util.Date&nbsp;effectiveFrom,
+                  java.util.Date&nbsp;effectiveTo,
+                  java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Create a relationship between a connection and an endpoint.</div>
+<div class="block">Create a relationship between a connection and a connector type.</div>
 </td>
 </tr>
 <tr id="i29" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties)">updateConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupEmbeddedConnection(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.EmbeddedConnectionProperties,java.util.Date)">setupEmbeddedConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
+                       java.lang.String&nbsp;externalSourceGUID,
+                       java.lang.String&nbsp;externalSourceName,
+                       boolean&nbsp;externalSourceIsHome,
+                       java.lang.String&nbsp;connectionGUID,
+                       java.lang.String&nbsp;embeddedConnectionGUID,
+                       <a href="../../../accessservices/assetmanager/properties/EmbeddedConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">EmbeddedConnectionProperties</a>&nbsp;properties,
+                       java.util.Date&nbsp;effectiveTime)</code></th>
+<td class="colLast">
+<div class="block">Create a relationship between a virtual connection and an embedded connection.</div>
+</td>
+</tr>
+<tr id="i30" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupEndpoint(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.util.Date)">setupEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
+             java.lang.String&nbsp;externalSourceGUID,
+             java.lang.String&nbsp;externalSourceName,
+             boolean&nbsp;externalSourceIsHome,
+             java.lang.String&nbsp;connectionGUID,
+             java.lang.String&nbsp;endpointGUID,
+             java.util.Date&nbsp;effectiveFrom,
+             java.util.Date&nbsp;effectiveTo,
+             java.util.Date&nbsp;effectiveTime)</code></th>
+<td class="colLast">
+<div class="block">Create a relationship between a connection and an endpoint.</div>
+</td>
+</tr>
+<tr id="i31" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties,java.util.Date)">updateConnection</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;externalSourceGUID,
                 java.lang.String&nbsp;externalSourceName,
                 java.lang.String&nbsp;connectionGUID,
                 java.lang.String&nbsp;connectionExternalIdentifier,
                 boolean&nbsp;isMergeUpdate,
-                <a href="../../../accessservices/assetmanager/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a>&nbsp;connectionProperties)</code></th>
+                <a href="../../../accessservices/assetmanager/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a>&nbsp;connectionProperties,
+                java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing an connection.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties)">updateConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties,java.util.Date)">updateConnectorType</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;externalSourceGUID,
                    java.lang.String&nbsp;externalSourceName,
                    java.lang.String&nbsp;connectorTypeGUID,
                    java.lang.String&nbsp;connectorTypeExternalIdentifier,
                    boolean&nbsp;isMergeUpdate,
-                   <a href="../../../accessservices/assetmanager/properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties)</code></th>
+                   <a href="../../../accessservices/assetmanager/properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties,
+                   java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a connector type.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties)">updateEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties,java.util.Date)">updateEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;externalSourceGUID,
               java.lang.String&nbsp;externalSourceName,
               java.lang.String&nbsp;connectorTypeGUID,
               java.lang.String&nbsp;endpointExternalIdentifier,
               boolean&nbsp;isMergeUpdate,
-              <a href="../../../accessservices/assetmanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">EndpointProperties</a>&nbsp;endpointProperties)</code></th>
+              <a href="../../../accessservices/assetmanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">EndpointProperties</a>&nbsp;endpointProperties,
+              java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing an endpoint.</div>
 </td>
@@ -533,18 +550,42 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createConnection(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties)">
+<a id="isForLineage()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isForLineage</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;isForLineage()</pre>
+<div class="block">Return whether retrieval requests from this service are to include elements with the Memento classification attached or not.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean flag</dd>
+</dl>
+</li>
+</ul>
+<a id="setForLineage(boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setForLineage</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setForLineage&#8203;(boolean&nbsp;forLineage)</pre>
+<div class="block">Set up whether retrieval requests from this service are to include elements with the Memento classification attached or not.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>forLineage</code> - boolean flag</dd>
+</dl>
+</li>
+</ul>
+<a id="createConnection(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createConnection</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createConnection&#8203;(boolean&nbsp;externalSourceIsHome,
-                                         java.lang.String&nbsp;connectionExternalIdentifier,
-                                         java.lang.String&nbsp;connectionExternalIdentifierName,
-                                         java.lang.String&nbsp;connectionExternalIdentifierUsage,
-                                         <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;connectionExternalIdentifierKeyPattern,
-                                         java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                         <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                          <a href="../../../accessservices/assetmanager/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a>&nbsp;connectionProperties)
                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -553,11 +594,7 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>externalSourceIsHome</code> - ensure that only the external source can update this connection</dd>
-<dd><code>connectionExternalIdentifier</code> - unique identifier of the connection in the external external source</dd>
-<dd><code>connectionExternalIdentifierName</code> - name of property for the external identifier in the external external source</dd>
-<dd><code>connectionExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external external source</dd>
-<dd><code>connectionExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external external source (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external external source and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>connectionProperties</code> - properties to store</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element</dd>
@@ -568,7 +605,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="createConnectionFromTemplate(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
+<a id="createConnectionFromTemplate(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -576,25 +613,17 @@ extends java.lang.Object</pre>
 <h4>createConnectionFromTemplate</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createConnectionFromTemplate&#8203;(boolean&nbsp;externalSourceIsHome,
                                                      java.lang.String&nbsp;templateGUID,
-                                                     java.lang.String&nbsp;connectionExternalIdentifier,
-                                                     java.lang.String&nbsp;connectionExternalIdentifierName,
-                                                     java.lang.String&nbsp;connectionExternalIdentifierUsage,
-                                                     <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;connectionExternalIdentifierKeyPattern,
-                                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                                     <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                                      <a href="../../../accessservices/assetmanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)
                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create a new metadata element to represent an connection using an existing metadata element as a template.
+<div class="block">Create a new metadata element to represent a connection using an existing metadata element as a template.
  The template defines additional classifications and relationships that should be added to the new connection.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>externalSourceIsHome</code> - ensure that only the external source can update this process</dd>
-<dd><code>connectionExternalIdentifier</code> - unique identifier of the connection in the external external source</dd>
-<dd><code>connectionExternalIdentifierName</code> - name of property for the external identifier in the external external source</dd>
-<dd><code>connectionExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external external source</dd>
-<dd><code>connectionExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external external source (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external external source and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -606,7 +635,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties)">
+<a id="updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -618,7 +647,8 @@ extends java.lang.Object</pre>
                              java.lang.String&nbsp;connectionGUID,
                              java.lang.String&nbsp;connectionExternalIdentifier,
                              boolean&nbsp;isMergeUpdate,
-                             <a href="../../../accessservices/assetmanager/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a>&nbsp;connectionProperties)
+                             <a href="../../../accessservices/assetmanager/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a>&nbsp;connectionProperties,
+                             java.util.Date&nbsp;effectiveTime)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -629,9 +659,10 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectionGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>connectionExternalIdentifier</code> - unique identifier of the connection in the external external source</dd>
+<dd><code>connectionExternalIdentifier</code> - unique identifier of the connection in the  external source</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>connectionProperties</code> - new properties for this element</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -639,7 +670,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="setupConnectorType(java.lang.String,boolean,java.lang.String,java.lang.String)">
+<a id="setupConnectorType(java.lang.String,boolean,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -648,7 +679,10 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;setupConnectorType&#8203;(java.lang.String&nbsp;userId,
                                boolean&nbsp;externalSourceIsHome,
                                java.lang.String&nbsp;connectionGUID,
-                               java.lang.String&nbsp;connectorTypeGUID)
+                               java.lang.String&nbsp;connectorTypeGUID,
+                               java.util.Date&nbsp;effectiveFrom,
+                               java.util.Date&nbsp;effectiveTo,
+                               java.util.Date&nbsp;effectiveTime)
                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -659,6 +693,9 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceIsHome</code> - ensure that only the asset manager can update this relationship</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection in the external asset manager</dd>
 <dd><code>connectorTypeGUID</code> - unique identifier of the connector type in the external asset manager</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -666,7 +703,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="clearConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -676,7 +713,8 @@ extends java.lang.Object</pre>
                                java.lang.String&nbsp;externalSourceGUID,
                                java.lang.String&nbsp;externalSourceName,
                                java.lang.String&nbsp;connectionGUID,
-                               java.lang.String&nbsp;connectorTypeGUID)
+                               java.lang.String&nbsp;connectorTypeGUID,
+                               java.util.Date&nbsp;effectiveTime)
                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -688,6 +726,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection in the external asset manager</dd>
 <dd><code>connectorTypeGUID</code> - unique identifier of the connector type in the external asset manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -695,7 +734,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="setupEndpoint(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String)">
+<a id="setupEndpoint(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -706,7 +745,10 @@ extends java.lang.Object</pre>
                           java.lang.String&nbsp;externalSourceName,
                           boolean&nbsp;externalSourceIsHome,
                           java.lang.String&nbsp;connectionGUID,
-                          java.lang.String&nbsp;endpointGUID)
+                          java.lang.String&nbsp;endpointGUID,
+                          java.util.Date&nbsp;effectiveFrom,
+                          java.util.Date&nbsp;effectiveTo,
+                          java.util.Date&nbsp;effectiveTime)
                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -719,6 +761,9 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceIsHome</code> - ensure that only the asset manager can update this relationship</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection in the external asset manager</dd>
 <dd><code>endpointGUID</code> - unique identifier of the endpoint in the external asset manager</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active now</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -726,7 +771,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="clearEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -736,7 +781,8 @@ extends java.lang.Object</pre>
                           java.lang.String&nbsp;externalSourceGUID,
                           java.lang.String&nbsp;externalSourceName,
                           java.lang.String&nbsp;connectionGUID,
-                          java.lang.String&nbsp;endpointGUID)
+                          java.lang.String&nbsp;endpointGUID,
+                          java.util.Date&nbsp;effectiveTime)
                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -748,6 +794,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection in the external asset manager</dd>
 <dd><code>endpointGUID</code> - unique identifier of the endpoint in the external asset manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -755,7 +802,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="setupEmbeddedConnection(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,int,java.lang.String,java.util.Map,java.lang.String)">
+<a id="setupEmbeddedConnection(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.EmbeddedConnectionProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -766,10 +813,9 @@ extends java.lang.Object</pre>
                                     java.lang.String&nbsp;externalSourceName,
                                     boolean&nbsp;externalSourceIsHome,
                                     java.lang.String&nbsp;connectionGUID,
-                                    int&nbsp;position,
-                                    java.lang.String&nbsp;displayName,
-                                    java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;arguments,
-                                    java.lang.String&nbsp;embeddedConnectionGUID)
+                                    java.lang.String&nbsp;embeddedConnectionGUID,
+                                    <a href="../../../accessservices/assetmanager/properties/EmbeddedConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">EmbeddedConnectionProperties</a>&nbsp;properties,
+                                    java.util.Date&nbsp;effectiveTime)
                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -781,10 +827,11 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>externalSourceIsHome</code> - ensure that only the asset manager can update this relationship</dd>
 <dd><code>connectionGUID</code> - unique identifier of the virtual connection in the external asset manager</dd>
-<dd><code>position</code> - which order should this connection be processed</dd>
-<dd><code>arguments</code> - What additional properties should be passed to the embedded connector via the configuration properties</dd>
-<dd><code>displayName</code> - what does this connector signify?</dd>
 <dd><code>embeddedConnectionGUID</code> - unique identifier of the embedded connection in the external asset manager</dd>
+<dd><code>properties</code> - properties describing how to use the embedded connection such as: Which order should this connection be processed;
+ What additional properties should be passed to the embedded connector via the configuration properties;
+ What does this connector signify?</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -792,7 +839,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="clearEmbeddedConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearEmbeddedConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -802,7 +849,8 @@ extends java.lang.Object</pre>
                                     java.lang.String&nbsp;externalSourceGUID,
                                     java.lang.String&nbsp;externalSourceName,
                                     java.lang.String&nbsp;connectionGUID,
-                                    java.lang.String&nbsp;embeddedConnectionGUID)
+                                    java.lang.String&nbsp;embeddedConnectionGUID,
+                                    java.util.Date&nbsp;effectiveTime)
                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -814,6 +862,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectionGUID</code> - unique identifier of the virtual connection in the external asset manager</dd>
 <dd><code>embeddedConnectionGUID</code> - unique identifier of the embedded connection in the external asset manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -821,7 +870,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="setupAssetConnection(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String)">
+<a id="setupAssetConnection(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.AssetConnectionProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -832,8 +881,9 @@ extends java.lang.Object</pre>
                                  java.lang.String&nbsp;externalSourceName,
                                  boolean&nbsp;externalSourceIsHome,
                                  java.lang.String&nbsp;assetGUID,
-                                 java.lang.String&nbsp;assetSummary,
-                                 java.lang.String&nbsp;connectionGUID)
+                                 java.lang.String&nbsp;connectionGUID,
+                                 <a href="../../../accessservices/assetmanager/properties/AssetConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">AssetConnectionProperties</a>&nbsp;properties,
+                                 java.util.Date&nbsp;effectiveTime)
                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -845,8 +895,9 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>externalSourceIsHome</code> - ensure that only the asset manager can update this relationship</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
-<dd><code>assetSummary</code> - summary of the asset that is stored in the relationship between the asset and the connection.</dd>
+<dd><code>properties</code> - summary of the asset that is stored in the relationship between the asset and the connection.</dd>
 <dd><code>connectionGUID</code> - unique identifier of the  connection</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -854,7 +905,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="clearAssetConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="clearAssetConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -864,7 +915,8 @@ extends java.lang.Object</pre>
                                  java.lang.String&nbsp;externalSourceGUID,
                                  java.lang.String&nbsp;externalSourceName,
                                  java.lang.String&nbsp;assetGUID,
-                                 java.lang.String&nbsp;connectionGUID)
+                                 java.lang.String&nbsp;connectionGUID,
+                                 java.util.Date&nbsp;effectiveTime)
                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -876,6 +928,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
 <dd><code>connectionGUID</code> - unique identifier of the connection</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -883,7 +936,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="removeConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -893,11 +946,12 @@ extends java.lang.Object</pre>
                              java.lang.String&nbsp;externalSourceGUID,
                              java.lang.String&nbsp;externalSourceName,
                              java.lang.String&nbsp;connectionGUID,
-                             java.lang.String&nbsp;connectionExternalIdentifier)
+                             java.lang.String&nbsp;connectionExternalIdentifier,
+                             java.util.Date&nbsp;effectiveTime)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Remove the metadata element representing an connection.  This will delete the connection and all anchored
+<div class="block">Remove the metadata element representing a connection.  This will delete the connection and all anchored
  elements such as schema and comments.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -905,7 +959,8 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectionGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>connectionExternalIdentifier</code> - unique identifier of the connection in the external external source</dd>
+<dd><code>connectionExternalIdentifier</code> - unique identifier of the connection in the external source</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -913,7 +968,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="findConnections(java.lang.String,int,int)">
+<a id="findConnections(java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -921,7 +976,8 @@ extends java.lang.Object</pre>
 <h4>findConnections</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectionElement</a>&gt;&nbsp;findConnections&#8203;(java.lang.String&nbsp;searchString,
                                                          int&nbsp;startFrom,
-                                                         int&nbsp;pageSize)
+                                                         int&nbsp;pageSize,
+                                                         java.util.Date&nbsp;effectiveTime)
                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -932,6 +988,7 @@ extends java.lang.Object</pre>
 <dd><code>searchString</code> - string to find in the properties</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -941,7 +998,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getConnectionsByName(java.lang.String,int,int)">
+<a id="getConnectionsByName(java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -949,7 +1006,8 @@ extends java.lang.Object</pre>
 <h4>getConnectionsByName</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectionElement</a>&gt;&nbsp;getConnectionsByName&#8203;(java.lang.String&nbsp;name,
                                                               int&nbsp;startFrom,
-                                                              int&nbsp;pageSize)
+                                                              int&nbsp;pageSize,
+                                                              java.util.Date&nbsp;effectiveTime)
                                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -960,6 +1018,7 @@ extends java.lang.Object</pre>
 <dd><code>name</code> - name to search for</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -969,14 +1028,15 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getConnectionsForAssetManager(int,int)">
+<a id="getConnectionsForAssetManager(int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getConnectionsForAssetManager</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectionElement</a>&gt;&nbsp;getConnectionsForAssetManager&#8203;(int&nbsp;startFrom,
-                                                                       int&nbsp;pageSize)
+                                                                       int&nbsp;pageSize,
+                                                                       java.util.Date&nbsp;effectiveTime)
                                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -985,6 +1045,7 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -994,7 +1055,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getConnectionByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="getConnectionByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1003,7 +1064,8 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;<a href="../../../accessservices/assetmanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectionElement</a>&nbsp;getConnectionByGUID&#8203;(java.lang.String&nbsp;userId,
                                              java.lang.String&nbsp;externalSourceGUID,
                                              java.lang.String&nbsp;externalSourceName,
-                                             java.lang.String&nbsp;connectionGUID)
+                                             java.lang.String&nbsp;connectionGUID,
+                                             java.util.Date&nbsp;effectiveTime)
                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1014,6 +1076,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectionGUID</code> - unique identifier of the requested metadata element</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>matching metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1023,18 +1086,14 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="createEndpoint(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties)">
+<a id="createEndpoint(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createEndpoint</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createEndpoint&#8203;(boolean&nbsp;externalSourceIsHome,
-                                       java.lang.String&nbsp;endpointExternalIdentifier,
-                                       java.lang.String&nbsp;endpointExternalIdentifierName,
-                                       java.lang.String&nbsp;endpointExternalIdentifierUsage,
-                                       <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;endpointExternalIdentifierKeyPattern,
-                                       java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                       <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                        <a href="../../../accessservices/assetmanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">EndpointProperties</a>&nbsp;endpointProperties)
                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1043,11 +1102,7 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>externalSourceIsHome</code> - ensure that only the external source can update this endpoint</dd>
-<dd><code>endpointExternalIdentifier</code> - unique identifier of the endpoint in the external external source</dd>
-<dd><code>endpointExternalIdentifierName</code> - name of property for the external identifier in the external external source</dd>
-<dd><code>endpointExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external external source</dd>
-<dd><code>endpointExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external external source (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external external source and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>endpointProperties</code> - properties to store</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element</dd>
@@ -1058,7 +1113,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="createEndpointFromTemplate(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
+<a id="createEndpointFromTemplate(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1066,11 +1121,7 @@ extends java.lang.Object</pre>
 <h4>createEndpointFromTemplate</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createEndpointFromTemplate&#8203;(boolean&nbsp;externalSourceIsHome,
                                                    java.lang.String&nbsp;templateGUID,
-                                                   java.lang.String&nbsp;endpointExternalIdentifier,
-                                                   java.lang.String&nbsp;endpointExternalIdentifierName,
-                                                   java.lang.String&nbsp;endpointExternalIdentifierUsage,
-                                                   <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;endpointExternalIdentifierKeyPattern,
-                                                   java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                                   <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                                    <a href="../../../accessservices/assetmanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)
                                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1080,11 +1131,7 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>externalSourceIsHome</code> - ensure that only the external source can update this process</dd>
-<dd><code>endpointExternalIdentifier</code> - unique identifier of the endpoint in the external external source</dd>
-<dd><code>endpointExternalIdentifierName</code> - name of property for the external identifier in the external external source</dd>
-<dd><code>endpointExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external external source</dd>
-<dd><code>endpointExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external external source (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external external source and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1096,7 +1143,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="updateEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties)">
+<a id="updateEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1108,7 +1155,8 @@ extends java.lang.Object</pre>
                            java.lang.String&nbsp;connectorTypeGUID,
                            java.lang.String&nbsp;endpointExternalIdentifier,
                            boolean&nbsp;isMergeUpdate,
-                           <a href="../../../accessservices/assetmanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">EndpointProperties</a>&nbsp;endpointProperties)
+                           <a href="../../../accessservices/assetmanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">EndpointProperties</a>&nbsp;endpointProperties,
+                           java.util.Date&nbsp;effectiveTime)
                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1119,9 +1167,10 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectorTypeGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>endpointExternalIdentifier</code> - unique identifier of the endpoint in the external external source</dd>
+<dd><code>endpointExternalIdentifier</code> - unique identifier of the endpoint in the external source</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>endpointProperties</code> - new properties for this element</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1129,7 +1178,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="removeEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1139,7 +1188,8 @@ extends java.lang.Object</pre>
                            java.lang.String&nbsp;externalSourceGUID,
                            java.lang.String&nbsp;externalSourceName,
                            java.lang.String&nbsp;connectorTypeGUID,
-                           java.lang.String&nbsp;endpointExternalIdentifier)
+                           java.lang.String&nbsp;endpointExternalIdentifier,
+                           java.util.Date&nbsp;effectiveTime)
                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1151,7 +1201,8 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectorTypeGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>endpointExternalIdentifier</code> - unique identifier of the endpoint in the external external source</dd>
+<dd><code>endpointExternalIdentifier</code> - unique identifier of the endpoint in the external source</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1159,7 +1210,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="findEndpoints(java.lang.String,int,int)">
+<a id="findEndpoints(java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1167,7 +1218,8 @@ extends java.lang.Object</pre>
 <h4>findEndpoints</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EndpointElement</a>&gt;&nbsp;findEndpoints&#8203;(java.lang.String&nbsp;searchString,
                                                      int&nbsp;startFrom,
-                                                     int&nbsp;pageSize)
+                                                     int&nbsp;pageSize,
+                                                     java.util.Date&nbsp;effectiveTime)
                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1178,6 +1230,7 @@ extends java.lang.Object</pre>
 <dd><code>searchString</code> - string to find in the properties</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1187,7 +1240,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getEndpointsByName(java.lang.String,int,int)">
+<a id="getEndpointsByName(java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1195,7 +1248,8 @@ extends java.lang.Object</pre>
 <h4>getEndpointsByName</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EndpointElement</a>&gt;&nbsp;getEndpointsByName&#8203;(java.lang.String&nbsp;name,
                                                           int&nbsp;startFrom,
-                                                          int&nbsp;pageSize)
+                                                          int&nbsp;pageSize,
+                                                          java.util.Date&nbsp;effectiveTime)
                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1206,6 +1260,7 @@ extends java.lang.Object</pre>
 <dd><code>name</code> - name to search for</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1215,14 +1270,15 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getEndpointsForAssetManager(int,int)">
+<a id="getEndpointsForAssetManager(int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getEndpointsForAssetManager</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EndpointElement</a>&gt;&nbsp;getEndpointsForAssetManager&#8203;(int&nbsp;startFrom,
-                                                                   int&nbsp;pageSize)
+                                                                   int&nbsp;pageSize,
+                                                                   java.util.Date&nbsp;effectiveTime)
                                                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1231,6 +1287,7 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1240,7 +1297,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getEndpointByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="getEndpointByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1249,7 +1306,8 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;<a href="../../../accessservices/assetmanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EndpointElement</a>&nbsp;getEndpointByGUID&#8203;(java.lang.String&nbsp;userId,
                                          java.lang.String&nbsp;externalSourceGUID,
                                          java.lang.String&nbsp;externalSourceName,
-                                         java.lang.String&nbsp;endpointGUID)
+                                         java.lang.String&nbsp;endpointGUID,
+                                         java.util.Date&nbsp;effectiveTime)
                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1260,6 +1318,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>endpointGUID</code> - unique identifier of the requested metadata element</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>matching metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1269,18 +1328,14 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="createConnectorType(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties)">
+<a id="createConnectorType(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createConnectorType</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createConnectorType&#8203;(boolean&nbsp;externalSourceIsHome,
-                                            java.lang.String&nbsp;connectorTypeExternalIdentifier,
-                                            java.lang.String&nbsp;connectorTypeExternalIdentifierName,
-                                            java.lang.String&nbsp;connectorTypeExternalIdentifierUsage,
-                                            <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;connectorTypeExternalIdentifierKeyPattern,
-                                            java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                            <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                             <a href="../../../accessservices/assetmanager/properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties)
                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1289,11 +1344,7 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>externalSourceIsHome</code> - ensure that only the connectorType manager can update this connectorType</dd>
-<dd><code>connectorTypeExternalIdentifier</code> - unique identifier of the connectorType in the external connectorType manager</dd>
-<dd><code>connectorTypeExternalIdentifierName</code> - name of property for the external identifier in the external connectorType manager</dd>
-<dd><code>connectorTypeExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external connectorType manager</dd>
-<dd><code>connectorTypeExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external connectorType manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external connectorType manager and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>connectorTypeProperties</code> - properties to store</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element</dd>
@@ -1304,7 +1355,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="createConnectorTypeFromTemplate(boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
+<a id="createConnectorTypeFromTemplate(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1312,11 +1363,7 @@ extends java.lang.Object</pre>
 <h4>createConnectorTypeFromTemplate</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createConnectorTypeFromTemplate&#8203;(boolean&nbsp;externalSourceIsHome,
                                                         java.lang.String&nbsp;templateGUID,
-                                                        java.lang.String&nbsp;connectorTypeExternalIdentifier,
-                                                        java.lang.String&nbsp;connectorTypeExternalIdentifierName,
-                                                        java.lang.String&nbsp;connectorTypeExternalIdentifierUsage,
-                                                        <a href="../../../accessservices/assetmanager/properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;connectorTypeExternalIdentifierKeyPattern,
-                                                        java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties,
+                                                        <a href="../../../accessservices/assetmanager/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
                                                         <a href="../../../accessservices/assetmanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">TemplateProperties</a>&nbsp;templateProperties)
                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1326,11 +1373,7 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>externalSourceIsHome</code> - ensure that only the connectorType manager can update this process</dd>
-<dd><code>connectorTypeExternalIdentifier</code> - unique identifier of the connectorType in the external connectorType manager</dd>
-<dd><code>connectorTypeExternalIdentifierName</code> - name of property for the external identifier in the external connectorType manager</dd>
-<dd><code>connectorTypeExternalIdentifierUsage</code> - optional usage description for the external identifier when calling the external connectorType manager</dd>
-<dd><code>connectorTypeExternalIdentifierKeyPattern</code> - pattern for the external identifier within the external connectorType manager (default is LOCAL_KEY)</dd>
-<dd><code>mappingProperties</code> - additional properties to help with the mapping of the elements in the external connectorType manager and open metadata</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
 <dd><code>templateProperties</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -1342,7 +1385,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="updateConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties)">
+<a id="updateConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1354,7 +1397,8 @@ extends java.lang.Object</pre>
                                 java.lang.String&nbsp;connectorTypeGUID,
                                 java.lang.String&nbsp;connectorTypeExternalIdentifier,
                                 boolean&nbsp;isMergeUpdate,
-                                <a href="../../../accessservices/assetmanager/properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties)
+                                <a href="../../../accessservices/assetmanager/properties/ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectorTypeProperties</a>&nbsp;connectorTypeProperties,
+                                java.util.Date&nbsp;effectiveTime)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1368,6 +1412,7 @@ extends java.lang.Object</pre>
 <dd><code>connectorTypeExternalIdentifier</code> - unique identifier of the connectorType in the external connectorType manager</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>connectorTypeProperties</code> - new properties for this element</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1375,7 +1420,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="removeConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1385,7 +1430,8 @@ extends java.lang.Object</pre>
                                 java.lang.String&nbsp;externalSourceGUID,
                                 java.lang.String&nbsp;externalSourceName,
                                 java.lang.String&nbsp;connectorTypeGUID,
-                                java.lang.String&nbsp;connectorTypeExternalIdentifier)
+                                java.lang.String&nbsp;connectorTypeExternalIdentifier,
+                                java.util.Date&nbsp;effectiveTime)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1398,6 +1444,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>connectorTypeGUID</code> - unique identifier of the metadata element to remove</dd>
 <dd><code>connectorTypeExternalIdentifier</code> - unique identifier of the connectorType in the external connectorType manager</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1405,7 +1452,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="findConnectorTypes(java.lang.String,int,int)">
+<a id="findConnectorTypes(java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1413,7 +1460,8 @@ extends java.lang.Object</pre>
 <h4>findConnectorTypes</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectorTypeElement</a>&gt;&nbsp;findConnectorTypes&#8203;(java.lang.String&nbsp;searchString,
                                                                int&nbsp;startFrom,
-                                                               int&nbsp;pageSize)
+                                                               int&nbsp;pageSize,
+                                                               java.util.Date&nbsp;effectiveTime)
                                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1424,6 +1472,7 @@ extends java.lang.Object</pre>
 <dd><code>searchString</code> - string to find in the properties</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1433,7 +1482,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getConnectorTypesByName(java.lang.String,int,int)">
+<a id="getConnectorTypesByName(java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1441,7 +1490,8 @@ extends java.lang.Object</pre>
 <h4>getConnectorTypesByName</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectorTypeElement</a>&gt;&nbsp;getConnectorTypesByName&#8203;(java.lang.String&nbsp;name,
                                                                     int&nbsp;startFrom,
-                                                                    int&nbsp;pageSize)
+                                                                    int&nbsp;pageSize,
+                                                                    java.util.Date&nbsp;effectiveTime)
                                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1452,6 +1502,7 @@ extends java.lang.Object</pre>
 <dd><code>name</code> - name to search for</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1461,14 +1512,15 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getConnectorTypesForAssetManager(int,int)">
+<a id="getConnectorTypesForAssetManager(int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getConnectorTypesForAssetManager</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/assetmanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectorTypeElement</a>&gt;&nbsp;getConnectorTypesForAssetManager&#8203;(int&nbsp;startFrom,
-                                                                             int&nbsp;pageSize)
+                                                                             int&nbsp;pageSize,
+                                                                             java.util.Date&nbsp;effectiveTime)
                                                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1477,6 +1529,7 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1486,7 +1539,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="getConnectorTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="getConnectorTypeByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -1495,7 +1548,8 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;<a href="../../../accessservices/assetmanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ConnectorTypeElement</a>&nbsp;getConnectorTypeByGUID&#8203;(java.lang.String&nbsp;userId,
                                                    java.lang.String&nbsp;externalSourceGUID,
                                                    java.lang.String&nbsp;externalSourceName,
-                                                   java.lang.String&nbsp;dataAssetGUID)
+                                                   java.lang.String&nbsp;dataAssetGUID,
+                                                   java.util.Date&nbsp;effectiveTime)
                                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1506,6 +1560,7 @@ extends java.lang.Object</pre>
 <dd><code>externalSourceGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>dataAssetGUID</code> - unique identifier of the requested metadata element</dd>
+<dd><code>effectiveTime</code> - when should the elements be effected for - null is anytime; new Date() is now</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>matching metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

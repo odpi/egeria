@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -316,6 +316,14 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i16" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSecurityManagerName()">getSecurityManagerName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the qualified name of the security manager that is supplied in the configuration
+ document.</div>
+</td>
+</tr>
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/securitymanager/metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">UserIdentityElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUserIdentitiesByName(java.lang.String,int,int)">getUserIdentitiesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                        int&nbsp;startFrom,
@@ -324,21 +332,21 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of user identity metadata elements with a matching qualified name.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/securitymanager/metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">UserIdentityElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUserIdentityByGUID(java.lang.String)">getUserIdentityByGUID</a></span>&#8203;(java.lang.String&nbsp;userIdentityGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the userIdentity metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerListener(org.odpi.openmetadata.accessservices.securitymanager.api.SecurityManagerEventListener)">registerListener</a></span>&#8203;(<a href="../../../accessservices/securitymanager/api/SecurityManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.securitymanager.api">SecurityManagerEventListener</a>&nbsp;listener)</code></th>
 <td class="colLast">
 <div class="block">Register a listener object that will be passed each of the events published by the Security Manager OMAS.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSecurityGroup(java.lang.String,boolean,org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityGroupProperties)">updateSecurityGroup</a></span>&#8203;(java.lang.String&nbsp;securityGroupGUID,
                    boolean&nbsp;isMergeUpdate,
@@ -347,7 +355,7 @@ extends java.lang.Object</pre>
 <div class="block">Update an existing security group.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateUserIdentity(java.lang.String,boolean,org.odpi.openmetadata.accessservices.securitymanager.properties.UserIdentityProperties)">updateUserIdentity</a></span>&#8203;(java.lang.String&nbsp;userIdentityGUID,
                   boolean&nbsp;isMergeUpdate,
@@ -416,6 +424,21 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getSecurityManagerName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getSecurityManagerName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getSecurityManagerName()</pre>
+<div class="block">Return the qualified name of the security manager that is supplied in the configuration
+ document.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string name</dd>
+</dl>
+</li>
+</ul>
 <a id="registerListener(org.odpi.openmetadata.accessservices.securitymanager.api.SecurityManagerEventListener)">
 <!--   -->
 </a>

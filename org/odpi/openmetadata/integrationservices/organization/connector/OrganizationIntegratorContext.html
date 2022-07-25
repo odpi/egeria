@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -345,13 +345,21 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i20" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalSourceName()">getExternalSourceName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the qualified name of the external source that is supplied in the configuration
+ document.</div>
+</td>
+</tr>
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/communityprofile/metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRoleByGUID(java.lang.String)">getPersonRoleByGUID</a></span>&#8203;(java.lang.String&nbsp;personRoleGUID)</code></th>
 <td class="colLast">
 <div class="block">Return information about a specific person role.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/communityprofile/metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRoleByName(java.lang.String,int,int)">getPersonRoleByName</a></span>&#8203;(java.lang.String&nbsp;name,
                    int&nbsp;startFrom,
@@ -360,7 +368,7 @@ extends java.lang.Object</pre>
 <div class="block">Return information about a named person role.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/communityprofile/metadataelements/SecurityGroupElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">SecurityGroupElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSecurityGroupsForDistinguishedName(java.lang.String,int,int)">getSecurityGroupsForDistinguishedName</a></span>&#8203;(java.lang.String&nbsp;distinguishedName,
                                      int&nbsp;startFrom,
@@ -369,7 +377,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of security groups associated with a unique distinguishedName.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/communityprofile/metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">UserIdentityElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUserIdentitiesByName(java.lang.String,int,int)">getUserIdentitiesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                        int&nbsp;startFrom,
@@ -378,14 +386,14 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of user identity metadata elements with a matching qualified name.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/communityprofile/metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">UserIdentityElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUserIdentityByGUID(java.lang.String)">getUserIdentityByGUID</a></span>&#8203;(java.lang.String&nbsp;userIdentityGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the userIdentity metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkPersonRoleToProfile(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties)">linkPersonRoleToProfile</a></span>&#8203;(java.lang.String&nbsp;personRoleGUID,
                        java.lang.String&nbsp;personProfileGUID,
@@ -394,7 +402,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a person role to a person profile to show that that person is performing the role.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkTeamPlayer(java.lang.String,java.lang.String,java.lang.String,boolean)">linkTeamPlayer</a></span>&#8203;(java.lang.String&nbsp;teamRoleGUID,
               java.lang.String&nbsp;teamProfileGUID,
@@ -404,7 +412,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a team leader person role or team member person role to a team profile.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkTeamsInHierarchy(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date)">linkTeamsInHierarchy</a></span>&#8203;(java.lang.String&nbsp;superTeamProfileGUID,
                     java.lang.String&nbsp;subTeamProfileGUID,
@@ -415,14 +423,14 @@ extends java.lang.Object</pre>
 <div class="block">Link two related team/organization actor profiles together as part of a hierarchy.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerListener(org.odpi.openmetadata.accessservices.communityprofile.api.CommunityProfileEventListener)">registerListener</a></span>&#8203;(<a href="../../../accessservices/communityprofile/api/CommunityProfileEventListener.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">CommunityProfileEventListener</a>&nbsp;listener)</code></th>
 <td class="colLast">
 <div class="block">Register a listener object that will be passed each of the events published by the Community Profile OMAS.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeIdentityFromProfile(java.lang.String,java.lang.String)">removeIdentityFromProfile</a></span>&#8203;(java.lang.String&nbsp;userIdentityGUID,
                          java.lang.String&nbsp;profileGUID)</code></th>
@@ -430,14 +438,14 @@ extends java.lang.Object</pre>
 <div class="block">Unlink a user identity from a profile.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkPersonRoleFromProfile(java.lang.String)">unlinkPersonRoleFromProfile</a></span>&#8203;(java.lang.String&nbsp;appointmentGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the link between a person role and a person profile.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkTeamPlayer(java.lang.String,java.lang.String,boolean)">unlinkTeamPlayer</a></span>&#8203;(java.lang.String&nbsp;teamRoleGUID,
                 java.lang.String&nbsp;teamProfileGUID,
@@ -446,7 +454,7 @@ extends java.lang.Object</pre>
 <div class="block">Remove the link between a person role and a team profile.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkTeamsInHierarchy(java.lang.String,java.lang.String)">unlinkTeamsInHierarchy</a></span>&#8203;(java.lang.String&nbsp;superTeamProfileGUID,
                       java.lang.String&nbsp;subTeamProfileGUID)</code></th>
@@ -454,7 +462,7 @@ extends java.lang.Object</pre>
 <div class="block">Remove the link between two actor profiles in the actor profile hierarchy.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateActorProfile(java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties,org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord)">updateActorProfile</a></span>&#8203;(java.lang.String&nbsp;actorProfileGUID,
                   boolean&nbsp;isMergeUpdate,
@@ -464,7 +472,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the definition of an actor profile.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAppointment(java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties)">updateAppointment</a></span>&#8203;(java.lang.String&nbsp;appointmentGUID,
                  boolean&nbsp;isMergeUpdate,
@@ -473,7 +481,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the properties for the appointment of a person to a role.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updatePersonRole(java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties)">updatePersonRole</a></span>&#8203;(java.lang.String&nbsp;personRoleGUID,
                 boolean&nbsp;isMergeUpdate,
@@ -482,7 +490,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the definition of a person role.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateProfileIdentity(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties)">updateProfileIdentity</a></span>&#8203;(java.lang.String&nbsp;userIdentityGUID,
                      java.lang.String&nbsp;profileGUID,
@@ -492,7 +500,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the properties of the relationship between a user identity and profile.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSecurityGroup(java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties)">updateSecurityGroup</a></span>&#8203;(java.lang.String&nbsp;securityGroupGUID,
                    boolean&nbsp;isMergeUpdate,
@@ -501,7 +509,7 @@ extends java.lang.Object</pre>
 <div class="block">Update an existing security group.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateUserIdentity(java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties)">updateUserIdentity</a></span>&#8203;(java.lang.String&nbsp;userIdentityGUID,
                   boolean&nbsp;isMergeUpdate,
@@ -574,6 +582,21 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getExternalSourceName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getExternalSourceName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getExternalSourceName()</pre>
+<div class="block">Return the qualified name of the external source that is supplied in the configuration
+ document.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string name</dd>
+</dl>
+</li>
+</ul>
 <a id="registerListener(org.odpi.openmetadata.accessservices.communityprofile.api.CommunityProfileEventListener)">
 <!--   -->
 </a>

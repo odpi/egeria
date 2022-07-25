@@ -150,7 +150,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public abstract class <span class="typeNameLabel">AssetElementHeader</span>
 extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></pre>
-<div class="block">ElementHeader provides the common identifier and type information for all properties objects
+<div class="block">ElementBase provides the common identifier and type information for all properties objects
  that link off of the asset and have a guid associated with them.  This typically means it is
  represented by an entity in the metadata repository.</div>
 <dl>
@@ -211,15 +211,15 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">AssetElementHeader</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                  org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;elementHeaderBean)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">AssetElementHeader</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
+                  org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;elementBaseBean)</code></th>
 <td class="colLast">
 <div class="block">Bean constructor with parent asset</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>protected </code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">AssetElementHeader</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;elementHeaderBean)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">AssetElementHeader</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;elementBaseBean)</code></th>
 <td class="colLast">
 <div class="block">Bean constructor</div>
 </td>
@@ -257,7 +257,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>protected org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</code></td>
+<td class="colFirst"><code>protected org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHeaderBean()">getElementHeaderBean</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the element header bean - used during cloning</div>
@@ -301,7 +301,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>protected void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setBean</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;elementHeaderBean)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">setBean</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;elementBaseBean)</code></th>
 <td class="colLast">
 <div class="block">Set up the bean that contains the properties of the element header.</div>
 </td>
@@ -358,33 +358,33 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>AssetElementHeader</h4>
-<pre>protected&nbsp;AssetElementHeader&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;elementHeaderBean)</pre>
+<pre>protected&nbsp;AssetElementHeader&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;elementBaseBean)</pre>
 <div class="block">Bean constructor</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>elementHeaderBean</code> - bean containing all to the properties</dd>
+<dd><code>elementBaseBean</code> - bean containing all to the properties</dd>
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>AssetElementHeader</h4>
 <pre>protected&nbsp;AssetElementHeader&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                             org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;elementHeaderBean)</pre>
+                             org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;elementBaseBean)</pre>
 <div class="block">Bean constructor with parent asset</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>parentAsset</code> - descriptor for parent asset</dd>
-<dd><code>elementHeaderBean</code> - bean containing properties</dd>
+<dd><code>elementBaseBean</code> - bean containing properties</dd>
 </dl>
 </li>
 </ul>
@@ -414,17 +414,17 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
+<a id="setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setBean</h4>
-<pre class="methodSignature">protected&nbsp;void&nbsp;setBean&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;elementHeaderBean)</pre>
+<pre class="methodSignature">protected&nbsp;void&nbsp;setBean&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;elementBaseBean)</pre>
 <div class="block">Set up the bean that contains the properties of the element header.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>elementHeaderBean</code> - bean containing all of the properties</dd>
+<dd><code>elementBaseBean</code> - bean containing all of the properties</dd>
 </dl>
 </li>
 </ul>
@@ -434,7 +434,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockList">
 <li class="blockList">
 <h4>getElementHeaderBean</h4>
-<pre class="methodSignature">protected&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;getElementHeaderBean()</pre>
+<pre class="methodSignature">protected&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;getElementHeaderBean()</pre>
 <div class="block">Return the element header bean - used during cloning</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>

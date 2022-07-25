@@ -221,19 +221,12 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">addExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">addExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;assetManagerGUID,
                      java.lang.String&nbsp;assetManagerName,
-                     <a href="../properties/SynchronizationDirection.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">SynchronizationDirection</a>&nbsp;synchronizationDirection,
-                     java.lang.String&nbsp;synchronizationDescription,
                      java.lang.String&nbsp;openMetadataElementGUID,
                      java.lang.String&nbsp;openMetadataElementTypeName,
-                     java.lang.String&nbsp;externalIdentifier,
-                     java.lang.String&nbsp;externalIdentifierName,
-                     java.lang.String&nbsp;externalIdentifierUsage,
-                     java.lang.String&nbsp;externalIdentifierSource,
-                     <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)</code></th>
+                     <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)</code></th>
 <td class="colLast">
 <div class="block">Add a new external identifier to an existing open metadata element.</div>
 </td>
@@ -281,38 +274,24 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">removeExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;assetManagerGUID,
                         java.lang.String&nbsp;assetManagerName,
-                        <a href="../properties/SynchronizationDirection.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">SynchronizationDirection</a>&nbsp;synchronizationDirection,
-                        java.lang.String&nbsp;synchronizationDescription,
                         java.lang.String&nbsp;openMetadataElementGUID,
                         java.lang.String&nbsp;openMetadataElementTypeName,
-                        java.lang.String&nbsp;externalIdentifier,
-                        java.lang.String&nbsp;externalIdentifierName,
-                        java.lang.String&nbsp;externalIdentifierUsage,
-                        java.lang.String&nbsp;externalIdentifierSource,
-                        <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                        java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)</code></th>
+                        java.lang.String&nbsp;externalIdentifier)</code></th>
 <td class="colLast">
 <div class="block">Remove an external identifier from an existing open metadata element.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">updateExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">updateExternalIdentifier</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;assetManagerGUID,
                         java.lang.String&nbsp;assetManagerName,
-                        <a href="../properties/SynchronizationDirection.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">SynchronizationDirection</a>&nbsp;synchronizationDirection,
-                        java.lang.String&nbsp;synchronizationDescription,
                         java.lang.String&nbsp;openMetadataElementGUID,
                         java.lang.String&nbsp;openMetadataElementTypeName,
-                        java.lang.String&nbsp;externalIdentifier,
-                        java.lang.String&nbsp;externalIdentifierName,
-                        java.lang.String&nbsp;externalIdentifierUsage,
-                        java.lang.String&nbsp;externalIdentifierSource,
-                        <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                        java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)</code></th>
+                        <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)</code></th>
 <td class="colLast">
 <div class="block">Update the description of a specific external identifier.</div>
 </td>
@@ -511,7 +490,7 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the unique identifier of the external asset manager from its qualified name.
- Typically the qualified name comes from the integration connector configuration.</div>
+ Typically, the qualified name comes from the integration connector configuration.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/AssetManagerInterface.html#getExternalAssetManagerGUID(java.lang.String,java.lang.String)">getExternalAssetManagerGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerInterface</a></code></dd>
@@ -527,7 +506,7 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
 </dl>
 </li>
 </ul>
-<a id="addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">
+<a id="addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -536,37 +515,23 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
 <pre class="methodSignature">public&nbsp;void&nbsp;addExternalIdentifier&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;assetManagerGUID,
                                   java.lang.String&nbsp;assetManagerName,
-                                  <a href="../properties/SynchronizationDirection.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">SynchronizationDirection</a>&nbsp;synchronizationDirection,
-                                  java.lang.String&nbsp;synchronizationDescription,
                                   java.lang.String&nbsp;openMetadataElementGUID,
                                   java.lang.String&nbsp;openMetadataElementTypeName,
-                                  java.lang.String&nbsp;externalIdentifier,
-                                  java.lang.String&nbsp;externalIdentifierName,
-                                  java.lang.String&nbsp;externalIdentifierUsage,
-                                  java.lang.String&nbsp;externalIdentifierSource,
-                                  <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                                  java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)
+                                  <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Add a new external identifier to an existing open metadata element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/AssetManagerInterface.html#addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">addExternalIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerInterface</a></code></dd>
+<dd><code><a href="../api/AssetManagerInterface.html#addExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">addExternalIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>synchronizationDirection</code> - details of the synchronization direction</dd>
-<dd><code>synchronizationDescription</code> - optional additional description about the synchronization approach</dd>
 <dd><code>openMetadataElementGUID</code> - unique identifier (GUID) of the element in the open metadata ecosystem</dd>
 <dd><code>openMetadataElementTypeName</code> - type name for the open metadata element</dd>
-<dd><code>externalIdentifier</code> - unique identifier of this element in the third party asset manager</dd>
-<dd><code>externalIdentifierName</code> - name of the identifier in the third party asset manager</dd>
-<dd><code>externalIdentifierUsage</code> - description of how the open metadata element maps to the identifier</dd>
-<dd><code>externalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>keyPattern</code> - style of the external identifier</dd>
-<dd><code>mappingProperties</code> - additional mapping properties</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
@@ -574,7 +539,7 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
 </dl>
 </li>
 </ul>
-<a id="updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">
+<a id="updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -583,37 +548,23 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
 <pre class="methodSignature">public&nbsp;void&nbsp;updateExternalIdentifier&#8203;(java.lang.String&nbsp;userId,
                                      java.lang.String&nbsp;assetManagerGUID,
                                      java.lang.String&nbsp;assetManagerName,
-                                     <a href="../properties/SynchronizationDirection.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">SynchronizationDirection</a>&nbsp;synchronizationDirection,
-                                     java.lang.String&nbsp;synchronizationDescription,
                                      java.lang.String&nbsp;openMetadataElementGUID,
                                      java.lang.String&nbsp;openMetadataElementTypeName,
-                                     java.lang.String&nbsp;externalIdentifier,
-                                     java.lang.String&nbsp;externalIdentifierName,
-                                     java.lang.String&nbsp;externalIdentifierUsage,
-                                     java.lang.String&nbsp;externalIdentifierSource,
-                                     <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)
+                                     <a href="../properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties)
                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the description of a specific external identifier.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/AssetManagerInterface.html#updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">updateExternalIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerInterface</a></code></dd>
+<dd><code><a href="../api/AssetManagerInterface.html#updateExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties)">updateExternalIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>synchronizationDirection</code> - details of the synchronization direction</dd>
-<dd><code>synchronizationDescription</code> - optional additional description about the synchronization approach</dd>
 <dd><code>openMetadataElementGUID</code> - unique identifier (GUID) of the element in the open metadata ecosystem</dd>
 <dd><code>openMetadataElementTypeName</code> - type name for the open metadata element</dd>
-<dd><code>externalIdentifier</code> - unique identifier of this element in the third party asset manager</dd>
-<dd><code>externalIdentifierName</code> - name of the identifier in the third party asset manager</dd>
-<dd><code>externalIdentifierUsage</code> - description of how the open metadata element maps to the identifier</dd>
-<dd><code>externalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>keyPattern</code> - style of the external identifier</dd>
-<dd><code>mappingProperties</code> - additional mapping properties</dd>
+<dd><code>externalIdentifierProperties</code> - optional properties used to define an external identifier</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>
@@ -621,7 +572,7 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
 </dl>
 </li>
 </ul>
-<a id="removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">
+<a id="removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -630,16 +581,9 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
 <pre class="methodSignature">public&nbsp;void&nbsp;removeExternalIdentifier&#8203;(java.lang.String&nbsp;userId,
                                      java.lang.String&nbsp;assetManagerGUID,
                                      java.lang.String&nbsp;assetManagerName,
-                                     <a href="../properties/SynchronizationDirection.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">SynchronizationDirection</a>&nbsp;synchronizationDirection,
-                                     java.lang.String&nbsp;synchronizationDescription,
                                      java.lang.String&nbsp;openMetadataElementGUID,
                                      java.lang.String&nbsp;openMetadataElementTypeName,
-                                     java.lang.String&nbsp;externalIdentifier,
-                                     java.lang.String&nbsp;externalIdentifierName,
-                                     java.lang.String&nbsp;externalIdentifierUsage,
-                                     java.lang.String&nbsp;externalIdentifierSource,
-                                     <a href="../properties/KeyPattern.html" title="enum in org.odpi.openmetadata.accessservices.assetmanager.properties">KeyPattern</a>&nbsp;keyPattern,
-                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;mappingProperties)
+                                     java.lang.String&nbsp;externalIdentifier)
                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -647,21 +591,14 @@ implements <a href="../api/AssetManagerInterface.html" title="interface in org.o
  affected.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/AssetManagerInterface.html#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern,java.util.Map)">removeExternalIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerInterface</a></code></dd>
+<dd><code><a href="../api/AssetManagerInterface.html#removeExternalIdentifier(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeExternalIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.api">AssetManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>assetManagerName</code> - unique name of software server capability representing the caller</dd>
-<dd><code>synchronizationDirection</code> - details of the synchronization direction</dd>
-<dd><code>synchronizationDescription</code> - optional additional description about the synchronization approach</dd>
 <dd><code>openMetadataElementGUID</code> - unique identifier (GUID) of the element in the open metadata ecosystem</dd>
 <dd><code>openMetadataElementTypeName</code> - type name for the open metadata element</dd>
 <dd><code>externalIdentifier</code> - unique identifier of this element in the third party asset manager</dd>
-<dd><code>externalIdentifierName</code> - name of the identifier in the third party asset manager</dd>
-<dd><code>externalIdentifierUsage</code> - description of how the open metadata element maps to the identifier</dd>
-<dd><code>externalIdentifierSource</code> - component that issuing this request.</dd>
-<dd><code>keyPattern</code> - style of the external identifier</dd>
-<dd><code>mappingProperties</code> - additional mapping properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request</dd>

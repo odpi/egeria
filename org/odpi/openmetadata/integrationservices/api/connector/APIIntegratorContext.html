@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10,"i61":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -401,13 +401,21 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i26" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIManagerName()">getAPIManagerName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the qualified name of the API manager that is supplied in the configuration
+ document.</div>
+</td>
+</tr>
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/APIOperationElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIOperationElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIOperationByGUID(java.lang.String)">getAPIOperationByGUID</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the API operation metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/APIOperationElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIOperationElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIOperationsByName(java.lang.String,int,int)">getAPIOperationsByName</a></span>&#8203;(java.lang.String&nbsp;name,
                       int&nbsp;startFrom,
@@ -416,21 +424,21 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of API operation metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/APIParameterElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIParameterElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIParameterByGUID(java.lang.String)">getAPIParameterByGUID</a></span>&#8203;(java.lang.String&nbsp;apiParameterGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the API parameter metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/APIParameterListElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIParameterListElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIParameterListByGUID(java.lang.String)">getAPIParameterListByGUID</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the API Parameter List metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/APIParameterListElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIParameterListElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIParameterListsByName(java.lang.String,int,int)">getAPIParameterListsByName</a></span>&#8203;(java.lang.String&nbsp;name,
                           int&nbsp;startFrom,
@@ -439,7 +447,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of API Parameter List metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/APIParameterElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIParameterElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIParametersByName(java.lang.String,java.lang.String,int,int)">getAPIParametersByName</a></span>&#8203;(java.lang.String&nbsp;name,
                       java.lang.String&nbsp;typeName,
@@ -449,7 +457,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of API parameter metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/APIElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAPIsByName(java.lang.String,int,int)">getAPIsByName</a></span>&#8203;(java.lang.String&nbsp;name,
              int&nbsp;startFrom,
@@ -458,14 +466,14 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of API metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointByGUID(java.lang.String)">getEndpointByGUID</a></span>&#8203;(java.lang.String&nbsp;endpointGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the endpoint metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointsByName(java.lang.String,int,int)">getEndpointsByName</a></span>&#8203;(java.lang.String&nbsp;name,
                   int&nbsp;startFrom,
@@ -474,7 +482,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of endpoint metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/APIElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMyAPIs(int,int)">getMyAPIs</a></span>&#8203;(int&nbsp;startFrom,
          int&nbsp;pageSize)</code></th>
@@ -482,7 +490,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of apis created by this caller.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/APIParameterElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIParameterElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedAPIParameters(java.lang.String,int,int)">getNestedAPIParameters</a></span>&#8203;(java.lang.String&nbsp;parentElementGUID,
                       int&nbsp;startFrom,
@@ -491,7 +499,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of API parameters associated with a parameter list or nested underneath another parameter.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/APIOperationElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIOperationElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOperationsForAPI(java.lang.String,int,int)">getOperationsForAPI</a></span>&#8203;(java.lang.String&nbsp;apiGUID,
                    int&nbsp;startFrom,
@@ -500,7 +508,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of operations associated with an API.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/APIParameterListElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">APIParameterListElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getParameterListsForAPIOperation(java.lang.String,int,int)">getParameterListsForAPIOperation</a></span>&#8203;(java.lang.String&nbsp;apiOperationGUID,
                                 int&nbsp;startFrom,
@@ -509,14 +517,14 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of API Parameter Lists associated with an API Operation.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByGUID(java.lang.String)">getSchemaTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the schema type metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByName(java.lang.String,java.lang.String,int,int)">getSchemaTypeByName</a></span>&#8203;(java.lang.String&nbsp;name,
                    java.lang.String&nbsp;typeName,
@@ -526,7 +534,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema type metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeForElement(java.lang.String,java.lang.String)">getSchemaTypeForElement</a></span>&#8203;(java.lang.String&nbsp;parentElementGUID,
                        java.lang.String&nbsp;parentElementTypeName)</code></th>
@@ -534,14 +542,14 @@ extends java.lang.Object</pre>
 <div class="block">Return the schema type associated with a specific open metadata element (data asset, process or port).</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeParent(java.lang.String)">getSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueSetElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueSetElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueSetByName(java.lang.String,int,int)">getValidValueSetByName</a></span>&#8203;(java.lang.String&nbsp;name,
                       int&nbsp;startFrom,
@@ -550,14 +558,14 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of valid value set metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishAPI(java.lang.String)">publishAPI</a></span>&#8203;(java.lang.String&nbsp;apiGUID)</code></th>
 <td class="colLast">
 <div class="block">Update the zones for the API asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerListener(org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener)">registerListener</a></span>&#8203;(<a href="../../../accessservices/datamanager/api/DataManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DataManagerEventListener</a>&nbsp;listener)</code></th>
 <td class="colLast">
@@ -565,7 +573,7 @@ extends java.lang.Object</pre>
  the Data Manager OMAS.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeAPI(java.lang.String,java.lang.String)">removeAPI</a></span>&#8203;(java.lang.String&nbsp;apiGUID,
          java.lang.String&nbsp;qualifiedName)</code></th>
@@ -573,7 +581,7 @@ extends java.lang.Object</pre>
 <div class="block">Remove the metadata element representing an API.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeAPIOperation(java.lang.String,java.lang.String)">removeAPIOperation</a></span>&#8203;(java.lang.String&nbsp;apiOperationGUID,
                   java.lang.String&nbsp;qualifiedName)</code></th>
@@ -581,14 +589,14 @@ extends java.lang.Object</pre>
 <div class="block">Remove the metadata element representing an API operation.</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeAPIParameter(java.lang.String)">removeAPIParameter</a></span>&#8203;(java.lang.String&nbsp;apiParameterGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a API parameter.</div>
 </td>
 </tr>
-<tr id="i49" class="rowColor">
+<tr id="i50" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeAPIParameterList(java.lang.String,java.lang.String)">removeAPIParameterList</a></span>&#8203;(java.lang.String&nbsp;apiParameterListGUID,
                       java.lang.String&nbsp;qualifiedName)</code></th>
@@ -596,28 +604,28 @@ extends java.lang.Object</pre>
 <div class="block">Remove an API Parameter List and all of its parameters.</div>
 </td>
 </tr>
-<tr id="i50" class="altColor">
+<tr id="i51" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEndpoint(java.lang.String)">removeEndpoint</a></span>&#8203;(java.lang.String&nbsp;endpointGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a endpoint.</div>
 </td>
 </tr>
-<tr id="i51" class="rowColor">
+<tr id="i52" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaType(java.lang.String)">removeSchemaType</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a schema type.</div>
 </td>
 </tr>
-<tr id="i52" class="altColor">
+<tr id="i53" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAPIManagerIsHome(boolean)">setAPIManagerIsHome</a></span>&#8203;(boolean&nbsp;apiManagerIsHome)</code></th>
 <td class="colLast">
 <div class="block">Set up the flag that controls the ownership of metadata created for this API manager.</div>
 </td>
 </tr>
-<tr id="i53" class="rowColor">
+<tr id="i54" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSchemaType(java.lang.String,java.lang.String,java.lang.String)">setupSchemaType</a></span>&#8203;(java.lang.String&nbsp;relationshipTypeName,
                java.lang.String&nbsp;apiParameterGUID,
@@ -626,7 +634,7 @@ extends java.lang.Object</pre>
 <div class="block">Connect a schema type to a API parameter.</div>
 </td>
 </tr>
-<tr id="i54" class="altColor">
+<tr id="i55" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAPI(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.APIProperties)">updateAPI</a></span>&#8203;(java.lang.String&nbsp;apiGUID,
          boolean&nbsp;isMergeUpdate,
@@ -635,7 +643,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing an API.</div>
 </td>
 </tr>
-<tr id="i55" class="rowColor">
+<tr id="i56" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAPIOperation(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.APIOperationProperties)">updateAPIOperation</a></span>&#8203;(java.lang.String&nbsp;apiOperationGUID,
                   boolean&nbsp;isMergeUpdate,
@@ -644,7 +652,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing an API operation.</div>
 </td>
 </tr>
-<tr id="i56" class="altColor">
+<tr id="i57" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAPIParameter(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterProperties)">updateAPIParameter</a></span>&#8203;(java.lang.String&nbsp;apiParameterGUID,
                   boolean&nbsp;isMergeUpdate,
@@ -653,7 +661,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the properties of the metadata element representing a API parameter.</div>
 </td>
 </tr>
-<tr id="i57" class="rowColor">
+<tr id="i58" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAPIParameterList(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListProperties)">updateAPIParameterList</a></span>&#8203;(java.lang.String&nbsp;apiParameterListGUID,
                       boolean&nbsp;isMergeUpdate,
@@ -662,7 +670,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing an API Parameter List.</div>
 </td>
 </tr>
-<tr id="i58" class="altColor">
+<tr id="i59" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEndpoint(boolean,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties)">updateEndpoint</a></span>&#8203;(boolean&nbsp;isMergeUpdate,
               java.lang.String&nbsp;endpointGUID,
@@ -671,7 +679,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing a endpoint.</div>
 </td>
 </tr>
-<tr id="i59" class="rowColor">
+<tr id="i60" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties)">updateSchemaType</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID,
                 boolean&nbsp;isMergeUpdate,
@@ -680,7 +688,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing a schema type.</div>
 </td>
 </tr>
-<tr id="i60" class="altColor">
+<tr id="i61" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawAPI(java.lang.String)">withdrawAPI</a></span>&#8203;(java.lang.String&nbsp;apiGUID)</code></th>
 <td class="colLast">
@@ -745,6 +753,21 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getAPIManagerName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAPIManagerName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getAPIManagerName()</pre>
+<div class="block">Return the qualified name of the API manager that is supplied in the configuration
+ document.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string name</dd>
+</dl>
+</li>
+</ul>
 <a id="setAPIManagerIsHome(boolean)">
 <!--   -->
 </a>
@@ -2075,8 +2098,8 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>schemaTypeProperties</code> - properties about the schema type to store</dd>
-<dd><code>mapFromSchemaTypeGUID</code> - unique identifier of the the domain of the map</dd>
-<dd><code>mapToSchemaTypeGUID</code> - unique identifier of the the range of the map</dd>
+<dd><code>mapFromSchemaTypeGUID</code> - unique identifier of the domain of the map</dd>
+<dd><code>mapToSchemaTypeGUID</code> - unique identifier of the range of the map</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new schema type</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

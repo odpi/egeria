@@ -667,7 +667,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity with the new classification added. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity with the new classification added. No guarantee this is all the classifications.</dd>
 <dd><code>classification</code> - new classification</dd>
 </dl>
 </li>
@@ -697,7 +697,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity with the new classification added. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity with the new classification added. No guarantee this is all the classifications.</dd>
 <dd><code>classification</code> - new classification</dd>
 </dl>
 </li>
@@ -727,7 +727,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity after the classification has been removed. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity after the classification has been removed. No guarantee this is all the classifications.</dd>
 <dd><code>originalClassification</code> - classification that was removed</dd>
 </dl>
 </li>
@@ -757,7 +757,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity after the classification has been removed. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity after the classification has been removed. No guarantee this is all the classifications.</dd>
 <dd><code>originalClassification</code> - classification that was removed</dd>
 </dl>
 </li>
@@ -788,7 +788,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity after the classification has been changed. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity after the classification has been changed. No guarantee this is all the classifications.</dd>
 <dd><code>originalClassification</code> - classification that was removed</dd>
 <dd><code>classification</code> - new classification</dd>
 </dl>
@@ -820,7 +820,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity after the classification has been changed. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity after the classification has been changed. No guarantee this is all the classifications.</dd>
 <dd><code>originalClassification</code> - classification that was removed</dd>
 <dd><code>classification</code> - new classification</dd>
 </dl>
@@ -838,7 +838,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
                                       java.lang.String&nbsp;originatorServerType,
                                       java.lang.String&nbsp;originatorOrganizationName,
                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail&nbsp;entity)</pre>
-<div class="block">An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+<div class="block">An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
  but it is no longer returned on queries.
  <p>
  All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -937,7 +937,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
                                       java.lang.String&nbsp;originatorOrganizationName,
                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary&nbsp;originalTypeDefSummary,
                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail&nbsp;entity)</pre>
-<div class="block">An existing entity has had its type changed.  Typically this action is taken to move an entity's
+<div class="block">An existing entity has had its type changed.  Typically, this action is taken to move an entity's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>
@@ -1058,7 +1058,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
                                             java.lang.String&nbsp;originatorServerType,
                                             java.lang.String&nbsp;originatorOrganizationName,
                                             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship&nbsp;relationship)</pre>
-<div class="block">An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+<div class="block">An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
  but it is no longer returned on queries.
  <p>
  Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
@@ -1151,7 +1151,7 @@ extends <a href="../../../repositoryservices/connectors/omrstopic/OMRSTopicListe
                                             java.lang.String&nbsp;originatorOrganizationName,
                                             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary&nbsp;originalTypeDefSummary,
                                             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship&nbsp;relationship)</pre>
-<div class="block">An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+<div class="block">An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>

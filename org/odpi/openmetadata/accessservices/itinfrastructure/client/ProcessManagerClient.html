@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -258,9 +258,8 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearLineageMapping</a></span>&#8203;(java.lang.String&nbsp;userId,
-                   java.lang.String&nbsp;sourceElementGUID,
-                   java.lang.String&nbsp;destinationElementGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearLineageMapping(java.lang.String,java.lang.String,java.util.Date)">clearLineageMapping</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   java.lang.String&nbsp;lineageMappingGUID,
                    java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Remove the lineage mapping between two elements.</div>
@@ -337,20 +336,24 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ControlFlowElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getControlFlowNextSteps(java.lang.String,java.lang.String,java.util.Date)">getControlFlowNextSteps</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getControlFlowNextSteps(java.lang.String,java.lang.String,int,int,java.util.Date)">getControlFlowNextSteps</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;currentStepGUID,
+                       int&nbsp;startFrom,
+                       int&nbsp;pageSize,
                        java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the control relationships linked from an specific element to the possible next elements in the process.</div>
+<div class="block">Retrieve the control relationships linked from a specific element to the possible next elements in the process.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ControlFlowElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getControlFlowPreviousSteps(java.lang.String,java.lang.String,java.util.Date)">getControlFlowPreviousSteps</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getControlFlowPreviousSteps(java.lang.String,java.lang.String,int,int,java.util.Date)">getControlFlowPreviousSteps</a></span>&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;currentStepGUID,
+                           int&nbsp;startFrom,
+                           int&nbsp;pageSize,
                            java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the control relationships linked from an specific element to the possible previous elements in the process.</div>
+<div class="block">Retrieve the control relationships linked from a specific element to the possible previous elements in the process.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
@@ -366,32 +369,49 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">DataFlowElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataFlowConsumers(java.lang.String,java.lang.String,java.util.Date)">getDataFlowConsumers</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataFlowConsumers(java.lang.String,java.lang.String,int,int,java.util.Date)">getDataFlowConsumers</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;dataSupplierGUID,
+                    int&nbsp;startFrom,
+                    int&nbsp;pageSize,
                     java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the data flow relationships linked from an specific element to the downstream consumers.</div>
+<div class="block">Retrieve the data flow relationships linked from a specific element to the downstream consumers.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">DataFlowElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataFlowSuppliers(java.lang.String,java.lang.String,java.util.Date)">getDataFlowSuppliers</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataFlowSuppliers(java.lang.String,java.lang.String,int,int,java.util.Date)">getDataFlowSuppliers</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;dataConsumerGUID,
+                    int&nbsp;startFrom,
+                    int&nbsp;pageSize,
                     java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the data flow relationships linked from an specific element to the upstream suppliers.</div>
+<div class="block">Retrieve the data flow relationships linked from a specific element to the upstream suppliers.</div>
 </td>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">LineageMappingElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDestinationLineageMappings(java.lang.String,java.lang.String,java.util.Date)">getDestinationLineageMappings</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDestinationLineageMappings(java.lang.String,java.lang.String,int,int,java.util.Date)">getDestinationLineageMappings</a></span>&#8203;(java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;sourceElementGUID,
+                             int&nbsp;startFrom,
+                             int&nbsp;pageSize,
                              java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the lineage mapping relationships linked from an specific source element to its destinations.</div>
+<div class="block">Retrieve the lineage mapping relationships linked from a specific source element to its destinations.</div>
 </td>
 </tr>
 <tr id="i16" class="altColor">
+<td class="colFirst"><code><a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">LineageMappingElement</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getLineageMapping</a></span>&#8203;(java.lang.String&nbsp;userId,
+                 java.lang.String&nbsp;sourceElementGUID,
+                 java.lang.String&nbsp;destinationElementGUID,
+                 java.lang.String&nbsp;qualifiedName,
+                 java.util.Date&nbsp;effectiveTime)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the lineage mapping relationship between two elements.</div>
+</td>
+</tr>
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/ProcessElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessByGUID(java.lang.String,java.lang.String)">getProcessByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;processGUID)</code></th>
@@ -399,7 +419,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Retrieve the process metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessCallElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getProcessCall</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;callerGUID,
@@ -410,25 +430,29 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Retrieve the process call relationship between two elements.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessCallElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessCalled(java.lang.String,java.lang.String,java.util.Date)">getProcessCalled</a></span>&#8203;(java.lang.String&nbsp;userId,
-                java.lang.String&nbsp;callerGUID,
-                java.util.Date&nbsp;effectiveTime)</code></th>
-<td class="colLast">
-<div class="block">Retrieve the process call relationships linked from an specific element to the elements it calls.</div>
-</td>
-</tr>
 <tr id="i19" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessCallElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessCallers(java.lang.String,java.lang.String,java.util.Date)">getProcessCallers</a></span>&#8203;(java.lang.String&nbsp;userId,
-                 java.lang.String&nbsp;calledGUID,
-                 java.util.Date&nbsp;effectiveTime)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessCalled(java.lang.String,java.lang.String,int,int,java.util.Date)">getProcessCalled</a></span>&#8203;(java.lang.String&nbsp;userId,
+                java.lang.String&nbsp;callerGUID,
+                int&nbsp;startFrom,
+                int&nbsp;pageSize,
+                java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the process call relationships linked from an specific element to its callers.</div>
+<div class="block">Retrieve the process call relationships linked from a specific element to the elements it calls.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessCallElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessCallers(java.lang.String,java.lang.String,int,int,java.util.Date)">getProcessCallers</a></span>&#8203;(java.lang.String&nbsp;userId,
+                 java.lang.String&nbsp;calledGUID,
+                 int&nbsp;startFrom,
+                 int&nbsp;pageSize,
+                 java.util.Date&nbsp;effectiveTime)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the process call relationships linked from a specific element to its callers.</div>
+</td>
+</tr>
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ProcessElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessesByName(java.lang.String,java.lang.String,java.util.Date,int,int)">getProcessesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;name,
@@ -439,7 +463,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Retrieve the list of process metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ProcessElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessesForInfrastructureManager(java.lang.String,java.lang.String,java.lang.String,java.util.Date,int,int)">getProcessesForInfrastructureManager</a></span>&#8203;(java.lang.String&nbsp;userId,
                                     java.lang.String&nbsp;infrastructureManagerGUID,
@@ -451,7 +475,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Return the list of processes associated with the infrastructure manager.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/ProcessElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProcessParent(java.lang.String,java.lang.String,java.util.Date)">getProcessParent</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;processGUID,
@@ -460,16 +484,18 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Retrieve the process metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">LineageMappingElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSourceLineageMappings(java.lang.String,java.lang.String,java.util.Date)">getSourceLineageMappings</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSourceLineageMappings(java.lang.String,java.lang.String,int,int,java.util.Date)">getSourceLineageMappings</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;destinationElementGUID,
+                        int&nbsp;startFrom,
+                        int&nbsp;pageSize,
                         java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the lineage mapping relationships linked from an specific destination element to its sources.</div>
+<div class="block">Retrieve the lineage mapping relationships linked from a specific destination element to its sources.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ProcessElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubProcesses(java.lang.String,java.lang.String,java.util.Date,int,int)">getSubProcesses</a></span>&#8203;(java.lang.String&nbsp;userId,
                java.lang.String&nbsp;processGUID,
@@ -480,7 +506,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Retrieve the process metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishProcess(java.lang.String,java.lang.String)">publishProcess</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;processGUID)</code></th>
@@ -488,7 +514,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Update the zones for the asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeProcess(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeProcess</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;infrastructureManagerGUID,
@@ -498,7 +524,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Remove the metadata element representing a process.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setBusinessSignificant(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setBusinessSignificant</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;infrastructureManagerGUID,
@@ -510,70 +536,61 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Classify a port, process or asset as "BusinessSignificant" (this may effect the way that lineage is displayed).</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupControlFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupControlFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupControlFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties,java.util.Date)">setupControlFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;infrastructureManagerGUID,
                 java.lang.String&nbsp;infrastructureManagerName,
                 boolean&nbsp;infrastructureManagerIsHome,
                 java.lang.String&nbsp;currentStepGUID,
                 java.lang.String&nbsp;nextStepGUID,
-                java.lang.String&nbsp;qualifiedName,
-                java.lang.String&nbsp;description,
-                java.lang.String&nbsp;guard,
-                java.util.Date&nbsp;effectiveFrom,
-                java.util.Date&nbsp;effectiveTo)</code></th>
+                <a href="../properties/ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ControlFlowProperties</a>&nbsp;properties,
+                java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Link two elements to show that when one completes the next is started.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupDataFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupDataFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupDataFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties,java.util.Date)">setupDataFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;infrastructureManagerGUID,
              java.lang.String&nbsp;infrastructureManagerName,
              boolean&nbsp;infrastructureManagerIsHome,
              java.lang.String&nbsp;dataSupplierGUID,
              java.lang.String&nbsp;dataConsumerGUID,
-             java.lang.String&nbsp;qualifiedName,
-             java.lang.String&nbsp;description,
-             java.lang.String&nbsp;formula,
-             java.util.Date&nbsp;effectiveFrom,
-             java.util.Date&nbsp;effectiveTo)</code></th>
+             <a href="../properties/DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">DataFlowProperties</a>&nbsp;properties,
+             java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Link two elements together to show that data flows from one to the other.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupLineageMapping</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupLineageMapping(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties,java.util.Date)">setupLineageMapping</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;sourceElementGUID,
                    java.lang.String&nbsp;destinationElementGUID,
-                   java.util.Date&nbsp;effectiveFrom,
-                   java.util.Date&nbsp;effectiveTo)</code></th>
+                   <a href="../properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">LineageMappingProperties</a>&nbsp;properties,
+                   java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Link two elements together to show that they are part of the lineage of the data that is moving
  between the processes.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupProcessCall(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupProcessCall</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupProcessCall(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties,java.util.Date)">setupProcessCall</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;infrastructureManagerGUID,
                 java.lang.String&nbsp;infrastructureManagerName,
                 boolean&nbsp;infrastructureManagerIsHome,
                 java.lang.String&nbsp;callerGUID,
                 java.lang.String&nbsp;calledGUID,
-                java.lang.String&nbsp;qualifiedName,
-                java.lang.String&nbsp;description,
-                java.lang.String&nbsp;formula,
-                java.util.Date&nbsp;effectiveFrom,
-                java.util.Date&nbsp;effectiveTo)</code></th>
+                <a href="../properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ProcessCallProperties</a>&nbsp;properties,
+                java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Link two elements together to show a request-response call between them.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupProcessParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessContainmentType,java.util.Date,java.util.Date)">setupProcessParent</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;infrastructureManagerGUID,
@@ -588,37 +605,43 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Create a parent-child relationship between two processes.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateControlFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties,java.util.Date)">updateControlFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;infrastructureManagerGUID,
                  java.lang.String&nbsp;infrastructureManagerName,
                  java.lang.String&nbsp;controlFlowGUID,
-                 java.lang.String&nbsp;qualifiedName,
-                 java.lang.String&nbsp;description,
-                 java.lang.String&nbsp;guard,
-                 java.util.Date&nbsp;effectiveFrom,
-                 java.util.Date&nbsp;effectiveTo)</code></th>
+                 <a href="../properties/ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ControlFlowProperties</a>&nbsp;properties,
+                 java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update the relationship between two elements that shows that when one completes the next is started.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateDataFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties,java.util.Date)">updateDataFlow</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;infrastructureManagerGUID,
               java.lang.String&nbsp;infrastructureManagerName,
               java.lang.String&nbsp;dataFlowGUID,
-              java.lang.String&nbsp;qualifiedName,
-              java.lang.String&nbsp;description,
-              java.lang.String&nbsp;formula,
-              java.util.Date&nbsp;effectiveFrom,
-              java.util.Date&nbsp;effectiveTo)</code></th>
+              <a href="../properties/DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">DataFlowProperties</a>&nbsp;properties,
+              java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update relationship between two elements that shows that data flows from one to the other.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i36" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties,java.util.Date)">updateLineageMapping</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;infrastructureManagerGUID,
+                    java.lang.String&nbsp;infrastructureManagerName,
+                    java.lang.String&nbsp;lineageMappingGUID,
+                    <a href="../properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">LineageMappingProperties</a>&nbsp;properties,
+                    java.util.Date&nbsp;effectiveTime)</code></th>
+<td class="colLast">
+<div class="block">Update the lineage mapping relationship between two elements.</div>
+</td>
+</tr>
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateProcess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessProperties)">updateProcess</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;infrastructureManagerGUID,
@@ -630,22 +653,19 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Update the metadata element representing a process.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateProcessCall</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties,java.util.Date)">updateProcessCall</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;infrastructureManagerGUID,
                  java.lang.String&nbsp;infrastructureManagerName,
                  java.lang.String&nbsp;processCallGUID,
-                 java.lang.String&nbsp;qualifiedName,
-                 java.lang.String&nbsp;description,
-                 java.lang.String&nbsp;formula,
-                 java.util.Date&nbsp;effectiveFrom,
-                 java.util.Date&nbsp;effectiveTo)</code></th>
+                 <a href="../properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ProcessCallProperties</a>&nbsp;properties,
+                 java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update the relationship between two elements that shows a request-response call between them.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateProcessStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessStatus)">updateProcessStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;infrastructureManagerGUID,
@@ -656,7 +676,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Update the status of the metadata element representing a process.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawProcess(java.lang.String,java.lang.String)">withdrawProcess</a></span>&#8203;(java.lang.String&nbsp;userId,
                java.lang.String&nbsp;processGUID)</code></th>
@@ -1368,7 +1388,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="setupDataFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<a id="setupDataFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1380,18 +1400,15 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
                                       boolean&nbsp;infrastructureManagerIsHome,
                                       java.lang.String&nbsp;dataSupplierGUID,
                                       java.lang.String&nbsp;dataConsumerGUID,
-                                      java.lang.String&nbsp;qualifiedName,
-                                      java.lang.String&nbsp;description,
-                                      java.lang.String&nbsp;formula,
-                                      java.util.Date&nbsp;effectiveFrom,
-                                      java.util.Date&nbsp;effectiveTo)
+                                      <a href="../properties/DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">DataFlowProperties</a>&nbsp;properties,
+                                      java.util.Date&nbsp;effectiveTime)
                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link two elements together to show that data flows from one to the other.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#setupDataFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupDataFlow</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#setupDataFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties,java.util.Date)">setupDataFlow</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1399,11 +1416,8 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <dd><code>infrastructureManagerIsHome</code> - ensure that only the infrastructure manager can update this asset</dd>
 <dd><code>dataSupplierGUID</code> - unique identifier of the data supplier</dd>
 <dd><code>dataConsumerGUID</code> - unique identifier of the data consumer</dd>
-<dd><code>qualifiedName</code> - unique identifier for this relationship</dd>
-<dd><code>description</code> - description and/or purpose of the data flow</dd>
-<dd><code>formula</code> - function that determines the subset of the data that flows</dd>
-<dd><code>effectiveFrom</code> - time when this hosting is effective - null means immediately</dd>
-<dd><code>effectiveTo</code> - time when this hosting is no longer effective - null means forever</dd>
+<dd><code>properties</code> - unique identifier for this relationship along with description and/or additional relevant properties</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1448,7 +1462,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="updateDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<a id="updateDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1458,28 +1472,22 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
                            java.lang.String&nbsp;infrastructureManagerGUID,
                            java.lang.String&nbsp;infrastructureManagerName,
                            java.lang.String&nbsp;dataFlowGUID,
-                           java.lang.String&nbsp;qualifiedName,
-                           java.lang.String&nbsp;description,
-                           java.lang.String&nbsp;formula,
-                           java.util.Date&nbsp;effectiveFrom,
-                           java.util.Date&nbsp;effectiveTo)
+                           <a href="../properties/DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">DataFlowProperties</a>&nbsp;properties,
+                           java.util.Date&nbsp;effectiveTime)
                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update relationship between two elements that shows that data flows from one to the other.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#updateDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateDataFlow</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#updateDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties,java.util.Date)">updateDataFlow</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>dataFlowGUID</code> - unique identifier of the data flow relationship</dd>
-<dd><code>qualifiedName</code> - unique identifier for this relationship</dd>
-<dd><code>description</code> - description and/or purpose of the data flow</dd>
-<dd><code>formula</code> - function that determines the subset of the data that flows</dd>
-<dd><code>effectiveFrom</code> - time when this hosting is effective - null means immediately</dd>
-<dd><code>effectiveTo</code> - time when this hosting is no longer effective - null means forever</dd>
+<dd><code>properties</code> - unique identifier for this relationship along with description and/or additional relevant properties</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1518,7 +1526,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getDataFlowConsumers(java.lang.String,java.lang.String,java.util.Date)">
+<a id="getDataFlowConsumers(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1526,17 +1534,21 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <h4>getDataFlowConsumers</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">DataFlowElement</a>&gt;&nbsp;getDataFlowConsumers&#8203;(java.lang.String&nbsp;userId,
                                                             java.lang.String&nbsp;dataSupplierGUID,
+                                                            int&nbsp;startFrom,
+                                                            int&nbsp;pageSize,
                                                             java.util.Date&nbsp;effectiveTime)
                                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the data flow relationships linked from an specific element to the downstream consumers.</div>
+<div class="block">Retrieve the data flow relationships linked from a specific element to the downstream consumers.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#getDataFlowConsumers(java.lang.String,java.lang.String,java.util.Date)">getDataFlowConsumers</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#getDataFlowConsumers(java.lang.String,java.lang.String,int,int,java.util.Date)">getDataFlowConsumers</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>dataSupplierGUID</code> - unique identifier of the data supplier</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>effectiveTime</code> - time when the hosting is effective</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier and properties of the relationship</dd>
@@ -1547,7 +1559,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getDataFlowSuppliers(java.lang.String,java.lang.String,java.util.Date)">
+<a id="getDataFlowSuppliers(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1555,17 +1567,21 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <h4>getDataFlowSuppliers</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">DataFlowElement</a>&gt;&nbsp;getDataFlowSuppliers&#8203;(java.lang.String&nbsp;userId,
                                                             java.lang.String&nbsp;dataConsumerGUID,
+                                                            int&nbsp;startFrom,
+                                                            int&nbsp;pageSize,
                                                             java.util.Date&nbsp;effectiveTime)
                                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the data flow relationships linked from an specific element to the upstream suppliers.</div>
+<div class="block">Retrieve the data flow relationships linked from a specific element to the upstream suppliers.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#getDataFlowSuppliers(java.lang.String,java.lang.String,java.util.Date)">getDataFlowSuppliers</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#getDataFlowSuppliers(java.lang.String,java.lang.String,int,int,java.util.Date)">getDataFlowSuppliers</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>dataConsumerGUID</code> - unique identifier of the data consumer</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>effectiveTime</code> - time when the hosting is effective</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier and properties of the relationship</dd>
@@ -1576,7 +1592,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="setupControlFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<a id="setupControlFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1588,18 +1604,15 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
                                          boolean&nbsp;infrastructureManagerIsHome,
                                          java.lang.String&nbsp;currentStepGUID,
                                          java.lang.String&nbsp;nextStepGUID,
-                                         java.lang.String&nbsp;qualifiedName,
-                                         java.lang.String&nbsp;description,
-                                         java.lang.String&nbsp;guard,
-                                         java.util.Date&nbsp;effectiveFrom,
-                                         java.util.Date&nbsp;effectiveTo)
+                                         <a href="../properties/ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ControlFlowProperties</a>&nbsp;properties,
+                                         java.util.Date&nbsp;effectiveTime)
                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link two elements to show that when one completes the next is started.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#setupControlFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupControlFlow</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#setupControlFlow(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties,java.util.Date)">setupControlFlow</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1607,11 +1620,8 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <dd><code>infrastructureManagerIsHome</code> - ensure that only the infrastructure manager can update this asset</dd>
 <dd><code>currentStepGUID</code> - unique identifier of the previous step</dd>
 <dd><code>nextStepGUID</code> - unique identifier of the next step</dd>
-<dd><code>qualifiedName</code> - unique identifier for this relationship</dd>
-<dd><code>description</code> - description and/or purpose of the data flow</dd>
-<dd><code>guard</code> - function that must be true to travel down this control flow</dd>
-<dd><code>effectiveFrom</code> - time when this hosting is effective - null means immediately</dd>
-<dd><code>effectiveTo</code> - time when this hosting is no longer effective - null means forever</dd>
+<dd><code>properties</code> - unique identifier for this relationship along with description and/or additional relevant properties</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier for the control flow relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1656,7 +1666,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="updateControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<a id="updateControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1666,28 +1676,22 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
                               java.lang.String&nbsp;infrastructureManagerGUID,
                               java.lang.String&nbsp;infrastructureManagerName,
                               java.lang.String&nbsp;controlFlowGUID,
-                              java.lang.String&nbsp;qualifiedName,
-                              java.lang.String&nbsp;description,
-                              java.lang.String&nbsp;guard,
-                              java.util.Date&nbsp;effectiveFrom,
-                              java.util.Date&nbsp;effectiveTo)
+                              <a href="../properties/ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ControlFlowProperties</a>&nbsp;properties,
+                              java.util.Date&nbsp;effectiveTime)
                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the relationship between two elements that shows that when one completes the next is started.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#updateControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateControlFlow</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#updateControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties,java.util.Date)">updateControlFlow</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>controlFlowGUID</code> - unique identifier of the  control flow relationship</dd>
-<dd><code>qualifiedName</code> - unique identifier for this relationship</dd>
-<dd><code>description</code> - description and/or purpose of the data flow</dd>
-<dd><code>guard</code> - function that must be true to travel down this control flow</dd>
-<dd><code>effectiveFrom</code> - time when this hosting is effective - null means immediately</dd>
-<dd><code>effectiveTo</code> - time when this hosting is no longer effective - null means forever</dd>
+<dd><code>properties</code> - unique identifier for this relationship along with description and/or additional relevant properties</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1726,7 +1730,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getControlFlowNextSteps(java.lang.String,java.lang.String,java.util.Date)">
+<a id="getControlFlowNextSteps(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1734,17 +1738,21 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <h4>getControlFlowNextSteps</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ControlFlowElement</a>&gt;&nbsp;getControlFlowNextSteps&#8203;(java.lang.String&nbsp;userId,
                                                                   java.lang.String&nbsp;currentStepGUID,
+                                                                  int&nbsp;startFrom,
+                                                                  int&nbsp;pageSize,
                                                                   java.util.Date&nbsp;effectiveTime)
                                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the control relationships linked from an specific element to the possible next elements in the process.</div>
+<div class="block">Retrieve the control relationships linked from a specific element to the possible next elements in the process.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#getControlFlowNextSteps(java.lang.String,java.lang.String,java.util.Date)">getControlFlowNextSteps</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#getControlFlowNextSteps(java.lang.String,java.lang.String,int,int,java.util.Date)">getControlFlowNextSteps</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>currentStepGUID</code> - unique identifier of the current step</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>effectiveTime</code> - time when the hosting is effective</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier and properties of the relationship</dd>
@@ -1755,7 +1763,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getControlFlowPreviousSteps(java.lang.String,java.lang.String,java.util.Date)">
+<a id="getControlFlowPreviousSteps(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1763,17 +1771,21 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <h4>getControlFlowPreviousSteps</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ControlFlowElement</a>&gt;&nbsp;getControlFlowPreviousSteps&#8203;(java.lang.String&nbsp;userId,
                                                                       java.lang.String&nbsp;currentStepGUID,
+                                                                      int&nbsp;startFrom,
+                                                                      int&nbsp;pageSize,
                                                                       java.util.Date&nbsp;effectiveTime)
                                                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the control relationships linked from an specific element to the possible previous elements in the process.</div>
+<div class="block">Retrieve the control relationships linked from a specific element to the possible previous elements in the process.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#getControlFlowPreviousSteps(java.lang.String,java.lang.String,java.util.Date)">getControlFlowPreviousSteps</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#getControlFlowPreviousSteps(java.lang.String,java.lang.String,int,int,java.util.Date)">getControlFlowPreviousSteps</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>currentStepGUID</code> - unique identifier of the current step</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>effectiveTime</code> - time when the hosting is effective</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier and properties of the relationship</dd>
@@ -1784,7 +1796,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="setupProcessCall(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<a id="setupProcessCall(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1796,18 +1808,15 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
                                          boolean&nbsp;infrastructureManagerIsHome,
                                          java.lang.String&nbsp;callerGUID,
                                          java.lang.String&nbsp;calledGUID,
-                                         java.lang.String&nbsp;qualifiedName,
-                                         java.lang.String&nbsp;description,
-                                         java.lang.String&nbsp;formula,
-                                         java.util.Date&nbsp;effectiveFrom,
-                                         java.util.Date&nbsp;effectiveTo)
+                                         <a href="../properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ProcessCallProperties</a>&nbsp;properties,
+                                         java.util.Date&nbsp;effectiveTime)
                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link two elements together to show a request-response call between them.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#setupProcessCall(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupProcessCall</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#setupProcessCall(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties,java.util.Date)">setupProcessCall</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -1815,11 +1824,8 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <dd><code>infrastructureManagerIsHome</code> - ensure that only the infrastructure manager can update this asset</dd>
 <dd><code>callerGUID</code> - unique identifier of the element that is making the call</dd>
 <dd><code>calledGUID</code> - unique identifier of the element that is processing the call</dd>
-<dd><code>qualifiedName</code> - unique identifier for this relationship</dd>
-<dd><code>description</code> - description and/or purpose of the data flow</dd>
-<dd><code>formula</code> - function that determines the subset of the data that flows</dd>
-<dd><code>effectiveFrom</code> - time when this hosting is effective - null means immediately</dd>
-<dd><code>effectiveTo</code> - time when this hosting is no longer effective - null means forever</dd>
+<dd><code>properties</code> - unique identifier for this relationship along with description and/or additional relevant properties</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -1864,7 +1870,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="updateProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<a id="updateProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1874,28 +1880,22 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
                               java.lang.String&nbsp;infrastructureManagerGUID,
                               java.lang.String&nbsp;infrastructureManagerName,
                               java.lang.String&nbsp;processCallGUID,
-                              java.lang.String&nbsp;qualifiedName,
-                              java.lang.String&nbsp;description,
-                              java.lang.String&nbsp;formula,
-                              java.util.Date&nbsp;effectiveFrom,
-                              java.util.Date&nbsp;effectiveTo)
+                              <a href="../properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ProcessCallProperties</a>&nbsp;properties,
+                              java.util.Date&nbsp;effectiveTime)
                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Update the relationship between two elements that shows a request-response call between them.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#updateProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">updateProcessCall</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#updateProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties,java.util.Date)">updateProcessCall</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>processCallGUID</code> - unique identifier of the process call relationship</dd>
-<dd><code>qualifiedName</code> - unique identifier for this relationship</dd>
-<dd><code>description</code> - description and/or purpose of the data flow</dd>
-<dd><code>formula</code> - function that determines the subset of the data that flows</dd>
-<dd><code>effectiveFrom</code> - time when this hosting is effective - null means immediately</dd>
-<dd><code>effectiveTo</code> - time when this hosting is no longer effective - null means forever</dd>
+<dd><code>properties</code> - unique identifier for this relationship along with description and/or additional relevant properties</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1926,7 +1926,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
 <dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
 <dd><code>processCallGUID</code> - unique identifier of the process call relationship</dd>
-<dd><code>effectiveTime</code> - time when the relationship is effective</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1934,7 +1934,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getProcessCalled(java.lang.String,java.lang.String,java.util.Date)">
+<a id="getProcessCalled(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1942,17 +1942,21 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <h4>getProcessCalled</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessCallElement</a>&gt;&nbsp;getProcessCalled&#8203;(java.lang.String&nbsp;userId,
                                                            java.lang.String&nbsp;callerGUID,
+                                                           int&nbsp;startFrom,
+                                                           int&nbsp;pageSize,
                                                            java.util.Date&nbsp;effectiveTime)
                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the process call relationships linked from an specific element to the elements it calls.</div>
+<div class="block">Retrieve the process call relationships linked from a specific element to the elements it calls.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#getProcessCalled(java.lang.String,java.lang.String,java.util.Date)">getProcessCalled</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#getProcessCalled(java.lang.String,java.lang.String,int,int,java.util.Date)">getProcessCalled</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>callerGUID</code> - unique identifier of the element that is making the call</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>effectiveTime</code> - time when the hosting is effective</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier and properties of the relationship</dd>
@@ -1963,7 +1967,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getProcessCallers(java.lang.String,java.lang.String,java.util.Date)">
+<a id="getProcessCallers(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1971,17 +1975,21 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <h4>getProcessCallers</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ProcessCallElement</a>&gt;&nbsp;getProcessCallers&#8203;(java.lang.String&nbsp;userId,
                                                             java.lang.String&nbsp;calledGUID,
+                                                            int&nbsp;startFrom,
+                                                            int&nbsp;pageSize,
                                                             java.util.Date&nbsp;effectiveTime)
                                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the process call relationships linked from an specific element to its callers.</div>
+<div class="block">Retrieve the process call relationships linked from a specific element to its callers.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#getProcessCallers(java.lang.String,java.lang.String,java.util.Date)">getProcessCallers</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#getProcessCallers(java.lang.String,java.lang.String,int,int,java.util.Date)">getProcessCallers</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>calledGUID</code> - unique identifier of the element that is processing the call</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>effectiveTime</code> - time when the hosting is effective</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier and properties of the relationship</dd>
@@ -1992,7 +2000,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="setupLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">
+<a id="setupLineageMapping(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -2001,23 +2009,23 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;setupLineageMapping&#8203;(java.lang.String&nbsp;userId,
                                             java.lang.String&nbsp;sourceElementGUID,
                                             java.lang.String&nbsp;destinationElementGUID,
-                                            java.util.Date&nbsp;effectiveFrom,
-                                            java.util.Date&nbsp;effectiveTo)
+                                            <a href="../properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">LineageMappingProperties</a>&nbsp;properties,
+                                            java.util.Date&nbsp;effectiveTime)
                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link two elements together to show that they are part of the lineage of the data that is moving
- between the processes.  Typically the lineage relationships stitch together processes and data assets
+ between the processes.  Typically, the lineage relationships stitch together processes and data assets
  supported by different technologies.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#setupLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date)">setupLineageMapping</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#setupLineageMapping(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties,java.util.Date)">setupLineageMapping</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>sourceElementGUID</code> - unique identifier of the source</dd>
 <dd><code>destinationElementGUID</code> - unique identifier of the destination</dd>
-<dd><code>effectiveFrom</code> - time when this hosting is effective - null means immediately</dd>
-<dd><code>effectiveTo</code> - time when this hosting is no longer effective - null means forever</dd>
+<dd><code>properties</code> - unique identifier for this relationship along with description and/or additional relevant properties</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -2027,15 +2035,82 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="clearLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
+<a id="getLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getLineageMapping</h4>
+<pre class="methodSignature">public&nbsp;<a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">LineageMappingElement</a>&nbsp;getLineageMapping&#8203;(java.lang.String&nbsp;userId,
+                                               java.lang.String&nbsp;sourceElementGUID,
+                                               java.lang.String&nbsp;destinationElementGUID,
+                                               java.lang.String&nbsp;qualifiedName,
+                                               java.util.Date&nbsp;effectiveTime)
+                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the lineage mapping relationship between two elements.  The qualifiedName is optional unless there
+ is more than one lineage mapping relationship between these two elements since it is used to disambiguate
+ the request.  This is often used in conjunction with update.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ProcessManagerInterface.html#getLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">getLineageMapping</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>sourceElementGUID</code> - unique identifier of the source</dd>
+<dd><code>destinationElementGUID</code> - unique identifier of the destination</dd>
+<dd><code>qualifiedName</code> - unique identifier for this relationship</dd>
+<dd><code>effectiveTime</code> - effective time for the query</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier and properties of the relationship</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="updateLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties,java.util.Date)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateLineageMapping</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;updateLineageMapping&#8203;(java.lang.String&nbsp;userId,
+                                 java.lang.String&nbsp;infrastructureManagerGUID,
+                                 java.lang.String&nbsp;infrastructureManagerName,
+                                 java.lang.String&nbsp;lineageMappingGUID,
+                                 <a href="../properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">LineageMappingProperties</a>&nbsp;properties,
+                                 java.util.Date&nbsp;effectiveTime)
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the lineage mapping relationship between two elements.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ProcessManagerInterface.html#updateLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties,java.util.Date)">updateLineageMapping</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
+<dd><code>infrastructureManagerName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>lineageMappingGUID</code> - unique identifier of the relationship</dd>
+<dd><code>properties</code> - qualified name for this relationship and other related properties</dd>
+<dd><code>effectiveTime</code> - optional date for effective time of the query.  Null means any effective time</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearLineageMapping(java.lang.String,java.lang.String,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>clearLineageMapping</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;clearLineageMapping&#8203;(java.lang.String&nbsp;userId,
-                                java.lang.String&nbsp;sourceElementGUID,
-                                java.lang.String&nbsp;destinationElementGUID,
+                                java.lang.String&nbsp;lineageMappingGUID,
                                 java.util.Date&nbsp;effectiveTime)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2043,11 +2118,10 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <div class="block">Remove the lineage mapping between two elements.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#clearLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">clearLineageMapping</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#clearLineageMapping(java.lang.String,java.lang.String,java.util.Date)">clearLineageMapping</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>sourceElementGUID</code> - unique identifier of the source</dd>
-<dd><code>destinationElementGUID</code> - unique identifier of the destination</dd>
+<dd><code>lineageMappingGUID</code> - unique identifier of the relationship</dd>
 <dd><code>effectiveTime</code> - time when the relationship is effective</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
@@ -2056,7 +2130,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getDestinationLineageMappings(java.lang.String,java.lang.String,java.util.Date)">
+<a id="getDestinationLineageMappings(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -2064,17 +2138,21 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <h4>getDestinationLineageMappings</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">LineageMappingElement</a>&gt;&nbsp;getDestinationLineageMappings&#8203;(java.lang.String&nbsp;userId,
                                                                            java.lang.String&nbsp;sourceElementGUID,
+                                                                           int&nbsp;startFrom,
+                                                                           int&nbsp;pageSize,
                                                                            java.util.Date&nbsp;effectiveTime)
                                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the lineage mapping relationships linked from an specific source element to its destinations.</div>
+<div class="block">Retrieve the lineage mapping relationships linked from a specific source element to its destinations.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#getDestinationLineageMappings(java.lang.String,java.lang.String,java.util.Date)">getDestinationLineageMappings</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#getDestinationLineageMappings(java.lang.String,java.lang.String,int,int,java.util.Date)">getDestinationLineageMappings</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>sourceElementGUID</code> - unique identifier of the source</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>effectiveTime</code> - time when the hosting is effective</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of lineage mapping relationships</dd>
@@ -2085,7 +2163,7 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="getSourceLineageMappings(java.lang.String,java.lang.String,java.util.Date)">
+<a id="getSourceLineageMappings(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -2093,17 +2171,21 @@ implements <a href="../api/ProcessManagerInterface.html" title="interface in org
 <h4>getSourceLineageMappings</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">LineageMappingElement</a>&gt;&nbsp;getSourceLineageMappings&#8203;(java.lang.String&nbsp;userId,
                                                                       java.lang.String&nbsp;destinationElementGUID,
+                                                                      int&nbsp;startFrom,
+                                                                      int&nbsp;pageSize,
                                                                       java.util.Date&nbsp;effectiveTime)
                                                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the lineage mapping relationships linked from an specific destination element to its sources.</div>
+<div class="block">Retrieve the lineage mapping relationships linked from a specific destination element to its sources.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/ProcessManagerInterface.html#getSourceLineageMappings(java.lang.String,java.lang.String,java.util.Date)">getSourceLineageMappings</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
+<dd><code><a href="../api/ProcessManagerInterface.html#getSourceLineageMappings(java.lang.String,java.lang.String,int,int,java.util.Date)">getSourceLineageMappings</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProcessManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ProcessManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>destinationElementGUID</code> - unique identifier of the destination</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>effectiveTime</code> - time when the hosting is effective</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of lineage mapping relationships</dd>

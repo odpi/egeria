@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -206,48 +206,62 @@ implements java.io.Serializable</pre>
 </td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code><a href="../properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLineageMappingProperties()">getLineageMappingProperties</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the properties associated with the lineage mapping relationship.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSourceElement()">getSourceElement</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the element header associated with end 1 of the relationship.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTargetElement()">getTargetElement</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the element header associated with end 2 of the relationship.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLineageMappingHeader(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader)">setLineageMappingHeader</a></span>&#8203;(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a>&nbsp;lineageMappingHeader)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with the relationship.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLineageMappingProperties(org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties)">setLineageMappingProperties</a></span>&#8203;(<a href="../properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a>&nbsp;lineageMappingProperties)</code></th>
+<td class="colLast">
+<div class="block">Set up the properties associated with the relationship.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSourceElement(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader)">setSourceElement</a></span>&#8203;(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a>&nbsp;sourceElement)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with end 1 of the relationship.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTargetElement(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader)">setTargetElement</a></span>&#8203;(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ElementHeader</a>&nbsp;targetElement)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with end 2 of the relationship.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -337,6 +351,34 @@ implements java.io.Serializable</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>lineageMappingHeader</code> - element header object</dd>
+</dl>
+</li>
+</ul>
+<a id="getLineageMappingProperties()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getLineageMappingProperties</h4>
+<pre class="methodSignature">public&nbsp;<a href="../properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a>&nbsp;getLineageMappingProperties()</pre>
+<div class="block">Return the properties associated with the lineage mapping relationship.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>properties</dd>
+</dl>
+</li>
+</ul>
+<a id="setLineageMappingProperties(org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setLineageMappingProperties</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setLineageMappingProperties&#8203;(<a href="../properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a>&nbsp;lineageMappingProperties)</pre>
+<div class="block">Set up the properties associated with the relationship.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>lineageMappingProperties</code> - properties</dd>
 </dl>
 </li>
 </ul>
