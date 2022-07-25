@@ -103,7 +103,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
         }
         while (!eventSent) {
             try {
-                log.debug("Sending message {} try {} [0 based]", event, eventRetryCount);
+                log.debug("Sending message try {} [0 based] : ", eventRetryCount,event);
                 ProducerRecord<String, String> record = new ProducerRecord<>(topicName, localServerId, event);
                 kafkaSendAttemptCount++;
                 log.info("Metrics: kafkaSendAttemptCount {}", kafkaSendAttemptCount);
