@@ -13,13 +13,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * StructPropertyValue supports the value part of property that is defined as a complex structure.
+ * StructTypePropertyValue supports the value part of property that is defined as a complex structure.
  * It manages a list of properties that cover the fields in the structure.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class StructPropertyValue extends PropertyValue
+public class StructTypePropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
@@ -27,9 +27,9 @@ public class StructPropertyValue extends PropertyValue
 
 
     /**
-     * Default constructor set StructPropertyValue to null.
+     * Default constructor set StructTypePropertyValue to null.
      */
-    public StructPropertyValue()
+    public StructTypePropertyValue()
     {
         super();
     }
@@ -38,9 +38,9 @@ public class StructPropertyValue extends PropertyValue
     /**
      * Copy/clone constructor sets up the values based on the template.
      *
-     * @param template StructPropertyValue to copy.
+     * @param template StructTypePropertyValue to copy.
      */
-    public StructPropertyValue(StructPropertyValue template)
+    public StructTypePropertyValue(StructTypePropertyValue template)
     {
         super(template);
 
@@ -58,7 +58,7 @@ public class StructPropertyValue extends PropertyValue
      */
     public PropertyValue cloneFromSubclass()
     {
-        return new StructPropertyValue(this);
+        return new StructTypePropertyValue(this);
     }
 
 
@@ -69,7 +69,7 @@ public class StructPropertyValue extends PropertyValue
      */
     public String valueAsString()
     {
-        return mapValuesAsString(attributes.getInstanceProperties()).toString();
+        return mapValuesAsString(attributes.getPropertyValueMap()).toString();
     }
 
 
@@ -80,7 +80,7 @@ public class StructPropertyValue extends PropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(attributes.getInstanceProperties());
+        return mapValuesAsObject(attributes.getPropertyValueMap());
     }
 
 
@@ -118,7 +118,7 @@ public class StructPropertyValue extends PropertyValue
     @Override
     public String toString()
     {
-        return "StructPropertyValue{" +
+        return "StructTypePropertyValue{" +
                 "attributes=" + attributes +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
@@ -142,7 +142,7 @@ public class StructPropertyValue extends PropertyValue
         {
             return false;
         }
-        StructPropertyValue that = (StructPropertyValue) objectToCompare;
+        StructTypePropertyValue that = (StructTypePropertyValue) objectToCompare;
         return Objects.equals(attributes, that.attributes);
     }
 

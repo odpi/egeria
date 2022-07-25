@@ -13,13 +13,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MapPropertyValue stores the values of a map within an entity, struct or relationship properties.
+ * MapTypePropertyValue stores the values of a map within an entity, struct or relationship properties.
  * The elements of the map are stored in an ElementProperties map.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MapPropertyValue extends PropertyValue
+public class MapTypePropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
@@ -29,7 +29,7 @@ public class MapPropertyValue extends PropertyValue
     /**
      * Default constructor sets the map to empty.
      */
-    public MapPropertyValue()
+    public MapTypePropertyValue()
     {
         super();
     }
@@ -38,9 +38,9 @@ public class MapPropertyValue extends PropertyValue
     /**
      * Copy/clone constructor set up the map using the supplied template.
      *
-     * @param template ArrayPropertyValue
+     * @param template ArrayTypePropertyValue
      */
-    public MapPropertyValue(MapPropertyValue template)
+    public MapTypePropertyValue(MapTypePropertyValue template)
     {
         super(template);
 
@@ -58,7 +58,7 @@ public class MapPropertyValue extends PropertyValue
      */
     public PropertyValue cloneFromSubclass()
     {
-        return new MapPropertyValue(this);
+        return new MapTypePropertyValue(this);
     }
 
 
@@ -69,7 +69,7 @@ public class MapPropertyValue extends PropertyValue
      */
     public String valueAsString()
     {
-      return mapValuesAsString(mapValues.getInstanceProperties()).toString();
+      return mapValuesAsString(mapValues.getPropertyValueMap()).toString();
     }
 
 
@@ -80,7 +80,7 @@ public class MapPropertyValue extends PropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(mapValues.getInstanceProperties());
+        return mapValuesAsObject(mapValues.getPropertyValueMap());
     }
 
 
@@ -155,7 +155,7 @@ public class MapPropertyValue extends PropertyValue
     @Override
     public String toString()
     {
-        return "MapPropertyValue{" +
+        return "MapTypePropertyValue{" +
                 "mapValues=" + mapValues +
                 ", mapElementCount=" + getMapElementCount() +
                 ", typeName='" + getTypeName() + '\'' +
@@ -180,7 +180,7 @@ public class MapPropertyValue extends PropertyValue
         {
             return false;
         }
-        MapPropertyValue that = (MapPropertyValue) objectToCompare;
+        MapTypePropertyValue that = (MapTypePropertyValue) objectToCompare;
         return Objects.equals(mapValues, that.mapValues);
     }
 

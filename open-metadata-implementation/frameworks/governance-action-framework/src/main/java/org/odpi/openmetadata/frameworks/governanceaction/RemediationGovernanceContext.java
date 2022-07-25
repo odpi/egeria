@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * RemediationGovernanceContext provides access to details of the remediation request along with access to the
+ * RemediationGovernanceContext provides access to the remediation request along with access to the
  * metadata store and APIs to enable changes to a wide range of metadata elements.
  *
  * A remediation service is typically making updates to the actionTargetElements. It may use
@@ -32,7 +32,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @param metadataElementTypeName type name of the new metadata element
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
      *
      * @return unique identifier of the new metadata element
@@ -59,7 +59,7 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
      *
      * @return unique identifier of the new metadata element
@@ -114,8 +114,6 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param newElementStatus new status value - or null to leave as is
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
@@ -126,11 +124,35 @@ public interface RemediationGovernanceContext extends GovernanceContext
                                      boolean       forLineage,
                                      boolean       forDuplicateProcessing,
                                      ElementStatus newElementStatus,
-                                     Date          effectiveFrom,
-                                     Date          effectiveTo,
                                      Date          effectiveTime) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException;
+
+
+    /**
+     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
+     * assigned when it was created.  The effectivity dates control the visibility of the element
+     * through specific APIs.
+     *
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    void updateMetadataElementEffectivity(String        metadataElementGUID,
+                                          boolean       forLineage,
+                                          boolean       forDuplicateProcessing,
+                                          Date          effectiveFrom,
+                                          Date          effectiveTo,
+                                          Date          effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**
@@ -360,7 +382,10 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @param relationshipGUID unique identifier of the relationship to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param properties new properties for the classification
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
@@ -369,9 +394,12 @@ public interface RemediationGovernanceContext extends GovernanceContext
      */
     void updateRelatedElements(String            relationshipGUID,
                                boolean           replaceProperties,
-                               ElementProperties properties) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+                               boolean           forLineage,
+                               boolean           forDuplicateProcessing,
+                               ElementProperties properties,
+                               Date              effectiveTime) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     /**
@@ -379,32 +407,44 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * The effectivity dates control the visibility of the classification through specific APIs.
      *
      * @param relationshipGUID unique identifier of the relationship to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void updateRelatedElementsStatus(String relationshipGUID,
-                                     Date   effectiveFrom,
-                                     Date   effectiveTo) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException;
+    void updateRelatedElementsStatus(String  relationshipGUID,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveFrom,
+                                     Date    effectiveTo,
+                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException;
 
 
     /**
      * Delete a relationship between two metadata elements.
      *
      * @param relationshipGUID unique identifier of the relationship to delete
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    void deleteRelatedElements(String relationshipGUID) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException;
+    void deleteRelatedElements(String  relationshipGUID,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
 
 
     /**

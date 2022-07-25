@@ -19,8 +19,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.PortType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.MatchCriteria;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveDefCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitivePropertyValue;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyCondition;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
@@ -168,7 +168,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @return unique identifier of the resulting incident report
      *
      * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create a incident report
+     * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -220,7 +220,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
@@ -243,7 +243,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
@@ -268,7 +268,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
@@ -396,7 +396,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * governance action service has created a new asset as part of the provisioning process.
      * This interface includes an optional templateGUID to copy the structure of an existing asset of the same type.
      *
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments
      *                     such as nested content, schema, connection etc)
      * @param qualifiedName the unique name of the new asset
      * @param name the technical display name of the asset
@@ -464,7 +464,7 @@ public class GovernanceActionContext implements GovernanceContext,
     /**
      * Create a new process to represent the processing of this governance action process.
      *
-     * @param templateGUID the unique identifier of the existing process to copy (this will copy all of the attachments such as ports, nested content,
+     * @param templateGUID the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
      *                     schema, connection etc)
      * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
@@ -506,7 +506,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param description the description of the process
-     * @param parentGUID the unique identifier of the existing process to copy (this will copy all of the attachments such as ports, nested content,
+     * @param parentGUID the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
      *                     schema, connection etc)
      *
      * @return unique identifier of the new process
@@ -657,7 +657,7 @@ public class GovernanceActionContext implements GovernanceContext,
      *
      * @param metadataElementTypeName type name of the new metadata element
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
      *
      * @return unique identifier of the new metadata element
@@ -688,7 +688,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
      *
      * @return unique identifier of the new metadata element
@@ -756,8 +756,6 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param forLineage the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param newElementStatus new status value - or null to leave as is
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
@@ -769,8 +767,6 @@ public class GovernanceActionContext implements GovernanceContext,
                                             boolean       forLineage,
                                             boolean       forDuplicateProcessing,
                                             ElementStatus newElementStatus,
-                                            Date          effectiveFrom,
-                                            Date          effectiveTo,
                                             Date          effectiveTime) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -779,9 +775,42 @@ public class GovernanceActionContext implements GovernanceContext,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              newElementStatus,
-                                                             effectiveFrom,
-                                                             effectiveTo,
                                                              effectiveTime);
+    }
+
+
+    /**
+     * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
+     * assigned when it was created.  The effectivity dates control the visibility of the element
+     * through specific APIs.
+     *
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     *
+     * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public void updateMetadataElementEffectivity(String        metadataElementGUID,
+                                                 boolean       forLineage,
+                                                 boolean       forDuplicateProcessing,
+                                                 Date          effectiveFrom,
+                                                 Date          effectiveTo,
+                                                 Date          effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        openMetadataStore.updateMetadataElementEffectivityInStore(metadataElementGUID,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
+                                                                  effectiveFrom,
+                                                                  effectiveTo,
+                                                                  effectiveTime);
     }
 
 
@@ -958,13 +987,13 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        openMetadataStore.updateClassificationStatusInStore(metadataElementGUID,
-                                                            classificationName,
-                                                            forLineage,
-                                                            forDuplicateProcessing,
-                                                            effectiveFrom,
-                                                            effectiveTo,
-                                                            effectiveTime);
+        openMetadataStore.updateClassificationEffectivityInStore(metadataElementGUID,
+                                                                 classificationName,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 effectiveFrom,
+                                                                 effectiveTo,
+                                                                 effectiveTime);
     }
 
 
@@ -1094,7 +1123,10 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param relationshipGUID unique identifier of the relationship to update
      * @param replaceProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
      *                          the individual properties specified on the request.
-     * @param properties new properties for the classification
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param properties new properties for the relationship
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
@@ -1104,11 +1136,14 @@ public class GovernanceActionContext implements GovernanceContext,
     @Override
     public void updateRelatedElements(String            relationshipGUID,
                                       boolean           replaceProperties,
-                                      ElementProperties properties) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                      boolean           forLineage,
+                                      boolean           forDuplicateProcessing,
+                                      ElementProperties properties,
+                                      Date              effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        openMetadataStore.updateRelatedElementsInStore(relationshipGUID, replaceProperties, properties);
+        openMetadataStore.updateRelatedElementsInStore(relationshipGUID, replaceProperties, forLineage, forDuplicateProcessing, properties, effectiveTime);
     }
 
 
@@ -1117,21 +1152,27 @@ public class GovernanceActionContext implements GovernanceContext,
      * The effectivity dates control the visibility of the classification through specific APIs.
      *
      * @param relationshipGUID unique identifier of the relationship to update
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public void updateRelatedElementsStatus(String relationshipGUID,
-                                            Date   effectiveFrom,
-                                            Date   effectiveTo) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void updateRelatedElementsStatus(String  relationshipGUID,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveFrom,
+                                            Date    effectiveTo,
+                                            Date    effectiveTime) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        openMetadataStore.updateRelatedElementsStatusInStore(relationshipGUID, effectiveFrom, effectiveTo);
+        openMetadataStore.updateRelatedElementsEffectivityInStore(relationshipGUID, forLineage, forDuplicateProcessing, effectiveFrom, effectiveTo, effectiveTime);
     }
 
 
@@ -1139,17 +1180,23 @@ public class GovernanceActionContext implements GovernanceContext,
      * Delete a relationship between two metadata elements.
      *
      * @param relationshipGUID unique identifier of the relationship to delete
+     * @param forLineage the query is to support lineage retrieval
+     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
      * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
-    public void deleteRelatedElements(String relationshipGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void deleteRelatedElements(String relationshipGUID,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
-        openMetadataStore.deleteRelatedElementsInStore(relationshipGUID);
+        openMetadataStore.deleteRelatedElementsInStore(relationshipGUID, forLineage, forDuplicateProcessing, effectiveTime);
     }
 
 
@@ -1240,7 +1287,7 @@ public class GovernanceActionContext implements GovernanceContext,
      */
 
     /**
-     * Create a To Do request for someone to work on.
+     * Create a To-Do request for someone to work on.
      *
      * @param toDoQualifiedName unique name for the to do.  (Could be the engine name and a guid?)
      * @param title short meaningful phrase for the person receiving the request
@@ -1250,7 +1297,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param assignTo qualified name of the PersonRole element for the recipient
      * @return unique identifier of new to do element
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create a to do
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create a to-do
      * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
      */
     @Override
@@ -1286,16 +1333,16 @@ public class GovernanceActionContext implements GovernanceContext,
 
         SearchProperties        searchProperties = new SearchProperties();
         List<PropertyCondition> conditions = new ArrayList<>();
-        PropertyCondition       condition = new PropertyCondition();
-        PrimitivePropertyValue  primitivePropertyValue = new PrimitivePropertyValue();
+        PropertyCondition          condition                  = new PropertyCondition();
+        PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
 
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        primitivePropertyValue.setPrimitiveValue(assignTo);
-        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitiveTypePropertyValue.setPrimitiveValue(assignTo);
+        primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
 
         condition.setProperty(qualifiedNamePropertyName);
         condition.setOperator(PropertyComparisonOperator.EQ);
-        condition.setValue(primitivePropertyValue);
+        condition.setValue(primitiveTypePropertyValue);
 
         conditions.add(condition);
 
