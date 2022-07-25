@@ -239,11 +239,11 @@ public class TestCertification
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -252,7 +252,7 @@ public class TestCertification
 
         try
         {
-            validateResultObject((Certification) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((Certification) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

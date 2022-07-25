@@ -243,11 +243,11 @@ public class TestSchemaAttribute
         /*
          * Through superclass
          */
-        ElementHeader elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -256,7 +256,7 @@ public class TestSchemaAttribute
 
         try
         {
-            validateResultObject((SchemaAttribute) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((SchemaAttribute) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {
