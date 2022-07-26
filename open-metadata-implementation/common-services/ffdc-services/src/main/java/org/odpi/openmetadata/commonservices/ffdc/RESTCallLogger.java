@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 
 /**
  * RESTCallLogger provides standard logging for REST API method invocations.  It logs
- * the start and end of the call and manages a timer so the the elapsed time of a call is logged.
+ * the start and end of the call and manages a timer so that the elapsed time of a call is logged.
  */
 public class RESTCallLogger
 {

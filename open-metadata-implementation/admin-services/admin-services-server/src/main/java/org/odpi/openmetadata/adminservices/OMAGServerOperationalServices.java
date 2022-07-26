@@ -307,7 +307,7 @@ public class OMAGServerOperationalServices
             instance.setOperationalRepositoryServices(operationalRepositoryServices);
 
             /*
-             * A this point the type of server influences the start up sequence.
+             * At this point the type of server influences the start-up sequence.
              */
             if ((ServerTypeClassification.METADATA_SERVER.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.METADATA_ACCESS_POINT.equals(serverTypeClassification)) ||

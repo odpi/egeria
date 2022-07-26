@@ -252,7 +252,7 @@ public class GovernedAssetHandler {
             throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
         String methodName = "getEntityDetailsByGUID";
 
-        return repositoryHandler.getEntityByGUID(userId, guid, "guid", entityType, methodName);
+        return repositoryHandler.getEntityByGUID(userId, guid, "guid", entityType, false, false, new Date(), methodName);
     }
 
     private SoftwareServerCapability convertSoftwareServerCapability(EntityDetail entityDetail) {

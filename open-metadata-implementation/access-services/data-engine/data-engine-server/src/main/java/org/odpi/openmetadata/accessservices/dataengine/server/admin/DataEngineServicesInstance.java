@@ -64,7 +64,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.PortHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -292,8 +292,8 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, localServerUserId, securityVerifier,
                 supportedZones, defaultZones, publishZones, auditLog);
 
-        final SoftwareServerCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler =
-                new SoftwareServerCapabilityHandler<>(new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
+        final SoftwareCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler =
+                new SoftwareCapabilityHandler<>(new DatabaseTableConverter<>(repositoryHelper, serviceName, serverName),
                         SoftwareServerCapability.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
                         repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 

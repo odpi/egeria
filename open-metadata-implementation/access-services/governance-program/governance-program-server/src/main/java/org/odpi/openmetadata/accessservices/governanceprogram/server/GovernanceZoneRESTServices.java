@@ -22,6 +22,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinition
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +36,12 @@ import java.util.List;
  */
 public class GovernanceZoneRESTServices
 {
-    private static GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
+    private static final GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(GovernanceZoneRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(GovernanceZoneRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -53,7 +54,7 @@ public class GovernanceZoneRESTServices
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
      * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
+     * and how they are set up.  In addition, the qualified names of zones can be added to Asset definitions
      * to indicate which zone(s) they belong to.
      *
      * @param serverName name of the server instance to connect to
@@ -95,6 +96,7 @@ public class GovernanceZoneRESTServices
                                                                requestBody.getAdditionalProperties(),
                                                                requestBody.getTypeName(),
                                                                requestBody.getExtendedProperties(),
+                                                               new Date(),
                                                                methodName);
 
                 response.setGUID(zoneGUID);
@@ -287,7 +289,10 @@ public class GovernanceZoneRESTServices
                                          false,
                                          OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
                                          OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
+                                         (InstanceProperties) null,
                                          null,
+                                         null,
+                                         new Date(),
                                          methodName);
         }
         catch (Exception error)
@@ -413,7 +418,10 @@ public class GovernanceZoneRESTServices
                                          false,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                         (InstanceProperties) null,
                                          null,
+                                         null,
+                                         new Date(),
                                          methodName);
         }
         catch (Exception error)
@@ -703,6 +711,9 @@ public class GovernanceZoneRESTServices
                                                                               null,
                                                                               0,
                                                                               0,
+                                                                              false,
+                                                                              false,
+                                                                              new Date(),
                                                                               methodName);
 
                 zoneDefinition.setAssociatedGovernanceDefinitions(elementStubConverter.getNewBeans(ElementStub.class,

@@ -63,7 +63,7 @@ public class CreateDatabaseTest
 
 
     /**
-     * Run all of the defined tests and capture the results.
+     * Run all the defined tests and capture the results.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -92,7 +92,7 @@ public class CreateDatabaseTest
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server
@@ -151,14 +151,12 @@ public class CreateDatabaseTest
         databaseTableGUID = thisTest.createDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);
         databaseColumnGUID = thisTest.createDatabaseColumn(client, databaseManagerGUID, databaseTableGUID, userId);
 
-
         /*
          * Check that elements can be deleted one by one
          */
-
         try
         {
-            activityName = "deleteOneByOne - prevalidate";
+            activityName = "deleteOneByOne - pre-validate";
             thisTest.checkDatabaseColumnOK(client, databaseColumnGUID, databaseTableGUID, activityName, userId);
             thisTest.checkDatabaseTableOK(client, databaseTableGUID, databaseSchemaGUID, activityName, userId);
             thisTest.checkDatabaseSchemaOK(client, databaseSchemaGUID, databaseGUID, activityName, userId);
@@ -200,8 +198,6 @@ public class CreateDatabaseTest
             /*
              * Recreate database
              */
-            activityName= "deleteOneByOne";
-
             databaseGUID = thisTest.getDatabase(client, databaseManagerGUID, userId);
             databaseSchemaGUID = thisTest.getDatabaseSchema(client, databaseManagerGUID, databaseGUID, userId);
             databaseTableGUID = thisTest.createDatabaseTable(client, databaseManagerGUID, databaseSchemaGUID, userId);

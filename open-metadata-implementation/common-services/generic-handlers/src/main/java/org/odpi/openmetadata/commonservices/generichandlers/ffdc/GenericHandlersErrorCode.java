@@ -30,17 +30,17 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
 {
     INTEGRATOR_NOT_RETURNED(400, "OMAG-GENERIC-HANDLERS-400-001",
                             "Service {0} is unable to process the properties supplied to method {1} because the requested owner {2} ({3}) is " +
-                                    "not a recognized software server capability.  The associated error message is: {4}",
+                                    "not a recognized software capability.  The associated error message is: {4}",
                             "The system is unable to create a new instance in the metadata repository with an invalid integrator specified as" +
                                     " the owner.",
-                            "Ensure the request includes the unique identifiers for a valid software server capability entity to represent " +
+                            "Ensure the request includes the unique identifiers for a valid software capability entity to represent " +
                                     "the integrator and retry the request."),
 
     BAD_INTEGRATOR_NAME(400, "OMAG-GENERIC-HANDLERS-400-002",
                         "Service {0} is unable to process the properties supplied to method {1} because the unique name {2} given for the " +
-                                "requested owner does not match the unique name of {3} returned in software server capability {4}",
+                                "requested owner does not match the unique name of {3} returned in software capability {4}",
                         "The system is unable to create a new instance with an invalid integrator specified as the owner.",
-                        "Retry the request with a matching the unique identifier and name for a valid software server capability entity to " +
+                        "Retry the request with a matching the unique identifier and name for a valid software capability entity to " +
                                 "represent the owner of the new instance."),
 
     UNKNOWN_EXTERNAL_IDENTITY (400, "OMAG-GENERIC-HANDLERS-400-003",

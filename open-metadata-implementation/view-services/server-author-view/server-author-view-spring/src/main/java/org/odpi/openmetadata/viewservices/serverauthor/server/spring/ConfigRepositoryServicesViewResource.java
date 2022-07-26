@@ -295,7 +295,7 @@ class ConfigRepositoryServicesViewResource {
     }
 
     /**
-     * Clear  the audit log destinations associated with the the server being configured
+     * Clear  the audit log destinations associated with the server being configured
      *
      * @param userId                   user that is issuing the request.
      * @param serverName               local server name.

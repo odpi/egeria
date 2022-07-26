@@ -22,9 +22,9 @@ import java.util.Map;
  */
 public class RepositoryErrorHandler
 {
-    private String               serviceName;
-    private String               serverName;
-    private OMRSRepositoryHelper repositoryHelper;
+    private final String               serviceName;
+    private final String               serverName;
+    private final OMRSRepositoryHelper repositoryHelper;
     private AuditLog             auditLog = null;
 
     /**
@@ -153,7 +153,7 @@ public class RepositoryErrorHandler
      *
      * @param statusPropertyName property name to test (or null to skip test)
      * @param statusThreshold threshold to test against
-     * @param properties properties retrieved form the the repositories
+     * @param properties properties retrieved from the repositories
      * @param methodName calling method
      *
      * @return true if no status property name is supplied or the property value meets the threshold.
@@ -287,7 +287,7 @@ public class RepositoryErrorHandler
                         RepositoryHandlerErrorCode.WRONG_EXTERNAL_SOURCE.getMessageDefinition(methodName,
                                                                                               externalSourceGUID,
                                                                                               externalSourceName,
-                                                                                              instanceHeader.getType().getTypeDefCategory().getName(),
+                                                                                              instanceHeader.getType().getTypeDefName(),
                                                                                               uniqueIdentifier,
                                                                                               instanceProvenanceType.getName(),
                                                                                               instanceHeader.getMetadataCollectionId(),
@@ -301,7 +301,7 @@ public class RepositoryErrorHandler
         {
             throw new UserNotAuthorizedException(
                     RepositoryHandlerErrorCode.LOCAL_CANNOT_CHANGE_EXTERNAL.getMessageDefinition(methodName,
-                                                                                                 instanceHeader.getType().getTypeDefCategory().getName(),
+                                                                                                 instanceHeader.getType().getTypeDefName(),
                                                                                                  uniqueIdentifier,
                                                                                                  instanceProvenanceType.getName(),
                                                                                                  instanceHeader.getMetadataCollectionId(),
@@ -331,7 +331,7 @@ public class RepositoryErrorHandler
                                      String         methodName,
                                      String         localMethodName) throws InvalidParameterException
     {
-        if ((instanceHeader != null) || (expectedTypeName != null))
+        if ((instanceHeader != null) && (expectedTypeName != null))
         {
             InstanceType type = instanceHeader.getType();
             if (type != null)
@@ -357,6 +357,7 @@ public class RepositoryErrorHandler
      * @param typeDefGUID GUID of the type to test for
      * @param guidParameterName name of parameter passing the GUID
      * @param typeDefName name of the type to test for
+     * @param nameParameterName name of parameter passing the typeDefName
      * @param methodName calling method
      * @param localMethodName name of repository handler method
      *
@@ -649,7 +650,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if the supplied type name is not supported i nthe metadta
+     * Throw an exception if the supplied type name is not supported in the metadata
      *
      * @param error  caught exception
      * @param methodName  name of the method making the call

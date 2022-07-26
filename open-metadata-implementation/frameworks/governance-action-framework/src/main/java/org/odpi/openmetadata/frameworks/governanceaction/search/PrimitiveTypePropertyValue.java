@@ -18,24 +18,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * PrimitivePropertyValue stores a single primitive property.  This is stored in the specific Java class
+ * PrimitiveTypePropertyValue stores a single primitive property.  This is stored in the specific Java class
  * for the property value's type although it is stored as an object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PrimitivePropertyValue extends PropertyValue
+public class PrimitiveTypePropertyValue extends PropertyValue
 {
     private static final long    serialVersionUID = 1L;
 
-    private  PrimitiveDefCategory   primitiveDefCategory = null;
-    private  Object                 primitiveValue = null;
+    private PrimitiveTypeCategory primitiveTypeCategory = null;
+    private Object                primitiveValue        = null;
 
 
     /**
      * Default constructor sets the primitive property value to null.
      */
-    public PrimitivePropertyValue()
+    public PrimitiveTypePropertyValue()
     {
         super();
     }
@@ -44,15 +44,15 @@ public class PrimitivePropertyValue extends PropertyValue
     /**
      * Copy/clone constructor copies the values from the supplied template.
      *
-     * @param template PrimitivePropertyValue
+     * @param template PrimitiveTypePropertyValue
      */
-    public PrimitivePropertyValue(PrimitivePropertyValue   template)
+    public PrimitiveTypePropertyValue(PrimitiveTypePropertyValue template)
     {
         super(template);
 
         if (template != null)
         {
-            this.primitiveDefCategory = template.getPrimitiveDefCategory();
+            this.primitiveTypeCategory = template.getPrimitiveTypeCategory();
             this.primitiveValue = template.getPrimitiveValue();
         }
     }
@@ -65,7 +65,7 @@ public class PrimitivePropertyValue extends PropertyValue
      */
     public PropertyValue cloneFromSubclass()
     {
-        return new PrimitivePropertyValue(this);
+        return new PrimitiveTypePropertyValue(this);
     }
 
 
@@ -92,37 +92,37 @@ public class PrimitivePropertyValue extends PropertyValue
 
 
     /**
-     * Return the the category of the primitive's type.  This sets the name and Java Class used for
+     * Return the category of the primitive's type.  This sets the name and Java Class used for
      * the primitive value.
      *
-     * @return PrimitiveDefCategory
+     * @return PrimitiveTypeCategory
      */
-    public PrimitiveDefCategory getPrimitiveDefCategory() { return primitiveDefCategory; }
+    public PrimitiveTypeCategory getPrimitiveTypeCategory() { return primitiveTypeCategory; }
 
 
     /**
      * Set up the category of the primitive type.  This sets the name and Java Class used for
      * the primitive value.
      *
-     * @param primitiveDefCategory PrimitiveDefCategory enum
+     * @param primitiveTypeCategory PrimitiveTypeCategory enum
      */
-    public void setPrimitiveDefCategory(PrimitiveDefCategory primitiveDefCategory)
+    public void setPrimitiveTypeCategory(PrimitiveTypeCategory primitiveTypeCategory)
     {
         /*
          * Tests that type and value are consistent
          */
-        this.primitiveValue = validateValueAgainstType(primitiveDefCategory, primitiveValue);
+        this.primitiveValue = validateValueAgainstType(primitiveTypeCategory, primitiveValue);
 
         /*
          * All ok so set the category
          */
-        this.primitiveDefCategory = primitiveDefCategory;
+        this.primitiveTypeCategory = primitiveTypeCategory;
     }
 
 
     /**
      * Return the primitive value.  It is already set up to be the appropriate type for the primitive
-     * as defined in the PrimitiveDefCategory.
+     * as defined in the PrimitiveTypeCategory.
      *
      * @return Object containing the primitive value.
      */
@@ -131,7 +131,7 @@ public class PrimitivePropertyValue extends PropertyValue
 
     /**
      * Set up the primitive value.   Although it is passed in as a java.lang.Object, it should be the correct
-     * type as defined by the PrimitiveDefCategory.
+     * type as defined by the PrimitiveTypeCategory.
      *
      * @param primitiveValue object contain the primitive value
      */
@@ -140,7 +140,7 @@ public class PrimitivePropertyValue extends PropertyValue
         /*
          * Tests that type and value are consistent
          */
-        this.primitiveValue = validateValueAgainstType(primitiveDefCategory, primitiveValue);
+        this.primitiveValue = validateValueAgainstType(primitiveTypeCategory, primitiveValue);
     }
 
 
@@ -152,9 +152,9 @@ public class PrimitivePropertyValue extends PropertyValue
     @Override
     public String toString()
     {
-        return "PrimitivePropertyValue{" +
+        return "PrimitiveTypePropertyValue{" +
                 "primitiveValue=" + primitiveValue +
-                ", primitiveDefCategory=" + primitiveDefCategory +
+                ", primitiveTypeCategory=" + primitiveTypeCategory +
                 ", typeName='" + getTypeName() + '\'' +
                 '}';
     }
@@ -177,8 +177,8 @@ public class PrimitivePropertyValue extends PropertyValue
         {
             return false;
         }
-        PrimitivePropertyValue that = (PrimitivePropertyValue) objectToCompare;
-        return primitiveDefCategory == that.primitiveDefCategory &&
+        PrimitiveTypePropertyValue that = (PrimitiveTypePropertyValue) objectToCompare;
+        return primitiveTypeCategory == that.primitiveTypeCategory &&
                 Objects.equals(primitiveValue, that.primitiveValue);
     }
 
@@ -191,18 +191,18 @@ public class PrimitivePropertyValue extends PropertyValue
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getPrimitiveDefCategory(), getPrimitiveValue());
+        return Objects.hash(super.hashCode(), getPrimitiveTypeCategory(), getPrimitiveValue());
     }
 
 
     /**
      * Ensure that the type and value supplied are compatible.
      *
-     * @param primitiveDefCategory category to test
+     * @param primitiveTypeCategory category to test
      * @param primitiveValue value to test
      * @return validated primitive value
      */
-    private Object validateValueAgainstType(PrimitiveDefCategory   primitiveDefCategory,
+    private Object validateValueAgainstType(PrimitiveTypeCategory primitiveTypeCategory,
                                             Object                 primitiveValue)
     {
         final String  methodName = "validateValueAgainstType";
@@ -210,18 +210,18 @@ public class PrimitivePropertyValue extends PropertyValue
         /*
          * Return if one of the values is missing
          */
-        if ((primitiveDefCategory == null) || (primitiveValue == null))
+        if ((primitiveTypeCategory == null) || (primitiveValue == null))
         {
             return primitiveValue;
         }
 
         try
         {
-            Class<?>    testJavaClass = Class.forName(primitiveDefCategory.getJavaClassName());
+            Class<?>    testJavaClass = Class.forName(primitiveTypeCategory.getJavaClassName());
 
             if (!testJavaClass.isInstance(primitiveValue))
             {
-                if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
+                if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE)
                 {
                     /*
                      * Date values are stored as Longs. The RepositoryHelper helper methods
@@ -247,49 +247,49 @@ public class PrimitivePropertyValue extends PropertyValue
                          * This is an internal error that needs to be debugged and fixed.
                          */
                         throw new GAFRuntimeException(GAFErrorCode.INVALID_PRIMITIVE_TYPE.getMessageDefinition("OM_PRIMITIVE_TYPE_DATE",
-                                                                                                               primitiveDefCategory.getJavaClassName(),
+                                                                                                               primitiveTypeCategory.getJavaClassName(),
                                                                                                                primitiveValue.getClass().getName()),
                                                       this.getClass().getName(),
                                                       methodName);
                     }
                 }
-                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL)
+                else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL)
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
                     return new BigDecimal(castValue);
                 }
-                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER)
+                else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BIGINTEGER)
                 {
                     Long    castValue = (Long)primitiveValue;
 
                     return new BigInteger(castValue.toString());
                 }
-                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE)
+                else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_BYTE)
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
                     return new Byte(castValue.toString());
                 }
-                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR)
+                else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_CHAR)
                 {
                     String    castValue = (String)primitiveValue;
 
                     return castValue.charAt(0);
                 }
-                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT)
+                else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT)
                 {
                     Double    castValue = (Double)primitiveValue;
 
                     return new Float(castValue);
                 }
-                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG)
+                else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_LONG)
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
                     return new Long(castValue);
                 }
-                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT)
+                else if (primitiveTypeCategory == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_SHORT)
                 {
                     Integer    castValue = (Integer)primitiveValue;
 
@@ -300,9 +300,9 @@ public class PrimitivePropertyValue extends PropertyValue
                     /*
                      * The primitive value supplied is the wrong type.  Throw an exception.
                      */
-                    throw new GAFRuntimeException(GAFErrorCode.INVALID_PRIMITIVE_VALUE.getMessageDefinition(primitiveDefCategory.getJavaClassName(),
-                                                                                                                 primitiveValue.getClass().getName(),
-                                                                                                                 primitiveDefCategory.getName()),
+                    throw new GAFRuntimeException(GAFErrorCode.INVALID_PRIMITIVE_VALUE.getMessageDefinition(primitiveTypeCategory.getJavaClassName(),
+                                                                                                            primitiveValue.getClass().getName(),
+                                                                                                            primitiveTypeCategory.getName()),
                                                       this.getClass().getName(),
                                                       methodName);
                 }
@@ -311,11 +311,11 @@ public class PrimitivePropertyValue extends PropertyValue
         catch (ClassNotFoundException    unknownPrimitiveClass)
         {
             /*
-             * The java class defined in the primitiveDefCategory is not known.  This is an internal error
-             * that needs a code fix in PrimitiveDefCategory.
+             * The java class defined in the primitiveTypeCategory is not known.  This is an internal error
+             * that needs a code fix in PrimitiveTypeCategory.
              */
-            throw new GAFRuntimeException(GAFErrorCode.INVALID_PRIMITIVE_CLASS_NAME.getMessageDefinition(primitiveDefCategory.getJavaClassName(),
-                                                                                                              primitiveDefCategory.getName()),
+            throw new GAFRuntimeException(GAFErrorCode.INVALID_PRIMITIVE_CLASS_NAME.getMessageDefinition(primitiveTypeCategory.getJavaClassName(),
+                                                                                                         primitiveTypeCategory.getName()),
                                               this.getClass().getName(),
                                               methodName,
                                               unknownPrimitiveClass);
@@ -325,7 +325,7 @@ public class PrimitivePropertyValue extends PropertyValue
             /*
              * Some unexpected exception occurred when manipulating the Java Classes.  Probably a coding error.
              */
-            throw new GAFRuntimeException(GAFErrorCode.INVALID_PRIMITIVE_CATEGORY.getMessageDefinition(primitiveDefCategory.getName()),
+            throw new GAFRuntimeException(GAFErrorCode.INVALID_PRIMITIVE_CATEGORY.getMessageDefinition(primitiveTypeCategory.getName()),
                                               this.getClass().getName(),
                                               methodName,
                                               invalidPrimitiveCategory);

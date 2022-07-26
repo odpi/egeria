@@ -13,9 +13,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
  */
 public class ContactDetailsBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private int    contactMethodType;
-    private String contactMethodService;
-    private String contactMethodValue;
+    private final int    contactMethodType;
+    private final String contactMethodService;
+    private final String contactMethodValue;
 
 
     /**

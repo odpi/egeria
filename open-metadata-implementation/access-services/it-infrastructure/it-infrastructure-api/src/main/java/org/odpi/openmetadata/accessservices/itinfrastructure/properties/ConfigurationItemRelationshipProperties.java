@@ -33,6 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ControlFlowProperties.class, name = "ControlFlowProperties"),
                 @JsonSubTypes.Type(value = DataFlowProperties.class, name = "DataFlowProperties"),
                 @JsonSubTypes.Type(value = ProcessCallProperties.class, name = "ProcessCallProperties"),
+                @JsonSubTypes.Type(value = LineageMappingProperties.class, name = "LineageMappingProperties"),
         })
 public class ConfigurationItemRelationshipProperties implements Serializable
 {

@@ -230,6 +230,8 @@ public class CollectionBuilder extends ReferenceableBuilder
                                                                   orderPropertyName,
                                                                   methodName);
 
+        setEffectivityDates(properties);
+
         return properties;
     }
 }

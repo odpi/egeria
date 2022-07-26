@@ -38,16 +38,16 @@ import java.util.List;
  */
 public class OrganizationIntegratorContext
 {
-    private OrganizationManagement      organizationClient;
-    private SecurityGroupManagement     securityGroupClient;
-    private UserIdentityManagement      userIdentityClient;
-    private CommunityProfileEventClient eventClient;
+    private final OrganizationManagement      organizationClient;
+    private final SecurityGroupManagement     securityGroupClient;
+    private final UserIdentityManagement      userIdentityClient;
+    private final CommunityProfileEventClient eventClient;
 
-    private String   userId;
-    private String   externalSourceGUID;
-    private String   externalSourceName;
-    private String   connectorName;
-    private AuditLog auditLog;
+    private final String   userId;
+    private final String   externalSourceGUID;
+    private final String   externalSourceName;
+    private final String   connectorName;
+    private final AuditLog auditLog;
 
 
     /**
@@ -85,6 +85,23 @@ public class OrganizationIntegratorContext
         this.auditLog           = auditLog;
     }
 
+
+
+    /* ========================================================
+     * Returning the external source name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the external source that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getExternalSourceName()
+    {
+        return externalSourceName;
+    }
 
 
     /* ========================================================

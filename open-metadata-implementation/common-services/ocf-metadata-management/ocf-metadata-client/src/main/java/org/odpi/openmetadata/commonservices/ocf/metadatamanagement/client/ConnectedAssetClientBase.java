@@ -96,7 +96,7 @@ public class ConnectedAssetClientBase
 
 
     /**
-     * Return the basic properties of a asset.
+     * Return the basic properties of an asset.
      *
      * @param restClient client that calls REST APIs
      * @param serviceName name of the calling service

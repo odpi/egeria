@@ -48,6 +48,7 @@ public class DigitalServiceEntityHandler
      * @return the string
      * @throws PropertyServerException    the property server exception
      * @throws InvalidParameterException  the invalid parameter exception
+     * @throws UserNotAuthorizedException  user not authorized
      */
     public String createDigitalServiceEntity(String userId,
                                              String serverName,

@@ -37,10 +37,10 @@ public enum PortType implements Serializable
     public static final String ENUM_TYPE_GUID  = "b57Fbce7-42ac-71D1-D6a6-9f62Cb7C6dc3";
     public static final String ENUM_TYPE_NAME  = "PortType";
 
-    private int    ordinal;
-    private String openTypeSymbolicName;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String openTypeSymbolicName;
+    private final String name;
+    private final String description;
 
 
     /**
@@ -131,11 +131,7 @@ public enum PortType implements Serializable
     @Override
     public String toString()
     {
-        return "PortType{" +
-                       "codeValue=" + ordinal +
-                       ", codeName='" + name + '\'' +
-                       ", description='" + description +
-                       '}';
+        return "PortType{" + name + "}";
     }
 }
 

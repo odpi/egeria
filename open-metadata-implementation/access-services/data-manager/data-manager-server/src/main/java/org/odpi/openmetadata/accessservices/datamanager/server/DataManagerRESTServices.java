@@ -26,11 +26,11 @@ import java.util.Date;
  */
 public class DataManagerRESTServices
 {
-    private static DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
+    private static final DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(DataManagerRESTServices.class),
-                                                                                  instanceHandler.getServiceName());
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(DataManagerRESTServices.class),
+                                                                                        instanceHandler.getServiceName());
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -129,6 +129,9 @@ public class DataManagerRESTServices
                                                           requestBody.getVendorProperties(),
                                                           null,
                                                           null,
+                                                          false,
+                                                          false,
+                                                          new Date(),
                                                           methodName));
             }
         }
@@ -193,6 +196,9 @@ public class DataManagerRESTServices
                                                                   requestBody.getVendorProperties(),
                                                                   null,
                                                                   null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
                                                                   methodName));
             }
         }
@@ -254,6 +260,9 @@ public class DataManagerRESTServices
                                                               requestBody.getVendorProperties(),
                                                               null,
                                                               null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -315,6 +324,9 @@ public class DataManagerRESTServices
                                                               requestBody.getVendorProperties(),
                                                               null,
                                                               null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -375,6 +387,9 @@ public class DataManagerRESTServices
                                                               requestBody.getVendorProperties(),
                                                               null,
                                                               null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -435,6 +450,9 @@ public class DataManagerRESTServices
                                                               requestBody.getVendorProperties(),
                                                               null,
                                                               null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -495,6 +513,9 @@ public class DataManagerRESTServices
                                                               requestBody.getVendorProperties(),
                                                               null,
                                                               null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -538,7 +559,7 @@ public class DataManagerRESTServices
 
             if (requestBody != null)
             {
-                SoftwareCapabilityHandler handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
+                SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareServerCapabilityHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
                                                                     OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,

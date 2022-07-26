@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * Many open metadata entities are referenceable.  It means that they have a qualified name and additional
  * properties.  In addition the Referenceable class adds support for the parent asset, guid, url and type
- * for the entity through extending ElementHeader.
+ * for the entity through extending ElementBase.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,7 +38,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SchemaElement.class, name = "SchemaElement"),
                 @JsonSubTypes.Type(value = ValidValue.class, name = "ValidValue")
         })
-public class Referenceable extends ElementHeader
+public class Referenceable extends ElementBase
 {
     private static final long     serialVersionUID = 1L;
 

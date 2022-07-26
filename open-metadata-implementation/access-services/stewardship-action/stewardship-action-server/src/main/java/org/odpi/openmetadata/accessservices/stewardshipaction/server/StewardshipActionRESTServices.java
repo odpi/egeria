@@ -27,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -37,12 +38,12 @@ import java.util.List;
  */
 public class StewardshipActionRESTServices
 {
-    private static StewardshipActionInstanceHandler instanceHandler = new StewardshipActionInstanceHandler();
+    private static final StewardshipActionInstanceHandler instanceHandler = new StewardshipActionInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(StewardshipActionRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(StewardshipActionRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -209,7 +210,6 @@ public class StewardshipActionRESTServices
                                                    element1GUIDParameter,
                                                    element2GUID,
                                                    element2GUIDParameter,
-                                                   null,
                                                    methodName);
         }
         catch (Exception error)
@@ -385,6 +385,7 @@ public class StewardshipActionRESTServices
                                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                           0,
                                                                           true,
+                                                                          true,
                                                                           startFrom,
                                                                           pageSize,
                                                                           null,
@@ -552,8 +553,8 @@ public class StewardshipActionRESTServices
                                                       consolidatedDuplicateGUID,
                                                       elementGUIDParameter,
                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                      OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
+                                                      OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_NAME,
                                                       properties,
                                                       false,
                                                       true,
@@ -629,6 +630,9 @@ public class StewardshipActionRESTServices
                                          OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
                                          OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
                                          null,
+                                         null,
+                                         (Date)null,
+                                         new Date(),
                                          methodName);
 
         }
@@ -813,6 +817,7 @@ public class StewardshipActionRESTServices
                                                                          null,
                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                          2,
+                                                                         true,
                                                                          true,
                                                                          null,
                                                                          methodName);

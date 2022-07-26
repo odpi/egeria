@@ -10,7 +10,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ElementHeader provides the common identifier and type information for all properties objects
+ * ElementBase provides the common identifier and type information for all properties objects
  * that link off of the asset and have a guid associated with them.  This typically means it is
  * represented by an entity in the metadata repository.
  */
@@ -28,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = Meaning.class, name = "Meaning"),
                 @JsonSubTypes.Type(value = Rating.class, name = "Rating")
         })
-public class ElementHeader extends PropertyBase
+public class ElementBase extends PropertyBase
 {
     private static final long     serialVersionUID = 1L;
 
@@ -45,7 +45,7 @@ public class ElementHeader extends PropertyBase
     /**
      * Default constructor used by subclasses
      */
-    public ElementHeader()
+    public ElementBase()
     {
         super();
     }
@@ -56,7 +56,7 @@ public class ElementHeader extends PropertyBase
      *
      * @param template element to copy
      */
-    public ElementHeader(ElementHeader template)
+    public ElementBase(ElementBase template)
     {
         super(template);
 
@@ -223,7 +223,7 @@ public class ElementHeader extends PropertyBase
     @Override
     public String toString()
     {
-        return "ElementHeader{" +
+        return "ElementBase{" +
                 "type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
@@ -246,11 +246,11 @@ public class ElementHeader extends PropertyBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof ElementHeader))
+        if (!(objectToCompare instanceof ElementBase))
         {
             return false;
         }
-        ElementHeader that = (ElementHeader) objectToCompare;
+        ElementBase that = (ElementBase) objectToCompare;
         return Objects.equals(getType(), that.getType()) &&
                 Objects.equals(guid, that.guid) &&
                 Objects.equals(url, that.url) &&

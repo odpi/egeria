@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * This package contains tests for managing database metadata.
+ * This package contains tests for managing glossary metadata.
  */
 
-package org.odpi.openmetadata.accessservices.assetmanager.fvt.databases;
+package org.odpi.openmetadata.accessservices.assetmanager.fvt.glossaries;

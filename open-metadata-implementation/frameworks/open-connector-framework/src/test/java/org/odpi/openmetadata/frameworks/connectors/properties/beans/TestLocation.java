@@ -202,11 +202,11 @@ public class TestLocation
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -215,7 +215,7 @@ public class TestLocation
 
         try
         {
-            validateResultObject((Location) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((Location) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

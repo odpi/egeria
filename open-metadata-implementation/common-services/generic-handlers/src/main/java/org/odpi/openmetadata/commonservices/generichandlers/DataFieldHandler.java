@@ -83,19 +83,25 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param discoveryReportGUID unique identifier of the discovery analysis report
      * @param startingFrom starting position in the list.
      * @param pageSize maximum number of elements that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of data fields (or null if none are registered)
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving data fields from the annotation store.
      */
-    public List<B>  getPreviousDataFieldsForAsset(String userId,
-                                                  String discoveryReportGUID,
-                                                  int    startingFrom,
-                                                  int    pageSize,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<B>  getPreviousDataFieldsForAsset(String  userId,
+                                                  String  discoveryReportGUID,
+                                                  int     startingFrom,
+                                                  int     pageSize,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String discoveryReportGUIDParameterName = "discoveryReportGUID";
 
@@ -116,19 +122,25 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param discoveryReportGUID unique identifier of the discovery analysis report
      * @param startingFrom starting position in the list.
      * @param pageSize maximum number of elements that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return list of data fields (or null if none are registered)
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving data fields from the annotation store.
      */
-    public List<B> getNewDataFieldsForAsset(String userId,
-                                            String discoveryReportGUID,
-                                            int    startingFrom,
-                                            int    pageSize,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public List<B> getNewDataFieldsForAsset(String  userId,
+                                            String  discoveryReportGUID,
+                                            int     startingFrom,
+                                            int     pageSize,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            Date    effectiveTime,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         final String   discoveryReportGUIDParameterName = "discoveryReportGUID";
 
@@ -142,10 +154,15 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                               OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
                                                                               OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_GUID,
                                                                               OpenMetadataAPIMapper.REPORT_TO_ANNOTATIONS_TYPE_NAME,
+                                                                              null,
                                                                               OpenMetadataAPIMapper.SCHEMA_ANALYSIS_ANNOTATION_TYPE_NAME,
                                                                               0,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              supportedZones,
+                                                                              0,
                                                                               invalidParameterHandler.getMaxPagingSize(),
-                                                                              null,
+                                                                              effectiveTime,
                                                                               methodName);
 
         if ((annotationRelationships != null) && (! annotationRelationships.isEmpty()))
@@ -166,14 +183,19 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                  OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_GUID,
                                                                                  OpenMetadataAPIMapper.DISCOVERED_DATA_FIELD_TYPE_NAME,
                                                                                  OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                                                                 false,
-                                                                                 false,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
                                                                                  startingFrom,
                                                                                  pageSize,
-                                                                                 null,
+                                                                                 effectiveTime,
                                                                                  methodName);
 
-                        return this.getDataFields(userId, entityGUIDs, methodName);
+                        return this.getDataFields(userId,
+                                                  entityGUIDs,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  effectiveTime,
+                                                  methodName);
                     }
                 }
             }
@@ -190,6 +212,9 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param parentDataFieldGUID parent data field identifier
      * @param startingFrom starting position in the list
      * @param pageSize maximum number of annotations that can be returned.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of DataField objects
@@ -198,13 +223,16 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public List<B>  getNestedDataFields(String userId,
-                                        String parentDataFieldGUID,
-                                        int    startingFrom,
-                                        int    pageSize,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public List<B>  getNestedDataFields(String  userId,
+                                        String  parentDataFieldGUID,
+                                        int     startingFrom,
+                                        int     pageSize,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         final String dataFieldGUIDParameterName = "parentDataFieldGUID";
 
@@ -219,14 +247,19 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                  OpenMetadataAPIMapper.DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID,
                                                                  OpenMetadataAPIMapper.DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME,
                                                                  OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                                                 false,
-                                                                 false,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
                                                                  startingFrom,
                                                                  pageSize,
-                                                                 null,
+                                                                 effectiveTime,
                                                                  methodName);
 
-        return this.getDataFields(userId, entityGUIDs, methodName);
+        return this.getDataFields(userId,
+                                  entityGUIDs,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  effectiveTime,
+                                  methodName);
     }
 
 
@@ -235,14 +268,20 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param dataFieldGUIDs list of guids for entities that represent data fields
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
-     * @return list of of data field beans
+     * @return list of data field beans
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
     private List<B> getDataFields(String       userId,
                                   List<String> dataFieldGUIDs,
+                                  boolean      forLineage,
+                                  boolean      forDuplicateProcessing,
+                                  Date         effectiveTime,
                                   String       methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
@@ -255,7 +294,12 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
             {
                 if (entityGUID != null)
                 {
-                    B bean = this.getDataField(userId, entityGUID, methodName);
+                    B bean = this.getDataField(userId,
+                                               entityGUID,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               effectiveTime,
+                                               methodName);
 
                     if (bean != null)
                     {
@@ -281,6 +325,9 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param dataFieldGUID unique identifier of the data field
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return data field object
@@ -289,11 +336,14 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving the data field from the annotation store.
      */
-    public B  getDataField(String userId,
-                           String dataFieldGUID,
-                           String methodName) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException
+    public B  getDataField(String  userId,
+                           String  dataFieldGUID,
+                           boolean forLineage,
+                           boolean forDuplicateProcessing,
+                           Date    effectiveTime,
+                           String  methodName) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException
     {
         final String   dataFieldGUIDParameterName = "dataFieldGUID";
 
@@ -306,18 +356,19 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
                                                             null,
                                                             null,
-                                                            false,
-                                                            false,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
                                                             supportedZones,
-                                                            new Date(),
+                                                            effectiveTime,
                                                             methodName);
 
         List<Relationship> relationships = super.getAllAttachmentLinks(userId,
                                                                        dataFieldGUID,
                                                                        dataFieldGUIDParameterName,
                                                                        OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                                                       false,
-                                                                       null,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       effectiveTime,
                                                                        methodName);
 
         return converter.getNewComplexBean(beanClass, entity, relationships, methodName);
@@ -342,6 +393,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param dataFieldSortOrder any sort order
      * @param defaultValue default value of the field
      * @param additionalProperties any additional properties
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return unique identifier of the data field
      * @throws InvalidParameterException one of the parameters is invalid
@@ -364,6 +420,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 int                 dataFieldSortOrder,
                                 String              defaultValue,
                                 Map<String, String> additionalProperties,
+                                Date                effectiveFrom,
+                                Date                effectiveTo,
+                                boolean             forLineage,
+                                boolean             forDuplicateProcessing,
+                                Date                effectiveTime,
                                 String              methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
@@ -381,10 +442,10 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               parentEntityParameterName,
                                                               parentEntityType,
                                                               false,
-                                                              false,
-                                                              false,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
                                                               supportedZones,
-                                                              new Date(),
+                                                              effectiveTime,
                                                               methodName);
 
         if (anchorEntity != null)
@@ -419,6 +480,7 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            null,
                                                            null,
                                                            builder,
+                                                           effectiveTime,
                                                            methodName);
 
         if (dataFieldGUID != null)
@@ -437,12 +499,15 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       dataFieldGUID,
                                       dataFieldGUIDParameterName,
                                       OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       relationshipTypeGUID,
                                       relationshipTypeName,
                                       relationshipProperties,
+                                      effectiveFrom,
+                                      effectiveTo,
+                                      effectiveTime,
                                       methodName);
         }
 
@@ -465,6 +530,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param dataFieldSortOrder any sort order
      * @param defaultValue default value of the field
      * @param additionalProperties any additional properties
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return unique identifier of new data field
      * @throws InvalidParameterException the dataField is invalid or the annotation GUID points to an annotation
@@ -484,6 +554,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                  int                 dataFieldSortOrder,
                                                  String              defaultValue,
                                                  Map<String, String> additionalProperties,
+                                                 Date                effectiveFrom,
+                                                 Date                effectiveTo,
+                                                 boolean             forLineage,
+                                                 boolean             forDuplicateProcessing,
+                                                 Date                effectiveTime,
                                                  String              methodName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -506,6 +581,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  dataFieldSortOrder,
                                  defaultValue,
                                  additionalProperties,
+                                 effectiveFrom,
+                                 effectiveTo,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 effectiveTime,
                                  methodName);
     }
 
@@ -525,6 +605,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param dataFieldSortOrder any sort order
      * @param defaultValue default value of the field
      * @param additionalProperties any additional properties
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of new data field
@@ -545,6 +630,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            int                 dataFieldSortOrder,
                                            String              defaultValue,
                                            Map<String, String> additionalProperties,
+                                           Date                effectiveFrom,
+                                           Date                effectiveTo,
+                                           boolean             forLineage,
+                                           boolean             forDuplicateProcessing,
+                                           Date                effectiveTime,
                                            String              methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -567,6 +657,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  dataFieldSortOrder,
                                  defaultValue,
                                  additionalProperties,
+                                 effectiveFrom,
+                                 effectiveTo,
+                                 forLineage,
+                                 forDuplicateProcessing,
+                                 effectiveTime,
                                  methodName);
     }
 
@@ -588,6 +683,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param dataFieldSortOrder any sort order
      * @param defaultValue default value of the field
      * @param additionalProperties any additional properties
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is invalid
@@ -606,6 +706,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  int                 dataFieldSortOrder,
                                  String              defaultValue,
                                  Map<String, String> additionalProperties,
+                                 Date                effectiveFrom,
+                                 Date                effectiveTo,
+                                 boolean             forLineage,
+                                 boolean             forDuplicateProcessing,
+                                 Date                effectiveTime,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -628,6 +733,8 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         serviceName,
                                                         serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         super.updateBeanInRepository(userId,
                                      externalSourceGUID,
                                      externalSourceName,
@@ -635,12 +742,12 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      dataFieldGUIDParameterName,
                                      OpenMetadataAPIMapper.DATA_FIELD_TYPE_GUID,
                                      OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                     false,
-                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
                                      supportedZones,
                                      builder.getInstanceProperties(methodName),
                                      isMergeUpdate,
-                                     new Date(),
+                                     effectiveTime,
                                      methodName);
     }
 
@@ -652,19 +759,25 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param externalSourceGUID unique identifier of the external source (null for local)
      * @param externalSourceName unique name of the external source (null for local)
      * @param dataFieldGUID unique identifier of the data field
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem deleting the data field from the annotation store.
      */
-    public void  deleteDataField(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String dataFieldGUID,
-                                 String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void  deleteDataField(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  dataFieldGUID,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         final String dataFieldGUIDParameterName = "dataFieldGUID";
 
@@ -680,9 +793,9 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
                                      null,
                                      null,
-                                     false,
-                                     false,
-                                     new Date(),
+                                     forLineage,
+                                     forDuplicateProcessing,
+                                     effectiveTime,
                                      methodName);
     }
 }

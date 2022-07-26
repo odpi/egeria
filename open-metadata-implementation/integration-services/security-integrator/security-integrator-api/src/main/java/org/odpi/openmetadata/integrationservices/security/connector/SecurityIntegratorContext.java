@@ -32,14 +32,14 @@ import java.util.List;
  */
 public class SecurityIntegratorContext
 {
-    private SecurityManagerClient      securityManagerClient;
-    private SecurityManagerEventClient eventClient;
+    private final SecurityManagerClient      securityManagerClient;
+    private final SecurityManagerEventClient eventClient;
 
-    private String   userId;
-    private String   securityManagerGUID;
-    private String   securityManagerName;
-    private String   connectorName;
-    private AuditLog auditLog;
+    private final String   userId;
+    private final String   securityManagerGUID;
+    private final String   securityManagerName;
+    private final String   connectorName;
+    private final AuditLog auditLog;
 
 
     /**
@@ -69,6 +69,23 @@ public class SecurityIntegratorContext
         this.securityManagerName = securityManagerName;
         this.connectorName       = connectorName;
         this.auditLog            = auditLog;
+    }
+
+
+    /* ========================================================
+     * Returning the security manager name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the security manager that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getSecurityManagerName()
+    {
+        return securityManagerName;
     }
 
 

@@ -4,9 +4,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentType;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.server.LineageExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -27,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class LineageExchangeResource
 {
-    private LineageExchangeRESTServices restAPI = new LineageExchangeRESTServices();
+    private final LineageExchangeRESTServices restAPI = new LineageExchangeRESTServices();
 
 
     /**
@@ -36,7 +33,7 @@ public class LineageExchangeResource
     public LineageExchangeResource()
     {
     }
-    
+
 
     /* =====================================================================================================================
      * A process describes a well defined series of steps that gets something done.
@@ -72,6 +69,7 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new process or
@@ -98,6 +96,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the metadata element
      *
      * @return void or
@@ -111,9 +111,13 @@ public class LineageExchangeResource
                                       @PathVariable String             userId,
                                       @PathVariable String             processGUID,
                                       @RequestParam boolean            isMergeUpdate,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                              boolean            forLineage,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                              boolean            forDuplicateProcessing,
                                       @RequestBody  ProcessRequestBody requestBody)
     {
-        return restAPI.updateProcess(serverName, userId, processGUID, isMergeUpdate, requestBody);
+        return restAPI.updateProcess(serverName, userId, processGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -123,6 +127,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the process to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new status for the process
      *
      * @return void or
@@ -135,9 +141,13 @@ public class LineageExchangeResource
     public VoidResponse updateProcessStatus(@PathVariable String                   serverName,
                                             @PathVariable String                   userId,
                                             @PathVariable String                   processGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forDuplicateProcessing,
                                             @RequestBody  ProcessStatusRequestBody requestBody)
     {
-        return restAPI.updateProcessStatus(serverName, userId, processGUID, requestBody);
+        return restAPI.updateProcessStatus(serverName, userId, processGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -149,6 +159,8 @@ public class LineageExchangeResource
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -163,9 +175,13 @@ public class LineageExchangeResource
                                            @PathVariable String                            parentProcessGUID,
                                            @PathVariable String                            childProcessGUID,
                                            @RequestParam boolean                           assetManagerIsHome,
-                                           @RequestBody  ProcessContainmentTypeRequestBody requestBody)
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                           forLineage,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                           forDuplicateProcessing,
+                                           @RequestBody  RelationshipRequestBody           requestBody)
     {
-        return restAPI.setupProcessParent(serverName, userId, parentProcessGUID, childProcessGUID, assetManagerIsHome, requestBody);
+        return restAPI.setupProcessParent(serverName, userId, parentProcessGUID, childProcessGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -176,6 +192,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -184,14 +202,18 @@ public class LineageExchangeResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/processes/parent/{parentProcessGUID}/child/{childProcessGUID}/remove")
-    
+
     public VoidResponse clearProcessParent(@PathVariable String                             serverName,
                                            @PathVariable String                             userId,
                                            @PathVariable String                             parentProcessGUID,
                                            @PathVariable String                             childProcessGUID,
-                                           @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forLineage,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forDuplicateProcessing,
+                                           @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearProcessParent(serverName, userId, parentProcessGUID, childProcessGUID, requestBody);
+        return restAPI.clearProcessParent(serverName, userId, parentProcessGUID, childProcessGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -203,6 +225,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to publish
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -212,12 +236,16 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/processes/{processGUID}/publish")
 
-    public VoidResponse publishProcess(@PathVariable String                             serverName,
-                                       @PathVariable String                             userId,
-                                       @PathVariable String                             processGUID,
-                                       @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse publishProcess(@PathVariable String                         serverName,
+                                       @PathVariable String                         userId,
+                                       @PathVariable String                         processGUID,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                       forLineage,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                       forDuplicateProcessing,
+                                       @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.publishProcess(serverName, userId, processGUID, requestBody);
+        return restAPI.publishProcess(serverName, userId, processGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -229,6 +257,9 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to withdraw
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody effective time
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
@@ -237,12 +268,16 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/processes/{processGUID}/withdraw")
 
-    public VoidResponse withdrawProcess(@PathVariable String                             serverName,
-                                        @PathVariable String                             userId,
-                                        @PathVariable String                             processGUID,
-                                        @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse withdrawProcess(@PathVariable String                        serverName,
+                                        @PathVariable String                        userId,
+                                        @PathVariable String                        processGUID,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                       forLineage,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                                      boolean                       forDuplicateProcessing,
+                                        @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.withdrawProcess(serverName, userId, processGUID, requestBody);
+        return restAPI.withdrawProcess(serverName, userId, processGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -252,6 +287,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -264,9 +301,13 @@ public class LineageExchangeResource
     public VoidResponse removeProcess(@PathVariable String                        serverName,
                                       @PathVariable String                        userId,
                                       @PathVariable String                        processGUID,
-                                      @RequestBody  MetadataCorrelationProperties requestBody)
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                       forLineage,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                       forDuplicateProcessing,
+                                      @RequestBody  UpdateRequestBody             requestBody)
     {
-        return restAPI.removeProcess(serverName, userId, processGUID, requestBody);
+        return restAPI.removeProcess(serverName, userId, processGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -278,6 +319,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -291,9 +334,13 @@ public class LineageExchangeResource
                                                  @PathVariable String                  userId,
                                                  @RequestParam int                     startFrom,
                                                  @RequestParam int                     pageSize,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                               boolean                 forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                               boolean                 forDuplicateProcessing,
                                                  @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findProcesses(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findProcesses(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -304,6 +351,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return list of metadata elements describing the processes associated with the requested asset manager or
@@ -317,9 +366,13 @@ public class LineageExchangeResource
                                                                @PathVariable String                             userId,
                                                                @RequestParam int                                startFrom,
                                                                @RequestParam int                                pageSize,
-                                                               @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forLineage,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                             boolean                      forDuplicateProcessing,
+                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getProcessesForAssetManager(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getProcessesForAssetManager(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -331,6 +384,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -344,9 +399,13 @@ public class LineageExchangeResource
                                                       @PathVariable String          userId,
                                                       @RequestParam int             startFrom,
                                                       @RequestParam int             pageSize,
+                                                      @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean         forLineage,
+                                                      @RequestParam (required = false, defaultValue = "false")
+                                                                    boolean         forDuplicateProcessing,
                                                       @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getProcessesByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getProcessesByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -356,6 +415,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return requested metadata element or
@@ -365,12 +426,16 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/processes/{processGUID}/retrieve")
 
-    public ProcessElementResponse getProcessByGUID(@PathVariable String                             serverName,
-                                                   @PathVariable String                             userId,
-                                                   @PathVariable String                             processGUID,
-                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public ProcessElementResponse getProcessByGUID(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId,
+                                                   @PathVariable String                        processGUID,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                             forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                             forDuplicateProcessing,
+                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getProcessByGUID(serverName, userId, processGUID, requestBody);
+        return restAPI.getProcessByGUID(serverName, userId, processGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -380,6 +445,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return parent process element or
@@ -389,12 +456,16 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/processes/{processGUID}/parent/retrieve")
 
-    public ProcessElementResponse getProcessParent(@PathVariable String                             serverName,
-                                                   @PathVariable String                             userId,
-                                                   @PathVariable String                             processGUID,
-                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public ProcessElementResponse getProcessParent(@PathVariable String                       serverName,
+                                                   @PathVariable String                       userId,
+                                                   @PathVariable String                       processGUID,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forDuplicateProcessing,
+                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getProcessParent(serverName, userId, processGUID, requestBody);
+        return restAPI.getProcessParent(serverName, userId, processGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -406,6 +477,8 @@ public class LineageExchangeResource
      * @param processGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return list of process elements or
@@ -415,14 +488,18 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/processes/{processGUID}/children/retrieve")
 
-    public ProcessElementsResponse getSubProcesses(@PathVariable String                             serverName,
-                                                   @PathVariable String                             userId,
-                                                   @PathVariable String                             processGUID,
-                                                   @RequestParam int                                startFrom,
-                                                   @RequestParam int                                pageSize,
-                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public ProcessElementsResponse getSubProcesses(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId,
+                                                   @PathVariable String                        processGUID,
+                                                   @RequestParam int                           startFrom,
+                                                   @RequestParam int                           pageSize,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                       forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                       forDuplicateProcessing,
+                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getSubProcesses(serverName, userId, processGUID, startFrom, pageSize, requestBody);
+        return restAPI.getSubProcesses(serverName, userId, processGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -437,6 +514,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the process manager can update this port
      * @param processGUID unique identifier of the process where the port is located
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the port
      *
      * @return unique identifier of the new metadata element for the port or
@@ -450,9 +529,13 @@ public class LineageExchangeResource
                                    @PathVariable String          userId,
                                    @PathVariable String          processGUID,
                                    @RequestParam boolean         assetManagerIsHome,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean         forLineage,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                           boolean               forDuplicateProcessing,
                                    @RequestBody  PortRequestBody requestBody)
     {
-        return restAPI.createPort(serverName, userId, assetManagerIsHome, processGUID, requestBody);
+        return restAPI.createPort(serverName, userId, assetManagerIsHome, processGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -463,6 +546,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param portGUID unique identifier of the port to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the port
      *
      * @return void or
@@ -475,9 +560,13 @@ public class LineageExchangeResource
     public VoidResponse updatePort(@PathVariable String          serverName,
                                    @PathVariable String          userId,
                                    @PathVariable String          portGUID,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean         forLineage,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                                 boolean         forDuplicateProcessing,
                                    @RequestBody  PortRequestBody requestBody)
     {
-        return restAPI.updatePort(serverName, userId, portGUID, requestBody);
+        return restAPI.updatePort(serverName, userId, portGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -489,6 +578,8 @@ public class LineageExchangeResource
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -498,14 +589,18 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/processes/{processGUID}/ports/{portGUID}")
 
-    public VoidResponse setupProcessPort(@PathVariable String                             serverName,
-                                         @PathVariable String                             userId,
-                                         @PathVariable String                             processGUID,
-                                         @PathVariable String                             portGUID,
-                                         @RequestParam boolean                            assetManagerIsHome,
-                                         @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupProcessPort(@PathVariable String                  serverName,
+                                         @PathVariable String                  userId,
+                                         @PathVariable String                  processGUID,
+                                         @PathVariable String                  portGUID,
+                                         @RequestParam boolean                 assetManagerIsHome,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                 forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                 forDuplicateProcessing,
+                                         @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupProcessPort(serverName, userId, assetManagerIsHome, processGUID, portGUID, requestBody);
+        return restAPI.setupProcessPort(serverName, userId, assetManagerIsHome, processGUID, portGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -516,6 +611,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -525,13 +622,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/processes/{processGUID}/ports/{portGUID}/remove")
 
-    public VoidResponse clearProcessPort(@PathVariable String                             serverName,
-                                         @PathVariable String                             userId,
-                                         @PathVariable String                             processGUID,
-                                         @PathVariable String                             portGUID,
-                                         @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearProcessPort(@PathVariable String                        serverName,
+                                         @PathVariable String                        userId,
+                                         @PathVariable String                        processGUID,
+                                         @PathVariable String                        portGUID,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                             forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                             forDuplicateProcessing,
+                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearProcessPort(serverName, userId, processGUID, portGUID, requestBody);
+        return restAPI.clearProcessPort(serverName, userId, processGUID, portGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -544,6 +645,8 @@ public class LineageExchangeResource
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -553,14 +656,18 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/ports/{portOneGUID}/port-delegations/{portTwoGUID}")
 
-    public VoidResponse setupPortDelegation(@PathVariable String                             serverName,
-                                            @PathVariable String                             userId,
-                                            @PathVariable String                             portOneGUID,
-                                            @PathVariable String                             portTwoGUID,
-                                            @RequestParam boolean                            assetManagerIsHome,
-                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupPortDelegation(@PathVariable String                        serverName,
+                                            @PathVariable String                        userId,
+                                            @PathVariable String                        portOneGUID,
+                                            @PathVariable String                        portTwoGUID,
+                                            @RequestParam boolean                       assetManagerIsHome,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                             forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                             forDuplicateProcessing,
+                                            @RequestBody  RelationshipRequestBody       requestBody)
     {
-        return restAPI.setupPortDelegation(serverName, userId, assetManagerIsHome, portOneGUID, portTwoGUID, requestBody);
+        return restAPI.setupPortDelegation(serverName, userId, assetManagerIsHome, portOneGUID, portTwoGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -571,6 +678,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -584,9 +693,13 @@ public class LineageExchangeResource
                                             @PathVariable String                             userId,
                                             @PathVariable String                             portOneGUID,
                                             @PathVariable String                             portTwoGUID,
-                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forDuplicateProcessing,
+                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearPortDelegation(serverName, userId, portOneGUID, portTwoGUID, requestBody);
+        return restAPI.clearPortDelegation(serverName, userId, portOneGUID, portTwoGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -598,6 +711,8 @@ public class LineageExchangeResource
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -612,9 +727,13 @@ public class LineageExchangeResource
                                             @RequestParam boolean                            assetManagerIsHome,
                                             @PathVariable String                             portGUID,
                                             @PathVariable String                             schemaTypeGUID,
-                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                            forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                            forDuplicateProcessing,
+                                            @RequestBody  RelationshipRequestBody            requestBody)
     {
-        return restAPI.setupPortSchemaType(serverName, userId, assetManagerIsHome, portGUID, schemaTypeGUID, requestBody);
+        return restAPI.setupPortSchemaType(serverName, userId, assetManagerIsHome, portGUID, schemaTypeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -625,6 +744,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -634,13 +755,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/ports/{portGUID}/schema-type/{schemaTypeGUID}/remove")
 
-    public VoidResponse clearPortSchemaType(@PathVariable String                             serverName,
-                                            @PathVariable String                             userId,
-                                            @PathVariable String                             portGUID,
-                                            @PathVariable String                             schemaTypeGUID,
-                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearPortSchemaType(@PathVariable String                        serverName,
+                                            @PathVariable String                        userId,
+                                            @PathVariable String                        portGUID,
+                                            @PathVariable String                        schemaTypeGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                       forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                       forDuplicateProcessing,
+                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearPortSchemaType(serverName, userId, portGUID, schemaTypeGUID, requestBody);
+        return restAPI.clearPortSchemaType(serverName, userId, portGUID, schemaTypeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -650,6 +775,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param portGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -662,9 +789,13 @@ public class LineageExchangeResource
     public VoidResponse removePort(@PathVariable String                        serverName,
                                    @PathVariable String                        userId,
                                    @PathVariable String                        portGUID,
-                                   @RequestBody  MetadataCorrelationProperties requestBody)
+                                   @RequestParam (required = false, defaultValue = "false")
+                                           boolean                      forLineage,
+                                   @RequestParam (required = false, defaultValue = "false")
+                                           boolean                      forDuplicateProcessing,
+                                   @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.removePort(serverName, userId, portGUID, requestBody);
+        return restAPI.removePort(serverName, userId, portGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -676,6 +807,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -689,9 +822,13 @@ public class LineageExchangeResource
                                           @PathVariable String                  userId,
                                           @RequestParam int                     startFrom,
                                           @RequestParam int                     pageSize,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forDuplicateProcessing,
                                           @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findPorts(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findPorts(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -703,6 +840,8 @@ public class LineageExchangeResource
      * @param processGUID unique identifier of the process of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return list of associated metadata elements or
@@ -717,9 +856,13 @@ public class LineageExchangeResource
                                                    @PathVariable String                             processGUID,
                                                    @RequestParam int                                startFrom,
                                                    @RequestParam int                                pageSize,
-                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forLineage,
+                                                   @RequestParam (required = false, defaultValue = "false")
+                                                           boolean                      forDuplicateProcessing,
+                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getPortsForProcess(serverName, userId, processGUID, startFrom, pageSize, requestBody);
+        return restAPI.getPortsForProcess(serverName, userId, processGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -731,6 +874,8 @@ public class LineageExchangeResource
      * @param portGUID unique identifier of the starting port
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return list of associated metadata elements or
@@ -745,9 +890,13 @@ public class LineageExchangeResource
                                            @PathVariable String                             portGUID,
                                            @RequestParam int                                startFrom,
                                            @RequestParam int                                pageSize,
-                                           @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forLineage,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                                   boolean                      forDuplicateProcessing,
+                                           @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getPortUse(serverName, userId, portGUID, startFrom, pageSize, requestBody);
+        return restAPI.getPortUse(serverName, userId, portGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -757,6 +906,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param portGUID unique identifier of the starting port alias
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return matching metadata element or
@@ -769,9 +920,13 @@ public class LineageExchangeResource
     public PortElementResponse getPortDelegation(@PathVariable String                             serverName,
                                                  @PathVariable String                             userId,
                                                  @PathVariable String                             portGUID,
-                                                 @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forDuplicateProcessing,
+                                                 @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getPortDelegation(serverName, userId, portGUID, requestBody);
+        return restAPI.getPortDelegation(serverName, userId, portGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -783,6 +938,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -796,9 +953,13 @@ public class LineageExchangeResource
                                                @PathVariable String          userId,
                                                @RequestParam int             startFrom,
                                                @RequestParam int             pageSize,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forDuplicateProcessing,
                                                @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getPortsByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getPortsByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -808,6 +969,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param portGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return matching metadata element or
@@ -820,9 +983,13 @@ public class LineageExchangeResource
     public PortElementResponse getPortByGUID(@PathVariable String                             serverName,
                                              @PathVariable String                             userId,
                                              @PathVariable String                             portGUID,
-                                             @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                      forLineage,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                      forDuplicateProcessing,
+                                             @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getPortByGUID(serverName, userId, portGUID, requestBody);
+        return restAPI.getPortByGUID(serverName, userId, portGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -832,11 +999,13 @@ public class LineageExchangeResource
 
 
     /**
-     * Classify a port, process or process as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     * Classify a port, process or process as "BusinessSignificant" (this may affect the way that lineage is displayed).
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -849,9 +1018,13 @@ public class LineageExchangeResource
     public VoidResponse setBusinessSignificant(@PathVariable String                        serverName,
                                                @PathVariable String                        userId,
                                                @PathVariable String                        elementGUID,
-                                               @RequestBody  MetadataCorrelationProperties requestBody)
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                       boolean                      forDuplicateProcessing,
+                                               @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.setBusinessSignificant(serverName, userId, elementGUID, requestBody);
+        return restAPI.setBusinessSignificant(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -861,6 +1034,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -873,9 +1048,13 @@ public class LineageExchangeResource
     public VoidResponse clearBusinessSignificant(@PathVariable String                        serverName,
                                                  @PathVariable String                        userId,
                                                  @PathVariable String                        elementGUID,
-                                                 @RequestBody  MetadataCorrelationProperties requestBody)
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forLineage,
+                                                 @RequestParam (required = false, defaultValue = "false")
+                                                         boolean                      forDuplicateProcessing,
+                                                 @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.clearBusinessSignificant(serverName, userId, elementGUID, requestBody);
+        return restAPI.clearBusinessSignificant(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -887,6 +1066,8 @@ public class LineageExchangeResource
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return unique identifier of the relationship or
@@ -901,9 +1082,13 @@ public class LineageExchangeResource
                                       @PathVariable String              dataSupplierGUID,
                                       @PathVariable String              dataConsumerGUID,
                                       @RequestParam boolean             assetManagerIsHome,
-                                      @RequestBody  DataFlowRequestBody requestBody)
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                 forLineage,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                 forDuplicateProcessing,
+                                      @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupDataFlow(serverName, userId, dataSupplierGUID, dataConsumerGUID, assetManagerIsHome, requestBody);
+        return restAPI.setupDataFlow(serverName, userId, dataSupplierGUID, dataConsumerGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -916,6 +1101,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody optional name to search for
      *
      * @return unique identifier and properties of the relationship or
@@ -929,9 +1116,13 @@ public class LineageExchangeResource
                                                @PathVariable String          userId,
                                                @PathVariable String          dataSupplierGUID,
                                                @PathVariable String          dataConsumerGUID,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                             boolean         forLineage,
+                                               @RequestParam (required = false, defaultValue = "false")
+                                                             boolean         forDuplicateProcessing,
                                                @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getDataFlow(serverName, userId, dataSupplierGUID, dataConsumerGUID, requestBody);
+        return restAPI.getDataFlow(serverName, userId, dataSupplierGUID, dataConsumerGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -941,6 +1132,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataFlowGUID unique identifier of the data flow relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return void or
@@ -952,10 +1145,14 @@ public class LineageExchangeResource
 
     public VoidResponse updateDataFlow(@PathVariable String              serverName,
                                        @PathVariable String              userId,
-                                       @PathVariable String              dataFlowGUID,
-                                       @RequestBody  DataFlowRequestBody requestBody)
+                                       @PathVariable String                  dataFlowGUID,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                               boolean                       forLineage,
+                                       @RequestParam (required = false, defaultValue = "false")
+                                               boolean                       forDuplicateProcessing,
+                                       @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.updateDataFlow(serverName, userId, dataFlowGUID, requestBody);
+        return restAPI.updateDataFlow(serverName, userId, dataFlowGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -965,6 +1162,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataFlowGUID unique identifier of the data flow relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -977,18 +1176,26 @@ public class LineageExchangeResource
     public VoidResponse clearDataFlow(@PathVariable String                             serverName,
                                       @PathVariable String                             userId,
                                       @PathVariable String                             dataFlowGUID,
-                                      @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                      @RequestParam (required = false, defaultValue = "false")
+                                              boolean                      forLineage,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                              boolean                      forDuplicateProcessing,
+                                      @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearDataFlow(serverName, userId, dataFlowGUID, requestBody);
+        return restAPI.clearDataFlow(serverName, userId, dataFlowGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -1001,18 +1208,28 @@ public class LineageExchangeResource
     public DataFlowElementsResponse getDataFlowConsumers(@PathVariable String                             serverName,
                                                          @PathVariable String                             userId,
                                                          @PathVariable String                             dataSupplierGUID,
-                                                         @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                         @RequestParam int                    startFrom,
+                                                         @RequestParam int                    pageSize,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forDuplicateProcessing,
+                                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getDataFlowConsumers(serverName, userId, dataSupplierGUID, requestBody);
+        return restAPI.getDataFlowConsumers(serverName, userId, dataSupplierGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -1025,9 +1242,15 @@ public class LineageExchangeResource
     public DataFlowElementsResponse getDataFlowSuppliers(@PathVariable String                             serverName,
                                                          @PathVariable String                             userId,
                                                          @PathVariable String                             dataConsumerGUID,
-                                                         @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                         @RequestParam int                    startFrom,
+                                                         @RequestParam int                    pageSize,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forDuplicateProcessing,
+                                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getDataFlowSuppliers(serverName, userId, dataConsumerGUID, requestBody);
+        return restAPI.getDataFlowSuppliers(serverName, userId, dataConsumerGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1039,6 +1262,8 @@ public class LineageExchangeResource
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
      * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return unique identifier for the control flow relationship or
@@ -1053,9 +1278,13 @@ public class LineageExchangeResource
                                          @PathVariable String                 currentStepGUID,
                                          @PathVariable String                 nextStepGUID,
                                          @RequestParam boolean                assetManagerIsHome,
-                                         @RequestBody  ControlFlowRequestBody requestBody)
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forDuplicateProcessing,
+                                         @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupControlFlow(serverName, userId, currentStepGUID, nextStepGUID, assetManagerIsHome, requestBody);
+        return restAPI.setupControlFlow(serverName, userId, currentStepGUID, nextStepGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1068,6 +1297,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier for this relationship
      *
      * @return unique identifier and properties of the relationship or
@@ -1081,9 +1312,13 @@ public class LineageExchangeResource
                                                      @PathVariable String          userId,
                                                      @PathVariable String          currentStepGUID,
                                                      @PathVariable String          nextStepGUID,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forDuplicateProcessing,
                                                      @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getControlFlow(serverName, userId, currentStepGUID, nextStepGUID, requestBody);
+        return restAPI.getControlFlow(serverName, userId, currentStepGUID, nextStepGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1093,6 +1328,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return void or
@@ -1105,9 +1342,13 @@ public class LineageExchangeResource
     public VoidResponse updateControlFlow(@PathVariable String                 serverName,
                                           @PathVariable String                 userId,
                                           @PathVariable String                 controlFlowGUID,
-                                          @RequestBody  ControlFlowRequestBody requestBody)
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forDuplicateProcessing,
+                                          @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.updateControlFlow(serverName, userId, controlFlowGUID, requestBody);
+        return restAPI.updateControlFlow(serverName, userId, controlFlowGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1117,6 +1358,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -1129,18 +1372,26 @@ public class LineageExchangeResource
     public VoidResponse clearControlFlow(@PathVariable String                             serverName,
                                          @PathVariable String                             userId,
                                          @PathVariable String                             controlFlowGUID,
-                                         @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forDuplicateProcessing,
+                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearControlFlow(serverName, userId, controlFlowGUID, requestBody);
+        return restAPI.clearControlFlow(serverName, userId, controlFlowGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -1153,18 +1404,28 @@ public class LineageExchangeResource
     public ControlFlowElementsResponse getControlFlowNextSteps(@PathVariable String                             serverName,
                                                                @PathVariable String                             userId,
                                                                @PathVariable String                             currentStepGUID,
-                                                               @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                               @RequestParam int                    startFrom,
+                                                               @RequestParam int                    pageSize,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                      forLineage,
+                                                               @RequestParam (required = false, defaultValue = "false")
+                                                                       boolean                      forDuplicateProcessing,
+                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getControlFlowNextSteps(serverName, userId, currentStepGUID, requestBody);
+        return restAPI.getControlFlowNextSteps(serverName, userId, currentStepGUID,  startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param currentStepGUID unique identifier of the previous step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -1177,9 +1438,15 @@ public class LineageExchangeResource
     public ControlFlowElementsResponse getControlFlowPreviousSteps(@PathVariable String                             serverName,
                                                                    @PathVariable String                             userId,
                                                                    @PathVariable String                             currentStepGUID,
-                                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                                   @RequestParam int                    startFrom,
+                                                                   @RequestParam int                    pageSize,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forDuplicateProcessing,
+                                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getControlFlowPreviousSteps(serverName, userId, currentStepGUID, requestBody);
+        return restAPI.getControlFlowPreviousSteps(serverName, userId, currentStepGUID,  startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1191,6 +1458,8 @@ public class LineageExchangeResource
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
      * @param assetManagerIsHome ensure that only the process manager can update this process
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return unique identifier of the new relationship or
@@ -1205,9 +1474,13 @@ public class LineageExchangeResource
                                          @PathVariable String                 callerGUID,
                                          @PathVariable String                 calledGUID,
                                          @RequestParam boolean                assetManagerIsHome,
-                                         @RequestBody  ProcessCallRequestBody requestBody)
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forDuplicateProcessing,
+                                         @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupProcessCall(serverName, userId, callerGUID, calledGUID, assetManagerIsHome, requestBody);
+        return restAPI.setupProcessCall(serverName, userId, callerGUID, calledGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1220,6 +1493,8 @@ public class LineageExchangeResource
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier for this relationship
      *
      * @return unique identifier and properties of the relationship or
@@ -1233,9 +1508,13 @@ public class LineageExchangeResource
                                                      @PathVariable String          userId,
                                                      @PathVariable String          callerGUID,
                                                      @PathVariable String          calledGUID,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forLineage,
+                                                     @RequestParam (required = false, defaultValue = "false")
+                                                             boolean                      forDuplicateProcessing,
                                                      @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getProcessCall(serverName, userId, callerGUID, calledGUID, requestBody);
+        return restAPI.getProcessCall(serverName, userId, callerGUID, calledGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1245,6 +1524,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processCallGUID unique identifier of the process call relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties of the relationship
      *
      * @return void or
@@ -1257,9 +1538,13 @@ public class LineageExchangeResource
     public VoidResponse updateProcessCall(@PathVariable String                 serverName,
                                           @PathVariable String                 userId,
                                           @PathVariable String                 processCallGUID,
-                                          @RequestBody  ProcessCallRequestBody requestBody)
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forLineage,
+                                          @RequestParam (required = false, defaultValue = "false")
+                                                  boolean                      forDuplicateProcessing,
+                                          @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.updateProcessCall(serverName, userId, processCallGUID, requestBody);
+        return restAPI.updateProcessCall(serverName, userId, processCallGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1269,6 +1554,8 @@ public class LineageExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param processCallGUID unique identifier of the process call relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -1281,18 +1568,26 @@ public class LineageExchangeResource
     public VoidResponse clearProcessCall(@PathVariable String                             serverName,
                                          @PathVariable String                             userId,
                                          @PathVariable String                             processCallGUID,
-                                         @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forLineage,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                                 boolean                      forDuplicateProcessing,
+                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.clearProcessCall(serverName, userId, processCallGUID, requestBody);
+        return restAPI.clearProcessCall(serverName, userId, processCallGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -1305,18 +1600,28 @@ public class LineageExchangeResource
     public ProcessCallElementsResponse getProcessCalled(@PathVariable String                             serverName,
                                                         @PathVariable String                             userId,
                                                         @PathVariable String                             callerGUID,
-                                                        @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
-    { 
-        return restAPI.getProcessCalled(serverName, userId, callerGUID, requestBody);
+                                                        @RequestParam int                    startFrom,
+                                                        @RequestParam int                    pageSize,
+                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                boolean                      forLineage,
+                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                boolean                      forDuplicateProcessing,
+                                                        @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getProcessCalled(serverName, userId, callerGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return unique identifier and properties of the relationship or
@@ -1329,21 +1634,29 @@ public class LineageExchangeResource
     public ProcessCallElementsResponse getProcessCallers(@PathVariable String                             serverName,
                                                          @PathVariable String                             userId,
                                                          @PathVariable String                             calledGUID,
-                                                         @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                         @RequestParam int                    startFrom,
+                                                         @RequestParam int                    pageSize,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forLineage,
+                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                 boolean                      forDuplicateProcessing,
+                                                         @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getProcessCallers(serverName, userId, calledGUID, requestBody);
+        return restAPI.getProcessCallers(serverName, userId, calledGUID,  startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
      * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -1357,9 +1670,47 @@ public class LineageExchangeResource
                                             @PathVariable String                             userId,
                                             @PathVariable String                             sourceElementGUID,
                                             @PathVariable String                             destinationElementGUID,
-                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forDuplicateProcessing,
+                                            @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.setupLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, requestBody);
+        return restAPI.setupLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the process call relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one process call relationships between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param sourceElementGUID unique identifier of the source
+     * @param destinationElementGUID unique identifier of the destination
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifier for this relationship
+     *
+     * @return unique identifier and properties of the relationship or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/lineage-mappings/sources/{sourceElementGUID}/destinations/{destinationElementGUID}/retrieve")
+
+    public LineageMappingElementResponse getLineageMapping(@PathVariable String          serverName,
+                                                           @PathVariable String          userId,
+                                                           @PathVariable String          sourceElementGUID,
+                                                           @PathVariable String          destinationElementGUID,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean         forLineage,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean         forDuplicateProcessing,
+                                                           @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1368,8 +1719,9 @@ public class LineageExchangeResource
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param sourceElementGUID unique identifier of the source
-     * @param destinationElementGUID unique identifier of the destination
+     * @param lineageMappingGUID unique identifier of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -1377,24 +1729,61 @@ public class LineageExchangeResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/lineage-mappings/sources/{sourceElementGUID}/destinations/{destinationElementGUID}/remove")
+    @PostMapping(path = "/lineage-mappings/{lineageMappingGUID}/update")
 
-    public VoidResponse clearLineageMapping(@PathVariable String                             serverName,
-                                            @PathVariable String                             userId,
-                                            @PathVariable String                             sourceElementGUID,
-                                            @PathVariable String                             destinationElementGUID,
-                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse updateLineageMapping(@PathVariable String                       serverName,
+                                             @PathVariable String                       userId,
+                                             @PathVariable String                       lineageMappingGUID,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                      forLineage,
+                                             @RequestParam (required = false, defaultValue = "false")
+                                                     boolean                      forDuplicateProcessing,
+                                             @RequestBody   RelationshipRequestBody      requestBody)
     {
-        return restAPI.clearLineageMapping(serverName, userId, sourceElementGUID, destinationElementGUID, requestBody);
+        return restAPI.updateLineageMapping(serverName, userId, lineageMappingGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     * Remove the lineage mapping between two elements.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param lineageMappingGUID unique identifier of the relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody unique identifiers of software server capability representing the caller (optional)
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/lineage-mappings/{lineageMappingGUID}/remove")
+
+    public VoidResponse clearLineageMapping(@PathVariable String                             serverName,
+                                            @PathVariable String                             userId,
+                                            @PathVariable String                             lineageMappingGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forLineage,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                    boolean                      forDuplicateProcessing,
+                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.clearLineageMapping(serverName, userId, lineageMappingGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -1404,21 +1793,31 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/lineage-mappings/sources/{sourceElementGUID}/destinations/retrieve")
 
-    public LineageMappingElementsResponse getDestinationLineageMappings(@PathVariable String                             serverName,
-                                                                        @PathVariable String                             userId,
-                                                                        @PathVariable String                             sourceElementGUID,
-                                                                        @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public LineageMappingElementsResponse getDestinationLineageMappings(@PathVariable String                        serverName,
+                                                                        @PathVariable String                        userId,
+                                                                        @PathVariable String                        sourceElementGUID,
+                                                                        @RequestParam int                           startFrom,
+                                                                        @RequestParam int                           pageSize,
+                                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                                boolean                       forLineage,
+                                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                                boolean                       forDuplicateProcessing,
+                                                                        @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getDestinationLineageMappings(serverName, userId, sourceElementGUID, requestBody);
+        return restAPI.getDestinationLineageMappings(serverName, userId, sourceElementGUID,  startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of software server capability representing the caller (optional)
      *
      * @return void or
@@ -1428,11 +1827,17 @@ public class LineageExchangeResource
      */
     @PostMapping(path = "/lineage-mappings/destinations/{destinationElementGUID}/sources/retrieve")
 
-    public LineageMappingElementsResponse getSourceLineageMappings(@PathVariable String                             serverName,
-                                                                   @PathVariable String                             userId,
-                                                                   @PathVariable String                             destinationElementGUID,
-                                                                   @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    public LineageMappingElementsResponse getSourceLineageMappings(@PathVariable String                 serverName,
+                                                                   @PathVariable String                 userId,
+                                                                   @PathVariable String                 destinationElementGUID,
+                                                                   @RequestParam int                    startFrom,
+                                                                   @RequestParam int                    pageSize,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forDuplicateProcessing,
+                                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getSourceLineageMappings(serverName, userId, destinationElementGUID, requestBody);
+        return restAPI.getSourceLineageMappings(serverName, userId, destinationElementGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 }

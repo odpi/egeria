@@ -86,17 +86,17 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
 
     UNAVAILABLE_ENTITY( "OMAG-REPOSITORY-HANDLER-0009",
                         OMRSAuditLogRecordSeverity.ERROR,
-                        "A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8}",
+                        "A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8} and call parameters of forLineage={9} and forDuplicateProcessing={10}",
                         "The system is unable to format all or part of the response because the entity either has effectivity dates that are not effective for the time that the entity is retrieved or it is classified as a memento.",
                         "Use knowledge of the request and the contents of the repositories to determine if the entity is set up correctly or needs to be updated."),
 
     ;
 
-    private String                     logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private final String                     logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String                     logMessage;
+    private final String                     systemAction;
+    private final String                     userAction;
 
 
     /**
@@ -107,7 +107,7 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
      *
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened

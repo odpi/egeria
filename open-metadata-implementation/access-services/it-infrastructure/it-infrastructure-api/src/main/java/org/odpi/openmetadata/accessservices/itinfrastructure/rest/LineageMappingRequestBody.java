@@ -1,16 +1,13 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetmanager.rest;
+package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,22 +15,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * CategorizationRequestBody describes the request body used when linking a glossary term to a category.
+ * LineageMappingRequestBody describes the request body used when adding a lineage mapping.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CategorizationRequestBody extends AssetManagerIdentifiersRequestBody
+public class LineageMappingRequestBody extends EffectiveTimeMetadataSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private GlossaryTermCategorization    categorizationProperties      = null;
+    private LineageMappingProperties properties = null;
 
 
     /**
      * Default constructor
      */
-    public CategorizationRequestBody()
+    public LineageMappingRequestBody()
     {
         super();
     }
@@ -44,13 +41,13 @@ public class CategorizationRequestBody extends AssetManagerIdentifiersRequestBod
      *
      * @param template object to copy
      */
-    public CategorizationRequestBody(CategorizationRequestBody template)
+    public LineageMappingRequestBody(LineageMappingRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            categorizationProperties = template.getCategorizationProperties();
+            properties = template.getProperties();
         }
     }
 
@@ -60,20 +57,20 @@ public class CategorizationRequestBody extends AssetManagerIdentifiersRequestBod
      *
      * @return properties object
      */
-    public GlossaryTermCategorization getCategorizationProperties()
+    public LineageMappingProperties getProperties()
     {
-        return categorizationProperties;
+        return properties;
     }
 
 
     /**
      * Set up the properties for the relationship.
      *
-     * @param categorizationProperties properties object
+     * @param properties properties object
      */
-    public void setCategorizationProperties(GlossaryTermCategorization categorizationProperties)
+    public void setProperties(LineageMappingProperties properties)
     {
-        this.categorizationProperties = categorizationProperties;
+        this.properties = properties;
     }
 
 
@@ -85,10 +82,11 @@ public class CategorizationRequestBody extends AssetManagerIdentifiersRequestBod
     @Override
     public String toString()
     {
-        return "CategorizationRequestBody{" +
-                       "categorizationProperties=" + categorizationProperties +
-                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
-                       ", assetManagerName='" + getAssetManagerName() + '\'' +
+        return "LineageMappingRequestBody{" +
+                       "effectiveTime=" + getEffectiveTime() +
+                       ", properties=" + properties +
+                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
     }
 
@@ -114,8 +112,8 @@ public class CategorizationRequestBody extends AssetManagerIdentifiersRequestBod
         {
             return false;
         }
-        CategorizationRequestBody that = (CategorizationRequestBody) objectToCompare;
-        return Objects.equals(getCategorizationProperties(), that.getCategorizationProperties());
+        LineageMappingRequestBody that = (LineageMappingRequestBody) objectToCompare;
+        return Objects.equals(getProperties(), that.getProperties());
     }
 
 
@@ -127,6 +125,6 @@ public class CategorizationRequestBody extends AssetManagerIdentifiersRequestBod
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), categorizationProperties);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

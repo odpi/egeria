@@ -28,7 +28,7 @@ public class GovernedAssetContextBuilder
 
     public Context buildContextForColumn(String userID, String assetId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "buildContextForColumn";
-        EntityDetail column = repositoryHandler.getEntityByGUID(userID, assetId, "guid", Constants.RELATIONAL_COLUMN, methodName);
+        EntityDetail column = repositoryHandler.getEntityByGUID(userID, assetId, "guid", Constants.RELATIONAL_COLUMN, false, false, new Date(),methodName);
         if (column != null && isRelationalColumn(column)) {
             return getDatabaseContextForColumn(userID, column);
         }

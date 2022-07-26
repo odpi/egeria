@@ -74,12 +74,12 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
     /**
      * Create a definition of a subject area.  The qualified name of these subject areas can be added
      * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of subjectAreas can be added to Asset definitions
+     * and how they are set up.  In addition, the qualified names of subjectAreas can be added to Asset definitions
      * to indicate which subjectArea(s) they belong to.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param qualifiedName unique name for the subjectArea - used in other configuration
      * @param displayName short display name for the subjectArea
      * @param description description of the subject area
@@ -87,8 +87,9 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param scope scope of the organization that this some applies to
      * @param domainIdentifier the identifier of the governance domain where the subjectArea is managed
      * @param additionalProperties additional properties for a subject area
-     * @param suppliedTypeName name of sub type - or null for SubjectAreaDefinition
+     * @param suppliedTypeName name of subtype - or null for SubjectAreaDefinition
      * @param extendedProperties  properties for a subject area subtype
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new subjectArea
@@ -109,6 +110,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     Map<String, String> additionalProperties,
                                     String              suppliedTypeName,
                                     Map<String, Object> extendedProperties,
+                                    Date                effectiveTime,
                                     String              methodName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -148,6 +150,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -155,12 +158,12 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
     /**
      * Create a definition of a subject area.  The qualified name of these subject areas can be added
      * to the supportedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of subjectAreas can be added to Asset definitions
+     * and how they are set up.  In addition, the qualified names of subjectAreas can be added to Asset definitions
      * to indicate which subjectArea(s) they belong to.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param subjectAreaGUID unique identifier of subject area
      * @param subjectAreaGUIDParameterName parameter name for subjectAreaGUID
      * @param qualifiedName unique name for the subjectArea - used in other configuration
@@ -248,6 +251,9 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param qualifiedName unique name for the subjectArea
      * @param qualifiedNameParameter name of parameter supplying the qualifiedName
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return properties of the subject area
@@ -259,6 +265,9 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public B getSubjectArea(String   userId,
                             String   qualifiedName,
                             String   qualifiedNameParameter,
+                            boolean  forLineage,
+                            boolean  forDuplicateProcessing,
+                            Date     effectiveTime,
                             String   methodName) throws InvalidParameterException,
                                                         UserNotAuthorizedException,
                                                         PropertyServerException
@@ -269,7 +278,9 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                         OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                         OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                        null,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -280,6 +291,9 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param subjectAreaGUID unique identifier for the subjectArea
      * @param subjectAreaGUIDParameter name of parameter supplying the subjectAreaGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the parent subject area
@@ -288,10 +302,13 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String getSubjectAreaParentGUID(String userId,
-                                           String subjectAreaGUID,
-                                           String subjectAreaGUIDParameter,
-                                           String methodName) throws InvalidParameterException,
+    public String getSubjectAreaParentGUID(String  userId,
+                                           String  subjectAreaGUID,
+                                           String  subjectAreaGUIDParameter,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
@@ -302,10 +319,11 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
                                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
-                                                     false,
-                                                     false,
+                                                     1,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
                                                      supportedZones,
-                                                     null,
+                                                     effectiveTime,
                                                      methodName);
 
         if (entity != null)
@@ -325,7 +343,9 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param subjectAreaGUID unique identifier for the subjectArea
      * @param subjectAreaGUIDParameter name of parameter supplying the subjectAreaGUID
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of unique identifier of the parent subject area
@@ -334,13 +354,15 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<String> getSubjectAreaChildrenGUIDs(String userId,
-                                                    String subjectAreaGUID,
-                                                    String subjectAreaGUIDParameter,
-                                                    Date   effectiveTime,
-                                                    String methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public List<String> getSubjectAreaChildrenGUIDs(String  userId,
+                                                    String  subjectAreaGUID,
+                                                    String  subjectAreaGUIDParameter,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime,
+                                                    String  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         List<EntityDetail> entities = this.getAttachedEntities(userId,
                                                                subjectAreaGUID,
@@ -352,8 +374,8 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                null,
                                                                null,
                                                                0,
-                                                               false,
-                                                               false,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
                                                                supportedZones,
                                                                0,
                                                                0,
@@ -387,7 +409,10 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId calling user
      * @param startFrom position in the list (used when there are so many reports that paging is needed
-     * @param pageSize maximum number of elements to return an this call
+     * @param pageSize maximum number of elements to return on this call
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return properties of the subject area
@@ -396,23 +421,26 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<B> getSubjectAreas(String userId,
-                                   int    startFrom,
-                                   int    pageSize,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public List<B> getSubjectAreas(String  userId,
+                                   int     startFrom,
+                                   int     pageSize,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         return this.getBeansByType(userId,
                                    OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                    OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                    null,
-                                   false,
-                                   false,
+                                   forLineage,
+                                   forDuplicateProcessing,
                                    supportedZones,
                                    startFrom,
                                    pageSize,
-                                   new Date(),
+                                   effectiveTime,
                                    methodName);
     }
 
@@ -423,7 +451,10 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param domainIdentifier identifier of domain - 0 is for all domains
      * @param startFrom position in the list (used when there are so many reports that paging is needed
-     * @param pageSize maximum number of elements to return an this call
+     * @param pageSize maximum number of elements to return on this call
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return properties of the subject area
@@ -432,29 +463,32 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<B> getSubjectAreasByDomain(String userId,
-                                           int    domainIdentifier,
-                                           int    startFrom,
-                                           int    pageSize,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public List<B> getSubjectAreasByDomain(String  userId,
+                                           int     domainIdentifier,
+                                           int     startFrom,
+                                           int     pageSize,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         if (domainIdentifier == 0)
         {
-            return this.getSubjectAreas(userId, startFrom, pageSize, methodName);
+            return this.getSubjectAreas(userId, startFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
 
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
                                                              OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                                              null,
-                                                             false,
-                                                             false,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
                                                              supportedZones,
                                                              startFrom,
                                                              pageSize,
-                                                             new Date(),
+                                                             effectiveTime,
                                                              methodName);
 
         List<B> results = new ArrayList<>();

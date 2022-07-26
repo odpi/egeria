@@ -27,12 +27,12 @@ import java.util.Date;
  */
 public class FileSystemRESTServices
 {
-    private static AssetOwnerInstanceHandler   instanceHandler     = new AssetOwnerInstanceHandler();
+    private static final AssetOwnerInstanceHandler   instanceHandler     = new AssetOwnerInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(FileSystemRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(FileSystemRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
     /**
@@ -97,6 +97,11 @@ public class FileSystemRESTServices
                                                           requestBody.getEncryption(),
                                                           requestBody.getAdditionalProperties(),
                                                           null,
+                                                          null,
+                                                          null,
+                                                          false,
+                                                          false,
+                                                          new Date(),
                                                           methodName));
             }
         }
@@ -153,6 +158,11 @@ public class FileSystemRESTServices
                                                                          null,
                                                                          anchorGUID,
                                                                          requestBody.getFullPath(),
+                                                                         null,
+                                                                         null,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
                                                                          methodName));
             }
         }
@@ -207,6 +217,11 @@ public class FileSystemRESTServices
                                                                          null,
                                                                          null,
                                                                          requestBody.getFullPath(),
+                                                                         null,
+                                                                         null,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
                                                                          methodName));
             }
         }
@@ -266,6 +281,11 @@ public class FileSystemRESTServices
                                              fileSystemGUIDParameterName,
                                              folderGUID,
                                              folderGUIDParameterName,
+                                             null,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
         }
         catch (Exception error)
@@ -324,6 +344,9 @@ public class FileSystemRESTServices
                                                fileSystemGUIDParameterName,
                                                folderGUID,
                                                folderGUIDParameterName,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
         }
         catch (Exception error)
@@ -381,6 +404,11 @@ public class FileSystemRESTServices
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
                                                                     requestBody.getFullPath(),
+                                                                    null,
+                                                                    null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
             }
         }
@@ -441,6 +469,11 @@ public class FileSystemRESTServices
                                                                       requestBody.getFullPath(),
                                                                       requestBody.getDisplayName(),
                                                                       requestBody.getDescription(),
+                                                                      null,
+                                                                      null,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
                                                                       methodName));
             }
         }
@@ -503,6 +536,11 @@ public class FileSystemRESTServices
                                                 folderGUIDParameterName,
                                                 fileGUID,
                                                 fileGUIDParameterName,
+                                                null,
+                                                null,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
         }
         catch (Exception error)
@@ -563,6 +601,9 @@ public class FileSystemRESTServices
                                                   folderGUIDParameterName,
                                                   fileGUID,
                                                   fileGUIDParameterName,
+                                                  false,
+                                                  false,
+                                                  new Date(),
                                                   methodName);
         }
         catch (Exception error)
@@ -578,7 +619,7 @@ public class FileSystemRESTServices
 
     /**
      * Move a data file from its current parent folder to a new parent folder - this changes the file's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param serverName name of calling server
      * @param userId calling user
@@ -622,6 +663,11 @@ public class FileSystemRESTServices
                                           folderGUIDParameterName,
                                           fileGUID,
                                           fileGUIDParameterName,
+                                          null,
+                                          null,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
         }
         catch (Exception error)
@@ -637,7 +683,7 @@ public class FileSystemRESTServices
 
     /**
      * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param serverName name of calling server
      * @param userId calling user
@@ -681,6 +727,11 @@ public class FileSystemRESTServices
                                             folderGUIDParameterName,
                                             fileGUID,
                                             fileGUIDParameterName,
+                                            null,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
         }
         catch (Exception error)
@@ -727,9 +778,12 @@ public class FileSystemRESTServices
                     FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             FileSystemElement fileSystemElement = handler.getFileSystemByGUID(userId,
-                                                                                    fileSystemGUID,
-                                                                                    guidParameterName,
-                                                                                    methodName);
+                                                                              fileSystemGUID,
+                                                                              guidParameterName,
+                                                                              false,
+                                                                              false,
+                                                                              new Date(),
+                                                                              methodName);
 
             response.setFileSystem(fileSystemElement);
         }
@@ -777,9 +831,12 @@ public class FileSystemRESTServices
                     FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             response.setFileSystem(new FileSystemElement(handler.getFileSystemByUniqueName(userId,
-                                                                                              uniqueName,
-                                                                                              uniqueNameParameterName,
-                                                                                              methodName)));
+                                                                                           uniqueName,
+                                                                                           uniqueNameParameterName,
+                                                                                           false,
+                                                                                           false,
+                                                                                           new Date(),
+                                                                                           methodName)));
         }
         catch (Exception error)
         {
@@ -828,6 +885,9 @@ public class FileSystemRESTServices
             response.setGUIDs(handler.getFileSystems(userId,
                                                      startingFrom,
                                                      maxPageSize,
+                                                     false,
+                                                     false,
+                                                     new Date(),
                                                      methodName));
         }
         catch (Exception error)
@@ -874,8 +934,11 @@ public class FileSystemRESTServices
                     FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
             response.setFolder(new FolderElement(handler.getFolderByGUID(userId,
-                                                                            folderGUID,
-                                                                            methodName)));
+                                                                         folderGUID,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName)));
         }
         catch (Exception error)
         {
@@ -923,6 +986,9 @@ public class FileSystemRESTServices
 
                 response.setFolder(new FolderElement(handler.getFolderByPathName(userId,
                                                                                  requestBody.getFullPath(),
+                                                                                 false,
+                                                                                 false,
+                                                                                 new Date(),
                                                                                  methodName)));
             }
         }
@@ -946,7 +1012,7 @@ public class FileSystemRESTServices
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
      *
-     * @return list of folder unique identifiers (null means no nested folders) or
+     * @return list of folder unique identifiers (null means "no nested folders") or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
@@ -978,7 +1044,9 @@ public class FileSystemRESTServices
                                                        parentGUIDParameterName,
                                                        startingFrom,
                                                        maxPageSize,
-                                                       null,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                        methodName));
         }
         catch (Exception error)
@@ -1033,7 +1101,9 @@ public class FileSystemRESTServices
                                                      folderGUIDParameterName,
                                                      startingFrom,
                                                      maxPageSize,
-                                                     null,
+                                                     false,
+                                                     false,
+                                                     new Date(),
                                                      methodName));
         }
         catch (Exception error)
@@ -1092,6 +1162,11 @@ public class FileSystemRESTServices
                                                                requestBody.getDisplayName(),
                                                                requestBody.getDescription(),
                                                                requestBody.getFullPath(),
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               false,
+                                                               new Date(),
                                                                methodName));
             }
         }
@@ -1154,6 +1229,10 @@ public class FileSystemRESTServices
                                                               requestBody.getColumnHeaders(),
                                                               requestBody.getDelimiterCharacter(),
                                                               requestBody.getQuoteCharacter(),
+                                                              null,
+                                                              null,
+                                                              false,
+                                                              false,
                                                               new Date(),
                                                               methodName));
             }

@@ -276,11 +276,11 @@ public class TestComplexSchemaType
         /*
          * Through superclass
          */
-        ElementHeader elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -289,7 +289,7 @@ public class TestComplexSchemaType
 
         try
         {
-            validateResultObject((ComplexSchemaType) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((ComplexSchemaType) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

@@ -18,10 +18,10 @@ import java.util.Map;
  */
 public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private int                  annotationStatus;
-    private Date                 reviewDate;
-    private String               steward;
-    private String               reviewComment;
+    private final int                  annotationStatus;
+    private final Date                 reviewDate;
+    private final String               steward;
+    private final String               reviewComment;
 
 
     /**

@@ -276,11 +276,11 @@ public class TestAPISchemaType
         /*
          * Through superclass
          */
-        ElementHeader elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -289,7 +289,7 @@ public class TestAPISchemaType
 
         try
         {
-            validateResultObject((APISchemaType) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((APISchemaType) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

@@ -60,8 +60,8 @@ public class <$$uClassificationName$$>Mapper {
                     Object actualValue;
                     switch (value.getInstancePropertyCategory()) {
                         case PRIMITIVE:
-                            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
-                            actualValue = primitivePropertyValue.getPrimitiveValue();
+                            PrimitivePropertyValue primitiveTypePropertyValue = (PrimitivePropertyValue) value;
+                            actualValue = primitiveTypePropertyValue.getPrimitiveValue();
                             if (<$$uClassificationName$$>.getAttributePropertyNames().contains(name)) {
                                <$$Attr$$
                                if (name.equals("<$$AttrName$$>")) {
@@ -74,12 +74,12 @@ public class <$$uClassificationName$$>Mapper {
                                 if (null==<$$ClassificationName$$>.getExtraAttributes())  {
                                      <$$ClassificationName$$>.setExtraAttributes(new HashMap<String, Object>());
                                 }
-                               <$$ClassificationName$$>.getExtraAttributes().put(name, primitivePropertyValue);
+                               <$$ClassificationName$$>.getExtraAttributes().put(name, primitiveTypePropertyValue);
                             }
                             break;
                         case ENUM:
-                            EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
-                            String symbolicName = enumPropertyValue.getSymbolicName();
+                            EnumPropertyValue enumTypePropertyValue = (EnumPropertyValue) value;
+                            String symbolicName = enumTypePropertyValue.getSymbolicName();
                             if (<$$uClassificationName$$>.getEnumPropertyNames().contains(name)) {
                                 <$$Enum$$
                                  if (name.equals("<$$EnumName$$>")) {
@@ -93,14 +93,14 @@ public class <$$uClassificationName$$>Mapper {
                                 if (null==<$$ClassificationName$$>.getExtraAttributes())  {
                                      <$$ClassificationName$$>.setExtraAttributes(new HashMap<String, Object>());
                                 }
-                                 <$$ClassificationName$$>.getExtraAttributes().put(name, enumPropertyValue);
+                                 <$$ClassificationName$$>.getExtraAttributes().put(name, enumTypePropertyValue);
                              }
 
                             break;
                         case MAP:
                             if (<$$uClassificationName$$>.getMapPropertyNames().contains(name)) {
-                                 MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
-                                 InstanceProperties instancePropertyForMap = (InstanceProperties) mapPropertyValue.getMapValues();
+                                 MapPropertyValue mapTypePropertyValue = (MapPropertyValue) value;
+                                 InstanceProperties instancePropertyForMap = (InstanceProperties) mapTypePropertyValue.getMapValues();
 
                                  <$$Map$$
                                  if (name.equals("<$$MapName$$>")) {
@@ -164,20 +164,20 @@ public class <$$uClassificationName$$>Mapper {
 
             <$$Attr$$
             if (<$$ClassificationName$$>.get<$$uAttrName$$>()!=null) {
-                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
-                primitivePropertyValue.setPrimitiveValue(<$$ClassificationName$$>.get<$$uAttrName$$>());
-                instanceProperties.setProperty("<$$AttrName$$>", primitivePropertyValue);
+                PrimitivePropertyValue primitiveTypePropertyValue = new PrimitivePropertyValue();
+                primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
+                primitiveTypePropertyValue.setPrimitiveValue(<$$ClassificationName$$>.get<$$uAttrName$$>());
+                instanceProperties.setProperty("<$$AttrName$$>", primitiveTypePropertyValue);
             }
             $$Attr$$>
 
             <$$Enum$$
             if (<$$ClassificationName$$>.get<$$uEnumName$$>()!=null) {
                 <$$uEnumType$$> enumType = <$$ClassificationName$$>.get<$$uEnumName$$>();
-                EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-                enumPropertyValue.setOrdinal(enumType.ordinal());
-                enumPropertyValue.setSymbolicName(enumType.name());
-                instanceProperties.setProperty("<$$EnumName$$>", enumPropertyValue);
+                EnumPropertyValue enumTypePropertyValue = new EnumPropertyValue();
+                enumTypePropertyValue.setOrdinal(enumType.ordinal());
+                enumTypePropertyValue.setSymbolicName(enumType.name());
+                instanceProperties.setProperty("<$$EnumName$$>", enumTypePropertyValue);
             }
             $$Enum$$>
 
@@ -185,16 +185,16 @@ public class <$$uClassificationName$$>Mapper {
             if (<$$ClassificationName$$>.get<$$uMapName$$>()!=null) {
 
                 Map<String,String> map =<$$ClassificationName$$>.get<$$uMapName$$>();
-                MapPropertyValue mapPropertyValue = new MapPropertyValue();
+                MapPropertyValue mapTypePropertyValue = new MapPropertyValue();
 
                 for (String key:map.keySet()) {
-                   PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                   primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-                   primitivePropertyValue.setPrimitiveValue(map.get(key));
-                   mapPropertyValue.setMapValue(key,primitivePropertyValue);
+                   PrimitivePropertyValue primitiveTypePropertyValue = new PrimitivePropertyValue();
+                   primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                   primitiveTypePropertyValue.setPrimitiveValue(map.get(key));
+                   mapTypePropertyValue.setMapValue(key,primitiveTypePropertyValue);
                 }
 
-                instanceProperties.setProperty("<$$MapName$$>", mapPropertyValue);
+                instanceProperties.setProperty("<$$MapName$$>", mapTypePropertyValue);
             }
             $$Map$$>
 

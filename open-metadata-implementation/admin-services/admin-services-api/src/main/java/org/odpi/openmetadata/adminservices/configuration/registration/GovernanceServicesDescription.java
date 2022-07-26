@@ -50,12 +50,12 @@ public enum GovernanceServicesDescription implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private int                        serviceCode;
-    private ComponentDevelopmentStatus serviceDevelopmentStatus;
-    private String                     serviceName;
-    private String                     serviceURLMarker;
-    private String                     serviceDescription;
-    private String                     serviceWiki;
+    private final int                        serviceCode;
+    private final ComponentDevelopmentStatus serviceDevelopmentStatus;
+    private final String                     serviceName;
+    private final String                     serviceURLMarker;
+    private final String                     serviceDescription;
+    private final String                     serviceWiki;
 
 
     /**

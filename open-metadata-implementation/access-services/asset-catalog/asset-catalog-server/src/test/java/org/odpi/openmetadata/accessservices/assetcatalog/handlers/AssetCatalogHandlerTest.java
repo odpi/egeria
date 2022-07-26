@@ -42,10 +42,12 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -133,8 +135,8 @@ public class AssetCatalogHandlerTest {
 
         when(invalidParameterHandler.getMaxPagingSize()).thenReturn(500);
         when(assetHandler.getAttachmentLinks(USER, FIRST_GUID, GUID_PARAMETER,
-                ASSET_TYPE, null, null, null,
-                0, 500, null, methodName))
+                ASSET_TYPE, null, null, null, null, 0,
+                false, false, 0, 500, null, methodName))
                 .thenReturn(relationshipsByType);
         when(assetCatalogConverter.convertRelationships(relationshipsByType)).
                 thenReturn(convertRelationships(relationshipsByType));
@@ -149,7 +151,7 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void getRelationshipsByEntityGUID_throwsInvalidParameterException() throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+    public void getRelationshipsByEntityGUID_throwsInvalidParameterException() throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
 
         String methodName = "getRelationshipsByEntityGUID";
 
@@ -253,8 +255,8 @@ public class AssetCatalogHandlerTest {
 
         doThrow(new PropertyServerException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(),
                 this.getClass().getName(), "")).when(assetHandler).getAttachmentLinks(USER, FIRST_GUID, GUID_PARAMETER,
-                ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, null,
-                FROM, PAGE_SIZE, null, methodName);
+                ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, null, null, 0,
+                false, false, FROM, PAGE_SIZE, null, methodName);
 
         assertThrows(PropertyServerException.class,
                 () -> assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE, FROM, PAGE_SIZE));
@@ -267,8 +269,8 @@ public class AssetCatalogHandlerTest {
 
         doThrow(new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(),
                 this.getClass().getName(), "", "")).when(assetHandler).getAttachmentLinks(USER, FIRST_GUID, GUID_PARAMETER,
-                ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, null,
-                FROM, PAGE_SIZE, null, methodName);
+                ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, null, null, 0,
+                false, false, FROM, PAGE_SIZE, null, methodName);
 
         assertThrows(UserNotAuthorizedException.class,
                 () -> assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE, FROM, PAGE_SIZE));
@@ -528,8 +530,8 @@ public class AssetCatalogHandlerTest {
     private void mockPagedRelationships(String methodName) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         List<Relationship> mockedRelationships = mockRelationships();
         when(assetHandler.getAttachmentLinks(USER, FIRST_GUID, GUID_PARAMETER,
-                ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, null,
-                FROM, PAGE_SIZE, null, methodName)).thenReturn(mockedRelationships);
+                ASSET_TYPE, RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, null, null, 0,
+                false, false, FROM, PAGE_SIZE, null, methodName)).thenReturn(mockedRelationships);
 
         when(assetCatalogConverter.convertRelationships(mockedRelationships)).
                 thenReturn(convertRelationships(mockedRelationships));

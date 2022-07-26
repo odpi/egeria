@@ -28,10 +28,10 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(AssetManagerOMRSTopicListener.class);
 
-    private AssetManagerOutTopicPublisher eventPublisher;
-    private AssetHandler                  assetHandler;
-    private String                        localServerUserId;
-    private List<String>                  supportedZones;
+    private final AssetManagerOutTopicPublisher eventPublisher;
+    private final AssetHandler                  assetHandler;
+    private final String                        localServerUserId;
+    private final List<String>                  supportedZones;
 
 
     /**
@@ -974,8 +974,9 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param userId callers userId
      * @param entity entity to test
      * @param entityProxy entity proxy when entity is not available
-     * @return entity detail if it is to be send.
+     * @return entity detail if it is to be sent.
      */
+    @SuppressWarnings(value="unchecked")
     private EntityDetail entityOfInterest(String       userId,
                                           EntityDetail entity,
                                           EntityProxy  entityProxy)

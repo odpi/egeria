@@ -119,10 +119,11 @@ public class LocationBuilder extends ReferenceableBuilder
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
@@ -175,7 +176,7 @@ public class LocationBuilder extends ReferenceableBuilder
                                                                   timeZone,
                                                                   methodName);
 
-
+        setEffectivityDates(properties);
 
         return properties;
     }
@@ -206,6 +207,9 @@ public class LocationBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.LEVEL_PROPERTY_NAME,
                                                                   level,
                                                                   methodName);
+
+        setEffectivityDates(properties);
+
         return properties;
     }
 

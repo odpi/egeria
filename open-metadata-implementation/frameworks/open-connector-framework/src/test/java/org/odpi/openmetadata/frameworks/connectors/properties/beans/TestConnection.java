@@ -299,11 +299,11 @@ public class TestConnection
         /*
          * Through superclass
          */
-        ElementHeader elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -312,7 +312,7 @@ public class TestConnection
 
         try
         {
-            validateResultObject((Connection) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((Connection) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

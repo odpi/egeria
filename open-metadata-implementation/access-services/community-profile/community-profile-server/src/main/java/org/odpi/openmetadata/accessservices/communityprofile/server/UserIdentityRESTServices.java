@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,12 +27,12 @@ import java.util.List;
  */
 public class UserIdentityRESTServices
 {
-    static private CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
+    private static final CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(UserIdentityRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final  RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(UserIdentityRESTServices.class),
+                                                                             instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -77,9 +78,15 @@ public class UserIdentityRESTServices
                                                                      null,
                                                                      null,
                                                                      requestBody.getProperties().getQualifiedName(),
+                                                                     requestBody.getProperties().getDistinguishedName(),
                                                                      requestBody.getProperties().getAdditionalProperties(),
                                                                      requestBody.getProperties().getTypeName(),
                                                                      requestBody.getProperties().getExtendedProperties(),
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName);
 
                 response.setGUID(userIdentityGUID);
@@ -140,10 +147,16 @@ public class UserIdentityRESTServices
                                            userIdentityGUID,
                                            guidParameterName,
                                            requestBody.getProperties().getQualifiedName(),
+                                           requestBody.getProperties().getDistinguishedName(),
                                            requestBody.getProperties().getAdditionalProperties(),
                                            requestBody.getProperties().getTypeName(),
                                            requestBody.getProperties().getExtendedProperties(),
                                            isMergeUpdate,
+                                           null,
+                                           null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -199,6 +212,9 @@ public class UserIdentityRESTServices
                                            requestBody.getExternalSourceName(),
                                            userIdentityGUID,
                                            guidParameterName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -260,6 +276,11 @@ public class UserIdentityRESTServices
                                              userIdentityGUIDParameterName,
                                              profileGUID,
                                              profileGUIDParameterName,
+                                             null,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
                                              methodName);
             }
             else
@@ -320,6 +341,9 @@ public class UserIdentityRESTServices
                                                   userIdentityGUIDParameterName,
                                                   profileGUID,
                                                   profileGUIDParameterName,
+                                                  false,
+                                                  false,
+                                                  new Date(),
                                                   methodName);
             }
             else
@@ -381,7 +405,9 @@ public class UserIdentityRESTServices
                                                                        null,
                                                                        startFrom,
                                                                        pageSize,
-                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName);
                 response.setElements(elements);
             }
@@ -442,6 +468,9 @@ public class UserIdentityRESTServices
                                                                                      nameParameterName,
                                                                                      startFrom,
                                                                                      pageSize,
+                                                                                     false,
+                                                                                     false,
+                                                                                     new Date(),
                                                                                      methodName);
                 response.setElements(elements);
             }
@@ -493,6 +522,9 @@ public class UserIdentityRESTServices
             UserIdentityElement element = handler.getUserIdentityByGUID(userId,
                                                                         userIdentityGUID,
                                                                         userIdentityGUIDParameterName,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
                                                                         methodName);
             response.setElement(element);
         }

@@ -342,10 +342,11 @@ public class AssetManagerRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a ExternalGlossaryLinkElementsResponse object.
+     * Issue a POST REST call that returns a ExternalGlossaryLinkElementsResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -353,16 +354,18 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public ExternalGlossaryLinkElementsResponse callExternalGlossaryLinksGetRESTCall(String    methodName,
-                                                                                     String    urlTemplate,
-                                                                                     Object... params) throws InvalidParameterException,
+    public ExternalGlossaryLinkElementsResponse callExternalGlossaryLinksPostRESTCall(String    methodName,
+                                                                                      String    urlTemplate,
+                                                                                      Object    requestBody,
+                                                                                      Object... params) throws InvalidParameterException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               PropertyServerException
     {
-        ExternalGlossaryLinkElementsResponse restResult = this.callGetRESTCall(methodName,
-                                                                               ExternalGlossaryLinkElementsResponse.class,
-                                                                               urlTemplate,
-                                                                               params);
+        ExternalGlossaryLinkElementsResponse restResult = this.callPostRESTCall(methodName,
+                                                                                ExternalGlossaryLinkElementsResponse.class,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -939,6 +942,63 @@ public class AssetManagerRESTClient extends FFDCRESTClient
 
 
     /**
+     * Issue a POST REST call that returns a RelationshipElementResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public RelationshipElementResponse callRelationshipPostRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object    requestBody,
+                                                                    Object... params) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        RelationshipElementResponse restResult = this.callPostRESTCall(methodName, RelationshipElementResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a RelationshipElementsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public RelationshipElementsResponse callRelationshipsPostRESTCall(String    methodName,
+                                                                      String    urlTemplate,
+                                                                      Object    requestBody,
+                                                                      Object... params) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        RelationshipElementsResponse restResult = this.callPostRESTCall(methodName, RelationshipElementsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
      * Issue a POST REST call that returns a DataFlowElementResponse object.
      *
      * @param methodName  name of the method being called.
@@ -1099,6 +1159,34 @@ public class AssetManagerRESTClient extends FFDCRESTClient
                                                                                              PropertyServerException
     {
         ProcessCallElementsResponse restResult = this.callPostRESTCall(methodName, ProcessCallElementsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a LineageMappingElementResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public LineageMappingElementResponse callLineageMappingPostRESTCall(String    methodName,
+                                                                        String    urlTemplate,
+                                                                        Object    requestBody,
+                                                                        Object... params) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        LineageMappingElementResponse restResult = this.callPostRESTCall(methodName, LineageMappingElementResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
