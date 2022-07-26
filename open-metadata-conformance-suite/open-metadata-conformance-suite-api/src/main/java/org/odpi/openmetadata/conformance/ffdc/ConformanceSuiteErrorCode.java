@@ -242,12 +242,12 @@ public enum ConformanceSuiteErrorCode
      */
     public String getFormattedErrorMessage(String... params)
     {
-        log.debug(String.format("<== ConformanceSuiteErrorCode.getMessage({})", Arrays.toString(params)));
+        log.debug(String.format("<== ConformanceSuiteErrorCode.getMessage(%s)", Arrays.toString(params)));
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
         
-        log.debug(String.format("==> ConformanceSuiteErrorCode.getMessage({}): {}", Arrays.toString(params), result));
+        log.debug(String.format("==> ConformanceSuiteErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }
