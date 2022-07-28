@@ -162,6 +162,7 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update0010BaseModel();
+        update0110ActorProfile();
         update04xxMultiLinkGovernanceActionTypes();
         update07xxImplementationRelationships();
         add0735SolutionPortSchemaRelationship();
@@ -250,6 +251,89 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0110ActorProfile()
+    {
+        this.archiveBuilder.addRelationshipDef(getProfileLocationRelationship());
+    }
+
+
+    private RelationshipDef getProfileLocationRelationship()
+    {
+        final String guid            = "4d652ef7-99c7-4ec3-a2fd-b10c0a1ab4b4";
+        final String name            = "ProfileLocation";
+        final String description     = "Identifies an association between an Actor Profile and a Location, such as a person's primary work location.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "ActorProfile";
+        final String                     end1AttributeName            = "associatedProfiles";
+        final String                     end1AttributeDescription     = "Profiles of actors associated with the location.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Location";
+        final String                     end2AttributeName            = "associatedLocation";
+        final String                     end2AttributeDescription     = "Locations that the actor is associated with.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "associationType";
+        final String attribute1Description     = "Identifier that describes the purpose of the association.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
