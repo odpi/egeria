@@ -178,18 +178,20 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                 final ConsumerRecords<String, String> records = consumer.poll(pollDuration);
                 
                 log.debug("Found records: {}", records.count());
-                for (ConsumerRecord<String, String> record : records)
+                for (ConsumerRecord<String, String> consumerRecord : records)
                 {
-                    String json = record.value();
+                    String json = consumerRecord.value();
                     log.debug("Received message: {}" ,json);
                     countReceivedMessages++;
                     log.info("Metrics: receivedMessages: {}", countReceivedMessages);
-                    final KafkaIncomingEvent event = new KafkaIncomingEvent(json, record.offset());
-                    if (! localServerId.equals(record.key()))
+                    final KafkaIncomingEvent event = new KafkaIncomingEvent(json, consumerRecord.offset());
+                    final String recordKey=consumerRecord.key();
+                    final String recordValue=consumerRecord.value();
+                    if (! localServerId.equals(recordKey))
                     {
                         try
                         {
-                            addUnprocessedEvent(record.partition(), record.topic(), event);
+                            addUnprocessedEvent(consumerRecord.partition(), consumerRecord.topic(), event);
                             connector.distributeToListeners(event);
                             countMessagesToProcess++;
                             log.info("Metrics: messagesToProcess: {}", countMessagesToProcess);
@@ -213,7 +215,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     }
                     else
                     {
-                        log.debug("Ignoring message with key: {} and value: {}",record.key(), record.value());
+                        log.debug("Ignoring message with key: {} and value: {}",recordKey, recordValue);
                         countIgnoredMessages++;
                         log.info("Metrics: ignoredMessages: {}", countIgnoredMessages);
                     }
@@ -226,8 +228,8 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                         //If auto-commit is disabled, the offset for a message is only committed when
                         //the message has been completely processed by all consumers.  That
                         //is handled by the call to checkForFullyProcessedMessagesIfNeeded().
-                        final TopicPartition partition = new TopicPartition(record.topic(), record.partition());
-                        currentOffsets.put(partition, new OffsetAndMetadata(record.offset() + 1));
+                        final TopicPartition partition = new TopicPartition(consumerRecord.topic(), consumerRecord.partition());
+                        currentOffsets.put(partition, new OffsetAndMetadata(consumerRecord.offset() + 1));
                         countCommits++;
                         log.info("Metrics: messageCommits: {}", countCommits);
                     
@@ -439,7 +441,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         //check whether the message processing timeout has elapsed (if there is one)
         if (messageProcessingTimeoutMs >= 0 && firstEvent.hasTimeElapsedSinceCreation(messageProcessingTimeoutMs)) {
             //max processing timeout has elapsed, treat the event as being fully processed
-            log.warn("Processing of message at offset " + firstEvent.getOffset() + " timed out.");
+            log.warn("Processing of message at offset {} timed out.", firstEvent.getOffset());
             return true;
         }
         
@@ -473,7 +475,8 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 		}
 		catch (InterruptedException e)
 		{
-		    log.warn("Interrupted whilst sleeping:");
+		    log.debug("Interrupted whilst sleeping:");
+            Thread.currentThread().interrupt();
 		}
 	}
 
@@ -490,6 +493,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         catch (InterruptedException e1)
         {
             log.debug("Interrupted while recovering");
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -499,6 +503,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      */
     void safeCloseConsumer()
     {
+        log.debug("Closing consumer");
         stopRunning();
 
         /*
@@ -506,6 +511,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
          */
         if (consumer != null)
         {
+            log.debug("Waking up consumer thread");
             consumer.wakeup();
         }
     }
@@ -527,6 +533,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      */
     private void stopRunning()
     {
+        log.debug("Set running to false");
         running.set(false);
     }
 
@@ -556,6 +563,8 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                         long maxOffsetWanted; // same as 'beginning'
 
                         TopicPartition partition = partitions.iterator().next();
+                        int partitionID=partition.partition();
+                        String partitionTopic = partition.topic();
 
                         // query offset by timestamp (when we started connector) - NULL if there are no messages later than this offset
                         long reqStartTime=KafkaOpenMetadataEventConsumer.this.startTime;
@@ -575,15 +584,15 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                             // if the current offset is later than the start time we want, rewind to the start time
                             if (currentOffset > maxOffsetWanted) {
 
-                                log.info("Seeking to {} for partition {} and topic {} as current offset {} is too late", maxOffsetWanted, partition.partition(),
-                                        partition.topic(), currentOffset);
+                                log.info("Seeking to {} for partition {} and topic {} as current offset {} is too late", maxOffsetWanted, partitionID,
+                                        partitionTopic, currentOffset);
                                 consumer.seek(partition, maxOffsetWanted);
                             } else
-                                log.info("Not Seeking to {} for partition {} and topic {} as current offset {} is older", maxOffsetWanted, partition.partition(),
-                                        partition.topic(), currentOffset);
+                                log.info("Not Seeking to {} for partition {} and topic {} as current offset {} is older", maxOffsetWanted, partitionID,
+                                        partitionTopic, currentOffset);
                         }
                         else
-                            log.info("No missed events found for partition {} and topic {}", partition.partition(), partition.topic());
+                            log.info("No missed events found for partition {} and topic {}", partitionID, partitionTopic);
                     }
                 }
                 else
