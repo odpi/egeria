@@ -83,7 +83,7 @@ public class ConnectionConverter<B> extends DataManagerOMASConverter<B>
 
                     connectionProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     connectionProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    connectionProperties.setDisplayName(this.removeName(instanceProperties));
+                    connectionProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     connectionProperties.setDescription(this.removeDescription(instanceProperties));
                     connectionProperties.setSecuredProperties(this.removeSecuredProperties(instanceProperties));
                     connectionProperties.setConfigurationProperties(this.removeConfigurationProperties(instanceProperties));

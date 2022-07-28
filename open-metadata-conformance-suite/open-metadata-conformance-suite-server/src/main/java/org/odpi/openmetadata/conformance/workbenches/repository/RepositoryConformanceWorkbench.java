@@ -600,7 +600,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                      * Test again.
                      */
                 }
-                catch (Throwable error)
+                catch (Exception error)
                 {
                     stopRunning();
                     log.error(String.format("Unexpected error: %s", error.getMessage()), error);

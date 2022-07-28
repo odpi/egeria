@@ -1789,7 +1789,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 }
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             // nothing to do - keep going
         }
@@ -1897,7 +1897,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 }
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             // nothing to do - keep going
         }
@@ -3529,7 +3529,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                 }
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             // nothing to do - keep going
         }

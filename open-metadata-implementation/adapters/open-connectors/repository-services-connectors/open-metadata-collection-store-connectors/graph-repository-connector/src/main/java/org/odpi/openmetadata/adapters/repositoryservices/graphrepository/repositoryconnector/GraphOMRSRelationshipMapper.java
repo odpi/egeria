@@ -254,7 +254,7 @@ class GraphOMRSRelationshipMapper {
                 jsonString = objectMapper.writeValueAsString(maintainedByList);
                 edge.property(PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY, jsonString);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
 
                 throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(methodName,
                                                                                                                          this.getClass().getName(),
@@ -290,7 +290,7 @@ class GraphOMRSRelationshipMapper {
                 jsonString = objectMapper.writeValueAsString(mappingProperties);
                 edge.property(PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES, jsonString);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
 
                 throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(methodName,
                                                                                                                          this.getClass().getName(),
@@ -322,7 +322,7 @@ class GraphOMRSRelationshipMapper {
                 jsonString = objectMapper.writeValueAsString(instanceProperties);
                 edge.property("relationshipProperties", jsonString);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(methodName,
                                                                                                                          this.getClass().getName(),
                                                                                                                          repositoryName),
@@ -435,7 +435,7 @@ class GraphOMRSRelationshipMapper {
                 log.debug("{} edge has deserialized maintainedBy list {}", methodName, maintainedByList);
                 relationship.setMaintainedBy(maintainedByList);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
 
                 throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(relationship.getGUID(),
                                                                                                                          methodName,
@@ -459,7 +459,7 @@ class GraphOMRSRelationshipMapper {
                 log.debug("{} edge has deserialized mappingProperties {}", methodName, mappingPropertiesMap);
                 relationship.setMappingProperties(mappingPropertiesMap);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
 
                 throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(relationship.getGUID(),
                                                                                                                          methodName,
@@ -480,7 +480,7 @@ class GraphOMRSRelationshipMapper {
                 log.debug("{} relationship has deserialized properties {}", methodName, instanceProperties);
                 relationship.setProperties(instanceProperties);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(relationship.getGUID(),
                                                                                                                          methodName,
                                                                                                                          this.getClass().getName(),

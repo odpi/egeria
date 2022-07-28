@@ -17,13 +17,13 @@ public abstract class RESTClientCheckedExceptionBase extends Exception
 {
     private static final long    serialVersionUID = 1L;
 
-    private int       reportedHTTPCode;
-    private String    reportingClassName;
-    private String    reportingActionDescription;
-    private String    reportedErrorMessage;
-    private String    reportedSystemAction;
-    private String    reportedUserAction;
-    private Throwable reportedCaughtException = null;
+    private final int       reportedHTTPCode;
+    private final String    reportingClassName;
+    private final String    reportingActionDescription;
+    private final String    reportedErrorMessage;
+    private final String    reportedSystemAction;
+    private final String    reportedUserAction;
+    private Exception reportedCaughtException = null;
 
 
     /**
@@ -71,7 +71,7 @@ public abstract class RESTClientCheckedExceptionBase extends Exception
                                           String    errorMessage,
                                           String    systemAction,
                                           String    userAction,
-                                          Throwable caughtError)
+                                          Exception caughtError)
     {
         super(errorMessage, caughtError);
         this.reportedHTTPCode = httpCode;
@@ -156,7 +156,7 @@ public abstract class RESTClientCheckedExceptionBase extends Exception
      *
      * @return reportedCaughtException
      */
-    public Throwable getReportedCaughtException() { return reportedCaughtException; }
+    public Exception getReportedCaughtException() { return reportedCaughtException; }
 
 
     /**

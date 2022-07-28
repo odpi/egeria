@@ -28,7 +28,7 @@ public class ConformanceException extends Exception
      * @param caughtException the exception
      */
     public ConformanceException(String    errorMessage,
-                                Throwable caughtException)
+                                Exception caughtException)
     {
         super(errorMessage, caughtException);
     }

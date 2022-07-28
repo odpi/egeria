@@ -92,7 +92,7 @@ public class DuplicateSuspectDiscoveryService extends AuditableDiscoveryService
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             super.handleUnexpectedException(methodName, error);
         }
