@@ -164,6 +164,7 @@ public class OpenMetadataTypesArchive
         update0010BaseModel();
         update0110ActorProfile();
         update04xxMultiLinkGovernanceActionTypes();
+        update0545ValidValues();
         update07xxImplementationRelationships();
         add0735SolutionPortSchemaRelationship();
     }
@@ -455,6 +456,119 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Add multi-link flags and extend properties to be able to record proper attributions.
+     */
+    private void update0545ValidValues()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateReferenceValueAssignment());
+        this.archiveBuilder.addTypeDefPatch(updateValidValuesMapping());
+        this.archiveBuilder.addTypeDefPatch(updateValidValuesImplementation());
+    }
+
+
+    private TypeDefPatch updateReferenceValueAssignment()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ReferenceValueAssignment";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "stewardTypeName";
+        final String attribute1Description     = "Type of element used to identify the steward.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "stewardPropertyName";
+        final String attribute2Description     = "Name of property used to identify the steward.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateValidValuesMapping()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ValidValuesMapping";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "stewardTypeName";
+        final String attribute1Description     = "Type of element used to identify the steward.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "stewardPropertyName";
+        final String attribute2Description     = "Name of property used to identify the steward.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateValidValuesImplementation()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ValidValuesImplementation";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
