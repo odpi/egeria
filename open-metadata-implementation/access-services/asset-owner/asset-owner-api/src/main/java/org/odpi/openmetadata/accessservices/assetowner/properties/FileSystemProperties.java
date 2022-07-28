@@ -21,10 +21,6 @@ public class FileSystemProperties extends SoftwareCapabilityProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              fileSystemType = null;
-    private String              version = null;
-    private String              patchLevel = null;
-    private String              source = null;
     private String              format = null;
     private String              encryption = null;
 
@@ -49,101 +45,9 @@ public class FileSystemProperties extends SoftwareCapabilityProperties
 
         if (template != null)
         {
-            fileSystemType = template.getFileSystemType();
-            version = template.getVersion();
-            patchLevel = template.getPatchLevel();
-            source = template.getSource();
             format = template.getFormat();
             encryption = template.getEncryption();
         }
-    }
-
-
-    /**
-     * Return the type of the file system.
-     *
-     * @return string name
-     */
-    public String getFileSystemType()
-    {
-        return fileSystemType;
-    }
-
-
-    /**
-     * Set up the type of the file system.
-     *
-     * @param type string name
-     */
-    public void setFileSystemType(String type)
-    {
-        this.fileSystemType = type;
-    }
-
-
-    /**
-     * Return the version number of the file system.
-     *
-     * @return string version identifier
-     */
-    public String getVersion()
-    {
-        return version;
-    }
-
-
-    /**
-     * Set up the version number of the file system.
-     *
-     * @param version string version identifier
-     */
-    public void setVersion(String version)
-    {
-        this.version = version;
-    }
-
-
-    /**
-     * Return the patch level of the file system.
-     *
-     * @return string version identifier
-     */
-    public String getPatchLevel()
-    {
-        return patchLevel;
-    }
-
-
-    /**
-     * Set up the patch level of the file system.
-     *
-     * @param patchLevel string version identifier
-     */
-    public void setPatchLevel(String patchLevel)
-    {
-        this.patchLevel = patchLevel;
-    }
-
-
-    /**
-     * Return the source of the file system.
-     *
-     * @return string name
-     */
-    public String getSource()
-    {
-        return source;
-    }
-
-
-    /**
-     * Set up the source of the file system.
-     *
-     * @param source string name
-     */
-    public void setSource(String source)
-    {
-        this.source = source;
     }
 
 
@@ -200,20 +104,19 @@ public class FileSystemProperties extends SoftwareCapabilityProperties
     public String toString()
     {
         return "FileSystemProperties{" +
-                "fileSystemType='" + fileSystemType + '\'' +
-                ", version='" + version + '\'' +
-                ", patchLevel='" + patchLevel + '\'' +
-                ", source='" + source + '\'' +
-                ", format='" + format + '\'' +
-                ", encryption='" + encryption + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "format='" + format + '\'' +
+                       ", encryption='" + encryption + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", version='" + getVersion() + '\'' +
+                       ", patchLevel='" + getPatchLevel() + '\'' +
+                       ", source='" + getSource() + '\'' +
+                       '}';
     }
 
 
@@ -234,19 +137,13 @@ public class FileSystemProperties extends SoftwareCapabilityProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         FileSystemProperties that = (FileSystemProperties) objectToCompare;
-        return Objects.equals(getFileSystemType(), that.getFileSystemType()) &&
-                       Objects.equals(getVersion(), that.getVersion()) &&
-                       Objects.equals(getPatchLevel(), that.getPatchLevel()) &&
-                       Objects.equals(getSource(), that.getSource()) &&
-                       Objects.equals(getFormat(), that.getFormat()) &&
-                       Objects.equals(getEncryption(), that.getEncryption());
+        return Objects.equals(format, that.format) && Objects.equals(encryption, that.encryption);
     }
-
 
 
     /**
@@ -257,8 +154,6 @@ public class FileSystemProperties extends SoftwareCapabilityProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getFileSystemType(), getVersion(), getPatchLevel(), getSource(),
-                            getFormat(),
-                            getEncryption());
+        return Objects.hash(super.hashCode(), getFormat(), getEncryption());
     }
 }

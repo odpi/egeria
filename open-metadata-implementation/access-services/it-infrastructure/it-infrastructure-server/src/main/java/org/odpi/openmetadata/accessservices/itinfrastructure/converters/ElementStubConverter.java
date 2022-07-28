@@ -162,6 +162,7 @@ public class ElementStubConverter<B> extends ITInfrastructureOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unchecked")
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -209,7 +210,7 @@ public class ElementStubConverter<B> extends ITInfrastructureOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,

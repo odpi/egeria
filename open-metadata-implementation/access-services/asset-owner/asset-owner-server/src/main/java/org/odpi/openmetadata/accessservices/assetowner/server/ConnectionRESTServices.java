@@ -27,7 +27,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -1093,24 +1092,6 @@ public class ConnectionRESTServices
                                                              new Date(),
                                                              methodName);
 
-                final String endpointGUIDParameterName = "endpointGUID";
-
-                handler.maintainSupplementaryProperties(userId,
-                                                        endpointGUID,
-                                                        endpointGUIDParameterName,
-                                                        OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
-                                                        endpointProperties.getQualifiedName(),
-                                                        endpointProperties.getDisplayName(),
-                                                        endpointProperties.getSummary(),
-                                                        endpointProperties.getDescription(),
-                                                        endpointProperties.getAbbreviation(),
-                                                        endpointProperties.getUsage(),
-                                                        false,
-                                                        false,
-                                                        false,
-                                                        new Date(),
-                                                        methodName);
-
                 response.setGUID(endpointGUID);
             }
             else
@@ -1244,22 +1225,6 @@ public class ConnectionRESTServices
                                        false,
                                        new Date(),
                                        methodName);
-
-                handler.maintainSupplementaryProperties(userId,
-                                                        endpointGUID,
-                                                        guidParameter,
-                                                        OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
-                                                        endpointProperties.getQualifiedName(),
-                                                        endpointProperties.getDisplayName(),
-                                                        endpointProperties.getSummary(),
-                                                        endpointProperties.getDescription(),
-                                                        endpointProperties.getAbbreviation(),
-                                                        endpointProperties.getUsage(),
-                                                        isMergeUpdate,
-                                                        false,
-                                                        false,
-                                                        new Date(),
-                                                        methodName);
             }
             else
             {

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.fvt;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.clientconstructors.ClientConstructorTest;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.connections.CreateConnectionTest;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.validvalues.CreateValidValuesSetTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
@@ -84,6 +85,13 @@ public class DigitalArchitectureOMASFVTSuite extends FVTSuiteBase
         results.printResults(serverName);
 
         results = CreateValidValuesSetTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
+
+        results = CreateConnectionTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;

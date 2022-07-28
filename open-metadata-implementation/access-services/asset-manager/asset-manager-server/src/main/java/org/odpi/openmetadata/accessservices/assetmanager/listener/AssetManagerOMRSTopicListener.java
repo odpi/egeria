@@ -954,6 +954,7 @@ public class AssetManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param relationship                   relationship details
      */
     @SuppressWarnings(value = "unused")
+    @Override
     public void processRefreshRelationshipEvent(String       sourceName,
                                                 String       originatorMetadataCollectionId,
                                                 String       originatorServerName,

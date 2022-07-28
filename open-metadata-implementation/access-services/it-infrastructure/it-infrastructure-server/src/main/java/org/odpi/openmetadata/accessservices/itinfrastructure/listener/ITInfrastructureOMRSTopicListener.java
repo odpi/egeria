@@ -31,10 +31,10 @@ public class ITInfrastructureOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(ITInfrastructureOMRSTopicListener.class);
 
-    private ITInfrastructureOutTopicPublisher eventPublisher;
-    private AssetHandler<AssetElement>        assetHandler;
-    private String                            localServerUserId;
-    private List<String>                      supportedZones;
+    private final ITInfrastructureOutTopicPublisher eventPublisher;
+    private final AssetHandler<AssetElement>        assetHandler;
+    private final String                            localServerUserId;
+    private final List<String>                      supportedZones;
 
     /**
      * Initialize the topic listener.
