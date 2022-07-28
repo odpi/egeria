@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -365,6 +365,16 @@ extends java.lang.Object</pre>
 <tr class="rowColor">
 <td class="colFirst"><code>static int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#TERM_RELATIONSHIP_STATUS_OTHER">TERM_RELATIONSHIP_STATUS_OTHER</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#VALID_VALUE_DEFINITION_TYPE_NAME">VALID_VALUE_DEFINITION_TYPE_NAME</a></span></code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#VALID_VALUE_SET_TYPE_NAME">VALID_VALUE_SET_TYPE_NAME</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
@@ -854,11 +864,22 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i33" class="rowColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addReferenceValueAssignmentRelationship(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)">addReferenceValueAssignmentRelationship</a></span>&#8203;(java.lang.String&nbsp;referenceableQName,
+                                       java.lang.String&nbsp;validValueQName,
+                                       int&nbsp;confidence,
+                                       java.lang.String&nbsp;steward,
+                                       java.lang.String&nbsp;notes)</code></th>
+<td class="colLast">
+<div class="block">Link a referenceable element to a valid value that is acting as a tag.</div>
+</td>
+</tr>
+<tr id="i34" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addRelatedTermRelationship(java.lang.String,java.lang.String)">addRelatedTermRelationship</a></span>&#8203;(java.lang.String&nbsp;conceptQName,
                           java.lang.String&nbsp;propertyQName)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Map)">addSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;typeName,
                   java.lang.String&nbsp;schemaTypeName,
@@ -873,7 +894,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a schema attribute with a TypeEmbeddedAttribute classification.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSchemaTypeOption(java.lang.String,java.lang.String)">addSchemaTypeOption</a></span>&#8203;(java.lang.String&nbsp;schemaTypeChoiceGUID,
                    java.lang.String&nbsp;schemaTypeOptionGUID)</code></th>
@@ -881,7 +902,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a SchemaTypeChoice element and a child element using the SchemaTypeOption relationship.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSoftwareCapability(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">addSoftwareCapability</a></span>&#8203;(java.lang.String&nbsp;typeName,
                      java.lang.String&nbsp;qualifiedName,
@@ -897,7 +918,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a software capability entity.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSubjectAreaClassification(java.lang.String,java.lang.String)">addSubjectAreaClassification</a></span>&#8203;(java.lang.String&nbsp;referenceableGUID,
                             java.lang.String&nbsp;subjectAreaQualifiedName)</code></th>
@@ -905,7 +926,7 @@ extends java.lang.Object</pre>
 <div class="block">Add the subject area classification to the requested element.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSubjectAreaDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Map,java.util.Map)">addSubjectAreaDefinition</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                         java.lang.String&nbsp;displayName,
@@ -919,7 +940,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a subject area entity.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSubjectAreaHierarchy(java.lang.String,java.lang.String)">addSubjectAreaHierarchy</a></span>&#8203;(java.lang.String&nbsp;broaderSubjectAreaGUID,
                        java.lang.String&nbsp;nestedSubjectAreaGUID)</code></th>
@@ -927,7 +948,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a design mode group and one of its members.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTerm(java.lang.String,java.util.List,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.lang.String,java.lang.String,java.util.Map)">addTerm</a></span>&#8203;(java.lang.String&nbsp;glossaryGUID,
        java.util.List&lt;java.lang.String&gt;&nbsp;categoryIds,
@@ -949,7 +970,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a term and link it to the glossary and an arbitrary number of categories.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTerm(java.lang.String,java.util.List,java.lang.String,java.lang.String,java.lang.String)">addTerm</a></span>&#8203;(java.lang.String&nbsp;glossaryGUID,
        java.util.List&lt;java.lang.String&gt;&nbsp;categoryGUIDs,
@@ -960,7 +981,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a term and link it to the glossary and an arbitrary number of categories.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTermToCategory(java.lang.String,java.lang.String)">addTermToCategory</a></span>&#8203;(java.lang.String&nbsp;categoryGUID,
                  java.lang.String&nbsp;termGUID)</code></th>
@@ -968,7 +989,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two categories together as part of the parent child hierarchy.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTermToCategory(java.lang.String,java.lang.String,int,java.lang.String)">addTermToCategory</a></span>&#8203;(java.lang.String&nbsp;categoryGUID,
                  java.lang.String&nbsp;termGUID,
@@ -978,7 +999,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two categories together as part of the parent child hierarchy.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTermToContext(java.lang.String,java.lang.String,int,java.lang.String)">addTermToContext</a></span>&#8203;(java.lang.String&nbsp;contextGUID,
                 java.lang.String&nbsp;termGUID,
@@ -988,7 +1009,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a term to a context referenceable to show that the term is valid in the context of the other.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTermToSynonym(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addTermToSynonym</a></span>&#8203;(java.lang.String&nbsp;synonymGUID,
                 java.lang.String&nbsp;termGUID,
@@ -1001,7 +1022,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two terms together to show that one is valid in the context of the other.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTopLevelSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addTopLevelSchemaType</a></span>&#8203;(java.lang.String&nbsp;assetGUID,
                      java.lang.String&nbsp;typeName,
@@ -1013,14 +1034,65 @@ extends java.lang.Object</pre>
 <div class="block">Create the top level schema type for an asset.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i48" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Map)">addValidValue</a></span>&#8203;(java.lang.String&nbsp;typeName,
+             java.lang.String&nbsp;qualifiedName,
+             java.lang.String&nbsp;displayName,
+             java.lang.String&nbsp;description,
+             java.lang.String&nbsp;usage,
+             java.lang.String&nbsp;scope,
+             java.lang.String&nbsp;preferredValue,
+             boolean&nbsp;isDeprecated,
+             java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties)</code></th>
+<td class="colLast">
+<div class="block">Add a valid value definition/set.</div>
+</td>
+</tr>
+<tr id="i49" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValueMembershipRelationship(java.lang.String,java.lang.String)">addValidValueMembershipRelationship</a></span>&#8203;(java.lang.String&nbsp;setQName,
+                                   java.lang.String&nbsp;memberQName)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i50" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValuesAssignmentRelationship(java.lang.String,java.lang.String,boolean)">addValidValuesAssignmentRelationship</a></span>&#8203;(java.lang.String&nbsp;setQName,
+                                    java.lang.String&nbsp;memberQName,
+                                    boolean&nbsp;strictRequirement)</code></th>
+<td class="colLast">&nbsp;</td>
+</tr>
+<tr id="i51" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValuesImplementationRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addValidValuesImplementationRelationship</a></span>&#8203;(java.lang.String&nbsp;validValueQName,
+                                        java.lang.String&nbsp;assetQName,
+                                        java.lang.String&nbsp;symbolicName,
+                                        java.lang.String&nbsp;implementationValue,
+                                        java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalValues)</code></th>
+<td class="colLast">
+<div class="block">Link a valid value definition to the asset where it is implemented.</div>
+</td>
+</tr>
+<tr id="i52" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValuesMappingRelationship(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)">addValidValuesMappingRelationship</a></span>&#8203;(java.lang.String&nbsp;matchingValue1QName,
+                                 java.lang.String&nbsp;matchingValue2QName,
+                                 java.lang.String&nbsp;associationDescription,
+                                 int&nbsp;confidence,
+                                 java.lang.String&nbsp;steward,
+                                 java.lang.String&nbsp;notes)</code></th>
+<td class="colLast">
+<div class="block">Add a mapping between two valid values.</div>
+</td>
+</tr>
+<tr id="i53" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGUID(java.lang.String)">getGUID</a></span>&#8203;(java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
 <div class="block">Return the guid of an element based on its qualified name.</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
+<tr id="i54" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkTermToReferenceable(java.lang.String,java.lang.String)">linkTermToReferenceable</a></span>&#8203;(java.lang.String&nbsp;termId,
                        java.lang.String&nbsp;referenceableId)</code></th>
@@ -1028,14 +1100,14 @@ extends java.lang.Object</pre>
 <div class="block">Create a semantic assignment between a term and a Referenceable - for example a model element.</div>
 </td>
 </tr>
-<tr id="i49" class="rowColor">
+<tr id="i55" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#queryGUID(java.lang.String)">queryGUID</a></span>&#8203;(java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
 <div class="block">Return the guid of an element based on its qualified name.</div>
 </td>
 </tr>
-<tr id="i50" class="altColor">
+<tr id="i56" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveGUIDs()">saveGUIDs</a></span>()</code></th>
 <td class="colLast">
@@ -1453,6 +1525,32 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../../../constant-values.html#org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper.API_RESPONSE_TYPE_NAME">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a id="VALID_VALUE_DEFINITION_TYPE_NAME">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>VALID_VALUE_DEFINITION_TYPE_NAME</h4>
+<pre>public static final&nbsp;java.lang.String VALID_VALUE_DEFINITION_TYPE_NAME</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../../../constant-values.html#org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper.VALID_VALUE_DEFINITION_TYPE_NAME">Constant Field Values</a></dd>
+</dl>
+</li>
+</ul>
+<a id="VALID_VALUE_SET_TYPE_NAME">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>VALID_VALUE_SET_TYPE_NAME</h4>
+<pre>public static final&nbsp;java.lang.String VALID_VALUE_SET_TYPE_NAME</pre>
+<dl>
+<dt><span class="seeLabel">See Also:</span></dt>
+<dd><a href="../../../../../constant-values.html#org.odpi.openmetadata.samples.archiveutilities.SimpleCatalogArchiveHelper.VALID_VALUE_SET_TYPE_NAME">Constant Field Values</a></dd>
 </dl>
 </li>
 </ul>
@@ -2935,11 +3033,132 @@ extends java.lang.Object</pre>
 <a id="addRelatedTermRelationship(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>addRelatedTermRelationship</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;addRelatedTermRelationship&#8203;(java.lang.String&nbsp;conceptQName,
                                        java.lang.String&nbsp;propertyQName)</pre>
+</li>
+</ul>
+<a id="addValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Map)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addValidValue</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;addValidValue&#8203;(java.lang.String&nbsp;typeName,
+                                      java.lang.String&nbsp;qualifiedName,
+                                      java.lang.String&nbsp;displayName,
+                                      java.lang.String&nbsp;description,
+                                      java.lang.String&nbsp;usage,
+                                      java.lang.String&nbsp;scope,
+                                      java.lang.String&nbsp;preferredValue,
+                                      boolean&nbsp;isDeprecated,
+                                      java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties)</pre>
+<div class="block">Add a valid value definition/set.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>typeName</code> - unique name of the valid value - ie a definition or a set</dd>
+<dd><code>qualifiedName</code> - unique name of the valid value</dd>
+<dd><code>displayName</code> - display name of the valid value</dd>
+<dd><code>scope</code> - short description of the valid value</dd>
+<dd><code>description</code> - description of the valid value</dd>
+<dd><code>preferredValue</code> - preferredValue of the valid value</dd>
+<dd><code>usage</code> - how is the valid value used</dd>
+<dd><code>isDeprecated</code> - is value active</dd>
+<dd><code>additionalProperties</code> - any other properties.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the valid value</dd>
+</dl>
+</li>
+</ul>
+<a id="addValidValueMembershipRelationship(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addValidValueMembershipRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addValidValueMembershipRelationship&#8203;(java.lang.String&nbsp;setQName,
+                                                java.lang.String&nbsp;memberQName)</pre>
+</li>
+</ul>
+<a id="addValidValuesAssignmentRelationship(java.lang.String,java.lang.String,boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addValidValuesAssignmentRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addValidValuesAssignmentRelationship&#8203;(java.lang.String&nbsp;setQName,
+                                                 java.lang.String&nbsp;memberQName,
+                                                 boolean&nbsp;strictRequirement)</pre>
+</li>
+</ul>
+<a id="addValidValuesMappingRelationship(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addValidValuesMappingRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addValidValuesMappingRelationship&#8203;(java.lang.String&nbsp;matchingValue1QName,
+                                              java.lang.String&nbsp;matchingValue2QName,
+                                              java.lang.String&nbsp;associationDescription,
+                                              int&nbsp;confidence,
+                                              java.lang.String&nbsp;steward,
+                                              java.lang.String&nbsp;notes)</pre>
+<div class="block">Add a mapping between two valid values.  Typically they are in different valid value sets.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>matchingValue1QName</code> - qualified name of one of the valid values.</dd>
+<dd><code>matchingValue2QName</code> - qualified name of the other valid value.</dd>
+<dd><code>associationDescription</code> - a description of the meaning of the association</dd>
+<dd><code>confidence</code> - how likely is the relationship correct - 0=unlikely; 100=certainty</dd>
+<dd><code>steward</code> - who was the steward that made the link</dd>
+<dd><code>notes</code> - any notes on the relationship.</dd>
+</dl>
+</li>
+</ul>
+<a id="addReferenceValueAssignmentRelationship(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addReferenceValueAssignmentRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addReferenceValueAssignmentRelationship&#8203;(java.lang.String&nbsp;referenceableQName,
+                                                    java.lang.String&nbsp;validValueQName,
+                                                    int&nbsp;confidence,
+                                                    java.lang.String&nbsp;steward,
+                                                    java.lang.String&nbsp;notes)</pre>
+<div class="block">Link a referenceable element to a valid value that is acting as a tag.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>referenceableQName</code> - qualified name of referenceable</dd>
+<dd><code>validValueQName</code> - qualified name of valid value</dd>
+<dd><code>confidence</code> - how likely is the relationship correct - 0=unlikely; 100=certainty</dd>
+<dd><code>steward</code> - who was the steward that made the link</dd>
+<dd><code>notes</code> - any notes on the relationship.</dd>
+</dl>
+</li>
+</ul>
+<a id="addValidValuesImplementationRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>addValidValuesImplementationRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addValidValuesImplementationRelationship&#8203;(java.lang.String&nbsp;validValueQName,
+                                                     java.lang.String&nbsp;assetQName,
+                                                     java.lang.String&nbsp;symbolicName,
+                                                     java.lang.String&nbsp;implementationValue,
+                                                     java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalValues)</pre>
+<div class="block">Link a valid value definition to the asset where it is implemented.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueQName</code> - qualified name of the valid value</dd>
+<dd><code>assetQName</code> - qualified name of the asset</dd>
+<dd><code>symbolicName</code> - property name used in the asset to represent the valid value</dd>
+<dd><code>implementationValue</code> - value used in the asset to represent the valid value</dd>
+<dd><code>additionalValues</code> - additional mapping values</dd>
+</dl>
 </li>
 </ul>
 </li>
