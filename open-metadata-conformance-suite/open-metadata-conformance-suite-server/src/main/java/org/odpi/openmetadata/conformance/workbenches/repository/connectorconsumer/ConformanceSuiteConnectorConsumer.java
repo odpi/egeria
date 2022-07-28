@@ -182,7 +182,7 @@ public class ConformanceSuiteConnectorConsumer implements OMRSConnectorConsumer
                 {
                     connector.disconnect();
                 }
-                catch (Throwable  error)
+                catch (Exception  error)
                 {
                     /* don't care */
                 }

@@ -104,7 +104,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
                                                                 localServerUserId,
                                                                 localServerPassword);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             throw new RepositoryErrorException(OMRSErrorCode.NO_REST_CLIENT.getMessageDefinition(repositoryName,
                                                                                                  this.errorMessage),

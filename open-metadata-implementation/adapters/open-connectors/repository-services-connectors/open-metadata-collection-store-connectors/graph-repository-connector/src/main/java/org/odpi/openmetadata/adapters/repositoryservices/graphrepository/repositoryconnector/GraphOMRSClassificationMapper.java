@@ -109,7 +109,7 @@ public class GraphOMRSClassificationMapper {
                 jsonString = objectMapper.writeValueAsString(classificationProperties);
                 log.debug("{} classification has serialized properties {}", methodName, jsonString);
                 vertex.property("classificationProperties", jsonString);
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 log.error("{} Caught exception from classification mapper", methodName);
                 throw new RepositoryErrorException(GraphOMRSErrorCode.CLASSIFICATION_PROPERTIES_ERROR.getMessageDefinition(classification.getName(), methodName,
                                                                                                                            this.getClass().getName(),
@@ -305,7 +305,7 @@ public class GraphOMRSClassificationMapper {
                 jsonString = objectMapper.writeValueAsString(maintainedByList);
                 vertex.property(PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY, jsonString);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 throw new RepositoryErrorException(GraphOMRSErrorCode.CLASSIFICATION_PROPERTIES_ERROR.getMessageDefinition(methodName,
                                                                                                                            this.getClass().getName(),
                                                                                                                            repositoryName),
@@ -336,7 +336,7 @@ public class GraphOMRSClassificationMapper {
                 jsonString = objectMapper.writeValueAsString(mappingProperties);
                 vertex.property(PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES, jsonString);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 throw new RepositoryErrorException(GraphOMRSErrorCode.CLASSIFICATION_PROPERTIES_ERROR.getMessageDefinition(methodName,
                                                                                                                            this.getClass().getName(),
                                                                                                                            repositoryName),
@@ -374,7 +374,7 @@ public class GraphOMRSClassificationMapper {
                 InstanceProperties instanceProperties = objectMapper.readValue(stringProps, InstanceProperties.class);
                 log.debug("{} classification has deserialized properties {}", methodName, instanceProperties);
                 classification.setProperties(instanceProperties);
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 log.error("{} caught exception {}", methodName, exc.getMessage());
                 throw new RepositoryErrorException(GraphOMRSErrorCode.CLASSIFICATION_PROPERTIES_ERROR.getMessageDefinition(classification.getName(), methodName,
                                                                                                                            this.getClass().getName(),
@@ -451,7 +451,7 @@ public class GraphOMRSClassificationMapper {
                 log.debug("{} vertex has deserialized maintainedBy list {}", methodName, maintainedByList);
                 classification.setMaintainedBy(maintainedByList);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 throw new RepositoryErrorException(GraphOMRSErrorCode.CLASSIFICATION_PROPERTIES_ERROR.getMessageDefinition(classification.getName(), methodName,
                                                                                                                            this.getClass().getName(),
                                                                                                                            repositoryName),
@@ -473,7 +473,7 @@ public class GraphOMRSClassificationMapper {
                 log.debug("{} vertex has deserialized mappingProperties {}", methodName, mappingPropertiesMap);
                 classification.setMappingProperties(mappingPropertiesMap);
 
-            } catch (Throwable exc) {
+            } catch (Exception exc) {
                 throw new RepositoryErrorException(GraphOMRSErrorCode.CLASSIFICATION_PROPERTIES_ERROR.getMessageDefinition(classification.getName(), methodName,
                                                                                                                            this.getClass().getName(),
                                                                                                                            repositoryName),
