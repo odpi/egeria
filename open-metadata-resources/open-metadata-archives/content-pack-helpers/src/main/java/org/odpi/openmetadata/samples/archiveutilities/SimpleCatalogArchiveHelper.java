@@ -156,6 +156,17 @@ public class SimpleCatalogArchiveHelper
     private static final String API_PARAMETER_TYPE_NAME                  = "APIParameter";
     private static final String API_PARAMETER_LIST_TYPE_NAME             = "APIParameterList";
 
+    public static final String VALID_VALUE_DEFINITION_TYPE_NAME         = "ValidValueDefinition";
+    public static final String VALID_VALUE_SET_TYPE_NAME                = "ValidValueSet";
+
+    private static final String VALID_VALUE_MEMBER_TYPE_NAME             = "ValidValueMember";
+    private static final String VALID_VALUES_ASSIGNMENT_TYPE_NAME        = "ValidValuesAssignment";
+    private static final String VALID_VALUES_MAPPING_TYPE_NAME            = "ValidValuesMapping";
+    private static final String VALID_VALUES_IMPLEMENTATION_TYPE_NAME    = "ValidValuesImplementation";
+    private static final String REFERENCE_VALUE_ASSIGNMENT_TYPE_NAME     = "ReferenceValueAssignment";
+
+    private static final String REFERENCE_DATA_CLASSIFICATION_NAME       = "ReferenceData";
+
     /*
      * Properties
      */
@@ -286,6 +297,14 @@ public class SimpleCatalogArchiveHelper
     private static final String STATUS_IDENTIFIER_PROPERTY                   = "statusIdentifier";
     private static final String CONFIDENCE_PROPERTY                          = "confidence";
     private static final String ATTRIBUTE_PROPERTY                           = "attribute";
+
+    private static final String STRICT_REQUIREMENT_PROPERTY                  = "strictRequirement";
+    private static final String PREFERRED_VALUE_PROPERTY                     = "preferredValue";
+    private static final String SYMBOLIC_NAME_PROPERTY                       = "symbolicName";
+    private static final String IMPLEMENTATION_VALUE_PROPERTY                = "implementationValue";
+    private static final String ADDITIONAL_VALUES_PROPERTY                   = "additionalValues";
+    private static final String ASSOCIATION_DESCRIPTION_PROPERTY             = "associationDescription";
+
 
     protected OpenMetadataArchiveBuilder archiveBuilder;
     protected OMRSArchiveHelper          archiveHelper;
@@ -2617,6 +2636,206 @@ public class SimpleCatalogArchiveHelper
         archiveBuilder.addRelationship(archiveHelper.getRelationship(RELATED_TERM_RELATIONSHIP_NAME,
                                                                      idToGUIDMap.getGUID(conceptId + "_to_" + propertyId + "_related_term_relationship"),
                                                                      null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a valid value definition/set.
+     *
+     * @param typeName unique name of the valid value - ie a definition or a set
+     * @param qualifiedName unique name of the valid value
+     * @param displayName display name of the valid value
+     * @param scope short description of the valid value
+     * @param description description of the valid value
+     * @param preferredValue preferredValue of the valid value
+     * @param usage how is the valid value used
+     * @param isDeprecated is value active
+     * @param additionalProperties any other properties.
+     *
+     * @return unique identifier of the valid value
+     */
+    public String addValidValue(String              typeName,
+                                String              qualifiedName,
+                                String              displayName,
+                                String              description,
+                                String              usage,
+                                String              scope,
+                                String              preferredValue,
+                                boolean             isDeprecated,
+                                Map<String, String> additionalProperties)
+    {
+        final String methodName = "addValidValue";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, USAGE_PROPERTY, usage, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SCOPE_PROPERTY, scope, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PREFERRED_VALUE_PROPERTY, preferredValue, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, IS_DEPRECATED_PROPERTY, isDeprecated, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+
+        EntityDetail  termEntity = archiveHelper.getEntityDetail(typeName,
+                                                                 idToGUIDMap.getGUID(qualifiedName),
+                                                                 properties,
+                                                                 InstanceStatus.ACTIVE,
+                                                                 null);
+
+        archiveBuilder.addEntity(termEntity);
+
+        return termEntity.getGUID();
+    }
+
+
+    public void addValidValueMembershipRelationship(String setQName, String memberQName)
+    {
+        String setId = idToGUIDMap.getGUID(setQName);
+        String memberId = idToGUIDMap.getGUID(memberQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(setId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(memberId));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(VALID_VALUE_MEMBER_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(setId + "_to_" + memberId + "_valid_value_member_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    public void addValidValuesAssignmentRelationship(String  setQName,
+                                                     String  memberQName,
+                                                     boolean strictRequirement)
+    {
+        final String methodName = "addValidValuesAssignmentRelationship";
+
+        String setId = idToGUIDMap.getGUID(setQName);
+        String memberId = idToGUIDMap.getGUID(memberQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(setId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(memberId));
+
+        InstanceProperties properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, null, STRICT_REQUIREMENT_PROPERTY, strictRequirement, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(VALID_VALUES_ASSIGNMENT_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(setId + "_to_" + memberId + "_valid_values_assignment_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a mapping between two valid values.  Typically they are in different valid value sets.
+     *
+     * @param matchingValue1QName qualified name of one of the valid values.
+     * @param matchingValue2QName qualified name of the other valid value.
+     * @param associationDescription a description of the meaning of the association
+     * @param confidence how likely is the relationship correct - 0=unlikely; 100=certainty
+     * @param steward who was the steward that made the link
+     * @param notes any notes on the relationship.
+     */
+    public void addValidValuesMappingRelationship(String matchingValue1QName,
+                                                  String matchingValue2QName,
+                                                  String associationDescription,
+                                                  int    confidence,
+                                                  String steward,
+                                                  String notes)
+    {
+        final String methodName = "addValidValuesMappingRelationship";
+
+        String matchingValue1Id = idToGUIDMap.getGUID(matchingValue1QName);
+        String matchingValueId = idToGUIDMap.getGUID(matchingValue2QName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(matchingValue1Id));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(matchingValueId));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, SYMBOLIC_NAME_PROPERTY, associationDescription, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, CONFIDENCE_PROPERTY, confidence, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_PROPERTY, steward, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NOTES_PROPERTY, notes, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(VALID_VALUES_MAPPING_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(matchingValue1Id + "_to_" + matchingValueId + "_valid_values_mapping_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a referenceable element to a valid value that is acting as a tag.
+     *
+     * @param referenceableQName qualified name of referenceable
+     * @param validValueQName qualified name of valid value
+     * @param confidence how likely is the relationship correct - 0=unlikely; 100=certainty
+     * @param steward who was the steward that made the link
+     * @param notes any notes on the relationship.
+     */
+    public void addReferenceValueAssignmentRelationship(String referenceableQName,
+                                                        String validValueQName,
+                                                        int    confidence,
+                                                        String steward,
+                                                        String notes)
+    {
+        final String methodName = "addReferenceValueAssignmentRelationship";
+
+        String referenceableId = idToGUIDMap.getGUID(referenceableQName);
+        String validValueId = idToGUIDMap.getGUID(validValueQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(referenceableId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(validValueId));
+
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, CONFIDENCE_PROPERTY, confidence, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_PROPERTY, steward, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NOTES_PROPERTY, notes, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(REFERENCE_VALUE_ASSIGNMENT_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(referenceableId + "_to_" + validValueId + "_reference_value_assignment_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a valid value definition to the asset where it is implemented.
+     *
+     * @param validValueQName qualified name of the valid value
+     * @param assetQName qualified name of the asset
+     * @param symbolicName property name used in the asset to represent the valid value
+     * @param implementationValue value used in the asset to represent the valid value
+     * @param additionalValues additional mapping values
+     */
+    public void addValidValuesImplementationRelationship(String              validValueQName,
+                                                         String              assetQName,
+                                                         String              symbolicName,
+                                                         String              implementationValue,
+                                                         Map<String, String> additionalValues)
+    {
+        final String methodName = "addValidValuesImplementationRelationship";
+
+        String validValueId = idToGUIDMap.getGUID(validValueQName);
+        String assetId = idToGUIDMap.getGUID(assetQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(validValueId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(assetId));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, SYMBOLIC_NAME_PROPERTY, symbolicName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IMPLEMENTATION_VALUE_PROPERTY, implementationValue, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_VALUES_PROPERTY, additionalValues, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(VALID_VALUES_IMPLEMENTATION_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(validValueId + "_to_" + assetId + "_valid_values_implementation_relationship"),
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
