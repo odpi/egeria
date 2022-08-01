@@ -108,7 +108,7 @@ allprojects {
         logbackVersion = '1.2.11'
         lettuceVersion = '6.1.8.RELEASE'
         luceneVersion = '8.11.1'
-        nettyVersion = '4.1.78.Final'
+        nettyVersion = '4.1.79.Final'
         ossVersion = '4.14.1'
         mockitoVersion = '4.6.1'
         openlineageVersion = '0.10.0'
