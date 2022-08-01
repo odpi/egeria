@@ -71,7 +71,7 @@ allprojects {
         classmateVersion = '1.5.1'
         collections4Version='4.4'
         commonscodecVersion = '1.15'
-        commonsconfiguration2Version = '2.7'
+        commonsconfiguration2Version = '2.8.0'
         commonsconfigurationVersion = '1.10'
         commonsioVersion = '2.11.0'
         commonsloggingVersion = '1.2'
