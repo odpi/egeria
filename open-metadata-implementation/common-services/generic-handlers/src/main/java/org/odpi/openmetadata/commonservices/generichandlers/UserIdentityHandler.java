@@ -164,25 +164,25 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
         {
             final String userIdentityGUIDParameterName = "userIdentityGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      profileGUID,
-                                      profileGUIDParameterName,
-                                      OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                      userIdentityGUID,
-                                      userIdentityGUIDParameterName,
-                                      OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
-                                      null,
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               profileGUID,
+                                               profileGUIDParameterName,
+                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                               userIdentityGUID,
+                                               userIdentityGUIDParameterName,
+                                               OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                               null,
+                                               effectiveFrom,
+                                               effectiveTo,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return userIdentityGUID;

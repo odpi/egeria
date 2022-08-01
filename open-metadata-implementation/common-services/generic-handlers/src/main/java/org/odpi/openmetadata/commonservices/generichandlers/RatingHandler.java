@@ -239,25 +239,25 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
         {
             final String ratingGUIDParameterName = "ratingGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      elementGUID,
-                                      elementGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      ratingGUID,
-                                      ratingGUIDParameterName,
-                                      OpenMetadataAPIMapper.RATING_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
-                                      builder.getRelationshipInstanceProperties(methodName),
-                                      null,
-                                      null,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               elementGUID,
+                                               elementGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               ratingGUID,
+                                               ratingGUIDParameterName,
+                                               OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                               builder.getRelationshipInstanceProperties(methodName),
+                                               null,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return ratingGUID;

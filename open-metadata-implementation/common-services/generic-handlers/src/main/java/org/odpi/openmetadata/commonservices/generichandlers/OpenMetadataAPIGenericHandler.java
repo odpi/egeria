@@ -12675,7 +12675,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Creates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).
-     * Both elements must be visible to the user to allow the link.
+     * Both elements must be visible to the user to allow the link. No check is done for the relationship existence before creating it.
      *
      * @param userId                    userId of user making request
      * @param externalSourceGUID        guid of the software capability entity that represented the external source - null for local
@@ -12692,6 +12692,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentTypeGUID        unique identifier of type of the relationship to create
      * @param attachmentTypeName        unique name of type of the relationship to create
      * @param relationshipProperties    properties to add to the relationship or null if no properties to add
+     * @param effectiveFrom             the date when this element is active - null for active now
+     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                calling method
      *
@@ -12700,23 +12702,25 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem adding the relationship to the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String multiLinkElementToElement(String             userId,
-                                            String             externalSourceGUID,
-                                            String             externalSourceName,
-                                            String             startingElementGUID,
-                                            String             startingGUIDParameterName,
-                                            String             startingElementTypeName,
-                                            String             attachingElementGUID,
-                                            String             attachingGUIDParameterName,
-                                            String             attachingElementTypeName,
-                                            boolean            forLineage,
-                                            boolean            forDuplicateProcessing,
-                                            List<String>       suppliedSupportedZones,
-                                            String             attachmentTypeGUID,
-                                            String             attachmentTypeName,
-                                            InstanceProperties relationshipProperties,
-                                            Date               effectiveTime,
-                                            String             methodName) throws InvalidParameterException,
+    public String uncheckedLinkElementToElement(String             userId,
+                                                String             externalSourceGUID,
+                                                String             externalSourceName,
+                                                String             startingElementGUID,
+                                                String             startingGUIDParameterName,
+                                                String             startingElementTypeName,
+                                                String             attachingElementGUID,
+                                                String             attachingGUIDParameterName,
+                                                String             attachingElementTypeName,
+                                                boolean            forLineage,
+                                                boolean            forDuplicateProcessing,
+                                                List<String>       suppliedSupportedZones,
+                                                String             attachmentTypeGUID,
+                                                String             attachmentTypeName,
+                                                InstanceProperties relationshipProperties,
+                                                Date               effectiveFrom,
+                                                Date               effectiveTo,
+                                                Date               effectiveTime,
+                                                String             methodName) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
@@ -12983,6 +12987,74 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+
+    /**
+     * Creates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).
+     * Both elements must be visible to the user to allow the link.
+     *
+     * @param userId                    userId of user making request
+     * @param externalSourceGUID        guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software capability entity that represented the external source
+     * @param startingElementGUID       unique id for the starting element's entity
+     * @param startingGUIDParameterName name of the parameter supplying the startingGUID
+     * @param startingElementTypeName   type name of the starting element's entity
+     * @param attachingElementGUID      unique id of the entity for the element that is being attached
+     * @param attachingGUIDParameterName name of the parameter supplying the attachingGUID
+     * @param attachingElementTypeName  type name of the attaching element's entity
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
+     * @param attachmentTypeGUID        unique identifier of type of the relationship to create
+     * @param attachmentTypeName        unique name of type of the relationship to create
+     * @param relationshipProperties    properties to add to the relationship or null if no properties to add
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName                calling method
+     *
+     * @return unique identifier of the new relationship
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the relationship to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String multiLinkElementToElement(String             userId,
+                                            String             externalSourceGUID,
+                                            String             externalSourceName,
+                                            String             startingElementGUID,
+                                            String             startingGUIDParameterName,
+                                            String             startingElementTypeName,
+                                            String             attachingElementGUID,
+                                            String             attachingGUIDParameterName,
+                                            String             attachingElementTypeName,
+                                            boolean            forLineage,
+                                            boolean            forDuplicateProcessing,
+                                            List<String>       suppliedSupportedZones,
+                                            String             attachmentTypeGUID,
+                                            String             attachmentTypeName,
+                                            InstanceProperties relationshipProperties,
+                                            Date               effectiveTime,
+                                            String             methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        return uncheckedLinkElementToElement(userId,
+                                             externalSourceGUID,
+                                             externalSourceName,
+                                             startingElementGUID,
+                                             startingGUIDParameterName,
+                                             startingElementTypeName,
+                                             attachingElementGUID,
+                                             attachingGUIDParameterName,
+                                             attachingElementTypeName,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             suppliedSupportedZones,
+                                             attachmentTypeGUID,
+                                             attachmentTypeName,
+                                             relationshipProperties,
+                                             null,
+                                             null,
+                                             effectiveTime,
+                                             methodName);
+    }
 
     /**
      * Updates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).

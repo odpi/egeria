@@ -1238,25 +1238,25 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                                           methodName);
                 }
 
-                this.linkElementToElement(userId,
-                                          externalSourceGUID,
-                                          externalSourceName,
-                                          connectionGUID,
-                                          connectionGUIDParameterName,
-                                          connectionTypeName,
-                                          assetGUID,
-                                          assetGUIDParameterName,
-                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          supportedZones,
-                                          OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                          OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
-                                          this.setUpEffectiveDates(relationshipProperties, effectiveFrom,effectiveTo),
-                                          effectiveFrom,
-                                          effectiveTo,
-                                          effectiveTime,
-                                          methodName);
+                this.uncheckedLinkElementToElement(userId,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   connectionGUID,
+                                                   connectionGUIDParameterName,
+                                                   connectionTypeName,
+                                                   assetGUID,
+                                                   assetGUIDParameterName,
+                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   supportedZones,
+                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
+                                                   this.setUpEffectiveDates(relationshipProperties, effectiveFrom,effectiveTo),
+                                                   effectiveFrom,
+                                                   effectiveTo,
+                                                   effectiveTime,
+                                                   methodName);
             }
 
             if (connectorTypeGUID != null)

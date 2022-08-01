@@ -216,25 +216,25 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
 
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(serviceName, relationshipTypeName);
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      apiOperationGUID,
-                                      apiOperationGUIDParameterName,
-                                      OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
-                                      apiParameterListGUID,
-                                      apiParameterListGUIDParameterName,
-                                      OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      relationshipTypeDef.getGUID(),
-                                      relationshipTypeDef.getName(),
-                                      null,
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               apiOperationGUID,
+                                               apiOperationGUIDParameterName,
+                                               OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                               apiParameterListGUID,
+                                               apiParameterListGUIDParameterName,
+                                               OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               relationshipTypeDef.getGUID(),
+                                               relationshipTypeDef.getName(),
+                                               null,
+                                               effectiveFrom,
+                                               effectiveTo,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return apiParameterListGUID;
@@ -321,25 +321,25 @@ public class APIParameterListHandler<B> extends ReferenceableHandler<B>
 
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(serviceName, relationshipTypeName);
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      apiOperationGUID,
-                                      apiOperationGUIDParameterName,
-                                      OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
-                                      apiParameterListGUID,
-                                      apiParameterListGUIDParameterName,
-                                      OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      relationshipTypeDef.getGUID(),
-                                      relationshipTypeDef.getName(),
-                                      null,
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               apiOperationGUID,
+                                               apiOperationGUIDParameterName,
+                                               OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                               apiParameterListGUID,
+                                               apiParameterListGUIDParameterName,
+                                               OpenMetadataAPIMapper.API_PARAMETER_LIST_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               relationshipTypeDef.getGUID(),
+                                               relationshipTypeDef.getName(),
+                                               null,
+                                               effectiveFrom,
+                                               effectiveTo,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return apiParameterListGUID;

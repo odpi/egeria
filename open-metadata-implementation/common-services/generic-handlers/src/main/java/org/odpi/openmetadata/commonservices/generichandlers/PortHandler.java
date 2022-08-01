@@ -167,25 +167,25 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
              */
             final String portGUIDParameterName = "portGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      processGUID,
-                                      processGUIDParameterName,
-                                      OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                                      portGUID,
-                                      portGUIDParameterName,
-                                      OpenMetadataAPIMapper.PORT_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
-                                      null,
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               processGUID,
+                                               processGUIDParameterName,
+                                               OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                               portGUID,
+                                               portGUIDParameterName,
+                                               OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
+                                               OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
+                                               null,
+                                               effectiveFrom,
+                                               effectiveTo,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return portGUID;

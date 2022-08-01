@@ -379,25 +379,25 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                 final String displaySchemaTypeGUIDParameterName = "displaySchemaTypeGUID";
                 final String dataContainerGUIDParameterName = "dataContainerGUID";
 
-                dataContainerHandler.linkElementToElement(userId,
-                                                          externalSourceGUID,
-                                                          externalSourceName,
-                                                          databaseSchemaTypeGUID,
-                                                          displaySchemaTypeGUIDParameterName,
-                                                          OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
-                                                          dataContainerGUID,
-                                                          dataContainerGUIDParameterName,
-                                                          OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
-                                                          forLineage,
-                                                          forDuplicateProcessing,
-                                                          supportedZones,
-                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                          null,
-                                                          effectiveFrom,
-                                                          effectiveTo,
-                                                          effectiveTime,
-                                                          methodName);
+                dataContainerHandler.uncheckedLinkElementToElement(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   databaseSchemaTypeGUID,
+                                                                   displaySchemaTypeGUIDParameterName,
+                                                                   OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                   dataContainerGUID,
+                                                                   dataContainerGUIDParameterName,
+                                                                   OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
+                                                                   OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                   OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                   null,
+                                                                   effectiveFrom,
+                                                                   effectiveTo,
+                                                                   effectiveTime,
+                                                                   methodName);
                 return dataContainerGUID;
             }
         }

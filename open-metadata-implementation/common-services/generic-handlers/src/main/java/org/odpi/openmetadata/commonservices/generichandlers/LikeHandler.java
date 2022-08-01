@@ -224,25 +224,25 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
         {
             final String likeGUIDParameterName = "likeGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      elementGUID,
-                                      elementGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      likeGUID,
-                                      likeGUIDParameterName,
-                                      OpenMetadataAPIMapper.LIKE_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
-                                      builder.getRelationshipInstanceProperties(methodName),
-                                      null,
-                                      null,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               elementGUID,
+                                               elementGUIDParameterName,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               likeGUID,
+                                               likeGUIDParameterName,
+                                               OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
+                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                               builder.getRelationshipInstanceProperties(methodName),
+                                               null,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
     }
 

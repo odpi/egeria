@@ -255,25 +255,25 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
 
             if ((contributionRecordGUID != null) && (profileGUID != null))
             {
-                this.linkElementToElement(userId,
-                                          null,
-                                          null,
-                                          profileGUID,
-                                          profileGUIDParameterName,
-                                          OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                          contributionRecordGUID,
-                                          contributionRecordGUIDParameterName,
-                                          OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          supportedZones,
-                                          OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
-                                          OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
-                                          null,
-                                          effectiveFrom,
-                                          effectiveTo,
-                                          effectiveTime,
-                                          methodName);
+                this.uncheckedLinkElementToElement(userId,
+                                                   null,
+                                                   null,
+                                                   profileGUID,
+                                                   profileGUIDParameterName,
+                                                   OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                                   contributionRecordGUID,
+                                                   contributionRecordGUIDParameterName,
+                                                   OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   supportedZones,
+                                                   OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
+                                                   null,
+                                                   effectiveFrom,
+                                                   effectiveTo,
+                                                   effectiveTime,
+                                                   methodName);
             }
         }
         else
