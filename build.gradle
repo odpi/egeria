@@ -20,7 +20,7 @@ buildscript {
 
 plugins {
         id "io.freefair.aggregate-javadoc" version "6.5.0.2"
-        id "io.freefair.lombok" version "6.5.0.2"
+        id "io.freefair.lombok" version "6.5.0.3"
         // Checks for unnecessary dependencies
         id 'com.autonomousapps.dependency-analysis' version "1.10.0"
         // helps resolve log implementation clashes
