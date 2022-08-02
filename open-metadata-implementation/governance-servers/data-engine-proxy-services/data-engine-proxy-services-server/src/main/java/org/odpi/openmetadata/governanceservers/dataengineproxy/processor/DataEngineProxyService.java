@@ -150,12 +150,12 @@ public class DataEngineProxyService implements Runnable {
 
     }
 
-    public void load() {
-        final String methodName = "load";
+    public void initialLoad() {
+        final String methodName = "initialLoad";
         Date now = Date.from(Instant.now());
         try {
             ensureSourceNameIsSet();
-            connector.loadCache();
+
             upsertSchemaTypes(now, now);
             upsertDataStores(now, now);
             upsertProcesses(now, now);

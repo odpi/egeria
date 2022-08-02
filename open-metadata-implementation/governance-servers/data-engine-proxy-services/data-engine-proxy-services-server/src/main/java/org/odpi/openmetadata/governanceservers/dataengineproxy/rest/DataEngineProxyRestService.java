@@ -17,7 +17,7 @@ public class DataEngineProxyRestService {
     private final DataEngineProxyInstanceHandler instanceHandler = new DataEngineProxyInstanceHandler();
     AtomicBoolean isRunning = new AtomicBoolean(false);
 
-    public ProcessLoadResponse load(String serverName, String userId) {
+    public ProcessLoadResponse initialLoad(String serverName, String userId) {
         String serviceOperationName = "DataEngineProxy";
         try {
             if (isRunning.get()) {
@@ -25,7 +25,7 @@ public class DataEngineProxyRestService {
             }
             DataEngineProxyService dataEngineProxyService = instanceHandler.getDataEngineProxyService(userId, serverName, serviceOperationName);
             isRunning.set(true);
-            CompletableFuture.runAsync(dataEngineProxyService::load).thenAccept(result -> isRunning.set(false));
+            CompletableFuture.runAsync(dataEngineProxyService::initialLoad).thenAccept(result -> isRunning.set(false));
 
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException | DataEngineProxyException e) {
             ProcessLoadResponse response = new ProcessLoadResponse();
