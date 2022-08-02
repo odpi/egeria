@@ -175,8 +175,6 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
      * @param suppliedTypeName name of subtype or null
      * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
      *                      matching names, or should the entire properties of the instance be replaced?
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship (null for all time)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -196,8 +194,6 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                        String              suppliedTypeName,
                                        Map<String, Object> extendedProperties,
                                        boolean             isMergeUpdate,
-                                       Date                effectiveFrom,
-                                       Date                effectiveTo,
                                        boolean             forLineage,
                                        boolean             forDuplicateProcessing,
                                        Date                effectiveTime,
@@ -270,8 +266,6 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                    OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_GUID,
                                                    OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME,
                                                    null,
-                                                   effectiveFrom,
-                                                   effectiveTo,
                                                    effectiveTime,
                                                    methodName);
             }

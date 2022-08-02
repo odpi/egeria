@@ -200,8 +200,6 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
                                                OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
                                                null,
-                                               effectiveFrom,
-                                               effectiveTo,
                                                effectiveTime,
                                                methodName);
         }

@@ -214,8 +214,6 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
                                                OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
                                                null,
-                                               effectiveFrom,
-                                               effectiveTo,
                                                effectiveTime,
                                                methodName);
         }
@@ -328,8 +326,6 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                            OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                            null,
-                                           effectiveFrom,
-                                           effectiveTo,
                                            effectiveTime,
                                            methodName);
 

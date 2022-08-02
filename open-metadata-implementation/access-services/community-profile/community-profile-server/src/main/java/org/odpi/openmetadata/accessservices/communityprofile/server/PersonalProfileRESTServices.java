@@ -130,8 +130,6 @@ public class PersonalProfileRESTServices
                                                            null,
                                                            null,
                                                            null,
-                                                           null,
-                                                           null,
                                                            false,
                                                            false,
                                                            new Date(),

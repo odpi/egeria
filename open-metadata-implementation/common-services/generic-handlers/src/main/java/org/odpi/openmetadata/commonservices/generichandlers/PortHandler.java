@@ -87,8 +87,6 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param additionalProperties additional properties for a port
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a port subtype
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -111,8 +109,6 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                              Map<String, String> additionalProperties,
                              String              suppliedTypeName,
                              Map<String, Object> extendedProperties,
-                             Date                effectiveFrom,
-                             Date                effectiveTo,
                              boolean             forLineage,
                              boolean             forDuplicateProcessing,
                              Date                effectiveTime,
@@ -182,8 +178,6 @@ public class PortHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                OpenMetadataAPIMapper.PROCESS_PORT_TYPE_GUID,
                                                OpenMetadataAPIMapper.PROCESS_PORT_TYPE_NAME,
                                                null,
-                                               effectiveFrom,
-                                               effectiveTo,
                                                effectiveTime,
                                                methodName);
         }

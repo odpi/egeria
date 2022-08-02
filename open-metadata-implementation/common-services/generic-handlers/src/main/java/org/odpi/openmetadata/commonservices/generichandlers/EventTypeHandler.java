@@ -214,8 +214,6 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                                OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                                null,
                                                effectiveFrom,
-                                               effectiveTo,
-                                               effectiveFrom,
                                                methodName);
         }
 
@@ -329,8 +327,6 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
                                            OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
                                            null,
-                                           effectiveFrom,
-                                           effectiveTo,
                                            effectiveTime,
                                            methodName);
 

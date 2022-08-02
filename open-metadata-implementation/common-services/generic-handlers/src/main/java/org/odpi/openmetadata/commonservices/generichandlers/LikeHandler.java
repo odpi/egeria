@@ -239,8 +239,6 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
                                                OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
                                                builder.getRelationshipInstanceProperties(methodName),
-                                               null,
-                                               null,
                                                effectiveTime,
                                                methodName);
         }

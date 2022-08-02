@@ -318,8 +318,6 @@ public class ValidValuesHandler<VALID_VALUE,
                                                OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
                                                OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                null,
-                                               effectiveFrom,
-                                               effectiveTo,
                                                effectiveTime,
                                                methodName);
         }

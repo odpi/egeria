@@ -172,8 +172,6 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
                                                OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
                                                null,
-                                               effectiveFrom,
-                                               effectiveTo,
                                                effectiveTime,
                                                methodName);
         }

@@ -1382,8 +1382,6 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                                               templateProperties.getQualifiedName(),
                                                                                               templateProperties.getDisplayName(),
                                                                                               templateProperties.getDescription(),
-                                                                                              null,
-                                                                                              null,
                                                                                               forLineage,
                                                                                               forDuplicateProcessing,
                                                                                               effectiveTime,

@@ -879,8 +879,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_GUID,
                                                OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME,
                                                scopeProperties,
-                                               effectiveFrom,
-                                               effectiveTo,
                                                effectiveTime,
                                                methodName);
 

@@ -393,8 +393,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param dataFieldSortOrder any sort order
      * @param defaultValue default value of the field
      * @param additionalProperties any additional properties
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship (null for all time)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -420,8 +418,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                 int                 dataFieldSortOrder,
                                 String              defaultValue,
                                 Map<String, String> additionalProperties,
-                                Date                effectiveFrom,
-                                Date                effectiveTo,
                                 boolean             forLineage,
                                 boolean             forDuplicateProcessing,
                                 Date                effectiveTime,
@@ -505,8 +501,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                relationshipTypeGUID,
                                                relationshipTypeName,
                                                relationshipProperties,
-                                               effectiveFrom,
-                                               effectiveTo,
                                                effectiveTime,
                                                methodName);
         }
@@ -530,8 +524,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param dataFieldSortOrder any sort order
      * @param defaultValue default value of the field
      * @param additionalProperties any additional properties
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship (null for all time)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -554,8 +546,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                  int                 dataFieldSortOrder,
                                                  String              defaultValue,
                                                  Map<String, String> additionalProperties,
-                                                 Date                effectiveFrom,
-                                                 Date                effectiveTo,
                                                  boolean             forLineage,
                                                  boolean             forDuplicateProcessing,
                                                  Date                effectiveTime,
@@ -581,8 +571,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  dataFieldSortOrder,
                                  defaultValue,
                                  additionalProperties,
-                                 effectiveFrom,
-                                 effectiveTo,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,
@@ -605,8 +593,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param dataFieldSortOrder any sort order
      * @param defaultValue default value of the field
      * @param additionalProperties any additional properties
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship (null for all time)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -630,8 +616,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            int                 dataFieldSortOrder,
                                            String              defaultValue,
                                            Map<String, String> additionalProperties,
-                                           Date                effectiveFrom,
-                                           Date                effectiveTo,
                                            boolean             forLineage,
                                            boolean             forDuplicateProcessing,
                                            Date                effectiveTime,
@@ -657,8 +641,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  dataFieldSortOrder,
                                  defaultValue,
                                  additionalProperties,
-                                 effectiveFrom,
-                                 effectiveTo,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,

@@ -4370,7 +4370,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                            forDuplicateProcessing,
                                                            supportedZones,
                                                            effectiveTime,
-                                                           methodName);;
+                                                           methodName);
 
         if (glossaryTerm == null)
         {
@@ -12692,8 +12692,6 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param attachmentTypeGUID        unique identifier of type of the relationship to create
      * @param attachmentTypeName        unique name of type of the relationship to create
      * @param relationshipProperties    properties to add to the relationship or null if no properties to add
-     * @param effectiveFrom             the date when this element is active - null for active now
-     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
      * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                calling method
      *
@@ -12717,8 +12715,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                                 String             attachmentTypeGUID,
                                                 String             attachmentTypeName,
                                                 InstanceProperties relationshipProperties,
-                                                Date               effectiveFrom,
-                                                Date               effectiveTo,
                                                 Date               effectiveTime,
                                                 String             methodName) throws InvalidParameterException,
                                                                                   PropertyServerException,
@@ -13050,8 +13046,6 @@ public class OpenMetadataAPIGenericHandler<B>
                                              attachmentTypeGUID,
                                              attachmentTypeName,
                                              relationshipProperties,
-                                             null,
-                                             null,
                                              effectiveTime,
                                              methodName);
     }

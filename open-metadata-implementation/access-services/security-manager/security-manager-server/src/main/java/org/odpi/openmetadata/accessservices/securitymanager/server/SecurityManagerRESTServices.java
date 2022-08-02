@@ -690,8 +690,6 @@ public class SecurityManagerRESTServices
                                                                      requestBody.getAdditionalProperties(),
                                                                      requestBody.getTypeName(),
                                                                      requestBody.getExtendedProperties(),
-                                                                     null,
-                                                                     null,
                                                                      false,
                                                                      false,
                                                                      new Date(),

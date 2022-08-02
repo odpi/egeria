@@ -202,8 +202,6 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
                                                OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
                                                null,
-                                               effectiveFrom,
-                                               effectiveTo,
                                                effectiveTime,
                                                methodName);
         }

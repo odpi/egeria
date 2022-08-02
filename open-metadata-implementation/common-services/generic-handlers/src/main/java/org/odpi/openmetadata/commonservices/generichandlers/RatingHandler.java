@@ -254,8 +254,6 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
                                                OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
                                                builder.getRelationshipInstanceProperties(methodName),
-                                               null,
-                                               null,
                                                effectiveTime,
                                                methodName);
         }

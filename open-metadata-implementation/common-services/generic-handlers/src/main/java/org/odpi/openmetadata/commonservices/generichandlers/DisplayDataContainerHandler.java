@@ -394,8 +394,6 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                    OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                    OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                    null,
-                                                                   effectiveFrom,
-                                                                   effectiveTo,
                                                                    effectiveTime,
                                                                    methodName);
                 return dataContainerGUID;

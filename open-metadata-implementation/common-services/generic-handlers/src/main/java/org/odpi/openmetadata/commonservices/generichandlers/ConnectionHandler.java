@@ -1253,8 +1253,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                    OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                                    OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                    this.setUpEffectiveDates(relationshipProperties, effectiveFrom,effectiveTo),
-                                                   effectiveFrom,
-                                                   effectiveTo,
                                                    effectiveTime,
                                                    methodName);
             }
