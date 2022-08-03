@@ -42,15 +42,11 @@ public class HttpRequestHeadersFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        LOG.debug(
-                "Reading request headers from : {}.",
-                req.getRequestURI());
 
         Map<String, String> threadLocalHeaders = new HashMap<>();
 
         for (String headerName : headerNames) {
             String headerValue = req.getHeader(headerName);
-            LOG.debug("Got header {} with value {}.", headerName, headerValue);
             threadLocalHeaders.put(headerName, headerValue);
         }
 
