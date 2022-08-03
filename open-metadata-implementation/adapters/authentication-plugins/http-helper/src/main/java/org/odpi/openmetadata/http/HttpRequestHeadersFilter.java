@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class HttpRequestHeadersFilter implements Filter {
 
-    private Logger LOG = LoggerFactory.getLogger(HttpRequestHeadersFilter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HttpRequestHeadersFilter.class);
     private List<String> headerNames;
 
     /**
@@ -42,7 +42,7 @@ public class HttpRequestHeadersFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        LOG.info(
+        LOG.debug(
                 "Reading request headers from : {}.",
                 req.getRequestURI());
 
@@ -50,7 +50,7 @@ public class HttpRequestHeadersFilter implements Filter {
 
         for (String headerName : headerNames) {
             String headerValue = req.getHeader(headerName);
-            LOG.info("Got header {} with value {}.", headerName, headerValue);
+            LOG.debug("Got header {} with value {}.", headerName, headerValue);
             threadLocalHeaders.put(headerName, headerValue);
         }
 
