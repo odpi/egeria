@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.model.ProcessLoadResponse;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.rest.DataEngineProxyRestService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +20,10 @@ public class DataEngineProxyServicesResource {
 
     DataEngineProxyRestService dataEngineProxyRestService = new DataEngineProxyRestService();
 
-    @PostMapping("/initial-load")
-    public ProcessLoadResponse initialLoad(@PathVariable("serverName") String serverName,
+    @GetMapping("/load")
+    public ProcessLoadResponse load(@PathVariable("serverName") String serverName,
                                            @PathVariable("userId") String userId) {
-        return dataEngineProxyRestService.initialLoad(serverName, userId);
+        return dataEngineProxyRestService.load(serverName, userId);
     }
 
 /*    @PostMapping("/load-process/{processId}")

@@ -150,17 +150,18 @@ public class DataEngineProxyService implements Runnable {
 
     }
 
-    public void initialLoad() {
-        final String methodName = "initialLoad";
+    public void load() {
+        final String methodName = "load";
         Date now = Date.from(Instant.now());
         try {
-            ensureSourceNameIsSet();
 
+            ensureSourceNameIsSet();
             upsertSchemaTypes(now, now);
             upsertDataStores(now, now);
             upsertProcesses(now, now);
             upsertProcessHierarchies(now, now);
             upsertLineageMappings(now, now);
+
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException | ConnectorCheckedException e) {
             this.auditLog.logException(methodName, DataEngineProxyAuditCode.RUNTIME_EXCEPTION.getMessageDefinition(), e);
         }
