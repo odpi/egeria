@@ -2,9 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.http;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -22,8 +19,6 @@ import java.util.Map;
  * saved from the request in HttpHeadersThreadLocal
  */
 public class HttpRequestHeadersFilter implements Filter {
-
-    private static final Logger LOG = LoggerFactory.getLogger(HttpRequestHeadersFilter.class);
     private List<String> headerNames;
 
     /**
