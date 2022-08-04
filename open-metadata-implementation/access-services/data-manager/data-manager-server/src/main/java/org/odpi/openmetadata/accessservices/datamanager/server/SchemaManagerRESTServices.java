@@ -1378,8 +1378,6 @@ public class SchemaManagerRESTServices
                                                                                   requestBody.getQualifiedName(),
                                                                                   requestBody.getDisplayName(),
                                                                                   requestBody.getDescription(),
-                                                                                  null,
-                                                                                  null,
                                                                                   false,
                                                                                   false,
                                                                                   new Date(),

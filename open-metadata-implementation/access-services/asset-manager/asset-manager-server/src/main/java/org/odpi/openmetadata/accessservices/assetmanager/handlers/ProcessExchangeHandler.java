@@ -1280,8 +1280,6 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                     portProperties.getAdditionalProperties(),
                                                     typeName,
                                                     portProperties.getExtendedProperties(),
-                                                    portProperties.getEffectiveFrom(),
-                                                    portProperties.getEffectiveTo(),
                                                     forLineage,
                                                     forDuplicateProcessing,
                                                     effectiveTime,

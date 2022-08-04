@@ -116,8 +116,6 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
      * @param qualifiedName unique name for the schema attribute - used in other configuration
      * @param displayName short display name for the schema attribute
      * @param description description of the schema attribute
-     * @param effectiveFrom      starting time for this relationship (null for all time)
-     * @param effectiveTo        ending time for this relationship (null for all time)
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -138,8 +136,6 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                     String  qualifiedName,
                                                     String  displayName,
                                                     String  description,
-                                                    Date    effectiveFrom,
-                                                    Date    effectiveTo,
                                                     boolean forLineage,
                                                     boolean forDuplicateProcessing,
                                                     Date    effectiveTime,
@@ -204,25 +200,23 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 }
             }
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      parentElementGUID,
-                                      parentElementGUIDParameterName,
-                                      parentElementTypeName,
-                                      schemaAttributeGUID,
-                                      schemaAttributeGUIDParameterName,
-                                      builder.getTypeName(),
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      parentElementRelationshipTypeGUID,
-                                      parentElementRelationshipTypeName,
-                                      null,
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               parentElementGUID,
+                                               parentElementGUIDParameterName,
+                                               parentElementTypeName,
+                                               schemaAttributeGUID,
+                                               schemaAttributeGUIDParameterName,
+                                               builder.getTypeName(),
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               parentElementRelationshipTypeGUID,
+                                               parentElementRelationshipTypeName,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return schemaAttributeGUID;
@@ -660,25 +654,23 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                   effectiveTime,
                                   methodName);
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      parentElementGUID,
-                                      parentElementGUIDParameterName,
-                                      parentElementTypeName,
-                                      schemaAttributeGUID,
-                                      schemaAttributeGUIDParameterName,
-                                      schemaAttributeBuilder.getTypeName(),
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      parentAttributeRelationshipTypeGUID,
-                                      parentAttributeRelationshipTypeName,
-                                      null,
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               parentElementGUID,
+                                               parentElementGUIDParameterName,
+                                               parentElementTypeName,
+                                               schemaAttributeGUID,
+                                               schemaAttributeGUIDParameterName,
+                                               schemaAttributeBuilder.getTypeName(),
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               parentAttributeRelationshipTypeGUID,
+                                               parentAttributeRelationshipTypeName,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
 
             return schemaAttributeGUID;
         }

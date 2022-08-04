@@ -2612,24 +2612,13 @@ public class RelationalDataHandler<DATABASE,
         }
 
         /*
-         * The schema type that connects the database schema asset to the tables has been created/retrieved.
-         * Now work out the position of the new table in the database schema type.  This is used to set the element position.
-         * Since this value begins with 0 as the first element, the table count is this table's position.
-         */
-        int tableCount = databaseTableHandler.countSchemaAttributes(userId,
-                                                                    databaseSchemaTypeGUID,
-                                                                    schemaTypeGUIDParameterName,
-                                                                    effectiveTime,
-                                                                    methodName);
-
-        /*
          * Load up the builder objects for processing by the databaseTableHandler.  The builders manage the properties
          * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
          */
         SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
                                                                                    displayName,
                                                                                    description,
-                                                                                   tableCount,
+                                                                                   0,
                                                                                    1,
                                                                                    1,
                                                                                    isDeprecated,
