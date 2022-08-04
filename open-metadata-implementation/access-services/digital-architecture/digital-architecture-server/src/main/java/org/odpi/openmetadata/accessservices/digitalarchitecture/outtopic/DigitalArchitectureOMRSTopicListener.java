@@ -688,6 +688,7 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
      * @param originalHomeMetadataCollectionId unique identifier for the original home repository.
      * @param entity                           new values for this entity, including the new home information.
      */
+    @Override
     public void processReHomedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,

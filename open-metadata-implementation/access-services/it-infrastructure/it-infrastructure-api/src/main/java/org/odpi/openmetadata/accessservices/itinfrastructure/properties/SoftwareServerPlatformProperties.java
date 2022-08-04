@@ -128,6 +128,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      * @param subTypeName subtype name
      * @return asset properties
      */
+    @Override
     public AssetProperties cloneToAsset(String subTypeName)
     {
         AssetProperties assetProperties = super.cloneToAsset(subTypeName);

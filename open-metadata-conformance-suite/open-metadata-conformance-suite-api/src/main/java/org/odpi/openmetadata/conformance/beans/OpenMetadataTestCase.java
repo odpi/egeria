@@ -422,7 +422,7 @@ public abstract class OpenMetadataTestCase
         catch (AssertionFailureException   exception)
         {
         }
-        catch (Throwable   exception)
+        catch (Exception   exception)
         {
             String   assertionMessage = "Unexpected Exception " + exception.getClass().getSimpleName() + " : " + exception.getMessage();
 
@@ -462,7 +462,7 @@ public abstract class OpenMetadataTestCase
         catch (AssertionFailureException   exception)
         {
         }
-        catch (Throwable   exception)
+        catch (Exception   exception)
         {
             String   assertionMessage = "Unexpected Exception " + exception.getClass().getSimpleName() + " : " + exception.getMessage();
 
@@ -484,7 +484,7 @@ public abstract class OpenMetadataTestCase
         try {
             this.cleanup();
         }
-        catch (Throwable   exception) {
+        catch (Exception   exception) {
             /* No action taken - the cleanup should be a belt and braces clearing of instances */
         }
     }

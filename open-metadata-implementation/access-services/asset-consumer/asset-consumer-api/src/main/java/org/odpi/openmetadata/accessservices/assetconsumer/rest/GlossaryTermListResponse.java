@@ -28,7 +28,6 @@ public class GlossaryTermListResponse extends PagedResponse
     private static final long    serialVersionUID = 1L;
 
     private List<MeaningElement> meanings            = null;
-    private int                  startingFromElement = 0;
 
 
     /**
@@ -51,7 +50,6 @@ public class GlossaryTermListResponse extends PagedResponse
 
         if (template != null)
         {
-            this.startingFromElement = template.getStartingFromElement();
             this.meanings = template.getMeanings();
         }
     }
@@ -98,28 +96,6 @@ public class GlossaryTermListResponse extends PagedResponse
 
 
     /**
-     * Return the starting element number from the server side list that this response contains.
-     *
-     * @return int
-     */
-    public int getStartingFromElement()
-    {
-        return startingFromElement;
-    }
-
-
-    /**
-     * Set up the starting element number from the server side list that this response contains.
-     *
-     * @param startingFromElement int
-     */
-    public void setStartingFromElement(int startingFromElement)
-    {
-        this.startingFromElement = startingFromElement;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -129,7 +105,7 @@ public class GlossaryTermListResponse extends PagedResponse
     {
         return "GlossaryTermListResponse{" +
                 "meanings=" + meanings +
-                ", startingFromElement=" + startingFromElement +
+                ", startingFromElement=" + getStartingFromElement() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -166,8 +142,7 @@ public class GlossaryTermListResponse extends PagedResponse
             return false;
         }
         GlossaryTermListResponse that = (GlossaryTermListResponse) objectToCompare;
-        return getStartingFromElement() == that.getStartingFromElement() &&
-                Objects.equals(getMeanings(), that.getMeanings());
+        return Objects.equals(getMeanings(), that.getMeanings());
     }
 
 
@@ -179,6 +154,6 @@ public class GlossaryTermListResponse extends PagedResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMeanings(), getStartingFromElement());
+        return Objects.hash(super.hashCode(), getMeanings());
     }
 }

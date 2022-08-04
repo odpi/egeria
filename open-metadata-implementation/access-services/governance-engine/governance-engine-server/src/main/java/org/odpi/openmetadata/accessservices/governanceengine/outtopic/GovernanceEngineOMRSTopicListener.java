@@ -37,17 +37,17 @@ import java.util.Map;
  */
 public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 {
-    private GovernanceEngineOutTopicPublisher                eventPublisher;
-    private OMRSRepositoryHelper                             repositoryHelper;
-    private MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
-    private GovernanceActionHandler<GovernanceActionElement> governanceActionHandler;
+    private final GovernanceEngineOutTopicPublisher                eventPublisher;
+    private final OMRSRepositoryHelper                             repositoryHelper;
+    private final MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
+    private final GovernanceActionHandler<GovernanceActionElement> governanceActionHandler;
 
-    private String                                           userId;
+    private final String                                           userId;
 
-    private EntityDetail                                     nullEntity = null;
-    private Relationship                                     nullRelationship = null;
+    private final EntityDetail                                     nullEntity = null;
+    private final Relationship                                     nullRelationship = null;
 
-    private PropertyHelper propertyHelper = new PropertyHelper();
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
 
     /**
@@ -574,22 +574,27 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     private ElementClassification getClassification(String         sourceName,
                                                     Classification classification)
     {
-        ElementClassification beanClassification = new ElementClassification();
-
-        fillElementControlHeader(sourceName, beanClassification, classification);
-
-        beanClassification.setClassificationName(classification.getName());
-
-        if (classification.getProperties() != null)
+        if (classification != null)
         {
-            Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(classification.getProperties());
+            ElementClassification beanClassification = new ElementClassification();
 
-            beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
-            beanClassification.setEffectiveFromTime(classification.getProperties().getEffectiveFromTime());
-            beanClassification.setEffectiveToTime(classification.getProperties().getEffectiveToTime());
+            fillElementControlHeader(sourceName, beanClassification, classification);
+
+            beanClassification.setClassificationName(classification.getName());
+
+            if (classification.getProperties() != null)
+            {
+                Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(classification.getProperties());
+
+                beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                beanClassification.setEffectiveFromTime(classification.getProperties().getEffectiveFromTime());
+                beanClassification.setEffectiveToTime(classification.getProperties().getEffectiveToTime());
+            }
+
+            return beanClassification;
         }
 
-        return beanClassification;
+        return null;
     }
 
 
@@ -603,33 +608,38 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     private RelatedMetadataElements getRelatedElements(String       sourceName,
                                                        Relationship relationship)
     {
-        RelatedMetadataElements relatedMetadataElements = new RelatedMetadataElements();
-
-        fillElementControlHeader(sourceName, relatedMetadataElements, relationship);
-
-        relatedMetadataElements.setRelationshipGUID(relationship.getGUID());
-        relatedMetadataElements.setRelationshipType(this.getElementType(relationship));
-
-        if (relationship.getProperties() != null)
+        if (relationship != null)
         {
-            Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(relationship.getProperties());
+            RelatedMetadataElements relatedMetadataElements = new RelatedMetadataElements();
 
-            relatedMetadataElements.setRelationshipProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
-            relatedMetadataElements.setEffectiveFromTime(relationship.getProperties().getEffectiveFromTime());
-            relatedMetadataElements.setEffectiveToTime(relationship.getProperties().getEffectiveToTime());
+            fillElementControlHeader(sourceName, relatedMetadataElements, relationship);
+
+            relatedMetadataElements.setRelationshipGUID(relationship.getGUID());
+            relatedMetadataElements.setRelationshipType(this.getElementType(relationship));
+
+            if (relationship.getProperties() != null)
+            {
+                Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(relationship.getProperties());
+
+                relatedMetadataElements.setRelationshipProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                relatedMetadataElements.setEffectiveFromTime(relationship.getProperties().getEffectiveFromTime());
+                relatedMetadataElements.setEffectiveToTime(relationship.getProperties().getEffectiveToTime());
+            }
+
+            if (relationship.getEntityOneProxy() != null)
+            {
+                relatedMetadataElements.setElementGUIDAtEnd1(relationship.getEntityOneProxy().getGUID());
+            }
+
+            if (relationship.getEntityTwoProxy() != null)
+            {
+                relatedMetadataElements.setElementGUIDAtEnd2(relationship.getEntityTwoProxy().getGUID());
+            }
+
+            return relatedMetadataElements;
         }
 
-        if (relationship.getEntityOneProxy() != null)
-        {
-            relatedMetadataElements.setElementGUIDAtEnd1(relationship.getEntityOneProxy().getGUID());
-        }
-
-        if (relationship.getEntityTwoProxy() != null)
-        {
-            relatedMetadataElements.setElementGUIDAtEnd2(relationship.getEntityTwoProxy().getGUID());
-        }
-
-        return relatedMetadataElements;
+        return null;
     }
 
 

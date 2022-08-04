@@ -26,8 +26,7 @@ public class ExternalReferenceRequestBody extends ExternalReferenceProperties
     private static final long    serialVersionUID = 1L;
 
     private String anchorGUID      = null;
-    private String linkId          = null;
-    private String linkDescription = null;
+
 
 
     /**
@@ -51,8 +50,6 @@ public class ExternalReferenceRequestBody extends ExternalReferenceProperties
         if (template != null)
         {
             anchorGUID = template.getAnchorGUID();
-            linkId = template.getLinkId();
-            linkDescription = template.getLinkDescription();
         }
     }
 
@@ -89,51 +86,6 @@ public class ExternalReferenceRequestBody extends ExternalReferenceProperties
         this.anchorGUID = anchorGUID;
     }
 
-
-    /**
-     * Return the link id.
-     *
-     * @return string identifier
-     */
-    public String getLinkId()
-    {
-        return linkId;
-    }
-
-
-    /**
-     * Set up the link id.
-     *
-     * @param linkId string identifier
-     */
-    public void setLinkId(String linkId)
-    {
-        this.linkId = linkId;
-    }
-
-
-    /**
-     * Return the link description.
-     *
-     * @return string description
-     */
-    public String getLinkDescription()
-    {
-        return linkDescription;
-    }
-
-
-    /**
-     * Set up the link description.
-     *
-     * @param linkDescription string description
-     */
-    public void setLinkDescription(String linkDescription)
-    {
-        this.linkDescription = linkDescription;
-    }
-
-
     /**
      * JSON-style toString
      *
@@ -144,8 +96,8 @@ public class ExternalReferenceRequestBody extends ExternalReferenceProperties
     {
         return "ExternalReferenceRequestBody{" +
                        "anchorGUID='" + anchorGUID + '\'' +
-                       ", linkId='" + linkId + '\'' +
-                       ", linkDescription='" + linkDescription + '\'' +
+                       ", linkId='" + getLinkId() + '\'' +
+                       ", linkDescription='" + getLinkDescription() + '\'' +
                        ", resourceId='" + getResourceId() + '\'' +
                        ", resourceDisplayName='" + getResourceDisplayName() + '\'' +
                        ", resourceDescription='" + getResourceDescription() + '\'' +
@@ -181,9 +133,7 @@ public class ExternalReferenceRequestBody extends ExternalReferenceProperties
             return false;
         }
         ExternalReferenceRequestBody that = (ExternalReferenceRequestBody) objectToCompare;
-        return Objects.equals(anchorGUID, that.anchorGUID) &&
-                       Objects.equals(linkId, that.linkId) &&
-                       Objects.equals(linkDescription, that.linkDescription);
+        return Objects.equals(anchorGUID, that.anchorGUID);
     }
 
 
@@ -195,6 +145,6 @@ public class ExternalReferenceRequestBody extends ExternalReferenceProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchorGUID, linkId, linkDescription);
+        return Objects.hash(super.hashCode(), anchorGUID);
     }
 }

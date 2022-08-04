@@ -163,7 +163,9 @@ public class OpenMetadataTypesArchive
          */
         update0010BaseModel();
         update0110ActorProfile();
+        updateResponsibilityAssignments();
         update04xxMultiLinkGovernanceActionTypes();
+        update0545ValidValues();
         update07xxImplementationRelationships();
         add0735SolutionPortSchemaRelationship();
     }
@@ -263,7 +265,6 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addRelationshipDef(getProfileLocationRelationship());
     }
 
-
     private RelationshipDef getProfileLocationRelationship()
     {
         final String guid            = "4d652ef7-99c7-4ec3-a2fd-b10c0a1ab4b4";
@@ -340,6 +341,131 @@ public class OpenMetadataTypesArchive
      */
 
     /**
+     * Add new relationship called properties to .
+     * Deprecate more specialist relationships: ProjectScope and GovernanceRoleAssignment.
+     */
+    private void updateResponsibilityAssignments()
+    {
+        this.archiveBuilder.addTypeDefPatch(deprecateProjectScope());
+        this.archiveBuilder.addTypeDefPatch(deprecateGovernanceRoleAssignment());
+        this.archiveBuilder.addRelationshipDef(getAssignmentScopeRelationship());
+    }
+
+    private TypeDefPatch deprecateProjectScope()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ProjectScope";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateGovernanceRoleAssignment()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GovernanceRoleAssignment";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    private RelationshipDef getAssignmentScopeRelationship()
+    {
+        final String guid            = "e3fdafe3-692a-46c6-a595-c538cc189dd9";
+        final String name            = "AssignmentScope";
+        final String description     = "Links a profile, role or project to the elements that they are responsible for managing.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "assignedActors";
+        final String                     end1AttributeDescription     = "Person, team, project or other type of actor that has been assigned.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "assignedScope";
+        final String                     end2AttributeDescription     = "Elements describing the resources or action the the actors are responsible for.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "assignmentType";
+        final String attribute1Description     = "What is the scope or nature of the assignment.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Further clarification on the assignment.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
      * Add multi-link flags and extend properties to be able to record proper attributions.
      */
     private void update04xxMultiLinkGovernanceActionTypes()
@@ -384,7 +510,6 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
-
     private TypeDefPatch updateGovernanceActionFlowRelationship()
     {
         /*
@@ -402,7 +527,6 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
-
     private TypeDefPatch updateNextGovernanceActionTypeRelationship()
     {
         /*
@@ -419,7 +543,6 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
-
 
     private TypeDefPatch updateNextGovernanceActionRelationship()
     {
@@ -455,6 +578,119 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * Add multi-link flags and extend properties to be able to record proper attributions.
+     */
+    private void update0545ValidValues()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateReferenceValueAssignment());
+        this.archiveBuilder.addTypeDefPatch(updateValidValuesMapping());
+        this.archiveBuilder.addTypeDefPatch(updateValidValuesImplementation());
+    }
+
+
+    private TypeDefPatch updateReferenceValueAssignment()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ReferenceValueAssignment";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "stewardTypeName";
+        final String attribute1Description     = "Type of element used to identify the steward.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "stewardPropertyName";
+        final String attribute2Description     = "Name of property used to identify the steward.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateValidValuesMapping()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ValidValuesMapping";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "stewardTypeName";
+        final String attribute1Description     = "Type of element used to identify the steward.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "stewardPropertyName";
+        final String attribute2Description     = "Name of property used to identify the steward.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateValidValuesImplementation()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ValidValuesImplementation";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
