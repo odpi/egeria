@@ -960,8 +960,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param additionalProperties additional properties for a port
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a port subtype
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -984,8 +982,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                              Map<String, String> additionalProperties,
                              String              suppliedTypeName,
                              Map<String, Object> extendedProperties,
-                             Date                effectiveFrom,
-                             Date                effectiveTo,
                              boolean             forLineage,
                              boolean             forDuplicateProcessing,
                              Date                effectiveTime,
@@ -1004,8 +1000,6 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                       additionalProperties,
                                       suppliedTypeName,
                                       extendedProperties,
-                                      effectiveFrom,
-                                      effectiveTo,
                                       forLineage,
                                       forDuplicateProcessing,
                                       effectiveTime,

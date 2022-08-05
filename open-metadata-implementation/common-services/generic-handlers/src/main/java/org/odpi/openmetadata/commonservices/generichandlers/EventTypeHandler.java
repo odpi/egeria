@@ -198,25 +198,23 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
              */
             final String eventTypeGUIDParameterName = "eventTypeGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      eventTypeListGUID,
-                                      eventTypeListGUIDParameterName,
-                                      OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
-                                      eventTypeGUID,
-                                      eventTypeGUIDParameterName,
-                                      OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                      null,
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveFrom,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               eventTypeListGUID,
+                                               eventTypeListGUIDParameterName,
+                                               OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
+                                               eventTypeGUID,
+                                               eventTypeGUIDParameterName,
+                                               OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                               null,
+                                               effectiveFrom,
+                                               methodName);
         }
 
         return eventTypeGUID;
@@ -314,25 +312,23 @@ public class EventTypeHandler<B> extends ReferenceableHandler<B>
          */
         final String eventTypeGUIDParameterName = "eventTypeGUID";
 
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  eventTypeListGUID,
-                                  eventTypeListGUIDParameterName,
-                                  OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
-                                  eventTypeGUID,
-                                  eventTypeGUIDParameterName,
-                                  OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                  null,
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
+        this.uncheckedLinkElementToElement(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           eventTypeListGUID,
+                                           eventTypeListGUIDParameterName,
+                                           OpenMetadataAPIMapper.EVENT_TYPE_LIST_TYPE_NAME,
+                                           eventTypeGUID,
+                                           eventTypeGUIDParameterName,
+                                           OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           supportedZones,
+                                           OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                           OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                           null,
+                                           effectiveTime,
+                                           methodName);
 
         return eventTypeGUID;
     }

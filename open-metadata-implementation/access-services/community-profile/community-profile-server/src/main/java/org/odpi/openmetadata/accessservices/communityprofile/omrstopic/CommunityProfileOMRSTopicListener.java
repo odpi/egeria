@@ -139,8 +139,6 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                                                        null,
                                                                                        null,
                                                                                        true,
-                                                                                       null,
-                                                                                       null,
                                                                                        false,
                                                                                        false,
                                                                                        new Date(),

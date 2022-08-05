@@ -185,25 +185,23 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
              */
             final String glossaryTermGUIDParameterName = "glossaryTermGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      glossaryGUID,
-                                      glossaryGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                      glossaryTermGUID,
-                                      glossaryTermGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
-                                      OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
-                                      null,
-                                      null,
-                                      null,
-                                      null,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               glossaryGUID,
+                                               glossaryGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                               glossaryTermGUID,
+                                               glossaryTermGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
+                                               false,
+                                               false,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_GUID,
+                                               OpenMetadataAPIMapper.TERM_ANCHOR_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return glossaryTermGUID;

@@ -199,25 +199,23 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
              */
             final String apiOperationGUIDParameterName = "apiOperationGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      apiSchemaTypeGUID,
-                                      apiSchemaTypeGUIDParameterName,
-                                      OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
-                                      apiOperationGUID,
-                                      apiOperationGUIDParameterName,
-                                      OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
-                                      null,
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               apiSchemaTypeGUID,
+                                               apiSchemaTypeGUIDParameterName,
+                                               OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                               apiOperationGUID,
+                                               apiOperationGUIDParameterName,
+                                               OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return apiOperationGUID;
@@ -313,25 +311,23 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
          */
         final String apiOperationGUIDParameterName = "apiOperationGUID";
 
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  apiSchemaTypeGUID,
-                                  apiSchemaTypeGUIDParameterName,
-                                  OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
-                                  apiOperationGUID,
-                                  apiOperationGUIDParameterName,
-                                  OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                  null,
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
+        this.uncheckedLinkElementToElement(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           apiSchemaTypeGUID,
+                                           apiSchemaTypeGUIDParameterName,
+                                           OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME,
+                                           apiOperationGUID,
+                                           apiOperationGUIDParameterName,
+                                           OpenMetadataAPIMapper.API_OPERATION_TYPE_NAME,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           supportedZones,
+                                           OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                           OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                           null,
+                                           effectiveTime,
+                                           methodName);
 
         return apiOperationGUID;
     }

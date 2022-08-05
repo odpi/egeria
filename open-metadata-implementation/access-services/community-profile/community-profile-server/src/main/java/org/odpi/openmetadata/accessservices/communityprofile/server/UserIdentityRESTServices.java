@@ -82,8 +82,6 @@ public class UserIdentityRESTServices
                                                                      requestBody.getProperties().getAdditionalProperties(),
                                                                      requestBody.getProperties().getTypeName(),
                                                                      requestBody.getProperties().getExtendedProperties(),
-                                                                     null,
-                                                                     null,
                                                                      false,
                                                                      false,
                                                                      new Date(),

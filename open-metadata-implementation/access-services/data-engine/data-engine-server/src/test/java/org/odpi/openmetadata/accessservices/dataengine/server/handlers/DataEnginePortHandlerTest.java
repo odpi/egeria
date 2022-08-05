@@ -95,7 +95,7 @@ class DataEnginePortHandlerTest {
 
         when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
                 "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, PORT_IMPLEMENTATION_TYPE_NAME,
-                null, null, null, false, false, null, methodName)).thenReturn(GUID);
+                 null, false, false, null, methodName)).thenReturn(GUID);
         String result = dataEnginePortHandler.createPortImplementation(USER, getPortImplementation(), PROCESS_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
@@ -105,7 +105,7 @@ class DataEnginePortHandlerTest {
         verify(invalidParameterHandler, times(1)).validateName(NAME, DISPLAY_NAME_PROPERTY_NAME, methodName);
         verify(portHandler, times(1)).createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
                 "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, PORT_IMPLEMENTATION_TYPE_NAME,
-                null, null, null, false, false, null, methodName);
+                null, false, false, null, methodName);
     }
 
     @Test
@@ -121,7 +121,7 @@ class DataEnginePortHandlerTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
                 "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, PORT_IMPLEMENTATION_TYPE_NAME,
-                null, null, null, false, false, null, methodName)).thenThrow(mockedException);
+                 null, false, false, null, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.createPortImplementation(USER, getPortImplementation(), PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -135,7 +135,7 @@ class DataEnginePortHandlerTest {
 
         when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
                 "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, PORT_ALIAS_TYPE_NAME,
-                null, null, null, false, false, null, methodName)).thenReturn(GUID);
+                null, false, false, null, methodName)).thenReturn(GUID);
 
         String result = dataEnginePortHandler.createPortAlias(USER, getPortAlias(), PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
@@ -145,7 +145,7 @@ class DataEnginePortHandlerTest {
         verify(invalidParameterHandler, times(1)).validateName(NAME, DISPLAY_NAME_PROPERTY_NAME, methodName);
         verify(portHandler, times(1)).createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
                 "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, PORT_ALIAS_TYPE_NAME,
-                null, null, null, false, false, null, methodName);
+                null, false, false, null, methodName);
     }
 
     @Test
@@ -161,7 +161,7 @@ class DataEnginePortHandlerTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         when(portHandler.createPort(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID,
                 "processGUID", QUALIFIED_NAME, NAME, PortType.INOUT_PORT.getOrdinal(), null, PORT_ALIAS_TYPE_NAME,
-                null, null, null, false, false, null, methodName)).thenThrow(mockedException);
+                null, false, false, null, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEnginePortHandler.createPortAlias(USER, getPortAlias(), PROCESS_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));

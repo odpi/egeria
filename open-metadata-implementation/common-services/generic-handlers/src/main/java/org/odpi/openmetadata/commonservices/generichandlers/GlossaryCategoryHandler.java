@@ -157,25 +157,23 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
              */
             final String glossaryCategoryGUIDParameterName = "glossaryCategoryGUID";
 
-            this.linkElementToElement(userId,
-                                      null,
-                                      null,
-                                      glossaryGUID,
-                                      glossaryGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                      glossaryCategoryGUID,
-                                      glossaryCategoryGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                      true,
-                                      true,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
-                                      OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
-                                      null,
-                                      null,
-                                      null,
-                                      null,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               null,
+                                               null,
+                                               glossaryGUID,
+                                               glossaryGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                               glossaryCategoryGUID,
+                                               glossaryCategoryGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                               true,
+                                               true,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
+                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
         
         return glossaryCategoryGUID;

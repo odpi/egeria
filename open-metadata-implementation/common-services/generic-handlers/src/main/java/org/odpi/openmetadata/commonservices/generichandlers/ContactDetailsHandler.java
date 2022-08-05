@@ -187,25 +187,23 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
         {
             final String contactMethodGUIDParameterName = "contactMethodGUID";
 
-            this.linkElementToElement(userId,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      profileGUID,
-                                      profileGUIDParameterName,
-                                      OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                      contactMethodGUID,
-                                      contactMethodGUIDParameterName,
-                                      OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
-                                      null,
-                                      effectiveFrom,
-                                      effectiveTo,
-                                      effectiveTime,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               profileGUID,
+                                               profileGUIDParameterName,
+                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                               contactMethodGUID,
+                                               contactMethodGUIDParameterName,
+                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
 
         return contactMethodGUID;
