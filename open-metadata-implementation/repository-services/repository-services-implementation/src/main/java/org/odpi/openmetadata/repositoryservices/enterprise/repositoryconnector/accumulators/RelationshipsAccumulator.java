@@ -16,7 +16,7 @@ import java.util.Map;
  * RelationshipsAccumulator accumulates and validates relationships received from a collection of open metadata
  * repositories.  It removes duplicates from the list by choosing the latest version.
  *
- * This class may be called simultaneously from many different threads so it must be thread-safe.
+ * This class may be called simultaneously from different threads so it must be thread-safe.
  */
 public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
 {
@@ -27,7 +27,7 @@ public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
      * Construct a relationship accumulator.  Its base class manages the common variables needed to
      * control the execution of requests across all members of the cohort(s).
      *
-     * @param localMetadataCollectionId collection Id of local repository - null means no local repository
+     * @param localMetadataCollectionId collection id of local repository - null means no local repository
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */

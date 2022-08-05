@@ -17,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
  */
 public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
 {
-    private TypesAccumulator accumulator;
+    private final TypesAccumulator accumulator;
 
     /**
      * Simple public constructor

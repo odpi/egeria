@@ -96,7 +96,7 @@ public class OMRSRepositoryRESTServices
 {
     private static final String                                serviceName     = CommonServicesDescription.REPOSITORY_SERVICES.getServiceName();
     private static final Logger                                log             = LoggerFactory.getLogger(OMRSRepositoryRESTServices.class);
-    private static       OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
+    private static final OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
     private static final String                                anonymousUserId = "anon"; // TODO add to config
 
     private static final MessageFormatter messageFormatter = new MessageFormatter();

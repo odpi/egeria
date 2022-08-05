@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecutorBase
 {
-    private String                   entityGUID;
-    private RelationshipsAccumulator accumulator;
+    private final String                   entityGUID;
+    private final RelationshipsAccumulator accumulator;
 
 
     /**

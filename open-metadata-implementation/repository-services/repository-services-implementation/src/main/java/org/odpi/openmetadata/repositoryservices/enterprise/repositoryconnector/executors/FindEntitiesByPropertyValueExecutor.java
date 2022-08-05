@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class FindEntitiesByPropertyValueExecutor extends PageableEntityRepositoryExecutorBase
 {
-    private String       searchCriteria;
-    private List<String> limitResultsByClassification;
+    private final String       searchCriteria;
+    private final List<String> limitResultsByClassification;
 
 
     /**

@@ -35,15 +35,15 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
     static final private String rootServiceNameInURL  = "/servers/{0}/open-metadata/repository-services";
     static final private String userIdInURL           = "/users/{1}";
 
-    private String              localServerUserId   = null;
-    private String              localServerPassword = null;
+    private final String              localServerUserId   = null;
+    private final String              localServerPassword = null;
 
-    private String              restURLRoot;                /* Initialized in constructor */
+    private final String              restURLRoot;                /* Initialized in constructor */
 
-    private RESTClientConnector restClient;                 /* Initialized in constructor */
-    private String              serverName;                 /* Initialized in constructor */
+    private final RESTClientConnector restClient;                 /* Initialized in constructor */
+    private final String              serverName;                 /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     protected AuditLog          auditLog = null;
 

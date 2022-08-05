@@ -34,15 +34,15 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
 {
     private static final Logger log = LoggerFactory.getLogger(EnterpriseOMRSConnectorProvider.class);
 
-    private  OMRSConnectorManager         connectorManager;
-    private  OMRSRepositoryContentManager repositoryContentManager;
-    private  String                       localServerName;
-    private  String                       localServerType;
-    private  OMRSAuditLog                 auditLog;
-    private  String                       owningOrganizationName;
-    private  String                       enterpriseMetadataCollectionId;
-    private  String                       enterpriseMetadataCollectionName;
-    private  String                       localMetadataCollectionId;
+    private final OMRSConnectorManager         connectorManager;
+    private final OMRSRepositoryContentManager repositoryContentManager;
+    private final String                       localServerName;
+    private final String                       localServerType;
+    private final OMRSAuditLog                 auditLog;
+    private final String                       owningOrganizationName;
+    private final String                       enterpriseMetadataCollectionId;
+    private final String                       enterpriseMetadataCollectionName;
+    private final String                       localMetadataCollectionId;
 
 
 

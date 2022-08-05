@@ -36,25 +36,26 @@ import java.util.UUID;
  */
 public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor implements OMRSInstanceRetrievalEventProcessor
 {
-    final private static String  localOMRSInstanceEventProcessorName = "Local Repository Inbound Instance Events";
+    private final static String  localOMRSInstanceEventProcessorName = "Local Repository Inbound Instance Events";
 
-    final private static MessageFormatter messageFormatter = new MessageFormatter();
+    private final static MessageFormatter messageFormatter = new MessageFormatter();
 
-    private String                          localMetadataCollectionId;
-    private String                          localServerName;
-    private OMRSRepositoryConnector         localRepositoryConnector;
-    private OMRSRepositoryHelper            repositoryHelper;
-    private OMRSRepositoryValidator         repositoryValidator;
-    private OMRSRepositoryEventExchangeRule saveExchangeRule;
+    private final String                          localMetadataCollectionId;
+    private final String                          localServerName;
+    private final OMRSRepositoryConnector         localRepositoryConnector;
+    private final OMRSRepositoryHelper            repositoryHelper;
+    private final OMRSRepositoryValidator         repositoryValidator;
+    private final OMRSRepositoryEventExchangeRule saveExchangeRule;
+    private final boolean                         produceRefreshEvents;
+    private final OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor;
+
     private OMRSMetadataCollection          localMetadataCollection = null;
-    private boolean                         produceRefreshEvents;
-    private OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor;
 
     /*
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(LocalOMRSInstanceEventProcessor.class);
 

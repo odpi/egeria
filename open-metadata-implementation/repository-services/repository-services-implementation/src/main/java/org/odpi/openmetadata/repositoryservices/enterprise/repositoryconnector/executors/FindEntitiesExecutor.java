@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class FindEntitiesExecutor extends PageableEntityRepositoryExecutorBase
 {
-    private SearchProperties      matchProperties;
-    private SearchClassifications matchClassifications;
-    private List<String>          instanceSubtypeGUIDs;
+    private final SearchProperties      matchProperties;
+    private final SearchClassifications matchClassifications;
+    private final List<String>          instanceSubtypeGUIDs;
 
     /**
      * Create the executor.  The parameters provide the parameters for issuing the requests and
