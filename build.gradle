@@ -143,6 +143,7 @@ allprojects {
         osgiVersion = '8.0.0'
         log4jVersion = '2.18.0'
         jacksonjdk8Version = '2.13.3'
+        reactivestreamsVersion = '1.0.4'
     }
 
     dependencies {
@@ -264,6 +265,7 @@ allprojects {
             implementation("org.osgi:org.osgi.core:${osgiVersion}")
             implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")
             implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
+            implementation("org.reactivestreams:reactive-streams:${reactivestreamsVersion}")
 
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:${testngVersion}")
