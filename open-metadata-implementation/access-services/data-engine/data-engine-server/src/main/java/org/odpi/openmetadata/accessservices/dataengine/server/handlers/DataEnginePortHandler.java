@@ -180,7 +180,7 @@ public class DataEnginePortHandler {
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         return portHandler.createPort(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME, port.getQualifiedName(),
                port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTpeName,
-              null, false, false, null, methodName);
+              null, false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -212,9 +212,10 @@ public class DataEnginePortHandler {
             return;
         }
 
+        Date now = dataEngineCommonHandler.getNow();
         portHandler.updatePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, port.getQualifiedName(),
                 port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTypeName, null,
-                null, null, false, false, null, methodName);
+                now, now, false, false, now, methodName);
     }
 
     /**
@@ -242,10 +243,11 @@ public class DataEnginePortHandler {
         Optional<Relationship> relationship = dataEngineCommonHandler.findRelationship(userId, portGUID, schemaTypeGUID,
                 PORT_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME);
         if (relationship.isEmpty()) {
+            Date now = dataEngineCommonHandler.getNow();
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
             portHandler.setupPortSchemaType(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME,
-                    schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME,
-                    null, null, false, false, null, methodName);
+                    schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, now, now, false, false,
+                    now, methodName);
         }
     }
 
@@ -306,8 +308,9 @@ public class DataEnginePortHandler {
                 PORT_TYPE_NAME, PORT_TYPE_NAME, PORT_DELEGATION_TYPE_NAME);
         if (relationship.isEmpty()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+            Date now = dataEngineCommonHandler.getNow();
             portHandler.setupPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, delegatedPortGUID,
-                    PORT_GUID_PARAMETER_NAME, null, null, false, false, null, methodName);
+                    PORT_GUID_PARAMETER_NAME, now, now, false, false, now, methodName);
         }
     }
 
@@ -333,7 +336,7 @@ public class DataEnginePortHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         portHandler.removePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME,
-                 false, false, null, methodName);
+                 false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**

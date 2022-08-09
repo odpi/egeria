@@ -19,7 +19,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -121,7 +120,7 @@ public class DataEngineDataFileHandler {
         if (file.getIncomplete()) {
             fileHandler.setClassificationInRepository(userId, externalSourceGuid, externalSourceName, fileGuid, FILE_GUID_PARAMETER_NAME, fileTypeName,
                     INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME, null,
-                                                      true, false, false, null, methodName);
+                                                      true, false, false, dataEngineCommonHandler.getNow(), methodName);
         }
 
         return fileGuid;
@@ -153,7 +152,8 @@ public class DataEngineDataFileHandler {
             dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.get().getGUID(), externalSourceName, deleteSemantic);
 
             fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, GUID_PROPERTY_NAME,
-                    DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, false, false, null, methodName);
+                    DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, false,
+                    false, dataEngineCommonHandler.getNow(), methodName);
         } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, dataFileGUID);
         }
@@ -165,11 +165,12 @@ public class DataEngineDataFileHandler {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DATA_FILE_TYPE_NAME);
 
+        Date now = dataEngineCommonHandler.getNow();
         fileHandler.updateAsset(userId, externalSourceGuid, externalSourceName, fileAsEntity.getGUID(),
                CommonMapper.GUID_PROPERTY_NAME, file.getQualifiedName(), file.getDisplayName(),
                file.getDescription(), file.getAdditionalProperties(), entityTypeDef.getGUID(),
-               entityTypeDef.getName(), extendedProperties, null, null, true,
-               false, false, null, methodName);
+               entityTypeDef.getName(), extendedProperties, now, now, true,
+               false, false, now, methodName);
         return fileAsEntity.getGUID();
     }
 
@@ -179,12 +180,13 @@ public class DataEngineDataFileHandler {
 
         int ownerType = dataEngineCommonHandler.getOwnerTypeOrdinal(file.getOwnerType());
 
+        Date now = dataEngineCommonHandler.getNow();
         return fileHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
                 file.getQualifiedName(), file.getDisplayName(), file.getDescription(), file.getZoneMembership(),
                 file.getOwner(), ownerType, file.getOriginOrganizationGUID(),
                 file.getOriginBusinessCapabilityGUID(), file.getOtherOriginValues(), file.getAdditionalProperties(),
-                typeGuid, typeName, extendedProperties, null,
-                null, InstanceStatus.ACTIVE, null, methodName);
+                typeGuid, typeName, extendedProperties, now,
+                now, InstanceStatus.ACTIVE, now, methodName);
     }
 
     private void validateParameters(DataFile file, SchemaType schemaType, String externalSourceGuid, String userId, String methodName) throws

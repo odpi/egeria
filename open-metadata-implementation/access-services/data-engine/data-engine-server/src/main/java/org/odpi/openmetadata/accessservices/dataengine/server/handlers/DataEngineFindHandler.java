@@ -39,6 +39,7 @@ public class DataEngineFindHandler {
     private final InvalidParameterHandler invalidParameterHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final OpenMetadataAPIGenericHandler<Referenceable> genericHandler;
+    private final DataEngineCommonHandler dataEngineCommonHandler;
     private final String serviceName;
     private final String serverName;
 
@@ -52,10 +53,12 @@ public class DataEngineFindHandler {
      * @param serverName              server name
      */
     public DataEngineFindHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
-                                 OpenMetadataAPIGenericHandler<Referenceable> genericHandler, String serviceName, String serverName) {
+                                 OpenMetadataAPIGenericHandler<Referenceable> genericHandler,
+                                 DataEngineCommonHandler dataEngineCommonHandler, String serviceName, String serverName) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.genericHandler = genericHandler;
+        this.dataEngineCommonHandler = dataEngineCommonHandler;
         this.serviceName = serviceName;
         this.serverName = serverName;
     }
@@ -96,7 +99,7 @@ public class DataEngineFindHandler {
         List<EntityDetail> result = genericHandler.getEntitiesByValue(userId, findRequestBody.getIdentifiers().getQualifiedName(),
                 QUALIFIED_NAME_PROPERTY_NAME, typeGuid, findRequestBody.getType(), Collections.singletonList(QUALIFIED_NAME_PROPERTY_NAME),
                 true, null, null, false, false,
-                0, invalidParameterHandler.getMaxPagingSize(), null, methodName);
+                0, invalidParameterHandler.getMaxPagingSize(), dataEngineCommonHandler.getNow(), methodName);
 
         if(!Objects.isNull(result)){
             List<String> guids = result.stream()
