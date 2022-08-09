@@ -4,6 +4,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -75,9 +76,8 @@ public class LineageJobHelper {
         try {
             //TODO investigate possibility of adding the PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG again
             List<String> guidList = this.graphHelper.getResult(this::getProcessGuids, this::handleRetrieveProcessGuids);
-            for (String guid : guidList) {
-                findInputColumns(guid);
-            }
+            guidList.forEach(this::findInputColumns);
+            guidList.forEach(this::findOrphanOutputColumns);
         } catch (Exception e) {
             log.error(SOMETHING_WENT_WRONG_WHEN_TRYING_TO_MAP_A_PROCESS_THE_ERROR_IS, e);
             auditLog.logException(SOMETHING_WENT_WRONG_WHEN_TRYING_TO_MAP_A_PROCESS, PROCESS_MAPPING_ERROR.getMessageDefinition(), e);
@@ -137,8 +137,12 @@ public class LineageJobHelper {
                 if (vertexToStart != null) {
                     columnOutList.addAll(this.graphHelper.getResult(this::findPathForOutputAsset, vertexToStart, columnIn, this::handleRetrieveResultError));
                 }
-                for (Vertex columnOut : columnOutList) {
-                    addNodesAndEdgesForQuerying(columnIn, columnOut, process);
+                if (columnOutList.isEmpty()) {
+                    this.graphHelper.commit(this::addInputNodesAndEdgesForQuerying, columnIn, process, this::handleCouldNotExecuteOperation);
+                } else {
+                    for (Vertex columnOut : columnOutList) {
+                        addNodesAndEdgesForQuerying(columnIn, columnOut, process);
+                    }
                 }
             }
         }
@@ -309,8 +313,7 @@ public class LineageJobHelper {
      * @param vertex - the queried vertex
      */
     private String getGuid(GraphTraversalSource g, Vertex vertex) {
-        String guid = g.V(vertex.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString();
-        return guid;
+        return g.V(vertex.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString();
     }
 
     /**
@@ -384,8 +387,155 @@ public class LineageJobHelper {
 
     }
 
+    /**
+     * For all the processes in the graph finds the paths to the output columns that do not have an input column
+     *
+     * @param guid - The unique identifier of a Process
+     */
+    private void findOrphanOutputColumns(String guid) {
+
+        List<Vertex> outputPathsForColumns = this.graphHelper.getResult(this::getOutputPaths,guid, this::handleRetrieveResultError);
+
+        Vertex process = this.graphHelper.getResult(this::getNodeByGuid, guid, this::handleRetrieveResultError);
+
+        if (!outputPathsForColumns.isEmpty()) {
+            outputPathsForColumns.forEach(columnOut -> addOutNodesAndEdgesForQuerying(process, columnOut));
+        }
+    }
+
+    private List<Vertex> getOutputPaths(GraphTraversalSource g, String guid) {
+        return g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
+                .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "OUTPUT_PORT")
+                .out(PORT_SCHEMA).out(ATTRIBUTE_FOR_SCHEMA).out(LINEAGE_MAPPING).where(__.inE(EDGE_LABEL_COLUMN_DATA_FLOW).count().is(P.eq(0)))
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL, P.within(DATA_FILE_AND_SUBTYPES)),
+                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)).toList();
+    }
+
+    /**
+     * Add nodes and edges that are going to be used for lineage UI.
+     * This method handles the case where a process has only output column without an input column
+     *
+     * @param process   - The vertex of the process.
+     * @param columnOut - The vertex of the output schema element
+     */
+    private void addOutNodesAndEdgesForQuerying(Vertex process, Vertex columnOut) {
+        final String columnOutGuid = this.graphHelper.getResult(this::getGuid, columnOut, this::handleRetrieveResultError);
+        final String processGuid = this.graphHelper.getResult(this::getGuid, process, this::handleRetrieveResultError);
+
+        Iterator<Vertex> existingSubprocess = this.graphHelper.getResult(this::getExistingSubprocess, columnOut, processGuid, this::handleRetrieveResultError);
+
+        if (!existingSubprocess.hasNext()) {
+
+
+            this.graphHelper.commit(this::createEdge, columnOut, process, this::handleCreateSubProcessError);
+            log.info("OLS has added the corresponding subProcess node and edges for output column {} and process {} ",
+                    columnOutGuid, processGuid);
+        }
+    }
+
+    private Iterator<Vertex> getExistingSubprocess(GraphTraversalSource g, Vertex columnOut, String processGuid) {
+        final String columnOutGuid = this.graphHelper.getResult(this::getGuid, columnOut, this::handleRetrieveResultError);
+
+        return g.V(columnOut.id()).inE(EDGE_LABEL_COLUMN_DATA_FLOW).outV()
+                .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
+                .hasNot(PROPERTY_KEY_COLUMN_IN_GUID);
+    }
+
+    private void createEdge(GraphTraversalSource g, Vertex columnOut, Vertex process) {
+        final String processGuid = getGuid(g, process);
+        final String processName = getProcessName(g, process);
+        final String columnOutGuid = getGuid(g, columnOut);
+
+        GraphTraversal<Vertex, Vertex> subProcessNode = g.addV(NODE_LABEL_SUB_PROCESS)
+                .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
+                .property(PROPERTY_KEY_DISPLAY_NAME, processName)
+                .property(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                .property(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid);
+
+        Vertex subProcess = subProcessNode.next();
+
+        g.V(subProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(__.V(columnOut.id())).next();
+        g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(__.V(process.id())).next();
+        addOutAssetToProcessEdge(g, columnOut, process);
+    }
+
+    /**
+     * Connects the tables and the processes with edges
+     *
+     * @param columnOut - The vertex of the output schema element
+     * @param process   - The vertex of the process.
+     */
+    private void addOutAssetToProcessEdge(GraphTraversalSource g, Vertex columnOut, Vertex process) {
+        Optional<Vertex> assetOut = getAsset(g, columnOut);
+        if (assetOut.isPresent()) {
+            Iterator<Vertex> tableVertex = g.V(assetOut.get().id()).inE(EDGE_LABEL_TABLE_DATA_FLOW).outV().hasId(process.id());
+            if (!tableVertex.hasNext()) {
+                g.V(process.id()).addE(EDGE_LABEL_TABLE_DATA_FLOW).to(__.V(assetOut.get().id())).next();
+            }
+        }
+    }
+
+
+    /**
+     * Add nodes and edges that are going to be used for lineage UI.
+     * This method handles the case where a process has only input column without an output column
+     *
+     * @param columnIn - The vertex of the input schema element
+     * @param process  - The vertex of the process.
+     */
+    private void addInputNodesAndEdgesForQuerying(GraphTraversalSource g, Vertex columnIn, Vertex process) {
+
+        final String columnInGuid = getGuid(g, columnIn);
+        final String processGuid = getGuid(g, process);
+
+        Iterator<Vertex> existingSubprocess = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV()
+                .has(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                .has(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid)
+                .hasNot(PROPERTY_KEY_COLUMN_OUT_GUID);
+
+        if (!existingSubprocess.hasNext()) {
+            final String processName = getProcessName(g, process);
+
+            GraphTraversal<Vertex, Vertex> subProcessNode = g.addV(NODE_LABEL_SUB_PROCESS)
+                    .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
+                    .property(PROPERTY_KEY_DISPLAY_NAME, processName)
+                    .property(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                    .property(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid);
+
+            Vertex subProcess = subProcessNode.next();
+
+            g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(__.V(subProcess.id())).next();
+            g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(__.V(process.id())).next();
+
+            addInAssetToProcessEdge(g, columnIn, process);
+            log.info("OLS has added the corresponding subProcess node and edges for input column {} and process {} ",
+                    columnInGuid, processGuid);
+        }
+    }
+
+    /**
+     * Connects the tables and the processes with edges
+     *
+     * @param columnIn - The vertex of the input schema element
+     * @param process  - The vertex of the process.
+     */
+    private void addInAssetToProcessEdge(GraphTraversalSource g, Vertex columnIn, Vertex process) {
+        Optional<Vertex> assetIn = getAsset(g, columnIn);
+        if (assetIn.isPresent()) {
+            Iterator<Vertex> tableVertex = g.V(assetIn.get().id()).outE(EDGE_LABEL_TABLE_DATA_FLOW).inV().hasId(process.id());
+            if (!tableVertex.hasNext()) {
+                g.V(assetIn.get().id()).addE(EDGE_LABEL_TABLE_DATA_FLOW).to(__.V(process.id())).next();
+            }
+        }
+    }
+
     private void handleRetrieveProcessGuids(Exception e) {
         log.error("Could not retrieve guids from the database", e);
+    }
+
+    private void handleCouldNotExecuteOperation(Exception e) {
+        log.error("Could not execute operation", e);
     }
 
     private void handleRetrieveResultError(Exception e, Vertex vertex) {
@@ -398,6 +548,14 @@ public class LineageJobHelper {
 
     private void handleRetrieveResultError(Exception e, Vertex vertex1, Vertex vertex2) {
         log.error("Could not retrieve object from database {}, {}", vertex1, vertex2, e);
+    }
+
+    private void handleRetrieveResultError(Exception e, Vertex vertex1, String processGuid) {
+        log.error("Could not retrieve object from database {}, {}", vertex1, processGuid, e);
+    }
+
+    private void handleCreateSubProcessError(Exception e, Vertex column, Vertex process) {
+        log.error("Could not retrieve object from database {}, {}, ()", column, process, e);
     }
 
     private void handleFindExistingSubprocess(Exception e, SubProcessDetails subProcessDetails) {
