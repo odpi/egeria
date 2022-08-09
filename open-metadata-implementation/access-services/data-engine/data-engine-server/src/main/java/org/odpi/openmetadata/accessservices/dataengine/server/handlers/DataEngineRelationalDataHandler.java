@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Date;
@@ -114,7 +115,7 @@ public class DataEngineRelationalDataHandler {
                     database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(), database.getDatabaseType(),
                     database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
                     database.getAdditionalProperties(), DATABASE_TYPE_NAME, null, null,
-                    now, now, false, false, now, methodName);
+                    null, null, false, false, now, methodName);
         } else {
             databaseGUID = originalDatabaseEntity.get().getGUID();
             relationalDataHandler.updateDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, database.getQualifiedName(),
@@ -123,7 +124,7 @@ public class DataEngineRelationalDataHandler {
                     database.getCreateTime(), database.getModifiedTime(), database.getEncodingType(), database.getEncodingLanguage(),
                     database.getEncodingDescription(), database.getEncodingProperties(), database.getDatabaseType(), database.getDatabaseVersion(),
                     database.getDatabaseInstance(), database.getDatabaseImportedFrom(), database.getAdditionalProperties(),
-                    DATABASE_TYPE_NAME, null, null, now, now, true,
+                    DATABASE_TYPE_NAME, null, null, null, null, true,
                     false, false, now, methodName);
         }
 
@@ -226,7 +227,7 @@ public class DataEngineRelationalDataHandler {
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                     databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
-                    null, now, now, false, false, now, methodName);
+                    null, null, null, false, false, now, methodName);
         } else {
             databaseSchemaGUID = originalDatabaseSchemaEntity.get().getGUID();
             relationalDataHandler.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
@@ -234,14 +235,14 @@ public class DataEngineRelationalDataHandler {
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                     databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
-                    null, now, now, true, false, false, now, methodName);
+                    null, null, null, true, false, false, now, methodName);
 
             if (StringUtils.isNotEmpty(databaseGUID)) {
                 databaseSchemaAssetHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, databaseGUID,
                    DATABASE_GUID, OpenMetadataAPIMapper.DATABASE_TYPE_NAME, databaseSchemaGUID, DATABASE_SCHEMA_GUID,
                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, false, false,
                    OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID, OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
-                        null, now, now, now, methodName);
+                        (InstanceProperties) null, null, null, now, methodName);
             }
         }
 
@@ -289,22 +290,24 @@ public class DataEngineRelationalDataHandler {
             relationalTableGUID = relationalDataHandler.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    RELATIONAL_TABLE_TYPE_NAME, null, null, now, now, false, false, now, methodName);
+                    RELATIONAL_TABLE_TYPE_NAME, null, null, null, null,
+                    false, false, now, methodName);
         } else {
             relationalTableGUID = originalRelationalTableEntity.get().getGUID();
             relationalDataHandler.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    RELATIONAL_TABLE_TYPE_NAME, null, null, now, now, true,
-                    false, false, now, methodName);
+                    RELATIONAL_TABLE_TYPE_NAME, null, null, null, null,
+                    true, false, false, now, methodName);
         }
 
         upsertRelationalColumns(userId, externalSourceGUID, externalSourceName, relationalTableGUID, relationalTable.getColumns());
 
         if (relationalTable.getIncomplete()) {
-            databaseSchemaAssetHandler.setClassificationInRepository(userId, externalSourceGUID, externalSourceName, relationalTableGUID, RELATIONAL_TABLE_TYPE_GUID,
-                    RELATIONAL_TABLE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
-                    null, true, false, false, now, methodName);
+            databaseSchemaAssetHandler.setClassificationInRepository(userId, externalSourceGUID, externalSourceName,
+                    relationalTableGUID, RELATIONAL_TABLE_TYPE_GUID, RELATIONAL_TABLE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID,
+                    INCOMPLETE_CLASSIFICATION_TYPE_NAME, null, true, false,
+                    false, now, methodName);
         }
         return relationalTableGUID;
     }
@@ -345,7 +348,7 @@ public class DataEngineRelationalDataHandler {
                         column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder,
                         column.getMinimumLength(), column.getLength(), column.getPrecision(), column.getIsNullable(), column.getNativeClass(),
                         column.getAliases(), column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null,
-                        null, now, now, false, false, now, methodName);
+                        null, null, null, false, false, now, methodName);
             } else {
                 relationalDataHandler.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName,
                         originalRelationalColumnEntity.get().getGUID(), column.getQualifiedName(), column.getDisplayName(), column.getDescription(),
@@ -353,8 +356,9 @@ public class DataEngineRelationalDataHandler {
                         column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                         column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder, column.getMinimumLength(), column.getLength(),
                         column.getPrecision(), column.getIsNullable(), column.getNativeClass(), column.getAliases(),
-                        column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null, null, now,
-                        now, true, false, false, now, methodName);
+                        column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null,
+                        null, null, null, true, false,
+                        false, now, methodName);
             }
         }
     }

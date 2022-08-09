@@ -172,14 +172,15 @@ public class DataEngineConnectionAndEndpointHandler {
         String endpointQualifiedName = getEndpointQualifiedName(assetTypeName, assetQualifiedName);
         String endpointGUID = endpointHandler.createEndpoint(userID, externalSourceGUID, externalSourceName, null,
                 endpointQualifiedName, endpointQualifiedName, ACCESS_INFORMATION + networkAddress, networkAddress,
-                protocol, null, null, null, null, now,
-                now, now, methodName);
+                protocol, null, null, null, null, null,
+                null, now, methodName);
 
         String connectionGUID = connectionHandler.createConnection(userID, externalSourceGUID, externalSourceName, assetGUID, ASSET_GUID,
                 null, connectionQualifiedName, connectionQualifiedName, null, null,
                 null, null, null, null, null,
                 OpenMetadataAPIMapper.CONNECTION_TYPE_NAME, null, connectorTypeGUID, CONNECTOR_TYPE_GUID_PARAMETER_NAME,
-                endpointGUID, ENDPOINT_GUID_PARAMETER_NAME, now, now,false, false, now, methodName);
+                endpointGUID, ENDPOINT_GUID_PARAMETER_NAME, null, null,false,
+                false, now, methodName);
 
         log.debug(CONNECTION_CREATED, assetQualifiedName, connectionQualifiedName, connectionGUID, endpointGUID, connectorTypeGUID);
     }
@@ -274,12 +275,11 @@ public class DataEngineConnectionAndEndpointHandler {
 
         String endpointGUID = existingEndpoint.get().getGUID();
         String description = ACCESS_INFORMATION + networkAddress;
-        Date now = dataEngineCommonHandler.getNow();
         endpointHandler.updateEndpoint(userID, externalSourceGUID, externalSourceName, endpointGUID, ENDPOINT_GUID_PARAMETER_NAME,
                 endpointQualifiedName, endpointQualifiedName, description, networkAddress,
                 protocol, null, null, null,
-                null, true, now, now, false,
-                false, now, methodName);
+                null, true, null, null, false,
+                false, dataEngineCommonHandler.getNow(), methodName);
 
         log.debug(ENDPOINT_UPDATED, assetQualifiedName, endpointQualifiedName);
     }

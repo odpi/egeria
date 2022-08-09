@@ -204,7 +204,6 @@ public class DataEngineCommonHandler {
 
         Optional<Relationship> relationship = findRelationship(userId, firstGUID, secondGUID, firstEntityTypeName,
                 secondEntityTypeName, relationshipTypeName);
-        Date now = getNow();
         if (relationship.isEmpty()) {
 
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
@@ -212,8 +211,8 @@ public class DataEngineCommonHandler {
             genericHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, firstGUID,
                     CommonMapper.GUID_PROPERTY_NAME, firstEntityTypeName, secondGUID, CommonMapper.GUID_PROPERTY_NAME,
                     secondEntityTypeName, false, false, null,
-                    relationshipTypeDef.getGUID(), relationshipTypeName, relationshipProperties, now,
-                    now, now, methodName);
+                    relationshipTypeDef.getGUID(), relationshipTypeName, relationshipProperties, null,
+                    null, getNow(), methodName);
         } else {
             Relationship originalRelationship = relationship.get();
             String relationshipGUID = originalRelationship.getGUID();
@@ -224,7 +223,7 @@ public class DataEngineCommonHandler {
             if (relationshipDifferences.hasInstancePropertiesDifferences()) {
                 genericHandler.updateRelationshipProperties(userId, externalSourceGUID, externalSourceName, relationshipGUID,
                         GUID_PROPERTY_NAME, originalRelationship.getType().getTypeDefName(), true,
-                        relationshipProperties, false, false, now, methodName);
+                        relationshipProperties, false, false, getNow(), methodName);
             }
         }
     }

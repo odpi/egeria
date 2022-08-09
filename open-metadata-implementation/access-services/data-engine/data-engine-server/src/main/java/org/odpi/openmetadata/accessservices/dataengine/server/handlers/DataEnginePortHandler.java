@@ -23,7 +23,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.util.Date;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
@@ -212,10 +211,9 @@ public class DataEnginePortHandler {
             return;
         }
 
-        Date now = dataEngineCommonHandler.getNow();
         portHandler.updatePort(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, port.getQualifiedName(),
                 port.getDisplayName(), port.getPortType().getOrdinal(), port.getAdditionalProperties(), entityTypeName, null,
-                now, now, false, false, now, methodName);
+                null, null, false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -243,11 +241,10 @@ public class DataEnginePortHandler {
         Optional<Relationship> relationship = dataEngineCommonHandler.findRelationship(userId, portGUID, schemaTypeGUID,
                 PORT_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME, PORT_SCHEMA_RELATIONSHIP_TYPE_NAME);
         if (relationship.isEmpty()) {
-            Date now = dataEngineCommonHandler.getNow();
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
             portHandler.setupPortSchemaType(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME,
-                    schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, now, now, false, false,
-                    now, methodName);
+                    schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, null, null, false, false,
+                    dataEngineCommonHandler.getNow(), methodName);
         }
     }
 
@@ -308,9 +305,9 @@ public class DataEnginePortHandler {
                 PORT_TYPE_NAME, PORT_TYPE_NAME, PORT_DELEGATION_TYPE_NAME);
         if (relationship.isEmpty()) {
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-            Date now = dataEngineCommonHandler.getNow();
             portHandler.setupPortDelegation(userId, externalSourceGUID, externalSourceName, portGUID, PORT_GUID_PARAMETER_NAME, delegatedPortGUID,
-                    PORT_GUID_PARAMETER_NAME, now, now, false, false, now, methodName);
+                    PORT_GUID_PARAMETER_NAME, null, null, false, false,
+                    dataEngineCommonHandler.getNow(), methodName);
         }
     }
 

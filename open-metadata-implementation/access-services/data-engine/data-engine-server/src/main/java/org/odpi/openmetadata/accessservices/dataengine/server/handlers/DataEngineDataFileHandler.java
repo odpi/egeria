@@ -18,7 +18,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -165,12 +164,11 @@ public class DataEngineDataFileHandler {
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DATA_FILE_TYPE_NAME);
 
-        Date now = dataEngineCommonHandler.getNow();
         fileHandler.updateAsset(userId, externalSourceGuid, externalSourceName, fileAsEntity.getGUID(),
                CommonMapper.GUID_PROPERTY_NAME, file.getQualifiedName(), file.getDisplayName(),
                file.getDescription(), file.getAdditionalProperties(), entityTypeDef.getGUID(),
-               entityTypeDef.getName(), extendedProperties, now, now, true,
-               false, false, now, methodName);
+               entityTypeDef.getName(), extendedProperties, null, null, true,
+               false, false, dataEngineCommonHandler.getNow(), methodName);
         return fileAsEntity.getGUID();
     }
 
@@ -180,13 +178,12 @@ public class DataEngineDataFileHandler {
 
         int ownerType = dataEngineCommonHandler.getOwnerTypeOrdinal(file.getOwnerType());
 
-        Date now = dataEngineCommonHandler.getNow();
         return fileHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
                 file.getQualifiedName(), file.getDisplayName(), file.getDescription(), file.getZoneMembership(),
                 file.getOwner(), ownerType, file.getOriginOrganizationGUID(),
                 file.getOriginBusinessCapabilityGUID(), file.getOtherOriginValues(), file.getAdditionalProperties(),
-                typeGuid, typeName, extendedProperties, now,
-                now, InstanceStatus.ACTIVE, now, methodName);
+                typeGuid, typeName, extendedProperties, null, null, InstanceStatus.ACTIVE,
+                dataEngineCommonHandler.getNow(), methodName);
     }
 
     private void validateParameters(DataFile file, SchemaType schemaType, String externalSourceGuid, String userId, String methodName) throws

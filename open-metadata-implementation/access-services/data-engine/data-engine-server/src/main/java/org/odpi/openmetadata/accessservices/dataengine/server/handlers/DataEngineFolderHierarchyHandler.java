@@ -166,13 +166,12 @@ public class DataEngineFolderHierarchyHandler {
             return folderAsEntity.get().getGUID();
         }
 
-        Date now = dataEngineCommonHandler.getNow();
         return folderHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
-                   folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
-                   folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
-                   null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
-                   FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME,  null, now, now, InstanceStatus.ACTIVE,
-                   now, methodName);
+                folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
+                folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
+                null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
+                FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME,  null, null, null,
+                InstanceStatus.ACTIVE, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**

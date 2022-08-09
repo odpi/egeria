@@ -91,14 +91,14 @@ public class DataEngineEventTypeHandler {
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
                     eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null,
-                    now, now, false, false, now, methodName);
+                    null, null, false, false, now, methodName);
         } else {
             eventTypeGUID = originalEventTypeEntity.get().getGUID();
             eventTypeHandler.updateEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, EVENT_TYPE_GUID_PARAMETER_NAME,
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
                     eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null,
-                    now, now, true,false, false, now, methodName);
+                    null, null, true,false, false, now, methodName);
         }
 
         List<Attribute> attributeList = eventType.getAttributeList();

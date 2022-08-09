@@ -112,7 +112,7 @@ public class DataEngineSchemaTypeHandler {
         Date now = dataEngineCommonHandler.getNow();
         if (originalSchemaTypeEntity.isEmpty()) {
             schemaTypeGUID = schemaTypeHandler.addSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeBuilder,
-                      now, now, false, false, now, methodName);
+                      null, null, false, false, now, methodName);
         } else {
             schemaTypeGUID = originalSchemaTypeEntity.get().getGUID();
             EntityDetail updatedSchemaTypeEntity = buildSchemaTypeEntityDetail(schemaTypeGUID, schemaType);

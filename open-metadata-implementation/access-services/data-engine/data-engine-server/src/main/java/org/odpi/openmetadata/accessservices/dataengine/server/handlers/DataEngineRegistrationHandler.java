@@ -20,7 +20,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Collections;
-import java.util.Date;
 
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.QUALIFIED_NAME_PROPERTY_NAME;
@@ -88,13 +87,12 @@ public class DataEngineRegistrationHandler {
 
         String externalEngineGUID = getExternalDataEngine(userId, externalEngineName);
         if (externalEngineGUID == null) {
-            Date now = clockService.getNow();
             externalEngineGUID = softwareServerCapabilityHandler.createSoftwareCapability(userId, null,
                     null,  entityTypeDef.getName(), null, externalEngineName,
                     softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
                     softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
-                    softwareServerCapability.getAdditionalProperties(), null, null, now, now, false,
-                     false, now, methodName);
+                    softwareServerCapability.getAdditionalProperties(), null, null, null,
+                    null, false, false, clockService.getNow(), methodName);
         } else {
             ExternalDataEnginePropertiesBuilder builder = getExternalDataEnginePropertiesBuilder(softwareServerCapability);
             InstanceProperties properties = builder.getInstanceProperties(methodName);

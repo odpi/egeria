@@ -23,7 +23,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -98,13 +97,12 @@ public class DataEngineProcessHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
 
-        Date now = dataEngineCommonHandler.getNow();
         return assetHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, process.getQualifiedName(), process.getName(),
                 process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 dataEngineCommonHandler.getOwnerTypeOrdinal(process.getOwnerType()), process.getOriginBusinessCapabilityGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
-                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, buildProcessExtendedProperties(process), now, now,
-                InstanceStatus.DRAFT, now, methodName);
+                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, buildProcessExtendedProperties(process), null, null,
+                InstanceStatus.DRAFT, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**
@@ -141,12 +139,11 @@ public class DataEngineProcessHandler {
         }
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
-        Date now = dataEngineCommonHandler.getNow();
         assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
                updatedProcess.getQualifiedName(), updatedProcess.getName(), updatedProcess.getDescription(),
                updatedProcess.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME,
-               buildProcessExtendedProperties(updatedProcess), now, now, true, false,
-                false, now, methodName);
+               buildProcessExtendedProperties(updatedProcess), null, null, true, false,
+                false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**

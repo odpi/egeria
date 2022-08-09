@@ -89,12 +89,13 @@ public class DataEngineTopicHandler {
                      topic.getDisplayName(), topic.getDescription(), topic.getZoneMembership(), topic.getOwner(), ownerTypeOrdinal,
                      topic.getOriginOrganizationGUID(), topic.getOriginBusinessCapabilityGUID(), topic.getOtherOriginValues(),
                      topic.getAdditionalProperties(), TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, extendedProperties,
-                     now, now, InstanceStatus.ACTIVE, now, methodName);
+                     null, null, InstanceStatus.ACTIVE, now, methodName);
         } else {
             topicGUID = originalTopicEntity.get().getGUID();
-            topicHandler.updateAsset(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME, topic.getQualifiedName(),
-                                     topic.getDisplayName(), topic.getDescription(), topic.getAdditionalProperties(), TOPIC_TYPE_GUID, TOPIC_TYPE_NAME,
-                                     extendedProperties, now, now, true, false, false, now, methodName);
+            topicHandler.updateAsset(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
+                    topic.getQualifiedName(), topic.getDisplayName(), topic.getDescription(), topic.getAdditionalProperties(),
+                    TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, extendedProperties, null, null, true,
+                    false, false, now, methodName);
         }
 
         return topicGUID;
