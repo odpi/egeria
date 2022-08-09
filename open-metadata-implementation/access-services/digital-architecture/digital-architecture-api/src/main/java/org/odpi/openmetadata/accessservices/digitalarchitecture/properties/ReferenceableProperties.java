@@ -28,6 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ConnectionProperties.class, name = "ConnectionProperties"),
                 @JsonSubTypes.Type(value = ConnectorTypeProperties.class, name = "ConnectorTypeProperties"),
                 @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
+                @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = MeaningProperties.class, name = "MeaningProperties")
         })
 public class ReferenceableProperties implements Serializable

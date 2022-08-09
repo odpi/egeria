@@ -20,7 +20,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  * <li>Error Message Id - to uniquely identify the message</li>
  * <li>Error Message Text - includes placeholder to allow additional values to be captured</li>
  * <li>SystemAction - describes the result of the error</li>
- * <li>UserAction - describes how a AssetConsumerInterface should correct the error</li>
+ * <li>UserAction - describes how an AssetConsumerInterface should correct the error</li>
  * </ul>
  */
 public enum AssetCatalogErrorCode implements ExceptionMessageSet {

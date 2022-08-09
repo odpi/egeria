@@ -73,18 +73,22 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
      * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      * @return unique identifier of the object or null
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countRelatedMedia(String userId,
-                                 String elementGUID,
-                                 Date   effectiveTime,
-                                 String methodName) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+    public int countRelatedMedia(String  userId,
+                                 String  elementGUID,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
     {
         final String guidParameterName = "elementGUID";
 
@@ -96,7 +100,9 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
-                                                                  false,
+                                                                  2,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing,
                                                                   effectiveTime,
                                                                   methodName);
     }
@@ -112,6 +118,8 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -128,6 +136,8 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
                                     List<String> serviceSupportedZones,
                                     int          startingFrom,
                                     int          pageSize,
+                                    boolean      forLineage,
+                                    boolean      forDuplicateProcessing,
                                     Date         effectiveTime,
                                     String       methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
@@ -145,8 +155,8 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,

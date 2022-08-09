@@ -100,7 +100,7 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
 
 
     /**
-     * Return the list of analysis parameters that are passed the the governance service (via
+     * Return the list of analysis parameters that are passed to the governance service (via
      * the governance context).  These values can be overridden on the actual governance request.
      *
      * @return map of parameter name to parameter value
@@ -123,7 +123,7 @@ public class GovernanceServiceRegistrationRequestBody implements Serializable
 
 
     /**
-     * Set up the  list of analysis parameters that are passed the the governance service (via
+     * Set up the  list of analysis parameters that are passed to the governance service (via
      * the governance context).  These values can be overridden on the actual governance request.
      *
      * @param requestParameters map of parameter name to parameter value

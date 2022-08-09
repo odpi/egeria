@@ -73,7 +73,7 @@ public class ConnectorTypeConverter<B> extends DataManagerOMASConverter<B>
 
                     connectorTypeProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     connectorTypeProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    connectorTypeProperties.setDisplayName(this.removeName(instanceProperties));
+                    connectorTypeProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     connectorTypeProperties.setDescription(this.removeDescription(instanceProperties));
                     connectorTypeProperties.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
                     connectorTypeProperties.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));

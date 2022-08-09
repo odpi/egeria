@@ -437,7 +437,7 @@ public class AssetOwnerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a AssetElementsResponse object.
+     * Issue a GET REST call that returns an AssetElementsResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -463,7 +463,7 @@ public class AssetOwnerRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a POST REST call that returns a AssetElementsResponse object.
+     * Issue a POST REST call that returns an AssetElementsResponse object.
      *
      * @param methodName  name of the method being called.
      * @param requestBody request body for the REST call - contains most of the parameters

@@ -22,7 +22,7 @@ public class ConformanceSuiteRuntimeException extends RuntimeException
     private String              reportedUserAction;
     private Map<String, Object> relatedProperties;
 
-    private Throwable           reportedCaughtException = null;
+    private Exception           reportedCaughtException = null;
 
 
     /**
@@ -74,7 +74,7 @@ public class ConformanceSuiteRuntimeException extends RuntimeException
                                             String              errorMessage,
                                             String              systemAction,
                                             String              userAction,
-                                            Throwable           caughtError,
+                                            Exception           caughtError,
                                             Map<String, Object> relatedProperties)
     {
         super(errorMessage, caughtError);
@@ -161,7 +161,7 @@ public class ConformanceSuiteRuntimeException extends RuntimeException
      *
      * @return reportedCaughtException
      */
-    public Throwable getReportedCaughtException()
+    public Exception getReportedCaughtException()
     {
         return reportedCaughtException;
     }

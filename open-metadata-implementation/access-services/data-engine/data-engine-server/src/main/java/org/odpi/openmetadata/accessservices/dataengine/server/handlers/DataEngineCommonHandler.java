@@ -27,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -207,7 +208,7 @@ public class DataEngineCommonHandler {
             genericHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, firstGUID,
                     CommonMapper.GUID_PROPERTY_NAME, firstEntityTypeName, secondGUID, CommonMapper.GUID_PROPERTY_NAME,
                     secondEntityTypeName, false, false, null,
-                    relationshipTypeDef.getGUID(), relationshipTypeName, relationshipProperties, methodName);
+                    relationshipTypeDef.getGUID(), relationshipTypeName, relationshipProperties, null, null, null, methodName);
         } else {
             Relationship originalRelationship = relationship.get();
             String relationshipGUID = originalRelationship.getGUID();
@@ -217,8 +218,8 @@ public class DataEngineCommonHandler {
 
             if (relationshipDifferences.hasInstancePropertiesDifferences()) {
                 genericHandler.updateRelationshipProperties(userId, externalSourceGUID, externalSourceName, relationshipGUID,
-                        GUID_PROPERTY_NAME, originalRelationship.getType().getTypeDefName(), false,
-                        relationshipProperties, methodName);
+                        GUID_PROPERTY_NAME, originalRelationship.getType().getTypeDefName(), true,
+                        relationshipProperties, false, false, null, methodName);
             }
         }
     }
@@ -253,7 +254,8 @@ public class DataEngineCommonHandler {
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
         Relationship relationshipBetweenEntities = genericHandler.getUniqueAttachmentLink(userId, firstGUID,
                  CommonMapper.GUID_PROPERTY_NAME, firstEntityTypeName, relationshipTypeDef.getGUID(),
-                relationshipTypeDef.getName(), secondGUID, secondEntityTypeName, null, methodName);
+                relationshipTypeDef.getName(), secondGUID, secondEntityTypeName, 0,
+                false, false, null, methodName);
 
         if (relationshipBetweenEntities == null) {
             return Optional.empty();
@@ -291,7 +293,7 @@ public class DataEngineCommonHandler {
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         genericHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, entityGUID, GUID_PROPERTY_NAME,
-                entityTypeDef.getGUID(), entityTypeDef.getName(), null, null, methodName);
+                entityTypeDef.getGUID(), entityTypeDef.getName(), null, null, false, false, null, methodName);
     }
 
     /**
@@ -362,7 +364,7 @@ public class DataEngineCommonHandler {
 
         List<EntityDetail> entities = genericHandler.getAttachedEntities(userId, guid, CommonMapper.GUID_PROPERTY_NAME,
                 entityTypeName, relationshipTypeDef.getGUID(), relationshipTypeName, resultingElementTypeName,
-                0, invalidParameterHandler.getMaxPagingSize(), methodName);
+                null, null, 0, false, false, 0, invalidParameterHandler.getMaxPagingSize(), null, methodName);
 
         if (CollectionUtils.isEmpty(entities)) {
             return new HashSet<>();

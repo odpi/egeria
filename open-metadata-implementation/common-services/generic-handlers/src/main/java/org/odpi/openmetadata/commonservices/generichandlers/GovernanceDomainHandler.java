@@ -79,11 +79,12 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param qualifiedName unique name for the governance domain - used in other configuration
      * @param displayName short display name for the governance domain
-     * @param description description of the governance governance domain
+     * @param description description of the  governance domain
      * @param domainIdentifier the domain identifier used in the governance domain definitions
      * @param additionalProperties additional properties for a governance domain
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
-     * @param extendedProperties  properties for a governance governance domain subtype
+     * @param extendedProperties  properties for a  governance domain subtype
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new governance domain object
@@ -99,6 +100,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                          Map<String, String> additionalProperties,
                                          String              suppliedTypeName,
                                          Map<String, Object> extendedProperties,
+                                         Date                effectiveTime,
                                          String              methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -141,6 +143,7 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -153,11 +156,11 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
      * @param governanceDomainGUIDParameterName parameter passing the governance domainGUID
      * @param qualifiedName unique name for the governance domain - used in other configuration
      * @param displayName short display name for the governance domain
-     * @param description description of the governance governance domain
+     * @param description description of the  governance domain
      * @param domainIdentifier the domain identifier used in the governance domain definitions
-     * @param additionalProperties additional properties for a governance governance domain
+     * @param additionalProperties additional properties for a  governance domain
      * @param suppliedTypeName type of governance domain
-     * @param extendedProperties  properties for a governance governance domain subtype
+     * @param extendedProperties  properties for a  governance domain subtype
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -296,7 +299,9 @@ public class GovernanceDomainHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
-                              null,
+                              false,
+                              false,
+                              new Date(),
                               methodName);
     }
 

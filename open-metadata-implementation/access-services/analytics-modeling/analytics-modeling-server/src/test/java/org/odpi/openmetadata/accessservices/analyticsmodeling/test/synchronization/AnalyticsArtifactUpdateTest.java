@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import org.mockito.Mockito;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerAssets;
@@ -345,7 +346,7 @@ public class AnalyticsArtifactUpdateTest extends SynchronizationBaseTest {
 	 */
 	private AnalyticsAsset getAsset(AssetConverter assetConverter, String guid, String test) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
 		return assetConverter.getNewBean(AnalyticsAsset.class,
-				ctx.getRepositoryHandler().getEntityByGUID(ctx.getUserId(), guid, "guid", IdMap.ASSET_TYPE_NAME, test), test);
+					 ctx.getRepositoryHandler().getEntityByGUID(ctx.getUserId(), guid, "guid", IdMap.ASSET_TYPE_NAME, false, false, new Date(), test), test);
 	}
 
 }

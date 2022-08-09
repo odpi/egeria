@@ -7,10 +7,15 @@ import org.odpi.openmetadata.accessservices.assetmanager.api.StewardshipExchange
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+
+import java.util.Date;
 
 
 /**
- * DataAssetExchangeClient is the client for managing Data Assets, Schemas and Connections.
+ * StewardshipExchangeClient is the client for todos and tasks.
  */
 public class StewardshipExchangeClient extends ExchangeClientBase implements StewardshipExchangeInterface
 {
@@ -107,5 +112,133 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
                                      String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+    /**
+     * Classify the element with the Memento classification to indicate that it has been logically deleted for by lineage requests.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void addMementoClassification(String  userId,
+                                         String  assetManagerGUID,
+                                         String  assetManagerName,
+                                         String  elementGUID,
+                                         String  elementExternalIdentifier,
+                                         Date    effectiveTime,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+
+    }
+
+
+    /**
+     * Remove the memento designation from the element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearMementoClassification(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           String  elementGUID,
+                                           String  elementExternalIdentifier,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+
+    }
+
+
+    /**
+     * Classify the element with the Incomplete classification to indicate that it has more details to come.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void addIncompleteClassification(String  userId,
+                                            String  assetManagerGUID,
+                                            String  assetManagerName,
+                                            String  elementGUID,
+                                            String  elementExternalIdentifier,
+                                            Date    effectiveTime,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+
+    }
+
+
+    /**
+     * Remove the Incomplete designation from the element.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software capability representing the caller
+     * @param assetManagerName unique name of software capability representing the caller
+     * @param elementGUID unique identifier of the metadata element to update
+     * @param elementExternalIdentifier unique identifier of the element in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void clearIncompleteClassification(String  userId,
+                                              String  assetManagerGUID,
+                                              String  assetManagerName,
+                                              String  elementGUID,
+                                              String  elementExternalIdentifier,
+                                              Date    effectiveTime,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+
     }
 }

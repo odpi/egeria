@@ -72,7 +72,7 @@ public class SearchKeywordConverter<B> extends OCFConverter<B>
                  */
                 InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                bean.setName(this.removeName(instanceProperties));
+                bean.setName(this.removeKeyword(instanceProperties));
                 bean.setDescription(this.removeDescription(instanceProperties));
 
                 /*

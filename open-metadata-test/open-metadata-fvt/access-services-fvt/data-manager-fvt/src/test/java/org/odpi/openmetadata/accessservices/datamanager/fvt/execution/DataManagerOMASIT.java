@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.apache.commons.lang3.StringUtils;
+import org.odpi.openmetadata.accessservices.datamanager.fvt.connections.CreateConnectionTest;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.databases.CreateDatabaseTest;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.events.CreateEventsTest;
@@ -55,6 +56,16 @@ public class DataManagerOMASIT
     public void testCreateEvents(String serverName)
     {
         FVTResults results = CreateEventsTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"), FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
+
+        results.printResults(serverName);
+        assertTrue(results.isSuccessful());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER})
+    public void testCreateConnections(String serverName)
+    {
+        FVTResults results = CreateConnectionTest.performFVT(serverName, StringUtils.defaultIfEmpty(System.getProperty("fvt.url"), FVTConstants.SERVER_PLATFORM_URL_ROOT), FVTConstants.USERID);
 
         results.printResults(serverName);
         assertTrue(results.isSuccessful());

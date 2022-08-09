@@ -176,11 +176,11 @@ public class TestInformalTag
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -189,7 +189,7 @@ public class TestInformalTag
 
         try
         {
-            validateResultObject((InformalTag) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((InformalTag) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

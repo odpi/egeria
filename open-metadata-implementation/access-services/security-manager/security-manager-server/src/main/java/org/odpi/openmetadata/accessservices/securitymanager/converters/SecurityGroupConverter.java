@@ -51,6 +51,7 @@ public class SecurityGroupConverter<B> extends SecurityManagerOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
+    @Override
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<Relationship> relationships,

@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * AssetConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a Asset bean.
+ * EntityDetail object into an Asset bean.
  */
 public class AssetConverter extends ReferenceableConverter
 {

@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.SchemaExchangeHandler;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -17,16 +16,16 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * DataAssetExchangeRESTServices is the server-side implementation of the Asset Manager OMAS's
- * support for relational databases.  It matches the DataAssetExchangeClient.
+ * SchemaExchangeRESTServices is the server-side implementation of the Asset Manager OMAS's
+ * support for schemas.  It matches the SchemaExchangeClient.
  */
 public class SchemaExchangeRESTServices
 {
-    private static AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
-    private static RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(SchemaExchangeRESTServices.class),
-                                                                                    instanceHandler.getServiceName());
+    private static final AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
+    private static final RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(SchemaExchangeRESTServices.class),
+                                                                                          instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -47,6 +46,8 @@ public class SchemaExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -58,6 +59,8 @@ public class SchemaExchangeRESTServices
     public GUIDResponse createSchemaType(String                serverName,
                                          String                userId,
                                          boolean               assetManagerIsHome,
+                                         boolean               forLineage,
+                                         boolean               forDuplicateProcessing,
                                          SchemaTypeRequestBody requestBody)
     {
         final String methodName = "createSchemaType";
@@ -79,6 +82,9 @@ public class SchemaExchangeRESTServices
                                                           requestBody.getMetadataCorrelationProperties(),
                                                           assetManagerIsHome,
                                                           requestBody.getElementProperties(),
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
                                                           methodName));
             }
             else
@@ -163,6 +169,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the metadata element
      *
      * @return void or
@@ -174,6 +182,8 @@ public class SchemaExchangeRESTServices
                                          String                userId,
                                          String                schemaTypeGUID,
                                          boolean               isMergeUpdate,
+                                         boolean               forLineage,
+                                         boolean               forDuplicateProcessing,
                                          SchemaTypeRequestBody requestBody)
     {
         final String methodName = "updateSchemaType";
@@ -195,7 +205,10 @@ public class SchemaExchangeRESTServices
                                          requestBody.getMetadataCorrelationProperties(),
                                          schemaTypeGUID,
                                          isMergeUpdate,
+                                         forLineage,
+                                         forDuplicateProcessing,
                                          requestBody.getElementProperties(),
+                                         requestBody.getEffectiveTime(),
                                          methodName);
             }
             else
@@ -223,6 +236,8 @@ public class SchemaExchangeRESTServices
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
      * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return void or
@@ -230,13 +245,15 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupSchemaTypeParent(String                             serverName,
-                                              String                             userId,
-                                              String                             parentElementGUID,
-                                              String                             parentElementTypeName,
-                                              String                             schemaTypeGUID,
-                                              boolean                            assetManagerIsHome,
-                                              AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse setupSchemaTypeParent(String                        serverName,
+                                              String                        userId,
+                                              String                        parentElementGUID,
+                                              String                        parentElementTypeName,
+                                              String                        schemaTypeGUID,
+                                              boolean                       assetManagerIsHome,
+                                              boolean                       forLineage,
+                                              boolean                       forDuplicateProcessing,
+                                              RelationshipRequestBody requestBody)
     {
         final String methodName = "setupSchemaTypeParent";
 
@@ -253,14 +270,38 @@ public class SchemaExchangeRESTServices
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
-                handler.setupSchemaTypeParent(userId,
-                                              requestBody.getAssetManagerGUID(),
-                                              requestBody.getAssetManagerName(),
-                                              assetManagerIsHome,
-                                              schemaTypeGUID,
-                                              parentElementGUID,
-                                              parentElementTypeName,
-                                              methodName);
+                if (requestBody.getProperties() != null)
+                {
+                    handler.setupSchemaTypeParent(userId,
+                                                  requestBody.getAssetManagerGUID(),
+                                                  requestBody.getAssetManagerName(),
+                                                  assetManagerIsHome,
+                                                  schemaTypeGUID,
+                                                  parentElementGUID,
+                                                  parentElementTypeName,
+                                                  requestBody.getProperties().getEffectiveFrom(),
+                                                  requestBody.getProperties().getEffectiveTo(),
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  requestBody.getEffectiveTime(),
+                                                  methodName);
+                }
+                else
+                {
+                    handler.setupSchemaTypeParent(userId,
+                                                  requestBody.getAssetManagerGUID(),
+                                                  requestBody.getAssetManagerName(),
+                                                  assetManagerIsHome,
+                                                  schemaTypeGUID,
+                                                  parentElementGUID,
+                                                  parentElementTypeName,
+                                                  null,
+                                                  null,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  requestBody.getEffectiveTime(),
+                                                  methodName);
+                }
             }
             else
             {
@@ -286,6 +327,8 @@ public class SchemaExchangeRESTServices
      * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return void or
@@ -293,12 +336,14 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearSchemaTypeParent(String                             serverName,
-                                              String                             userId,
-                                              String                             parentElementGUID,
-                                              String                             parentElementTypeName,
-                                              String                             schemaTypeGUID,
-                                              AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearSchemaTypeParent(String                        serverName,
+                                              String                        userId,
+                                              String                        parentElementGUID,
+                                              String                        parentElementTypeName,
+                                              String                        schemaTypeGUID,
+                                              boolean                       forLineage,
+                                              boolean                       forDuplicateProcessing,
+                                              EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearSchemaTypeParent";
 
@@ -321,6 +366,9 @@ public class SchemaExchangeRESTServices
                                               schemaTypeGUID,
                                               parentElementGUID,
                                               parentElementTypeName,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              requestBody.getEffectiveTime(),
                                               methodName);
             }
             else
@@ -345,6 +393,8 @@ public class SchemaExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -352,10 +402,12 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeSchemaType(String                        serverName,
-                                         String                        userId,
-                                         String                        schemaTypeGUID,
-                                         MetadataCorrelationProperties requestBody)
+    public VoidResponse removeSchemaType(String            serverName,
+                                         String            userId,
+                                         String            schemaTypeGUID,
+                                         boolean           forLineage,
+                                         boolean           forDuplicateProcessing,
+                                         UpdateRequestBody requestBody)
     {
         final String methodName = "removeSchemaType";
 
@@ -372,7 +424,7 @@ public class SchemaExchangeRESTServices
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
-                handler.removeSchemaType(userId, requestBody, schemaTypeGUID, methodName);
+                handler.removeSchemaType(userId, requestBody.getMetadataCorrelationProperties(), schemaTypeGUID, forLineage, forDuplicateProcessing, requestBody.getEffectiveTime(), methodName);
             }
             else
             {
@@ -398,6 +450,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties plus external identifiers
      *
      * @return list of matching metadata elements or
@@ -409,6 +463,8 @@ public class SchemaExchangeRESTServices
                                                      String                  userId,
                                                      int                     startFrom,
                                                      int                     pageSize,
+                                                     boolean                 forLineage,
+                                                     boolean                 forDuplicateProcessing,
                                                      SearchStringRequestBody requestBody)
     {
         final String methodName = "findSchemaType";
@@ -432,6 +488,9 @@ public class SchemaExchangeRESTServices
                                                                requestBody.getSearchString(),
                                                                startFrom,
                                                                pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               requestBody.getEffectiveTime(),
                                                                methodName));
             }
             else
@@ -457,6 +516,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return metadata element describing the schema type associated with the requested parent element or
@@ -464,13 +525,15 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaTypeElementResponse getSchemaTypeForElement(String                             serverName,
-                                                             String                             userId,
-                                                             String                             parentElementGUID,
-                                                             String                             parentElementTypeName,
-                                                             AssetManagerIdentifiersRequestBody requestBody)
+    public SchemaTypeElementResponse getSchemaTypeForElement(String                        serverName,
+                                                             String                        userId,
+                                                             String                        parentElementGUID,
+                                                             String                        parentElementTypeName,
+                                                             boolean                       forLineage,
+                                                             boolean                       forDuplicateProcessing,
+                                                             EffectiveTimeQueryRequestBody requestBody)
     {
-        final String methodName        = "getSchemaTypeForElement";
+        final String methodName = "getSchemaTypeForElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -490,6 +553,9 @@ public class SchemaExchangeRESTServices
                                                                     requestBody.getAssetManagerName(),
                                                                     parentElementGUID,
                                                                     parentElementTypeName,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
                                                                     methodName));
             }
             else
@@ -516,6 +582,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name to search for plus identifiers
      *
      * @return list of matching metadata elements or
@@ -527,6 +595,8 @@ public class SchemaExchangeRESTServices
                                                             String          userId,
                                                             int             startFrom,
                                                             int             pageSize,
+                                                            boolean         forLineage,
+                                                            boolean         forDuplicateProcessing,
                                                             NameRequestBody requestBody)
     {
         final String methodName = "getSchemaTypeByName";
@@ -550,6 +620,9 @@ public class SchemaExchangeRESTServices
                                                                     requestBody.getName(),
                                                                     startFrom,
                                                                     pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
                                                                     methodName));
             }
             else
@@ -574,6 +647,8 @@ public class SchemaExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return requested metadata element or
@@ -581,10 +656,12 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaTypeElementResponse getSchemaTypeByGUID(String                             serverName,
-                                                         String                             userId,
-                                                         String                             schemaTypeGUID,
-                                                         AssetManagerIdentifiersRequestBody requestBody)
+    public SchemaTypeElementResponse getSchemaTypeByGUID(String                        serverName,
+                                                         String                        userId,
+                                                         String                        schemaTypeGUID,
+                                                         boolean                       forLineage,
+                                                         boolean                       forDuplicateProcessing,
+                                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSchemaTypeByGUID";
 
@@ -602,10 +679,13 @@ public class SchemaExchangeRESTServices
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
                 response.setElement(handler.getSchemaTypeByGUID(userId,
-                                                               requestBody.getAssetManagerGUID(),
-                                                               requestBody.getAssetManagerName(),
-                                                               schemaTypeGUID,
-                                                               methodName));
+                                                                requestBody.getAssetManagerGUID(),
+                                                                requestBody.getAssetManagerName(),
+                                                                schemaTypeGUID,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                requestBody.getEffectiveTime(),
+                                                                methodName));
             }
             else
             {
@@ -629,6 +709,8 @@ public class SchemaExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return header for parent element (data asset, process, port) or
@@ -636,10 +718,12 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ElementHeaderResponse getSchemaTypeParent(String                             serverName,
-                                                     String                             userId,
-                                                     String                             schemaTypeGUID,
-                                                     AssetManagerIdentifiersRequestBody requestBody)
+    public ElementHeaderResponse getSchemaTypeParent(String                        serverName,
+                                                     String                        userId,
+                                                     String                        schemaTypeGUID,
+                                                     boolean                       forLineage,
+                                                     boolean                       forDuplicateProcessing,
+                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSchemaTypeParent";
 
@@ -657,10 +741,13 @@ public class SchemaExchangeRESTServices
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
                 response.setElement(handler.getSchemaTypeParent(userId,
-                                                               requestBody.getAssetManagerGUID(),
-                                                               requestBody.getAssetManagerName(),
-                                                               schemaTypeGUID,
-                                                               methodName));
+                                                                requestBody.getAssetManagerGUID(),
+                                                                requestBody.getAssetManagerName(),
+                                                                schemaTypeGUID,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                requestBody.getEffectiveTime(),
+                                                                methodName));
             }
             else
             {
@@ -689,6 +776,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the schema attribute
      *
      * @return unique identifier of the new metadata element for the schema attribute or
@@ -700,6 +789,8 @@ public class SchemaExchangeRESTServices
                                               String                     userId,
                                               String                     schemaElementGUID,
                                               boolean                    assetManagerIsHome,
+                                              boolean                    forLineage,
+                                              boolean                    forDuplicateProcessing,
                                               SchemaAttributeRequestBody requestBody)
     {
         final String methodName = "createSchemaAttribute";
@@ -722,6 +813,9 @@ public class SchemaExchangeRESTServices
                                                                assetManagerIsHome,
                                                                schemaElementGUID,
                                                                requestBody.getElementProperties(),
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               requestBody.getEffectiveTime(),
                                                                methodName));
             }
             else
@@ -748,6 +842,8 @@ public class SchemaExchangeRESTServices
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
      * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the schema attribute or
@@ -760,6 +856,8 @@ public class SchemaExchangeRESTServices
                                                           String              schemaElementGUID,
                                                           String              templateGUID,
                                                           boolean             assetManagerIsHome,
+                                                          boolean             forLineage,
+                                                          boolean             forDuplicateProcessing,
                                                           TemplateRequestBody requestBody)
     {
         final String methodName = "createSchemaAttributeFromTemplate";
@@ -783,6 +881,9 @@ public class SchemaExchangeRESTServices
                                                                            schemaElementGUID,
                                                                            templateGUID,
                                                                            requestBody.getElementProperties(),
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           requestBody.getEffectiveTime(),
                                                                            methodName));
             }
             else
@@ -808,6 +909,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param schemaAttributeGUID unique identifier of the schema attribute to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody new properties for the schema attribute
      *
      * @return void or
@@ -819,9 +922,11 @@ public class SchemaExchangeRESTServices
                                               String                     userId,
                                               String                     schemaAttributeGUID,
                                               boolean                    isMergeUpdate,
+                                              boolean                    forLineage,
+                                              boolean                    forDuplicateProcessing,
                                               SchemaAttributeRequestBody requestBody)
     {
-        final String methodName                       = "updateSchemaAttribute";
+        final String methodName  = "updateSchemaAttribute";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -841,6 +946,9 @@ public class SchemaExchangeRESTServices
                                               schemaAttributeGUID,
                                               isMergeUpdate,
                                               requestBody.getElementProperties(),
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              requestBody.getEffectiveTime(),
                                               methodName);
             }
             else
@@ -866,6 +974,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param assetManagerIsHome ensure that only the asset manager can update this classification
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -873,11 +983,13 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setSchemaElementAsCalculatedValue(String                        serverName,
-                                                          String                        userId,
-                                                          String                        schemaElementGUID,
-                                                          boolean                       assetManagerIsHome,
-                                                          MetadataCorrelationProperties requestBody)
+    public VoidResponse setSchemaElementAsCalculatedValue(String            serverName,
+                                                          String            userId,
+                                                          String            schemaElementGUID,
+                                                          boolean           assetManagerIsHome,
+                                                          boolean           forLineage,
+                                                          boolean           forDuplicateProcessing,
+                                                          UpdateRequestBody requestBody)
     {
         final String methodName = "setSchemaElementAsCalculatedValue";
 
@@ -890,16 +1002,19 @@ public class SchemaExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
                 handler.setSchemaElementAsCalculatedValue(userId,
-                                                          requestBody.getAssetManagerGUID(),
-                                                          requestBody.getAssetManagerName(),
+                                                          requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                                          requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
                                                           assetManagerIsHome,
                                                           schemaElementGUID,
-                                                          requestBody.getExternalIdentifier(),
+                                                          requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          requestBody.getEffectiveTime(),
                                                           methodName);
             }
             else
@@ -924,6 +1039,8 @@ public class SchemaExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaElementGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -931,10 +1048,12 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearSchemaElementAsCalculatedValue(String                        serverName,
-                                                            String                        userId,
-                                                            String                        schemaElementGUID,
-                                                            MetadataCorrelationProperties requestBody)
+    public VoidResponse clearSchemaElementAsCalculatedValue(String            serverName,
+                                                            String            userId,
+                                                            String            schemaElementGUID,
+                                                            boolean           forLineage,
+                                                            boolean           forDuplicateProcessing,
+                                                            UpdateRequestBody requestBody)
     {
         final String methodName = "clearSchemaElementAsCalculatedValue";
 
@@ -947,14 +1066,17 @@ public class SchemaExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
                 handler.clearSchemaElementAsCalculatedValue(userId,
-                                                            requestBody.getAssetManagerGUID(),
-                                                            requestBody.getAssetManagerName(),
+                                                            requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                                            requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
                                                             schemaElementGUID,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            requestBody.getEffectiveTime(),
                                                             methodName);
             }
             else
@@ -980,6 +1102,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param assetManagerIsHome ensure that only the asset manager can update this classification
      * @param schemaAttributeGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody details of the primary key plus external identifiers
      *
      * @return null or
@@ -991,6 +1115,8 @@ public class SchemaExchangeRESTServices
                                                 String                              userId,
                                                 String                              schemaAttributeGUID,
                                                 boolean                             assetManagerIsHome,
+                                                boolean                             forLineage,
+                                                boolean                             forDuplicateProcessing,
                                                 PrimaryKeyClassificationRequestBody requestBody)
     {
         final String methodName = "setupColumnAsPrimaryKey";
@@ -1015,6 +1141,9 @@ public class SchemaExchangeRESTServices
                                                 schemaAttributeGUID,
                                                 requestBody.getPrimaryKeyProperties().getName(),
                                                 requestBody.getPrimaryKeyProperties().getKeyPattern(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
                                                 methodName);
             }
             else
@@ -1039,6 +1168,8 @@ public class SchemaExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaAttributeGUID unique identifier of the metadata element to update
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -1047,9 +1178,11 @@ public class SchemaExchangeRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public VoidResponse clearColumnAsPrimaryKey(String                        serverName,
-                                                String                        userId,
+                                                String                    userId,
                                                 String                        schemaAttributeGUID,
-                                                MetadataCorrelationProperties requestBody)
+                                                boolean           forLineage,
+                                                boolean           forDuplicateProcessing,
+                                                UpdateRequestBody requestBody)
     {
         final String methodName = "clearColumnAsPrimaryKey";
 
@@ -1062,14 +1195,17 @@ public class SchemaExchangeRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
                 handler.clearColumnAsPrimaryKey(userId,
-                                                requestBody.getAssetManagerGUID(),
-                                                requestBody.getAssetManagerName(),
+                                                requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                                requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
                                                 schemaAttributeGUID,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
                                                 methodName);
             }
             else
@@ -1096,6 +1232,8 @@ public class SchemaExchangeRESTServices
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
      * @param assetManagerIsHome ensure that only the asset manager can update this relationship
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the foreign key relationship
      *
      * @return  void or
@@ -1108,6 +1246,8 @@ public class SchemaExchangeRESTServices
                                                     String                primaryKeyGUID,
                                                     String                foreignKeyGUID,
                                                     boolean               assetManagerIsHome,
+                                                    boolean               forLineage,
+                                                    boolean               forDuplicateProcessing,
                                                     ForeignKeyRequestBody requestBody)
     {
         final String methodName = "setupForeignKeyRelationship";
@@ -1132,6 +1272,9 @@ public class SchemaExchangeRESTServices
                                                     primaryKeyGUID,
                                                     foreignKeyGUID,
                                                     requestBody.getProperties(),
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    requestBody.getEffectiveTime(),
                                                     methodName);
             }
             else
@@ -1157,6 +1300,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the foreign key relationship plus external identifiers
      *
      * @return void or
@@ -1168,6 +1313,8 @@ public class SchemaExchangeRESTServices
                                                      String                userId,
                                                      String                primaryKeyGUID,
                                                      String                foreignKeyGUID,
+                                                     boolean               forLineage,
+                                                     boolean               forDuplicateProcessing,
                                                      ForeignKeyRequestBody requestBody)
     {
         final String methodName = "updateForeignKeyRelationship";
@@ -1191,6 +1338,9 @@ public class SchemaExchangeRESTServices
                                                      primaryKeyGUID,
                                                      foreignKeyGUID,
                                                      requestBody.getProperties(),
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     requestBody.getEffectiveTime(),
                                                      methodName);
             }
             else
@@ -1216,6 +1366,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return void or
@@ -1223,11 +1375,13 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearForeignKeyRelationship(String                             serverName,
-                                                    String                             userId,
-                                                    String                             primaryKeyGUID,
-                                                    String                             foreignKeyGUID,
-                                                    AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse clearForeignKeyRelationship(String                        serverName,
+                                                    String                        userId,
+                                                    String                        primaryKeyGUID,
+                                                    String                        foreignKeyGUID,
+                                                    boolean                       forLineage,
+                                                    boolean                       forDuplicateProcessing,
+                                                    EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearForeignKeyRelationship";
 
@@ -1249,6 +1403,9 @@ public class SchemaExchangeRESTServices
                                                     requestBody.getAssetManagerName(),
                                                     primaryKeyGUID,
                                                     foreignKeyGUID,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    requestBody.getEffectiveTime(),
                                                     methodName);
             }
             else
@@ -1273,6 +1430,8 @@ public class SchemaExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaAttributeGUID unique identifier of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller and external identifier of element
      *
      * @return void or
@@ -1280,10 +1439,12 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeSchemaAttribute(String                        serverName,
-                                              String                        userId,
-                                              String                        schemaAttributeGUID,
-                                              MetadataCorrelationProperties requestBody)
+    public VoidResponse removeSchemaAttribute(String            serverName,
+                                              String            userId,
+                                              String            schemaAttributeGUID,
+                                              boolean           forLineage,
+                                              boolean           forDuplicateProcessing,
+                                              UpdateRequestBody requestBody)
     {
         final String methodName = "removeSchemaAttribute";
 
@@ -1300,7 +1461,13 @@ public class SchemaExchangeRESTServices
             {
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
-                handler.removeSchemaAttribute(userId, requestBody, schemaAttributeGUID, methodName);
+                handler.removeSchemaAttribute(userId,
+                                              requestBody.getMetadataCorrelationProperties(),
+                                              schemaAttributeGUID,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              requestBody.getEffectiveTime(),
+                                              methodName);
             }
             else
             {
@@ -1326,6 +1493,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties plus external identifiers
      *
      * @return list of matching metadata elements or
@@ -1337,6 +1506,8 @@ public class SchemaExchangeRESTServices
                                                                 String                  userId,
                                                                 int                     startFrom,
                                                                 int                     pageSize,
+                                                                boolean                 forLineage,
+                                                                boolean                 forDuplicateProcessing,
                                                                 SearchStringRequestBody requestBody)
     {
         final String methodName = "findSchemaAttributes";
@@ -1360,6 +1531,9 @@ public class SchemaExchangeRESTServices
                                                                      requestBody.getSearchString(),
                                                                      startFrom,
                                                                      pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     requestBody.getEffectiveTime(),
                                                                      methodName));
             }
             else
@@ -1386,6 +1560,8 @@ public class SchemaExchangeRESTServices
      * @param schemaTypeGUID unique identifier of the schemaType of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return list of associated metadata elements or
@@ -1393,12 +1569,14 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementsResponse getNestedAttributes(String                             serverName,
-                                                                      String                             userId,
-                                                                      String                             schemaTypeGUID,
-                                                                      int                                startFrom,
-                                                                      int                                pageSize,
-                                                                      AssetManagerIdentifiersRequestBody requestBody)
+    public SchemaAttributeElementsResponse getNestedAttributes(String                        serverName,
+                                                               String                        userId,
+                                                               String                        schemaTypeGUID,
+                                                               int                           startFrom,
+                                                               int                           pageSize,
+                                                               boolean                       forLineage,
+                                                               boolean                       forDuplicateProcessing,
+                                                               EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getNestedAttributes";
 
@@ -1421,6 +1599,9 @@ public class SchemaExchangeRESTServices
                                                                     schemaTypeGUID,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
                                                                     methodName));
             }
             else
@@ -1447,6 +1628,8 @@ public class SchemaExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return list of matching metadata elements or
@@ -1458,6 +1641,8 @@ public class SchemaExchangeRESTServices
                                                                      String          userId,
                                                                      int             startFrom,
                                                                      int             pageSize,
+                                                                     boolean         forLineage,
+                                                                     boolean         forDuplicateProcessing,
                                                                      NameRequestBody requestBody)
     {
         final String methodName = "getSchemaAttributesByName";
@@ -1481,6 +1666,9 @@ public class SchemaExchangeRESTServices
                                                                           requestBody.getName(),
                                                                           startFrom,
                                                                           pageSize,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          requestBody.getEffectiveTime(),
                                                                           methodName));
             }
             else
@@ -1505,6 +1693,8 @@ public class SchemaExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param schemaAttributeGUID unique identifier of the requested metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier/name of software server capability representing the caller
      *
      * @return matching metadata element or
@@ -1512,10 +1702,12 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementResponse getSchemaAttributeByGUID(String                             serverName,
-                                                                   String                             userId,
-                                                                   String                             schemaAttributeGUID,
-                                                                   AssetManagerIdentifiersRequestBody requestBody)
+    public SchemaAttributeElementResponse getSchemaAttributeByGUID(String                        serverName,
+                                                                   String                        userId,
+                                                                   String                        schemaAttributeGUID,
+                                                                   boolean                       forLineage,
+                                                                   boolean                       forDuplicateProcessing,
+                                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSchemaAttributeByGUID";
 
@@ -1536,6 +1728,9 @@ public class SchemaExchangeRESTServices
                                                                      requestBody.getAssetManagerGUID(),
                                                                      requestBody.getAssetManagerName(),
                                                                      schemaAttributeGUID,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     requestBody.getEffectiveTime(),
                                                                      methodName));
             }
             else

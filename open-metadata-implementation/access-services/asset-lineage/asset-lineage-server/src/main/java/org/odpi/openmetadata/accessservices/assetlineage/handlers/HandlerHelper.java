@@ -30,6 +30,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -106,8 +107,8 @@ public class HandlerHelper {
         String relationshipTypeGUID = getTypeGUID(userId, relationshipTypeName);
 
         List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, entityGUID, GUID_PARAMETER,
-                entityTypeName, relationshipTypeGUID, relationshipTypeName, null,
-                0, 0, null, methodName);
+                entityTypeName, relationshipTypeGUID, relationshipTypeName, null, null, 0,
+                true, false, 0, 0, null, methodName);
 
         if (CollectionUtils.isEmpty(relationships)) {
             return Collections.emptyList();
@@ -143,8 +144,8 @@ public class HandlerHelper {
         String relationshipTypeGuid = getTypeGUID(userId, relationshipTypeName);
         return Optional.ofNullable(
                 genericHandler.getUniqueAttachmentLink(userId, entityGUID, GUID_PARAMETER, entityTypeName,
-                        relationshipTypeGuid, relationshipTypeName, null, null,
-                        null, methodName)
+                        relationshipTypeGuid, relationshipTypeName, null, null, 0,
+                        true, false, null, methodName)
         );
     }
 
@@ -184,13 +185,11 @@ public class HandlerHelper {
         if (relationship.getEntityOneProxy().getGUID().equals(entityDetailGUID)) {
             return genericHandler.getEntityFromRepository(userId, relationship.getEntityTwoProxy().getGUID(), GUID_PARAMETER,
                     relationship.getEntityTwoProxy().getType().getTypeDefName(),
-                    null, null,
-                    false, false, null, methodName);
+                    null, null, true, false, null, methodName);
         } else if (relationship.getEntityTwoProxy().getGUID().equals(entityDetailGUID)) {
             return genericHandler.getEntityFromRepository(userId, relationship.getEntityOneProxy().getGUID(), GUID_PARAMETER,
                     relationship.getEntityOneProxy().getType().getTypeDefName(),
-                    null, null,
-                    false, false, null, methodName);
+                    null, null, true, false, null, methodName);
         }
         return null;
     }
@@ -215,7 +214,7 @@ public class HandlerHelper {
 
         return genericHandler.getEntityFromRepository(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName,
                 null, null,
-                false, false, null, methodName);
+                true, false, null, methodName);
     }
 
 
@@ -253,7 +252,7 @@ public class HandlerHelper {
         List<EntityDetail> pagedEntities = genericHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
                 findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(),
-                true, false, startingFrom, pageSize, methodName);
+                true, false, startingFrom, pageSize, null, methodName);
         if (pagedEntities == null) {
             return false;
         }

@@ -80,8 +80,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * Create the description of a role.  This is typically a subtype of PersonRole.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param qualifiedName unique name for the role - used in other configuration
      * @param name short display name for the role
      * @param description description of the role
@@ -91,6 +91,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a role
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a governance role subtype
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new role object
@@ -112,6 +115,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                    Map<String, Object> extendedProperties,
                                    Date                effectiveFrom,
                                    Date                effectiveTo,
+                                   Date                effectiveTime,
                                    String              methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -158,6 +162,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            roleBuilder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -167,8 +172,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * The template defines additional classifications and relationships that should be added to the new role.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the role - used in other configuration
      * @param name short display name for the role
@@ -230,15 +235,18 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * Link a person role with a Person profile to show that the person has been appointed to role.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param profileGUID unique identifier of actor profile
      * @param profileGUIDParameterName parameter name supplying profileGUID
      * @param roleGUID  unique identifier of the person role
      * @param roleGUIDParameterName parameter name supplying roleGUID
      * @param isPublic is this appointment visible to others
-     * @param effectiveFrom the official start date of the appointment - null means effective immediately
-     * @param effectiveFrom the official end date of the appointment - null means unknown
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the appointment relationship
@@ -257,6 +265,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       boolean isPublic,
                                       Date    effectiveFrom,
                                       Date    effectiveTo,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
                                       String  methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
@@ -272,12 +283,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                          roleGUID,
                                          roleGUIDParameterName,
                                          OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
-                                         false,
-                                         false,
+                                         forLineage,
+                                         forDuplicateProcessing,
                                          supportedZones,
                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_GUID,
                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
                                          builder.getAppointmentProperties(isPublic, effectiveFrom, effectiveTo, methodName),
+                                         effectiveFrom,
+                                         effectiveTo,
+                                         effectiveTime,
                                          methodName);
     }
 
@@ -286,15 +300,18 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * Update the properties in an appointment relationship.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param appointmentGUID        relationship GUID
      * @param appointmentGUIDParameterName property for appointmentGUID
      * @param isPublic is this appointment visible to others
-     * @param effectiveFrom the official start date of the appointment - null means effective immediately
-     * @param effectiveFrom the official end date of the appointment - null means unknown
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
      * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
      *                      matching names, or should the entire properties of the instance be replaced?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
@@ -310,6 +327,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   Date    effectiveFrom,
                                   Date    effectiveTo,
                                   boolean isMergeUpdate,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
                                   String  methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -317,14 +337,17 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
         PersonRoleBuilder builder = new PersonRoleBuilder(repositoryHelper, serviceName, serverName);
 
         this.updateRelationshipProperties(userId,
-                                             externalSourceGUID,
-                                             externalSourceName,
-                                             appointmentGUID,
-                                             appointmentGUIDParameterName,
-                                             OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
-                                             isMergeUpdate,
-                                             builder.getAppointmentProperties(isPublic, effectiveFrom, effectiveTo, methodName),
-                                             methodName);
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          appointmentGUID,
+                                          appointmentGUIDParameterName,
+                                          OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
+                                          isMergeUpdate,
+                                          builder.getAppointmentProperties(isPublic, effectiveFrom, effectiveTo, methodName),
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
+                                          methodName);
     }
 
 
@@ -332,8 +355,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * Set an end date on a specific appointment.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param profileGUID unique identifier of person profile
      * @param profileGUIDParameterName parameter name supplying profileGUID
      * @param roleGUID  unique identifier of the person role
@@ -341,6 +364,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param appointmentGUID unique identifier (guid) of the appointment relationship
      * @param appointmentGUIDParameterName parameter name supplying appointmentGUID
      * @param endDate the official end of the appointment - null means effective immediately
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
@@ -357,6 +381,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       String appointmentGUID,
                                       String appointmentGUIDParameterName,
                                       Date   endDate,
+                                      Date   effectiveTime,
                                       String methodName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
@@ -367,7 +392,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                             appointmentGUID,
                                                                             appointmentGUIDParameterName,
                                                                             OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME,
-                                                                            null,
+                                                                            effectiveTime,
                                                                             methodName);
 
 
@@ -459,8 +484,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * Link a team leader role to a team profile.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param teamLeaderRoleGUID unique identifier of TeamLeader role
      * @param teamLeaderRoleGUIDParameterName parameter name supplying teamLeaderRoleGUID
      * @param teamGUID  unique identifier of the user identity
@@ -468,25 +493,31 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param position optional name of position
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void addTeamLeader(String userId,
-                              String externalSourceGUID,
-                              String externalSourceName,
-                              String teamLeaderRoleGUID,
-                              String teamLeaderRoleGUIDParameterName,
-                              String teamGUID,
-                              String teamGUIDParameterName,
-                              String position,
-                              Date   effectiveFrom,
-                              Date   effectiveTo,
-                              String methodName) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void addTeamLeader(String  userId,
+                              String  externalSourceGUID,
+                              String  externalSourceName,
+                              String  teamLeaderRoleGUID,
+                              String  teamLeaderRoleGUIDParameterName,
+                              String  teamGUID,
+                              String  teamGUIDParameterName,
+                              String  position,
+                              Date    effectiveFrom,
+                              Date    effectiveTo,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing,
+                              Date    effectiveTime,
+                              String  methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
         PersonRoleBuilder builder = new PersonRoleBuilder(repositoryHelper, serviceName, serverName);
 
@@ -501,12 +532,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   teamGUID,
                                   teamGUIDParameterName,
                                   OpenMetadataAPIMapper.TEAM_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
-                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                  relationshipProperties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -515,30 +549,34 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * Unlink a team leader role from a team profile.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param teamLeaderRoleGUID unique identifier of TeamLeader role
      * @param teamLeaderRoleGUIDParameterName parameter name supplying teamLeaderRoleGUID
      * @param teamGUID  unique identifier of the user identity
      * @param teamGUIDParameterName parameter name supplying teamGUID
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void removeTeamLeader(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String teamLeaderRoleGUID,
-                                 String teamLeaderRoleGUIDParameterName,
-                                 String teamGUID,
-                                 String teamGUIDParameterName,
-                                 Date   effectiveTime,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void removeTeamLeader(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  teamLeaderRoleGUID,
+                                 String  teamLeaderRoleGUIDParameterName,
+                                 String  teamGUID,
+                                 String  teamGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -551,8 +589,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       teamGUIDParameterName,
                                       OpenMetadataAPIMapper.TEAM_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
@@ -566,8 +604,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * Link a team member role to a team profile.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param teamMemberRoleGUID unique identifier of TeamMember role
      * @param teamMemberRoleGUIDParameterName parameter name supplying teamMemberRoleGUID
      * @param teamGUID  unique identifier of the user identity
@@ -575,25 +613,31 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param position optional name of position
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  addTeamMember(String userId,
-                               String externalSourceGUID,
-                               String externalSourceName,
-                               String teamMemberRoleGUID,
-                               String teamMemberRoleGUIDParameterName,
-                               String teamGUID,
-                               String teamGUIDParameterName,
-                               String position,
-                               Date   effectiveFrom,
-                               Date   effectiveTo,
-                               String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void  addTeamMember(String  userId,
+                               String  externalSourceGUID,
+                               String  externalSourceName,
+                               String  teamMemberRoleGUID,
+                               String  teamMemberRoleGUIDParameterName,
+                               String  teamGUID,
+                               String  teamGUIDParameterName,
+                               String  position,
+                               Date    effectiveFrom,
+                               Date    effectiveTo,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         PersonRoleBuilder builder = new PersonRoleBuilder(repositoryHelper, serviceName, serverName);
 
@@ -608,12 +652,15 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   teamGUID,
                                   teamGUIDParameterName,
                                   OpenMetadataAPIMapper.TEAM_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
-                                  setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
+                                  relationshipProperties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -622,30 +669,34 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * Unlink a team member role from a team profile.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param teamMemberRoleGUID unique identifier of TeamMember role
      * @param teamMemberRoleGUIDParameterName parameter name supplying teamMemberRoleGUID
      * @param teamGUID  unique identifier of the user identity
      * @param teamGUIDParameterName parameter name supplying teamGUID
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void removeTeamMember(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String teamMemberRoleGUID,
-                                 String teamMemberRoleGUIDParameterName,
-                                 String teamGUID,
-                                 String teamGUIDParameterName,
-                                 Date   effectiveTime,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void removeTeamMember(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  teamMemberRoleGUID,
+                                 String  teamMemberRoleGUIDParameterName,
+                                 String  teamGUID,
+                                 String  teamGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -658,8 +709,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       teamGUIDParameterName,
                                       OpenMetadataAPIMapper.TEAM_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
                                       OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
@@ -673,8 +724,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * Update the person role object.
      *
      * @param userId calling user
-     * @param externalSourceGUID     unique identifier of software server capability representing the caller
-     * @param externalSourceName     unique name of software server capability representing the caller
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param roleGUID unique identifier of the role to update
      * @param roleGUIDParameterName parameter passing the roleGUID
      * @param qualifiedName unique name for the role - used in other configuration
@@ -692,6 +743,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      *                      matching names, or should the entire properties of the instance be replaced?
      * @param effectiveFrom starting time for this element (null for all time)
      * @param effectiveTo ending time for this element (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -717,6 +771,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                  boolean             isMergeUpdate,
                                  Date                effectiveFrom,
                                  Date                effectiveTo,
+                                 boolean             forLineage,
+                                 boolean             forDuplicateProcessing,
+                                 Date                effectiveTime,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -752,8 +809,6 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
 
         roleBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
-        Date effectiveTime = this.getEffectiveTime(effectiveFrom, effectiveTo);
-
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
@@ -761,8 +816,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     roleGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     roleBuilder.getInstanceProperties(methodName),
                                     isMergeUpdate,
@@ -778,18 +833,24 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param roleGUID unique identifier of the metadata element to remove
      * @param roleGUIDParameterName parameter supplying the roleGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removePersonRole(String userId,
-                                 String roleGUID,
-                                 String roleGUIDParameterName,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void removePersonRole(String  userId,
+                                 String  roleGUID,
+                                 String  roleGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     null,
@@ -800,9 +861,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -816,7 +877,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -825,15 +888,17 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> findPersonRoles(String userId,
-                                   String searchString,
-                                   String searchStringParameterName,
-                                   int    startFrom,
-                                   int    pageSize,
-                                   Date   effectiveTime,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public List<B> findPersonRoles(String  userId,
+                                   String  searchString,
+                                   String  searchStringParameterName,
+                                   int     startFrom,
+                                   int     pageSize,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         return this.findBeans(userId,
                               searchString,
@@ -843,6 +908,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                               null,
                               startFrom,
                               pageSize,
+                              forLineage,
+                              forDuplicateProcessing,
                               effectiveTime,
                               methodName);
     }
@@ -857,7 +924,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -866,15 +935,17 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>  getPersonRolesByName(String userId,
-                                         String name,
-                                         String nameParameterName,
-                                         int    startFrom,
-                                         int    pageSize,
-                                         Date   effectiveTime,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<B>  getPersonRolesByName(String  userId,
+                                         String  name,
+                                         String  nameParameterName,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -889,8 +960,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -906,7 +977,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param personRoleGUID unique identifier of the role
      * @param personRoleGUIDParameterName name of the parameter that supplied the GUID
-     * @param effectiveTime when should this bean be retrieved from
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return bean
@@ -915,20 +988,22 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getPersonRoleByGUID(String userId,
-                                 String personRoleGUID,
-                                 String personRoleGUIDParameterName,
-                                 Date   effectiveTime,
-                                 String methodName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public B getPersonRoleByGUID(String  userId,
+                                 String  personRoleGUID,
+                                 String  personRoleGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
         return getBeanFromRepository(userId,
                                      personRoleGUID,
                                      personRoleGUIDParameterName,
                                      OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                     false,
-                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
                                      effectiveTime,
                                      methodName);
     }
@@ -943,7 +1018,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -952,15 +1029,17 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getPersonRolesForRoleId(String userId,
-                                           String name,
-                                           String nameParameterName,
-                                           int    startFrom,
-                                           int    pageSize,
-                                           Date   effectiveTime,
-                                           String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public List<B> getPersonRolesForRoleId(String  userId,
+                                           String  name,
+                                           String  nameParameterName,
+                                           int     startFrom,
+                                           int     pageSize,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing,
+                                           Date    effectiveTime,
+                                           String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
@@ -974,8 +1053,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -994,7 +1073,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1003,15 +1084,17 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getPersonRolesForTitle(String userId,
-                                          String name,
-                                          String nameParameterName,
-                                          int    startFrom,
-                                          int    pageSize,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public List<B> getPersonRolesForTitle(String  userId,
+                                          String  name,
+                                          String  nameParameterName,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
@@ -1025,8 +1108,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
@@ -1044,7 +1127,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param domainIdentifier domain of interest - 0 means all domains
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -1053,14 +1138,16 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getPersonRolesForDomainId(String userId,
-                                             int    domainIdentifier,
-                                             int    startFrom,
-                                             int    pageSize,
-                                             Date   effectiveTime,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public List<B> getPersonRolesForDomainId(String  userId,
+                                             int     domainIdentifier,
+                                             int     startFrom,
+                                             int     pageSize,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         /*
          * A governance domain identifier of 0 is ignored in the retrieval because it means return for all domains.
@@ -1071,8 +1158,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,
                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                        null,
-                                       false,
-                                       false,
+                                       forLineage,
+                                       forDuplicateProcessing,
                                        supportedZones,
                                        startFrom,
                                        pageSize,
@@ -1087,8 +1174,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                        OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                        null,
                                        null,
-                                       false,
-                                       false,
+                                       forLineage,
+                                       forDuplicateProcessing,
                                        supportedZones,
                                        null,
                                        startFrom,

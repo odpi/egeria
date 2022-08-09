@@ -20,12 +20,12 @@ import java.util.Map;
  */
 public class DatabaseIntegratorContext
 {
-    private ConnectionManagerClient connectionManagerClient;
-    private DatabaseManagerClient   databaseManagerClient;
-    private DataManagerEventClient  eventClient;
-    private String                  userId;
-    private String                  databaseManagerGUID;
-    private String                  databaseManagerName;
+    private final ConnectionManagerClient connectionManagerClient;
+    private final DatabaseManagerClient   databaseManagerClient;
+    private final DataManagerEventClient  eventClient;
+    private final String                  userId;
+    private final String                  databaseManagerGUID;
+    private final String                  databaseManagerName;
 
 
     /**
@@ -51,6 +51,23 @@ public class DatabaseIntegratorContext
         this.connectionManagerClient = connectionManagerClient;
         this.databaseManagerGUID     = databaseManagerGUID;
         this.databaseManagerName     = databaseManagerName;
+    }
+
+
+    /* ========================================================
+     * Returning the database manager name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the database manager that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getDatabaseManagerName()
+    {
+        return databaseManagerName;
     }
 
 
@@ -529,7 +546,7 @@ public class DatabaseIntegratorContext
 
 
     /**
-     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * Link the schema type and asset.  This is called from outside the AssetHandler.  The databaseAssetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
      *
      * @param databaseAssetGUID unique identifier of the asset to connect the schema to
@@ -1166,7 +1183,7 @@ public class DatabaseIntegratorContext
 
     /**
      * Classify a column in a database table as the primary key.  This means each row has a different value
-     * in this column and it can be used to uniquely identify the column.
+     * in this column, and it can be used to uniquely identify the column.
      *
      * @param databaseColumnGUID unique identifier if the primary key column
      * @param databasePrimaryKeyProperties properties to store
@@ -1596,7 +1613,7 @@ public class DatabaseIntegratorContext
 
 
     /**
-     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * Update the metadata element representing an endpoint.  It is possible to use the subtype property classes or
      * set up specialized properties in extended properties.
      *
      * @param endpointGUID unique identifier of the metadata element to update

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLi
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryCategory;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 import java.util.Arrays;
@@ -15,6 +16,10 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+
 import static org.mockito.Mockito.when;
 
 public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
@@ -63,7 +68,8 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
     public void getCategoriesViaCategoryAnchorRelationships() throws Exception{
         when(entitiesHandler.getAttachedEntities(USER_ID, glossaries.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
                 GLOSSARY_TYPE_NAME, CATEGORY_ANCHOR_RELATIONSHIP_GUID, CATEGORY_ANCHOR_RELATIONSHIP_NAME, null,
-                0, 10000, "getCategoriesViaCategoryAnchorRelationships")).thenReturn(categories);
+                null, null, 0, false, false,
+                0, 10000, null, "getCategoriesViaCategoryAnchorRelationships")).thenReturn(categories);
 
         GlossaryViewEntityDetailResponse response = underTest.getCategoriesViaCategoryAnchorRelationships(USER_ID, SERVER_NAME,
                 glossaries.get(0).getGUID(), 0, 10000);
@@ -103,7 +109,7 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
     public void getExternalGlossaryLinks() throws Exception{
         when(entitiesHandler.getAttachedEntities(USER_ID, categories.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
                 CATEGORY_TYPE_NAME, LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_GUID, LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME,
-                null, 0, 10, "getExternalGlossaryLinks"))
+                null, null, null, 0, false, false, 0, 10, null, "getExternalGlossaryLinks"))
                 .thenReturn(Collections.singletonList(externalGlossaryLink));
 
         GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaryLinks(USER_ID, SERVER_NAME,

@@ -63,9 +63,9 @@ public enum SequencingOrder implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private int     ordinal;
-    private String  name;
-    private String  description;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
 
     /**
      * Constructor to set up a single instances of the enum.
@@ -113,10 +113,6 @@ public enum SequencingOrder implements Serializable
     @Override
     public String toString()
     {
-        return "SequencingOrder{" +
-                "ordinal=" + ordinal +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "SequencingOrder{" + name + "}";
     }
 }

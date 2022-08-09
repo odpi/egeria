@@ -15,23 +15,24 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
  * ValidValuesRESTServices provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- * the same attributes and so inherit from ValidValue where all of the attributes are defined.
+ * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
 public class ValidValuesRESTServices
 {
-    private static DigitalArchitectureInstanceHandler   instanceHandler     = new DigitalArchitectureInstanceHandler();
-    private static RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final DigitalArchitectureInstanceHandler   instanceHandler     = new DigitalArchitectureInstanceHandler();
+    private static final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
 
     /**
@@ -100,6 +101,7 @@ public class ValidValuesRESTServices
                                                              requestBody.getExtendedProperties(),
                                                              null,
                                                              null,
+                                                             new Date(),
                                                              methodName));
             }
             else
@@ -172,6 +174,9 @@ public class ValidValuesRESTServices
                                                                     requestBody.getExtendedProperties(),
                                                                     null,
                                                                     null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
             }
             else
@@ -246,6 +251,9 @@ public class ValidValuesRESTServices
                                          requestBody.getExtendedProperties(),
                                          null,
                                          null,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -309,6 +317,9 @@ public class ValidValuesRESTServices
                                          null,
                                          validValueGUID,
                                          qualifiedName,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -375,6 +386,9 @@ public class ValidValuesRESTServices
                                           validValueGUID,
                                           null,
                                           null,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
         }
         catch (Exception error)
@@ -428,7 +442,15 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.detachValidValueFromSet(userId, null, null, setGUID, validValueGUID, null, methodName);
+            handler.detachValidValueFromSet(userId,
+                                            null,
+                                            null,
+                                            setGUID,
+                                            validValueGUID,
+                                            false,
+                                            false,
+                                            new Date(),
+                                            methodName);
         }
         catch (Exception error)
         {
@@ -501,6 +523,9 @@ public class ValidValuesRESTServices
                                                    additionalValues,
                                                    null,
                                                    null,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
         }
         catch (Exception error)
@@ -547,7 +572,13 @@ public class ValidValuesRESTServices
 
             AssetHandler<ReferenceDataAssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.classifyAssetAsReferenceData(userId, assetGUID, assetGUIDParameterName, methodName);
+            handler.classifyAssetAsReferenceData(userId,
+                                                 assetGUID,
+                                                 assetGUIDParameterName,
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
         }
         catch (Exception error)
         {
@@ -600,7 +631,15 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.unlinkValidValueFromImplementation(userId, null, null, validValueGUID, assetGUID, null, methodName);
+            handler.unlinkValidValueFromImplementation(userId,
+                                                       null,
+                                                       null,
+                                                       validValueGUID,
+                                                       assetGUID,
+                                                       false,
+                                                       false,
+                                                       new Date(),
+                                                       methodName);
         }
         catch (Exception error)
         {
@@ -646,7 +685,13 @@ public class ValidValuesRESTServices
 
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.declassifyAssetAsReferenceData(userId, assetGUID, assetGUIDParameterName, methodName);
+            handler.declassifyAssetAsReferenceData(userId,
+                                                   assetGUID,
+                                                   assetGUIDParameterName,
+                                                   false,
+                                                   false,
+                                                   new Date(),
+                                                   methodName);
         }
         catch (Exception error)
         {
@@ -705,7 +750,18 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.assignValidValueToConsumer(userId, null, null, validValueGUID, consumerGUID, strictRequirement, null, null, methodName);
+            handler.assignValidValueToConsumer(userId,
+                                               null,
+                                               null,
+                                               validValueGUID,
+                                               consumerGUID,
+                                               strictRequirement,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
         }
         catch (Exception error)
         {
@@ -758,7 +814,15 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.unassignValidValueFromConsumer(userId, null, null, validValueGUID, consumerGUID, null, methodName);
+            handler.unassignValidValueFromConsumer(userId,
+                                                   null,
+                                                   null,
+                                                   validValueGUID,
+                                                   consumerGUID,
+                                                   false,
+                                                   false,
+                                                   new Date(),
+                                                   methodName);
         }
         catch (Exception error)
         {
@@ -831,6 +895,9 @@ public class ValidValuesRESTServices
                                                notes,
                                                null,
                                                null,
+                                               false,
+                                               false,
+                                               new Date(),
                                                methodName);
         }
         catch (Exception error)
@@ -889,7 +956,9 @@ public class ValidValuesRESTServices
                                                    null,
                                                    validValueGUID,
                                                    referenceableGUID,
-                                                   null,
+                                                   false,
+                                                   false,
+                                                   new Date(),
                                                    methodName);
         }
         catch (Exception error)
@@ -965,6 +1034,9 @@ public class ValidValuesRESTServices
                                    notes,
                                    null,
                                    null,
+                                   false,
+                                   false,
+                                   new Date(),
                                    methodName);
         }
         catch (Exception error)
@@ -1018,7 +1090,15 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.unmapValidValues(userId, null, null, validValue1GUID, validValue2GUID, null, methodName);
+            handler.unmapValidValues(userId,
+                                     null,
+                                     null,
+                                     validValue1GUID,
+                                     validValue2GUID,
+                                     false,
+                                     false,
+                                     new Date(),
+                                     methodName);
         }
         catch (Exception error)
         {
@@ -1066,7 +1146,12 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            ValidValueElement validValue = handler.getValidValueByGUID(userId, validValueGUID, null, methodName);
+            ValidValueElement validValue = handler.getValidValueByGUID(userId,
+                                                                       validValueGUID,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
+                                                                       methodName);
             response.setElement(validValue);
         }
         catch (Exception error)
@@ -1128,7 +1213,9 @@ public class ValidValuesRESTServices
                                                                                    nameParameterName,
                                                                                    startFrom,
                                                                                    pageSize,
-                                                                                   null,
+                                                                                   false,
+                                                                                   false,
+                                                                                   new Date(),
                                                                                    methodName);
                 response.setElementList(validValues);
             }
@@ -1192,7 +1279,9 @@ public class ValidValuesRESTServices
                                                                                searchStringParameterName,
                                                                                startFrom,
                                                                                pageSize,
-                                                                               null,
+                                                                               false,
+                                                                               false,
+                                                                               new Date(),
                                                                                methodName);
                 response.setElementList(validValues);
             }
@@ -1253,7 +1342,9 @@ public class ValidValuesRESTServices
                                                                                    validValueGUIDParameter,
                                                                                    startFrom,
                                                                                    pageSize,
-                                                                                   null,
+                                                                                   false,
+                                                                                   false,
+                                                                                   new Date(),
                                                                                    methodName);
             response.setElementList(validValues);
         }
@@ -1313,7 +1404,9 @@ public class ValidValuesRESTServices
                                                                                 validValueGUIDParameter,
                                                                                 startFrom,
                                                                                 pageSize,
-                                                                                null,
+                                                                                false,
+                                                                                false,
+                                                                                new Date(),
                                                                                 methodName);
             response.setElementList(validValues);
         }
@@ -1376,7 +1469,9 @@ public class ValidValuesRESTServices
                                                                                                                                                          methodName),
                                                                                                                        startFrom,
                                                                                                                        pageSize,
-                                                                                                                       null,
+                                                                                                                       false,
+                                                                                                                       false,
+                                                                                                                       new Date(),
                                                                                                                        methodName);
 
             response.setElementList(validValueConsumers);
@@ -1438,7 +1533,9 @@ public class ValidValuesRESTServices
                                                                                                                                       referenceableGUIDParameter,
                                                                                                                                       startFrom,
                                                                                                                                       pageSize,
-                                                                                                                                      null,
+                                                                                                                                      false,
+                                                                                                                                      false,
+                                                                                                                                      new Date(),
                                                                                                                                       methodName);
 
             response.setElementList(validValueAssignmentDefinitions);
@@ -1500,7 +1597,9 @@ public class ValidValuesRESTServices
                                                                                                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                                                                   startFrom,
                                                                                                                                   pageSize,
-                                                                                                                                  null,
+                                                                                                                                 false,
+                                                                                                                                 false,
+                                                                                                                                 new Date(),
                                                                                                                                   methodName);
 
             response.setElementList(validValueImplAssetElements);
@@ -1563,7 +1662,9 @@ public class ValidValuesRESTServices
                                                                                assetGUIDParameterName,
                                                                                startFrom,
                                                                                pageSize,
-                                                                               null,
+                                                                               false,
+                                                                               false,
+                                                                               new Date(),
                                                                                methodName);
 
             response.setElementList(definitions);
@@ -1626,7 +1727,9 @@ public class ValidValuesRESTServices
                                                                                                 validValueGUIDParameter,
                                                                                                 startFrom,
                                                                                                 pageSize,
-                                                                                                null,
+                                                                                                false,
+                                                                                                false,
+                                                                                                new Date(),
                                                                                                 methodName);
 
             response.setElementList(validValuesMappings);
@@ -1685,14 +1788,21 @@ public class ValidValuesRESTServices
                     ReferenceValueAssignmentDefinitionElement,
                     ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            ValidValueElement  validValueElement = handler.getValidValueByGUID(userId, validValueGUID, null, methodName);
+            ValidValueElement  validValueElement = handler.getValidValueByGUID(userId,
+                                                                               validValueGUID,
+                                                                               false,
+                                                                               false,
+                                                                               new Date(),
+                                                                               methodName);
 
             List<ValidValueMappingElement>  validValuesMappings = handler.getValidValueMappings(userId,
                                                                                                 validValueGUID,
                                                                                                 validValueGUIDParameter,
                                                                                                 startFrom,
                                                                                                 pageSize,
-                                                                                                null,
+                                                                                                false,
+                                                                                                false,
+                                                                                                new Date(),
                                                                                                 methodName);
 
             if ((validValuesMappings != null) && (! validValuesMappings.isEmpty()))
@@ -1788,7 +1898,9 @@ public class ValidValuesRESTServices
                                                                                                                                                 methodName),
                                                                                                               startFrom,
                                                                                                               pageSize,
-                                                                                                              null,
+                                                                                                              false,
+                                                                                                              false,
+                                                                                                              new Date(),
                                                                                                               methodName);
 
             response.setElementList(assignedItems);
@@ -1850,7 +1962,9 @@ public class ValidValuesRESTServices
                                                                                                                               guidParameterName,
                                                                                                                               startFrom,
                                                                                                                               pageSize,
-                                                                                                                              null,
+                                                                                                                              false,
+                                                                                                                              false,
+                                                                                                                              new Date(),
                                                                                                                               methodName);
 
             response.setElementList(referenceValueAssignments);

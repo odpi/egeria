@@ -48,7 +48,7 @@ public class RESTConfigurationException extends RESTClientCheckedExceptionBase
                                       String    errorMessage,
                                       String    systemAction,
                                       String    userAction,
-                                      Throwable caughtError)
+                                      Exception caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 

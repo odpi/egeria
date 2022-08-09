@@ -1373,6 +1373,19 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
 
     /**
+     * Retrieve an entity from the archive.  Return null if it does not exist
+     *
+     * @param guid unique identifier
+     * @return requested entity
+     */
+    @Override
+    public EntityDetail queryEntity(String   guid)
+    {
+        return entityDetailMap.get(guid);
+    }
+
+
+    /**
      * Add a new relationship to the archive.
      *
      * @param relationship instance to add
@@ -1438,6 +1451,20 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
     }
 
 
+
+    /**
+     * Retrieve a relationship from the archive.
+     *
+     * @param guid unique identifier
+     * @return requested relationship
+     */
+    @Override
+    public Relationship queryRelationship(String   guid)
+    {
+        return relationshipMap.get(guid);
+    }
+
+
     /**
      * Add a new classification to the archive.
      *
@@ -1499,10 +1526,30 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
     }
 
 
+
+    /**
+     * Retrieve a classification extension from the archive if it exists
+     *
+     * @param entityGUID unique identifier of entity
+     * @param classificationName name of the classification
+     * @return requested classification extension
+     */
+    @Override
+    public ClassificationEntityExtension queryClassification(String entityGUID,
+                                                           String classificationName)
+    {
+        final String methodName = "getClassification";
+
+        String identifier = entityGUID + ":" + classificationName;
+
+        return classificationMap.get(identifier);
+    }
+
+
     /**
      * Once the content of the archive has been added to the archive builder, an archive object can be retrieved.
      *
-     * @return open metadata archive object with all of the supplied content in it.
+     * @return open metadata archive object with all the supplied content in it.
      */
     public OpenMetadataArchive getOpenMetadataArchive()
     {

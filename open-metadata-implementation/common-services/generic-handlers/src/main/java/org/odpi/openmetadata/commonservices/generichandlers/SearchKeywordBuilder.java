@@ -12,8 +12,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
 {
-    private String keyword;
-    private String description;
+    private final String keyword;
+    private final String description;
 
 
     /**
@@ -41,6 +41,7 @@ public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
         this.description = description;
     }
 
+
     /**
      * Return the supplied bean properties in an InstanceProperties object.
      *
@@ -53,23 +54,17 @@ public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (keyword != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.KEYWORD_PROPERTY_NAME,
-                                                                      keyword,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.KEYWORD_PROPERTY_NAME,
+                                                                  keyword,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.KEYWORD_DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.KEYWORD_DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
         return properties;
     }

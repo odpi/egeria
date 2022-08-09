@@ -56,7 +56,7 @@ public class OpenMetadataPlatformSecurityVerifier
             platformSecurityConnector.start();
             platformSecurityConnection = connection;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             /*
              * The assumption is that any exceptions creating the new connector are down to a bad connection

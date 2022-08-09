@@ -1979,7 +1979,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     switch(operator)
                     {
                         case IN:
-                            // For the IN operator, only an ArrayPropertyValue is allowed
+                            // For the IN operator, only an ArrayTypePropertyValue is allowed
                             if (!(value instanceof ArrayPropertyValue))
                             {
                                 throw new InvalidParameterException(OMRSErrorCode.INVALID_LIST_CONDITION.getMessageDefinition(),
@@ -1989,7 +1989,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                             }
                             break;
                         case LIKE:
-                            // For the LIKE operator, only a PrimitivePropertyValue of type string is allowed
+                            // For the LIKE operator, only a PrimitiveTypePropertyValue of type string is allowed
                             if (value instanceof PrimitivePropertyValue)
                             {
                                 PrimitivePropertyValue ppv = (PrimitivePropertyValue) value;
@@ -4169,7 +4169,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                         matchesProperties = (actualBD != null && testBD != null && actualBD.compareTo(testBD) >= 0);
                         break;
                     case IN:
-                        // The value to test against must be a list (ArrayPropertyValue)
+                        // The value to test against must be a list (ArrayTypePropertyValue)
                         if (testValue instanceof ArrayPropertyValue)
                         {
                             ArrayPropertyValue apv = (ArrayPropertyValue) testValue;

@@ -20,12 +20,13 @@ import java.util.Map;
  */
 public class TopicIntegratorContext
 {
-    private ConnectionManagerClient connectionManagerClient;
-    private EventBrokerClient       eventBrokerClient;
-    private DataManagerEventClient  eventClient;
-    private String                  userId;
-    private String                  eventBrokerGUID;
-    private String                  eventBrokerName;
+    private final ConnectionManagerClient connectionManagerClient;
+    private final EventBrokerClient       eventBrokerClient;
+    private final DataManagerEventClient  eventClient;
+    private final String                  userId;
+    private final String                  eventBrokerGUID;
+    private final String                  eventBrokerName;
+
     private boolean                 eventBrokerIsHome = true;
 
     /**
@@ -51,6 +52,23 @@ public class TopicIntegratorContext
         this.userId                  = userId;
         this.eventBrokerGUID         = eventBrokerGUID;
         this.eventBrokerName         = eventBrokerName;
+    }
+
+
+
+    /* ========================================================
+     * Returning the event broker name from the configuration
+     */
+
+    /**
+     * Return the qualified name of the event broker that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getEventBrokerName()
+    {
+        return eventBrokerName;
     }
 
 
@@ -715,8 +733,8 @@ public class TopicIntegratorContext
      * Create a new metadata element to represent a schema type.
      *
      * @param schemaTypeProperties properties about the schema type to store
-     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
-     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
+     * @param mapFromSchemaTypeGUID unique identifier of the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the range of the map
      *
      * @return unique identifier of the new schema type
      *

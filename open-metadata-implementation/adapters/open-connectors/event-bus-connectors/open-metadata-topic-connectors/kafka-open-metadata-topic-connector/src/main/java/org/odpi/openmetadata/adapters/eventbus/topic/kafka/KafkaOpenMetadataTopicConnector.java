@@ -321,7 +321,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
     private void initializeProducerAndProducerThread() {
 
-        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, this, auditLog);
+        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, auditLog);
         producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
     }
 

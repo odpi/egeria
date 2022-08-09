@@ -187,7 +187,7 @@ public class ConnectionProperties extends ConfigurationItemProperties
 
 
     /**
-     * Set up the the userId to use on this connection.
+     * Set up the userId to use on this connection.
      *
      * @param userId string
      */

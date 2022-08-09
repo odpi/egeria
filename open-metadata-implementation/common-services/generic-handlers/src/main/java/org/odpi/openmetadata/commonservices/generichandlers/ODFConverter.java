@@ -51,9 +51,9 @@ public abstract class ODFConverter<B> extends OCFConverter<B>
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    protected ElementHeader getMetadataElementHeader(Class<B> beanClass,
+    protected ElementHeader getMetadataElementHeader(Class<B>     beanClass,
                                                      EntityDetail entity,
-                                                     String methodName) throws PropertyServerException
+                                                     String       methodName) throws PropertyServerException
     {
         if (entity != null)
         {

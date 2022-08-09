@@ -282,11 +282,11 @@ public class TestPrimitiveSchemaType
         /*
          * Through superclass
          */
-        ElementHeader elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -295,7 +295,7 @@ public class TestPrimitiveSchemaType
 
         try
         {
-            validateResultObject((PrimitiveSchemaType) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((PrimitiveSchemaType) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

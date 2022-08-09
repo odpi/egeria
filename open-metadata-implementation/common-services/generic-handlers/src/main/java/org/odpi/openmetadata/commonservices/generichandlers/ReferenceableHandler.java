@@ -187,6 +187,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
      * @param name name to search for
      * @param nameParameterName property that provided the name
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return matching B bean
@@ -195,24 +198,27 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public B getBeanByQualifiedName(String userId,
-                                    String typeGUID,
-                                    String typeName,
-                                    String name,
-                                    String nameParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
+    public B getBeanByQualifiedName(String  userId,
+                                    String  typeGUID,
+                                    String  typeName,
+                                    String  name,
+                                    String  nameParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
         return this.getBeanByQualifiedName(userId,
                                            typeGUID,
                                            typeName,
                                            name,
                                            nameParameterName,
-                                           false,
-                                           false,
+                                           forLineage,
+                                           forDuplicateProcessing,
                                            supportedZones,
-                                           new Date(),
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -412,6 +418,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param nameParameterName property that provided the name
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return list of B beans
@@ -427,6 +436,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            String   nameParameterName,
                                            int      startFrom,
                                            int      pageSize,
+                                           boolean  forLineage,
+                                           boolean  forDuplicateProcessing,
+                                           Date     effectiveTime,
                                            String   methodName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
@@ -439,7 +451,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        supportedZones,
                                        startFrom,
                                        pageSize,
-                                       null,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -456,6 +470,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -473,6 +489,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            List<String> serviceSupportedZones,
                                            int          startFrom,
                                            int          pageSize,
+                                           boolean      forLineage,
+                                           boolean      forDuplicateProcessing,
                                            Date         effectiveTime,
                                            String       methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
@@ -502,8 +520,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     serviceSupportedZones,
                                     null,
                                     startFrom,
@@ -805,22 +823,28 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param owner name of the owner
      * @param ownerTypeName type of element that owner comes from
      * @param ownerPropertyName name of property used to identify owner
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void addOwner(String userId,
-                         String beanGUID,
-                         String beanGUIDParameterName,
-                         String beanGUIDTypeName,
-                         String owner,
-                         String ownerTypeName,
-                         String ownerPropertyName,
-                         String methodName) throws InvalidParameterException,
-                                                   UserNotAuthorizedException,
-                                                   PropertyServerException
+    public void addOwner(String  userId,
+                         String  beanGUID,
+                         String  beanGUIDParameterName,
+                         String  beanGUIDTypeName,
+                         String  owner,
+                         String  ownerTypeName,
+                         String  ownerPropertyName,
+                         boolean forLineage,
+                         boolean forDuplicateProcessing,
+                         Date    effectiveTime,
+                         String  methodName) throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException
     {
         ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
@@ -837,10 +861,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
                                            builder.getOwnershipProperties(owner, ownerTypeName, ownerPropertyName, methodName),
-                                           false,
-                                           false,
-                                           false,
-                                           new Date(),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -852,19 +876,25 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUID unique identifier of entity to update
      * @param beanGUIDParameterName name of parameter providing beanGUID
      * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeOwner(String userId,
-                             String beanGUID,
-                             String beanGUIDParameterName,
-                             String beanGUIDTypeName,
-                             String methodName) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException
+    public void  removeOwner(String  userId,
+                             String  beanGUID,
+                             String  beanGUIDParameterName,
+                             String  beanGUIDTypeName,
+                             boolean forLineage,
+                             boolean forDuplicateProcessing,
+                             Date    effectiveTime,
+                             String  methodName) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
                                                 null,
@@ -874,9 +904,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUIDTypeName,
                                                 OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
-                                                false,
-                                                false,
-                                                new Date(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -891,6 +921,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUIDTypeName type of bean
      * @param securityLabels list of security labels defining the security characteristics of the element
      * @param securityProperties Descriptive labels describing origin of the asset
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
@@ -903,6 +936,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                  String                beanGUIDTypeName,
                                  List<String>          securityLabels,
                                  Map<String, Object>   securityProperties,
+                                 boolean               forLineage,
+                                 boolean               forDuplicateProcessing,
+                                 Date                  effectiveTime,
                                  String                methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -922,10 +958,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
                                            builder.getSecurityTagProperties(securityLabels, securityProperties, methodName),
-                                           false,
-                                           false,
-                                           false,
-                                           new Date(),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -937,19 +973,25 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUID unique identifier of entity to update
      * @param beanGUIDParameterName name of parameter providing beanGUID
      * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeSecurityTags(String userId,
-                                    String beanGUID,
-                                    String beanGUIDParameterName,
-                                    String beanGUIDTypeName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void  removeSecurityTags(String  userId,
+                                    String  beanGUID,
+                                    String  beanGUIDParameterName,
+                                    String  beanGUIDTypeName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
                                                 null,
@@ -959,15 +1001,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUIDTypeName,
                                                 OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.SECURITY_TAG_CLASSIFICATION_TYPE_NAME,
-                                                false,
-                                                false,
-                                                new Date(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
 
     /**
-     * Classify a referenceable as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     * Classify a referenceable as "BusinessSignificant" (this may affect the way that lineage is displayed).
      *
      * @param userId calling user
      * @param beanGUID unique identifier of entity to update
@@ -976,22 +1018,28 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param description description of why this is significant
      * @param scope scope of its business significance
      * @param businessCapabilityGUID unique identifier of the business capability that rates this as significant
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setBusinessSignificant(String userId,
-                                       String beanGUID,
-                                       String beanGUIDParameterName,
-                                       String beanGUIDTypeName,
-                                       String description,
-                                       String scope,
-                                       String businessCapabilityGUID,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public void setBusinessSignificant(String  userId,
+                                       String  beanGUID,
+                                       String  beanGUIDParameterName,
+                                       String  beanGUIDTypeName,
+                                       String  description,
+                                       String  scope,
+                                       String  businessCapabilityGUID,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         ReferenceableBuilder builder = new ReferenceableBuilder(OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
@@ -1008,10 +1056,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
                                            builder.getBusinessSignificanceProperties(description, scope, businessCapabilityGUID, methodName),
-                                           false,
-                                           false,
-                                           false,
-                                           new Date(),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1023,19 +1071,25 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUID unique identifier of entity to update
      * @param beanGUIDParameterName name of parameter providing beanGUID
      * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearBusinessSignificant(String userId,
-                                         String beanGUID,
-                                         String beanGUIDParameterName,
-                                         String beanGUIDTypeName,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void clearBusinessSignificant(String  userId,
+                                         String  beanGUID,
+                                         String  beanGUIDParameterName,
+                                         String  beanGUIDTypeName,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
                                                 null,
@@ -1045,9 +1099,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUIDTypeName,
                                                 OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.BUSINESS_SIGNIFICANCE_CLASSIFICATION_TYPE_NAME,
-                                                false,
-                                                false,
-                                                new Date(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -1062,6 +1116,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param name name of the template
      * @param description description of when, where and how to use the template
      * @param additionalProperties any additional properties
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException asset or element not known, null userId or guid
@@ -1075,6 +1132,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           String              name,
                                           String              description,
                                           Map<String, String> additionalProperties,
+                                          boolean             forLineage,
+                                          boolean             forDuplicateProcessing,
+                                          Date                effectiveTime,
                                           String              methodName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -1094,10 +1154,10 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME,
                                            builder.getTemplateProperties(name, description, additionalProperties, methodName),
-                                           false,
-                                           false,
-                                           false,
-                                           new Date(),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -1109,19 +1169,25 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param beanGUID unique identifier of bean
      * @param beanGUIDParameterName name of parameter supplying the beanGUID
      * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException asset or element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void removeTemplateClassification(String userId,
-                                             String beanGUID,
-                                             String beanGUIDParameterName,
-                                             String beanGUIDTypeName,
-                                             String methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void removeTemplateClassification(String  userId,
+                                             String  beanGUID,
+                                             String  beanGUIDParameterName,
+                                             String  beanGUIDTypeName,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
                                                 null,
@@ -1131,9 +1197,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                 beanGUIDTypeName,
                                                 OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.TEMPLATE_CLASSIFICATION_TYPE_NAME,
-                                                false,
-                                                false,
-                                                new Date(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -1148,6 +1214,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param suppliedResultingTypeName name of the type of object that the search returns - null mean referenceable
      * @param startFrom int      starting position for fist returned element.
      * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName String calling method
      *
      * @return a list of assets or
@@ -1155,16 +1224,19 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public List<B> getMoreInformation(String userId,
-                                      String startingGUID,
-                                      String startingGUIDParameterName,
-                                      String suppliedStartingTypeName,
-                                      String suppliedResultingTypeName,
-                                      int    startFrom,
-                                      int    pageSize,
-                                      String methodName) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    public List<B> getMoreInformation(String  userId,
+                                      String  startingGUID,
+                                      String  startingGUIDParameterName,
+                                      String  suppliedStartingTypeName,
+                                      String  suppliedResultingTypeName,
+                                      int     startFrom,
+                                      int     pageSize,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
         return this.getMoreInformation(userId,
                                        startingGUID,
@@ -1174,7 +1246,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        supportedZones,
                                        startFrom,
                                        pageSize,
-                                       null,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       effectiveTime,
                                        methodName);
     }
 
@@ -1190,6 +1264,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startFrom int      starting position for fist returned element.
      * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName String calling method
      *
@@ -1206,6 +1282,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       List<String> serviceSupportedZones,
                                       int          startFrom,
                                       int          pageSize,
+                                      boolean      forLineage,
+                                      boolean      forDuplicateProcessing,
                                       Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
@@ -1235,8 +1313,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startFrom,
                                         pageSize,
@@ -1246,31 +1324,103 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Create a simple relationship between a glossary term and a referenceable.
+     * Create relationships between the identified glossary terms and an Asset.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
-     * @param beanGUID unique identifier of the asset that is being described
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
+     * @param beanGUID unique identifier of the referenceable that is being described
      * @param beanGUIDParameter parameter supply the beanGUID
-     * @param glossaryTermGUID unique identifier of the glossary term
-     * @param glossaryTermGUIDParameter parameter supplying the list of GlossaryTermGUID
+     * @param glossaryTermGUIDs list of unique identifiers of the glossary terms
+     * @param glossaryTermGUIDsParameter parameter supplying the list of GlossaryTermGUIDs
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException the guid properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void  saveSemanticAssignment(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String beanGUID,
-                                        String beanGUIDParameter,
-                                        String glossaryTermGUID,
-                                        String glossaryTermGUIDParameter,
-                                        String methodName)  throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public void  saveSemanticAssignments(String         userId,
+                                         String         externalSourceGUID,
+                                         String         externalSourceName,
+                                         String         beanGUID,
+                                         String         beanGUIDParameter,
+                                         List<String>   glossaryTermGUIDs,
+                                         String         glossaryTermGUIDsParameter,
+                                         Date           effectiveFrom,
+                                         Date           effectiveTo,
+                                         boolean        forLineage,
+                                         boolean        forDuplicateProcessing,
+                                         Date           effectiveTime,
+                                         String         methodName)  throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        if (glossaryTermGUIDs != null)
+        {
+            for (String glossaryTermGUID : glossaryTermGUIDs)
+            {
+                if (glossaryTermGUID != null)
+                {
+                    this.saveSemanticAssignment(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                beanGUID,
+                                                beanGUIDParameter,
+                                                glossaryTermGUID,
+                                                glossaryTermGUIDsParameter,
+                                                effectiveFrom,
+                                                effectiveTo,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Create a simple relationship between a glossary term and a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
+     * @param beanGUID unique identifier of the asset that is being described
+     * @param beanGUIDParameter parameter supply the beanGUID
+     * @param glossaryTermGUID unique identifier of the glossary term
+     * @param glossaryTermGUIDParameter parameter supplying the list of GlossaryTermGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the guid properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void  saveSemanticAssignment(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  beanGUID,
+                                        String  beanGUIDParameter,
+                                        String  glossaryTermGUID,
+                                        String  glossaryTermGUIDParameter,
+                                        Date    effectiveFrom,
+                                        Date    effectiveTo,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName)  throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -1281,12 +1431,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   glossaryTermGUID,
                                   glossaryTermGUIDParameter,
                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
                                   null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -1296,8 +1449,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Create a simple relationship between a glossary term and a referenceable.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
      * @param beanGUID unique identifier of the element that is being described
      * @param beanGUIDParameter parameter supply the beanGUID
      * @param glossaryTermGUID unique identifier of the glossary term
@@ -1311,31 +1464,37 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param source where was the source of the assignment
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException the guid properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void  saveSemanticAssignment(String userId,
-                                        String externalSourceGUID,
-                                        String externalSourceName,
-                                        String beanGUID,
-                                        String beanGUIDParameter,
-                                        String glossaryTermGUID,
-                                        String glossaryTermGUIDParameter,
-                                        String description,
-                                        String expression,
-                                        int    statusOrdinal,
-                                        int    confidence,
-                                        String createdBy,
-                                        String steward,
-                                        String source,
-                                        Date   effectiveFrom,
-                                        Date   effectiveTo,
-                                        String methodName)  throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public void  saveSemanticAssignment(String  userId,
+                                        String  externalSourceGUID,
+                                        String  externalSourceName,
+                                        String  beanGUID,
+                                        String  beanGUIDParameter,
+                                        String  glossaryTermGUID,
+                                        String  glossaryTermGUIDParameter,
+                                        String  description,
+                                        String  expression,
+                                        int     statusOrdinal,
+                                        int     confidence,
+                                        String  createdBy,
+                                        String  steward,
+                                        String  source,
+                                        Date    effectiveFrom,
+                                        Date    effectiveTo,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName)  throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
@@ -1395,12 +1554,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   glossaryTermGUID,
                                   glossaryTermGUIDParameter,
                                   OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                  setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                  properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -1410,12 +1572,14 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * a field in the schema).
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param beanGUID unique identifier of the element that is being described
      * @param beanGUIDParameter parameter supply the beanGUID
      * @param glossaryTermGUID unique identifier of the glossary term
      * @param glossaryTermGUIDParameter parameter supplying the list of GlossaryTermGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -1423,17 +1587,19 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeSemanticAssignment(String userId,
-                                          String externalSourceGUID,
-                                          String externalSourceName,
-                                          String beanGUID,
-                                          String beanGUIDParameter,
-                                          String glossaryTermGUID,
-                                          String glossaryTermGUIDParameter,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void  removeSemanticAssignment(String  userId,
+                                          String  externalSourceGUID,
+                                          String  externalSourceName,
+                                          String  beanGUID,
+                                          String  beanGUIDParameter,
+                                          String  glossaryTermGUID,
+                                          String  glossaryTermGUIDParameter,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -1446,8 +1612,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       glossaryTermGUIDParameter,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                       OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       supportedZones,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
@@ -1460,8 +1626,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Create a relationship between a referenceable and a resource it uses.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source - null for local
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
      * @param beanGUID unique identifier of the starting element
      * @param beanGUIDParameter parameter supplying the beanGUID
      * @param memberGUID unique identifier of the element to link
@@ -1470,6 +1636,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param watchResource should changes in the members result in notifications
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException the guid properties are invalid
@@ -1487,6 +1656,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         boolean watchResource,
                                         Date    effectiveFrom,
                                         Date    effectiveTo,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
                                         String  methodName)  throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -1512,12 +1684,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   memberGUID,
                                   memberGUIDParameter,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
-                                  setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                  properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -1526,12 +1701,14 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Remove the relationship between a referenceable and a resource it uses.
      *
      * @param userId calling user
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param beanGUID unique identifier of the referenceable
      * @param beanGUIDParameter parameter supplying beanGUID
      * @param memberGUID unique identifier of the glossary term
      * @param memberGUIDParameter parameter supplying memberGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -1539,17 +1716,19 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeResourceListMember(String userId,
-                                          String externalSourceGUID,
-                                          String externalSourceName,
-                                          String beanGUID,
-                                          String beanGUIDParameter,
-                                          String memberGUID,
-                                          String memberGUIDParameter,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void  removeResourceListMember(String  userId,
+                                          String  externalSourceGUID,
+                                          String  externalSourceName,
+                                          String  beanGUID,
+                                          String  beanGUIDParameter,
+                                          String  memberGUID,
+                                          String  memberGUIDParameter,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         if (beanGUID != null)
         {
@@ -1564,8 +1743,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           memberGUIDParameter,
                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
                                           OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
                                           OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
@@ -1585,6 +1764,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param collectionGUIDParameterName name of the parameter supplying collectionGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
@@ -1594,15 +1775,17 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getCollectionMembers(String userId,
-                                          String collectionGUID,
-                                          String collectionGUIDParameterName,
-                                          int    startFrom,
-                                          int    pageSize,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public List<B>   getCollectionMembers(String  userId,
+                                          String  collectionGUID,
+                                          String  collectionGUIDParameterName,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          Date    effectiveTime,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         collectionGUID,
@@ -1611,6 +1794,11 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
                                         OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,
@@ -1643,7 +1831,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
             if (repositoryHelper.getClassificationFromEntity(serviceName,
                                                              entity,
                                                              OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
-                                                             methodName) == null)
+                                                             methodName) != null)
             {
                 classificationNeeded = false;
             }
@@ -1664,14 +1852,71 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
                                                OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                null,
-                                               false,
                                                true,
                                                false,
+                                               true,
                                                new Date(),
                                                methodName);
         }
     }
 
+
+    /**
+     * Set up the standard properties for elements related to stewardship
+     *
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
+     * @param methodName calling method
+     */
+    private InstanceProperties createStewardshipProperties(int     statusIdentifier,
+                                                           String  steward,
+                                                           String  stewardTypeName,
+                                                           String  stewardPropertyName,
+                                                           String  source,
+                                                           String  notes,
+                                                           String  methodName)
+    {
+        InstanceProperties properties  = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                                      steward,
+                                                                                      methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                  stewardTypeName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  stewardPropertyName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  source,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                  notes,
+                                                                  methodName);
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                               statusIdentifier,
+                                                               methodName);
+
+        return properties;
+    }
 
     /**
      * Create a simple relationship between two elements in an Asset description (typically the asset itself or
@@ -1724,7 +1969,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                             null,
                                                             null,
-                                                            false,
+                                                            true,
                                                             true,
                                                             supportedZones,
                                                             null,
@@ -1736,7 +1981,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                             null,
                                                             null,
-                                                            false,
+                                                            true,
                                                             true,
                                                             supportedZones,
                                                             null,
@@ -1752,42 +1997,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         }
 
         /*
-         * Finally link the entities together.
+         * Finally, link the entities together.
          */
-        InstanceProperties properties  = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                      null,
-                                                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
-                                                                                      steward,
-                                                                                      methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
-                                                                  stewardTypeName,
-                                                                  methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
-                                                                  stewardPropertyName,
-                                                                  methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
-                                                                  source,
-                                                                  methodName);
-
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
-                                                                  notes,
-                                                                  methodName);
-
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                               properties,
-                                                               OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME,
-                                                               statusIdentifier,
-                                                               methodName);
+        InstanceProperties properties = this.createStewardshipProperties(statusIdentifier,
+                                                                         steward,
+                                                                         stewardTypeName,
+                                                                         stewardPropertyName,
+                                                                         source,
+                                                                         notes,
+                                                                         methodName);
 
         this.linkElementToElement(userId,
                                   null,
@@ -1798,12 +2016,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   element2GUID,
                                   element2GUIDParameter,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                  false,
+                                  true,
                                   true,
                                   supportedZones,
                                   OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_GUID,
                                   OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_NAME,
                                   properties,
+                                  null,
+                                  null,
+                                  null,
                                   methodName);
     }
 
@@ -1816,7 +2037,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param element1GUIDParameter name of parameter supplying element1GUID
      * @param element2GUID unique identifier of second element
      * @param element2GUIDParameter name of parameter supplying element2GUID
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid or the elements are not linked as duplicates
@@ -1828,7 +2048,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                String element1GUIDParameter,
                                                String element2GUID,
                                                String element2GUIDParameter,
-                                               Date   effectiveTime,
                                                String methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -1849,7 +2068,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                             element2GUID,
                                                             true,
-                                                            effectiveTime,
+                                                            true,
+                                                            null,
                                                             methodName);
 
         /*
@@ -1865,9 +2085,11 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     0,
                                     true,
+                                    true,
+                                    supportedZones,
                                     0,
                                     invalidParameterHandler.getMaxPagingSize(),
-                                    effectiveTime,
+                                    null,
                                     methodName) == null)
         {
             this.removeClassificationFromRepository(userId,
@@ -1878,9 +2100,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                     OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
                                                     OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
-                                                    false,
                                                     true,
-                                                    effectiveTime,
+                                                    true,
+                                                    null,
                                                     methodName);
         }
 
@@ -1895,6 +2117,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     0,
                                     true,
+                                    true,
+                                    supportedZones,
                                     0,
                                     invalidParameterHandler.getMaxPagingSize(),
                                     null,
@@ -1917,11 +2141,171 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Set the ConsolidatedDuplicate classification on an entity if it is not already set up.
+     *
+     * @param userId calling user
+     * @param entity retrieved entity
+     * @param guidParameterName parameter name to use of the requested GUID
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    private void setConsolidatedDuplicateClassification(String       userId,
+                                                        EntityDetail entity,
+                                                        String       guidParameterName,
+                                                        int          statusIdentifier,
+                                                        String       steward,
+                                                        String       stewardTypeName,
+                                                        String       stewardPropertyName,
+                                                        String       source,
+                                                        String       notes,
+                                                        String       methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        InstanceProperties properties = this.createStewardshipProperties(statusIdentifier,
+                                                                             steward,
+                                                                             stewardTypeName,
+                                                                             stewardPropertyName,
+                                                                             source,
+                                                                             notes,
+                                                                             methodName);
+        this.setClassificationInRepository(userId,
+                                           null,
+                                           null,
+                                           entity,
+                                           guidParameterName,
+                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                           OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_GUID,
+                                           OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_NAME,
+                                           properties,
+                                           false,
+                                           false,
+                                           true,
+                                           null,
+                                           methodName);
+    }
+
+
+    /**
+     * Identify an element that acts as a consolidated version for a set of duplicate elements.
+     * (The consolidated element is created using createMetadataElement.)
+     * Creates a simple relationship between the elements. If the ConsolidatedDuplicate
+     * classification already exists, the properties are updated.
+     *
+     * @param userId calling user
+     * @param consolidatedElementGUID unique identifier of the metadata element
+     * @param consolidatedElementGUIDParameter parameter name to use for the requested GUID
+     * @param statusIdentifier what is the status of this relationship (negative means untrusted, 0 means unverified and positive means trusted)
+     * @param steward identifier of the steward
+     * @param stewardTypeName type of element used to identify the steward
+     * @param stewardPropertyName property name used to identify steward
+     * @param source source of the duplicate detection processing
+     * @param notes notes for the steward
+     * @param sourceElementGUIDs List of the source elements that must be linked to the consolidated element.  It is assumed that they already
+     *                           have the KnownDuplicateClassification.
+     * @param sourceElementGUIDsParameterName parameter name for the source GUIDs
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void linkConsolidatedDuplicate(String       userId,
+                                          String       consolidatedElementGUID,
+                                          String       consolidatedElementGUIDParameter,
+                                          int          statusIdentifier,
+                                          String       steward,
+                                          String       stewardTypeName,
+                                          String       stewardPropertyName,
+                                          String       source,
+                                          String       notes,
+                                          List<String> sourceElementGUIDs,
+                                          String       sourceElementGUIDsParameterName,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(consolidatedElementGUID, consolidatedElementGUIDParameter, methodName);
+
+        /*
+         * First check the GUIDs are valid.
+         */
+        EntityDetail consolidatedEntity = this.getEntityFromRepository(userId,
+                                                                       consolidatedElementGUID,
+                                                                       consolidatedElementGUIDParameter,
+                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                       null,
+                                                                       null,
+                                                                       false,
+                                                                       true,
+                                                                       supportedZones,
+                                                                       null,
+                                                                       methodName);
+
+        if (consolidatedEntity != null)
+        {
+            this.setConsolidatedDuplicateClassification(userId,
+                                                        consolidatedEntity,
+                                                        consolidatedElementGUIDParameter,
+                                                        statusIdentifier,
+                                                        steward,
+                                                        stewardTypeName,
+                                                        stewardPropertyName,
+                                                        source,
+                                                        notes,
+                                                        methodName);
+
+            if (sourceElementGUIDs != null)
+            {
+                for (String sourceElementGUID : sourceElementGUIDs)
+                {
+                    if (sourceElementGUID != null)
+                    {
+                        this.linkElementToElement(userId,
+                                                  null,
+                                                  null,
+                                                  sourceElementGUID,
+                                                  sourceElementGUIDsParameterName,
+                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  consolidatedElementGUID,
+                                                  consolidatedElementGUIDParameter,
+                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  false,
+                                                  true,
+                                                  supportedZones,
+                                                  OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
+                                                  OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  methodName);
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
      * Create the property facet for the vendor properties.
      *
      * @param userId calling user
-     * @param referenceableGUID unique identifier of the software server capability
+     * @param referenceableGUID unique identifier of the software capability
      * @param vendorProperties properties for the vendor
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -1931,6 +2315,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     public void setVendorProperties(String               userId,
                                     String               referenceableGUID,
                                     Map<String, String>  vendorProperties,
+                                    boolean              forLineage,
+                                    boolean              forDuplicateProcessing,
+                                    Date                 effectiveTime,
                                     String               methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -1941,8 +2328,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(referenceableGUID, referenceableGUIDParameter, methodName);
 
-        Date effectiveTime = new Date();
-
         List<EntityDetail> propertyFacets = this.getAttachedEntities(userId,
                                                                      referenceableGUID,
                                                                      referenceableGUIDParameter,
@@ -1952,9 +2337,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                      OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
                                                                      null,
                                                                      null,
-                                                                     0,
-                                                                     false,
-                                                                     false,
+                                                                     2,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
                                                                      supportedZones,
                                                                      0,
                                                                      invalidParameterHandler.getMaxPagingSize(),
@@ -1991,8 +2376,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         propertyFacetGUIDParameter,
                                                         OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
                                                         OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
-                                                        false,
-                                                        false,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
                                                         supportedZones,
                                                         builder.getInstanceProperties(methodName),
                                                         true,
@@ -2017,6 +2402,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   null,
                                                                   null,
                                                                   builder,
+                                                                  effectiveTime,
                                                                   methodName);
 
                 InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -2033,12 +2419,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      propertyFacetGUID,
                                      propertyFacetGUIDParameter,
                                      OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
-                                     false,
-                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
                                      supportedZones,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_GUID,
                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_PROPERTY_FACET_TYPE_NAME,
                                      relationshipProperties,
+                                     null,
+                                     null,
+                                     effectiveTime,
                                      methodName);
             }
         }
@@ -2066,9 +2455,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
                                                         null,
                                                         null,
-                                                        false,
-                                                        false,
-                                                        new Date(),
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
                                                         methodName);
                         }
                     }
@@ -2084,6 +2473,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param referenceableGUID unique identifier of the metadata element
      * @param referenceableGUIDParameter parameter name for referenceableGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
      * @return map of properties
@@ -2092,12 +2484,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public Map<String, String> getVendorProperties(String userId,
-                                                   String referenceableGUID,
-                                                   String referenceableGUIDParameter,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public Map<String, String> getVendorProperties(String  userId,
+                                                   String  referenceableGUID,
+                                                   String  referenceableGUIDParameter,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         List<EntityDetail> propertyFacets = this.getAttachedEntities(userId,
                                                                      referenceableGUID,
@@ -2109,12 +2504,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                      null,
                                                                      null,
                                                                      0,
-                                                                     false,
-                                                                     false,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
                                                                      supportedZones,
                                                                      0,
                                                                      invalidParameterHandler.getMaxPagingSize(),
-                                                                     null,
+                                                                     effectiveTime,
                                                                      methodName);
 
         if (propertyFacets != null)

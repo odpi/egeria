@@ -65,7 +65,7 @@ public class DataFolderConnector extends ConnectorBase implements BasicFileStore
     private void throwException(DataFolderConnectorErrorCode errorCode,
                                 String                       methodName,
                                 String                       fileStoreName,
-                                Throwable                    caughtException) throws FileException
+                                Exception                    caughtException) throws FileException
     {
         ExceptionMessageDefinition messageDefinition;
 
@@ -154,7 +154,7 @@ public class DataFolderConnector extends ConnectorBase implements BasicFileStore
         {
             this.throwException(DataFolderConnectorErrorCode.UNEXPECTED_SECURITY_EXCEPTION, methodName, dataFolderName, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             this.throwException(DataFolderConnectorErrorCode.UNEXPECTED_IO_EXCEPTION, methodName, dataFolderName, error);
         }
@@ -172,7 +172,7 @@ public class DataFolderConnector extends ConnectorBase implements BasicFileStore
         {
             super.disconnect();
         }
-        catch (Throwable  exec)
+        catch (Exception  exec)
         {
             log.debug("Ignoring unexpected exception " + exec.getClass().getSimpleName() + " with message " + exec.getMessage());
         }

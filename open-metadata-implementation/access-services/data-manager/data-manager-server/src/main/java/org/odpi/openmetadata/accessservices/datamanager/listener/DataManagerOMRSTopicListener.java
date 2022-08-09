@@ -35,12 +35,12 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(DataManagerOMRSTopicListener.class);
 
-    private List<String>                               supportedZones;
-    private DataManagerOutTopicPublisher               publisher;
-    private OMRSRepositoryHelper                       repositoryHelper;
-    private String                                     serverUserId;
-    private DataManagerOMASConverter<ElementStub>      converter;
-    private OpenMetadataAPIGenericHandler<ElementStub> genericHandler;
+    private final List<String>                               supportedZones;
+    private final DataManagerOutTopicPublisher               publisher;
+    private final OMRSRepositoryHelper                       repositoryHelper;
+    private final String                                     serverUserId;
+    private final DataManagerOMASConverter<ElementStub>      converter;
+    private final OpenMetadataAPIGenericHandler<ElementStub> genericHandler;
 
 
     /**
@@ -558,6 +558,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param entityProxy  details of the entityProxy after the classification has been removed. No guarantee this is all of the classifications.
      * @param originalClassification classification that was removed
      */
+    @Override
     public void processDeclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
