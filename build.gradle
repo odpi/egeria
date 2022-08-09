@@ -19,10 +19,10 @@ buildscript {
  */
 
 plugins {
-        id "io.freefair.aggregate-javadoc" version "6.5.0.2"
-        id "io.freefair.lombok" version "6.5.0.2"
+        id "io.freefair.aggregate-javadoc" version "6.5.0.3"
+        id "io.freefair.lombok" version "6.5.0.3"
         // Checks for unnecessary dependencies
-        id 'com.autonomousapps.dependency-analysis' version "1.10.0"
+        id 'com.autonomousapps.dependency-analysis' version "1.12.0"
         // helps resolve log implementation clashes
         id 'dev.jacomet.logging-capabilities' version "0.10.0"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
@@ -66,22 +66,22 @@ allprojects {
     ext {
         antlrVersion = '3.5.3'
         ST4Version = '4.3.3'
-        avroVersion = '1.11.0'
-        classgraphVersion = '4.8.147'
+        avroVersion = '1.11.1'
+        classgraphVersion = '4.8.149'
         classmateVersion = '1.5.1'
         collections4Version='4.4'
         commonscodecVersion = '1.15'
-        commonsconfiguration2Version = '2.7'
+        commonsconfiguration2Version = '2.8.0'
         commonsconfigurationVersion = '1.10'
         commonsioVersion = '2.11.0'
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.9'
         commonscliVersion = '1.5.0'
-        elasticsearchVersion = '8.3.1'
+        elasticsearchVersion = '8.3.3'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.2'
-        groovyVersion = '3.0.9'
+        groovyVersion = '3.0.10'
         guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
@@ -100,20 +100,20 @@ allprojects {
         jodatimeVersion = '2.10.14'
         jsonldVersion = '0.13.4'
         junitVersion = '4.13.2'
-        junitjupiterVersion = '5.8.2'
+        junitjupiterVersion = '5.9.0'
         junitplatformVersion = '1.8.2'
         jwtVersion = '0.9.1'
-        kafkaVersion = '3.2.0'
+        kafkaVersion = '3.2.1'
         lang3Version='3.12.0'
         logbackVersion = '1.2.11'
-        lettuceVersion = '6.1.8.RELEASE'
+        lettuceVersion = '6.2.0.RELEASE'
         luceneVersion = '8.11.1'
-        nettyVersion = '4.1.78.Final'
+        nettyVersion = '4.1.79.Final'
         ossVersion = '4.14.1'
         mockitoVersion = '4.6.1'
-        openlineageVersion = '0.10.0'
+        openlineageVersion = '0.12.0'
         plexusVersion = '3.4.2'
-        prometheusVersion = '1.9.1'
+        prometheusVersion = '1.9.2'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
@@ -123,26 +123,27 @@ allprojects {
         snakeyamlVersion = '1.30'
         snappyVersion = '1.1.8.4'
         spotbugsVersion = '4.7.1'
-        springbootVersion = '2.7.1'
+        springbootVersion = '2.7.2'
         springdocVersion = '1.6.9'
-        springdataVersion = '2.7.1'
+        springdataVersion = '2.7.2'
         springldapVersion = '2.4.1'
-        swaggerVersion = '2.2.1'
+        swaggerVersion = '2.2.2'
         springsecurityVersion = '5.7.2'
         testngVersion = '7.6.1'
-        springwebVersion = '5.3.21'
+        springwebVersion = '5.3.22'
         thriftVersion = '0.16.0'
         tinkVersion = '1.6.1'
-        tomcatVersion = '9.0.64'
+        tomcatVersion = '9.0.65'
         validationVersion = '2.0.1.Final'
         antVersion = '1.10.12'
-        gsonVersion = '2.9.0'
-        protobufVersion = '3.21.2'
+        gsonVersion = '2.9.1'
+        protobufVersion = '3.21.4'
         jnrVersion = '3.1.15'
-        cassandraVersion = '4.0.4'
+        cassandraVersion = '4.0.5'
         osgiVersion = '8.0.0'
-        log4jVersion = '2.17.2'
+        log4jVersion = '2.18.0'
         jacksonjdk8Version = '2.13.3'
+        reactivestreamsVersion = '1.0.4'
     }
 
     dependencies {
@@ -264,6 +265,7 @@ allprojects {
             implementation("org.osgi:org.osgi.core:${osgiVersion}")
             implementation("org.apache.logging.log4j:log4j-api:${log4jVersion}")
             implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
+            implementation("org.reactivestreams:reactive-streams:${reactivestreamsVersion}")
 
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:${testngVersion}")
