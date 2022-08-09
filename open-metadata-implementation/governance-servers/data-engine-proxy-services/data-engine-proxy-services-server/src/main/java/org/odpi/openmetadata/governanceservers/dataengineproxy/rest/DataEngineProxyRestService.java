@@ -28,6 +28,7 @@ public class DataEngineProxyRestService {
             CompletableFuture.runAsync(dataEngineProxyService::load).thenAccept(result -> isRunning.set(false));
 
         } catch (PropertyServerException | UserNotAuthorizedException | InvalidParameterException | DataEngineProxyException e) {
+            isRunning.set(false);
             ProcessLoadResponse response = new ProcessLoadResponse();
             response.setRelatedHTTPCode(e.getReportedHTTPCode());
             response.setExceptionClassName(e.getClass().getName());
