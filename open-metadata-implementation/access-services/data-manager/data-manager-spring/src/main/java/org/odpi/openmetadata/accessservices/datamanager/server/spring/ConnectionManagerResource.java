@@ -7,15 +7,11 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.ConnectionRESTServices;
-import org.odpi.openmetadata.accessservices.datamanager.server.EventBrokerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**
@@ -33,7 +29,7 @@ import java.util.List;
 
 public class ConnectionManagerResource
 {
-    private ConnectionRESTServices restAPI = new ConnectionRESTServices();
+    private final ConnectionRESTServices restAPI = new ConnectionRESTServices();
 
     /**
      * Default constructor

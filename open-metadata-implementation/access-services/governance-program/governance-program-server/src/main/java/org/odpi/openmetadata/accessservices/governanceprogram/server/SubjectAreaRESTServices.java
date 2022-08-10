@@ -22,6 +22,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinition
 import org.odpi.openmetadata.commonservices.generichandlers.SubjectAreaHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +36,12 @@ import java.util.List;
  */
 public class SubjectAreaRESTServices
 {
-    private static GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
+    private static final GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(SubjectAreaRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -92,6 +93,7 @@ public class SubjectAreaRESTServices
                                                                    requestBody.getAdditionalProperties(),
                                                                    requestBody.getTypeName(),
                                                                    requestBody.getExtendedProperties(),
+                                                                   new Date(),
                                                                    methodName);
 
                 response.setGUID(subjectAreaGUID);
@@ -284,7 +286,10 @@ public class SubjectAreaRESTServices
                                          false,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_GUID,
                                          OpenMetadataAPIMapper.SUBJECT_AREA_HIERARCHY_TYPE_NAME,
+                                         (InstanceProperties) null,
                                          null,
+                                         null,
+                                         new Date(),
                                          methodName);
         }
         catch (Exception error)
@@ -410,7 +415,10 @@ public class SubjectAreaRESTServices
                                          false,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                          OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                         (InstanceProperties) null,
                                          null,
+                                         null,
+                                         new Date(),
                                          methodName);
         }
         catch (Exception error)
@@ -567,6 +575,9 @@ public class SubjectAreaRESTServices
             response.setElement(handler.getSubjectArea(userId,
                                                        qualifiedName,
                                                        qualifiedNameParameterName,
+                                                       false,
+                                                       false,
+                                                       new Date(),
                                                        methodName));
         }
         catch (Exception error)
@@ -615,6 +626,9 @@ public class SubjectAreaRESTServices
                                                                                     domainIdentifier,
                                                                                     startFrom,
                                                                                     pageSize,
+                                                                                    false,
+                                                                                    false,
+                                                                                    new Date(),
                                                                                     methodName);
 
             response.setElementList(subjectAreas);
@@ -673,11 +687,16 @@ public class SubjectAreaRESTServices
                 subjectAreaDefinition.setParentSubjectAreaGUID(subjectAreaHandler.getSubjectAreaParentGUID(userId,
                                                                                                            subjectAreaGUID,
                                                                                                            subjectAreaGUIDParameterName,
+                                                                                                           false,
+                                                                                                           false,
+                                                                                                           new Date(),
                                                                                                            methodName));
 
                 subjectAreaDefinition.setNestedSubjectAreaGUIDs(subjectAreaHandler.getSubjectAreaChildrenGUIDs(userId,
                                                                                                                subjectAreaGUID,
                                                                                                                subjectAreaGUIDParameterName,
+                                                                                                               false,
+                                                                                                               false,
                                                                                                                new Date(),
                                                                                                                methodName));
 
@@ -690,6 +709,9 @@ public class SubjectAreaRESTServices
                                                                                                                                               null,
                                                                                                                                               0,
                                                                                                                                               0,
+                                                                                                                                              false,
+                                                                                                                                              false,
+                                                                                                                                              new Date(),
                                                                                                                                               methodName);
                 List<ElementStub> definitions = elementStubConverter.getNewBeans(ElementStub.class, relationships, true, methodName);
                 subjectAreaDefinition.setAssociatedGovernanceDefinitions(definitions);

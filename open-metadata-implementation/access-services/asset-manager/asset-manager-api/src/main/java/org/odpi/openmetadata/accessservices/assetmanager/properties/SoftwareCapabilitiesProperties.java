@@ -104,7 +104,7 @@ public class SoftwareCapabilitiesProperties extends SupplementaryProperties
      *
      * @param description string
      */
-    public void setDescription(String description)
+    public void setTechnicalDescription(String description)
     {
         this.technicalDescription = description;
     }

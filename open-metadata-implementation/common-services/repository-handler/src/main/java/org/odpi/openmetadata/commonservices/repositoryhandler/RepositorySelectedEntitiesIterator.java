@@ -23,14 +23,15 @@ import java.util.Date;
  */
 public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEntities
 {
-    private InstanceProperties properties;
-    private MatchCriteria      matchCriteria;
-    private String             searchCriteria;
+    private final InstanceProperties properties;
+    private final MatchCriteria      matchCriteria;
+    private final String             searchCriteria;
 
     /**
      * Constructor takes the parameters used to call the repository handler.
      *
      * @param repositoryHandler interface to the open metadata repositories.
+     * @param invalidParameterHandler error handler set up with max page size
      * @param userId  user making the request
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param properties properties used in the search
@@ -40,9 +41,9 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
-     * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName  name of calling method
+     * @throws InvalidParameterException bad parameter - probably page size
      */
     public RepositorySelectedEntitiesIterator(RepositoryHandler       repositoryHandler,
                                               InvalidParameterHandler invalidParameterHandler,
@@ -81,6 +82,7 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * Constructor takes the parameters used to call the repository handler.
      *
      * @param repositoryHandler interface to the open metadata repositories.
+     * @param invalidParameterHandler error handler set up with max page size
      * @param userId  user making the request
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param searchCriteria value used in the search
@@ -91,6 +93,7 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param pageSize maximum number of definitions to return on this call.
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
+     * @throws InvalidParameterException bad parameter - probably page size
      */
     public RepositorySelectedEntitiesIterator(RepositoryHandler       repositoryHandler,
                                               InvalidParameterHandler invalidParameterHandler,
@@ -128,11 +131,13 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * Determine if there is more to receive.  It will populate the iterator's cache with more content.
      *
      * @return boolean flag
+     * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
      * @throws PropertyServerException there is a problem in the repository
      */
     @Override
-    public boolean  moreToReceive() throws UserNotAuthorizedException,
+    public boolean  moreToReceive() throws InvalidParameterException,
+                                           UserNotAuthorizedException,
                                            PropertyServerException
     {
         if ((entitiesCache == null) || (entitiesCache.isEmpty()))

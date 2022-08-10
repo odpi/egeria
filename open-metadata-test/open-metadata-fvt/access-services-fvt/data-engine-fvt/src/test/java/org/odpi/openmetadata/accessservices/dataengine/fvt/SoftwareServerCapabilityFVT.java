@@ -53,7 +53,7 @@ public class SoftwareServerCapabilityFVT extends DataEngineFVT {
         assertEquals(softwareServerCapability.getDescription(), entity.getProperties().getPropertyValue(DESCRIPTION).valueAsString());
         assertEquals(softwareServerCapability.getName(), entity.getProperties().getPropertyValue(NAME).valueAsString());
         assertEquals(softwareServerCapability.getEngineVersion(), entity.getProperties().getPropertyValue(CAPABILITY_VERSION).valueAsString());
-        assertEquals(softwareServerCapability.getEngineType(), entity.getProperties().getPropertyValue(DEPLOYED_IMPLEMENTATION_TYPE).valueAsString());
+        assertEquals(softwareServerCapability.getEngineType(), entity.getProperties().getPropertyValue(CAPABILITY_TYPE).valueAsString());
         assertEquals(softwareServerCapability.getPatchLevel(), entity.getProperties().getPropertyValue(PATCH_LEVEL).valueAsString());
         assertEquals(softwareServerCapability.getQualifiedName(), entity.getProperties().getPropertyValue(QUALIFIED_NAME).valueAsString());
         assertEquals(softwareServerCapability.getSource(), entity.getProperties().getPropertyValue(SOURCE).valueAsString());

@@ -1536,14 +1536,15 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Override
     public void setupSchemaType(String  userId,
                                 String  apiManagerGUID,
                                 String  apiManagerName,
                                 String  relationshipTypeName,
                                 String  apiParameterGUID,
                                 String  schemaTypeGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         super.setupSchemaType(userId, apiManagerGUID, apiManagerName, relationshipTypeName, apiParameterGUID, schemaTypeGUID);
     }

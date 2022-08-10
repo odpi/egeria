@@ -3,8 +3,12 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.LineageMappingElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessCallElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -57,7 +61,8 @@ public class LineageMappingConverter<B> extends AssetManagerOMASConverter<B>
 
             if (returnBean instanceof LineageMappingElement)
             {
-                LineageMappingElement bean = (LineageMappingElement) returnBean;
+                LineageMappingElement    bean                     = (LineageMappingElement) returnBean;
+                LineageMappingProperties lineageMappingProperties = new LineageMappingProperties();
 
                 if (relationship != null)
                 {
@@ -74,6 +79,16 @@ public class LineageMappingConverter<B> extends AssetManagerOMASConverter<B>
                     {
                         bean.setTargetElement(super.getMetadataElementHeader(beanClass, entityProxy, entityProxy.getClassifications(), methodName));
                     }
+
+                    /*
+                     * The rest of the properties come from the relationship.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
+
+                    lineageMappingProperties.setQualifiedName(this.getQualifiedName(instanceProperties));
+                    lineageMappingProperties.setDescription(this.getDescription(instanceProperties));
+
+                    bean.setLineageMappingProperties(lineageMappingProperties);
                 }
                 else
                 {

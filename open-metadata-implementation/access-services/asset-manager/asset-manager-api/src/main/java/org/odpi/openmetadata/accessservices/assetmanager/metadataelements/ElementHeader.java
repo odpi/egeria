@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * that link off of the asset and have a guid associated with them.  This typically means it is
  * represented by an entity in the metadata repository.
  *
- * In addition are useful attachments that are found connected to the metadata element.
+ * In addition, there are useful attachments that are found connected to the metadata element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -226,7 +226,7 @@ public class ElementHeader implements Serializable
     @Override
     public String toString()
     {
-        return "ElementHeader{" +
+        return "ElementBase{" +
                        "guid='" + guid + '\'' +
                        ", status=" + status +
                        ", type=" + type +

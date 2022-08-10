@@ -29,7 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         MetadataCollectionName defines the display name for the home metadata collection.
  *     </li>
  *     <li>
- *         InstanceLicense defines an specific license that applies to this instance - null means no restrictions.
+ *         InstanceLicense defines a specific license that applies to this instance - null means no restrictions.
  *     </li>
  *     <li>
  *         CreatedBy contains the userId of the person/engine that created the instance.  This field is set
@@ -93,7 +93,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     public static final long CURRENT_AUDIT_HEADER_VERSION = 1;
 
     /*
-     * Version number for this header.  This is used to ensure that all of the critical header information
+     * Version number for this header.  This is used to ensure that all the critical header information
      * in read in a back-level version of the OMRS.  The default is 0 to indicate that the instance came from
      * a version of the OMRS that does not have a version number encoded.
      */

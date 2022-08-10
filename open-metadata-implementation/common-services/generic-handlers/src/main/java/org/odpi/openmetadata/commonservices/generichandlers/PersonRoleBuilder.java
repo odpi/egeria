@@ -173,11 +173,15 @@ public class PersonRoleBuilder extends ReferenceableBuilder
     InstanceProperties getTeamLeadershipProperties(String position,
                                                    String methodName)
     {
-        return repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                            null,
-                                                            OpenMetadataAPIMapper.POSITION_PROPERTY_NAME,
-                                                            position,
-                                                            methodName);
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.POSITION_PROPERTY_NAME,
+                                                                                     position,
+                                                                                     methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
@@ -191,11 +195,15 @@ public class PersonRoleBuilder extends ReferenceableBuilder
     InstanceProperties getTeamMembershipProperties(String position,
                                                    String methodName)
     {
-        return repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                            null,
-                                                            OpenMetadataAPIMapper.POSITION_PROPERTY_NAME,
-                                                            position,
-                                                            methodName);
+        InstanceProperties properties =  repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      OpenMetadataAPIMapper.POSITION_PROPERTY_NAME,
+                                                                                      position,
+                                                                                      methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
@@ -204,7 +212,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
      *
      * @param isPublic is this appointment visible to others
      * @param effectiveFrom the official start date of the appointment - null means effective immediately
-     * @param effectiveFrom the official end date of the appointment - null means unknown
+     * @param effectiveTo the official end date of the appointment - null means unknown
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
@@ -219,10 +227,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
                                                                                       isPublic,
                                                                                       methodName);
 
-        properties.setEffectiveFromTime(effectiveFrom);
-        properties.setEffectiveFromTime(effectiveTo);
-
-        return properties;
+        return this.setEffectivityDates(properties, effectiveFrom, effectiveTo);
     }
 
 }

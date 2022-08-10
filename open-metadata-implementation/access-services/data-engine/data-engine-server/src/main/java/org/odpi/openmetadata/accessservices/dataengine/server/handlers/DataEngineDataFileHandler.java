@@ -13,10 +13,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -116,8 +119,9 @@ public class DataEngineDataFileHandler {
                 file.getProtocol(), file.getNetworkAddress(), externalSourceGuid, externalSourceName, userId);
 
         if (file.getIncomplete()) {
-            fileHandler.setClassificationInRepository(userId, fileGuid, FILE_GUID_PARAMETER_NAME, fileTypeName,
-                    INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME, null, methodName);
+            fileHandler.setClassificationInRepository(userId, externalSourceGuid, externalSourceName, fileGuid, FILE_GUID_PARAMETER_NAME, fileTypeName,
+                    INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME, null,
+                                                      true, false, false, null, methodName);
         }
 
         return fileGuid;
@@ -149,7 +153,7 @@ public class DataEngineDataFileHandler {
             dataEngineSchemaTypeHandler.removeSchemaType(userId, schemaType.get().getGUID(), externalSourceName, deleteSemantic);
 
             fileHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, dataFileGUID, GUID_PROPERTY_NAME,
-                    DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, methodName);
+                    DATA_FILE_TYPE_GUID, DATA_FILE_TYPE_NAME, null, null, false, false, null, methodName);
         } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, dataFileGUID);
         }
@@ -162,9 +166,10 @@ public class DataEngineDataFileHandler {
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DATA_FILE_TYPE_NAME);
 
         fileHandler.updateAsset(userId, externalSourceGuid, externalSourceName, fileAsEntity.getGUID(),
-                CommonMapper.GUID_PROPERTY_NAME, file.getQualifiedName(), file.getDisplayName(),
-                file.getDescription(), file.getAdditionalProperties(), entityTypeDef.getGUID(),
-                entityTypeDef.getName(), extendedProperties, methodName);
+               CommonMapper.GUID_PROPERTY_NAME, file.getQualifiedName(), file.getDisplayName(),
+               file.getDescription(), file.getAdditionalProperties(), entityTypeDef.getGUID(),
+               entityTypeDef.getName(), extendedProperties, null, null, true,
+               false, false, null, methodName);
         return fileAsEntity.getGUID();
     }
 
@@ -178,7 +183,8 @@ public class DataEngineDataFileHandler {
                 file.getQualifiedName(), file.getDisplayName(), file.getDescription(), file.getZoneMembership(),
                 file.getOwner(), ownerType, file.getOriginOrganizationGUID(),
                 file.getOriginBusinessCapabilityGUID(), file.getOtherOriginValues(), file.getAdditionalProperties(),
-                typeGuid, typeName, extendedProperties, methodName);
+                typeGuid, typeName, extendedProperties, null,
+                null, InstanceStatus.ACTIVE, null, methodName);
     }
 
     private void validateParameters(DataFile file, SchemaType schemaType, String externalSourceGuid, String userId, String methodName) throws

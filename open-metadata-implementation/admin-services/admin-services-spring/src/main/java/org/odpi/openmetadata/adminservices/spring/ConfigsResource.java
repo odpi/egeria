@@ -26,7 +26,7 @@ public class ConfigsResource
     private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
     /**
-     * Return all the the server configuration documents
+     * Return all the server configuration documents
      *
      * @param userId  user that is issuing the request
      * @return OMAGServerConfigs properties or

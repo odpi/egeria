@@ -124,7 +124,8 @@ class DataEngineSchemaTypeHandlerTest {
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
         doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
         when(schemaTypeHandler.addSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                schemaTypeBuilder, methodName)).thenReturn(GUID);
+                schemaTypeBuilder, null, null, false, false, null,
+                methodName)).thenReturn(GUID);
 
         mockTypeDef(TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME, TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
 
@@ -169,7 +170,8 @@ class DataEngineSchemaTypeHandlerTest {
         verify(invalidParameterHandler, times(1)).validateName(NAME,
                 DISPLAY_NAME_PROPERTY_NAME, methodName);
         verify(schemaTypeHandler, times(1)).updateSchemaType(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, schemaTypeBuilder);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, SCHEMA_TYPE_GUID_PARAMETER_NAME, schemaTypeBuilder, true,
+                false, false, null, methodName);
         verify(dataEngineSchemaAttributeHandler, times(1)).upsertSchemaAttributes(USER, attributeList,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
     }
@@ -194,7 +196,8 @@ class DataEngineSchemaTypeHandlerTest {
         doReturn(schemaTypeBuilder).when(dataEngineSchemaTypeHandler).getSchemaTypeBuilder(schemaType);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(schemaTypeHandler.addSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, schemaTypeBuilder,
+        when(schemaTypeHandler.addSchemaType(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, schemaTypeBuilder, null,
+                null, false, false, null,
                 methodName)).thenThrow(mockedException);
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEngineSchemaTypeHandler.upsertSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME));

@@ -189,7 +189,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
 
 
     /**
-     * Extract the path name located in the properties of the the supplied asset metadata element (either a FileFolder or DataFile).
+     * Extract the path name located in the properties of the supplied asset metadata element (either a FileFolder or DataFile).
      * It looks first in the linked connection endpoint.  If this is not available then the qualified name of the asset is used.
      *
      * @param asset metadata element

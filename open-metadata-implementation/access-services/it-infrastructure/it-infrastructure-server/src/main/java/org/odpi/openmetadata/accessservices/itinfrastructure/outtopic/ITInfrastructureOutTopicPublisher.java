@@ -20,11 +20,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class ITInfrastructureOutTopicPublisher
 {
-    private ITInfrastructureOutTopicServerConnector outTopicServerConnector;
-    private AuditLog                                outTopicAuditLog;
-    private String                                  outTopicName;
-    private ElementHeaderConverter<ElementHeader>   headerConverter;
-    private OMRSRepositoryHelper                    repositoryHelper;
+    private final ITInfrastructureOutTopicServerConnector outTopicServerConnector;
+    private final AuditLog                                outTopicAuditLog;
+    private final String                                  outTopicName;
+    private final ElementHeaderConverter<ElementHeader>   headerConverter;
+    private final OMRSRepositoryHelper                    repositoryHelper;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 

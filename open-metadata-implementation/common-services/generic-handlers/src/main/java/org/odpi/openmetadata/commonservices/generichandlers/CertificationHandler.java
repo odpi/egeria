@@ -72,21 +72,25 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Count the number of Certifications attached to an referenceable entity.
+     * Count the number of Certifications attached to a referenceable entity.
      *
      * @param userId     calling user
      * @param connectedEntityGUID identifier for the entity that the object is attached to
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countCertifications(String userId,
-                                   String connectedEntityGUID,
-                                   Date   effectiveTime,
-                                   String methodName) throws InvalidParameterException,
+    public int countCertifications(String  userId,
+                                   String  connectedEntityGUID,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
@@ -95,20 +99,25 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
                                       OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                      2,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       effectiveTime,
                                       methodName);
     }
 
 
     /**
-     * Return the Certifications attached to an referenceable entity.
+     * Return the Certifications attached to a referenceable entity.
      *
      * @param userId     calling user
      * @param parentGUID identifier for the entity that the feedback is attached to
      * @param parentGUIDParameterName parameter name for the parentGUID
      * @param startFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return unique identifier of the object or null
      * @throws InvalidParameterException  the input properties are invalid
@@ -120,6 +129,8 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                       String       parentGUIDParameterName,
                                       int          startFrom,
                                       int          pageSize,
+                                      boolean      forLineage,
+                                      boolean      forDuplicateProcessing,
                                       Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
@@ -131,6 +142,8 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                       supportedZones,
                                       startFrom,
                                       pageSize,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       effectiveTime,
                                       methodName);
     }
@@ -138,7 +151,7 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return the Certifications attached to an referenceable entity.
+     * Return the Certifications attached to a referenceable entity.
      *
      * @param userId     calling user
      * @param parentGUID identifier for the entity that the feedback is attached to
@@ -146,7 +159,9 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return unique identifier of the object or null
      * @throws InvalidParameterException  the input properties are invalid
@@ -159,6 +174,8 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                       List<String> serviceSupportedZones,
                                       int          startFrom,
                                       int          pageSize,
+                                      boolean      forLineage,
+                                      boolean      forDuplicateProcessing,
                                       Date         effectiveTime,
                                       String       methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
@@ -170,7 +187,12 @@ public class CertificationHandler<B> extends ReferenceableHandler<B>
                                                                     OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                                     OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
                                                                     OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                    null,
                                                                     OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                    2,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    serviceSupportedZones,
                                                                     startFrom,
                                                                     pageSize,
                                                                     effectiveTime,

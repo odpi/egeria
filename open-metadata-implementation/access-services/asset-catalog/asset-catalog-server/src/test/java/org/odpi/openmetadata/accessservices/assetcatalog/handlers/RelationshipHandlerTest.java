@@ -22,9 +22,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -72,7 +75,7 @@ public class RelationshipHandlerTest {
 
         when(assetHandler.getUniqueAttachmentLink(USER, FIRST_GUID,
                 Constants.GUID_PARAMETER, "", RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, SECOND_GUID,
-                "", null, methodName)).thenReturn(mock);
+                "", 0, false, false, null, methodName)).thenReturn(mock);
 
         org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship
                 result = relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID,
@@ -95,7 +98,7 @@ public class RelationshipHandlerTest {
         UserNotAuthorizedException mockedException = new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(), this.getClass().getName(), "", "");
         doThrow(mockedException).when(assetHandler).getUniqueAttachmentLink(USER, FIRST_GUID,
                 Constants.GUID_PARAMETER, "", RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE, SECOND_GUID,
-                "", null, methodName);
+                "", 0, false, false, null, methodName);
 
         assertThrows(UserNotAuthorizedException.class, () ->
                 relationshipHandler.getRelationshipBetweenEntities(USER, SERVER_NAME, FIRST_GUID, SECOND_GUID, RELATIONSHIP_TYPE));

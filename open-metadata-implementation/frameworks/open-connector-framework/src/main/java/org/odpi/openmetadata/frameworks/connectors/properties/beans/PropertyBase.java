@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = RelatedAsset.class, name = "RelatedAsset"),
-                @JsonSubTypes.Type(value = ElementHeader.class, name = "ElementHeader"),
+                @JsonSubTypes.Type(value = ElementBase.class, name = "ElementBase"),
                 @JsonSubTypes.Type(value = ElementControlHeader.class, name = "ElementControlHeader"),
                 @JsonSubTypes.Type(value = SchemaAttributeRelationship.class, name = "SchemaAttributeRelationship"),
                 @JsonSubTypes.Type(value = EmbeddedConnection.class, name = "EmbeddedConnection")
@@ -34,7 +34,7 @@ public abstract class PropertyBase implements Serializable
     public static final long CURRENT_AUDIT_HEADER_VERSION = 1;
 
     /*
-     * Version number for this header.  This is used to ensure that all of the critical header information
+     * Version number for this header.  This is used to ensure that all the critical header information
      * in read in a back-level version of the OCF.  The default is 0 to indicate that the instance came from
      * a version of the OCF that does not have a version number encoded.
      */
@@ -66,7 +66,7 @@ public abstract class PropertyBase implements Serializable
     /**
      * Return the version of this header.  This is used by the OMRS to determine if it is back level and
      * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
+     * to receive all the header properties.
      *
      * @return long version number - the value is incremented each time a new non-informational field is added
      * to the audit header.
@@ -80,7 +80,7 @@ public abstract class PropertyBase implements Serializable
     /**
      * Return the version of this header.  This is used by the OMRS to determine if it is back level and
      * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
+     * to receive all the header properties.
      *
      * @param headerVersion long version number - the value is incremented each time a new non-informational field is added
      * to the audit header.

@@ -31,10 +31,10 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
     private static final Logger log = LoggerFactory.getLogger(SecurityManagerOMRSTopicListener.class);
 
 
-    private SecurityManagerOutTopicPublisher         eventPublisher;
-    private UserIdentityHandler<UserIdentityElement> userIdentityHandler;
-    private String                                   localServerUserId;
-    private List<String>                             supportedZones;
+    private final SecurityManagerOutTopicPublisher         eventPublisher;
+    private final UserIdentityHandler<UserIdentityElement> userIdentityHandler;
+    private final String                                   localServerUserId;
+    private final List<String>                             supportedZones;
 
     /**
      * Initialize the topic listener.
@@ -46,12 +46,12 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param supportedZones list of zones that the access service is allowed to serve instances from.
      * @param auditLog logging destination
      */
-    public SecurityManagerOMRSTopicListener(String                                  serviceName,
-                                          String                                  localServerUserId,
-                                          SecurityManagerOutTopicPublisher         eventPublisher,
-                                          UserIdentityHandler<UserIdentityElement> userIdentityHandler,
-                                          List<String>                             supportedZones,
-                                          AuditLog                                 auditLog)
+    public SecurityManagerOMRSTopicListener(String                                   serviceName,
+                                            String                                   localServerUserId,
+                                            SecurityManagerOutTopicPublisher         eventPublisher,
+                                            UserIdentityHandler<UserIdentityElement> userIdentityHandler,
+                                            List<String>                             supportedZones,
+                                            AuditLog                                 auditLog)
     {
         super(serviceName, auditLog);
 
@@ -687,6 +687,7 @@ public class SecurityManagerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originalHomeMetadataCollectionId unique identifier for the original home repository.
      * @param entity                           new values for this entity, including the new home information.
      */
+    @Override
     public void processReHomedEntityEvent(String       sourceName,
                                           String       originatorMetadataCollectionId,
                                           String       originatorServerName,

@@ -160,11 +160,11 @@ public class TestLike
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -173,7 +173,7 @@ public class TestLike
 
         try
         {
-            validateResultObject((Like)objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((Like)objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

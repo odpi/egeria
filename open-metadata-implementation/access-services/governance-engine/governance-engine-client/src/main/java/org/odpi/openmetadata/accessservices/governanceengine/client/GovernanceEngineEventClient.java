@@ -21,13 +21,13 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  */
 public class GovernanceEngineEventClient
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceEngineRESTClient restClient;               /* Initialized in constructor */
-    private String                     callerId;                 /* Initialized in constructor */
-    private AuditLog                   auditLog;                 /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceEngineRESTClient restClient;               /* Initialized in constructor */
+    private final String                     callerId;                 /* Initialized in constructor */
+    private final AuditLog                   auditLog;                 /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
     private static final String  serviceName = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName();

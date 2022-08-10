@@ -17,20 +17,22 @@ import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 /**
  * ValidValuesAssetOwner provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- * the same attributes and so inherit from ValidValue where all of the attributes are defined.
+ * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
 public class ValidValuesRESTServices
 {
-    private static AssetOwnerInstanceHandler   instanceHandler      = new AssetOwnerInstanceHandler();
-    private static RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger              restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
-                                                                                         instanceHandler.getServiceName());
+    private static final AssetOwnerInstanceHandler   instanceHandler      = new AssetOwnerInstanceHandler();
+    private static final RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
+    private static final RESTCallLogger              restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
+                                                                                               instanceHandler.getServiceName());
 
 
     /**
@@ -99,6 +101,7 @@ public class ValidValuesRESTServices
                                                              requestBody.getExtendedProperties(),
                                                              null,
                                                              null,
+                                                             new Date(),
                                                              methodName));
             }
             else
@@ -171,6 +174,9 @@ public class ValidValuesRESTServices
                                                                     requestBody.getExtendedProperties(),
                                                                     null,
                                                                     null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
             }
             else
@@ -245,6 +251,9 @@ public class ValidValuesRESTServices
                                          requestBody.getExtendedProperties(),
                                          null,
                                          null,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -308,6 +317,9 @@ public class ValidValuesRESTServices
                                          null,
                                          validValueGUID,
                                          qualifiedName,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -374,6 +386,9 @@ public class ValidValuesRESTServices
                                           validValueGUID,
                                           null,
                                           null,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
         }
         catch (Exception error)
@@ -432,7 +447,9 @@ public class ValidValuesRESTServices
                                             null,
                                             setGUID,
                                             validValueGUID,
-                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
                                             methodName);
         }
         catch (Exception error)
@@ -481,7 +498,12 @@ public class ValidValuesRESTServices
                                         OpenMetadataAPIDummyBean,
                                         OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getValidValueByGUID(userId, validValueGUID, null, methodName));
+            response.setElement(handler.getValidValueByGUID(userId,
+                                                            validValueGUID,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -542,7 +564,9 @@ public class ValidValuesRESTServices
                                                                     nameParameterName,
                                                                     startFrom,
                                                                     pageSize,
-                                                                    null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
             }
         }
@@ -605,7 +629,9 @@ public class ValidValuesRESTServices
                                                                 searchStringParameterName,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
             }
         }
@@ -665,7 +691,9 @@ public class ValidValuesRESTServices
                                                                     validValueGUIDParameter,
                                                                     startFrom,
                                                                     pageSize,
-                                                                    null,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
                                                                     methodName));
         }
         catch (Exception error)
@@ -724,7 +752,9 @@ public class ValidValuesRESTServices
                                                                  validValueGUIDParameter,
                                                                  startFrom,
                                                                  pageSize,
-                                                                 null,
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
                                                                  methodName));
         }
         catch (Exception error)

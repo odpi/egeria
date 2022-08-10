@@ -12,7 +12,7 @@ public abstract class WatchdogGovernanceListener
 {
     /**
      * This method is called each time a requested event is received from the open metadata repositories.
-     * It is called for events received after this listener is registered until the the watchdog governance
+     * It is called for events received after this listener is registered until the watchdog governance
      * service sets its status in the context as ACTIONED, INVALID, IGNORED or FAILED or it is stopped by an administrator shutting down
      * the hosting server or this service explicitly.
      *

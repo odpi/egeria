@@ -18,11 +18,12 @@ import java.util.List;
  */
 public class DisplayIntegratorContext
 {
-    private DisplayApplicationClient client;
-    private DataManagerEventClient   eventClient;
-    private String                   userId;
-    private String                   applicationGUID;
-    private String                   applicationName;
+    private final DisplayApplicationClient client;
+    private final DataManagerEventClient   eventClient;
+    private final String                   userId;
+    private final String                   applicationGUID;
+    private final String                   applicationName;
+
     private boolean                  applicationIsHome = true;
 
 
@@ -46,6 +47,24 @@ public class DisplayIntegratorContext
         this.userId          = userId;
         this.applicationGUID = applicationGUID;
         this.applicationName = applicationName;
+    }
+
+
+
+    /* ========================================================
+     * Returning the application name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the application that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getApplicationName()
+    {
+        return applicationName;
     }
 
 

@@ -38,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -134,7 +135,7 @@ class DataEngineCommonHandlerTest {
         verify(genericHandler, times(1)).linkElementToElement(USER,  EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, FIRST_GUID,
                 CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME, SECOND_GUID, CommonMapper.GUID_PROPERTY_NAME,
                 ENTITY_TYPE_NAME, false, false, null,
-                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, null, methodName);
+                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, null, null, null, null, methodName);
     }
 
     @Test
@@ -154,7 +155,7 @@ class DataEngineCommonHandlerTest {
         when(relationshipType.getTypeDefName()).thenReturn(RELATIONSHIP_TYPE_NAME);
 
         when(genericHandler.getUniqueAttachmentLink(USER, FIRST_GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME,
-                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, SECOND_GUID, ENTITY_TYPE_NAME, null,
+                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, SECOND_GUID, ENTITY_TYPE_NAME, 0, false, false, null,
                 "findRelationship")).thenReturn(mockedRelationship);
 
         RelationshipDifferences mockedDifferences = mock(RelationshipDifferences.class);
@@ -169,11 +170,11 @@ class DataEngineCommonHandlerTest {
         verify(genericHandler, times(0)).linkElementToElement(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, FIRST_GUID,
                 CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME, SECOND_GUID, CommonMapper.GUID_PROPERTY_NAME,
                 ENTITY_TYPE_NAME, false, false, null,
-                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, null, methodName);
+                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, null, null, null, null, methodName);
 
         verify(genericHandler, times(1)).updateRelationshipProperties(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, RELATIONSHIP_GUID, GUID_PROPERTY_NAME, RELATIONSHIP_TYPE_NAME,
-                false, null, methodName);
+                true, null, false, false, null, methodName);
     }
 
     @Test
@@ -187,7 +188,7 @@ class DataEngineCommonHandlerTest {
                 methodName);
         verify(genericHandler, times(1)).deleteBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, GUID_PROPERTY_NAME, ENTITY_TYPE_GUID, ENTITY_TYPE_NAME,
-                null, null, methodName);
+                null, null, false, false, null,methodName);
     }
 
     @Test
@@ -199,7 +200,7 @@ class DataEngineCommonHandlerTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(genericHandler).deleteBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, GUID_PROPERTY_NAME, ENTITY_TYPE_GUID, ENTITY_TYPE_NAME,
-                null, null, methodName);
+                null, null, false, false, null, methodName);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () -> dataEngineCommonHandler.removeEntity(USER, GUID,
                 ENTITY_TYPE_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -219,7 +220,8 @@ class DataEngineCommonHandlerTest {
 
         String methodName = "findRelationship";
         when(genericHandler.getUniqueAttachmentLink(USER, FIRST_GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME,
-                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, SECOND_GUID, ENTITY_TYPE_NAME, null, methodName))
+                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, SECOND_GUID, ENTITY_TYPE_NAME, 0,
+                false, false, null, methodName))
                 .thenReturn(mockedRelationship);
 
         Optional<Relationship> result = dataEngineCommonHandler.findRelationship(USER, FIRST_GUID, SECOND_GUID,
@@ -237,6 +239,7 @@ class DataEngineCommonHandlerTest {
     void getEntityDetails() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "getEntityDetails";
         EntityDetail mockedEntity = mock(EntityDetail.class);
+
         when(genericHandler.getEntityFromRepository(USER, GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME,
                 null, null, false, false,
                 null, null, methodName)).thenReturn(mockedEntity);
@@ -266,8 +269,9 @@ class DataEngineCommonHandlerTest {
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(genericHandler.getAttachedEntities(USER, GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME,
-                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME, 0,
-                invalidParameterHandler.getMaxPagingSize(), methodName)).thenReturn(Collections.singletonList(mockedEntity));
+                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME, null, null, 0,
+                false, false, 0,
+                invalidParameterHandler.getMaxPagingSize(), null, methodName)).thenReturn(Collections.singletonList(mockedEntity));
 
         Set<EntityDetail> result = dataEngineCommonHandler.getEntitiesForRelationship(USER, GUID, RELATIONSHIP_TYPE_NAME,
                 ENTITY_TYPE_NAME, ENTITY_TYPE_NAME);
@@ -284,8 +288,8 @@ class DataEngineCommonHandlerTest {
         mockTypeDef(RELATIONSHIP_TYPE_NAME, RELATIONSHIP_TYPE_GUID);
 
         when(genericHandler.getAttachedEntities(USER, GUID, CommonMapper.GUID_PROPERTY_NAME, ENTITY_TYPE_NAME,
-                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME, 0,
-                invalidParameterHandler.getMaxPagingSize(), methodName)).thenReturn(null);
+                RELATIONSHIP_TYPE_GUID, RELATIONSHIP_TYPE_NAME, ENTITY_TYPE_NAME, null, null, 0, false, false,0,
+                invalidParameterHandler.getMaxPagingSize(), null, methodName)).thenReturn(null);
 
         Set<EntityDetail> result = dataEngineCommonHandler.getEntitiesForRelationship(USER, GUID, RELATIONSHIP_TYPE_NAME,
                 ENTITY_TYPE_NAME, ENTITY_TYPE_NAME);

@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EffectiveTimeRequestBody carries the date/time for a query.
+ * EffectiveTimeQueryRequestBody carries the date/time for a query.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,6 +41,8 @@ public class EffectiveTimeQueryRequestBody extends AssetManagerIdentifiersReques
      */
     public EffectiveTimeQueryRequestBody(EffectiveTimeQueryRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             effectiveTime = template.getEffectiveTime();
