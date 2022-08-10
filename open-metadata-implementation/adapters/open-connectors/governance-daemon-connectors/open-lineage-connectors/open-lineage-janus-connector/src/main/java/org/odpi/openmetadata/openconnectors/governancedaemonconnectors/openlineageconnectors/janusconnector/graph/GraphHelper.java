@@ -111,6 +111,28 @@ public class GraphHelper {
         }
     }
 
+    /**
+     * Helper method that gets a traversal and executes the code that queries the graph
+     *
+     * @param consumer     must accept a GraphTraversalSource as the first parameter and has two more parameter
+     * @param argument1    the second argument of the consumer
+     * @param argument2    the third argument of the consumer
+     * @param errorHandler function that is called when an error occurs while executing the consumer
+     * @param <U>          type of the second parameter of the consumer
+     * @param <V>          type of the third parameter of the consumer
+     */
+    public <V, U> void commit(TriConsumer<GraphTraversalSource, V, U> consumer, V argument1, U argument2, TriConsumer<Exception, V, U> errorHandler) {
+        GraphTraversalSource g = this.getGraphTraversalSource();
+        try {
+            consumer.accept(g, argument1, argument2);
+            if (isSupportingTransactions()) {
+                g.tx().commit();
+            }
+        } catch (Exception e) {
+            g.tx().rollback();
+            errorHandler.accept(e, argument1, argument2);
+        }
+    }
 
     /**
      * Helper method that gets a traversal and executes the code that queries the graph
