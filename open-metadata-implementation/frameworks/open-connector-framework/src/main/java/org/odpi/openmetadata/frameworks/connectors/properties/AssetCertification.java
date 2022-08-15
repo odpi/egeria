@@ -32,7 +32,7 @@ public class AssetCertification extends AssetReferenceable
     /**
      * Bean constructor
      *
-     * @param certificationBean bean containing all of the parameters
+     * @param certificationBean bean containing all the parameters
      */
     public AssetCertification(Certification certificationBean)
     {
@@ -53,7 +53,7 @@ public class AssetCertification extends AssetReferenceable
      * Bean constructor with parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param certificationBean bean with all of the properties in it
+     * @param certificationBean bean with all the properties in it
      */
     public AssetCertification(AssetDescriptor parentAsset,
                               Certification   certificationBean)
@@ -93,7 +93,7 @@ public class AssetCertification extends AssetReferenceable
 
 
     /**
-     * Return the bean with all of the properties in it.
+     * Return the bean with all the properties in it.
      *
      * @return certification bean
      */

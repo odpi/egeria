@@ -276,7 +276,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param userId   unique identifier for requesting user.
      * @param category enum value for the category of TypeDef to return.
@@ -299,7 +299,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param userId   unique identifier for requesting user.
      * @param category enum value for the category of an AttributeTypeDef to return.
@@ -1683,7 +1683,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
@@ -2943,7 +2943,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -2988,7 +2988,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollectionBase
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.

@@ -136,7 +136,7 @@ public class IntegrationDaemonRESTServices
 
 
     /**
-     * Request that the integration daemon refresh all of the connectors in all of the integration services
+     * Request that the integration daemon refresh all the connectors in all the integration services
      *
      * @param serverName name of the integration daemon
      * @param userId identifier of calling user

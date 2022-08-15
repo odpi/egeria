@@ -29,7 +29,7 @@ public class AssetComment extends AssetElementHeader
     /**
      * Bean constructor
      *
-     * @param commentBean bean that contains all of the properties
+     * @param commentBean bean that contains all the properties
      * @param commentReplies any replies to this comment
      */
     public AssetComment(Comment              commentBean,
@@ -64,7 +64,7 @@ public class AssetComment extends AssetElementHeader
      * Bean constructor with parent asset and replies
      *
      * @param parentAsset     descriptor for parent asset
-     * @param commentBean bean that contains all of the properties
+     * @param commentBean bean that contains all the properties
      * @param commentReplies any replies to this comment
      */
     public    AssetComment(AssetDescriptor      parentAsset,
@@ -127,7 +127,7 @@ public class AssetComment extends AssetElementHeader
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return Comment bean
      */

@@ -27,6 +27,7 @@ public class UserIdentityElement implements MetadataElement, Serializable
 
     private ElementHeader          elementHeader = null;
     private UserIdentityProperties properties    = null;
+    private RelatedElement         relatedElement = null;
 
 
     /**
@@ -49,6 +50,7 @@ public class UserIdentityElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
+            relatedElement = template.getRelatedElement();
         }
     }
 
@@ -100,6 +102,30 @@ public class UserIdentityElement implements MetadataElement, Serializable
 
 
     /**
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @return list of element stubs
+     */
+    public RelatedElement getRelatedElement()
+    {
+        return relatedElement;
+    }
+
+
+    /**
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @param relatedElement relationship details
+     */
+    public void setRelatedElement(RelatedElement relatedElement)
+    {
+        this.relatedElement = relatedElement;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -110,6 +136,7 @@ public class UserIdentityElement implements MetadataElement, Serializable
         return "UserIdentityElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
+                       ", relatedElement=" + relatedElement +
                        '}';
     }
 
@@ -133,7 +160,8 @@ public class UserIdentityElement implements MetadataElement, Serializable
         }
         UserIdentityElement that = (UserIdentityElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties);
+                       Objects.equals(properties, that.properties) &&
+                       Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -145,6 +173,6 @@ public class UserIdentityElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
     }
 }

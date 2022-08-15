@@ -21,7 +21,7 @@ public class AssetMeaning extends AssetElementHeader
     /**
      * Bean constructor
      *
-     * @param meaningBean - bean containing all of the properties
+     * @param meaningBean - bean containing all the properties
      */
     public AssetMeaning(Meaning   meaningBean)
     {
@@ -42,7 +42,7 @@ public class AssetMeaning extends AssetElementHeader
      * Bean constructor
      *
      * @param parentAsset descriptor for parent asset
-     * @param meaningBean - bean containing all of the properties
+     * @param meaningBean - bean containing all the properties
      */
     public AssetMeaning(AssetDescriptor  parentAsset,
                         Meaning          meaningBean)
@@ -82,7 +82,7 @@ public class AssetMeaning extends AssetElementHeader
 
 
     /**
-     * Return the bean containing all of the properties
+     * Return the bean containing all the properties
      *
      * @return meaning bean
      */

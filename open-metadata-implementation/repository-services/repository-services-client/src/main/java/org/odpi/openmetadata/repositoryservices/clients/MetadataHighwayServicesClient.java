@@ -677,7 +677,7 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
         else if (restResult.getExceptionClassName() != null)
         {
             /*
-             * All of the other expected exceptions have been processed so default exception to RepositoryErrorException
+             * all the other expected exceptions have been processed so default exception to RepositoryErrorException
              */
             throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
                                                this.getClass().getName(),

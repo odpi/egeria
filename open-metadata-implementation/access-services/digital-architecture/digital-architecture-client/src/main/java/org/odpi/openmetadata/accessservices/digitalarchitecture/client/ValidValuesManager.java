@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * ValidValuesManager provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- * the same attributes and so inherit from ValidValue where all of the attributes are defined.
+ * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
@@ -198,6 +198,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      *
      * @param userId calling user.
      * @param setGUID unique identifier of the set to attach this to.
+     * @param isDefaultValue     is this the default value for the set?
      * @param qualifiedName unique name.
      * @param displayName displayable descriptive name.
      * @param description further information.
@@ -216,6 +217,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
     @Override
     public String  createValidValueDefinition(String              userId,
                                               String              setGUID,
+                                              boolean             isDefaultValue,
                                               String              qualifiedName,
                                               String              displayName,
                                               String              description,
@@ -234,7 +236,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}?isDefaultValue={3}";
 
         ValidValueProperties requestBody = new ValidValueProperties();
         requestBody.setQualifiedName(qualifiedName);
@@ -252,7 +254,8 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  setGUID);
+                                                                  setGUID,
+                                                                  isDefaultValue);
 
         return restResult.getGUID();
     }
@@ -371,6 +374,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @param userId calling user.
      * @param setGUID unique identifier of the set.
      * @param validValueGUID unique identifier of the valid value to add to the set.
+     * @param isDefaultValue     is this the default value for the set?
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -379,7 +383,8 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
     @Override
     public void    attachValidValueToSet(String   userId,
                                          String   setGUID,
-                                         String   validValueGUID) throws InvalidParameterException,
+                                         String   validValueGUID,
+                                         boolean  isDefaultValue) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
@@ -391,7 +396,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
         invalidParameterHandler.validateGUID(setGUID, setGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}/members/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}/members/{3}?isDefaultValue={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformURLRoot + urlTemplate,
@@ -399,7 +404,8 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
                                         serverName,
                                         userId,
                                         setGUID,
-                                        validValueGUID);
+                                        validValueGUID,
+                                        isDefaultValue);
     }
 
 

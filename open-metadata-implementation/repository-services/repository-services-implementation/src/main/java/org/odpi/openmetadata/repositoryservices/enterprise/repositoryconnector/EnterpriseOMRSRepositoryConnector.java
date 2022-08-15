@@ -30,7 +30,7 @@ import java.util.List;
  *     using the OCF ConnectorBroker.  They use its metadata collection to retrieve and send the metadata they need.
  * </p>
  * <p>
- *     Each EnterpriseOMRSRepositoryConnector instance needs to maintain an up to date list of OMRS Connectors to all of the
+ *     Each EnterpriseOMRSRepositoryConnector instance needs to maintain an up to date list of OMRS Connectors to all the
  *     repositories in the connected open metadata repository cohort(s).  It does by registering as an OMRSConnectorConsumer
  *     with the OMRSConnectorManager to be notified when connectors to new open metadata repositories are available.
  * </p>

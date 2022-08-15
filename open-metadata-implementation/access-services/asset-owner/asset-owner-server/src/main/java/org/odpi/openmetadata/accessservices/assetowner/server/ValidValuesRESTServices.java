@@ -125,6 +125,7 @@ public class ValidValuesRESTServices
      * @param serverName name of calling server
      * @param userId calling user.
      * @param setGUID unique identifier of the set to attach this to.
+     * @param isDefaultValue     is this the default value for the set?
      * @param requestBody parameters to update.
      *
      * @return unique identifier for the new definition
@@ -135,6 +136,7 @@ public class ValidValuesRESTServices
     public GUIDResponse  createValidValueDefinition(String                 serverName,
                                                     String                 userId,
                                                     String                 setGUID,
+                                                    boolean                isDefaultValue,
                                                     ValidValuesRequestBody requestBody)
     {
         final String methodName = "createValidValueDefinition";
@@ -163,6 +165,7 @@ public class ValidValuesRESTServices
                                                                     null,
                                                                     null,
                                                                     setGUID,
+                                                                    isDefaultValue,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
@@ -345,6 +348,7 @@ public class ValidValuesRESTServices
      * @param userId calling user.
      * @param setGUID unique identifier of the set.
      * @param validValueGUID unique identifier of the valid value to add to the set.
+     * @param isDefaultValue     is this the default value for the set?
      * @param requestBody null request body supplied to satisfy REST protocol
      *
      * @return void or
@@ -357,6 +361,7 @@ public class ValidValuesRESTServices
                                                  String          userId,
                                                  String          setGUID,
                                                  String          validValueGUID,
+                                                 boolean         isDefaultValue,
                                                  NullRequestBody requestBody)
     {
         final String   methodName = "attachValidValueToSet";
@@ -384,6 +389,7 @@ public class ValidValuesRESTServices
                                           null,
                                           setGUID,
                                           validValueGUID,
+                                          isDefaultValue,
                                           null,
                                           null,
                                           false,

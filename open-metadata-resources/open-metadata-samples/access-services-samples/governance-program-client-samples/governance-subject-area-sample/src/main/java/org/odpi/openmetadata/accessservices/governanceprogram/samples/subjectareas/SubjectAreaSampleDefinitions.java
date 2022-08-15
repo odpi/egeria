@@ -187,13 +187,13 @@ public enum SubjectAreaSampleDefinitions
     ;
 
 
-    private String subjectAreaName;
-    private String parentName;
-    private String displayName;
-    private String description;
-    private String scope;
-    private String usage;
-    private int    domain;
+    private final String subjectAreaName;
+    private final String parentName;
+    private final String displayName;
+    private final String description;
+    private final String scope;
+    private final String usage;
+    private final int    domain;
 
 
     SubjectAreaSampleDefinitions(String name,
@@ -205,6 +205,7 @@ public enum SubjectAreaSampleDefinitions
                                  int    domain)
     {
         this.subjectAreaName = name;
+        this.parentName = parentName;
         this.displayName = displayName;
         this.description = description;
         this.scope = scope;
@@ -227,7 +228,7 @@ public enum SubjectAreaSampleDefinitions
     /**
      * Return the name of the parent subject area - null for top level.
      *
-     * @return subject area name.
+     * @return parent subject area name.
      */
     public String getParentName()
     {
@@ -268,8 +269,9 @@ public enum SubjectAreaSampleDefinitions
 
 
     /**
-     * Get the typical usage of the subject area;
-     * @return
+     * Get the typical usage of the subject area.
+     *
+     * @return text
      */
     public String getUsage()
     {
@@ -305,4 +307,5 @@ public enum SubjectAreaSampleDefinitions
                        ", usage='" + usage + '\'' +
                        ", domain=" + domain +
                        '}';
-    }}
+    }
+}

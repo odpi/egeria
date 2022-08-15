@@ -292,6 +292,7 @@ public class CreateValidValuesSetTest
 
             String validValue1GUID = client.createValidValueDefinition(userId,
                                                                        validValueSetGUID,
+                                                                       true,
                                                                        validValue1Name,
                                                                        validValue1DisplayName,
                                                                        validValue1Description,
@@ -474,6 +475,7 @@ public class CreateValidValuesSetTest
             {
                 client.createValidValueDefinition(userId,
                                                   validValueSetGUID,
+                                                  false,
                                                   validValue1Name,
                                                   validValue1DisplayName,
                                                   validValue1Description,
@@ -496,6 +498,7 @@ public class CreateValidValuesSetTest
              */
             String validValue2GUID = client.createValidValueDefinition(userId,
                                                                        validValueSetGUID,
+                                                                       false,
                                                                        validValue2Name,
                                                                        validValue2DisplayName,
                                                                        validValue2Description,
@@ -854,7 +857,7 @@ public class CreateValidValuesSetTest
             /*
              * Now reattach value 2 and check it reappears in the set.
              */
-            client.attachValidValueToSet(userId, validValueSetGUID, validValue2GUID);
+            client.attachValidValueToSet(userId, validValueSetGUID, validValue2GUID, true);
 
             validValueList = client.getValidValueSetMembers(userId, validValueSetGUID, 0, maxPageSize);
 

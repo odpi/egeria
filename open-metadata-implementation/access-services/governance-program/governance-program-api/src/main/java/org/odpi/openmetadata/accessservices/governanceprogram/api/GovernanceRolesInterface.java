@@ -181,7 +181,7 @@ public interface GovernanceRolesInterface
     /**
      * Retrieve the properties of a governance role using its unique name.  The results are returned as a list
      * since it is possible that two roles have the same identifier due to the distributed nature of the
-     * open metadata ecosystem.  By returning all of the search results here it is possible to manage the
+     * open metadata ecosystem.  By returning all the search results here it is possible to manage the
      * duplicates through this interface.
      *
      * @param userId calling user
@@ -200,7 +200,7 @@ public interface GovernanceRolesInterface
 
 
     /**
-     * Retrieve all of the governance roles for a particular governance domain.
+     * Retrieve all the governance roles for a particular governance domain.
      *
      * @param userId calling user
      * @param domainIdentifier identifier of domain - 0 means all
@@ -222,7 +222,7 @@ public interface GovernanceRolesInterface
 
 
     /**
-     * Retrieve all of the governance roles for a particular title.  The title can include regEx wildcards.
+     * Retrieve all the governance roles for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
      * @param title identifier of role
@@ -243,7 +243,7 @@ public interface GovernanceRolesInterface
                                                                                   PropertyServerException;
 
     /**
-     * Return all of the governance roles and their incumbents (if any).
+     * Return all the governance roles and their incumbents (if any).
      *
      * @param userId the name of the calling user.
      * @param domainIdentifier identifier of domain - 0 means all

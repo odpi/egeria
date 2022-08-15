@@ -485,7 +485,7 @@ public class OMAGServerOperationalServices
                  * Governance servers are varied in nature.  Many host connectors that exchange metadata with third party technologies.
                  * However they may also host specific types of engines, or provide an implementation of a complete governance service.
                  * Because of this variety, Egeria does not (yet) provide any specialist frameworks for supporting the governance servers.
-                 * All of the implementation is in the governance services subsystems initialized below.
+                 * all the implementation is in the governance services subsystems initialized below.
                  *
                  * Set up the server instance - ensure it is active and the security has been set up correctly.
                  */

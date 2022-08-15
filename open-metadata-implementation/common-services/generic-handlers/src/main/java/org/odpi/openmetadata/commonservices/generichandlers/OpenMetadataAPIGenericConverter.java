@@ -1123,6 +1123,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the contactType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string name or null
+     */
+    protected String removeContactType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeContactType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.CONTACT_TYPE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the contactMethodService property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -1181,6 +1203,30 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.MISSION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+
+    /**
+     * Extract and delete the associationType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeAssociationType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeAssociationType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ASSOCIATION_TYPE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2078,6 +2124,49 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         return null;
     }
 
+
+    /**
+     * Retrieve the zoneName from the properties.
+     *
+     * @param instanceProperties properties from the entity
+     * @return zone name
+     */
+    protected String removeZoneName(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeZoneName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                              OpenMetadataAPIMapper.ZONE_NAME_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the subjectAreaName from the properties.
+     *
+     * @param instanceProperties properties from the entity
+     * @return subject area name
+     */
+    protected String removeSubjectAreaName(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeSubjectAreaName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.SUBJECT_AREA_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
 
     /**
      * Retrieve the zone membership from the properties of the zone membership classification.
@@ -3001,6 +3090,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeBooleanProperty(serviceName,
                                                           OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                          instanceProperties,
+                                                          methodName);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Retrieve the isDefaultValue flag from the properties from the supplied instance properties.
+     *
+     * @param instanceProperties properties from the classification
+     * @return boolean - default is false
+     */
+    protected boolean removeIsDefaultValue(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeIsDefaultValue";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeBooleanProperty(serviceName,
+                                                          OpenMetadataAPIMapper.IS_DEFAULT_VALUE_PROPERTY_NAME,
                                                           instanceProperties,
                                                           methodName);
         }
@@ -3987,6 +4098,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.TITLE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the pronouns property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
+    protected String removePronouns(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removePronouns";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.PRONOUNS_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5212,7 +5346,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getIntProperty(serviceName,
-                                                   OpenMetadataAPIMapper.VALID_VALUES_CONFIDENCE_PROPERTY_NAME,
+                                                   OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
                                                    instanceProperties,
                                                    methodName);
         }
@@ -5234,7 +5368,52 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataAPIMapper.VALID_VALUES_STEWARD_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the stewardTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from ReferenceValueAssignment or ValidValuesMapping relationship
+     * @return string text or null
+     */
+    protected String getStewardTypeName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getStewardTypeName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the stewardTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from ReferenceValueAssignment or ValidValuesMapping relationship
+     * @return string text or null
+     */
+    protected String getStewardPropertyName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getStewardPropertyName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -5301,7 +5480,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataAPIMapper.VALID_VALUES_ASSOCIATION_DESCRIPTION_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.ASSOCIATION_DESCRIPTION_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }

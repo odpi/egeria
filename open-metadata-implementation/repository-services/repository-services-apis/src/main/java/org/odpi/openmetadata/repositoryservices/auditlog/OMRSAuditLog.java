@@ -21,7 +21,7 @@ import java.util.UUID;
  * will have their own instance of an OMRSAuditLog. OMRSAuditLog will ensure audit log records are written to
  * disk in the common OMRSAuditLog for this local server.
  *
- * There are different severities of log record to cover all of the activity of the OMRS.
+ * There are different severities of log record to cover all the activity of the OMRS.
  *
  * This audit log is critical to validate the behavior of the OMAG Service, particularly in the initial interaction of
  * a new member in the OMRS Cohort.

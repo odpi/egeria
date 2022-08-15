@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
 
 import java.util.Objects;
 
@@ -12,25 +13,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MetadataSourceRequestBody carries the parameters for marking an asset or schema as external.
+ * TemplateRequestBody carries the parameters for creating a new asset using a template.
+ * The external source identifiers indicate whether the new asset should be created as an external element or not.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MetadataSourceRequestBody extends CommunityProfileOMASAPIRequestBody
+public class TemplateRequestBody extends TemplateProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String externalSourceGUID = null;
-    private String externalSourceName = null;
+    private String externalSourceGUID         = null;
+    private String externalSourceName         = null;
 
 
     /**
      * Default constructor
      */
-    public MetadataSourceRequestBody()
+    public TemplateRequestBody()
     {
-        super();
     }
 
 
@@ -39,15 +40,26 @@ public class MetadataSourceRequestBody extends CommunityProfileOMASAPIRequestBod
      *
      * @param template object to copy
      */
-    public MetadataSourceRequestBody(MetadataSourceRequestBody template)
+    public TemplateRequestBody(TemplateRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            externalSourceGUID = template.getExternalSourceGUID();
-            externalSourceName = template.getExternalSourceName();
+            externalSourceGUID         = template.getExternalSourceGUID();
+            externalSourceName         = template.getExternalSourceName();
         }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public TemplateRequestBody(TemplateProperties template)
+    {
+        super(template);
     }
 
 
@@ -103,11 +115,15 @@ public class MetadataSourceRequestBody extends CommunityProfileOMASAPIRequestBod
     @Override
     public String toString()
     {
-        return "MetadataSourceRequestBody{" +
-                "externalSourceGUID='" + externalSourceGUID + '\'' +
-                ", externalSourceName='" + externalSourceName + '\'' +
-                '}';
+        return "TemplateRequestBody{" +
+                       "externalSourceGUID='" + externalSourceGUID + '\'' +
+                       ", externalSourceName='" + externalSourceName + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       '}';
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -126,7 +142,11 @@ public class MetadataSourceRequestBody extends CommunityProfileOMASAPIRequestBod
         {
             return false;
         }
-        MetadataSourceRequestBody that = (MetadataSourceRequestBody) objectToCompare;
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        TemplateRequestBody that = (TemplateRequestBody) objectToCompare;
         return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
                 Objects.equals(externalSourceName, that.externalSourceName);
     }

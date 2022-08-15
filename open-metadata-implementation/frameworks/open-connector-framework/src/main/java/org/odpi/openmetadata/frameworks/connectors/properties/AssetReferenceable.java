@@ -42,7 +42,7 @@ public class AssetReferenceable extends AssetElementHeader
     /**
      * Bean constructor
      *
-     * @param referenceableBean bean containing all of the properties
+     * @param referenceableBean bean containing all the properties
      */
     protected AssetReferenceable(Referenceable referenceableBean)
     {
@@ -108,7 +108,7 @@ public class AssetReferenceable extends AssetElementHeader
     /**
      * Set up the bean that contains the properties of the referenceable.
      *
-     * @param referenceableBean bean containing all of the properties
+     * @param referenceableBean bean containing all the properties
      */
     protected void  setBean(Referenceable referenceableBean)
     {
@@ -120,7 +120,7 @@ public class AssetReferenceable extends AssetElementHeader
     /**
      * Return the bean for this referenceable.
      *
-     * @return Referenceable object with all of the properties
+     * @return Referenceable object with all the properties
      */
     protected Referenceable getReferenceableBean()
     {

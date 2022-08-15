@@ -6,8 +6,9 @@ package org.odpi.openmetadata.accessservices.communityprofile.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LocationElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelationshipElement;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -16,22 +17,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * LocationsResponse is a response object for passing back a list of location objects.
+ * RelationshipElementsResponse is a response object for passing back a list of relationships
+ * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LocationsResponse extends CommunityProfileOMASAPIResponse
+public class RelationshipElementsResponse extends CommunityProfileOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<LocationElement> elementList = null;
+    private List<RelationshipElement> elementList = null;
 
 
     /**
      * Default constructor
      */
-    public LocationsResponse()
+    public RelationshipElementsResponse()
     {
     }
 
@@ -41,7 +43,7 @@ public class LocationsResponse extends CommunityProfileOMASAPIResponse
      *
      * @param template object to copy
      */
-    public LocationsResponse(LocationsResponse template)
+    public RelationshipElementsResponse(RelationshipElementsResponse template)
     {
         super(template);
 
@@ -57,7 +59,7 @@ public class LocationsResponse extends CommunityProfileOMASAPIResponse
      *
      * @return result object
      */
-    public List<LocationElement> getElementList()
+    public List<RelationshipElement> getElementList()
     {
         if (elementList == null)
         {
@@ -69,17 +71,17 @@ public class LocationsResponse extends CommunityProfileOMASAPIResponse
         }
         else
         {
-            return elementList;
+            return new ArrayList<>(elementList);
         }
     }
 
 
     /**
-     * Set up the list of metadata elements to return.
+     * Set up the metadata element to return.
      *
      * @param elementList result object
      */
-    public void setElementList(List<LocationElement> elementList)
+    public void setElementList(List<RelationshipElement> elementList)
     {
         this.elementList = elementList;
     }
@@ -93,19 +95,19 @@ public class LocationsResponse extends CommunityProfileOMASAPIResponse
     @Override
     public String toString()
     {
-        return "LocationsResponse{" +
-                "element=" + elementList +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+        return "RelationshipElementsResponse{" +
+                       "elementList=" + elementList +
+                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                       ", actionDescription='" + getActionDescription() + '\'' +
+                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
+                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
+                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
+                       ", exceptionProperties=" + getExceptionProperties() +
+                       '}';
     }
 
 
@@ -130,7 +132,7 @@ public class LocationsResponse extends CommunityProfileOMASAPIResponse
         {
             return false;
         }
-        LocationsResponse that = (LocationsResponse) objectToCompare;
+        RelationshipElementsResponse that = (RelationshipElementsResponse) objectToCompare;
         return Objects.equals(elementList, that.elementList);
     }
 

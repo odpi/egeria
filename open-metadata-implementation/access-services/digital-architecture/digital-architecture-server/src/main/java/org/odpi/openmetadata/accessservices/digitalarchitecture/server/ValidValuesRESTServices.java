@@ -125,6 +125,7 @@ public class ValidValuesRESTServices
      * @param serverName name of calling server
      * @param userId calling user.
      * @param setGUID unique identifier of the set to attach this to.
+     * @param isDefaultValue     is this the default value for the set?
      * @param requestBody parameters to update.
      *
      * @return unique identifier for the new definition
@@ -135,6 +136,7 @@ public class ValidValuesRESTServices
     public GUIDResponse  createValidValueDefinition(String               serverName,
                                                     String               userId,
                                                     String               setGUID,
+                                                    boolean              isDefaultValue,
                                                     ValidValueProperties requestBody)
     {
         final String methodName = "createValidValueDefinition";
@@ -163,6 +165,7 @@ public class ValidValuesRESTServices
                                                                     null,
                                                                     null,
                                                                     setGUID,
+                                                                    isDefaultValue,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
@@ -345,6 +348,7 @@ public class ValidValuesRESTServices
      * @param userId calling user.
      * @param setGUID unique identifier of the set.
      * @param validValueGUID unique identifier of the valid value to add to the set.
+     * @param isDefaultValue     is this the default value for the set?
      * @param requestBody null request body supplied to satisfy REST protocol
      *
      * @return void or
@@ -357,6 +361,7 @@ public class ValidValuesRESTServices
                                                  String          userId,
                                                  String          setGUID,
                                                  String          validValueGUID,
+                                                 boolean         isDefaultValue,
                                                  NullRequestBody requestBody)
     {
         final String   methodName = "attachValidValueToSet";
@@ -384,6 +389,7 @@ public class ValidValuesRESTServices
                                           null,
                                           setGUID,
                                           validValueGUID,
+                                          isDefaultValue,
                                           null,
                                           null,
                                           false,
@@ -463,7 +469,7 @@ public class ValidValuesRESTServices
 
 
     /**
-     * Link a valid value to an asset that provides the implementation.  Typically this method is
+     * Link a valid value to an asset that provides the implementation.  Typically, this method is
      * used to link a valid value set to a code table.
      *
      * @param serverName name of calling server
@@ -683,7 +689,7 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<ReferenceDataAssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.declassifyAssetAsReferenceData(userId,
                                                    assetGUID,
@@ -849,10 +855,10 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public VoidResponse    assignReferenceValueToItem(String                   serverName,
-                                                      String                   userId,
-                                                      String                   validValueGUID,
-                                                      String                   referenceableGUID,
+    public VoidResponse    assignReferenceValueToItem(String                             serverName,
+                                                      String                             userId,
+                                                      String                             validValueGUID,
+                                                      String                             referenceableGUID,
                                                       ReferenceValueAssignmentProperties requestBody)
     {
         final String   methodName = "assignReferenceValueToItem";
@@ -863,13 +869,17 @@ public class ValidValuesRESTServices
         AuditLog     auditLog = null;
         int          confidence = 0;
         String       steward = null;
+        String       stewardTypeName = null;
+        String       stewardPropertyName = null;
         String       notes = null;
 
         if (requestBody != null)
         {
-            confidence = requestBody.getConfidence();
-            steward    = requestBody.getSteward();
-            notes      = requestBody.getNotes();
+            confidence          = requestBody.getConfidence();
+            steward             = requestBody.getSteward();
+            stewardTypeName     = requestBody.getStewardTypeName();
+            stewardPropertyName = requestBody.getStewardPropertyName();
+            notes               = requestBody.getNotes();
         }
 
         try
@@ -892,6 +902,8 @@ public class ValidValuesRESTServices
                                                referenceableGUID,
                                                confidence,
                                                steward,
+                                               stewardTypeName,
+                                               stewardPropertyName,
                                                notes,
                                                null,
                                                null,
@@ -1000,6 +1012,8 @@ public class ValidValuesRESTServices
         String       associationDescription = null;
         int          confidence = 0;
         String       steward = null;
+        String       stewardTypeName = null;
+        String       stewardPropertyName = null;
         String       notes = null;
 
         if (requestBody != null)
@@ -1007,6 +1021,8 @@ public class ValidValuesRESTServices
             associationDescription = requestBody.getAssociationDescription();
             confidence             = requestBody.getConfidence();
             steward                = requestBody.getSteward();
+            stewardTypeName        = requestBody.getStewardTypeName();
+            stewardPropertyName    = requestBody.getStewardPropertyName();
             notes                  = requestBody.getNotes();
         }
 
@@ -1031,6 +1047,8 @@ public class ValidValuesRESTServices
                                    associationDescription,
                                    confidence,
                                    steward,
+                                   stewardTypeName,
+                                   stewardPropertyName,
                                    notes,
                                    null,
                                    null,

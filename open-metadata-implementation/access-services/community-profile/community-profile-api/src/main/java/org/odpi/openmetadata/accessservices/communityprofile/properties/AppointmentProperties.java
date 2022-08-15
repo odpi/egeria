@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceRequestBody;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MetadataSourceRequestBody carries the parameters for marking an asset or schema as external.
+ * ExternalSourceRequestBody carries the parameters for marking an asset or schema as external.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * ManageValidValues provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- * the same attributes and so inherit from ValidValue where all of the attributes are defined.
+ * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
@@ -58,6 +58,7 @@ public interface ManageValidValues
      *
      * @param userId calling user.
      * @param setGUID unique identifier of the set to attach this to.
+     * @param isDefaultValue     is this the default value for the set?
      * @param qualifiedName unique name.
      * @param displayName displayable descriptive name.
      * @param description further information.
@@ -76,6 +77,7 @@ public interface ManageValidValues
      */
     String  createValidValueDefinition(String              userId,
                                        String              setGUID,
+                                       boolean             isDefaultValue,
                                        String              qualifiedName,
                                        String              displayName,
                                        String              description,
@@ -153,16 +155,18 @@ public interface ManageValidValues
      * @param userId calling user.
      * @param setGUID unique identifier of the set.
      * @param validValueGUID unique identifier of the valid value to add to the set.
+     * @param isDefaultValue     is this the default value for the set?
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    void    attachValidValueToSet(String userId,
-                                  String setGUID,
-                                  String validValueGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException;
+    void    attachValidValueToSet(String  userId,
+                                  String  setGUID,
+                                  String  validValueGUID,
+                                  boolean isDefaultValue) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
 
 
     /**

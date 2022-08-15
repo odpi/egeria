@@ -248,7 +248,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      *
      * @param sourceName source of call
      * @param propertyName name of requested map property
-     * @param properties all of the properties of the instance
+     * @param properties all the properties of the instance
      * @param callingMethodName method of caller
      * @return array property value or null
      */
@@ -309,7 +309,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      *
      * @param sourceName source of call
      * @param propertyName name of requested map property
-     * @param properties all of the properties of the instance
+     * @param properties all the properties of the instance
      * @param methodName method of caller
      * @return array property value or null
      */
@@ -338,7 +338,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * Convert the values in the instance properties into a String Array.  It assumes all of the elements are primitives.
+     * Convert the values in the instance properties into a String Array.  It assumes all the elements are primitives.
      *
      * @param instanceProperties instance properties containing the values.  They should all be primitive Strings.
      * @param callingMethodName method of caller
@@ -705,7 +705,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      *
      * @param sourceName source of call
      * @param propertyName name of requested map property
-     * @param properties all of the properties of the instance
+     * @param properties all the properties of the instance
      * @param methodName method of caller
      * @return map property value or null
      */

@@ -1,24 +1,23 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.rest;
+package org.odpi.openmetadata.accessservices.communityprofile.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * FixedLocationRequestBody carries the parameters for marking a location as a fixed physical location.
+ * FixedLocationProperties carries the parameters for marking a location as a fixed physical location.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FixedLocationRequestBody implements Serializable
+public class FixedLocationProperties extends ClassificationProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -32,8 +31,9 @@ public class FixedLocationRequestBody implements Serializable
     /**
      * Default constructor
      */
-    public FixedLocationRequestBody()
+    public FixedLocationProperties()
     {
+        super();
     }
 
 
@@ -42,8 +42,10 @@ public class FixedLocationRequestBody implements Serializable
      *
      * @param template object to copy
      */
-    public FixedLocationRequestBody(FixedLocationRequestBody template)
+    public FixedLocationProperties(FixedLocationProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             coordinates = template.getCoordinates();
@@ -150,8 +152,11 @@ public class FixedLocationRequestBody implements Serializable
     @Override
     public String toString()
     {
-        return "FixedLocationRequestBody{" +
-                       "coordinates='" + coordinates + '\'' +
+        return "FixedLocationProperties{" +
+                       "effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", coordinates='" + coordinates + '\'' +
                        ", mapProjection='" + mapProjection + '\'' +
                        ", postalAddress='" + postalAddress + '\'' +
                        ", timeZone='" + timeZone + '\'' +
@@ -176,7 +181,11 @@ public class FixedLocationRequestBody implements Serializable
         {
             return false;
         }
-        FixedLocationRequestBody that = (FixedLocationRequestBody) objectToCompare;
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
+        FixedLocationProperties that = (FixedLocationProperties) objectToCompare;
         return Objects.equals(coordinates, that.coordinates) &&
                        Objects.equals(mapProjection, that.mapProjection) &&
                        Objects.equals(postalAddress, that.postalAddress) &&
@@ -192,6 +201,6 @@ public class FixedLocationRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(coordinates, mapProjection, postalAddress, timeZone);
+        return Objects.hash(super.hashCode(), coordinates, mapProjection, postalAddress, timeZone);
     }
 }

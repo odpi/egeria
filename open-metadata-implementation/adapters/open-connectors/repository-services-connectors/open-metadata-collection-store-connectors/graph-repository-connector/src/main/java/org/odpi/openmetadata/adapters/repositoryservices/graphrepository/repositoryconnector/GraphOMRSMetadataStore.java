@@ -8491,7 +8491,7 @@ class GraphOMRSMetadataStore {
         /*
          * The strategy is to:
          *
-         * a) check the supplied value is an Array and that it contains primitive elements that are all of the same primitive category
+         * a) check the supplied value is an Array and that it contains primitive elements that are all the same primitive category
          *
          * b) determine whether the specified property is a core or type-defined attribute and check that it is a primitive and has
          *    the same primitive category as the elements in the array.
@@ -8502,7 +8502,7 @@ class GraphOMRSMetadataStore {
 
         /*
          * a) Validate the supplied match value is an array property and has elements that are primitive
-         *    and all of the same primitive category. Remember the primitive category.
+         *    and all the same primitive category. Remember the primitive category.
          *
          *    If any condition fails, throw InvalidParameterException naming the property.
          *
@@ -8510,7 +8510,7 @@ class GraphOMRSMetadataStore {
          * compare the named primitive property.
          *
          * Before going much further, validate that the parameter is an array and that it has
-         * only primitive elements and they are all of the same primitive category.
+         * only primitive elements and they are all the same primitive category.
          */
 
         ArrayPropertyValue apv = (ArrayPropertyValue)value;
@@ -8962,7 +8962,7 @@ class GraphOMRSMetadataStore {
         /*
          * The strategy is to:
          *
-         * a) check the supplied value is an Array and that it contains primitive elements that are all of the same primitive category
+         * a) check the supplied value is an Array and that it contains primitive elements that are all the same primitive category
          *
          * b) determine whether the specified property is a core or type-defined attribute and check that it is a primitive and has
          *    the same primitive category as the elements in the array.
@@ -8973,7 +8973,7 @@ class GraphOMRSMetadataStore {
 
         /*
          * a) Validate the supplied match value is an array property and has elements that are primitive
-         *    and all of the same primitive category. Remember the primitive category.
+         *    and all the same primitive category. Remember the primitive category.
          *
          *    If any condition fails, throw InvalidParameterException naming the property.
          *
@@ -8981,7 +8981,7 @@ class GraphOMRSMetadataStore {
          * compare the named primitive property.
          *
          * Before going much further, validate that the parameter is an array and that it has
-         * only primitive elements and they are all of the same primitive category.
+         * only primitive elements and they are all the same primitive category.
          */
 
         ArrayPropertyValue apv = (ArrayPropertyValue)value;

@@ -1,11 +1,12 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.rest;
+
+package org.odpi.openmetadata.accessservices.communityprofile.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.PersonalProfileElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LocationElement;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,27 +15,24 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-
 /**
- * PersonalProfileListResponse is the response structure used on the OMAS REST API calls that return a
- * a list of personal profile objects.
+ * LocationListResponse is a response object for passing back a list of location objects.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonalProfileListResponse extends GovernanceProgramOMASAPIResponse
+public class LocationListResponse extends CommunityProfileOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<PersonalProfileElement> personalProfiles = null;
+    private List<LocationElement> elements = null;
 
 
     /**
      * Default constructor
      */
-    public PersonalProfileListResponse()
+    public LocationListResponse()
     {
-        super();
     }
 
 
@@ -43,47 +41,47 @@ public class PersonalProfileListResponse extends GovernanceProgramOMASAPIRespons
      *
      * @param template object to copy
      */
-    public PersonalProfileListResponse(PersonalProfileListResponse template)
+    public LocationListResponse(LocationListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.personalProfiles = template.getPersonalProfiles();
+            elements = template.getElements();
         }
     }
 
 
     /**
-     * Return the personalProfile result.
+     * Return the list of metadata elements.
      *
-     * @return unique identifier
+     * @return result object
      */
-    public List<PersonalProfileElement> getPersonalProfiles()
+    public List<LocationElement> getElements()
     {
-        if (personalProfiles == null)
+        if (elements == null)
         {
             return null;
         }
-        else if (personalProfiles.isEmpty())
+        else if (elements.isEmpty())
         {
             return null;
         }
         else
         {
-            return personalProfiles;
+            return elements;
         }
     }
 
 
     /**
-     * Set up the personalProfile result.
+     * Set up the list of metadata elements to return.
      *
-     * @param personalProfiles - unique identifier
+     * @param elements result object
      */
-    public void setPersonalProfiles(List<PersonalProfileElement> personalProfiles)
+    public void setElements(List<LocationElement> elements)
     {
-        this.personalProfiles = personalProfiles;
+        this.elements = elements;
     }
 
 
@@ -95,8 +93,8 @@ public class PersonalProfileListResponse extends GovernanceProgramOMASAPIRespons
     @Override
     public String toString()
     {
-        return "PersonalProfileListResponse{" +
-                "personalProfiles='" + getPersonalProfiles() + '\'' +
+        return "LocationListResponse{" +
+                "element=" + elements +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -124,7 +122,7 @@ public class PersonalProfileListResponse extends GovernanceProgramOMASAPIRespons
         {
             return true;
         }
-        if (!(objectToCompare instanceof PersonalProfileListResponse))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -132,8 +130,8 @@ public class PersonalProfileListResponse extends GovernanceProgramOMASAPIRespons
         {
             return false;
         }
-        PersonalProfileListResponse that = (PersonalProfileListResponse) objectToCompare;
-        return Objects.equals(getPersonalProfiles(), that.getPersonalProfiles());
+        LocationListResponse that = (LocationListResponse) objectToCompare;
+        return Objects.equals(elements, that.elements);
     }
 
 
@@ -145,6 +143,6 @@ public class PersonalProfileListResponse extends GovernanceProgramOMASAPIRespons
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), personalProfiles);
+        return Objects.hash(super.hashCode(), elements);
     }
 }

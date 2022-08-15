@@ -43,7 +43,7 @@ public enum AssetConsumerErrorCode implements ExceptionMessageSet
     PROXY_CONNECTION_FOUND(404, "OMAS-ASSET-CONSUMER-404-006",
             "Only an entity proxy for requested connection {0} is found in the open metadata server {1}, error message was: {2}",
             "The system is unable to populate the requested connection object because the object stored is only a stub from a relationship.",
-            "Check that the connection name is correct.  Check that all of the servers in the cohort are running. Retry the request when the " +
+            "Check that the connection name is correct.  Check that all the servers in the cohort are running. Retry the request when the " +
                                    "connection is available in the cohort."),
     ASSET_NOT_FOUND(404, "OMAS-ASSET-CONSUMER-404-007",
             "A connected asset is not found for connection {0}",

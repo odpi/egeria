@@ -22,7 +22,7 @@ public class AssetSecurityTags extends AssetPropertyBase
     /**
      * Bean constructor
      *
-     * @param securityTags - bean containing all of the properties
+     * @param securityTags - bean containing all the properties
      */
     public AssetSecurityTags(SecurityTags securityTags)
     {
@@ -43,7 +43,7 @@ public class AssetSecurityTags extends AssetPropertyBase
      * Bean constructor
      *
      * @param parentAsset descriptor for parent asset
-     * @param securityTags - bean containing all of the properties
+     * @param securityTags - bean containing all the properties
      */
     public AssetSecurityTags(AssetDescriptor  parentAsset,
                              SecurityTags     securityTags)
@@ -83,7 +83,7 @@ public class AssetSecurityTags extends AssetPropertyBase
 
 
     /**
-     * Return the bean containing all of the properties
+     * Return the bean containing all the properties
      *
      * @return  bean
      */

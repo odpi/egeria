@@ -29,12 +29,12 @@ import java.util.List;
  */
 public class SecurityGroupManagement implements SecurityGroupInterface
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
 
@@ -289,7 +289,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
 
 
     /**
-     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, the should be only one.
+     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, there should be only one.
      *
      * @param userId calling user
      * @param distinguishedName unique name of the security group

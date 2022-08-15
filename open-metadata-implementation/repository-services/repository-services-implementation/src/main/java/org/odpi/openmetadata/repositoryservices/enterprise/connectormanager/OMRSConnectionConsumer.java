@@ -47,7 +47,7 @@ public interface OMRSConnectionConsumer
 
 
     /**
-     * Remove all of the remote connections for the requested open metadata repository cohort.
+     * Remove all the remote connections for the requested open metadata repository cohort.
      *
      * @param cohortName name of the cohort
      */

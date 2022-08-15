@@ -154,7 +154,7 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceService
     /**
      * Once the content of the archive has been added to the archive builder, an archive object can be retrieved.
      *
-     * @return open metadata archive object with all of the supplied content in it.
+     * @return open metadata archive object with all the supplied content in it.
      */
     public OpenMetadataArchive getOpenMetadataArchive()
     {
@@ -720,7 +720,7 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceService
         /**
          * Once the content of the archive has been added to the archive builder, an archive object can be retrieved.
          *
-         * @return open metadata archive object with all of the supplied content in it.
+         * @return open metadata archive object with all the supplied content in it.
          */
         @Override
         public OpenMetadataArchive getOpenMetadataArchive()

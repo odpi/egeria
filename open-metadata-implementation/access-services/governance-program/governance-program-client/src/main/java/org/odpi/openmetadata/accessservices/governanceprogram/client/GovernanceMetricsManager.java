@@ -22,12 +22,12 @@ import java.util.List;
  */
 public class GovernanceMetricsManager implements GovernanceMetricsInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
+    private final String                      serverName;               /* Initialized in constructor */
+    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -135,7 +135,7 @@ public class GovernanceMetricsManager implements GovernanceMetricsInterface
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers

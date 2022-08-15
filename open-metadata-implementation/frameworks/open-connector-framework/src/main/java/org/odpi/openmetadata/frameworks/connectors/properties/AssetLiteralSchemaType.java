@@ -95,7 +95,7 @@ public class AssetLiteralSchemaType extends AssetSchemaType
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return primitive element bean
      */

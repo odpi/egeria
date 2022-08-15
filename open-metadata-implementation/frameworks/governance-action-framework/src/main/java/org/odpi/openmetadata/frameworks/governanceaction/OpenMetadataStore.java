@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * OpenMetadataStore provides access to metadata elements stored in the metadata repositories.  It is implemented by the
- * abstract class OpenMetadataClient and used by all of the governance action services to retrieve metadata.
+ * abstract class OpenMetadataClient and used by all the governance action services to retrieve metadata.
  *
  * The concrete class for OpenMetadataClient is implemented by a metadata repository provider. In Egeria, this class is
  * implemented in the Governance Engine OMAS client.

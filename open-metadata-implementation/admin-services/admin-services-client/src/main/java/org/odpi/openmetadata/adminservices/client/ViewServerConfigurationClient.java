@@ -259,7 +259,7 @@ public class ViewServerConfigurationClient extends OMAGServerConfigurationClient
 
 
     /**
-     * Set up the configuration for all of the open metadata view services (OMVSs).  This overrides
+     * Set up the configuration for all the open metadata view services (OMVSs).  This overrides
      * the current values.
      *
      * @param viewServicesConfig  list of configuration properties for each view service.

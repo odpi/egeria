@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
 
 import java.util.Objects;
@@ -14,12 +13,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ContactMethodRequestBody provides the request body payload for working on ContactMethod entities.
+ * ProfileIdentityRequestBody provides the request body payload for working on ProfileIdentity relationships.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProfileIdentityRequestBody extends MetadataSourceRequestBody
+public class ProfileIdentityRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 

@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import java.util.Objects;
 
 /**
- * AssetDetail extends AssetSummary to provide all of the properties related to this asset.  It includes:
+ * AssetDetail extends AssetSummary to provide all the properties related to this asset.  It includes:
  * <ul>
  *     <li>AssetProperties - properties unique to the particular type of asset including any vendor-specific facets.</li>
  *     <li>ExternalIdentifiers - list of identifiers for this asset that are used in other systems.</li>

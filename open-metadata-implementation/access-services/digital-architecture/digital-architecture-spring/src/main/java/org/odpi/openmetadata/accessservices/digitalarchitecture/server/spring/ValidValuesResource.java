@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * ValidValuesResource provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- * the same attributes and so inherit from ValidValue where all of the attributes are defined.
+ * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
@@ -70,6 +70,7 @@ public class ValidValuesResource
      * @param serverName name of calling server
      * @param userId calling user.
      * @param setGUID unique identifier of the set to attach this to.
+     * @param isDefaultValue     is this the default value for the set?
      * @param requestBody parameters for the new object.
      *
      * @return unique identifier for the new definition
@@ -82,9 +83,12 @@ public class ValidValuesResource
     public GUIDResponse  createValidValueDefinition(@PathVariable String               serverName,
                                                     @PathVariable String               userId,
                                                     @PathVariable String               setGUID,
+                                                    @RequestParam
+                                                            (required = false, defaultValue = "false")
+                                                                  boolean              isDefaultValue,
                                                     @RequestBody  ValidValueProperties requestBody)
     {
-        return restAPI.createValidValueDefinition(serverName, userId, setGUID, requestBody);
+        return restAPI.createValidValueDefinition(serverName, userId, setGUID, isDefaultValue, requestBody);
     }
 
 
@@ -159,9 +163,12 @@ public class ValidValuesResource
                                                  @PathVariable                  String          userId,
                                                  @PathVariable                  String          setGUID,
                                                  @PathVariable                  String          validValueGUID,
+                                                 @RequestParam
+                                                         (required = false, defaultValue = "false")
+                                                         boolean isDefaultValue,
                                                  @RequestBody(required = false) NullRequestBody requestBody)
     {
-        return restAPI.attachValidValueToSet(serverName, userId, setGUID, validValueGUID, requestBody);
+        return restAPI.attachValidValueToSet(serverName, userId, setGUID, validValueGUID, isDefaultValue, requestBody);
     }
 
 

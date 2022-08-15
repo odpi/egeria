@@ -2,95 +2,75 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.rest;
 
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * SecureLocationRequestBody carries the parameters for marking a location as secure.
+ * RelationshipRequestBody describes the request body used when linking elements together.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SecureLocationRequestBody implements Serializable
+public class RelationshipRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private String description   = null;
-    private String level = null;
+    private RelationshipProperties properties = null;
 
 
     /**
      * Default constructor
      */
-    public SecureLocationRequestBody()
+    public RelationshipRequestBody()
     {
+        super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.
      *
      * @param template object to copy
      */
-    public SecureLocationRequestBody(SecureLocationRequestBody template)
+    public RelationshipRequestBody(RelationshipRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            description = template.getDescription();
-            level = template.getLevel();
-
+            properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the description of security at the site.
+     * Return the properties for the relationship.
      *
-     * @return text
+     * @return properties object
      */
-    public String getDescription()
+    public RelationshipProperties getProperties()
     {
-        return description;
+        return properties;
     }
 
 
     /**
-     * Set up description of security at the site.
+     * Set up the properties for the relationship.
      *
-     * @param description text
+     * @param properties properties object
      */
-    public void setDescription(String description)
+    public void setProperties(RelationshipProperties properties)
     {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the level of security.
-     *
-     * @return string
-     */
-    public String getLevel()
-    {
-        return level;
-    }
-
-
-    /**
-     * Set up the level of security.
-     *
-     * @param level string
-     */
-    public void setLevel(String level)
-    {
-        this.level = level;
+        this.properties = properties;
     }
 
 
@@ -102,9 +82,10 @@ public class SecureLocationRequestBody implements Serializable
     @Override
     public String toString()
     {
-        return "SecureLocationRequestBody{" +
-                       "description='" + description + '\'' +
-                       ", level='" + level + '\'' +
+        return "RelationshipRequestBody{" +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", properties=" + properties +
                        '}';
     }
 
@@ -126,9 +107,12 @@ public class SecureLocationRequestBody implements Serializable
         {
             return false;
         }
-        SecureLocationRequestBody that = (SecureLocationRequestBody) objectToCompare;
-        return Objects.equals(description, that.description) &&
-                       Objects.equals(level, that.level);
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        RelationshipRequestBody that = (RelationshipRequestBody) objectToCompare;
+        return Objects.equals(getProperties(), that.getProperties());
     }
 
 
@@ -140,6 +124,6 @@ public class SecureLocationRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(description, level);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

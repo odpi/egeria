@@ -96,10 +96,6 @@ public class PersonalProfileRESTServices
                                                                                                new Date(),
                                                                                                methodName);
 
-
-
-
-
                 Map<String, Object> extendedProperties = new HashMap<>();
 
                 extendedProperties.put(OpenMetadataAPIMapper.FULL_NAME_PROPERTY_NAME, requestBody.getFullName());
@@ -125,6 +121,7 @@ public class PersonalProfileRESTServices
                                                            requestBody.getOriginatingSystemName(),
                                                            profileGUID,
                                                            profileGUIDParameterName,
+                                                           requestBody.getQualifiedName(),
                                                            requestBody.getProfileUserId(),
                                                            null,
                                                            null,

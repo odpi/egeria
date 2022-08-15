@@ -109,7 +109,7 @@ public class RelationshipsAccumulator extends QueryInstanceAccumulatorBase
 
     /**
      * Extract the results - this will the a unique list of relationships selected from the instances
-     * supplied to this accumulator.  It should be called once all of the executors have completed processing
+     * supplied to this accumulator.  It should be called once all the executors have completed processing
      * their request(s).
      *
      * @param repositoryConnector enterprise connector

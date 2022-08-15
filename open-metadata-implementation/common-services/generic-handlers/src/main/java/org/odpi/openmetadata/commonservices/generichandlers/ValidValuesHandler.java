@@ -226,6 +226,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param externalSourceGUID   guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName   name of the software capability entity that represented the external source
      * @param setGUID              unique identifier of the set to attach this to.
+     * @param isDefaultValue       is this the default value for the set?
      * @param qualifiedName        unique name.
      * @param displayName          displayable descriptive name.
      * @param description          further information.
@@ -250,6 +251,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                              String              externalSourceGUID,
                                              String              externalSourceName,
                                              String              setGUID,
+                                             boolean             isDefaultValue,
                                              String              qualifiedName,
                                              String              displayName,
                                              String              description,
@@ -303,6 +305,8 @@ public class ValidValuesHandler<VALID_VALUE,
 
         if ((definitionGUID != null) && (setGUID != null))
         {
+            InstanceProperties relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.IS_DEFAULT_VALUE_PROPERTY_NAME, isDefaultValue, methodName);
+
             this.uncheckedLinkElementToElement(userId,
                                                externalSourceGUID,
                                                externalSourceName,
@@ -317,7 +321,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                                supportedZones,
                                                OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
                                                OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
-                                               null,
+                                               relationshipProperties,
                                                effectiveTime,
                                                methodName);
         }
@@ -476,6 +480,7 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param setGUID            unique identifier of the set.
      * @param validValueGUID     unique identifier of the valid value to add to the set.
+     * @param isDefaultValue     is this the default value for the set?
      * @param effectiveFrom      starting time for this relationship (null for all time)
      * @param effectiveTo        ending time for this relationship (null for all time)
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -491,6 +496,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                       String  externalSourceName,
                                       String  setGUID,
                                       String  validValueGUID,
+                                      boolean isDefaultValue,
                                       Date    effectiveFrom,
                                       Date    effectiveTo,
                                       boolean forLineage,
@@ -502,6 +508,8 @@ public class ValidValuesHandler<VALID_VALUE,
     {
         final String setGUIDParameter        = "setGUID";
         final String validValueGUIDParameter = "validValueGUID";
+
+        InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.IS_DEFAULT_VALUE_PROPERTY_NAME, isDefaultValue, methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -517,7 +525,7 @@ public class ValidValuesHandler<VALID_VALUE,
                                   supportedZones,
                                   OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
-                                  this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                  this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -848,7 +856,9 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param validValueGUID     unique identifier of the valid value.
      * @param referenceableGUID  unique identifier of the element to link to.
      * @param confidence         how confident is the steward that this mapping is correct (0-100).
-     * @param steward            identifier of steward
+     * @param steward                identifier of steward
+     * @param stewardTypeName        type of element that represents steward
+     * @param stewardPropertyName    property name of steward identifier
      * @param notes              additional notes from the steward
      * @param effectiveFrom      starting time for this relationship (null for all time)
      * @param effectiveTo        ending time for this relationship (null for all time)
@@ -867,6 +877,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                            String  referenceableGUID,
                                            int     confidence,
                                            String  steward,
+                                           String  stewardTypeName,
+                                           String  stewardPropertyName,
                                            String  notes,
                                            Date    effectiveFrom,
                                            Date    effectiveTo,
@@ -886,27 +898,33 @@ public class ValidValuesHandler<VALID_VALUE,
 
         InstanceProperties relationshipProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                               null,
-                                                                                              OpenMetadataAPIMapper.VALID_VALUES_CONFIDENCE_PROPERTY_NAME,
+                                                                                              OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
                                                                                               confidence,
                                                                                               methodName);
 
-        if (steward != null)
-        {
-            relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                  null,
-                                                                                  OpenMetadataAPIMapper.VALID_VALUES_STEWARD_PROPERTY_NAME,
-                                                                                  steward,
-                                                                                  methodName);
-        }
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                              steward,
+                                                                              methodName);
 
-        if (notes != null)
-        {
-            relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                  null,
-                                                                                  OpenMetadataAPIMapper.VALID_VALUES_NOTES_PROPERTY_NAME,
-                                                                                  notes,
-                                                                                  methodName);
-        }
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                              stewardTypeName,
+                                                                              methodName);
+
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                              stewardPropertyName,
+                                                                              methodName);
+
+       relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                             relationshipProperties,
+                                                                             OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                             notes,
+                                                                             methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -992,6 +1010,8 @@ public class ValidValuesHandler<VALID_VALUE,
      * @param associationDescription how are the valid values related?
      * @param confidence             how confident is the steward that this mapping is correct (0-100).
      * @param steward                identifier of steward
+     * @param stewardTypeName        type of element that represents steward
+     * @param stewardPropertyName    property name of steward identifier
      * @param notes                  additional notes from the steward
      * @param effectiveFrom          starting time for this relationship (null for all time)
      * @param effectiveTo            ending time for this relationship (null for all time)
@@ -1011,6 +1031,8 @@ public class ValidValuesHandler<VALID_VALUE,
                                String  associationDescription,
                                int     confidence,
                                String  steward,
+                               String  stewardTypeName,
+                               String  stewardPropertyName,
                                String  notes,
                                Date    effectiveFrom,
                                Date    effectiveTo,
@@ -1026,36 +1048,38 @@ public class ValidValuesHandler<VALID_VALUE,
 
         InstanceProperties relationshipProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                               null,
-                                                                                              OpenMetadataAPIMapper.VALID_VALUES_CONFIDENCE_PROPERTY_NAME,
+                                                                                              OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
                                                                                               confidence,
                                                                                               methodName);
 
-        if (associationDescription != null)
-        {
-            relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                  null,
-                                                                                  OpenMetadataAPIMapper.VALID_VALUES_ASSOCIATION_DESCRIPTION_PROPERTY_NAME,
-                                                                                  associationDescription,
-                                                                                  methodName);
-        }
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.ASSOCIATION_DESCRIPTION_PROPERTY_NAME,
+                                                                              associationDescription,
+                                                                              methodName);
 
-        if (steward != null)
-        {
-            relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                  null,
-                                                                                  OpenMetadataAPIMapper.VALID_VALUES_STEWARD_PROPERTY_NAME,
-                                                                                  steward,
-                                                                                  methodName);
-        }
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                              steward,
+                                                                              methodName);
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                              stewardTypeName,
+                                                                              methodName);
 
-        if (notes != null)
-        {
-            relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                  null,
-                                                                                  OpenMetadataAPIMapper.VALID_VALUES_NOTES_PROPERTY_NAME,
-                                                                                  notes,
-                                                                                  methodName);
-        }
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                              stewardPropertyName,
+                                                                              methodName);
+
+        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                              relationshipProperties,
+                                                                              OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                              notes,
+                                                                              methodName);
 
         this.linkElementToElement(userId,
                                   externalSourceGUID,
@@ -1204,6 +1228,7 @@ public class ValidValuesHandler<VALID_VALUE,
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.VALID_VALUE_DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.PREFERRED_VALUE_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
                                     name,

@@ -103,7 +103,7 @@ public class OMRSArchiveManager
         this.localInstanceEventProcessor = instanceProcessor;
 
         /*
-         * The repository content manager is seeded with all of the open metadata types.
+         * The repository content manager is seeded with all the open metadata types.
          */
         processOpenMetadataTypes();
 

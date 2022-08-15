@@ -24,11 +24,11 @@ import java.util.Map;
  */
 public class MyProfileManagement implements MyPersonalProfileInterface
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
     
-    private InvalidParameterHandler              invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
 
 
     /**

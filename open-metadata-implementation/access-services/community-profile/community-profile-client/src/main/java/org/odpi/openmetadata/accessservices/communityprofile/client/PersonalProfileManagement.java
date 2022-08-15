@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactM
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -21,17 +22,17 @@ import java.util.Map;
 
 /**
  * CommunityProfileLeadership provides the client-side interface for the Governance Program Open Metadata Access Service (OMAS).
- * This client, manages all of the interaction with an open metadata repository.  It is initialized with the URL
+ * This client, manages all the interaction with an open metadata repository.  It is initialized with the URL
  * of the server that is running the Open Metadata Access Services.  This server is responsible for locating and
  * managing the governance program definitions exchanged with this client.
  */
 public class PersonalProfileManagement implements PersonalProfileManagementInterface
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
 
 
     /**
@@ -377,8 +378,8 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
     @Override
     public List<ContactMethodProperties> getContactMethods(String userId,
                                                            String profileUserId) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         return null;
     }
@@ -530,8 +531,8 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
     @Override
     public PersonalProfileUniverse getPersonalProfileByQualifiedName(String userId,
                                                                      String qualifiedName) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
         final String   methodName = "getPersonalProfileByQualifiedName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/personal-profiles/by-qualified-name";
@@ -542,8 +543,12 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        PersonalProfileResponse restResult = restClient.callPersonalProfileGetRESTCall(methodName,
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(qualifiedName);
+
+        PersonalProfileResponse restResult = restClient.callPersonalProfilePostRESTCall(methodName,
                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                       requestBody,
                                                                                        serverName,
                                                                                        userId,
                                                                                        qualifiedName);
@@ -566,10 +571,10 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<PersonalProfileUniverse> getPersonalProfilesByName(String        userId,
-                                                                   String        name) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+    public List<PersonalProfileUniverse> getPersonalProfilesByName(String userId,
+                                                                   String  name) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         final String   methodName = "getPersonalProfilesByName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/personal-profiles/by-name";
@@ -580,8 +585,12 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
-        PersonalProfileListResponse restResult = restClient.callPersonalProfileListGetRESTCall(methodName,
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(name);
+
+        PersonalProfileListResponse restResult = restClient.callPersonalProfileListPostRESTCall(methodName,
                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                               requestBody,
                                                                                                serverName,
                                                                                                userId,
                                                                                                name);
