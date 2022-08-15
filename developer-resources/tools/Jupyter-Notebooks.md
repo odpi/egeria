@@ -7,7 +7,7 @@
 Jupyter notebooks to provide an interactive environment for running snippets of python code, interspersed
 with [Markdown](Markdown.md) documentation.
 
-This is an example of a Jupyter notebook from the [Open Metadata Labs](../../open-metadata-resources/open-metadata-labs).
+This is an example of a Jupyter notebook from the [Open Metadata Labs](https://egeria-project.org/education/open-metadata-labs/overview/).
 
 ![Jupyter notebook](jupyter-notebook-browser-window.png#pagewidth)
 
