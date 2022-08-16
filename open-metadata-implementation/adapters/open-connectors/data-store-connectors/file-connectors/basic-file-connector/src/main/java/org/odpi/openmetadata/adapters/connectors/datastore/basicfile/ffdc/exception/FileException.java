@@ -72,7 +72,7 @@ public class FileException extends ConnectorCheckedException
     public FileException(ExceptionMessageDefinition messageDefinition,
                          String                     className,
                          String                     actionDescription,
-                         Throwable                  caughtError,
+                         Exception                  caughtError,
                          String                     fileName)
     {
         super(messageDefinition, className, actionDescription, caughtError);
@@ -94,7 +94,7 @@ public class FileException extends ConnectorCheckedException
     public FileException(ExceptionMessageDefinition messageDefinition,
                          String                     className,
                          String                     actionDescription,
-                         Throwable                  caughtError,
+                         Exception                  caughtError,
                          String                     fileName,
                          Map<String, Object>        relatedProperties)
     {
@@ -194,7 +194,7 @@ public class FileException extends ConnectorCheckedException
                          String    errorMessage,
                          String    systemAction,
                          String    userAction,
-                         Throwable caughtError,
+                         Exception caughtError,
                          String    fileName)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);

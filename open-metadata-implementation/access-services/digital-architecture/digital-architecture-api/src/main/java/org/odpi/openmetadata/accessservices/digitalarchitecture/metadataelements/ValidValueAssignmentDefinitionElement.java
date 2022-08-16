@@ -62,7 +62,7 @@ public class ValidValueAssignmentDefinitionElement extends ValidValueAssignmentP
 
 
     /**
-     * Set up the the valid value bean (may be a definition or a set).
+     * Set up the valid value bean (may be a definition or a set).
      *
      * @param validValueElement bean
      */

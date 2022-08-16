@@ -2465,7 +2465,7 @@ public class LocalRepositoryServicesResource
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
@@ -2494,7 +2494,7 @@ public class LocalRepositoryServicesResource
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
@@ -2528,7 +2528,7 @@ public class LocalRepositoryServicesResource
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *

@@ -13,11 +13,11 @@ import java.util.Map;
  */
 public class SubjectAreaBuilder extends ReferenceableBuilder
 {
-    private String displayName;
-    private String description;
-    private String usage;
-    private String scope;
-    private int    domainIdentifier;
+    private final String displayName;
+    private final String description;
+    private final String usage;
+    private final String scope;
+    private final int    domainIdentifier;
 
 
     /**
@@ -86,17 +86,18 @@ public class SubjectAreaBuilder extends ReferenceableBuilder
                                                                   displayName,
                                                                   methodName);
 
-
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                   description,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
                                                                   usage,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,

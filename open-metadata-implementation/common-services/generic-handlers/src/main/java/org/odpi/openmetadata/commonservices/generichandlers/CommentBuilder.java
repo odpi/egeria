@@ -15,9 +15,9 @@ import java.util.UUID;
  */
 public class CommentBuilder extends ReferenceableBuilder
 {
-    private int     commentType;
-    private String  commentText;
-    private boolean isPublic;
+    private final int     commentType;
+    private final String  commentText;
+    private final boolean isPublic;
 
     /**
      * Constructor.
@@ -59,11 +59,15 @@ public class CommentBuilder extends ReferenceableBuilder
      */
     public InstanceProperties getRelationshipInstanceProperties(String  methodName)
     {
-        return repositoryHelper.addBooleanPropertyToInstance(serviceName,
-                                                             null,
-                                                             OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
-                                                             isPublic,
-                                                             methodName);
+        InstanceProperties properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                                      null,
+                                                                                      OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                                                      isPublic,
+                                                                                      methodName);
+
+        setEffectivityDates(properties);
+
+        return properties;
     }
 
 
@@ -79,14 +83,11 @@ public class CommentBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (commentText != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.COMMENT_TEXT_PROPERTY_NAME,
-                                                                      commentText,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.COMMENT_TEXT_PROPERTY_NAME,
+                                                                  commentText,
+                                                                  methodName);
 
         try
         {

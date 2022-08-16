@@ -260,7 +260,7 @@ public class OMAGServerPlatformConfigurationClient
 
 
     /**
-     * Return all the the OMAG Server configurations that are stored on this platform
+     * Return all the OMAG Server configurations that are stored on this platform
      *
      * @return the OMAG Server configurations that are stored on this platform
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.

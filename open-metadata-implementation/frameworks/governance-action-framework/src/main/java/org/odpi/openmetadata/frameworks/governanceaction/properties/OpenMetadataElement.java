@@ -208,11 +208,7 @@ public class OpenMetadataElement extends ElementControlHeader
     public String toString()
     {
         return "OpenMetadataElement{" +
-                       "elementGUID='" + elementGUID + '\'' +
-                       ", elementType=" + elementType +
-                       ", classifications=" + classifications +
-                       ", elementProperties=" + elementProperties +
-                       ", headerVersion=" + getHeaderVersion() +
+                       "headerVersion=" + getHeaderVersion() +
                        ", elementSourceServer='" + getElementSourceServer() + '\'' +
                        ", elementOriginCategory=" + getElementOriginCategory() +
                        ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
@@ -226,6 +222,12 @@ public class OpenMetadataElement extends ElementControlHeader
                        ", elementUpdateTime=" + getElementUpdateTime() +
                        ", elementVersion=" + getElementVersion() +
                        ", mappingProperties=" + getMappingProperties() +
+                       ", elementGUID='" + elementGUID + '\'' +
+                       ", elementType=" + elementType +
+                       ", effectiveFromTime=" + effectiveFromTime +
+                       ", effectiveToTime=" + effectiveToTime +
+                       ", classifications=" + classifications +
+                       ", elementProperties=" + elementProperties +
                        '}';
     }
 

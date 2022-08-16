@@ -105,7 +105,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
             else
             {
                 /*
-                 * Retrieve all the the rest endpoint already catalogued.
+                 * Retrieve all the rest endpoint already catalogued.
                  */
                 getRESTClients();
             }

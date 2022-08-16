@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalReferenceLinkRequestBody extends AssetManagerIdentifiersRequestBody
+public class ExternalReferenceLinkRequestBody extends EffectiveTimeQueryRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -80,9 +80,10 @@ public class ExternalReferenceLinkRequestBody extends AssetManagerIdentifiersReq
     public String toString()
     {
         return "ExternalReferenceLinkRequestBody{" +
-                       "elementProperties=" + elementProperties +
-                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
+                       "assetManagerGUID='" + getAssetManagerGUID() + '\'' +
                        ", assetManagerName='" + getAssetManagerName() + '\'' +
+                       ", effectiveTime=" + getEffectiveTime() +
+                       ", elementProperties=" + elementProperties +
                        '}';
     }
 

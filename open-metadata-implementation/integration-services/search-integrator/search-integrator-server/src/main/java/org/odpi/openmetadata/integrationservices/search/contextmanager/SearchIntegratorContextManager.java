@@ -80,6 +80,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
      */
     @Override
     public void createClients() throws InvalidParameterException {
+        final String methodName = "createClients";
         AssetCatalog restClient;
         if (localServerPassword == null) {
             restClient = new AssetCatalog(partnerOMASServerName, partnerOMASPlatformRootURL);
@@ -102,7 +103,7 @@ public class SearchIntegratorContextManager extends IntegrationContextManager
         try {
             assetCatalogEventClient.registerListener(localServerUserId, eventListener);
         } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException e) {
-            e.printStackTrace();
+            auditLog.logException(methodName,SearchIntegratorAuditCode.REGISTER_CATALOG_LISTENER_ERROR.getMessageDefinition(IntegrationServiceDescription.SEARCH_INTEGRATOR_OMIS.getIntegrationServiceFullName()),e);
         }
 
         AssetManagerRESTClient assetManagerRestClient;

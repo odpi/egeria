@@ -237,6 +237,13 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                                "Verify that the local repository is receiving inbound events - or at least there are no errors reported " +
                                        "related to incoming events"),
 
+    COHORT_STARTUP_ERROR("OMRS-AUDIT-0027",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The local server is unable to initiate a connection to the cohort {0} when starting up, exception {1} was caught with error message: {2}",
+            "The local server will now cancel startup, and shutdown.",
+            "Review the exception and resolve the issue it documents. " +
+                    "Then try starting the server again."),
+
     INITIALIZING_EVENT_MANAGER("OMRS-AUDIT-0029",
                                OMRSAuditLogRecordSeverity.STARTUP,
                                "The {0} event manager is initializing",
@@ -971,6 +978,14 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                               "of the batch in case there are other problems with it.",
                       "Review the instances from the event (passed as additional information on this log message) to determine the source of " +
                               "the error and its resolution."),
+
+    RETRY_FOR_PROXY("OMRS-AUDIT-8008",
+                    OMRSAuditLogRecordSeverity.INFO,
+                    "Retrying retrieve of an entity {0} for user {1} because only a proxy is available - attempt {2}",
+                    "The enterprise connector is retrying the call to retrieve an entity from the cohort because a proxy (or no entity) " +
+                            "has been returned.  Since most requests for entities are made with valid GUID, this suggests one of the repositories " +
+                            "is not current registered and so the hope is that by retrying, the entity is returned on a subsequent attempt.",
+                    "If this message occurs frequently then seek to improve the availability of the cohort members."),
 
     OUTBOUND_TOPIC_EVENT("OMRS-AUDIT-8009",
                     OMRSAuditLogRecordSeverity.EVENT,

@@ -198,6 +198,8 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                            methodName);
         }
 
+        setEffectivityDates(properties);
+
         return properties;
     }
 
@@ -263,98 +265,6 @@ public class AssetBuilder extends ReferenceableBuilder
         }
 
         return null;
-    }
-
-
-    /**
-     * Add the asset origin classification to an asset.
-     *
-     * @param userId calling user
-     * @param organizationGUID Unique identifier (GUID) of the organization where this asset originated from - or null
-     * @param businessCapabilityGUID  Unique identifier (GUID) of the business capability where this asset originated from.
-     * @param otherOriginValues Descriptive labels describing origin of the asset
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException entity not known, null userId or guid
-     */
-    void  setAssetOrigin(String                userId,
-                         String                organizationGUID,
-                         String                businessCapabilityGUID,
-                         Map<String, String>   otherOriginValues,
-                         String                methodName) throws InvalidParameterException
-    {
-        if ((organizationGUID != null) || (businessCapabilityGUID != null) || ((otherOriginValues != null) && (! otherOriginValues.isEmpty())))
-        {
-            try
-            {
-                Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                      null,
-                                                                                      null,
-                                                                                      InstanceProvenanceType.LOCAL_COHORT,
-                                                                                      userId,
-                                                                                      OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
-                                                                                      typeName,
-                                                                                      ClassificationOrigin.ASSIGNED,
-                                                                                      null,
-                                                                                      getOriginProperties(organizationGUID,
-                                                                                                          businessCapabilityGUID,
-                                                                                                          otherOriginValues,
-                                                                                                          methodName));
-                newClassifications.put(classification.getName(), classification);
-            }
-            catch (TypeErrorException error)
-            {
-                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME);
-            }
-        }
-    }
-
-
-    /**
-     * Return the bean properties describing the asset's owner in an InstanceProperties object.
-     *
-     * @param organizationGUID Unique identifier (GUID) of the organization where this asset originated from - or null
-     * @param businessCapabilityGUID  Unique identifier (GUID) of the business capability where this asset originated from.
-     * @param otherOriginValues Descriptive labels describing origin of the asset
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    InstanceProperties getOriginProperties(String                organizationGUID,
-                                           String                businessCapabilityGUID,
-                                           Map<String, String>   otherOriginValues,
-                                           String                methodName)
-    {
-        InstanceProperties properties = null;
-
-        if (organizationGUID != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.ORGANIZATION_PROPERTY_NAME,
-                                                                      organizationGUID,
-                                                                      methodName);
-        }
-
-        if (businessCapabilityGUID != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.BUSINESS_CAPABILITY_PROPERTY_NAME,
-                                                                      businessCapabilityGUID,
-                                                                      methodName);
-
-        }
-
-        if ((otherOriginValues != null ) && (! otherOriginValues.isEmpty()))
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.OTHER_ORIGIN_VALUES_PROPERTY_NAME,
-                                                                         otherOriginValues,
-                                                                         methodName);
-        }
-
-        return properties;
     }
 
 
@@ -457,6 +367,8 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                      otherOriginValues,
                                                                      methodName);
 
+        setEffectivityDates(properties);
+
         return properties;
     }
 
@@ -505,23 +417,16 @@ public class AssetBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (technicalName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
                                                                       technicalName,
                                                                       methodName);
-        }
-
-        if (technicalDescription != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+       properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       technicalDescription,
                                                                       methodName);
-        }
 
         return properties;
     }

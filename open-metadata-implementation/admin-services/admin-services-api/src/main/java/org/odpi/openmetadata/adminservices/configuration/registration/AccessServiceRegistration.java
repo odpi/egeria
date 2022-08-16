@@ -234,7 +234,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Return the URL for the wiki page describing this access service.
      *
-     * @return String URL name for the wiki page
+     * @return String URL for the wiki page
      */
     public String getAccessServiceWiki()
     {
@@ -245,7 +245,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Set up the URL for the wiki page describing this access service.
      *
-     * @param accessServiceWiki  String URL name for the wiki page
+     * @param accessServiceWiki  String URL for the wiki page
      */
     public void setAccessServiceWiki(String accessServiceWiki)
     {

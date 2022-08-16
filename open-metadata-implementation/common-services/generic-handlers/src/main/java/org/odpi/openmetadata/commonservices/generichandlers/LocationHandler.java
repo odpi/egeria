@@ -74,6 +74,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Create the location.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param qualifiedName unique name for the location - used in other configuration
      * @param displayName short display name for the location
      * @param description description of the governance location
@@ -82,6 +84,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param extendedProperties  properties for a governance location subtype
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new location object
@@ -90,6 +93,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public String createLocation(String              userId,
+                                 String              externalSourceGUID,
+                                 String              externalSourceName,
                                  String              qualifiedName,
                                  String              displayName,
                                  String              description,
@@ -98,6 +103,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  Map<String, Object> extendedProperties,
                                  Date                effectiveFrom,
                                  Date                effectiveTo,
+                                 Date                effectiveTime,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -134,13 +140,14 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
         locationBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         return this.createBeanInRepository(userId,
-                                           null,
-                                           null,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            typeGUID,
                                            typeName,
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            locationBuilder,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -153,6 +160,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * location is deleted, any linked terms and categories are deleted as well.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the location - used in other configuration
      * @param displayName short display name for the location
@@ -166,6 +175,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createLocationFromTemplate(String userId,
+                                             String externalSourceGUID,
+                                             String externalSourceName,
                                              String templateGUID,
                                              String qualifiedName,
                                              String displayName,
@@ -189,8 +200,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                               serverName);
 
         return this.createBeanFromTemplate(userId,
-                                           null,
-                                           null,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
                                            OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
@@ -206,6 +217,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Update the location.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of the location to update
      * @param locationGUIDParameterName parameter passing the locationGUID
      * @param qualifiedName unique name for the location - used in other configuration
@@ -217,6 +230,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -224,6 +240,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public void   updateLocation(String              userId,
+                                 String              externalSourceGUID,
+                                 String              externalSourceName,
                                  String              locationGUID,
                                  String              locationGUIDParameterName,
                                  String              qualifiedName,
@@ -235,6 +253,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  boolean             isMergeUpdate,
                                  Date                effectiveFrom,
                                  Date                effectiveTo,
+                                 boolean             forLineage,
+                                 boolean             forDuplicateProcessing,
+                                 Date                effectiveTime,
                                  String              methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -271,17 +292,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
 
         locationBuilder.setEffectivityDates(effectiveFrom, effectiveTo);
 
-        Date effectiveTime = this.getEffectiveTime(effectiveFrom, effectiveTo);
-
         this.updateBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     locationGUID,
                                     locationGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     locationBuilder.getInstanceProperties(methodName),
                                     isMergeUpdate,
@@ -294,35 +313,53 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Mark the location as a Fixed Location.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of location
      * @param locationGUIDParameterName parameter name supplying locationGUID
      * @param coordinates coordinate location
      * @param mapProjection scheme used for the coordinates
      * @param postalAddress postal address of the location
      * @param timeZone time zone of the location
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  addFixedLocationClassification(String userId,
-                                                String locationGUID,
-                                                String locationGUIDParameterName,
-                                                String coordinates,
-                                                String mapProjection,
-                                                String postalAddress,
-                                                String timeZone,
-                                                String methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public void  addFixedLocationClassification(String  userId,
+                                                String  externalSourceGUID,
+                                                String  externalSourceName,
+                                                String  locationGUID,
+                                                String  locationGUIDParameterName,
+                                                String  coordinates,
+                                                String  mapProjection,
+                                                String  postalAddress,
+                                                String  timeZone,
+                                                Date    effectiveFrom,
+                                                Date    effectiveTo,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameterName, methodName);
 
         LocationBuilder builder = new LocationBuilder(repositoryHelper, serviceName, serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            locationGUID,
                                            locationGUIDParameterName,
                                            OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
@@ -333,6 +370,10 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                                               postalAddress,
                                                                               timeZone,
                                                                               methodName),
+                                           false,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -341,29 +382,44 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Remove the Fixed Location designation from a location.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of location
      * @param locationGUIDParameterName parameter name supplying locationGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeFixedLocationClassification(String userId,
-                                                   String locationGUID,
-                                                   String locationGUIDParameterName,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void  removeFixedLocationClassification(String  userId,
+                                                   String  externalSourceGUID,
+                                                   String  externalSourceName,
+                                                   String  locationGUID,
+                                                   String  locationGUIDParameterName,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameterName, methodName);
 
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 locationGUID,
                                                 locationGUIDParameterName,
                                                 OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                                 OpenMetadataAPIMapper.FIXED_LOCATION_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.FIXED_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -372,37 +428,59 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Mark the location as a Secure Location.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of location
      * @param locationGUIDParameterName parameter name supplying locationGUID
      * @param description description of security
      * @param level level of security
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  addSecureLocationClassification(String userId,
-                                                 String locationGUID,
-                                                 String locationGUIDParameterName,
-                                                 String description,
-                                                 String level,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void  addSecureLocationClassification(String  userId,
+                                                 String  externalSourceGUID,
+                                                 String  externalSourceName,
+                                                 String  locationGUID,
+                                                 String  locationGUIDParameterName,
+                                                 String  description,
+                                                 String  level,
+                                                 Date    effectiveFrom,
+                                                 Date    effectiveTo,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameterName, methodName);
 
         LocationBuilder builder = new LocationBuilder(repositoryHelper, serviceName, serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            locationGUID,
                                            locationGUIDParameterName,
                                            OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                            OpenMetadataAPIMapper.SECURE_LOCATION_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.SECURE_LOCATION_CLASSIFICATION_TYPE_NAME,
                                            builder.getSecureLocationProperties(description, level, methodName),
+                                           false,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -411,26 +489,41 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Remove the Secure Location designation from a location.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of location
      * @param locationGUIDParameterName parameter name supplying locationGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeSecureLocationClassification(String userId,
-                                                    String locationGUID,
-                                                    String locationGUIDParameterName,
-                                                    String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void  removeSecureLocationClassification(String  userId,
+                                                    String  externalSourceGUID,
+                                                    String  externalSourceName,
+                                                    String  locationGUID,
+                                                    String  locationGUIDParameterName,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime,
+                                                    String  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 locationGUID,
                                                 locationGUIDParameterName,
                                                 OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                                 OpenMetadataAPIMapper.SECURE_LOCATION_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.SECURE_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -439,35 +532,57 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Mark the location as a Cyber Location.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of location
      * @param locationGUIDParameterName parameter name supplying locationGUID
      * @param networkAddress network address of the location
+     * @param effectiveFrom the date when this element is active - null for active now
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  addCyberLocationClassification(String userId,
-                                                String locationGUID,
-                                                String locationGUIDParameterName,
-                                                String networkAddress,
-                                                String methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public void  addCyberLocationClassification(String  userId,
+                                                String  externalSourceGUID,
+                                                String  externalSourceName,
+                                                String  locationGUID,
+                                                String  locationGUIDParameterName,
+                                                String  networkAddress,
+                                                Date    effectiveFrom,
+                                                Date    effectiveTo,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameterName, methodName);
 
         LocationBuilder builder = new LocationBuilder(repositoryHelper, serviceName, serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
                                            locationGUID,
                                            locationGUIDParameterName,
                                            OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                            OpenMetadataAPIMapper.CYBER_LOCATION_CLASSIFICATION_TYPE_GUID,
                                            OpenMetadataAPIMapper.CYBER_LOCATION_CLASSIFICATION_TYPE_NAME,
                                            builder.getCyberLocationProperties(networkAddress, methodName),
+                                           false,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
     }
 
@@ -476,26 +591,41 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Remove the Cyber Location designation from a location.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of location
      * @param locationGUIDParameterName parameter name supplying locationGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException entity not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  removeCyberLocationClassification(String userId,
-                                                   String locationGUID,
-                                                   String locationGUIDParameterName,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void  removeCyberLocationClassification(String  userId,
+                                                   String  externalSourceGUID,
+                                                   String  externalSourceName,
+                                                   String  locationGUID,
+                                                   String  locationGUIDParameterName,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 locationGUID,
                                                 locationGUIDParameterName,
                                                 OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                                 OpenMetadataAPIMapper.CYBER_LOCATION_CLASSIFICATION_TYPE_GUID,
                                                 OpenMetadataAPIMapper.CYBER_LOCATION_CLASSIFICATION_TYPE_GUID,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
                                                 methodName);
     }
 
@@ -504,44 +634,57 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Create a parent-child relationship between two locations.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationParentGUID unique identifier of the parent location
      * @param locationParentGUIDParameterName parameter supplying the parent
      * @param locationChildGUID unique identifier of the child location
      * @param locationChildGUIDParameterName parameter supplying the child
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupNestedLocation(String userId,
-                                    String locationParentGUID,
-                                    String locationParentGUIDParameterName,
-                                    String locationChildGUID,
-                                    String locationChildGUIDParameterName,
-                                    Date   effectiveFrom,
-                                    Date   effectiveTo,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void setupNestedLocation(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  locationParentGUID,
+                                    String  locationParentGUIDParameterName,
+                                    String  locationChildGUID,
+                                    String  locationChildGUIDParameterName,
+                                    Date    effectiveFrom,
+                                    Date    effectiveTo,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         this.linkElementToElement(userId,
-                                  null,
-                                  null,
+                                  externalSourceGUID,
+                                  externalSourceName,
                                   locationParentGUID,
                                   locationParentGUIDParameterName,
                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                   locationChildGUID,
                                   locationChildGUIDParameterName,
                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -550,11 +693,15 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Remove a parent-child relationship between two locations.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationParentGUID unique identifier of the parent location
      * @param locationParentGUIDParameterName parameter supplying the parent
      * @param locationChildGUID unique identifier of the child location
      * @param locationChildGUIDParameterName parameter supplying the child
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -562,19 +709,23 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearNestedLocation(String userId,
-                                    String locationParentGUID,
-                                    String locationParentGUIDParameterName,
-                                    String locationChildGUID,
-                                    String locationChildGUIDParameterName,
-                                    Date   effectiveTime,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  locationParentGUID,
+                                    String  locationParentGUIDParameterName,
+                                    String  locationChildGUID,
+                                    String  locationChildGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
-                                      null,
-                                      null,
+                                      externalSourceGUID,
+                                      externalSourceName,
                                       locationParentGUID,
                                       locationParentGUIDParameterName,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
@@ -582,8 +733,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       locationChildGUIDParameterName,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
                                       effectiveTime,
@@ -595,44 +746,57 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Create a peer relationship between two locations.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationOneGUID unique identifier of the first location
      * @param locationOneGUIDParameterName parameter supplying the first location
      * @param locationTwoGUID unique identifier of the second location
      * @param locationTwoGUIDParameterName parameter supplying the second location
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupPeerLocations(String userId,
-                                   String locationOneGUID,
-                                   String locationOneGUIDParameterName,
-                                   String locationTwoGUID,
-                                   String locationTwoGUIDParameterName,
-                                   Date   effectiveFrom,
-                                   Date   effectiveTo,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void setupPeerLocations(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  locationOneGUID,
+                                   String  locationOneGUIDParameterName,
+                                   String  locationTwoGUID,
+                                   String  locationTwoGUIDParameterName,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         this.linkElementToElement(userId,
-                                  null,
-                                  null,
+                                  externalSourceGUID,
+                                  externalSourceName,
                                   locationOneGUID,
                                   locationOneGUIDParameterName,
                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                   locationTwoGUID,
                                   locationTwoGUIDParameterName,
                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -641,31 +805,39 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Remove a peer relationship between two locations.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationOneGUID unique identifier of the first location
      * @param locationOneGUIDParameterName parameter supplying the first location
      * @param locationTwoGUID unique identifier of the second location
      * @param locationTwoGUIDParameterName parameter supplying the second location
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearPeerLocations(String userId,
-                                   String locationOneGUID,
-                                   String locationOneGUIDParameterName,
-                                   String locationTwoGUID,
-                                   String locationTwoGUIDParameterName,
-                                   Date   effectiveTime,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void clearPeerLocations(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  locationOneGUID,
+                                   String  locationOneGUIDParameterName,
+                                   String  locationTwoGUID,
+                                   String  locationTwoGUIDParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
-                                      null,
-                                      null,
+                                      externalSourceGUID,
+                                      externalSourceName,
                                       locationOneGUID,
                                       locationOneGUIDParameterName,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
@@ -673,8 +845,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       locationTwoGUIDParameterName,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
                                       effectiveTime,
@@ -686,44 +858,57 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Create a relationship between a location and an asset.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of the location
      * @param locationGUIDParameterName parameter supplying the location
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter supplying the asset
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupAssetLocation(String userId,
-                                   String locationGUID,
-                                   String locationGUIDParameterName,
-                                   String assetGUID,
-                                   String assetGUIDParameterName,
-                                   Date   effectiveFrom,
-                                   Date   effectiveTo,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void setupAssetLocation(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  locationGUID,
+                                   String  locationGUIDParameterName,
+                                   String  assetGUID,
+                                   String  assetGUIDParameterName,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         this.linkElementToElement(userId,
-                                  null,
-                                  null,
+                                  externalSourceGUID,
+                                  externalSourceName,
                                   locationGUID,
                                   locationGUIDParameterName,
                                   OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                   assetGUID,
                                   assetGUIDParameterName,
                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                   OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -732,31 +917,39 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Remove a relationship between a location and an asset.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of the location
      * @param locationGUIDParameterName parameter supplying the location
      * @param assetGUID unique identifier of the asset
      * @param assetGUIDParameterName parameter supplying the asset
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearAssetLocation(String userId,
-                                   String locationGUID,
-                                   String locationGUIDParameterName,
-                                   String assetGUID,
-                                   String assetGUIDParameterName,
-                                   Date   effectiveTime,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void clearAssetLocation(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  locationGUID,
+                                   String  locationGUIDParameterName,
+                                   String  assetGUID,
+                                   String  assetGUIDParameterName,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
-                                      null,
-                                      null,
+                                      externalSourceGUID,
+                                      externalSourceName,
                                       locationGUID,
                                       locationGUIDParameterName,
                                       OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
@@ -764,8 +957,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                       assetGUIDParameterName,
                                       OpenMetadataAPIMapper.ASSET_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
                                       effectiveTime,
@@ -777,33 +970,43 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * Remove the metadata element representing a location.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
      * @param locationGUID unique identifier of the metadata element to remove
      * @param locationGUIDParameterName parameter supplying the locationGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeLocation(String userId,
-                               String locationGUID,
-                               String locationGUIDParameterName,
-                               String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void removeLocation(String  userId,
+                               String  externalSourceGUID,
+                               String  externalSourceName,
+                               String  locationGUID,
+                               String  locationGUIDParameterName,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
         this.deleteBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     locationGUID,
                                     locationGUIDParameterName,
                                     OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
                                     OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -814,24 +1017,31 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param userId     calling user
      * @param elementGUID identifier for the entity that the object is attached to
      * @param methodName calling method
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @return count of attached objects
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countKnownLocations(String userId,
-                                   String elementGUID,
-                                   Date   effectiveTime,
-                                   String methodName) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+    public int countKnownLocations(String  userId,
+                                   String  elementGUID,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
     {
         return super.countAttachments(userId,
                                       elementGUID,
                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
+                                      2,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       effectiveTime,
                                       methodName);
     }
@@ -846,7 +1056,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param elementTypeName name of the type of object being attached to
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -861,12 +1073,14 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  String       elementTypeName,
                                  int          startingFrom,
                                  int          pageSize,
+                                 boolean      forLineage,
+                                 boolean      forDuplicateProcessing,
                                  Date         effectiveTime,
                                  String       methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
     {
-        return this.getLocations(userId, elementGUID, elementGUIDParameterName, elementTypeName, supportedZones, startingFrom, pageSize, effectiveTime, methodName);
+        return this.getLocations(userId, elementGUID, elementGUIDParameterName, elementTypeName, supportedZones, startingFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
@@ -880,7 +1094,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found
@@ -896,6 +1112,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  List<String> serviceSupportedZones,
                                  int          startingFrom,
                                  int          pageSize,
+                                 boolean      forLineage,
+                                 boolean      forDuplicateProcessing,
                                  Date         effectiveTime,
                                  String       methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
@@ -913,8 +1131,8 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         0,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         serviceSupportedZones,
                                         startingFrom,
                                         pageSize,

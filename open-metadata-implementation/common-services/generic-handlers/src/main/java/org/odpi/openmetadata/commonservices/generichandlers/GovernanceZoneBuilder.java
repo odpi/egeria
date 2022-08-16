@@ -13,11 +13,11 @@ import java.util.Map;
  */
 public class GovernanceZoneBuilder extends ReferenceableBuilder
 {
-    private String       displayName;
-    private String       description;
-    private String       criteria;
-    private String       scope;
-    private int          domainIdentifier;
+    private final String       displayName;
+    private final String       description;
+    private final String       criteria;
+    private final String       scope;
+    private final int          domainIdentifier;
 
 
     /**
@@ -86,17 +86,18 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
                                                                   displayName,
                                                                   methodName);
 
-
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                   description,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.CRITERIA_PROPERTY_NAME,
                                                                   criteria,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,

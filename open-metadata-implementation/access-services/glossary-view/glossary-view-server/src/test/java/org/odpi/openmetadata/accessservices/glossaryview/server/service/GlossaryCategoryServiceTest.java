@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryCategory;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 import java.util.Arrays;
@@ -14,8 +16,10 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+
 import static org.mockito.Mockito.when;
 
 public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
@@ -29,8 +33,10 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getCategory() throws Exception{
-        when(repositoryHandler.getEntityByGUID(USER_ID, categories.get(0).getGUID(), "guid",
-                CATEGORY_TYPE_NAME, "getCategory")).thenReturn(categories.get(0));
+        when(entitiesHandler.getEntityFromRepository(USER_ID, categories.get(0).getGUID(),
+                OpenMetadataAPIMapper.GUID_PROPERTY_NAME, CATEGORY_TYPE_NAME, null,
+                null, false, false, null,
+                null, "getCategory")).thenReturn(categories.get(0));
 
         GlossaryViewEntityDetailResponse response = underTest.getCategory(USER_ID, SERVER_NAME, categories.get(0).getGUID());
 
@@ -40,8 +46,9 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getAllCategories() throws Exception{
-        when(repositoryHandler.getEntitiesByType(eq(USER_ID), eq(CATEGORY_TYPE_GUID),
-                anyInt(), anyInt(), eq("getAllCategories"))).thenReturn(categories);
+        when(entitiesHandler.getEntitiesByType(USER_ID, CATEGORY_TYPE_GUID, CATEGORY_TYPE_NAME, null,
+                false, false, null, 0, 10, null,
+                "getAllCategories")).thenReturn(categories);
 
         GlossaryViewEntityDetailResponse response = underTest.getAllCategories(USER_ID, SERVER_NAME, 0, 10);
 
@@ -59,9 +66,10 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getCategoriesViaCategoryAnchorRelationships() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(GLOSSARY_TYPE_NAME),
-                eq(CATEGORY_ANCHOR_RELATIONSHIP_GUID), eq(CATEGORY_ANCHOR_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getCategoriesViaCategoryAnchorRelationships"))).thenReturn(categories);
+        when(entitiesHandler.getAttachedEntities(USER_ID, glossaries.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                GLOSSARY_TYPE_NAME, CATEGORY_ANCHOR_RELATIONSHIP_GUID, CATEGORY_ANCHOR_RELATIONSHIP_NAME, null,
+                null, null, 0, false, false,
+                0, 10000, null, "getCategoriesViaCategoryAnchorRelationships")).thenReturn(categories);
 
         GlossaryViewEntityDetailResponse response = underTest.getCategoriesViaCategoryAnchorRelationships(USER_ID, SERVER_NAME,
                 glossaries.get(0).getGUID(), 0, 10000);
@@ -79,9 +87,11 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getSubcategories() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipEnd(eq(USER_ID), eq(categories.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
-                eq(true), eq(CATEGORY_HIERARCHY_LINK_RELATIONSHIP_GUID), eq(CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getSubcategories"))).thenReturn(Arrays.asList(categories.get(1), categories.get(2)));
+       when(entitiesHandler.getAttachedEntities(USER_ID, categories.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+               CATEGORY_TYPE_NAME, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_GUID, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME,
+               null, null, null, 0,
+               false, false, null, 0, 10000,
+               null, "getSubcategories")).thenReturn(Arrays.asList(categories.get(1), categories.get(2)));
 
         GlossaryViewEntityDetailResponse response = underTest.getSubcategories(USER_ID, SERVER_NAME,
                 categories.get(0).getGUID(), 0, 10000);
@@ -97,9 +107,10 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBase {
 
     @Test
     public void getExternalGlossaryLinks() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(categories.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
-                eq(LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_GUID), eq(LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getExternalGlossaryLinks"))).thenReturn(Collections.singletonList(externalGlossaryLink));
+        when(entitiesHandler.getAttachedEntities(USER_ID, categories.get(0).getGUID(), OpenMetadataAPIMapper.GUID_PROPERTY_NAME,
+                CATEGORY_TYPE_NAME, LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_GUID, LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME,
+                null, null, null, 0, false, false, 0, 10, null, "getExternalGlossaryLinks"))
+                .thenReturn(Collections.singletonList(externalGlossaryLink));
 
         GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaryLinks(USER_ID, SERVER_NAME,
                 categories.get(0).getGUID(),0, 10);

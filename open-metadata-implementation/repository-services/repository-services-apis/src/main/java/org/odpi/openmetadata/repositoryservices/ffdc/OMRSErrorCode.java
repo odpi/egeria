@@ -672,6 +672,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "A call to the {0} of the open metadata repository server {1} results in an exception {2} with message {3}",
             "The system is not able to retrieve metadata properties from this repository.",
             "Retry the request when the repository server is available."),
+    COHORT_STARTUP_ERROR(404, "OMRS-METADATA-HIGHWAY-404-004",
+            "The local server is unable to initiate a connection to the cohort {0} when starting up",
+            "The server will now cancel startup, and shutdown.",
+            "Check the other error messages to determine the source of the error. When these are resolved, retry the request."),
     ENTERPRISE_NOT_SUPPORTED(405, "OMRS-ENTERPRISE-REPOSITORY-CONNECTOR-405-001",
             "The requested method {0} is not supported by the EnterpriseOMRSRepositoryConnector",
             "The system is not able to process the requested method because it is not supported by the " +

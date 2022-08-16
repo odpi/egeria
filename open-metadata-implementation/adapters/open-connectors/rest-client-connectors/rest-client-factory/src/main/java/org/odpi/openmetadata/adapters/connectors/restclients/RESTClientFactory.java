@@ -131,7 +131,7 @@ public class RESTClientFactory
                     connectorType.setConnectorProviderClassName(connectorProviderClassName);
                 }
             }
-            catch (Throwable classException)
+            catch (Exception classException)
             {
                 log.error("Bad connectorProviderClassName: " + classException.getMessage());
             }

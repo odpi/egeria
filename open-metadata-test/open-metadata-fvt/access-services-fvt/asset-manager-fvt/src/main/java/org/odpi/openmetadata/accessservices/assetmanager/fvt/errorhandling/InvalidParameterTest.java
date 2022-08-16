@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetMan
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -29,15 +28,9 @@ public class InvalidParameterTest
     private final static String assetManagerGUID = "TestExternalSourceGUID";
     private final static String assetManagerName = "TestExternalSourceName";
 
-    private final static String     externalGlossaryIdentifier           = "TestExternalIdentifier";
-    private final static String     externalGlossaryIdentifierName       = "TestExternalIdentifierName";
-    private final static String     externalGlossaryIdentifierUsage      = "TestExternalIdentifierUsage";
-    private final static KeyPattern externalGlossaryIdentifierKeyPattern = KeyPattern.LOCAL_KEY;
-    private final static String     externalGlossaryIdentifierSource     = "TestExternalIdentifierSource";
-
 
     /**
-     * Run all of the defined tests and capture the results.
+     * Run all the defined tests and capture the results.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -66,7 +59,7 @@ public class InvalidParameterTest
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server
@@ -476,11 +469,6 @@ public class InvalidParameterTest
             client.createGlossary(null,
                                   assetManagerGUID,
                                   assetManagerName,
-                                  externalGlossaryIdentifier,
-                                  externalGlossaryIdentifierName,
-                                  externalGlossaryIdentifierUsage,
-                                  externalGlossaryIdentifierSource,
-                                  externalGlossaryIdentifierKeyPattern,
                                   null,
                                   properties);
 
@@ -515,11 +503,6 @@ public class InvalidParameterTest
             client.createGlossary(userId,
                                   assetManagerGUID,
                                   assetManagerName,
-                                  externalGlossaryIdentifier,
-                                  externalGlossaryIdentifierName,
-                                  externalGlossaryIdentifierUsage,
-                                  externalGlossaryIdentifierSource,
-                                  externalGlossaryIdentifierKeyPattern,
                                   null,
                                   null);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
@@ -554,11 +537,6 @@ public class InvalidParameterTest
             client.createGlossary(userId,
                                   assetManagerGUID,
                                   assetManagerName,
-                                  externalGlossaryIdentifier,
-                                  externalGlossaryIdentifierName,
-                                  externalGlossaryIdentifierUsage,
-                                  externalGlossaryIdentifierSource,
-                                  externalGlossaryIdentifierKeyPattern,
                                   null,
                                   properties);
             throw new FVTUnexpectedCondition(testCaseName, activityName);

@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * Many open metadata entities are referenceable.  It means that they have a qualified name and additional
  * properties.  In addition the Referenceable class adds support for the parent asset, guid, url and type
- * for the entity through extending ElementHeader.  There is also the possibility that referenceable may have
+ * for the entity through extending ElementBase.  There is also the possibility that referenceable may have
  * meanings (glossary terms) and security tags assigned.
  *
  * Asset meanings are extracted on demand by the caller.

@@ -10,8 +10,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Govern
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceActionTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NextGovernanceActionTypeElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionProcessElementResponse;
@@ -19,7 +19,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionPr
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionTypeElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionTypeElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NextGovernanceActionTypeElementsResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -28,7 +27,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -138,12 +136,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param definitionExternalIdentifier unique identifier of the definition in the external asset manager
-     * @param definitionExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param definitionExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param definitionExternalIdentifierSource component that issuing this request.
-     * @param definitionExternalIdentifierKeyPattern  pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param typeName type of definition
      * @param definitionProperties properties of the definition
      *
@@ -157,12 +150,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
                                              String                         assetManagerGUID,
                                              String                         assetManagerName,
                                              String                         typeName,
-                                             String                         definitionExternalIdentifier,
-                                             String                         definitionExternalIdentifierName,
-                                             String                         definitionExternalIdentifierUsage,
-                                             String                         definitionExternalIdentifierSource,
-                                             KeyPattern                     definitionExternalIdentifierKeyPattern,
-                                             Map<String, String>            mappingProperties,
+                                             ExternalIdentifierProperties   externalIdentifierProperties,
                                              GovernanceDefinitionProperties definitionProperties) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException

@@ -18,7 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  *     <li><b>ProvisioningGovernanceActionService</b> - provisions resources in the digital landscape and maintains lineage.</li>
  * </ul>
  *
- * Each type of governance action service is passed a specialize context that provides it with the metadata methods it needs for its specific role.
+ * Each type of governance action service is passed a specialized context that provides it with the metadata methods it needs for its specific role.
  * When you build a governance action service, you extend the governance action service class that matches the purpose of your governance action
  * to ensure your code receives a context with the appropriate interface.
  */
@@ -28,7 +28,7 @@ public abstract class GovernanceActionService extends GovernanceActionServiceCon
 
 
     /**
-     * Set up details of the the governance action request and access to the metadata store.
+     * Set up details of the governance action request and access to the metadata store.
      * This method is called before start and should not be null
      *
      * @param governanceContext specialist context for this type of governance action.

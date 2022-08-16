@@ -144,7 +144,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         {
             this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_SECURITY_EXCEPTION, fileDirectoryName, error);
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_IO_EXCEPTION, fileDirectoryName, error);
         }
@@ -235,7 +235,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      */
     private void throwConfigException(BasicFilesIntegrationConnectorsErrorCode errorCode,
                                       String                                   fileLocationName,
-                                      Throwable                                caughtException) throws ConfigException
+                                      Exception                                caughtException) throws ConfigException
     {
         final String methodName = "getRootDirectoryFile";
 

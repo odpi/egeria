@@ -50,8 +50,8 @@ public class <$$uRelationshipName$$>Mapper {
                     Object actualValue;
                     switch (value.getInstancePropertyCategory()) {
                                                case PRIMITIVE:
-                                                   PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
-                                                   actualValue = primitivePropertyValue.getPrimitiveValue();
+                                                   PrimitivePropertyValue primitiveTypePropertyValue = (PrimitivePropertyValue) value;
+                                                   actualValue = primitiveTypePropertyValue.getPrimitiveValue();
                                                    if (<$$uRelationshipName$$>.getAttributePropertyNames().contains(name)) {
                                                       <$$Attr$$
                                                       if (name.equals("<$$AttrName$$>")) {
@@ -65,12 +65,12 @@ public class <$$uRelationshipName$$>Mapper {
                                                             Map<String, Object> extraAttributes = new HashMap<>();
                                                             <$$RelationshipName$$>.setExtraAttributes(extraAttributes);
                                                         }
-                                                      <$$RelationshipName$$>.getExtraAttributes().put(name, primitivePropertyValue);
+                                                      <$$RelationshipName$$>.getExtraAttributes().put(name, primitiveTypePropertyValue);
                                                    }
                                                    break;
                                                case ENUM:
-                                                   EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
-                                                   String symbolicName = enumPropertyValue.getSymbolicName();
+                                                   EnumPropertyValue enumTypePropertyValue = (EnumPropertyValue) value;
+                                                   String symbolicName = enumTypePropertyValue.getSymbolicName();
                                                    if (<$$uRelationshipName$$>.getEnumPropertyNames().contains(name)) {
                                                        <$$Enum$$
                                                         if (name.equals("<$$EnumName$$>")) {
@@ -86,14 +86,14 @@ public class <$$uRelationshipName$$>Mapper {
                                                             <$$RelationshipName$$>.setExtraAttributes(extraAttributes);
                                                         }
 
-                                                        <$$RelationshipName$$>.getExtraAttributes().put(name, enumPropertyValue);
+                                                        <$$RelationshipName$$>.getExtraAttributes().put(name, enumTypePropertyValue);
                                                     }
                        
                                                    break;
                                                case MAP:
                                                     if (<$$uRelationshipName$$>.getMapPropertyNames().contains(name)) {
-                                                        MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
-                                                        InstanceProperties instancePropertyForMap = (InstanceProperties) mapPropertyValue.getMapValues();
+                                                        MapPropertyValue mapTypePropertyValue = (MapPropertyValue) value;
+                                                        InstanceProperties instancePropertyForMap = (InstanceProperties) mapTypePropertyValue.getMapValues();
 
                                                         <$$Map$$
                                                         if (name.equals("<$$MapName$$>")) {
@@ -174,20 +174,20 @@ public class <$$uRelationshipName$$>Mapper {
 
             <$$Attr$$
             if (<$$RelationshipName$$>.get<$$uAttrName$$>()!=null) {
-                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
-                primitivePropertyValue.setPrimitiveValue(<$$RelationshipName$$>.get<$$uAttrName$$>());
-                instanceProperties.setProperty("<$$AttrName$$>", primitivePropertyValue);
+                PrimitivePropertyValue primitiveTypePropertyValue = new PrimitivePropertyValue();
+                primitiveTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_<$$uAttrType$$>);
+                primitiveTypePropertyValue.setPrimitiveValue(<$$RelationshipName$$>.get<$$uAttrName$$>());
+                instanceProperties.setProperty("<$$AttrName$$>", primitiveTypePropertyValue);
             }
             $$Attr$$>
 
             <$$Enum$$
             if (<$$RelationshipName$$>.get<$$uEnumName$$>()!=null) {
                 <$$uEnumType$$> enumType = <$$RelationshipName$$>.get<$$uEnumName$$>();
-                EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-                enumPropertyValue.setOrdinal(enumType.ordinal());
-                enumPropertyValue.setSymbolicName(enumType.name());
-                instanceProperties.setProperty("<$$EnumName$$>", enumPropertyValue);
+                EnumPropertyValue enumTypePropertyValue = new EnumPropertyValue();
+                enumTypePropertyValue.setOrdinal(enumType.ordinal());
+                enumTypePropertyValue.setSymbolicName(enumType.name());
+                instanceProperties.setProperty("<$$EnumName$$>", enumTypePropertyValue);
             }
             $$Enum$$>
 

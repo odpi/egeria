@@ -14,8 +14,9 @@ import java.util.Map;
  */
 public class ConnectorTypeBuilder extends ReferenceableBuilder
 {
-    private String       displayName;
-    private String       description;
+    private final String       displayName;
+    private final String       description;
+
     private String       supportedAssetTypeName            = null;
     private String       expectedDataFormat                = null;
     private String       connectorProviderClassName        = null;
@@ -153,20 +154,23 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.SUPPORTED_ASSET_TYPE_NAME,
                                                                   supportedAssetTypeName,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.EXPECTED_DATA_FORMAT,
@@ -178,16 +182,19 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.CONNECTOR_PROVIDER_PROPERTY_NAME,
                                                                   connectorProviderClassName,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME,
                                                                   connectorFrameworkName,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE,
                                                                   connectorInterfaceLanguage,
                                                                   methodName);
+
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
                                                                        OpenMetadataAPIMapper.CONNECTOR_INTERFACES,
@@ -199,38 +206,42 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.TARGET_TECHNOLOGY_SOURCE,
                                                                   targetTechnologySource,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.TARGET_TECHNOLOGY_NAME,
                                                                   targetTechnologyName,
                                                                   methodName);
+
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
                                                                        OpenMetadataAPIMapper.TARGET_TECHNOLOGY_INTERFACES,
                                                                        targetTechnologyInterfaces,
                                                                        methodName);
+
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
                                                                        OpenMetadataAPIMapper.TARGET_TECHNOLOGY_VERSIONS,
                                                                        targetTechnologyVersions,
                                                                        methodName);
 
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.RECOGNIZED_ADD_PROPS_PROPERTY_NAME,
+                                                                       recognizedAdditionalProperties,
+                                                                       methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           OpenMetadataAPIMapper.RECOGNIZED_ADD_PROPS_PROPERTY_NAME,
-                                                                           recognizedAdditionalProperties,
-                                                                           methodName);
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.RECOGNIZED_SEC_PROPS_PROPERTY_NAME,
+                                                                       recognizedSecuredProperties,
+                                                                       methodName);
+
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           OpenMetadataAPIMapper.RECOGNIZED_SEC_PROPS_PROPERTY_NAME,
-                                                                           recognizedSecuredProperties,
-                                                                           methodName);
-        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           OpenMetadataAPIMapper.RECOGNIZED_CONFIG_PROPS_PROPERTY_NAME,
-                                                                           recognizedConfigurationProperties,
-                                                                           methodName);
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.RECOGNIZED_CONFIG_PROPS_PROPERTY_NAME,
+                                                                       recognizedConfigurationProperties,
+                                                                       methodName);
 
         return properties;
     }

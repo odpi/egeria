@@ -35,7 +35,6 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     private String            defaultValueOverride  = null;
     private String            nativeJavaClass       = null;
     private List<String>      aliases               = null;
-    private String            formula               = null;
 
     private SchemaTypeBuilder schemaTypeBuilder     = null;
 
@@ -225,8 +224,8 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * This method overrides any previously defined CalculatedValue classification for this entity.
      *
      * @param userId calling user
-     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
-     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param externalSourceGUID        guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software capability entity that represented the external source
      * @param formula details of how this value is calculated
      * @param methodName calling method
      * @throws InvalidParameterException calculated value is not supported in the local repository, or any repository
@@ -303,23 +302,17 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
@@ -327,15 +320,11 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                elementPosition,
                                                                methodName);
 
-        if (cardinality != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.CARDINALITY_PROPERTY_NAME,
-                                                                      cardinality,
-                                                                      methodName);
-        }
-
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.CARDINALITY_PROPERTY_NAME,
+                                                                  cardinality,
+                                                                  methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
@@ -349,22 +338,17 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                maxCardinality,
                                                                methodName);
 
-
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
                                                                    OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
                                                                    isDeprecated,
                                                                    methodName);
 
-        if (defaultValueOverride != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
-                                                                      defaultValueOverride,
-                                                                      methodName);
-        }
-
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
+                                                                  defaultValueOverride,
+                                                                  methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
@@ -417,32 +401,17 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                    isNullable,
                                                                    methodName);
 
-        if (nativeJavaClass != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.NATIVE_CLASS_PROPERTY_NAME,
                                                                       nativeJavaClass,
                                                                       methodName);
-        }
 
-        if ((aliases != null) && (!aliases.isEmpty()))
-        {
-            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                            properties,
                                                                            OpenMetadataAPIMapper.ALIASES_PROPERTY_NAME,
                                                                            aliases,
                                                                            methodName);
-        }
-
-        if (formula != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
-                                                                      formula,
-                                                                      methodName);
-        }
 
         return properties;
     }

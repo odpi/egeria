@@ -73,11 +73,13 @@ class DataEngineSchemaAttributeHandlerTest {
                 ATTRIBUTE_DISPLAY_NAME, null, null, null, null, null,
                 null, null, false, 0, 0, 0, false,
                 false, null, 99, 0, 0, 0, false, null,
-                null, null, TABULAR_COLUMN_TYPE_NAME, null, null, "createSchemaAttribute");
+                null, null, TABULAR_COLUMN_TYPE_NAME, null, null, null, false,
+                false, null, "createSchemaAttribute");
     }
 
     @Test
     void upsertSchemaAttributes_update() throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
+        final String methodName = "updateSchemaAttribute";
         EntityDetail schemaAttributeEntity = mock(EntityDetail.class);
         when(schemaAttributeEntity.getGUID()).thenReturn(ATTRIBUTE_GUID);
         when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.of(schemaAttributeEntity));
@@ -97,7 +99,7 @@ class DataEngineSchemaAttributeHandlerTest {
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID);
 
         verify(schemaAttributeHandler, times(1)).updateSchemaAttribute(USER, EXTERNAL_SOURCE_DE_GUID,
-                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, ATTRIBUTE_GUID, null);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, ATTRIBUTE_GUID, null, false, false, null, methodName);
     }
 
     private Attribute getAttribute() {

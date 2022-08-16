@@ -7,7 +7,6 @@ import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -19,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -107,7 +107,7 @@ public class GlossaryViewOmasBase {
     @Mock
     protected GlossaryViewInstanceHandler instanceHandler;
     @Mock
-    protected RepositoryHandler repositoryHandler;
+    protected OpenMetadataAPIGenericHandler<GlossaryViewEntityDetail> entitiesHandler;
     @Mock
     protected OMRSRepositoryConnector repositoryConnector;
     @Mock
@@ -163,8 +163,8 @@ public class GlossaryViewOmasBase {
 
     public void before(GlossaryViewOMAS underTest) throws Exception{
         MockitoAnnotations.openMocks(this);
-        when(instanceHandler.getRepositoryHandler(eq(USER_ID), eq(SERVER_NAME), anyString())).thenReturn(repositoryHandler);
         when(instanceHandler.getRepositoryConnector(eq(USER_ID), eq(SERVER_NAME), anyString())).thenReturn(repositoryConnector);
+        when(instanceHandler.getEntitiesHandler(eq(USER_ID), eq(SERVER_NAME), anyString())).thenReturn(entitiesHandler);
         when(repositoryConnector.getRepositoryHelper()).thenReturn(repositoryHelper);
 
         when(repositoryHelper.getTypeDefByName(anyString(), eq(GLOSSARY_TYPE_NAME))).thenReturn(glossaryTypeDef);

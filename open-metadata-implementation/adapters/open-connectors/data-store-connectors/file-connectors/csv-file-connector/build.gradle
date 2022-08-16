@@ -11,7 +11,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
     testImplementation 'org.testng:testng'
     testImplementation project(':open-metadata-test:open-metadata-ut')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 
@@ -23,6 +23,8 @@ java {
 
 test {
     useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
     //TODO: Maven build is currently not running these failing tests
-    ignoreFailures = true
+    //ignoreFailures = true
 }

@@ -39,7 +39,7 @@ public class DataStoreAndRelationalTableSetupService {
         if(database == null){
             database = getDefaultDatabase();
         }
-        dataEngineClient.upsertDatabase(userId, database, false);
+        dataEngineClient.upsertDatabase(userId, database);
         return database;
     }
 
@@ -90,7 +90,7 @@ public class DataStoreAndRelationalTableSetupService {
         if(databaseSchema == null) {
             databaseSchema = getDefaultDatabaseSchema();
         }
-        dataEngineClient.upsertDatabaseSchema(userId, databaseSchema, databaseQualifiedName, incomplete);
+        dataEngineClient.upsertDatabaseSchema(userId, databaseSchema, databaseQualifiedName);
         return databaseSchema;
     }
 
@@ -133,7 +133,7 @@ public class DataStoreAndRelationalTableSetupService {
         if(dataFile == null){
             dataFile = getDefaultDataFile();
         }
-        dataEngineClient.upsertDataFile(userId, dataFile, false);
+        dataEngineClient.upsertDataFile(userId, dataFile);
         return dataFile;
     }
 
@@ -196,7 +196,7 @@ public class DataStoreAndRelationalTableSetupService {
         if(relationalTable == null) {
             relationalTable = getDefaultRelationalTable();
         }
-        dataEngineClient.upsertRelationalTable(userId, relationalTable, databaseSchemaQualifiedName, incomplete);
+        dataEngineClient.upsertRelationalTable(userId, relationalTable, databaseSchemaQualifiedName);
         return relationalTable;
     }
 

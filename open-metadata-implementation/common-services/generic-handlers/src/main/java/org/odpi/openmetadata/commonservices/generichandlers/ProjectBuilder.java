@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public class ProjectBuilder extends ReferenceableBuilder
 {
-    private String name = null;
-    private String description = null;
-    private Date startDate = null;
-    private Date plannedEndDate = null;
-    private String status = null;
+    private String name           = null;
+    private String description    = null;
+    private Date   startDate      = null;
+    private Date   plannedEndDate = null;
+    private String status         = null;
 
 
     /**

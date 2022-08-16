@@ -72,7 +72,7 @@ public class ConfigException extends ConnectorCheckedException
     public ConfigException(ExceptionMessageDefinition messageDefinition,
                            String                     className,
                            String                     actionDescription,
-                           Throwable                  caughtError,
+                           Exception                  caughtError,
                            String                     fileName)
     {
         super(messageDefinition, className, actionDescription, caughtError);
@@ -94,7 +94,7 @@ public class ConfigException extends ConnectorCheckedException
     public ConfigException(ExceptionMessageDefinition messageDefinition,
                            String                     className,
                            String                     actionDescription,
-                           Throwable                  caughtError,
+                           Exception                  caughtError,
                            String                     fileName,
                            Map<String, Object>        relatedProperties)
     {

@@ -83,7 +83,16 @@ public class EntitySummary extends InstanceHeader
         }
         else
         {
-            return new ArrayList<>(classifications);
+            List<Classification> newClassifications = new ArrayList<>();
+
+            for (Classification classification : classifications)
+            {
+                if (classification != null)
+                {
+                    newClassifications.add(classification);
+                }
+            }
+            return newClassifications;
         }
     }
 

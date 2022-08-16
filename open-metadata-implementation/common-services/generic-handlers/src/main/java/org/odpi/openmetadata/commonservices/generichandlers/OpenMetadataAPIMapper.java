@@ -4,7 +4,7 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 /**
  * OpenMetadataAPIMapper provides property name mapping for the generic builder, handler and converter.
- * It includes identifiers for all of the types that need specialist processing at this level in the stack
+ * It includes identifiers for all the types that need specialist processing at this level in the stack
  */
 public class OpenMetadataAPIMapper
 {
@@ -746,10 +746,21 @@ public class OpenMetadataAPIMapper
     public static final String NOTE_ENTRY_TYPE_NAME                     = "NoteEntry";              /* from Area 1 */
     /* Referenceable */
 
+
+    /*
+    Added warning suppression for SonarCloud since the below constants contain the pattern
+         ..AUTH..="GUID"
+         which looks exactly like
+         myAuth = SECURITY_SECRET
+         which is reported as a security risk.
+    */
+    @SuppressWarnings("java:S6418")
     public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_GUID  = "8f798c0c-6769-4a2d-b489-12714d89e0a4";
+
     public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_NAME  = "NoteLogAuthorship";
     /* End1 = NoteLogAuthor; End 2 = NoteLog */
 
+    @SuppressWarnings("java:S6418")
     public static final String NOTE_LOG_AUTHOR_TYPE_GUID                = "3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3";
     public static final String NOTE_LOG_AUTHOR_TYPE_NAME                = "NoteLogAuthor";              /* from Area 1 */
     /* PersonRole */
@@ -1166,7 +1177,7 @@ public class OpenMetadataAPIMapper
 
     public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_GUID       = "58520015-ce6e-47b7-a1fd-864030544819";
     public static final String ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME       = "ElementSupplement";   /* from Area 3 */
-    /* Project */
+    /* Referencable */
 
     public static final String SUPPLEMENTARY_PROPERTIES_TYPE_GUID                = "2bb10ba5-7aa2-456a-8b3a-8fdbd75c95cd";
     public static final String SUPPLEMENTARY_PROPERTIES_TYPE_NAME                = "SupplementaryProperties";  /* from Area 3 */
@@ -1686,6 +1697,9 @@ public class OpenMetadataAPIMapper
     public static final String PEER_DUPLICATE_LINK_TYPE_GUID             = "a94b2929-9e62-4b12-98ab-8ac45691e5bd";
     public static final String PEER_DUPLICATE_LINK_TYPE_NAME             = "PeerDuplicateLink";
     /* End1 = Referenceable (Oldest); End 2 = Referenceable (Newest) */
+
+    public static final String CONSOLIDATED_DUPLICATE_TYPE_GUID          = "e40e80d7-5a29-482c-9a88-0dc7251f08de";
+    public static final String CONSOLIDATED_DUPLICATE_TYPE_NAME          = "ConsolidatedDuplicate";
 
     public static final String CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID     = "a1fabffd-d6ec-4b2d-bfe4-646f27c07c82";
     public static final String CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME     = "ConsolidatedDuplicateLink";
@@ -2477,6 +2491,10 @@ public class OpenMetadataAPIMapper
     /* ============================================================================================================================*/
     /* Area 7 - Lineage                                                                                                            */
     /* ============================================================================================================================*/
+
+    public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_GUID = "bf02c703-57a2-4ab7-b6db-f49b57b05985";
+    public static final String SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_NAME = "SolutionPortSchema";
+    /* End1 = SolutionPort; End 2 = SchemaType */
 
     public static final String DATA_FLOW_TYPE_GUID                  = "d2490c0c-06cc-458a-add2-33cf2f5dd724";
     public static final String DATA_FLOW_TYPE_NAME                  = "DataFlow";

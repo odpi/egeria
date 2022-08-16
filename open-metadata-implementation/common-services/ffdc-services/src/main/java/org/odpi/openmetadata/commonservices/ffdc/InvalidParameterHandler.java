@@ -4,7 +4,7 @@ package org.odpi.openmetadata.commonservices.ffdc;
 
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -552,7 +552,7 @@ public class InvalidParameterHandler
      */
     public void  validateInstanceProvenanceForUpdate(String        instanceGUID,
                                                      String        parameterName,
-                                                     ElementHeader instanceHeader,
+                                                     ElementBase instanceHeader,
                                                      ElementOrigin expectedOrigin,
                                                      String        expectedMetadataCollectionGUID,
                                                      String        expectedMetadataCollectionName,

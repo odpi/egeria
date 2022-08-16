@@ -527,7 +527,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
 
     /**
      * Move a file from its current parent folder to a new parent folder - this changes the file's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param userId calling user
      * @param folderGUID new parent folder
@@ -565,7 +565,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
 
     /**
      * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
-     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     * but not its unique identifier (guid).  Similarly to the endpoint in the connection object.
      *
      * @param userId calling user
      * @param folderGUID new parent folder

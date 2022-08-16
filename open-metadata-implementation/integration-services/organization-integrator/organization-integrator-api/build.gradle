@@ -12,7 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-api')
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-client')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Organization Integrator OMIS API'

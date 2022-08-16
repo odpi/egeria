@@ -14,10 +14,10 @@ import java.util.Map;
  */
 public class OperatingPlatformBuilder extends ReferenceableBuilder
 {
-    private String name;
-    private String description;
-    private String operatingSystem;
-    private int    byteOrdering;
+    private final String name;
+    private final String description;
+    private final String operatingSystem;
+    private final int    byteOrdering;
 
 
     /**

@@ -13,12 +13,13 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import java.util.Map;
 
 /**
- * SoftwareCapabilityBuilder creates the parts for an entity that represents a software server capability.
+ * SoftwareCapabilityBuilder creates the parts for an entity that represents a software capability.
  */
 public class SoftwareCapabilityBuilder extends ReferenceableBuilder
 {
-    private String displayName;
-    private String description;
+    private final String displayName;
+    private final String description;
+
     private String type;
     private String version;
     private String patchLevel;
@@ -132,7 +133,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
 
 
     /**
-     * Set up the classification that defines the type of the software server capability where there are
+     * Set up the classification that defines the type of the software capability where there are
      * no associated properties.
      *
      * @param userId calling user
@@ -179,25 +180,19 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
                                      String encryption,
                                      String methodName) throws InvalidParameterException
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties;
 
-        if (format != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
                                                                       OpenMetadataAPIMapper.FORMAT_PROPERTY_NAME,
                                                                       format,
                                                                       methodName);
-        }
-
-        if (encryption != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.ENCRYPTION_PROPERTY_NAME,
                                                                       encryption,
                                                                       methodName);
-        }
+
 
         /*
          * The classification is set up with the same effectivity dates as the entity so can search on classifications.
@@ -254,16 +249,19 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
                                                                   OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME,
                                                                   type,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME,
                                                                   version,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.PATCH_LEVEL_PROPERTY_NAME,
                                                                   patchLevel,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,

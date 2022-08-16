@@ -26,14 +26,16 @@ import java.util.List;
  */
 public class RepositoryFindRelationshipsIterator extends RepositoryIterator
 {
-    private String               relationshipTypeGUID;
+    private final String               relationshipTypeGUID;
+    private final List<String>         relationshipSubtypeGUIDs;
+    private final SearchProperties     searchProperties;
+    private final List<InstanceStatus> limitResultsByStatus;
+    private final Date                 asOfTime;
+    private final String               sequencingProperty;
+    private final SequencingOrder      sequencingOrder;
+
     private List<Relationship>   relationshipsCache = null;
-    private List<String>         relationshipSubtypeGUIDs;
-    private SearchProperties     searchProperties;
-    private List<InstanceStatus> limitResultsByStatus;
-    private Date                 asOfTime;
-    private String               sequencingProperty;
-    private SequencingOrder      sequencingOrder;
+
 
     /**
      * Constructor takes the parameters used to call the repository handler.
@@ -54,6 +56,7 @@ public class RepositoryFindRelationshipsIterator extends RepositoryIterator
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing       the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime          the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName  name of calling method
@@ -71,6 +74,7 @@ public class RepositoryFindRelationshipsIterator extends RepositoryIterator
                                                SequencingOrder         sequencingOrder,
                                                int                     startingFrom,
                                                int                     pageSize,
+                                               boolean                 forLineage,
                                                boolean                 forDuplicateProcessing,
                                                Date                    effectiveTime,
                                                String                  methodName) throws InvalidParameterException
@@ -80,6 +84,7 @@ public class RepositoryFindRelationshipsIterator extends RepositoryIterator
               userId,
               startingFrom,
               pageSize,
+              forLineage,
               forDuplicateProcessing,
               effectiveTime,
               methodName);

@@ -38,9 +38,9 @@ public enum ElementOriginCategory implements Serializable
 
     private static final long     serialVersionUID = 1L;
 
-    private int    originCode;
-    private String originName;
-    private String originDescription;
+    private final int    originCode;
+    private final String originName;
+    private final String originDescription;
 
 
     /**
@@ -99,10 +99,6 @@ public enum ElementOriginCategory implements Serializable
     @Override
     public String toString()
     {
-        return "ElementOriginCategory{" +
-                "originCode=" + originCode +
-                ", originName='" + originName + '\'' +
-                ", originDescription='" + originDescription + '\'' +
-                '}';
+        return "ElementOriginCategory{" +  originName + "}";
     }
 }

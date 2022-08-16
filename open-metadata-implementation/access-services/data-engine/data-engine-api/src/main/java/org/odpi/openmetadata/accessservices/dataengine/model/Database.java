@@ -59,12 +59,12 @@ public class Database extends DataStore {
     private String databaseInstance;
 
     /**
-     * The the source (typically connection name) of the database information
+     * The  source (typically connection name) of the database information
      * -- GETTER --
      * Return the source (typically connection name) of the database information.
      * @return source name
      * -- SETTER --
-     * Set up the the source (typically connection name) of the database information.
+     * Set up the source (typically connection name) of the database information.
      * @param databaseImportedFrom source name
      */
     private String databaseImportedFrom;
@@ -117,4 +117,16 @@ public class Database extends DataStore {
      */
     private String networkAddress;
 
+    /**
+     * Determines if the database is incomplete
+     * -- GETTER --
+     * Return if the database is incomplete
+     *
+     * @return if the database is incomplete
+     * -- SETTER --
+     * Sets up if the database is incomplete
+     * @param incomplete if the database is incomplete
+     */
+    @JsonProperty("incomplete")
+    private boolean incomplete;
 }

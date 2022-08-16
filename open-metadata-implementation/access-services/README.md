@@ -57,7 +57,7 @@ involved in reviewing and crowd-sourcing knowledge about the data assets and the
 * **[data-engine](data-engine)** - exchange metadata with a data processing engine.
                                    
   The Data Engine OMAS provides APIs and events for a data movement/processing
-engine to record the changes it is making the the data landscape. 
+engine to record the changes it is making to the data landscape. 
 This information forms a key part of asset lineage.
 
 * **[data-manager](data-manager)** - exchange metadata with a data manager.

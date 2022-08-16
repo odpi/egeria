@@ -12,6 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Search Integrator OMIS API'

@@ -171,7 +171,7 @@ public class ElementHeader extends ElementControlHeader
     @Override
     public String toString()
     {
-        return "ElementHeader{" +
+        return "ElementBase{" +
                 "type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +

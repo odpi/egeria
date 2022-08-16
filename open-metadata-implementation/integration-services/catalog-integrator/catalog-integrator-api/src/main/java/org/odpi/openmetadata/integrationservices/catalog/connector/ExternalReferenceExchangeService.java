@@ -6,9 +6,9 @@ package org.odpi.openmetadata.integrationservices.catalog.connector;
 import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalReferenceExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -18,7 +18,6 @@ import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorE
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -26,15 +25,18 @@ import java.util.Map;
  */
 public class ExternalReferenceExchangeService
 {
-    private ExternalReferenceExchangeClient externalReferenceClient;
-    private String                          userId;
-    private String                          assetManagerGUID;
-    private String                          assetManagerName;
-    private String                          connectorName;
-    private SynchronizationDirection        synchronizationDirection;
-    private AuditLog                        auditLog;
+    private final ExternalReferenceExchangeClient externalReferenceClient;
+    private final String                          userId;
+    private final String                          assetManagerGUID;
+    private final String                          assetManagerName;
+    private final String                          connectorName;
+    private final SynchronizationDirection        synchronizationDirection;
+    private final AuditLog                        auditLog;
 
     private boolean assetManagerIsHome = true;
+
+    private boolean forLineage             = false;
+    private boolean forDuplicateProcessing = false;
 
     /**
      * Create a new client to exchange data asset content with open metadata.
@@ -66,7 +68,6 @@ public class ExternalReferenceExchangeService
     }
 
 
-
     /* ========================================================
      * Set up whether metadata is owned by the asset manager
      */
@@ -83,6 +84,59 @@ public class ExternalReferenceExchangeService
     }
 
 
+
+    /* ========================================================
+     * Set up the forLineage flag
+     */
+
+    /**
+     * Return whether retrieval requests from this service are to include elements with the Memento classification attached or not.
+     *
+     * @return boolean flag
+     */
+    public boolean isForLineage()
+    {
+        return forLineage;
+    }
+
+
+    /**
+     * Set up whether retrieval requests from this service are to include elements with the Memento classification attached or not.
+     *
+     * @param forLineage boolean flag
+     */
+    public void setForLineage(boolean forLineage)
+    {
+        this.forLineage = forLineage;
+    }
+
+
+    /* ========================================================
+     * Set up the forDuplicateProcessing flag
+     */
+
+    /**
+     * Return whether retrieval requests from this service are to avoid merging duplicates or not.
+     *
+     * @return boolean flag
+     */
+    public boolean isForDuplicateProcessing()
+    {
+        return forDuplicateProcessing;
+    }
+
+
+    /**
+     * Set up whether retrieval requests from this service are to avoid merging duplicates or not.
+     *
+     * @param forDuplicateProcessing boolean flag
+     */
+    public void setForDuplicateProcessing(boolean forDuplicateProcessing)
+    {
+        this.forDuplicateProcessing = forDuplicateProcessing;
+    }
+
+
     /* ========================================================
      * External references provide links to external sources.
      */
@@ -91,11 +145,7 @@ public class ExternalReferenceExchangeService
     /**
      * Create a definition of a external reference.
      *
-     * @param referenceExternalIdentifier unique identifier of the external reference in the external asset manager
-     * @param referenceExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param referenceExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param referenceExternalIdentifierKeyPattern  pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param anchorGUID optional element to link the external reference to that will act as an anchor - that is, this external reference
      *                   will be deleted when the element is deleted (once the external reference is linked to the anchor).
      * @param properties properties for a external reference
@@ -106,11 +156,7 @@ public class ExternalReferenceExchangeService
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String createExternalReference(String                      referenceExternalIdentifier,
-                                          String                      referenceExternalIdentifierName,
-                                          String                      referenceExternalIdentifierUsage,
-                                          KeyPattern                  referenceExternalIdentifierKeyPattern,
-                                          Map<String, String>         mappingProperties,
+    public String createExternalReference(ExternalIdentifierProperties externalIdentifierProperties,
                                           String                      anchorGUID,
                                           ExternalReferenceProperties properties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
@@ -124,12 +170,7 @@ public class ExternalReferenceExchangeService
                                                                    assetManagerGUID,
                                                                    assetManagerName,
                                                                    assetManagerIsHome,
-                                                                   referenceExternalIdentifier,
-                                                                   referenceExternalIdentifierName,
-                                                                   referenceExternalIdentifierUsage,
-                                                                   connectorName,
-                                                                   referenceExternalIdentifierKeyPattern,
-                                                                   mappingProperties,
+                                                                   externalIdentifierProperties,
                                                                    anchorGUID,
                                                                    properties);
         }
@@ -153,6 +194,7 @@ public class ExternalReferenceExchangeService
      * @param referenceExternalIdentifier unique identifier of the external reference in the external asset manager
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
      * @param properties properties to change
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @throws InvalidParameterException guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known
      * @throws PropertyServerException problem accessing property server
@@ -161,15 +203,16 @@ public class ExternalReferenceExchangeService
     public void updateExternalReference(String                      externalReferenceGUID,
                                         String                      referenceExternalIdentifier,
                                         boolean                     isMergeUpdate,
-                                        ExternalReferenceProperties properties) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                        ExternalReferenceProperties properties,
+                                        Date                        effectiveTime) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName = "updateExternalReference";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            externalReferenceClient.updateExternalReference(userId, assetManagerGUID, assetManagerName, externalReferenceGUID, referenceExternalIdentifier, isMergeUpdate, properties);
+            externalReferenceClient.updateExternalReference(userId, assetManagerGUID, assetManagerName, externalReferenceGUID, referenceExternalIdentifier, isMergeUpdate, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
@@ -189,21 +232,23 @@ public class ExternalReferenceExchangeService
      *
      * @param externalReferenceGUID unique identifier of external reference
      * @param referenceExternalIdentifier unique identifier of the external reference in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @throws InvalidParameterException guid or userId is null; guid is not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     public void deleteExternalReference(String externalReferenceGUID,
-                                        String referenceExternalIdentifier) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+                                        String referenceExternalIdentifier,
+                                        Date   effectiveTime) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         final String methodName = "deleteExternalReference";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            externalReferenceClient.deleteExternalReference(userId, assetManagerGUID, assetManagerName, externalReferenceGUID, referenceExternalIdentifier);
+            externalReferenceClient.deleteExternalReference(userId, assetManagerGUID, assetManagerName, externalReferenceGUID, referenceExternalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
@@ -224,6 +269,7 @@ public class ExternalReferenceExchangeService
      * @param attachedToGUID object linked to external references.
      * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
      * @param externalReferenceGUID unique identifier (guid) of the external reference details.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @return Unique identifier for new relationship
      *
@@ -233,15 +279,16 @@ public class ExternalReferenceExchangeService
      */
     public String linkExternalReferenceToElement(String                          attachedToGUID,
                                                  String                          externalReferenceGUID,
-                                                 ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                                        PropertyServerException,
-                                                                                                        UserNotAuthorizedException
+                                                 ExternalReferenceLinkProperties linkProperties,
+                                                 Date                            effectiveTime) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
     {
         final String methodName = "linkExternalReferenceToElement";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            return externalReferenceClient.linkExternalReferenceToElement(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, attachedToGUID, externalReferenceGUID, linkProperties);
+            return externalReferenceClient.linkExternalReferenceToElement(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, attachedToGUID, externalReferenceGUID, linkProperties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
@@ -262,21 +309,23 @@ public class ExternalReferenceExchangeService
      *
      * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
      * @param externalReferenceLinkGUID unique identifier (guid) of the external reference details.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public void updateExternalReferenceToElementLink(String                          externalReferenceLinkGUID,
-                                                     ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                                            PropertyServerException,
-                                                                                                            UserNotAuthorizedException
+                                                     ExternalReferenceLinkProperties linkProperties,
+                                                     Date                            effectiveTime) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
     {
         final String methodName = "linkExternalReferenceToElement";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            externalReferenceClient.updateExternalReferenceToElementLink(userId, assetManagerGUID, assetManagerName, externalReferenceLinkGUID, linkProperties);
+            externalReferenceClient.updateExternalReferenceToElementLink(userId, assetManagerGUID, assetManagerName, externalReferenceLinkGUID, linkProperties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
@@ -295,20 +344,22 @@ public class ExternalReferenceExchangeService
      * Remove the link between a external reference and an element.  If the element is its anchor, the external reference is removed.
      *
      * @param externalReferenceLinkGUID identifier of the external reference relationship.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public void unlinkExternalReferenceFromElement(String externalReferenceLinkGUID) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+    public void unlinkExternalReferenceFromElement(String externalReferenceLinkGUID,
+                                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         final String methodName = "unlinkExternalReferenceFromElement";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            externalReferenceClient.unlinkExternalReferenceFromElement(userId, assetManagerGUID, assetManagerName, externalReferenceLinkGUID);
+            externalReferenceClient.unlinkExternalReferenceFromElement(userId, assetManagerGUID, assetManagerName, externalReferenceLinkGUID, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
@@ -336,13 +387,13 @@ public class ExternalReferenceExchangeService
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<ExternalReferenceElement> getExternalReferences(Date   effectiveTime,
-                                                                int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    public List<ExternalReferenceElement> getExternalReferences(int  startFrom,
+                                                                int  pageSize,
+                                                                Date effectiveTime) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
     {
-        return externalReferenceClient.getExternalReferences(userId, assetManagerGUID, assetManagerName, effectiveTime, startFrom, pageSize);
+        return externalReferenceClient.getExternalReferences(userId, assetManagerGUID, assetManagerName, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -361,13 +412,13 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public List<ExternalReferenceElement> getExternalReferencesById(String resourceId,
-                                                                    Date   effectiveTime,
                                                                     int    startFrom,
-                                                                    int    pageSize) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+                                                                    int    pageSize,
+                                                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
     {
-        return externalReferenceClient.getExternalReferencesById(userId, assetManagerGUID, assetManagerName, resourceId, effectiveTime, startFrom, pageSize);
+        return externalReferenceClient.getExternalReferencesById(userId, assetManagerGUID, assetManagerName, resourceId, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -386,13 +437,13 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public List<ExternalReferenceElement> getExternalReferencesByURL(String url,
-                                                                     Date   effectiveTime,
                                                                      int    startFrom,
-                                                                     int    pageSize) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+                                                                     int    pageSize,
+                                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
-        return externalReferenceClient.getExternalReferencesByURL(userId, assetManagerGUID, assetManagerName, url, effectiveTime, startFrom, pageSize);
+        return externalReferenceClient.getExternalReferencesByURL(userId, assetManagerGUID, assetManagerName, url, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -402,9 +453,9 @@ public class ExternalReferenceExchangeService
      * Retrieve the list of external references for this name.
      *
      * @param name qualifiedName or displayName of the external resource.
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @return links to addition information.
      *
@@ -413,21 +464,21 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public List<ExternalReferenceElement> getExternalReferencesByName(String name,
-                                                                      Date   effectiveTime,
                                                                       int    startFrom,
-                                                                      int    pageSize) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+                                                                      int    pageSize,
+                                                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
     {
-        return externalReferenceClient.getExternalReferencesByName(userId, assetManagerGUID, assetManagerName, name, effectiveTime, startFrom, pageSize);
+        return externalReferenceClient.getExternalReferencesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
     /**
      * Retrieve the list of external reference created on behalf of the named asset manager.
      *
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @return list of matching metadata elements
      *
@@ -435,13 +486,13 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ExternalReferenceElement> getExternalReferencesForAssetManager(Date   effectiveTime,
-                                                                               int    startFrom,
-                                                                               int    pageSize) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+    public List<ExternalReferenceElement> getExternalReferencesForAssetManager(int    startFrom,
+                                                                               int    pageSize,
+                                                                               Date   effectiveTime) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
-        return externalReferenceClient.getExternalReferencesForAssetManager(userId, assetManagerGUID, assetManagerName, effectiveTime, startFrom, pageSize);
+        return externalReferenceClient.getExternalReferencesForAssetManager(userId, assetManagerGUID, assetManagerName, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -449,9 +500,9 @@ public class ExternalReferenceExchangeService
      * Find the external references that contain the search string - which may contain wildcards.
      *
      * @param searchString regular expression (RegEx) to search for
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @return links to addition information.
      *
@@ -460,13 +511,13 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public List<ExternalReferenceElement> findExternalReferences(String searchString,
-                                                                 Date   effectiveTime,
                                                                  int    startFrom,
-                                                                 int    pageSize) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException
+                                                                 int    pageSize,
+                                                                 Date   effectiveTime) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
     {
-        return externalReferenceClient.findExternalReferences(userId, assetManagerGUID, assetManagerName, searchString, effectiveTime, startFrom, pageSize);
+        return externalReferenceClient.findExternalReferences(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
@@ -474,9 +525,9 @@ public class ExternalReferenceExchangeService
      * Retrieve the list of external references attached to the supplied object.
      *
      * @param attachedToGUID object linked to external reference.
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @return links to addition information.
      *
@@ -485,21 +536,21 @@ public class ExternalReferenceExchangeService
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     public List<ExternalReferenceLinkElement> retrieveAttachedExternalReferences(String attachedToGUID,
-                                                                                 Date   effectiveTime,
                                                                                  int    startFrom,
-                                                                                 int    pageSize) throws InvalidParameterException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException
+                                                                                 int    pageSize,
+                                                                                 Date   effectiveTime) throws InvalidParameterException,
+                                                                                                              PropertyServerException,
+                                                                                                              UserNotAuthorizedException
     {
-        return externalReferenceClient.retrieveAttachedExternalReferences(userId, assetManagerGUID, assetManagerName, attachedToGUID, effectiveTime, startFrom, pageSize);
+        return externalReferenceClient.retrieveAttachedExternalReferences(userId, assetManagerGUID, assetManagerName, attachedToGUID, startFrom, pageSize, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 
     /**
      * Return information about a specific external reference.
      *
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param externalReferenceGUID unique identifier for the external reference
+     * @param effectiveTime the time that the retrieved elements must be effective for
      *
      * @return properties of the external reference
      *
@@ -507,12 +558,12 @@ public class ExternalReferenceExchangeService
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public ExternalReferenceElement getExternalReferenceByGUID(Date   effectiveTime,
-                                                               String externalReferenceGUID) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public ExternalReferenceElement getExternalReferenceByGUID(String externalReferenceGUID,
+                                                               Date   effectiveTime) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        return externalReferenceClient.getExternalReferenceByGUID(userId, assetManagerGUID, assetManagerName, externalReferenceGUID, effectiveTime);
+        return externalReferenceClient.getExternalReferenceByGUID(userId, assetManagerGUID, assetManagerName, externalReferenceGUID, effectiveTime, forLineage, forDuplicateProcessing);
     }
 
 }

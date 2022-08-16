@@ -7,9 +7,9 @@ import org.odpi.openmetadata.accessservices.assetmanager.api.ExternalReferencesI
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceLinkElementsResponse;
@@ -25,7 +25,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ExternalReferenceExchangeClient is the client for managing external references.
@@ -129,21 +128,16 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
 
     /**
-     * Create a definition of a external reference.
+     * Create a definition of an external reference.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
-     * @param referenceExternalIdentifier unique identifier of the external reference in the external asset manager
-     * @param referenceExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param referenceExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param referenceExternalIdentifierSource component that issuing this request.
-     * @param referenceExternalIdentifierKeyPattern  pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param anchorGUID optional element to link the external reference to that will act as an anchor - that is, this external reference
      *                   will be deleted when the element is deleted (once the external reference is linked to the anchor).
-     * @param properties properties for a external reference
+     * @param properties properties for an external reference
      *
      * @return unique identifier of the external reference
      *
@@ -152,20 +146,15 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public String createExternalReference(String                      userId,
-                                          String                      assetManagerGUID,
-                                          String                      assetManagerName,
-                                          boolean                     assetManagerIsHome,
-                                          String                      referenceExternalIdentifier,
-                                          String                      referenceExternalIdentifierName,
-                                          String                      referenceExternalIdentifierUsage,
-                                          String                      referenceExternalIdentifierSource,
-                                          KeyPattern                  referenceExternalIdentifierKeyPattern,
-                                          Map<String, String>         mappingProperties,
-                                          String                      anchorGUID,
-                                          ExternalReferenceProperties properties) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public String createExternalReference(String                       userId,
+                                          String                       assetManagerGUID,
+                                          String                       assetManagerName,
+                                          boolean                      assetManagerIsHome,
+                                          ExternalIdentifierProperties externalIdentifierProperties,
+                                          String                       anchorGUID,
+                                          ExternalReferenceProperties  properties) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName                  = "createExternalReference";
         final String propertiesParameterName     = "properties";
@@ -179,12 +168,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
         requestBody.setElementProperties(properties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   referenceExternalIdentifier,
-                                                                                   referenceExternalIdentifierName,
-                                                                                   referenceExternalIdentifierUsage,
-                                                                                   referenceExternalIdentifierSource,
-                                                                                   referenceExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references?assetManagerIsHome={2}";
@@ -201,7 +185,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
 
     /**
-     * Update the definition of a external reference.
+     * Update the definition of an external reference.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
@@ -210,6 +194,9 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param referenceExternalIdentifier unique identifier of the external reference in the external asset manager
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
      * @param properties properties to change
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException guid, qualifiedName or userId is null; qualifiedName is not unique; guid is not known
      * @throws PropertyServerException problem accessing property server
@@ -222,9 +209,12 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                         String                      externalReferenceGUID,
                                         String                      referenceExternalIdentifier,
                                         boolean                     isMergeUpdate,
-                                        ExternalReferenceProperties properties) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                        ExternalReferenceProperties properties,
+                                        Date                        effectiveTime,
+                                        boolean                     forLineage,
+                                        boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         final String methodName                         = "updateExternalReference";
         final String externalReferenceGUIDParameterName = "externalReferenceGUID";
@@ -246,6 +236,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                                                    assetManagerName,
                                                                                    referenceExternalIdentifier,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/{2}?isMergeUpdate={3}";
 
@@ -260,26 +251,32 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
 
     /**
-     * Remove the definition of a external reference.
+     * Remove the definition of an external reference.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalReferenceGUID unique identifier of external reference
      * @param referenceExternalIdentifier unique identifier of the external reference in the external asset manager
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException guid or userId is null; guid is not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void deleteExternalReference(String userId,
-                                        String assetManagerGUID,
-                                        String assetManagerName,
-                                        String externalReferenceGUID,
-                                        String referenceExternalIdentifier) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public void deleteExternalReference(String  userId,
+                                        String  assetManagerGUID,
+                                        String  assetManagerName,
+                                        String  externalReferenceGUID,
+                                        String  referenceExternalIdentifier,
+                                        Date    effectiveTime,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName                         = "deleteExternalReference";
         final String externalReferenceGUIDParameterName = "externalReferenceGUID";
@@ -291,10 +288,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      referenceExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, referenceExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
                                         externalReferenceGUID);
@@ -311,6 +305,9 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param attachedToGUID object linked to external references.
      * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
      * @param externalReferenceGUID unique identifier (guid) of the external reference details.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return Unique identifier for new relationship
      *
@@ -325,9 +322,12 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                  boolean                         assetManagerIsHome,
                                                  String                          attachedToGUID,
                                                  String                          externalReferenceGUID,
-                                                 ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                                        PropertyServerException,
-                                                                                                        UserNotAuthorizedException
+                                                 ExternalReferenceLinkProperties linkProperties,
+                                                 Date                            effectiveTime,
+                                                 boolean                         forLineage,
+                                                 boolean                         forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException
     {
         final String methodName                          = "linkExternalReferenceToElement";
         final String attachedToGUIDParameterName         = "attachedToGUID";
@@ -366,6 +366,9 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerName unique name of software server capability representing the caller
      * @param linkProperties description for the reference from the perspective of the object that the reference is being attached to.
      * @param externalReferenceLinkGUID unique identifier (guid) of the external reference details.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
@@ -376,9 +379,12 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
                                                      String                          assetManagerGUID,
                                                      String                          assetManagerName,
                                                      String                          externalReferenceLinkGUID,
-                                                     ExternalReferenceLinkProperties linkProperties) throws InvalidParameterException,
-                                                                                                            PropertyServerException,
-                                                                                                            UserNotAuthorizedException
+                                                     ExternalReferenceLinkProperties linkProperties,
+                                                     Date                            effectiveTime,
+                                                     boolean                         forLineage,
+                                                     boolean                         forDuplicateProcessing) throws InvalidParameterException, 
+                                                                                                                    PropertyServerException, 
+                                                                                                                    UserNotAuthorizedException
     {
         final String methodName                          = "linkExternalReferenceToElement";
         final String externalReferenceGUIDParameterName  = "externalReferenceLinkGUID";
@@ -404,24 +410,30 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
 
     /**
-     * Remove the link between a external reference and an element.  If the element is its anchor, the external reference is removed.
+     * Remove the link between an external reference and an element.  If the element is its anchor, the external reference is removed.
      *
      * @param userId the name of the calling user.
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalReferenceLinkGUID identifier of the external reference relationship.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException problem with the GUID or the external references are not correctly specified, or are null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public void unlinkExternalReferenceFromElement(String userId,
-                                                   String assetManagerGUID,
-                                                   String assetManagerName,
-                                                   String externalReferenceLinkGUID) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+    public void unlinkExternalReferenceFromElement(String  userId,
+                                                   String  assetManagerGUID,
+                                                   String  assetManagerName,
+                                                   String  externalReferenceLinkGUID,
+                                                   Date    effectiveTime,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         final String methodName                          = "linkExternalReferenceToElement";
         final String externalReferenceGUIDParameterName  = "externalReferenceLinkGUID";
@@ -433,7 +445,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         externalReferenceLinkGUID);
@@ -446,9 +458,11 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param userId the name of the calling user.
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return links to addition information.
      *
@@ -457,14 +471,16 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<ExternalReferenceElement> getExternalReferences(String userId,
-                                                                String assetManagerGUID,
-                                                                String assetManagerName,
-                                                                Date   effectiveTime,
-                                                                int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    public List<ExternalReferenceElement> getExternalReferences(String  userId,
+                                                                String  assetManagerGUID,
+                                                                String  assetManagerName,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                Date    effectiveTime,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing) throws InvalidParameterException, 
+                                                                                                       PropertyServerException, 
+                                                                                                       UserNotAuthorizedException
     {
         final String methodName = "getExternalReferences";
 
@@ -495,9 +511,11 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param resourceId unique reference id assigned by the resource owner (supports wildcards). This is the qualified name of the entity
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return links to addition information.
      *
@@ -506,15 +524,17 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<ExternalReferenceElement> getExternalReferencesById(String userId,
-                                                                    String assetManagerGUID,
-                                                                    String assetManagerName,
-                                                                    String resourceId,
-                                                                    Date   effectiveTime,
-                                                                    int    startFrom,
-                                                                    int    pageSize) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+    public List<ExternalReferenceElement> getExternalReferencesById(String  userId,
+                                                                    String  assetManagerGUID,
+                                                                    String  assetManagerName,
+                                                                    String  resourceId,
+                                                                    int     startFrom,
+                                                                    int     pageSize,
+                                                                    Date    effectiveTime,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing) throws InvalidParameterException, 
+                                                                                                           PropertyServerException, 
+                                                                                                           UserNotAuthorizedException
     {
         final String methodName        = "getExternalReferencesById";
         final String nameParameterName = "resourceId";
@@ -552,9 +572,11 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param url URL of the external resource.
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return links to addition information.
      *
@@ -563,15 +585,17 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<ExternalReferenceElement> getExternalReferencesByURL(String userId,
-                                                                     String assetManagerGUID,
-                                                                     String assetManagerName,
-                                                                     String url,
-                                                                     Date   effectiveTime,
-                                                                     int    startFrom,
-                                                                     int    pageSize) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+    public List<ExternalReferenceElement> getExternalReferencesByURL(String  userId,
+                                                                     String  assetManagerGUID,
+                                                                     String  assetManagerName,
+                                                                     String  url,
+                                                                     int     startFrom,
+                                                                     int     pageSize,
+                                                                     Date    effectiveTime,
+                                                                     boolean forLineage,
+                                                                     boolean forDuplicateProcessing) throws InvalidParameterException, 
+                                                                                                            PropertyServerException, 
+                                                                                                            UserNotAuthorizedException
     {
         final String methodName        = "getExternalReferencesByURL";
         final String nameParameterName = "url";
@@ -609,9 +633,11 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param name qualifiedName or displayName of the external resource.
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return links to addition information.
      *
@@ -620,15 +646,17 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<ExternalReferenceElement> getExternalReferencesByName(String userId,
-                                                                      String assetManagerGUID,
-                                                                      String assetManagerName,
-                                                                      String name,
-                                                                      Date   effectiveTime,
-                                                                      int    startFrom,
-                                                                      int    pageSize) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+    public List<ExternalReferenceElement> getExternalReferencesByName(String  userId,
+                                                                      String  assetManagerGUID,
+                                                                      String  assetManagerName,
+                                                                      String  name,
+                                                                      int     startFrom,
+                                                                      int     pageSize,
+                                                                      Date    effectiveTime,
+                                                                      boolean forLineage,
+                                                                      boolean forDuplicateProcessing) throws InvalidParameterException, 
+                                                                                                             PropertyServerException, 
+                                                                                                             UserNotAuthorizedException
     {
         final String methodName        = "getExternalReferencesByName";
         final String nameParameterName = "name";
@@ -665,9 +693,11 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements
      *
@@ -676,14 +706,16 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ExternalReferenceElement> getExternalReferencesForAssetManager(String userId,
-                                                                               String assetManagerGUID,
-                                                                               String assetManagerName,
-                                                                               Date   effectiveTime,
-                                                                               int    startFrom,
-                                                                               int    pageSize) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+    public List<ExternalReferenceElement> getExternalReferencesForAssetManager(String  userId,
+                                                                               String  assetManagerGUID,
+                                                                               String  assetManagerName,
+                                                                               int     startFrom,
+                                                                               int     pageSize,
+                                                                               Date    effectiveTime,
+                                                                               boolean forLineage,
+                                                                               boolean forDuplicateProcessing) throws InvalidParameterException, 
+                                                                                                                      UserNotAuthorizedException, 
+                                                                                                                      PropertyServerException
     {
         final String methodName = "getExternalReferencesForAssetManager";
 
@@ -713,9 +745,11 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param searchString regular expression (RegEx) to search for
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return links to addition information.
      *
@@ -724,15 +758,17 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<ExternalReferenceElement> findExternalReferences(String userId,
-                                                                 String assetManagerGUID,
-                                                                 String assetManagerName,
-                                                                 String searchString,
-                                                                 Date   effectiveTime,
-                                                                 int    startFrom,
-                                                                 int    pageSize) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException
+    public List<ExternalReferenceElement> findExternalReferences(String  userId,
+                                                                 String  assetManagerGUID,
+                                                                 String  assetManagerName,
+                                                                 String  searchString,
+                                                                 int     startFrom,
+                                                                 int     pageSize,
+                                                                 Date    effectiveTime,
+                                                                 boolean forLineage,
+                                                                 boolean forDuplicateProcessing) throws InvalidParameterException, 
+                                                                                                        PropertyServerException, 
+                                                                                                        UserNotAuthorizedException
     {
         final String methodName                = "findExternalReferences";
         final String searchStringParameterName = "searchString";
@@ -769,9 +805,11 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param attachedToGUID object linked to external reference.
-     * @param effectiveTime the time that the retrieved elements must be effective for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return links to addition information.
      *
@@ -780,15 +818,17 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<ExternalReferenceLinkElement> retrieveAttachedExternalReferences(String userId,
-                                                                                 String assetManagerGUID,
-                                                                                 String assetManagerName,
-                                                                                 String attachedToGUID,
-                                                                                 Date   effectiveTime,
-                                                                                 int    startFrom,
-                                                                                 int    pageSize) throws InvalidParameterException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException
+    public List<ExternalReferenceLinkElement> retrieveAttachedExternalReferences(String  userId,
+                                                                                 String  assetManagerGUID,
+                                                                                 String  assetManagerName,
+                                                                                 String  attachedToGUID,
+                                                                                 int     startFrom,
+                                                                                 int     pageSize,
+                                                                                 Date    effectiveTime,
+                                                                                 boolean forLineage,
+                                                                                 boolean forDuplicateProcessing) throws InvalidParameterException, 
+                                                                                                                        PropertyServerException, 
+                                                                                                                        UserNotAuthorizedException
     {
         final String methodName        = "retrieveAttachedExternalReferences";
         final String guidParameterName = "attachedToGUID";
@@ -822,6 +862,8 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @param assetManagerName unique name of software server capability representing the caller
      * @param externalReferenceGUID unique identifier for the external reference
      * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return properties of the external reference
      *
@@ -830,13 +872,15 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public ExternalReferenceElement getExternalReferenceByGUID(String userId,
-                                                               String assetManagerGUID,
-                                                               String assetManagerName,
-                                                               String externalReferenceGUID,
-                                                               Date   effectiveTime) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public ExternalReferenceElement getExternalReferenceByGUID(String  userId,
+                                                               String  assetManagerGUID,
+                                                               String  assetManagerName,
+                                                               String  externalReferenceGUID,
+                                                               Date    effectiveTime,
+                                                               boolean forLineage,
+                                                               boolean forDuplicateProcessing) throws InvalidParameterException, 
+                                                                                                      UserNotAuthorizedException, 
+                                                                                                      PropertyServerException
     {
         final String methodName = "getExternalReferenceByGUID";
         final String guidParameterName = "externalReferenceGUID";
@@ -857,5 +901,4 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         return restResult.getElement();
     }
-
 }

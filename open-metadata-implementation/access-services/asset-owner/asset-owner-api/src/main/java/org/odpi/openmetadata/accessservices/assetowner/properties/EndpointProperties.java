@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EndpointProperties extends SupplementaryProperties
+public class EndpointProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -191,14 +191,9 @@ public class EndpointProperties extends SupplementaryProperties
                        ", address='" + address + '\'' +
                        ", protocol='" + protocol + '\'' +
                        ", encryptionMethod='" + encryptionMethod + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", abbreviation='" + getAbbreviation() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }

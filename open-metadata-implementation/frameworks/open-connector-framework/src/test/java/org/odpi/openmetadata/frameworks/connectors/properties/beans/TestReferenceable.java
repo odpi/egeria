@@ -209,11 +209,11 @@ public class TestReferenceable
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -222,7 +222,7 @@ public class TestReferenceable
 
         try
         {
-            validateResultObject((Referenceable) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((Referenceable) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

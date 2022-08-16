@@ -20,7 +20,7 @@ import java.util.Objects;
  *         <li>AssetStructSchemaType is a complex structure of nested schema elements.</li>
  *         <li>AssetMapSchemaType is for an attribute of type Map</li>
  *     </ul>
- *     Most assets will be linked to a AssetComplexSchemaType.
+ *     Most assets will be linked to an AssetComplexSchemaType.
  *
  */
 public abstract class AssetSchemaType extends AssetSchemaElement

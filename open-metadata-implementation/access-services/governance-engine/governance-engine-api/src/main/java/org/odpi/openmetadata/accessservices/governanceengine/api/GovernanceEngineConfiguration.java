@@ -305,7 +305,7 @@ public interface GovernanceEngineConfiguration
      * @param governanceEngineGUID unique identifier of the governance engine.
      * @param governanceServiceGUID unique identifier of the governance service.
      * @param requestType request type that this governance service is able to process.
-     * @param requestParameters list of parameters that are passed the the governance service (via
+     * @param requestParameters list of parameters that are passed to the governance service (via
      *                             the context).  These values can be overridden on the actual governance service request.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.

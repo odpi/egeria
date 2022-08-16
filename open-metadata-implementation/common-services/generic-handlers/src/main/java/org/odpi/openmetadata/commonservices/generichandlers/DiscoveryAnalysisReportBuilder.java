@@ -17,11 +17,11 @@ import java.util.Map;
  */
 public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
 {
-    private String                 displayName;
-    private String                 description;
-    private Date                   creationDate;
-    private Map<String, String>    analysisParameters;
-    private int                    discoveryRequestStatus;
+    private final String                 displayName;
+    private final String                 description;
+    private final Date                   creationDate;
+    private final Map<String, String>    analysisParameters;
+    private final int                    discoveryRequestStatus;
 
 
 
@@ -82,41 +82,29 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  displayName,
+                                                                  methodName);
 
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
 
-        if (creationDate != null)
-        {
-            properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                    properties,
-                                                                    OpenMetadataAPIMapper.EXECUTION_DATE_PROPERTY_NAME,
-                                                                    creationDate,
-                                                                    methodName);
-        }
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataAPIMapper.EXECUTION_DATE_PROPERTY_NAME,
+                                                                creationDate,
+                                                                methodName);
 
-        if (analysisParameters != null)
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.ANALYSIS_PARAMS_PROPERTY_NAME,
-                                                                         analysisParameters,
-                                                                         methodName);
-        }
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataAPIMapper.ANALYSIS_PARAMS_PROPERTY_NAME,
+                                                                     analysisParameters,
+                                                                     methodName);
 
         try
         {
@@ -132,7 +120,6 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
         {
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
         }
-
 
         return properties;
     }

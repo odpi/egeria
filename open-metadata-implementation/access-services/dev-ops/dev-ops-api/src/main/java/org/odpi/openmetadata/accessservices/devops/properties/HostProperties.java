@@ -70,6 +70,7 @@ public class HostProperties extends ITInfrastructureProperties
      * @param subTypeName subtype name
      * @return asset properties
      */
+    @Override
     public AssetProperties cloneToAsset(String subTypeName)
     {
         return super.cloneToAsset(subTypeName);
