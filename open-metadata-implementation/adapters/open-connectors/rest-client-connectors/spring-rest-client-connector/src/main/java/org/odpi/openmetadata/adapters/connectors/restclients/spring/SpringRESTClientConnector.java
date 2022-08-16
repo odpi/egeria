@@ -184,17 +184,17 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             return responseObject;
         }
-        catch (Throwable error)
+         catch (Exception exception)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                                                                                                      methodName,
                                                                                                      urlTemplate,
                                                                                                      serverName,
                                                                                                      serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+                                                                                                     exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),
@@ -202,7 +202,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction(),
-                                          error);
+                                          exception);
         }
     }
 
@@ -255,17 +255,17 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             return responseObject;
         }
-        catch (Exception error)
+        catch (Exception exception)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                                                                                                      methodName,
                                                                                                      urlTemplate,
                                                                                                      serverName,
                                                                                                      serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+                                                                                                     exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),
@@ -273,7 +273,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction(),
-                                          error);
+                                          exception);
         }
     }
 
@@ -337,17 +337,17 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             return responseObject;
         }
-        catch (Throwable error)
+         catch (Exception exception)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                                                                                                      methodName,
                                                                                                      urlTemplate,
                                                                                                      serverName,
                                                                                                      serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+                                                                                                     exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),
@@ -355,7 +355,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction(),
-                                          error);
+                                          exception);
         }
     }
 
@@ -422,17 +422,17 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             return responseObject;
         }
-        catch (Throwable error)
+         catch (Exception exception)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                                                                                                      methodName,
                                                                                                      urlTemplate,
                                                                                                      serverName,
                                                                                                      serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+                                                                                                     exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -440,7 +440,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                               errorMessage,
                                               errorCode.getSystemAction(),
                                               errorCode.getUserAction(),
-                                              error);
+                                              exception);
         }
     }
 
@@ -494,17 +494,17 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             return responseObject;
         }
-        catch (Throwable error)
+         catch (Exception exception)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                                                                                                      methodName,
                                                                                                      urlTemplate,
                                                                                                      serverName,
                                                                                                      serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+                                                                                                     exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),
@@ -512,7 +512,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction(),
-                                          error);
+                                          exception);
         }
     }
 
@@ -574,17 +574,17 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             return responseObject;
         }
-        catch (Throwable error)
+         catch (Exception exception)
         {
-            log.error("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.error("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                                                                                                      methodName,
                                                                                                      urlTemplate,
                                                                                                      serverName,
                                                                                                      serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+                                                                                                     exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),
@@ -592,7 +592,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction(),
-                                          error);
+                                          exception);
         }
     }
 
@@ -640,17 +640,17 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             return responseObject;
         }
-        catch (Throwable error)
+         catch (Exception exception)
         {
-            log.error("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.error("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                                                                                                      methodName,
                                                                                                      urlTemplate,
                                                                                                      serverName,
                                                                                                      serverPlatformURLRoot,
-                                                                                                     error.getMessage());
+                                                                                                     exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                                           this.getClass().getName(),
@@ -658,7 +658,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                           errorMessage,
                                           errorCode.getSystemAction(),
                                           errorCode.getUserAction(),
-                                          error);
+                                          exception);
         }
     }
 
@@ -710,16 +710,16 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
 
             return responseObject;
-        } catch (Throwable error) {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+        }  catch (Exception exception) {
+            log.debug("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                     methodName,
                     urlTemplate,
                     serverName,
                     serverPlatformURLRoot,
-                    error.getMessage());
+                    exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -727,7 +727,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction(),
-                    error);
+                    exception);
         }
     }
 
@@ -770,16 +770,16 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
 
             return responseObject;
-        } catch (Throwable error) {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+        }  catch (Exception exception) {
+            log.debug("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                     methodName,
                     urlTemplate,
                     serverName,
                     serverPlatformURLRoot,
-                    error.getMessage());
+                    exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -787,7 +787,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction(),
-                    error);
+                    exception);
         }
     }
 
@@ -827,16 +827,16 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
 
             return responseObject;
-        } catch (Throwable error) {
-            log.error("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+        }  catch (Exception exception) {
+            log.error("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                     methodName,
                     urlTemplate,
                     serverName,
                     serverPlatformURLRoot,
-                    error.getMessage());
+                    exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -844,7 +844,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction(),
-                    error);
+                    exception);
         }
     }
 
@@ -890,16 +890,16 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
 
             return responseObject;
-        } catch (Throwable error) {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+        }  catch (Exception exception) {
+            log.debug("Exception " + exception.getClass().getName() + " with message " + exception.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(exception.getClass().getName(),
                     methodName,
                     urlTemplate,
                     serverName,
                     serverPlatformURLRoot,
-                    error.getMessage());
+                    exception.getMessage());
 
             throw new RESTServerException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -907,7 +907,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction(),
-                    error);
+                    exception);
         }
     }
 }
