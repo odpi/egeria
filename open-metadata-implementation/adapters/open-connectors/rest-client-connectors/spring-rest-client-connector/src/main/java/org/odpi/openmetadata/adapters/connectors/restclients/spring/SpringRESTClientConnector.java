@@ -173,7 +173,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 responseObject = responseEntity.getBody();
             }
 
-            if (responseObject != null)
+            if ( log.isDebugEnabled() && responseObject != null )
             {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             }
@@ -244,7 +244,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 responseObject = responseEntity.getBody();
             }
 
-            if (responseObject != null)
+            if ( log.isDebugEnabled() && responseObject != null )
             {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             }
@@ -326,7 +326,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 responseObject = responseEntity.getBody();
             }
 
-            if (responseObject != null)
+            if ( log.isDebugEnabled() && responseObject != null )
             {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             }
@@ -411,7 +411,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 responseObject = responseEntity.getBody();
             }
 
-            if (responseObject != null)
+            if ( log.isDebugEnabled() && responseObject != null )
             {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             }
@@ -483,7 +483,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, returnClass, params);
             T responseObject = responseEntity.getBody();
 
-            if (responseObject != null)
+            if ( log.isDebugEnabled() && responseObject != null )
             {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             }
@@ -563,7 +563,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 responseObject = responseEntity.getBody();
             }
 
-            if (responseObject != null)
+            if ( log.isDebugEnabled() && responseObject != null )
             {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             }
@@ -629,7 +629,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
             ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, returnClass, params);
             T  responseObject = responseEntity.getBody();
-            if (responseObject != null)
+            if ( log.isDebugEnabled() && responseObject != null )
             {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             }
@@ -703,7 +703,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             responseObject = responseEntity.getBody();
 
-            if (responseObject != null) {
+            if ( log.isDebugEnabled() && responseObject != null ) {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             } else {
                 log.debug("Returning from " + methodName + " with no response object.");
@@ -763,7 +763,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             responseObject = responseEntity.getBody();
 
-            if (responseObject != null) {
+            if ( log.isDebugEnabled() && responseObject != null ) {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             } else {
                 log.debug("Returning from " + methodName + " with no response object.");
@@ -820,7 +820,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, responseType, params);
             T responseObject = responseEntity.getBody();
-            if (responseObject != null) {
+            if ( log.isDebugEnabled() && responseObject != null ) {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             } else {
                 log.debug("Returning from " + methodName + " with no response object.");
@@ -883,7 +883,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, responseType, params);
             T responseObject = responseEntity.getBody();
 
-            if (responseObject != null) {
+            if ( log.isDebugEnabled() && responseObject != null ) {
                 log.debug("Returning from " + methodName + " with response object " + responseObject.toString() + ".");
             } else {
                 log.debug("Returning from " + methodName + " with no response object.");
