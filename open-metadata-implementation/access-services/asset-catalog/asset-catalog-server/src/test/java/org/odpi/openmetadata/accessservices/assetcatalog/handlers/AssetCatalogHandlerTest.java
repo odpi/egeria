@@ -15,6 +15,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.ClockService;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
@@ -42,12 +43,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -90,6 +89,9 @@ public class AssetCatalogHandlerTest {
 
     @Mock
     private AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter;
+
+    @Mock
+    private ClockService clockService;
 
     @InjectMocks
     private AssetCatalogHandler assetCatalogHandler;

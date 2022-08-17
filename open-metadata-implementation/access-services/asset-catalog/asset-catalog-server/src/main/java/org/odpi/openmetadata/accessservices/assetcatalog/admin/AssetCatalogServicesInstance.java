@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogE
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.ClockService;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.time.Clock;
 import java.util.List;
 
 /**
@@ -79,13 +81,14 @@ class AssetCatalogServicesInstance extends OMASServiceInstance {
                             AssetCatalogBean.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
                             repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones,
                             auditLog);
+            ClockService clockService = new ClockService(Clock.systemUTC());
 
             assetCatalogHandler = new AssetCatalogHandler(serverName, sourceName, invalidParameterHandler,
                     repositoryHandler, repositoryHelper, assetHandler, assetCatalogConverter,  errorHandler,
-                    supportedZones, supportedTypesForSearch);
+                    supportedZones, supportedTypesForSearch, clockService);
 
             relationshipHandler = new RelationshipHandler(sourceName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper, assetHandler, errorHandler);
+                    repositoryHelper, assetHandler, errorHandler, clockService);
         } else {
             final String methodName = "new ServiceInstance";
             throw new NewInstanceException(AssetCatalogErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(serverName),

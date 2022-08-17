@@ -10,8 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.util.ClockService;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -21,7 +21,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +66,8 @@ class AssetContextHandlerTest {
     private List<String> supportedZones;
     @Mock
     private OpenMetadataAPIGenericHandler genericHandler;
+    @Mock
+    ClockService clockService;
     @InjectMocks
     private AssetContextHandler assetContextHandler;
 

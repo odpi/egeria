@@ -15,6 +15,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
+import org.odpi.openmetadata.accessservices.assetlineage.util.ClockService;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
@@ -86,6 +87,8 @@ class HandlerHelperTest {
     private Converter converter;
     @Mock
     private AssetLineageTypesValidator assetLineageTypesValidator;
+    @Mock
+    private ClockService clockService;
 
     @InjectMocks
     private HandlerHelper handlerHelper;

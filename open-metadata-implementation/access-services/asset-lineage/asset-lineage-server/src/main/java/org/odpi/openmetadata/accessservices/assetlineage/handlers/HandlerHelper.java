@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
+import org.odpi.openmetadata.accessservices.assetlineage.util.ClockService;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
@@ -30,7 +31,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -62,6 +62,7 @@ public class HandlerHelper {
 
     private final Converter converter;
     private final AssetLineageTypesValidator assetLineageTypesValidator;
+    private final ClockService clockService;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -71,15 +72,17 @@ public class HandlerHelper {
      * @param genericHandler             handler for calling the repository services
      * @param converter                  converter used for creating entities in Open Lineage format
      * @param assetLineageTypesValidator service for validating types
+     * @param clockService               clock service
      */
     public HandlerHelper(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
                          OpenMetadataAPIGenericHandler<GenericStub> genericHandler, Converter converter,
-                         AssetLineageTypesValidator assetLineageTypesValidator) {
+                         AssetLineageTypesValidator assetLineageTypesValidator, ClockService clockService) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.genericHandler = genericHandler;
         this.assetLineageTypesValidator = assetLineageTypesValidator;
         this.converter = converter;
+        this.clockService = clockService;
     }
 
     /**
@@ -108,7 +111,7 @@ public class HandlerHelper {
 
         List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, entityGUID, GUID_PARAMETER,
                 entityTypeName, relationshipTypeGUID, relationshipTypeName, null, null, 0,
-                true, false, 0, 0, null, methodName);
+                true, false, 0, 0, clockService.getNow(), methodName);
 
         if (CollectionUtils.isEmpty(relationships)) {
             return Collections.emptyList();
@@ -145,7 +148,7 @@ public class HandlerHelper {
         return Optional.ofNullable(
                 genericHandler.getUniqueAttachmentLink(userId, entityGUID, GUID_PARAMETER, entityTypeName,
                         relationshipTypeGuid, relationshipTypeName, null, null, 0,
-                        true, false, null, methodName)
+                        true, false, clockService.getNow(), methodName)
         );
     }
 
@@ -184,12 +187,12 @@ public class HandlerHelper {
 
         if (relationship.getEntityOneProxy().getGUID().equals(entityDetailGUID)) {
             return genericHandler.getEntityFromRepository(userId, relationship.getEntityTwoProxy().getGUID(), GUID_PARAMETER,
-                    relationship.getEntityTwoProxy().getType().getTypeDefName(),
-                    null, null, true, false, null, methodName);
+                    relationship.getEntityTwoProxy().getType().getTypeDefName(), null,
+                    null, true, false, clockService.getNow(), methodName);
         } else if (relationship.getEntityTwoProxy().getGUID().equals(entityDetailGUID)) {
             return genericHandler.getEntityFromRepository(userId, relationship.getEntityOneProxy().getGUID(), GUID_PARAMETER,
-                    relationship.getEntityOneProxy().getType().getTypeDefName(),
-                    null, null, true, false, null, methodName);
+                    relationship.getEntityOneProxy().getType().getTypeDefName(), null,
+                    null, true, false, clockService.getNow(), methodName);
         }
         return null;
     }
@@ -213,8 +216,8 @@ public class HandlerHelper {
         String methodName = "getEntityDetails";
 
         return genericHandler.getEntityFromRepository(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName,
-                null, null,
-                true, false, null, methodName);
+                null, null, true, false,
+                clockService.getNow(), methodName);
     }
 
 
@@ -252,7 +255,7 @@ public class HandlerHelper {
         List<EntityDetail> pagedEntities = genericHandler.findEntities(userId, typeDefGUID, findEntitiesParameters.getEntitySubtypeGUIDs(),
                 searchProperties, findEntitiesParameters.getLimitResultsByStatus(), findEntitiesParameters.getSearchClassifications(), null,
                 findEntitiesParameters.getSequencingProperty(), findEntitiesParameters.getSequencingOrder(),
-                true, false, startingFrom, pageSize, null, methodName);
+                true, false, startingFrom, pageSize, clockService.getNow(), methodName);
         if (pagedEntities == null) {
             return false;
         }

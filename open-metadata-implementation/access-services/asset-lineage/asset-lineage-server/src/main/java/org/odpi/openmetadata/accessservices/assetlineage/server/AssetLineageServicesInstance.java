@@ -14,6 +14,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.GenericStub;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.connector.AssetLineageOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageTypesValidator;
+import org.odpi.openmetadata.accessservices.assetlineage.util.ClockService;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
@@ -23,6 +24,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.time.Clock;
 import java.util.List;
 
 /**
@@ -72,8 +74,10 @@ public class AssetLineageServicesInstance extends OMASServiceInstance {
                         localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
         Converter converter = new Converter(repositoryHelper);
-        handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, genericHandler, converter, assetLineageTypesValidator);
-        assetContextHandler = new AssetContextHandler(genericHandler, handlerHelper, supportedZones);
+        ClockService clockService = new ClockService(Clock.systemUTC());
+        handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, genericHandler, converter,
+                assetLineageTypesValidator, clockService);
+        assetContextHandler = new AssetContextHandler(genericHandler, handlerHelper, supportedZones, clockService);
         processContextHandler = new ProcessContextHandler(assetContextHandler, handlerHelper, supportedZones);
         glossaryContextHandler = new GlossaryContextHandler(invalidParameterHandler, assetContextHandler, handlerHelper);
         classificationHandler = new ClassificationHandler(invalidParameterHandler, handlerHelper);

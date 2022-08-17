@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.ClockService;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
@@ -43,7 +44,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -153,6 +153,7 @@ public class AssetCatalogHandler {
     private final AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter;
     private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;
     private final Map<String, String> defaultSearchTypes = new HashMap<>();
+    private final ClockService clockService;
     private List<String> supportedTypesForSearch = new ArrayList<>(Arrays.asList(GLOSSARY_TERM, ASSET, SCHEMA_ELEMENT));
 
     private final List<String> supportedZones;
@@ -170,11 +171,14 @@ public class AssetCatalogHandler {
      * @param errorHandler            provides common validation routines for the other handler classes
      * @param supportedZones          configurable list of zones that Asset Catalog is allowed to serve Assets from
      * @param supportedTypesForSearch configurable list of supported types used for search
+     * @param clockService            clock service
      */
     public AssetCatalogHandler(String serverUserName, String sourceName, InvalidParameterHandler invalidParameterHandler,
                                RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                               OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler, AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter,
-                               RepositoryErrorHandler errorHandler, List<String> supportedZones, List<String> supportedTypesForSearch) {
+                               OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler,
+                               AssetCatalogConverter<AssetCatalogBean> assetCatalogConverter,
+                               RepositoryErrorHandler errorHandler, List<String> supportedZones, List<String> supportedTypesForSearch,
+                               ClockService clockService) {
         this.serverUserName = serverUserName;
         this.sourceName = sourceName;
         this.invalidParameterHandler = invalidParameterHandler;
@@ -184,11 +188,13 @@ public class AssetCatalogHandler {
         this.assetCatalogConverter = assetCatalogConverter;
         this.errorHandler = errorHandler;
         this.supportedZones = supportedZones;
-        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, assetHandler, errorHandler);
+        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, assetHandler, errorHandler,
+                clockService);
         if (CollectionUtils.isNotEmpty(supportedTypesForSearch)) {
             this.supportedTypesForSearch = supportedTypesForSearch;
             Collections.sort(supportedTypesForSearch);
         }
+        this.clockService = clockService;
         defaultSearchTypes.put(GLOSSARY_TERM, GLOSSARY_TERM_TYPE_GUID);
         defaultSearchTypes.put(ASSET, ASSET_GUID);
         defaultSearchTypes.put(SCHEMA_ELEMENT, SCHEMA_ELEMENT_GUID);
@@ -238,8 +244,9 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
         List<Relationship> relationshipsByType = assetHandler.getAttachmentLinks(userId, assetGUID, GUID_PARAMETER,
-                 assetTypeName, null, null, null, null, 0,
-                 false, false, 0, invalidParameterHandler.getMaxPagingSize(),  null, methodName);
+                 assetTypeName, null, null, null,
+                null, 0, false, false, 0,
+                invalidParameterHandler.getMaxPagingSize(),  clockService.getNow(), methodName);
 
         if (CollectionUtils.isNotEmpty(relationshipsByType)) {
             return assetCatalogConverter.convertRelationships(relationshipsByType);
@@ -312,7 +319,7 @@ public class AssetCatalogHandler {
 
         List<Relationship> pagedRelationshipsByType = assetHandler.getAttachmentLinks(userId, assetGUID, GUID_PARAMETER,
                 assetTypeName, relationshipTypeGUID, relationshipTypeName, null, null,0,
-                false, false, from, pageSize, null, methodName);
+                false, false, from, pageSize, clockService.getNow(), methodName);
 
         if (CollectionUtils.isNotEmpty(pagedRelationshipsByType)) {
             return assetCatalogConverter.convertRelationships(pagedRelationshipsByType);
@@ -770,7 +777,7 @@ public class AssetCatalogHandler {
                 if (port.getType().getTypeDefName().equals(PORT_IMPLEMENTATION)) {
                     EntityDetail schemaType = assetHandler.getAttachedEntity(userId, port.getGUID(), GUID_PARAMETER,
                             DATABASE, PORT_SCHEMA_GUID, PORT_SCHEMA, null, false,
-                            false, new Date(), method);
+                            false, clockService.getNow(), method);
 
                     if (schemaType != null) {
                         assetCatalogConverter.addElement(assetCatalogItemElement, schemaType);
@@ -824,7 +831,7 @@ public class AssetCatalogHandler {
 
         EntityDetail schemaType = assetHandler.getAttachedEntity(userId, dataSet.getGUID(), GUID_PARAMETER,
                 DATA_SET, ASSET_SCHEMA_TYPE_GUID, ASSET_SCHEMA_TYPE, null, false,
-                false, new Date(), method);
+                false, clockService.getNow(), method);
 
         if (schemaType == null) {
             return;
@@ -859,7 +866,7 @@ public class AssetCatalogHandler {
         List<Relationship> parentFolderRelationships = assetHandler.getAttachmentLinks(userId, entityDetail.getGUID(),
                 GUID_PARAMETER, entityDetail.getType().getTypeDefName(), FOLDER_HIERARCHY_GUID,
                 FOLDER_HIERARCHY, null, null,0, false, false,
-                0, invalidParameterHandler.getMaxPagingSize(), new Date(), method);
+                0, invalidParameterHandler.getMaxPagingSize(), clockService.getNow(), method);
 
         if (CollectionUtils.isEmpty(parentFolderRelationships)) {
             return;
@@ -919,7 +926,7 @@ public class AssetCatalogHandler {
         EntityDetail host = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(), GUID_PARAMETER,
                 entityDetail.getType().getTypeDefName(), SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_GUID,
                 SOFTWARE_SERVER_PLATFORM_DEPLOYMENT, null, false, false,
-                new Date(), method);
+                clockService.getNow(), method);
         if (host != null) {
             assetCatalogConverter.addElement(assetCatalogItemElement, host);
             getContextForHost(userId, host, assetCatalogItemElement);
@@ -977,7 +984,7 @@ public class AssetCatalogHandler {
 
         EntityDetail operatingPlatform = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(), GUID_PARAMETER,
                 entityDetail.getType().getTypeDefName(), HOST_OPERATING_PLATFORM_GUID, HOST_OPERATING_PLATFORM,
-                null, false, false, new Date(), method);
+                null, false, false, clockService.getNow(), method);
         assetCatalogConverter.addElement(assetCatalogItemElement, operatingPlatform);
 
         processLocations(userId, entityDetail, assetCatalogItemElement, method);
@@ -1027,7 +1034,7 @@ public class AssetCatalogHandler {
 
         EntityDetail softwareServerPlatform = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(),
                 GUID_PARAMETER, SOFTWARE_SERVER, SOFTWARE_SERVER_DEPLOYMENT_GUID, SOFTWARE_SERVER_DEPLOYMENT,
-                null, false, false, new Date(), method);
+                null, false, false, clockService.getNow(), method);
         if (softwareServerPlatform != null) {
             parentElement = assetCatalogConverter.getLastNode(assetCatalogItemElement);
             assetCatalogConverter.addElement(assetCatalogItemElement, softwareServerPlatform);
@@ -1036,7 +1043,7 @@ public class AssetCatalogHandler {
 
         EntityDetail endpoint = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(),
                 GUID_PARAMETER, SOFTWARE_SERVER, SERVER_ENDPOINT_GUID, SERVER_ENDPOINT,
-                null, false, false, new Date(), method);
+                null, false, false, clockService.getNow(), method);
         if (endpoint != null) {
             if (parentElement != null) {
                 assetCatalogConverter.addChildElement(parentElement, assetCatalogConverter.buildAssetElements(endpoint));
@@ -1068,14 +1075,14 @@ public class AssetCatalogHandler {
             List<EntityDetail> elements = new ArrayList<>();
             EntityDetail connectorType = assetHandler.getAttachedEntity(userId, connection.getGUID(),
                     GUID_PARAMETER, CONNECTION, CONNECTION_CONNECTOR_TYPE_GUID, CONNECTION_CONNECTOR_TYPE,
-                    null, false, false, new Date(), methodName);
+                    null, false, false, clockService.getNow(), methodName);
             if (connectorType != null) {
                 elements.add(connectorType);
             }
 
             EntityDetail asset = assetHandler.getAttachedEntity(userId, connection.getGUID(),
                     GUID_PARAMETER, CONNECTION, CONNECTION_TO_ASSET_GUID, CONNECTION_TO_ASSET,
-                    null, false, false, new Date(), methodName);
+                    null, false, false, clockService.getNow(), methodName);
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                     GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(asset.getClassifications()),
@@ -1201,7 +1208,7 @@ public class AssetCatalogHandler {
 
         EntityDetail dataSet = assetHandler.getAttachedEntity(userId, entity.getGUID(),
                 GUID_PARAMETER, entity.getType().getTypeDefName(), ASSET_SCHEMA_TYPE_GUID, ASSET_SCHEMA_TYPE,
-                null, false, false, new Date(), methodName);
+                null, false, false, clockService.getNow(), methodName);
         if (dataSet == null) {
             return;
         }
@@ -1238,8 +1245,8 @@ public class AssetCatalogHandler {
         String methodName = "getAsset";
         List<Relationship> assetToDataSetRelationships = assetHandler.getAttachmentLinks(userId, dataSet.getGUID(),
                 GUID_PARAMETER, dataSet.getType().getTypeDefName(), DATA_CONTENT_FOR_DATA_SET_GUID,
-                DATA_CONTENT_FOR_DATA_SET, null, null, 1, false, false,0,
-                invalidParameterHandler.getMaxPagingSize(), new Date(), methodName);
+                DATA_CONTENT_FOR_DATA_SET, null, null, 1, false,
+                false,0, invalidParameterHandler.getMaxPagingSize(), clockService.getNow(), methodName);
 
         if (CollectionUtils.isEmpty(assetToDataSetRelationships)) {
             return;
@@ -1345,7 +1352,7 @@ public class AssetCatalogHandler {
                 SEARCH_STRING_PARAMETER_NAME, entityTypeGUID, entityTypeName, Collections.singletonList(propertyName),
                 searchParameters.getExactMatch(), null, null, false,
                 false, supportedZones, sequencingOrder.getName(),searchParameters.getFrom(),
-                searchParameters.getPageSize(), null, methodName);
+                searchParameters.getPageSize(), clockService.getNow(), methodName);
 
         if (CollectionUtils.isNotEmpty(entitiesByPropertyValue)) {
             return entitiesByPropertyValue;
@@ -1361,7 +1368,7 @@ public class AssetCatalogHandler {
 
         List<EntityDetail> entitiesByPropertyValue = assetHandler.getEntitiesByType(userId, entityTypeGUID,
                 entityTypeName, null,false,false, 0,
-                20, new Date(), methodName);
+                20, clockService.getNow(), methodName);
 
         if (CollectionUtils.isNotEmpty(entitiesByPropertyValue)) {
             return entitiesByPropertyValue;
