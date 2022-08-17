@@ -1204,6 +1204,106 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+
+    /**
+     * Page through the list of consumers for a valid value.
+     *
+     * @param userId                  calling user
+     * @param validValueGUID          unique identifier of valid value to query
+     * @param validValueGUIDParameter parameter name for validValueGUID
+     * @param startFrom               paging starting point
+     * @param pageSize                maximum number of return values.
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName              calling method
+     * @return list of valid value consumer beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<B> getValidValueConsumers(String       userId,
+                                          String       validValueGUID,
+                                          String       validValueGUIDParameter,
+                                          int          startFrom,
+                                          int          pageSize,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        return this.getAttachedElements(userId,
+                                        validValueGUID,
+                                        validValueGUIDParameter,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+
+
+    /**
+     * Page through the list of referenceables that have this valid value as a reference value.
+     *
+     * @param userId         calling user
+     * @param validValueGUID unique identifier of valid value to query
+     * @param validValueGUIDParameter name of parameter that provides the validValueGUID value
+     * @param startFrom      paging starting point
+     * @param pageSize       maximum number of return values
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName     calling method
+     * @return list of referenceable beans
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to make this request
+     * @throws PropertyServerException    the repository is not available or not working properly
+     */
+    public List<B> getReferenceValueAssignees(String       userId,
+                                              String       validValueGUID,
+                                              String       validValueGUIDParameter,
+                                              int          startFrom,
+                                              int          pageSize,
+                                              boolean      forLineage,
+                                              boolean      forDuplicateProcessing,
+                                              Date         effectiveTime,
+                                              String       methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        return this.getAttachedElements(userId,
+                                        validValueGUID,
+                                        validValueGUIDParameter,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
     /**
      * Add a more information to element.
      *

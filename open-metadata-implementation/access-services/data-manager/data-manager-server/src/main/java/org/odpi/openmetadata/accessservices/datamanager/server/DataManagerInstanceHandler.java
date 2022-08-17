@@ -599,18 +599,11 @@ class DataManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    ValidValuesHandler<ValidValueSetElement,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean,
-                              OpenMetadataAPIDummyBean> getValidValuesHandler(String userId,
-                                                                              String serverName,
-                                                                              String serviceOperationName) throws InvalidParameterException,
-                                                                                                                  UserNotAuthorizedException,
-                                                                                                                  PropertyServerException
+    ValidValuesHandler<ValidValueSetElement> getValidValuesHandler(String userId,
+                                                                   String serverName,
+                                                                   String serviceOperationName) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         DataManagerServicesInstance instance = (DataManagerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                            serverName,

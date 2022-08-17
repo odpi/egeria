@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.client;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.api.ManageValidValues;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.api.ManageReferenceData;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ValidValuesManager provides the API operations to create and maintain lists of valid
+ * ReferenceDataManager provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
-public class ValidValuesManager extends DigitalArchitectureClientBase implements ManageValidValues
+public class ReferenceDataManager extends DigitalArchitectureClientBase implements ManageReferenceData
 {
     /**
      * Create a new client with no authentication embedded in the HTTP request and an audit log.
@@ -38,9 +38,9 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public ValidValuesManager(String   serverName,
-                              String   serverPlatformURLRoot,
-                              AuditLog auditLog) throws InvalidParameterException
+    public ReferenceDataManager(String   serverName,
+                                String   serverPlatformURLRoot,
+                                AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -54,8 +54,8 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public ValidValuesManager(String serverName,
-                              String serverPlatformURLRoot) throws InvalidParameterException
+    public ReferenceDataManager(String serverName,
+                                String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -75,11 +75,11 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public ValidValuesManager(String   serverName,
-                              String   serverPlatformURLRoot,
-                              String   userId,
-                              String   password,
-                              AuditLog auditLog) throws InvalidParameterException
+    public ReferenceDataManager(String   serverName,
+                                String   serverPlatformURLRoot,
+                                String   userId,
+                                String   password,
+                                AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -96,10 +96,10 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public ValidValuesManager(String serverName,
-                              String serverPlatformURLRoot,
-                              String userId,
-                              String password) throws InvalidParameterException
+    public ReferenceDataManager(String serverName,
+                                String serverPlatformURLRoot,
+                                String userId,
+                                String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -116,11 +116,11 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public ValidValuesManager(String                        serverName,
-                              String                        serverPlatformURLRoot,
-                              DigitalArchitectureRESTClient restClient,
-                              int                           maxPageSize,
-                              AuditLog                      auditLog) throws InvalidParameterException
+    public ReferenceDataManager(String                        serverName,
+                                String                        serverPlatformURLRoot,
+                                DigitalArchitectureRESTClient restClient,
+                                int                           maxPageSize,
+                                AuditLog                      auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, restClient, maxPageSize, auditLog);
     }
@@ -128,7 +128,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
 
     /*
      * ==============================================
-     * ManageValidValues
+     * ManageReferenceData
      * ==============================================
      */
 
@@ -448,7 +448,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
 
 
     /**
-     * Link a valid value to an asset that provides the implementation.  Typically this method is
+     * Link a valid value to an asset that provides the implementation.  Typically, this method is
      * used to link a valid value set to a code table.
      *
      * @param userId calling user.

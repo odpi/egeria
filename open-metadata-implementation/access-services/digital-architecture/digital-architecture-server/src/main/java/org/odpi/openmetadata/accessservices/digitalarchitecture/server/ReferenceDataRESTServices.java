@@ -10,7 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceDataHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -20,32 +20,32 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ValidValuesRESTServices provides the API operations to create and maintain lists of valid
+ * ReferenceDataRESTServices provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
-public class ValidValuesRESTServices
+public class ReferenceDataRESTServices
 {
     private static final DigitalArchitectureInstanceHandler   instanceHandler     = new DigitalArchitectureInstanceHandler();
     private static final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ReferenceDataRESTServices.class),
                                                                             instanceHandler.getServiceName());
 
 
     /**
      * Default constructor
      */
-    public ValidValuesRESTServices()
+    public ReferenceDataRESTServices()
     {
     }
 
 
     /*
      * ==============================================
-     * ManageValidValues
+     * ManageReferenceData
      * ==============================================
      */
 
@@ -79,14 +79,14 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueElement,
+                ReferenceDataHandler<ValidValueElement,
                         ValidValueAssignmentConsumerElement,
                         ValidValueAssignmentDefinitionElement,
                         ValidValueImplAssetElement,
                         ValidValueImplDefinitionElement,
                         ValidValueMappingElement,
                         ReferenceValueAssignmentDefinitionElement,
-                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createValidValueSet(userId,
                                                              null,
@@ -152,14 +152,14 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueElement,
+                ReferenceDataHandler<ValidValueElement,
                         ValidValueAssignmentConsumerElement,
                         ValidValueAssignmentDefinitionElement,
                         ValidValueImplAssetElement,
                         ValidValueImplDefinitionElement,
                         ValidValueMappingElement,
                         ReferenceValueAssignmentDefinitionElement,
-                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createValidValueDefinition(userId,
                                                                     null,
@@ -230,14 +230,14 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueElement,
+                ReferenceDataHandler<ValidValueElement,
                         ValidValueAssignmentConsumerElement,
                         ValidValueAssignmentDefinitionElement,
                         ValidValueImplAssetElement,
                         ValidValueImplDefinitionElement,
                         ValidValueMappingElement,
                         ReferenceValueAssignmentDefinitionElement,
-                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
                 handler.updateValidValue(userId,
                                          null,
@@ -306,14 +306,14 @@ public class ValidValuesRESTServices
 
             if (qualifiedName != null)
             {
-                ValidValuesHandler<ValidValueElement,
+                ReferenceDataHandler<ValidValueElement,
                         ValidValueAssignmentConsumerElement,
                         ValidValueAssignmentDefinitionElement,
                         ValidValueImplAssetElement,
                         ValidValueImplDefinitionElement,
                         ValidValueMappingElement,
                         ReferenceValueAssignmentDefinitionElement,
-                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
                 handler.deleteValidValue(userId,
                                          null,
@@ -375,14 +375,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.attachValidValueToSet(userId,
                                           null,
@@ -439,14 +439,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.detachValidValueFromSet(userId,
                                             null,
@@ -510,14 +510,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.linkValidValueToImplementation(userId,
                                                    null,
@@ -628,14 +628,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.unlinkValidValueFromImplementation(userId,
                                                        null,
@@ -747,14 +747,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.assignValidValueToConsumer(userId,
                                                null,
@@ -811,14 +811,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.unassignValidValueFromConsumer(userId,
                                                    null,
@@ -886,14 +886,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.assignReferenceValueToItem(userId,
                                                null,
@@ -954,14 +954,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.unassignReferenceValueFromItem(userId,
                                                    null,
@@ -1030,14 +1030,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.mapValidValues(userId,
                                    null,
@@ -1099,14 +1099,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             handler.unmapValidValues(userId,
                                      null,
@@ -1155,14 +1155,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             ValidValueElement validValue = handler.getValidValueByGUID(userId,
                                                                        validValueGUID,
@@ -1217,14 +1217,14 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueElement,
+                ReferenceDataHandler<ValidValueElement,
                         ValidValueAssignmentConsumerElement,
                         ValidValueAssignmentDefinitionElement,
                         ValidValueImplAssetElement,
                         ValidValueImplDefinitionElement,
                         ValidValueMappingElement,
                         ReferenceValueAssignmentDefinitionElement,
-                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
                 List<ValidValueElement>  validValues = handler.getValidValueByName(userId,
                                                                                    requestBody.getName(),
@@ -1283,14 +1283,14 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueElement,
+                ReferenceDataHandler<ValidValueElement,
                         ValidValueAssignmentConsumerElement,
                         ValidValueAssignmentDefinitionElement,
                         ValidValueImplAssetElement,
                         ValidValueImplDefinitionElement,
                         ValidValueMappingElement,
                         ReferenceValueAssignmentDefinitionElement,
-                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
                 List<ValidValueElement>  validValues = handler.findValidValues(userId,
                                                                                requestBody.getSearchString(),
@@ -1346,14 +1346,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             List<ValidValueElement>  validValues = handler.getValidValueSetMembers(userId,
                                                                                    validValueSetGUID,
@@ -1408,14 +1408,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             List<ValidValueElement>  validValues = handler.getSetsForValidValue(userId,
                                                                                 validValueGUID,
@@ -1470,14 +1470,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             List<ValidValueAssignmentConsumerElement>  validValueConsumers = handler.getValidValuesAssignmentConsumers(userId,
                                                                                                                        validValueGUID,
@@ -1537,14 +1537,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             List<ValidValueAssignmentDefinitionElement>  validValueAssignmentDefinitions = handler.getValidValuesAssignmentDefinition(userId,
                                                                                                                                       referenceableGUID,
@@ -1600,14 +1600,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> validValuesHandler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> validValuesHandler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             List<ValidValueImplAssetElement> validValueImplAssetElements = validValuesHandler.getValidValuesImplementationAssets(userId,
                                                                                                                                   validValueGUID,
@@ -1665,14 +1665,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> validValuesHandler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> validValuesHandler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             List<ValidValueImplDefinitionElement>  definitions =
                     validValuesHandler.getValidValuesImplementationDefinitions(userId,
@@ -1731,14 +1731,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             List<ValidValueMappingElement>  validValuesMappings = handler.getValidValueMappings(userId,
                                                                                                 validValueGUID,
@@ -1797,14 +1797,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             ValidValueElement  validValueElement = handler.getValidValueByGUID(userId,
                                                                                validValueGUID,
@@ -1899,14 +1899,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             List<ReferenceValueAssignmentItemElement>  assignedItems = handler.getReferenceValueAssignedItems(userId,
                                                                                                               validValueGUID,
@@ -1966,14 +1966,14 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler<ValidValueElement,
+            ReferenceDataHandler<ValidValueElement,
                     ValidValueAssignmentConsumerElement,
                     ValidValueAssignmentDefinitionElement,
                     ValidValueImplAssetElement,
                     ValidValueImplDefinitionElement,
                     ValidValueMappingElement,
                     ReferenceValueAssignmentDefinitionElement,
-                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getReferenceDataHandler(userId, serverName, methodName);
 
             List<ReferenceValueAssignmentDefinitionElement>  referenceValueAssignments = handler.getReferenceValueAssignments(userId,
                                                                                                                               referenceableGUID,

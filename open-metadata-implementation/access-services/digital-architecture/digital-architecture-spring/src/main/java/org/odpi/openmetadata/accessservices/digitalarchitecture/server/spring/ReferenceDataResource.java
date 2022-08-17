@@ -7,13 +7,13 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.server.ValidValuesRESTServices;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.server.ReferenceDataRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 
 /**
- * ValidValuesResource provides the API operations to create and maintain lists of valid
+ * ReferenceDataResource provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
@@ -28,15 +28,15 @@ import org.springframework.web.bind.annotation.*;
         externalDocs=@ExternalDocumentation(description="Digital Architecture Open Metadata Access Service (OMAS)",
                 url="https://egeria-project.org/services/omas/digital-architecture/overview/"))
 
-public class ValidValuesResource
+public class ReferenceDataResource
 {
-    private ValidValuesRESTServices restAPI = new ValidValuesRESTServices();
+    private ReferenceDataRESTServices restAPI = new ReferenceDataRESTServices();
 
 
     /**
      * Default constructor
      */
-    public ValidValuesResource()
+    public ReferenceDataResource()
     {
     }
 
