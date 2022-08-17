@@ -706,9 +706,12 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 request = new HttpEntity<>(requestBody);
             }
             else {
-                if (requestBody != null) {
+                if (requestBody != null)
+                {
                     request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
-                } else {
+                }
+                else
+                {
                     log.warn("Poorly formed POST call made by " + methodName);
                     request = new HttpEntity<>(basicAuthorizationHeader);
                 }
