@@ -45,6 +45,16 @@
             <artifactId>swagger-annotations</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>project-management-api</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

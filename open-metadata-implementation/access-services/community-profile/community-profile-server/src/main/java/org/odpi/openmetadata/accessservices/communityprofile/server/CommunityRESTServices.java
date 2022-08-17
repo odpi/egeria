@@ -291,12 +291,12 @@ public class CommunityRESTServices
 
 
     /**
-     * Create a relationship between a community and a connector type.
+     * Create a relationship between a community and a person role.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param communityGUID unique identifier of the community in the external data manager
-     * @param communityRoleGUID unique identifier of the connector type in the external data manager
+     * @param communityRoleGUID unique identifier of the person role in the external data manager
      * @param requestBody relationship properties
      *
      * @return void or
@@ -392,12 +392,12 @@ public class CommunityRESTServices
 
 
     /**
-     * Remove a relationship between a community and a connector type.
+     * Remove a relationship between a community and a role.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param communityGUID unique identifier of the community in the external data manager
-     * @param communityRoleGUID unique identifier of the connector type in the external data manager
+     * @param communityRoleGUID unique identifier of the role in the external data manager
      * @param requestBody external source identifiers
      *
      * @return void or

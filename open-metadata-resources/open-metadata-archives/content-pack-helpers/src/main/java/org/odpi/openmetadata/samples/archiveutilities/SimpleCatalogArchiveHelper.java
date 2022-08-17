@@ -1403,6 +1403,69 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+
+    /**
+     * Add a new person role.
+     *
+     * @param suppliedTypeName type name to use for the person role
+     * @param qualifiedName qualified name of role
+     * @param domainIdentifier identifier of governance domain
+     * @param identifier unique code
+     * @param name display name
+     * @param description description (eg job description)
+     * @param scope scope of role's responsibilities
+     * @param setHeadCount should the headcount field be set?
+     * @param headCount number of people that may be appointed to the role (default = 1)
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @return unique identifier of the new profile
+     */
+    public  String addGovernanceRole(String              suppliedTypeName,
+                                     String              qualifiedName,
+                                     int                 domainIdentifier,
+                                     String              identifier,
+                                     String              name,
+                                     String              description,
+                                     String              scope,
+                                     boolean             setHeadCount,
+                                     int                 headCount,
+                                     Map<String, String> additionalProperties,
+                                     Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addPersonRole";
+
+        String typeName = suppliedTypeName;
+
+        if (typeName == null)
+        {
+            typeName = PERSON_ROLE_TYPE_NAME;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IDENTIFIER_PROPERTY, identifier, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, DOMAIN_IDENTIFIER_PROPERTY, domainIdentifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SCOPE_PROPERTY, scope, methodName);
+        if (setHeadCount)
+        {
+            properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, HEAD_COUNT_PROPERTY, headCount, methodName);
+        }
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail role = archiveHelper.getEntityDetail(typeName,
+                                                          idToGUIDMap.getGUID(qualifiedName),
+                                                          properties,
+                                                          InstanceStatus.ACTIVE,
+                                                          null);
+
+        archiveBuilder.addEntity(role);
+
+        return role.getGUID();
+    }
+
+
     /**
      * Link a person profile to a person role.
      *

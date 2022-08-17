@@ -15,7 +15,7 @@ import static java.lang.System.exit;
 
 
 /**
- * CommunityProfileOMASFVTSuite provides the main program for the CommunityProperties Profile OMAS
+ * CommunityProfileOMASFVTSuite provides the main program for the ProjectProperties Profile OMAS
  * Functional Verification Tests (FVTs).  It is used when running the test suite standalone
  * (ie outside the failsafe test framework).
  */

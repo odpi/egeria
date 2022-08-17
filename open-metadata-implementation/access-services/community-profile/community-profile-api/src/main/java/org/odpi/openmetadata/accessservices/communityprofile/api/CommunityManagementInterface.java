@@ -5,17 +5,13 @@ package org.odpi.openmetadata.accessservices.communityprofile.api;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CommunityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityMembershipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityMembershipType;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceListProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The CommunityManagementInterface provides methods for managing communities, their membership and content.

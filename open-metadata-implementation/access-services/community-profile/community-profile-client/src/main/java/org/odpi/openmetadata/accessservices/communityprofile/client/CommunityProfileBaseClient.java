@@ -530,7 +530,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
 
 
     /**
-     * Remove a relationship.
+     * Retrieve a relationship.
      *
      * @param userId   calling user
      * @param startingElementGUID   unique identifier of the primary element
@@ -540,6 +540,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param pageSize   maximum number of elements to return.
      * @param methodName    calling method
      *
+     * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -702,6 +703,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
+     * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -731,6 +733,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
+     * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -843,6 +846,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
+     * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -872,6 +876,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
+     * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -977,6 +982,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
+     * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1006,6 +1012,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
+     * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1111,6 +1118,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
+     * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1140,6 +1148,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
+     * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
