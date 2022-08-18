@@ -233,11 +233,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling {} with URL template {} and parameters {}.",
-                    methodName,
-                    urlTemplate,
-                    Arrays.toString(params)
-            );
+            if(log.isDebugEnabled()) 
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             T  responseObject;
 
@@ -405,11 +409,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling {} with URL template {} and parameters {}.",
-                    methodName,
-                    urlTemplate,
-                    Arrays.toString(params)
-            );
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
             T  responseObject;
 
             if (basicAuthorizationHeader == null)
@@ -494,11 +502,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling {} with URL template {} and parameters {}.",
-                    methodName,
-                    urlTemplate,
-                    Arrays.toString(params)
-            );
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             HttpEntity<?> request = new HttpEntity<>(requestBody);
 
@@ -660,11 +672,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling {} with URL template {} and parameters {}.",
-                    methodName,
-                    urlTemplate,
-                    Arrays.toString(params)
-                    );
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             // requestBody may be null
             HttpEntity<?> request = new HttpEntity<>(requestBody) ;
@@ -729,11 +745,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling {} with URL template {} and parameters {}.",
-                    methodName,
-                    urlTemplate,
-                    Arrays.toString(params)
-                    );
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             T responseObject;
 
@@ -814,11 +834,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling {} with URL template {} and parameters {}.",
-                    methodName,
-                    urlTemplate,
-                    Arrays.toString(params)
-                    );
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             T responseObject;
 
@@ -894,11 +918,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling {} with URL template {} and parameters {}.",
-                    methodName,
-                    urlTemplate,
-                    Arrays.toString(params)
-                    );
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             // requestBody may be null
             HttpEntity<?> request = new HttpEntity<>(requestBody);
@@ -962,11 +990,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                   Object... params) throws RESTServerException
     {
         try {
-            log.debug("Calling {} with URL template {} and parameters {}.",
-                    methodName,
-                    urlTemplate,
-                    Arrays.toString(params)
-                    );
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             HttpEntity<?> request = new HttpEntity<>(requestBody);
 
