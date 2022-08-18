@@ -37,6 +37,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
                 @JsonSubTypes.Type(value = ResourceProperties.class, name = "ResourceProperties"),
                 @JsonSubTypes.Type(value = UserIdentityProperties.class, name = "UserIdentityProperties"),
+                @JsonSubTypes.Type(value = ValidValueProperties.class, name = "ValidValueProperties"),
         })
 public class ReferenceableProperties implements Serializable
 {

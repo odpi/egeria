@@ -566,7 +566,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
                                                                                              Integer.toString(startFrom),
                                                                                              Integer.toString(pageSize));
 
-        return restResult.getElements();
+        return restResult.getElementList();
     }
 
 

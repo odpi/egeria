@@ -164,6 +164,7 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         update0010BaseModel();
+        add0022Translations();
         update0025Locations();
         update0110ActorProfile();
         update0130Projects();
@@ -258,6 +259,135 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0022Translations()
+    {
+        this.archiveBuilder.addEntityDef(getTranslationDetailEntity());
+        this.archiveBuilder.addRelationshipDef(getTranslationLinkRelationship());
+    }
+
+
+    private RelationshipDef getTranslationLinkRelationship()
+    {
+        final String guid            = "576228af-33ec-4588-ba4e-6a864a097e10";
+        final String name            = "TranslationLink";
+        final String description     = "Links an entity to a collection of translated properties.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "OpenMetadataRoot";
+        final String                     end1AttributeName            = "translates";
+        final String                     end1AttributeDescription     = "Entity that is translated.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "TranslationDetail";
+        final String                     end2AttributeName            = "translation";
+        final String                     end2AttributeDescription     = "Translation of entity for a single language.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    private EntityDef getTranslationDetailEntity()
+    {
+        final String guid            = "d7df0579-8671-48f0-a8aa-38a487d418c8";
+        final String name            = "TranslationDetail";
+        final String description     = "A collection of translated properties.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "OpenMetadataRoot";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "language";
+        final String attribute1Description     = "Language for the translation.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "locale";
+        final String attribute2Description     = "Locale for the translation.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "displayName";
+        final String attribute3Description     = "Translation of the name or displayName property.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "description";
+        final String attribute4Description     = "Translation of the description property.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "additionalTranslations";
+        final String attribute5Description     = "Translations of other string properties found in the linked entity.";
+        final String attribute5DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute5Name,
+                                                                attribute5Description,
+                                                                attribute5DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 

@@ -598,8 +598,7 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Retrieve the list of community metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
+     * Retrieve the list of community metadata elements.
      *
      * @param userId calling user
      * @param startFrom paging start point

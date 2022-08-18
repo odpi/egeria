@@ -12,7 +12,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -227,12 +226,13 @@ public class ValidValuesRESTServices
                                          requestBody.getDescription(),
                                          requestBody.getUsage(),
                                          requestBody.getScope(),
-                                         requestBody.getPreferredValue(),
                                          false,
+                                         requestBody.getPreferredValue(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
                                          null,
                                          null,
+                                         true,
                                          false,
                                          false,
                                          new Date(),

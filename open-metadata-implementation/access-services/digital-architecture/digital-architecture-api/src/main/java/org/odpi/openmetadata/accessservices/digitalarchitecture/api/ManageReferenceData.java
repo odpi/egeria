@@ -106,6 +106,7 @@ public interface ManageReferenceData
      * @param preferredValue the value that should be used in an implementation if possible.
      * @param isDeprecated is this value deprecated?
      * @param additionalProperties additional properties for this valid value.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param typeName name of subtype of the definition (or null to use the standard open type)
      * @param extendedProperties properties that need to be populated into a subtype.
      *
@@ -123,6 +124,7 @@ public interface ManageReferenceData
                              String              preferredValue,
                              boolean             isDeprecated,
                              Map<String, String> additionalProperties,
+                             boolean             isMergeUpdate,
                              String              typeName,
                              Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,

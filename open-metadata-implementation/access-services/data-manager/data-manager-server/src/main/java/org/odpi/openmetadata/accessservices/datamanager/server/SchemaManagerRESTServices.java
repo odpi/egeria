@@ -339,7 +339,7 @@ public class SchemaManagerRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueSetElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueSetElement> handler = instanceHandler.getValidValuesSetHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getValidValueByName(userId,
                                                                     requestBody.getName(),
@@ -402,7 +402,7 @@ public class SchemaManagerRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueSetElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueSetElement> handler = instanceHandler.getValidValuesSetHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.findValidValues(userId,
                                                                 requestBody.getSearchString(),

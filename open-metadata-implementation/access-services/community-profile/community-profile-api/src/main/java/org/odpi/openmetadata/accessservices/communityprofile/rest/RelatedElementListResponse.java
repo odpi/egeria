@@ -25,7 +25,7 @@ public class RelatedElementListResponse extends CommunityProfileOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<RelatedElement> elements = null;
+    private List<RelatedElement> elementList = null;
 
 
     /**
@@ -47,7 +47,7 @@ public class RelatedElementListResponse extends CommunityProfileOMASAPIResponse
 
         if (template != null)
         {
-            elements = template.getElements();
+            elementList = template.getElementList();
         }
     }
 
@@ -57,19 +57,19 @@ public class RelatedElementListResponse extends CommunityProfileOMASAPIResponse
      *
      * @return result object
      */
-    public List<RelatedElement> getElements()
+    public List<RelatedElement> getElementList()
     {
-        if (elements == null)
+        if (elementList == null)
         {
             return null;
         }
-        else if (elements.isEmpty())
+        else if (elementList.isEmpty())
         {
             return null;
         }
         else
         {
-            return elements;
+            return elementList;
         }
     }
 
@@ -79,9 +79,9 @@ public class RelatedElementListResponse extends CommunityProfileOMASAPIResponse
      *
      * @param elements result object
      */
-    public void setElements(List<RelatedElement> elements)
+    public void setElementList(List<RelatedElement> elements)
     {
-        this.elements = elements;
+        this.elementList = elements;
     }
 
 
@@ -94,7 +94,7 @@ public class RelatedElementListResponse extends CommunityProfileOMASAPIResponse
     public String toString()
     {
         return "RelatedElementListResponse{" +
-                "element=" + elements +
+                "element=" + elementList +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -131,7 +131,7 @@ public class RelatedElementListResponse extends CommunityProfileOMASAPIResponse
             return false;
         }
         RelatedElementListResponse that = (RelatedElementListResponse) objectToCompare;
-        return Objects.equals(elements, that.elements);
+        return Objects.equals(elementList, that.elementList);
     }
 
 
@@ -143,6 +143,6 @@ public class RelatedElementListResponse extends CommunityProfileOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elements);
+        return Objects.hash(super.hashCode(), elementList);
     }
 }

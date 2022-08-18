@@ -36,6 +36,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
     private final ContactDetailsHandler<ContactMethodElement>            contactDetailsHandler;
     private final LocationHandler<LocationElement>                       locationHandler;
     private final GovernanceDefinitionHandler<SecurityGroupElement>      securityGroupHandler;
+    private final ValidValuesHandler<ValidValueElement>                  validValuesHandler;
 
     private final CommentHandler<CommentElement>         commentHandler;
     private final InformalTagHandler<InformalTagElement> informalTagHandler;
@@ -201,18 +202,18 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                          auditLog);
 
             this.securityGroupHandler = new GovernanceDefinitionHandler<>(new SecurityGroupConverter<>(repositoryHelper, serviceName, serverName),
-                                                                          SecurityGroupElement.class,
-                                                                          serviceName,
-                                                                          serverName,
-                                                                          invalidParameterHandler,
-                                                                          repositoryHandler,
-                                                                          repositoryHelper,
-                                                                          localServerUserId,
-                                                                          securityVerifier,
-                                                                          supportedZones,
-                                                                          defaultZones,
-                                                                          publishZones,
-                                                                          auditLog);
+                                                                        SecurityGroupElement.class,
+                                                                        serviceName,
+                                                                        serverName,
+                                                                        invalidParameterHandler,
+                                                                        repositoryHandler,
+                                                                        repositoryHelper,
+                                                                        localServerUserId,
+                                                                        securityVerifier,
+                                                                        supportedZones,
+                                                                        defaultZones,
+                                                                        publishZones,
+                                                                        auditLog);
 
             this.contactDetailsHandler = new ContactDetailsHandler<>(new ContactMethodConverter<>(repositoryHelper, serviceName, serverName),
                                                                      ContactMethodElement.class,
@@ -298,6 +299,20 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                      defaultZones,
                                                      publishZones,
                                                      auditLog);
+
+            this.validValuesHandler = new ValidValuesHandler<>(new ValidValueConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ValidValueElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
         }
         else
         {
@@ -548,4 +563,21 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
         return ratingHandler;
     }
+
+
+    /**
+     * Return the handler for valid value requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ValidValuesHandler<ValidValueElement> getValidValuesHandler() throws PropertyServerException
+    {
+        final String methodName = "getValidValuesHandler";
+
+        validateActiveRepository(methodName);
+
+        return validValuesHandler;
+    }
+
 }

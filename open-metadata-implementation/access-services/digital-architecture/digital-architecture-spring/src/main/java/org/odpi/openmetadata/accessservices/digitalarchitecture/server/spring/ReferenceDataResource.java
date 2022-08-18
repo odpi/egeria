@@ -100,6 +100,7 @@ public class ReferenceDataResource
      * @param serverName name of calling server
      * @param userId calling user.
      * @param validValueGUID unique identifier of the valid value.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param requestBody parameters to update.
      *
      * @return void or
@@ -112,9 +113,11 @@ public class ReferenceDataResource
     public VoidResponse    updateValidValue(@PathVariable String               serverName,
                                             @PathVariable String               userId,
                                             @PathVariable String               validValueGUID,
+                                            @RequestParam(required = false, defaultValue = "true")
+                                                          boolean              isMergeUpdate,
                                             @RequestBody  ValidValueProperties requestBody)
     {
-        return restAPI.updateValidValue(serverName, userId, validValueGUID, requestBody);
+        return restAPI.updateValidValue(serverName, userId, validValueGUID, isMergeUpdate, requestBody);
     }
 
 

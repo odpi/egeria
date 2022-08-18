@@ -62,7 +62,7 @@ public class CreateValidValuesSetTest
 
 
     /**
-     * Run all of the defined tests and capture the results.
+     * Run all the defined tests and capture the results.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -91,7 +91,7 @@ public class CreateValidValuesSetTest
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server
@@ -107,11 +107,11 @@ public class CreateValidValuesSetTest
         CreateValidValuesSetTest thisTest = new CreateValidValuesSetTest();
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceCode(),
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceDevelopmentStatus(),
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceName(),
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceDescription(),
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceWiki());
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceDevelopmentStatus(),
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceName(),
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceDescription(),
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceWiki());
 
         ReferenceDataManager client         = thisTest.getValidValuesManagerClient(serverName, serverPlatformRootURL, auditLog);
         String               validValuesSet = thisTest.createValidValueSet(client, userId);
@@ -123,7 +123,7 @@ public class CreateValidValuesSetTest
 
 
     /**
-     * Create and return a valid values manager client.
+     * Create and return a valid values' manager client.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -647,6 +647,7 @@ public class CreateValidValuesSetTest
                                     validValue2PreferredValue,
                                     true,
                                     null,
+                                    false,
                                     null,
                                     null);
 
@@ -684,7 +685,7 @@ public class CreateValidValuesSetTest
 
 
             /*
-             * Update value value 2 with valid value 1's qualified name - this should fail
+             * Update valid value 2 with valid value 1's qualified name - this should fail
              */
             try
             {
@@ -698,6 +699,7 @@ public class CreateValidValuesSetTest
                                         validValue2PreferredValue,
                                         true,
                                         null,
+                                        true,
                                         null,
                                         null);
 
@@ -745,7 +747,7 @@ public class CreateValidValuesSetTest
 
 
             /*
-             * Update value value 2 with a new qualified name - this should work ok
+             * Update valid value 2 with a new qualified name - this should work ok
              */
 
             client.updateValidValue(userId,
@@ -758,6 +760,7 @@ public class CreateValidValuesSetTest
                                         validValue2PreferredValue,
                                         true,
                                         null,
+                                        true,
                                         null,
                                         null);
 

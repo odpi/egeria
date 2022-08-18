@@ -228,9 +228,9 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
-     * @param communityGUID unique identifier of the community in the external data manager
+     * @param communityGUID unique identifier of the community
      * @param membershipProperties describes the permissions that the role has in the community
-     * @param personRoleGUID unique identifier of the person role in the external data manager
+     * @param personRoleGUID unique identifier of the person role
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -262,8 +262,8 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
-     * @param communityGUID unique identifier of the community in the external data manager
-     * @param personRoleGUID unique identifier of the person role in the external data manager
+     * @param communityGUID unique identifier of the community
+     * @param personRoleGUID unique identifier of the person role
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request

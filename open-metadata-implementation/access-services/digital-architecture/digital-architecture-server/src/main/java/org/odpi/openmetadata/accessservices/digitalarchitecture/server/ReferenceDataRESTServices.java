@@ -205,6 +205,7 @@ public class ReferenceDataRESTServices
      * @param serverName name of calling server
      * @param userId calling user.
      * @param validValueGUID unique identifier of the valid value.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param requestBody parameters to update.
      *
      * @return void or
@@ -215,6 +216,7 @@ public class ReferenceDataRESTServices
     public VoidResponse    updateValidValue(String               serverName,
                                             String               userId,
                                             String               validValueGUID,
+                                            boolean              isMergeUpdate,
                                             ValidValueProperties requestBody)
     {
         final String   methodName = "updateValidValue";
@@ -248,12 +250,13 @@ public class ReferenceDataRESTServices
                                          requestBody.getDescription(),
                                          requestBody.getUsage(),
                                          requestBody.getScope(),
-                                         requestBody.getPreferredValue(),
                                          requestBody.getIsDeprecated(),
+                                         requestBody.getPreferredValue(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
                                          null,
                                          null,
+                                         isMergeUpdate,
                                          false,
                                          false,
                                          new Date(),

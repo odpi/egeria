@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CommunityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -17,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * CommunityConverter generates an CommunityProperties bean from an CommunityProperties entity.
+ * CommunityConverter generates an CommunityElement bean from an CommunityProperties entity.
  */
 public class CommunityConverter<B> extends CommunityProfileOMASConverter<B>
 {
@@ -128,9 +127,9 @@ public class CommunityConverter<B> extends CommunityProfileOMASConverter<B>
     {
         B returnBean = this.getNewBean(beanClass, entity, methodName);
 
-        if (returnBean instanceof CollectionElement)
+        if (returnBean instanceof CommunityElement)
         {
-            CollectionElement bean = (CollectionElement) returnBean;
+            CommunityElement bean = (CommunityElement) returnBean;
 
             bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
         }

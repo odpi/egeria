@@ -61,7 +61,9 @@ public class DataManagerServicesInstance extends OMASServiceInstance
     private final ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
     private final EndpointHandler<EndpointElement>           endpointHandler;
 
-    private final ValidValuesHandler<ValidValueSetElement>   validValuesHandler;
+    private final ValidValuesHandler<ValidValueSetElement> validValuesSetHandler;
+    private final ReferenceableHandler<RelatedElement>     relatedElementHandler;
+    private final ValidValuesHandler<ValidValueElement>    validValuesHandler;
 
 
     /**
@@ -384,8 +386,22 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                      publishZones,
                                                      auditLog);
 
-        this.validValuesHandler = new ValidValuesHandler<>(new ValidValueSetConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ValidValueSetElement.class,
+        this.validValuesSetHandler = new ValidValuesHandler<>(new ValidValueSetConverter<>(repositoryHelper, serviceName, serverName),
+                                                              ValidValueSetElement.class,
+                                                              serviceName,
+                                                              serverName,
+                                                              invalidParameterHandler,
+                                                              repositoryHandler,
+                                                              repositoryHelper,
+                                                              localServerUserId,
+                                                              securityVerifier,
+                                                              supportedZones,
+                                                              defaultZones,
+                                                              publishZones,
+                                                              auditLog);
+
+        this.validValuesHandler = new ValidValuesHandler<>(new ValidValueConverter<>(repositoryHelper, serviceName, serverName),
+                                                           ValidValueElement.class,
                                                            serviceName,
                                                            serverName,
                                                            invalidParameterHandler,
@@ -397,6 +413,20 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                                            defaultZones,
                                                            publishZones,
                                                            auditLog);
+
+        this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName,serverName),
+                                                                RelatedElement.class,
+                                                                serviceName,
+                                                                serverName,
+                                                                invalidParameterHandler,
+                                                                repositoryHandler,
+                                                                repositoryHelper,
+                                                                localServerUserId,
+                                                                securityVerifier,
+                                                                supportedZones,
+                                                                defaultZones,
+                                                                publishZones,
+                                                                auditLog);
     }
 
 
@@ -702,17 +732,50 @@ public class DataManagerServicesInstance extends OMASServiceInstance
 
 
     /**
+     * Return the handler for managing valid values - used by schema.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ValidValuesHandler<ValidValueSetElement> getValidValuesSetHandler() throws PropertyServerException
+    {
+        final String methodName = "getValidValuesSetHandler";
+
+        validateActiveRepository(methodName);
+
+        return validValuesSetHandler;
+    }
+
+
+    /**
      * Return the handler for managing valid values.
      *
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ValidValuesHandler<ValidValueSetElement> getValidValuesHandler() throws PropertyServerException
+    ValidValuesHandler<ValidValueElement> getValidValuesHandler() throws PropertyServerException
     {
         final String methodName = "getValidValuesHandler";
 
         validateActiveRepository(methodName);
 
         return validValuesHandler;
+    }
+
+
+
+    /**
+     * Return the handler for managing valid values.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelatedElementHandler";
+
+        validateActiveRepository(methodName);
+
+        return relatedElementHandler;
     }
 }
