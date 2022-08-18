@@ -25,12 +25,12 @@ import java.util.List;
  */
 public class ExternalReferenceManager implements ExternalReferencesInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
+    private final String                      serverName;               /* Initialized in constructor */
+    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -138,7 +138,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -164,7 +164,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
 
 
     /**
-     * Create a definition of a external reference.
+     * Create a definition of an external reference.
      *
      * @param userId calling user
      * @param anchorGUID optional element to link the external reference to that will act as an anchor - that is, this external reference
@@ -207,7 +207,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
 
 
     /**
-     * Update the definition of a external reference.
+     * Update the definition of an external reference.
      *
      * @param userId calling user
      * @param externalReferenceGUID unique identifier of external reference
@@ -254,7 +254,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
 
 
     /**
-     * Remove the definition of a external reference.
+     * Remove the definition of an external reference.
      *
      * @param userId calling user
      * @param externalReferenceGUID unique identifier of external reference
@@ -327,7 +327,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
 
 
     /**
-     * Remove the link between a external reference and an element.  If the element is its anchor, the external reference is removed.
+     * Remove the link between an external reference and an element.  If the element is its anchor, the external reference is removed.
      *
      * @param userId the name of the calling user.
      * @param attachedToGUID object linked to external references.

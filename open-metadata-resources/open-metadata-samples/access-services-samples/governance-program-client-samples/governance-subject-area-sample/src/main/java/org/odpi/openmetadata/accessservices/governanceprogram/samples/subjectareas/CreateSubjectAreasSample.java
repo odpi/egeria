@@ -19,11 +19,11 @@ import java.util.Map;
  */
 public class CreateSubjectAreasSample
 {
-    private String  serverName;
-    private String  serverURLRoot;
-    private String  clientUserId;
+    private final String  serverName;
+    private final String  serverURLRoot;
+    private final String  clientUserId;
 
-    private Map<String, String> subjectAreaMap = new HashMap<>();
+    private final Map<String, String> subjectAreaMap = new HashMap<>();
 
     private SubjectAreaManager client = null;
 
@@ -71,17 +71,18 @@ public class CreateSubjectAreasSample
         System.out.println("------------------------------------------------------------------------");
         System.out.println(subjectAreaDefinitionName);
         System.out.println("------------------------------------------------------------------------");
-        System.out.println(" ==> qualifiedName: " + subjectAreaDefinitionName);
-        System.out.println(" ==> displayName:   " + displayName);
-        System.out.println(" ==> description:   " + description);
-        System.out.println(" ==> scope:         " + scope);
-        System.out.println(" ==> usage:         " + usage);
-        System.out.println(" ==> domain:        " + domainIdentifier);
+        System.out.println(" ==> subjectAreaName: " + subjectAreaDefinitionName);
+        System.out.println(" ==> displayName:     " + displayName);
+        System.out.println(" ==> description:     " + description);
+        System.out.println(" ==> scope:           " + scope);
+        System.out.println(" ==> usage:           " + usage);
+        System.out.println(" ==> domain:          " + domainIdentifier);
         System.out.println(" ");
 
         SubjectAreaProperties properties = new SubjectAreaProperties();
 
-        properties.setQualifiedName(subjectAreaDefinitionName);
+        properties.setQualifiedName("SubjectArea:" + subjectAreaDefinitionName);
+        properties.setSubjectAreaName(subjectAreaDefinitionName);
         properties.setDisplayName(displayName);
         properties.setDescription(description);
         properties.setScope(scope);

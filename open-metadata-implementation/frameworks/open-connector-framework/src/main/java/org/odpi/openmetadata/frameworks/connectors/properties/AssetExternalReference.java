@@ -18,7 +18,7 @@ public class AssetExternalReference extends AssetReferenceable
     /**
      * Bean constructor
      *
-     * @param externalReferenceBean bean with all of the properties in it
+     * @param externalReferenceBean bean with all the properties in it
      */
     public AssetExternalReference(ExternalReference    externalReferenceBean)
     {
@@ -39,7 +39,7 @@ public class AssetExternalReference extends AssetReferenceable
      * Bean constructor with parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param externalReferenceBean bean with all of the properties in it
+     * @param externalReferenceBean bean with all the properties in it
      */
     public AssetExternalReference(AssetDescriptor      parentAsset,
                                   ExternalReference    externalReferenceBean)
@@ -81,7 +81,7 @@ public class AssetExternalReference extends AssetReferenceable
     /**
      * Return the bean - used in the cloning process.
      *
-     * @return bean with all of the properties in
+     * @return bean with all the properties in
      */
     protected ExternalReference  getExternalReferenceBean()
     {

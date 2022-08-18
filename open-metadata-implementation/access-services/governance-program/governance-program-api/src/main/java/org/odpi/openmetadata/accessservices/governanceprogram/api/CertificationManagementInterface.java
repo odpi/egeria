@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationTypeElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
@@ -11,7 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -116,7 +114,7 @@ public interface CertificationManagementInterface
 
 
     /**
-     * Retrieve all of the certification types for a particular title.  The title can include regEx wildcards.
+     * Retrieve all the certification types for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
      * @param title identifier of role
@@ -138,7 +136,7 @@ public interface CertificationManagementInterface
 
 
     /**
-     * Retrieve all of the certification type definitions for a specific governance domain.
+     * Retrieve all the certification type definitions for a specific governance domain.
      *
      * @param userId calling user
      * @param domainIdentifier identifier to search for

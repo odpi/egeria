@@ -85,7 +85,7 @@ public class AssetNote extends AssetReferenceable
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return note bean
      */

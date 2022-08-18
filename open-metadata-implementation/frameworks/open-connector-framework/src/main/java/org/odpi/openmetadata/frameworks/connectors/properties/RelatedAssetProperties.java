@@ -16,7 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * The RelatedAssetProperties returns metadata about the asset at three levels of detail:
  * <ul>
  *     <li><b>assetSummary</b> - used for displaying details of the asset in summary lists or hover text</li>
- *     <li><b>assetDetail</b> - used to display all of the information known about the asset with summaries
+ *     <li><b>assetDetail</b> - used to display all the information known about the asset with summaries
  *     of the relationships to other metadata entities</li>
  *     <li><b>assetUniverse</b> - used to define the broader context for the asset</li>
  * </ul>
@@ -105,7 +105,7 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
 
 
     /**
-     * Returns all of the detail of the asset and information connected to it in organized in the assetUniverse
+     * Returns all the detail of the asset and information connected to it in organized in the assetUniverse
      * structure.
      *
      * @return AssetUniverse universe object

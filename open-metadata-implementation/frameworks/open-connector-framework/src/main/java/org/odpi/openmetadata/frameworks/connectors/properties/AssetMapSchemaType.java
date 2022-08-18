@@ -76,7 +76,7 @@ public class AssetMapSchemaType extends AssetSchemaType
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return map element bean
      */

@@ -474,7 +474,7 @@ public class OMAGConformanceSuiteConfigServices
 
 
     /**
-     * Request that all of the conformance suite tests are deactivated in this server.
+     * Request that all the conformance suite tests are deactivated in this server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.

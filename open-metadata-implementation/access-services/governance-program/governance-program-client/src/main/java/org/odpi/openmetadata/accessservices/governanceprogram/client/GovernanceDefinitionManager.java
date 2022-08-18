@@ -22,7 +22,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * that define the motivation, goals and implementation approach for the governance program.
  *
  * Governance drivers document of the business strategy and regulations that provide the motivation behind the governance program. They feed
- * into the governance program's policy making phase ensuring the governance program is focused on activity that delivers value to the organization.
+ * into the governance program's policymaking phase ensuring the governance program is focused on activity that delivers value to the organization.
  * A governance driver could be a governance strategy statement, a business imperative, a regulation or a regulation's article.
  *
  * Governance policies define the goals and best practices for the governance program.  There are three types of governance policies:
@@ -73,12 +73,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  */
 public class GovernanceDefinitionManager implements GovernanceDefinitionsInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
+    private final String                      serverName;               /* Initialized in constructor */
+    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -186,7 +186,7 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers

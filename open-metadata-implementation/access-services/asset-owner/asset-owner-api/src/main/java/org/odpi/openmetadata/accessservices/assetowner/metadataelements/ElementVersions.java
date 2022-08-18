@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * ElementVersions provides the version information for the element plus details of the creation time and last
- * update time.  Finally it lists all of the users that have made changes to this element.
+ * update time.  Finally, it lists all the users that have made changes to this element.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

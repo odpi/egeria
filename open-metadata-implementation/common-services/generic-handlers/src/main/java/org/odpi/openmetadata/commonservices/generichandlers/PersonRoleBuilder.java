@@ -15,21 +15,28 @@ import java.util.Map;
  */
 public class PersonRoleBuilder extends ReferenceableBuilder
 {
-    private String  name              = null;
-    private String  description       = null;
-    private String  scope             = null;
-    private int     headCount         = 1;
-    private boolean headCountLimitSet = false;
+    private String  identifier          = null;
+    private String  name                = null;
+    private String  description         = null;
+    private String  scope               = null;
+    private int     headCount           = 1;
+    private boolean headCountLimitSet   = false;
+    private int     domainIdentifier    = 0; /* only supported on roles that inherit from GovernanceRole. */
+    private boolean domainIdentifierSet = false;
 
 
     /**
      * Create constructor
      *
      * @param qualifiedName unique name for the role
+     * @param identifier unique identifier for the role - typically from external system
      * @param name short display name for the role
      * @param description description of the role
      * @param scope the scope of the role
      * @param headCount number of individuals that can be appointed to this role
+     * @param headCountLimitSet should the headcount attribute be set in the role?
+     * @param domainIdentifier governance domain identifier
+     * @param domainIdentifierSet should the domainIdentifier attribute be set in the role?
      * @param additionalProperties additional properties for a role
      * @param typeGUID unique identifier of this element's type
      * @param typeName unique name of this element's type
@@ -39,11 +46,14 @@ public class PersonRoleBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     PersonRoleBuilder(String               qualifiedName,
+                      String               identifier,
                       String               name,
                       String               description,
                       String               scope,
                       int                  headCount,
                       boolean              headCountLimitSet,
+                      int                  domainIdentifier,
+                      boolean              domainIdentifierSet,
                       Map<String, String>  additionalProperties,
                       String               typeGUID,
                       String               typeName,
@@ -61,27 +71,32 @@ public class PersonRoleBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
+        this.identifier = identifier;
         this.name = name;
         this.description = description;
         this.scope = scope;
         this.headCount = headCount;
         this.headCountLimitSet = headCountLimitSet;
+        this.domainIdentifier = domainIdentifier;
+        this.domainIdentifierSet = domainIdentifierSet;
     }
 
 
     /**
-     * Create constructor
+     * Create constructor for templated roles.
      *
      * @param qualifiedName unique name for the role
+     * @param identifier unique identifier for the role - typically from external system
      * @param name short display name for the role
      * @param description description of the role
      * @param headCount number of individuals that can be appointed to this role
-     * @param headCountLimitSet should the head count property be set?
+     * @param headCountLimitSet should the headcount attribute be set in the role?
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
     PersonRoleBuilder(String               qualifiedName,
+                      String               identifier,
                       String               name,
                       String               description,
                       int                  headCount,
@@ -95,6 +110,7 @@ public class PersonRoleBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
+        this.identifier = identifier;
         this.name = name;
         this.description = description;
         this.headCount = headCount;
@@ -135,6 +151,12 @@ public class PersonRoleBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
+                                                                  OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
+                                                                  identifier,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
                                                                   OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
                                                                   name,
                                                                   methodName);
@@ -158,6 +180,22 @@ public class PersonRoleBuilder extends ReferenceableBuilder
                                                                    OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME,
                                                                    headCount,
                                                                    methodName);
+        }
+
+        if (domainIdentifierSet)
+        {
+            /*
+             * The domain identifier may have been set in the extended properties which are populated by the super class.
+             * This ensures the value fromm extended properties is not overridden.
+             */
+            if ((properties == null) || (properties.getPropertyValue(OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME) == null))
+            {
+                properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                                       domainIdentifier,
+                                                                       methodName);
+            }
         }
 
         return properties;

@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * AssetManagerOutTopicEvent provides the structure of the Asset Manager OMAS's OutTopic events.  The values for elements and their classifications
  * come from the events.  They are not guaranteed to be current.  If the latest values are required, the element should be queried from the repository
- * using its GUID.  The event values are useful if the third party catalog needs to maintain an exact record of all of the versions.
+ * using its GUID.  The event values are useful if the third party catalog needs to maintain an exact record of all the versions.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

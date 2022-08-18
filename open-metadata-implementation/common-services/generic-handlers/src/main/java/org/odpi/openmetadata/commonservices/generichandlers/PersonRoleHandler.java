@@ -83,11 +83,13 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID     unique identifier of software capability representing the caller
      * @param externalSourceName     unique name of software capability representing the caller
      * @param qualifiedName unique name for the role - used in other configuration
+     * @param identifier unique identifier for the role - typically from external system
      * @param name short display name for the role
      * @param description description of the role
      * @param scope the scope of the role
      * @param headCount number of individuals that can be appointed to this role
      * @param headCountLimitSet should the headcount be added to the entity?
+     * @param domainIdentifier governance domain identifier
      * @param additionalProperties additional properties for a role
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a governance role subtype
@@ -105,11 +107,13 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                    String              externalSourceGUID,
                                    String              externalSourceName,
                                    String              qualifiedName,
+                                   String              identifier,
                                    String              name,
                                    String              description,
                                    String              scope,
                                    int                 headCount,
                                    boolean             headCountLimitSet,
+                                   int                 domainIdentifier,
                                    Map<String, String> additionalProperties,
                                    String              suppliedTypeName,
                                    Map<String, Object> extendedProperties,
@@ -138,12 +142,22 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                                    methodName,
                                                                    repositoryHelper);
 
+        /*
+         * GovernanceRole inherits from PersonRole and introduces the domainIdentifier property.  If the requested role
+         * is a type of governance role then domain identifier is set.  If the role comes from an API that does not explicitly support
+         * the domain identifier then it will be set to zero (all domains) unless overridden in the extended properties.
+         */
+        boolean domainIdentifierSet = repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.GOVERNANCE_ROLE_TYPE_NAME);
+
         PersonRoleBuilder roleBuilder = new PersonRoleBuilder(qualifiedName,
+                                                              identifier,
                                                               name,
                                                               description,
                                                               scope,
                                                               headCount,
                                                               headCountLimitSet,
+                                                              domainIdentifier,
+                                                              domainIdentifierSet,
                                                               additionalProperties,
                                                               typeGUID,
                                                               typeName,
@@ -176,6 +190,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName     unique name of software capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for the role - used in other configuration
+     * @param identifier unique identifier for the role - typically from external system
      * @param name short display name for the role
      * @param description description of the governance role
      * @param headCount number of individuals that can be appointed to this role
@@ -193,6 +208,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                String  externalSourceName,
                                                String  templateGUID,
                                                String  qualifiedName,
+                                               String  identifier,
                                                String  name,
                                                String  description,
                                                int     headCount,
@@ -209,6 +225,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         PersonRoleBuilder roleBuilder = new PersonRoleBuilder(qualifiedName,
+                                                              identifier,
                                                               name,
                                                               description,
                                                               headCount,
@@ -599,7 +616,6 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
     }
 
 
-
     /**
      * Link a team member role to a team profile.
      *
@@ -719,7 +735,6 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
     }
 
 
-
     /**
      * Update the person role object.
      *
@@ -730,12 +745,14 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @param roleGUIDParameterName parameter passing the roleGUID
      * @param qualifiedName unique name for the role - used in other configuration
      * @param qualifiedNameParameterName  parameter providing qualified name
+     * @param identifier unique identifier for the role - typically from external system
      * @param name short display name for the role
      * @param nameParameterName  parameter providing name
      * @param description description of the role
      * @param scope the scope of the role
      * @param headCountLimitSet should the head count be set in the entity?
      * @param headCount number of individuals that can be appointed to this role
+     * @param domainIdentifier governance domain identifier
      * @param additionalProperties additional properties for a governance role
      * @param typeName type of role
      * @param extendedProperties  properties for a governance role subtype
@@ -759,12 +776,14 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                  String              roleGUIDParameterName,
                                  String              qualifiedName,
                                  String              qualifiedNameParameterName,
+                                 String              identifier,
                                  String              name,
                                  String              nameParameterName,
                                  String              description,
                                  String              scope,
                                  int                 headCount,
                                  boolean             headCountLimitSet,
+                                 int                 domainIdentifier,
                                  Map<String, String> additionalProperties,
                                  String              typeName,
                                  Map<String, Object> extendedProperties,
@@ -787,18 +806,31 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(name, nameParameterName, methodName);
         }
 
+
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
 
+        /*
+         * GovernanceRole inherits from PersonRole and introduces the domainIdentifier property.  If the requested role
+         * is a type of governance role then domain identifier is set.  If the role comes from an API that does not explicitly support
+         * the domain identifier then it will be set to zero (all domains) unless overridden in the extended properties.
+         */
+        boolean domainIdentifierSet = (typeName != null) &&
+                                      (!(isMergeUpdate) && (domainIdentifier == 0)) &&
+                                      (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.GOVERNANCE_ROLE_TYPE_NAME));
+
         PersonRoleBuilder roleBuilder = new PersonRoleBuilder(qualifiedName,
+                                                              identifier,
                                                               name,
                                                               description,
                                                               scope,
                                                               headCount,
                                                               headCountLimitSet,
+                                                              domainIdentifier,
+                                                              domainIdentifierSet,
                                                               additionalProperties,
                                                               typeGUID,
                                                               typeName,
@@ -949,6 +981,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME);
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
 
         return this.getBeansByValue(userId,
@@ -969,6 +1002,212 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                     effectiveTime,
                                     methodName);
     }
+
+
+    /**
+     * Return the person roles attached to a supplied project via the project management relationship.
+     *
+     * @param userId     calling user
+     * @param projectGUID identifier for the entity that the contact details are attached to
+     * @param projectGUIDParameterName name of parameter supplying the GUID
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of objects or null if none found
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B>  getProjectManagerRoles(String              userId,
+                                           String              projectGUID,
+                                           String              projectGUIDParameterName,
+                                           int                 startingFrom,
+                                           int                 pageSize,
+                                           boolean             forLineage,
+                                           boolean             forDuplicateProcessing,
+                                           Date                effectiveTime,
+                                           String              methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        projectGUID,
+                                        projectGUIDParameterName,
+                                        OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Return the person roles attached to a supplied team via the team leadership relationship.
+     *
+     * @param userId     calling user
+     * @param teamGUID identifier for the entity that the contact details are attached to
+     * @param teamGUIDParameterName name of parameter supplying the GUID
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of objects or null if none found
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B>  getTeamLeaderRoles(String              userId,
+                                       String              teamGUID,
+                                       String              teamGUIDParameterName,
+                                       int                 startingFrom,
+                                       int                 pageSize,
+                                       boolean             forLineage,
+                                       boolean             forDuplicateProcessing,
+                                       Date                effectiveTime,
+                                       String              methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        teamGUID,
+                                        teamGUIDParameterName,
+                                        OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                        OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Return the person roles attached to a supplied team via the team membership relationship.
+     *
+     * @param userId     calling user
+     * @param teamGUID identifier for the entity that the contact details are attached to
+     * @param teamGUIDParameterName name of parameter supplying the GUID
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of objects or null if none found
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B>  getTeamMemberRoles(String              userId,
+                                       String              teamGUID,
+                                       String              teamGUIDParameterName,
+                                       int                 startingFrom,
+                                       int                 pageSize,
+                                       boolean             forLineage,
+                                       boolean             forDuplicateProcessing,
+                                       Date                effectiveTime,
+                                       String              methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        teamGUID,
+                                        teamGUIDParameterName,
+                                        OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                        OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+
+    /**
+     * Return the person roles attached to a supplied community via the community membership relationship.
+     *
+     * @param userId     calling user
+     * @param communityGUID identifier for the entity that the contact details are attached to
+     * @param communityGUIDParameterName name of parameter supplying the GUID
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of objects or null if none found
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B>  getCommunityRoles(String              userId,
+                                      String              communityGUID,
+                                      String              communityGUIDParameterName,
+                                      int                 startingFrom,
+                                      int                 pageSize,
+                                      boolean             forLineage,
+                                      boolean             forDuplicateProcessing,
+                                      Date                effectiveTime,
+                                      String              methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        communityGUID,
+                                        communityGUIDParameterName,
+                                        OpenMetadataAPIMapper.COMMUNITY_TYPE_NAME,
+                                        OpenMetadataAPIMapper.COMMUNITY_MEMBERSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.COMMUNITY_MEMBERSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
 
 
     /**
@@ -1120,8 +1359,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Retrieve the list of role metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
+     * Retrieve the list of role metadata elements with a matching domain identifier.  If the domain identifier is 0 then all roles are returned.
      *
      * @param userId calling user
      * @param domainIdentifier domain of interest - 0 means all domains

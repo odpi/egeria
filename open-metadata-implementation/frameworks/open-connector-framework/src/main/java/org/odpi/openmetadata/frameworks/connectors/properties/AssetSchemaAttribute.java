@@ -25,7 +25,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
     /**
      * Bean constructor used by subclasses
      *
-     * @param schemaAttributeBean bean containing all of the properties
+     * @param schemaAttributeBean bean containing all the properties
      */
     protected AssetSchemaAttribute(SchemaAttribute schemaAttributeBean)
     {
@@ -46,7 +46,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      * Bean constructor with parent asset
      *
      * @param parentAsset description of the asset that this schema attribute is attached to.
-     * @param schemaAttributeBean bean containing all of the properties
+     * @param schemaAttributeBean bean containing all the properties
      */
     public AssetSchemaAttribute(AssetDescriptor parentAsset,
                                 SchemaAttribute schemaAttributeBean)
@@ -86,7 +86,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return schema attribute bean
      */
@@ -196,7 +196,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
 
     /**
      * Return the SchemaType that relates to the type of this attribute.  It is possible to query its type and cast it to
-     * specific types of schema type to retrieve all of the values.
+     * specific types of schema type to retrieve all the values.
      *
      * @return SchemaType object
      */
@@ -209,7 +209,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
 
     /**
      * Return the SchemaType that relates to the type of this attribute.  It is possible to query its type and cast it to
-     * specific types of schema type to retrieve all of the values.
+     * specific types of schema type to retrieve all the values.
      *
      * @return SchemaType object
      */

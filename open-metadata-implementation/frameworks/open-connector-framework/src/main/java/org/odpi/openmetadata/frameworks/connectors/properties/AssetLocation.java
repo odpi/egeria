@@ -21,7 +21,7 @@ public class AssetLocation extends AssetReferenceable
     /**
      * Bean constructor
      *
-     * @param locationBean bean containing all of the properties
+     * @param locationBean bean containing all the properties
      */
     public AssetLocation(Location   locationBean)
     {
@@ -42,7 +42,7 @@ public class AssetLocation extends AssetReferenceable
      * Bean constructor and parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param locationBean bean containing all of the properties
+     * @param locationBean bean containing all the properties
      */
     public AssetLocation(AssetDescriptor  parentAsset,
                          Location         locationBean)
@@ -82,7 +82,7 @@ public class AssetLocation extends AssetReferenceable
 
 
     /**
-     * Return the bean with all of the properties in it.
+     * Return the bean with all the properties in it.
      *
      * @return location bean
      */

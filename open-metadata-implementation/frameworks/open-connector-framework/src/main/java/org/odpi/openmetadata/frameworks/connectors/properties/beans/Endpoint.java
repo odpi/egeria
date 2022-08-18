@@ -48,7 +48,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     </li>
  *     <li>
  *         encryptionMethod - Describes the encryption method to use (if any).  This is an open value allowing
- *         information needed by the connector user to retrieve all of the information they need to work with
+ *         information needed by the connector user to retrieve all the information they need to work with
  *         the endpoint.
  *     </li>
  *     <li>

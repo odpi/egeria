@@ -47,7 +47,7 @@ public interface ConnectionsManagerInterface
 
     /**
      * Create a new metadata element to represent a connection using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new asset.
+     * The template defines additional classifications and relationships that should be added to the new connection.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller

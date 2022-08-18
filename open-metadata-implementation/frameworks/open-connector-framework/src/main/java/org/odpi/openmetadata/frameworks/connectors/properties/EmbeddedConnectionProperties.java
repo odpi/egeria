@@ -22,7 +22,7 @@ public class EmbeddedConnectionProperties extends AssetPropertyBase
     /**
      * Bean constructor
      *
-     * @param embeddedConnectionBean bean containing all of the properties
+     * @param embeddedConnectionBean bean containing all the properties
      */
     public EmbeddedConnectionProperties(EmbeddedConnection embeddedConnectionBean)
     {
@@ -43,7 +43,7 @@ public class EmbeddedConnectionProperties extends AssetPropertyBase
      * Bean constructor with parent asset
      *
      * @param parentAsset   descriptor of parent asset
-     * @param embeddedConnectionBean bean containing all of the properties
+     * @param embeddedConnectionBean bean containing all the properties
      */
     public EmbeddedConnectionProperties(AssetDescriptor    parentAsset,
                                         EmbeddedConnection embeddedConnectionBean)
@@ -83,7 +83,7 @@ public class EmbeddedConnectionProperties extends AssetPropertyBase
 
 
     /**
-     * Return the bean with all of the properties
+     * Return the bean with all the properties
      *
      * @return schema link bean
      */

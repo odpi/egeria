@@ -93,7 +93,7 @@ class InMemoryOMRSMetadataStore
         Map<String, EntityDetail>  timeWarpedEntityStore = new HashMap<>();
 
         /*
-         * First step through the current relationship store and extract all of the relationships that were
+         * First step through the current relationship store and extract all the relationships that were
          * last updated before the asOfTime.
          */
         for (EntityDetail  entity : entityStore.values())
@@ -200,7 +200,7 @@ class InMemoryOMRSMetadataStore
 
 
         /*
-         * First step through the current relationship store and extract all of the relationships that were
+         * First step through the current relationship store and extract all the relationships that were
          * last updated before the asOfTime.
          */
         for (Relationship  relationship : relationshipStore.values())

@@ -60,7 +60,7 @@ public interface OMRSCohortRegistryStore
 
 
     /**
-     * Return a list of all of the remote metadata repositories registered in the metadata repository cohort.
+     * Return a list of all the remote metadata repositories registered in the metadata repository cohort.
      *
      * @return List of member registrations for remote servers/repositories
      */
@@ -69,7 +69,7 @@ public interface OMRSCohortRegistryStore
 
     /**
      * Return the registration information for a specific metadata repository, identified by its repository's
-     * metadata collection Id.   If the metadata collection Id is not recognized then null is returned.
+     * metadata collection id.   If the metadata collection id is not recognized then null is returned.
      *
      * @param metadataCollectionId unique identifier for the repository's metadata collection.
      * @return MemberRegistration object containing details of the remote metadata repository.

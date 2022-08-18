@@ -27,7 +27,7 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
 
 
     /**
-     * Retrieve the all of the integration service handlers for the requested integration daemon.
+     * Retrieve the all the integration service handlers for the requested integration daemon.
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request

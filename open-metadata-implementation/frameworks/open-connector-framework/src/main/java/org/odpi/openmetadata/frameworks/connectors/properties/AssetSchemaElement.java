@@ -66,7 +66,7 @@ public abstract class AssetSchemaElement extends AssetReferenceable
     /**
      * Set up the bean that contains the properties of the schema element.
      *
-     * @param schemaElementBean bean containing all of the properties
+     * @param schemaElementBean bean containing all the properties
      */
     protected void  setBean(SchemaElement schemaElementBean)
     {

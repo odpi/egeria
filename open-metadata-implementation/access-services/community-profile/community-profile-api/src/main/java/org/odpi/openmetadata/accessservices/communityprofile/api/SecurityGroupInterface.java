@@ -67,7 +67,7 @@ public interface SecurityGroupInterface
 
 
     /**
-     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, the should be only one.
+     * Return the list of security groups associated with a unique distinguishedName.  In an ideal world, there should be only one.
      *
      * @param userId calling user
      * @param distinguishedName unique name of the security group

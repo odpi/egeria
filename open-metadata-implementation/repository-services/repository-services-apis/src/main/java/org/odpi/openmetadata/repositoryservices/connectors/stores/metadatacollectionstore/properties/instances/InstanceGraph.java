@@ -89,7 +89,7 @@ public class InstanceGraph extends InstanceElementHeader
 
 
     /**
-     * Return the list of all of the entities (vertices/nodes) in the instance graph.  Null means empty graph.
+     * Return the list of all the entities (vertices/nodes) in the instance graph.  Null means empty graph.
      *
      * @return EntityDetails entity list
      */

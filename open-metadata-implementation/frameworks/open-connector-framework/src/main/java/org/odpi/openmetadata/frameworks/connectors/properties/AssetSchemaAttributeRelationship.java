@@ -21,7 +21,7 @@ public class AssetSchemaAttributeRelationship extends AssetPropertyBase
     /**
      * Bean constructor
      *
-     * @param schemaAttributeRelationshipBean bean containing all of the properties
+     * @param schemaAttributeRelationshipBean bean containing all the properties
      */
     public AssetSchemaAttributeRelationship(SchemaAttributeRelationship schemaAttributeRelationshipBean)
     {
@@ -42,7 +42,7 @@ public class AssetSchemaAttributeRelationship extends AssetPropertyBase
      * Bean constructor with parent asset
      *
      * @param parentAsset   descriptor of parent asset
-     * @param schemaAttributeRelationship bean containing all of the properties
+     * @param schemaAttributeRelationship bean containing all the properties
      */
     public AssetSchemaAttributeRelationship(AssetDescriptor             parentAsset,
                                             SchemaAttributeRelationship schemaAttributeRelationship)
@@ -82,7 +82,7 @@ public class AssetSchemaAttributeRelationship extends AssetPropertyBase
 
 
     /**
-     * Return the bean with all of the properties
+     * Return the bean with all the properties
      *
      * @return schema link bean
      */

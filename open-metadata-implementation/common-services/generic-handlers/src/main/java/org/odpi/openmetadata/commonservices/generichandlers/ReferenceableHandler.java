@@ -1204,6 +1204,218 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+
+    /**
+     * Page through the list of consumers for a valid value.
+     *
+     * @param userId                  calling user
+     * @param validValueGUID          unique identifier of valid value to query
+     * @param validValueGUIDParameter parameter name for validValueGUID
+     * @param startFrom               paging starting point
+     * @param pageSize                maximum number of return values.
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName              calling method
+     * @return list of valid value consumer beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<B> getValidValueConsumers(String       userId,
+                                          String       validValueGUID,
+                                          String       validValueGUIDParameter,
+                                          int          startFrom,
+                                          int          pageSize,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        return this.getAttachedElements(userId,
+                                        validValueGUID,
+                                        validValueGUIDParameter,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+
+
+    /**
+     * Page through the list of referenceables that have this valid value as a reference value.
+     *
+     * @param userId         calling user
+     * @param validValueGUID unique identifier of valid value to query
+     * @param validValueGUIDParameter name of parameter that provides the validValueGUID value
+     * @param startFrom      paging starting point
+     * @param pageSize       maximum number of return values
+     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName     calling method
+     * @return list of referenceable beans
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to make this request
+     * @throws PropertyServerException    the repository is not available or not working properly
+     */
+    public List<B> getReferenceValueAssignees(String       userId,
+                                              String       validValueGUID,
+                                              String       validValueGUIDParameter,
+                                              int          startFrom,
+                                              int          pageSize,
+                                              boolean      forLineage,
+                                              boolean      forDuplicateProcessing,
+                                              Date         effectiveTime,
+                                              String       methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        return this.getAttachedElements(userId,
+                                        validValueGUID,
+                                        validValueGUIDParameter,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Add a more information to element.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param elementGUID unique identifier of the element
+     * @param elementGUIDParameterName parameter supplying the elementGUID
+     * @param moreInformationGUID unique identifier of the element that is supplying more information
+     * @param moreInformationGUIDParameterName parameter supplying the moreInformationGUID
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addMoreInformation(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  elementGUID,
+                                   String  elementGUIDParameterName,
+                                   String  moreInformationGUID,
+                                   String  moreInformationGUIDParameterName,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  elementGUID,
+                                  elementGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  moreInformationGUID,
+                                  moreInformationGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
+                                  null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove more information from an element.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param elementGUID unique identifier of the project
+     * @param elementGUIDParameterName parameter supplying the elementGUID
+     * @param moreInformationGUID unique identifier of the element that is being added to the project
+     * @param moreInformationGUIDParameterName parameter supplying the moreInformationGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeMoreInformation(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  elementGUID,
+                                      String  elementGUIDParameterName,
+                                      String  moreInformationGUID,
+                                      String  moreInformationGUIDParameterName,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      elementGUID,
+                                      elementGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      moreInformationGUID,
+                                      moreInformationGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+
     /**
      * Returns the list of elements that are linked to provide more information.  It uses the supportedZones supplied with the service.
      *
@@ -1312,10 +1524,78 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         resultingTypeName,
                                         null,
                                         null,
-                                        0,
+                                        2,
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the descriptive elements linked via a "MoreInformation" relationship between two referenceables.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param suppliedResultingTypeName name of the type of object that the search returns - null mean referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getDescriptiveElements(String       userId,
+                                          String       startingGUID,
+                                          String       startingGUIDParameterName,
+                                          String       suppliedStartingTypeName,
+                                          String       suppliedResultingTypeName,
+                                          int          startFrom,
+                                          int          pageSize,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+        if (suppliedResultingTypeName != null)
+        {
+            resultingTypeName = suppliedResultingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_GUID,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MORE_INFO_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,
@@ -1442,7 +1722,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   effectiveTime,
                                   methodName);
     }
-
 
 
     /**
@@ -1623,6 +1902,130 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Returns the list of glossary terms that are linked to provide a semantic definition of a data item.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getMeanings(String       userId,
+                               String       startingGUID,
+                               String       startingGUIDParameterName,
+                               String       suppliedStartingTypeName,
+                               int          startFrom,
+                               int          pageSize,
+                               boolean      forLineage,
+                               boolean      forDuplicateProcessing,
+                               Date         effectiveTime,
+                               String       methodName) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Returns the list of elements that are linked to a glossary term that is providing a semantic definition.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedResultingTypeName name of the type of object that the search returns - null mean referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getSemanticAssignments(String       userId,
+                                          String       startingGUID,
+                                          String       startingGUIDParameterName,
+                                          String       suppliedResultingTypeName,
+                                          int          startFrom,
+                                          int          pageSize,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        String startingTypeName = OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME;
+        String resultingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedResultingTypeName != null)
+        {
+            resultingTypeName = suppliedResultingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
      * Create a relationship between a referenceable and a resource it uses.
      *
      * @param userId calling user
@@ -1754,6 +2157,792 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
 
+
+    /**
+     * Returns the list of elements that are linked to provide resources to the starting element (for example, a community provides
+     * people to a governance domain).
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getResourceList(String       userId,
+                                   String       startingGUID,
+                                   String       startingGUIDParameterName,
+                                   String       suppliedStartingTypeName,
+                                   int          startFrom,
+                                   int          pageSize,
+                                   boolean      forLineage,
+                                   boolean      forDuplicateProcessing,
+                                   Date         effectiveTime,
+                                   String       methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+
+    /**
+     * Retrieve the list of elements assigned to a resource via the "ResourceList" relationship between two referenceables.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getSupportedByResource(String       userId,
+                                          String       startingGUID,
+                                          String       startingGUIDParameterName,
+                                          String       suppliedStartingTypeName,
+                                          int          startFrom,
+                                          int          pageSize,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Add a scope to an actor - both referenceables.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param assignedActorGUID unique identifier of the actor
+     * @param assignedActorGUIDParameterName parameter supplying the assignedActorGUID
+     * @param assignedScopeGUID unique identifier of the scope
+     * @param assignedScopeGUIDParameterName parameter supplying the assignedScopeGUID
+     * @param assignmentType Type of assignment - such as accountable, responsible, observing ...
+     * @param description mode details about the assignment
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addAssignmentScope(String  userId,
+                                   String  externalSourceGUID,
+                                   String  externalSourceName,
+                                   String  assignedActorGUID,
+                                   String  assignedActorGUIDParameterName,
+                                   String  assignedScopeGUID,
+                                   String  assignedScopeGUIDParameterName,
+                                   String  assignmentType,
+                                   String  description,
+                                   Date    effectiveFrom,
+                                   Date    effectiveTo,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing,
+                                   Date    effectiveTime,
+                                   String  methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.ASSIGNMENT_TYPE_PROPERTY_NAME,
+                                                                                     assignmentType,
+                                                                                     methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  assignedActorGUID,
+                                  assignedActorGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  assignedScopeGUID,
+                                  assignedScopeGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
+                                  properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove a scope from an actor - both referenceables.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param assignedActorGUID unique identifier of the actor
+     * @param assignedActorGUIDParameterName parameter supplying the assignedActorGUID
+     * @param assignedScopeGUID unique identifier of the scope
+     * @param assignedScopeGUIDParameterName parameter supplying the assignedScopeGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeAssignmentScope(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  assignedActorGUID,
+                                      String  assignedActorGUIDParameterName,
+                                      String  assignedScopeGUID,
+                                      String  assignedScopeGUIDParameterName,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      assignedActorGUID,
+                                      assignedActorGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      assignedScopeGUID,
+                                      assignedScopeGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+
+    /**
+     * Returns the list of elements that are scoping the work of one or more actors/roles.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param suppliedResultingTypeName name of the type of object that the search returns - null mean referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getAssignmentScope(String       userId,
+                                      String       startingGUID,
+                                      String       startingGUIDParameterName,
+                                      String       suppliedStartingTypeName,
+                                      String       suppliedResultingTypeName,
+                                      int          startFrom,
+                                      int          pageSize,
+                                      boolean      forLineage,
+                                      boolean      forDuplicateProcessing,
+                                      Date         effectiveTime,
+                                      String       methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+        if (suppliedResultingTypeName != null)
+        {
+            resultingTypeName = suppliedResultingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Returns the list of actors/roles that assigned to a specific scope.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param suppliedResultingTypeName name of the type of object that the search returns - null mean referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getAssignedActors(String       userId,
+                                     String       startingGUID,
+                                     String       startingGUIDParameterName,
+                                     String       suppliedStartingTypeName,
+                                     String       suppliedResultingTypeName,
+                                     int          startFrom,
+                                     int          pageSize,
+                                     boolean      forLineage,
+                                     boolean      forDuplicateProcessing,
+                                     Date         effectiveTime,
+                                     String       methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+        if (suppliedResultingTypeName != null)
+        {
+            resultingTypeName = suppliedResultingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Add a commissioning stakeholder to a project/team/community etc.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param commissionedGUID unique identifier of the project etc
+     * @param commissionedGUIDParameterName parameter supplying the commissionedGUID
+     * @param stakeholderGUID unique identifier of the stakeholder - may be a person, team, role, ...
+     * @param stakeholderGUIDParameterName parameter supplying the stakeholderGUID
+     * @param stakeholderRole what are the responsibilities of a stakeholder?
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addStakeholder(String  userId,
+                               String  externalSourceGUID,
+                               String  externalSourceName,
+                               String  commissionedGUID,
+                               String  commissionedGUIDParameterName,
+                               String  stakeholderGUID,
+                               String  stakeholderGUIDParameterName,
+                               String  stakeholderRole,
+                               Date    effectiveFrom,
+                               Date    effectiveTo,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.STAKEHOLDER_ROLE_PROPERTY_NAME,
+                                                                                     stakeholderRole,
+                                                                                     methodName);
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  commissionedGUID,
+                                  commissionedGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  stakeholderGUID,
+                                  stakeholderGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
+                                  properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove a commissioning stakeholder from a project/team/community etc.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param commissionedGUID unique identifier of the project etc
+     * @param commissionedGUIDParameterName parameter supplying the commissionedGUID
+     * @param stakeholderGUID unique identifier of the stakeholder
+     * @param stakeholderGUIDParameterName parameter supplying the stakeholderGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeStakeholder(String  userId,
+                                  String  externalSourceGUID,
+                                  String  externalSourceName,
+                                  String  commissionedGUID,
+                                  String  commissionedGUIDParameterName,
+                                  String  stakeholderGUID,
+                                  String  stakeholderGUIDParameterName,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      commissionedGUID,
+                                      commissionedGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      stakeholderGUID,
+                                      stakeholderGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+
+
+
+    /**
+     * Returns the list one or more actors/roles are stakeholders for the starting element.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param suppliedResultingTypeName name of the type of object that the search returns - null mean referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getStakeholders(String       userId,
+                                   String       startingGUID,
+                                   String       startingGUIDParameterName,
+                                   String       suppliedStartingTypeName,
+                                   String       suppliedResultingTypeName,
+                                   int          startFrom,
+                                   int          pageSize,
+                                   boolean      forLineage,
+                                   boolean      forDuplicateProcessing,
+                                   Date         effectiveTime,
+                                   String       methodName) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+        if (suppliedResultingTypeName != null)
+        {
+            resultingTypeName = suppliedResultingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Returns the list of elements that one or more actors/roles are stakeholders for.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param suppliedResultingTypeName name of the type of object that the search returns - null mean referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getCommissionedByStakeholder(String       userId,
+                                                String       startingGUID,
+                                                String       startingGUIDParameterName,
+                                                String       suppliedStartingTypeName,
+                                                String       suppliedResultingTypeName,
+                                                int          startFrom,
+                                                int          pageSize,
+                                                boolean      forLineage,
+                                                boolean      forDuplicateProcessing,
+                                                Date         effectiveTime,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+        if (suppliedResultingTypeName != null)
+        {
+            resultingTypeName = suppliedResultingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+
+    /**
+     * Add a link between a design artifact and its implementation.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param designArtifactGUID unique identifier of the project
+     * @param designArtifactGUIDParameterName parameter supplying the designArtifactGUID
+     * @param implementationGUID unique identifier of the element that is being added to the project
+     * @param implementationGUIDParameterName parameter supplying the implementationGUID
+     * @param designStep match to design process
+     * @param role describe role performing from design
+     * @param description additional description
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addImplementedBy(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  designArtifactGUID,
+                                 String  designArtifactGUIDParameterName,
+                                 String  implementationGUID,
+                                 String  implementationGUIDParameterName,
+                                 String  designStep,
+                                 String  role,
+                                 String  description,
+                                 Date    effectiveFrom,
+                                 Date    effectiveTo,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.DESIGN_STEP_PROPERTY_NAME,
+                                                                                     designStep,
+                                                                                     methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ROLE_PROPERTY_NAME,
+                                                                  role,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+
+
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  designArtifactGUID,
+                                  designArtifactGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  implementationGUID,
+                                  implementationGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
+                                  properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove a link between a design artifact and its implementation.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param designArtifactGUID unique identifier of the project
+     * @param designArtifactGUIDParameterName parameter supplying the designArtifactGUID
+     * @param implementationGUID unique identifier of the element that is being added to the project
+     * @param implementationGUIDParameterName parameter supplying the implementationGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeImplementedBy(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  designArtifactGUID,
+                                    String  designArtifactGUIDParameterName,
+                                    String  implementationGUID,
+                                    String  implementationGUIDParameterName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      designArtifactGUID,
+                                      designArtifactGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      implementationGUID,
+                                      implementationGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
+                                      effectiveTime,
+                                      methodName);
+    }
 
 
     /**

@@ -25,12 +25,12 @@ import java.util.List;
  */
 public class SubjectAreaManager implements SubjectAreasInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
+    private final String                      serverName;               /* Initialized in constructor */
+    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
 
     /**
@@ -139,7 +139,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -184,11 +184,12 @@ public class SubjectAreaManager implements SubjectAreasInterface
     {
         final String methodName = "createSubjectArea";
 
+        final String propertiesParameter = "properties";
         final String qualifiedNameParameter = "qualifiedName";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(properties, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
 
         GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
@@ -225,7 +226,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
 
         final String guidParameter = "subjectAreaGUID";
         final String qualifiedNameParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}?isMergeUpdate={3}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}?isMergeUpdate={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(subjectAreaGUID, guidParameter, methodName);
@@ -302,7 +303,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
 
         final String parentSubjectAreaGUIDParameterName = "parentSubjectAreaGUID";
         final String childSubjectAreaGUIDParameterName = "childSubjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-area/{3}/link";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/link";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentSubjectAreaGUID, parentSubjectAreaGUIDParameterName, methodName);
@@ -340,7 +341,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
 
         final String parentSubjectAreaGUIDParameterName = "parentSubjectAreaGUID";
         final String childSubjectAreaGUIDParameterName = "childSubjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-area/{3}/unlink";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/unlink";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentSubjectAreaGUID, parentSubjectAreaGUIDParameterName, methodName);
@@ -416,7 +417,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
 
         final String subjectAreaGUIDParameterName = "subjectAreaGUID";
         final String definitionGUIDParameterName = "definitionGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/governed-by/{3}/unlink";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/governed-by/{3}/unlink";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(subjectAreaGUID, subjectAreaGUIDParameterName, methodName);

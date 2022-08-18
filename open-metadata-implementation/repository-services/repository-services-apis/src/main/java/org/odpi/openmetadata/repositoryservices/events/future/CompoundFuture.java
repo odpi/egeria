@@ -29,7 +29,7 @@ public class CompoundFuture implements OMRSFuture {
 
     @Override
     public boolean isDone() {
-        //the future is done when all of the children are done
+        //the future is done when all the children are done
         for(OMRSFuture future : children) {
             if (! future.isDone()) {
                 return false;

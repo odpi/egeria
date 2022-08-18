@@ -7,12 +7,9 @@ import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceDoma
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainSetElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceLevelIdentifierElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceLevelIdentifierSetElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceLevelIdentifierProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceLevelIdentifierSetProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -28,18 +25,16 @@ import java.util.List;
 
 /**
  * GovernanceDomainManager sets up the governance domains that are part of an organization governance.
- * Each governance domain describes a focus for governance.  The governance domain typically focuses on a particular set of activity
- * within the organization.  There is often overlap in the resources (assets) that each domain governs.  As a result, there is
- * often linkage between the governance definitions from different governance domains.
+ * Each governance domain describes a focus for governance.
  */
 public class GovernanceDomainManager implements GovernanceDomainInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
+    private final String                      serverName;               /* Initialized in constructor */
+    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
 
     /**
@@ -148,7 +143,7 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -189,7 +184,6 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
      *     <li>Software Development - The software development lifecycle (SDLC) governance domain.</li>
      *     <li>Corporate - The corporate governance domain.</li>
      *     <li>Asset Management - The physical asset management governance domain.</li>
-     *     <li>Other - The governance domain is locally defined.</li>
      * </ul>
      *
      * @param userId calling user
@@ -204,20 +198,44 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        final String methodName = "createStandardGovernanceDomains";
-
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/standard-set";
+        final String methodName     = "createStandardGovernanceDomains";
+        final String setName        = "EgeriaStandardDomains";
+        final String setDescription = "Initial list of governance domain definitions for the following governance domains.\n" +
+                                              "\n" +
+                                              "* Unclassified - The governance domain is not specified - that is the definition applies to all domains - this is the default value for governance definitions within the governance program.\n" +
+                                              "* Data - The data (information) governance domain\n" +
+                                              "* Privacy - The data privacy governance domain\n" +
+                                              "* Security - The security governance domain.\n" +
+                                              "* IT Infrastructure - The IT infrastructure management governance domain.\n" +
+                                              "* Software Development - The software development lifecycle (SDLC) governance domain.\n" +
+                                              "* Corporate - The corporate governance domain.\n" +
+                                              "* Asset Management - The physical asset management governance domain.\n";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
-                                                                serverPlatformURLRoot + urlTemplate,
-                                                                nullRequestBody,
-                                                                serverName,
-                                                                userId);
+        GovernanceDomainSetProperties governanceDomainSetProperties = new GovernanceDomainSetProperties();
+        governanceDomainSetProperties.setQualifiedName("GovernanceDomainSet:" + setName);
+        governanceDomainSetProperties.setDisplayName(setName);
+        governanceDomainSetProperties.setDescription(setDescription);
 
-        return response.getGUID();
+        String setGUID = this.createGovernanceDomainSet(userId, governanceDomainSetProperties);
 
+        for (GovernanceDomain governanceDomain : GovernanceDomain.values())
+        {
+            if (governanceDomain != GovernanceDomain.OTHER)
+            {
+                GovernanceDomainProperties governanceDomainProperties = new GovernanceDomainProperties();
+
+                governanceDomainProperties.setQualifiedName("GovernanceDomain:" + governanceDomain.getName());
+                governanceDomainProperties.setDisplayName(governanceDomain.getName());
+                governanceDomainProperties.setDomainIdentifier(governanceDomain.getOrdinal());
+                governanceDomainProperties.setDescription(governanceDomain.getDescription());
+
+                this.createGovernanceDomain(userId, setGUID, governanceDomainProperties);
+            }
+        }
+
+        return setGUID;
     }
 
 
@@ -540,7 +558,7 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
 
         final String guidParameter = "governanceDomainGUID";
         final String qualifiedNameParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/governance-domains/{2}/update";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domains/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceDomainGUID, guidParameter, methodName);
@@ -575,7 +593,7 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
         final String methodName = "deleteGovernanceDomain";
 
         final String guidParameter = "governanceDomainGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/governance-domains/{2}/delete";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domains/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceDomainGUID, guidParameter, methodName);
@@ -590,8 +608,83 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
 
 
     /**
+     * Create a parent-child relationship between a governance domain set and a governance domain.
+     *
+     * @param userId calling user
+     * @param governanceDomainSetGUID unique identifier of the governance domain set
+     * @param governanceDomainGUID unique identifier of the governance domain
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void addDomainToSet(String userId,
+                               String governanceDomainSetGUID,
+                               String governanceDomainGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String methodName = "addDomainToSet";
+
+        final String guid1Parameter = "governanceDomainSetGUID";
+        final String guid2Parameter = "governanceDomainGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/{2}/governance-domains/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceDomainSetGUID, guid1Parameter, methodName);
+        invalidParameterHandler.validateGUID(governanceDomainGUID, guid2Parameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        governanceDomainSetGUID,
+                                        governanceDomainGUID);
+    }
+
+
+    /**
+     * Remove a parent-child relationship between a governance domain set and a governance domain.
+     *
+     * @param userId calling user
+     * @param governanceDomainSetGUID unique identifier of the governance domain set
+     * @param governanceDomainGUID unique identifier of the governance domain
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void removeDomainFromSet(String userId,
+                                    String governanceDomainSetGUID,
+                                    String governanceDomainGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String methodName = "removeDomainFromSet";
+
+        final String guid1Parameter = "governanceDomainSetGUID";
+        final String guid2Parameter = "governanceDomainGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/{2}/governance-domains/{3}/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(governanceDomainSetGUID, guid1Parameter, methodName);
+        invalidParameterHandler.validateGUID(governanceDomainGUID, guid2Parameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformURLRoot + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        governanceDomainSetGUID,
+                                        governanceDomainGUID);
+    }
+
+
+    /**
      * Retrieve the list of Governance Domain metadata elements defined for the governance program.
-     * The search string is treated as a regular expression.
      *
      * @param userId calling user
      * @param startFrom paging start point
@@ -611,7 +704,7 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
                                                                                       PropertyServerException
     {
         final String methodName = "getGovernanceDomains";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/governance-domains?startFrom={2}&pageSize={3}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domains?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -653,7 +746,7 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
         final String methodName = "findGovernanceDomains";
 
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/governance-domains/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domains/by-search-string?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -701,14 +794,14 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
         final String methodName = "getSetsForGovernanceDomain";
 
         final String guidParameterName = "governanceDomainGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/governance-domains/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/by-governance-domains/{2}?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceDomainGUID, guidParameterName, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        GovernanceDomainSetListResponse restResult = restClient.callGovernanceDomainSetListPostRESTCall(methodName,
+        GovernanceDomainSetListResponse restResult = restClient.callGovernanceDomainSetListGetRESTCall(methodName,
                                                                                                         serverPlatformURLRoot + urlTemplate,
                                                                                                         serverName,
                                                                                                         userId,
@@ -745,7 +838,7 @@ public class GovernanceDomainManager implements GovernanceDomainInterface
         final String methodName = "getGovernanceDomainsByName";
 
         final String nameParameterName = "name";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domain-sets/governance-domains/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-domains/by-name?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);

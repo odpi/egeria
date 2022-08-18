@@ -88,57 +88,6 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a PersonalProfileResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return PersonalProfileResponse
-     * @throws InvalidParameterException the unique identifier of the governance officer is either null or invalid.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    public PersonalProfileResponse callPersonalProfileGetRESTCall(String    methodName,
-                                                                  String    urlTemplate,
-                                                                  Object... params) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
-    {
-        PersonalProfileResponse restResult = this.callGetRESTCall(methodName, PersonalProfileResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a list of PersonalProfileElement objects.
-     *
-     * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
-     * @return PersonalProfileListResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public PersonalProfileListResponse callPersonalProfileListGetRESTCall(String    methodName,
-                                                                          String    urlTemplate,
-                                                                          Object... params) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
-    {
-        PersonalProfileListResponse restResult = this.callGetRESTCall(methodName, PersonalProfileListResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
      * Issue a GET REST call that returns a CertificationTypeResponse object.
      *
      * @param methodName  name of the method being called
@@ -444,6 +393,32 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
 
         return restResult;
     }
+
+
+    /**
+     * Issue a GET REST call that returns a GovernanceDomainSetListResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return GovernanceDomainSetResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public GovernanceDomainSetListResponse callGovernanceDomainSetListGetRESTCall(String    methodName,
+                                                                                  String    urlTemplate,
+                                                                                  Object... params) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        GovernanceDomainSetListResponse restResult = this.callGetRESTCall(methodName, GovernanceDomainSetListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
 
 
     /**

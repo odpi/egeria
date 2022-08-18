@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * The GovernanceMetricsInterface supports the definition of the metrics that measure the success of the governance program.  Typically a
+ * The GovernanceMetricsInterface supports the definition of the metrics that measure the success of the governance program.  Typically, a
  * metric is associated with a governance definition.
  */
 public interface GovernanceMetricsInterface

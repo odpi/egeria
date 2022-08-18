@@ -19,11 +19,12 @@ import java.util.List;
  */
 public class AddEntityExecutor extends RepositoryExecutorBase
 {
-    private String                 entityTypeGUID;
-    private InstanceProperties     initialProperties;
-    private List<Classification>   initialClassifications;
-    private InstanceStatus         initialStatus;
-    private MaintenanceAccumulator accumulator;
+    private final String                 entityTypeGUID;
+    private final InstanceProperties     initialProperties;
+    private final List<Classification>   initialClassifications;
+    private final InstanceStatus         initialStatus;
+    private final MaintenanceAccumulator accumulator;
+
     private String                 externalSourceGUID = null;
     private String                 externalSourceName = null;
     private EntityDetail           newEntity          = null;

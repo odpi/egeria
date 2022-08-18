@@ -98,8 +98,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                     effectiveTo = new Date(suppliedProject.getEffectiveToTime());
                 }
 
-                ProjectBuilder builder = new ProjectBuilder(
-                                                            suppliedProject.getQualifiedName(),
+                ProjectBuilder builder = new ProjectBuilder(suppliedProject.getQualifiedName(),
+                                                            suppliedProject.getIdentifier(),
                                                             suppliedProject.getName(),
                                                             suppliedProject.getDescription(),
                                                             suppliedProject.getStartDate(),

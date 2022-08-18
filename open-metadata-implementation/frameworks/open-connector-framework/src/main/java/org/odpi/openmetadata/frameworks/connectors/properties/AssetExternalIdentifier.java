@@ -23,7 +23,7 @@ public class AssetExternalIdentifier extends AssetReferenceable
     /**
      * Bean constructor
      *
-     * @param externalIdentifierBean bean containing all of the properties
+     * @param externalIdentifierBean bean containing all the properties
      */
     public AssetExternalIdentifier(ExternalIdentifier   externalIdentifierBean)
     {
@@ -44,7 +44,7 @@ public class AssetExternalIdentifier extends AssetReferenceable
      * Bean constructor with parent asset
      *
      * @param parentAsset   descriptor for parent asset
-     * @param externalIdentifierBean bean containing all of the properties
+     * @param externalIdentifierBean bean containing all the properties
      */
     public AssetExternalIdentifier(AssetDescriptor      parentAsset,
                                    ExternalIdentifier   externalIdentifierBean)
@@ -84,7 +84,7 @@ public class AssetExternalIdentifier extends AssetReferenceable
 
 
     /**
-     * Return the bean with all of the properties - used in the cloning process.
+     * Return the bean with all the properties - used in the cloning process.
      *
      * @return ExternalIdentifier bean
      */

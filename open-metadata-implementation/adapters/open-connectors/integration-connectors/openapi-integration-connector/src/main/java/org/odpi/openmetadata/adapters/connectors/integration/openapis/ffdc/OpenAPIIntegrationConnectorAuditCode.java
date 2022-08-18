@@ -72,7 +72,7 @@ public enum OpenAPIIntegrationConnectorAuditCode implements AuditLogMessageSet
                             OMRSAuditLogRecordSeverity.INFO,
                             "The {0} integration connector retrieved the Open API Specification from URL {1} ({2} ({3})) and catalogued {4} APIs with a total of {5} operations.",
                             "The connector extracted the content of the Open API, retrieved/created the endpoint for it and created a DeployedAPI asset for each 'tag' linked to an APIOperation for each 'path/operation' pair",
-                            "Validate that the connector is extracting all of the required information for your use case."),
+                            "Validate that the connector is extracting all the required information for your use case."),
 
     UNABLE_TO_RETRIEVE_OPEN_API_SPEC("OPEN-API-INTEGRATION-CONNECTOR-0008",
                             OMRSAuditLogRecordSeverity.EXCEPTION,

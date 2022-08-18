@@ -26,6 +26,8 @@ public class ValidValueElement implements MetadataElement, Serializable
 
     private ElementHeader        elementHeader = null;
     private ValidValueProperties validValueProperties = null;
+    private String               setGUID = null;
+    private boolean              isDefaultValue = false;
 
 
     /**
@@ -48,6 +50,8 @@ public class ValidValueElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             validValueProperties = template.getValidValueProperties();
+            setGUID = template.setGUID;
+            isDefaultValue = getIsDefaultValue();
         }
     }
 
@@ -99,6 +103,49 @@ public class ValidValueElement implements MetadataElement, Serializable
 
 
     /**
+     * Return the set unique identifier if the valid value is retrieved via a set.
+     *
+     * @return string identifier
+     */
+    public String getSetGUID()
+    {
+        return setGUID;
+    }
+
+
+    /**
+     * Set up the set unique identifier if the valid value is retrieved via a set.
+     *
+     * @param setGUID string identifier
+     */
+    public void setSetGUID(String setGUID)
+    {
+        this.setGUID = setGUID;
+    }
+
+
+    /**
+     * Return whether this valid value is the default of the setGUID (if supplied)
+     * @return flag
+     */
+    public boolean getIsDefaultValue()
+    {
+        return isDefaultValue;
+    }
+
+
+    /**
+     * Set up whether this valid value is the default of the setGUID (if supplied).
+     *
+     * @param defaultValue flag
+     */
+    public void setIsDefaultValue(boolean defaultValue)
+    {
+        isDefaultValue = defaultValue;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -107,9 +154,11 @@ public class ValidValueElement implements MetadataElement, Serializable
     public String toString()
     {
         return "ValidValueElement{" +
-                "elementHeader=" + elementHeader +
-                ", validValueProperties=" + validValueProperties +
-                '}';
+                       "elementHeader=" + elementHeader +
+                       ", validValueProperties=" + validValueProperties +
+                       ", setGUID='" + setGUID + '\'' +
+                       ", isDefaultValue=" + isDefaultValue +
+                       '}';
     }
 
 
@@ -130,13 +179,9 @@ public class ValidValueElement implements MetadataElement, Serializable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         ValidValueElement that = (ValidValueElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(validValueProperties, that.validValueProperties);
+        return isDefaultValue == that.isDefaultValue && Objects.equals(elementHeader, that.elementHeader) && Objects.equals(
+                validValueProperties, that.validValueProperties) && Objects.equals(setGUID, that.setGUID);
     }
 
 
@@ -148,6 +193,6 @@ public class ValidValueElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, validValueProperties);
+        return Objects.hash(super.hashCode(), elementHeader, validValueProperties, setGUID, isDefaultValue);
     }
 }

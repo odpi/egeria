@@ -95,7 +95,7 @@ public class AssetEnumSchemaType extends AssetSimpleSchemaType
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return enum element bean
      */
