@@ -5,8 +5,8 @@
 
 Markdown is a simple tagging language that generates HTML webpages.
 We use it for documentation (this page is written in markdown for example), in GitHub comments and
-in the [Jupyter Notebooks](Jupyter-Notebooks.md) that form the teaching material for the
-[Hand-on Labs](../../open-metadata-resources/open-metadata-labs).
+in the Jupyter Notebooks that form the teaching material for the
+[Hand-on Labs](https://egeria-project.org/education/open-metadata-labs/overview/).
 
 This summary for markdown is very useful
 * [Markdown Syntax (from GitHub)](https://guides.github.com/pdfs/markdown-cheatsheet-online.pdf)
