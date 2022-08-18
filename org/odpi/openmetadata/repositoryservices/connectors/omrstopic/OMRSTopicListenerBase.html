@@ -141,7 +141,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public class <span class="typeNameLabel">OMRSTopicListenerBase</span>
 extends java.lang.Object
 implements <a href="OMRSTopicListener.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicListener</a></pre>
-<div class="block">OMRSTopicListenerBase provides a base class for a topic listener so it only needs to
+<div class="block">OMRSTopicListenerBase provides a base class for a topic listener, so it only needs to
  override the methods for the events it cares about.</div>
 </li>
 </ul>
@@ -314,7 +314,7 @@ implements <a href="OMRSTopicListener.html" title="interface in org.odpi.openmet
                                    java.lang.String&nbsp;errorMessage)</code></th>
 <td class="colLast">
 <div class="block">There is more than one member of the open metadata repository cohort that is using the same metadata
- collection Id.</div>
+ collection id.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
@@ -1231,7 +1231,7 @@ implements <a href="OMRSTopicListener.html" title="interface in org.odpi.openmet
                                                    java.lang.String&nbsp;conflictingMetadataCollectionId,
                                                    java.lang.String&nbsp;errorMessage)</pre>
 <div class="block">There is more than one member of the open metadata repository cohort that is using the same metadata
- collection Id.  This means that their metadata instances can be updated in more than one server and their
+ collection id.  This means that their metadata instances can be updated in more than one server and there
  is a potential for data integrity issues.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1272,7 +1272,7 @@ implements <a href="OMRSTopicListener.html" title="interface in org.odpi.openmet
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>targetMetadataCollectionId</code> - Id for the repository with the bad remote connection.</dd>
+<dd><code>targetMetadataCollectionId</code> - id for the repository with the bad remote connection.</dd>
 <dd><code>remoteConnection</code> - the Connection properties for the connector used to call the registering server.</dd>
 <dd><code>errorMessage</code> - details of the error that occurs when the connection is used.</dd>
 </dl>
@@ -1675,7 +1675,7 @@ implements <a href="OMRSTopicListener.html" title="interface in org.odpi.openmet
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity with the new classification added. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity with the new classification added. No guarantee this is all the classifications.</dd>
 <dd><code>classification</code> - new classification</dd>
 </dl>
 </li>
@@ -1703,7 +1703,7 @@ implements <a href="OMRSTopicListener.html" title="interface in org.odpi.openmet
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity with the new classification added. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity with the new classification added. No guarantee this is all the classifications.</dd>
 <dd><code>classification</code> - new classification</dd>
 </dl>
 </li>
@@ -1759,7 +1759,7 @@ public&nbsp;void&nbsp;processClassifiedEntityEvent&#8203;(java.lang.String&nbsp;
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity after the classification has been removed. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity after the classification has been removed. No guarantee this is all the classifications.</dd>
 <dd><code>originalClassification</code> - classification that was removed</dd>
 </dl>
 </li>
@@ -1787,7 +1787,7 @@ public&nbsp;void&nbsp;processClassifiedEntityEvent&#8203;(java.lang.String&nbsp;
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity after the classification has been removed. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity after the classification has been removed. No guarantee this is all the classifications.</dd>
 <dd><code>originalClassification</code> - classification that was removed</dd>
 </dl>
 </li>
@@ -1844,7 +1844,7 @@ public&nbsp;void&nbsp;processDeclassifiedEntityEvent&#8203;(java.lang.String&nbs
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity after the classification has been changed. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity after the classification has been changed. No guarantee this is all the classifications.</dd>
 <dd><code>originalClassification</code> - classification that was removed</dd>
 <dd><code>classification</code> - new classification</dd>
 </dl>
@@ -1874,7 +1874,7 @@ public&nbsp;void&nbsp;processDeclassifiedEntityEvent&#8203;(java.lang.String&nbs
 <dd><code>originatorServerName</code> - name of the server that the event came from.</dd>
 <dd><code>originatorServerType</code> - type of server that the event came from.</dd>
 <dd><code>originatorOrganizationName</code> - name of the organization that owns the server that sent the event.</dd>
-<dd><code>entity</code> - details of the entity after the classification has been changed. No guarantee this is all of the classifications.</dd>
+<dd><code>entity</code> - details of the entity after the classification has been changed. No guarantee this is all the classifications.</dd>
 <dd><code>originalClassification</code> - classification that was removed</dd>
 <dd><code>classification</code> - new classification</dd>
 </dl>
@@ -1920,7 +1920,7 @@ public&nbsp;void&nbsp;processReclassifiedEntityEvent&#8203;(java.lang.String&nbs
                                       java.lang.String&nbsp;originatorServerType,
                                       java.lang.String&nbsp;originatorOrganizationName,
                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail&nbsp;entity)</pre>
-<div class="block">An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+<div class="block">An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
  but it is no longer returned on queries.
  <p>
  All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -2072,7 +2072,7 @@ public&nbsp;void&nbsp;processReclassifiedEntityEvent&#8203;(java.lang.String&nbs
                                       java.lang.String&nbsp;originatorOrganizationName,
                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary&nbsp;originalTypeDefSummary,
                                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail&nbsp;entity)</pre>
-<div class="block">An existing entity has had its type changed.  Typically this action is taken to move an entity's
+<div class="block">An existing entity has had its type changed.  Typically, this action is taken to move an entity's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>
@@ -2270,7 +2270,7 @@ public&nbsp;void&nbsp;processReclassifiedEntityEvent&#8203;(java.lang.String&nbs
                                             java.lang.String&nbsp;originatorServerType,
                                             java.lang.String&nbsp;originatorOrganizationName,
                                             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship&nbsp;relationship)</pre>
-<div class="block">An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+<div class="block">An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
  but it is no longer returned on queries.
  <p>
  Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
@@ -2416,7 +2416,7 @@ public&nbsp;void&nbsp;processReclassifiedEntityEvent&#8203;(java.lang.String&nbs
                                             java.lang.String&nbsp;originatorOrganizationName,
                                             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary&nbsp;originalTypeDefSummary,
                                             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship&nbsp;relationship)</pre>
-<div class="block">An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+<div class="block">An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
  type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
  added.)  However, the type can be changed to any compatible type.</div>
 <dl>

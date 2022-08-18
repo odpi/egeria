@@ -199,24 +199,24 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAppointees()">getAppointees</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the list of Person profiles that are appointed to the role.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHeader()">getElementHeader</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">PersonRoleProperties</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProperties()">getProperties</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the properties of the role.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedElement()">getRelatedElement</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return details of the relationship used to retrieve this element.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
@@ -228,23 +228,23 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAppointees(java.util.List)">setAppointees</a></span>&#8203;(java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;&nbsp;appointees)</code></th>
-<td class="colLast">
-<div class="block">Set up  the list of Person profiles that are appointed to the role.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementHeader(org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementHeader)">setElementHeader</a></span>&#8203;(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementHeader</a>&nbsp;header)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProperties(org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties)">setProperties</a></span>&#8203;(<a href="../properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">PersonRoleProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Set up the role properties.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRelatedElement(org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement)">setRelatedElement</a></span>&#8203;(<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&nbsp;relatedElement)</code></th>
+<td class="colLast">
+<div class="block">Set up details of the relationship used to retrieve this element.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
@@ -372,31 +372,33 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </dl>
 </li>
 </ul>
-<a id="getAppointees()">
+<a id="getRelatedElement()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getAppointees</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;&nbsp;getAppointees()</pre>
-<div class="block">Return the list of Person profiles that are appointed to the role.</div>
+<h4>getRelatedElement</h4>
+<pre class="methodSignature">public&nbsp;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&nbsp;getRelatedElement()</pre>
+<div class="block">Return details of the relationship used to retrieve this element.
+ Will be null if the element was retrieved directly rather than via a relationship.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of element stubs</dd>
 </dl>
 </li>
 </ul>
-<a id="setAppointees(java.util.List)">
+<a id="setRelatedElement(org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setAppointees</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setAppointees&#8203;(java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;&nbsp;appointees)</pre>
-<div class="block">Set up  the list of Person profiles that are appointed to the role.</div>
+<h4>setRelatedElement</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRelatedElement&#8203;(<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&nbsp;relatedElement)</pre>
+<div class="block">Set up details of the relationship used to retrieve this element.
+ Will be null if the element was retrieved directly rather than via a relationship.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>appointees</code> - list of element stubs</dd>
+<dd><code>relatedElement</code> - relationship details</dd>
 </dl>
 </li>
 </ul>

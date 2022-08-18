@@ -138,7 +138,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 extends java.lang.Object
 implements <a href="../api/GovernanceRolesInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceRolesInterface</a></pre>
 <div class="block">GovernanceRoleManager provides one of the client-side interface for the Governance Program Open Metadata Access Service (OMAS).
- This client manages all of the interaction with an open metadata repository.  It is initialized with the URL
+ This client manages all the interaction with an open metadata repository.  It is initialized with the URL
  of the server that is running the Open Metadata Access Services.  This server is responsible for locating and
  managing the governance program definitions exchanged with this client.</div>
 </li>
@@ -256,7 +256,7 @@ implements <a href="../api/GovernanceRolesInterface.html" title="interface in or
                                     int&nbsp;startFrom,
                                     int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Return all of the governance roles and their incumbents (if any).</div>
+<div class="block">Return all the governance roles and their incumbents (if any).</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
@@ -291,7 +291,7 @@ implements <a href="../api/GovernanceRolesInterface.html" title="interface in or
                             int&nbsp;startFrom,
                             int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Return all of the defined governance roles for a specific governance domain.</div>
+<div class="block">Return all the defined governance roles for a specific governance domain.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
@@ -301,7 +301,7 @@ implements <a href="../api/GovernanceRolesInterface.html" title="interface in or
                          int&nbsp;startFrom,
                          int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Retrieve all of the governance roles for a particular title.</div>
+<div class="block">Retrieve all the governance roles for a particular title.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
@@ -490,7 +490,7 @@ implements <a href="../api/GovernanceRolesInterface.html" title="interface in or
                              org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient&nbsp;restClient,
                              int&nbsp;maxPageSize)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
-<div class="block">Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.</div>
+<div class="block">Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
@@ -562,7 +562,7 @@ implements <a href="../api/GovernanceRolesInterface.html" title="interface in or
 <dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or replaced with null?</dd>
 <dd><code>properties</code> - the description of the governance role</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the title is null or the governanceDomain/appointmentId does not match the
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the title is null or the governanceDomain/appointmentId does not match
                                    the existing values associated with the governanceRoleGUID.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the server is not available.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the calling user is not authorized to issue the call.</dd>
@@ -770,7 +770,7 @@ implements <a href="../api/GovernanceRolesInterface.html" title="interface in or
                                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Retrieve the properties of a governance role using its unique name.  The results are returned as a list
  since it is possible that two roles have the same identifier due to the distributed nature of the
- open metadata ecosystem.  By returning all of the search results here it is possible to manage the
+ open metadata ecosystem.  By returning all the search results here it is possible to manage the
  duplicates through this interface.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -800,7 +800,7 @@ implements <a href="../api/GovernanceRolesInterface.html" title="interface in or
                                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Return all of the defined governance roles for a specific governance domain.</div>
+<div class="block">Return all the defined governance roles for a specific governance domain.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/GovernanceRolesInterface.html#getGovernanceRolesByDomainId(java.lang.String,int,int,int)">getGovernanceRolesByDomainId</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceRolesInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceRolesInterface</a></code></dd>
@@ -831,7 +831,7 @@ implements <a href="../api/GovernanceRolesInterface.html" title="interface in or
                                                                 throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                        <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve all of the governance roles for a particular title.  The title can include regEx wildcards.</div>
+<div class="block">Retrieve all the governance roles for a particular title.  The title can include regEx wildcards.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/GovernanceRolesInterface.html#getGovernanceRolesByTitle(java.lang.String,java.lang.String,int,int)">getGovernanceRolesByTitle</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceRolesInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceRolesInterface</a></code></dd>
@@ -862,7 +862,7 @@ implements <a href="../api/GovernanceRolesInterface.html" title="interface in or
                                                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Return all of the governance roles and their incumbents (if any).</div>
+<div class="block">Return all the governance roles and their incumbents (if any).</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/GovernanceRolesInterface.html#getCurrentGovernanceRoleAppointments(java.lang.String,int,int,int)">getCurrentGovernanceRoleAppointments</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceRolesInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceRolesInterface</a></code></dd>

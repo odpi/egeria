@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -213,24 +213,31 @@ implements java.io.Serializable</pre>
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDescription()">getDescription</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the description of the job role for this governance appointment.</div>
+<div class="block">Return the description of the job role.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>int</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDomainIdentifier()">getDomainIdentifier</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the identifier of the governance domain that this role belongs to.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.Date</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEffectiveFrom()">getEffectiveFrom</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the date/time that this element is effective from (null means effective from the epoch).</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.Date</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEffectiveTo()">getEffectiveTo</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the date/time that element is effective to (null means that it is effective indefinitely into the future).</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExtendedProperties()">getExtendedProperties</a></span>()</code></th>
 <td class="colLast">
@@ -238,28 +245,35 @@ implements java.io.Serializable</pre>
  supported by the bean.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRoleId()">getRoleId</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the unique identifier for this job role/appointment.</div>
-</td>
-</tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getScope()">getScope</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQualifiedName()">getQualifiedName</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the context in which the governance officer is appointed.</div>
+<div class="block">Return the unique name for element in open metadata ecosystem.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRoleId()">getRoleId</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the unique identifier for this job role/appointment typically from an HR system.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getScope()">getScope</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the context in which the person is appointed.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTitle()">getTitle</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the job role title.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypeName()">getTypeName</a></span>()</code></th>
 <td class="colLast">
@@ -267,42 +281,49 @@ implements java.io.Serializable</pre>
  the referenceable.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties)</code></th>
 <td class="colLast">
 <div class="block">Set up additional properties.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
-<div class="block">Set up the description of the job role for this governance officer.</div>
+<div class="block">Set up the description of the job role.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDomainIdentifier(int)">setDomainIdentifier</a></span>&#8203;(int&nbsp;domainIdentifier)</code></th>
+<td class="colLast">
+<div class="block">Set up the identifier of the governance domain that this role belongs to.</div>
+</td>
+</tr>
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a></span>&#8203;(java.util.Date&nbsp;effectiveFrom)</code></th>
 <td class="colLast">
 <div class="block">Set up the date/time that this element is effective from (null means effective from the epoch).</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEffectiveTo(java.util.Date)">setEffectiveTo</a></span>&#8203;(java.util.Date&nbsp;effectiveTo)</code></th>
 <td class="colLast">
 <div class="block">Set the date/time that element is effective to (null means that it is effective indefinitely into the future).</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExtendedProperties(java.util.Map)">setExtendedProperties</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties)</code></th>
 <td class="colLast">
@@ -310,28 +331,35 @@ implements java.io.Serializable</pre>
  supported by the bean.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i19" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setQualifiedName(java.lang.String)">setQualifiedName</a></span>&#8203;(java.lang.String&nbsp;qualifiedName)</code></th>
+<td class="colLast">
+<div class="block">Set up the unique name for element in open metadata ecosystem.</div>
+</td>
+</tr>
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRoleId(java.lang.String)">setRoleId</a></span>&#8203;(java.lang.String&nbsp;roleId)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique identifier for this job role/appointment.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setScope(java.lang.String)">setScope</a></span>&#8203;(java.lang.String&nbsp;scope)</code></th>
 <td class="colLast">
-<div class="block">Set up the context in which the governance officer is appointed.</div>
+<div class="block">Set up the context in which the person is appointed.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTitle(java.lang.String)">setTitle</a></span>&#8203;(java.lang.String&nbsp;title)</code></th>
 <td class="colLast">
 <div class="block">Set up the job role title.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTypeName(java.lang.String)">setTypeName</a></span>&#8203;(java.lang.String&nbsp;typeName)</code></th>
 <td class="colLast">
@@ -339,7 +367,7 @@ implements java.io.Serializable</pre>
  the referenceable.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -404,6 +432,34 @@ implements java.io.Serializable</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getQualifiedName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getQualifiedName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getQualifiedName()</pre>
+<div class="block">Return the unique name for element in open metadata ecosystem.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique name</dd>
+</dl>
+</li>
+</ul>
+<a id="setQualifiedName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setQualifiedName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setQualifiedName&#8203;(java.lang.String&nbsp;qualifiedName)</pre>
+<div class="block">Set up the unique name for element in open metadata ecosystem.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>qualifiedName</code> - unique name</dd>
+</dl>
+</li>
+</ul>
 <a id="getRoleId()">
 <!--   -->
 </a>
@@ -411,10 +467,10 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>getRoleId</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getRoleId()</pre>
-<div class="block">Return the unique identifier for this job role/appointment.</div>
+<div class="block">Return the unique identifier for this job role/appointment typically from an HR system.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique name</dd>
+<dd>unique identifier</dd>
 </dl>
 </li>
 </ul>
@@ -428,7 +484,7 @@ implements java.io.Serializable</pre>
 <div class="block">Set up the unique identifier for this job role/appointment.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>roleId</code> - unique name</dd>
+<dd><code>roleId</code> - unique identifier</dd>
 </dl>
 </li>
 </ul>
@@ -439,7 +495,7 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>getScope</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getScope()</pre>
-<div class="block">Return the context in which the governance officer is appointed. This may be an organizational scope,
+<div class="block">Return the context in which the person is appointed. This may be an organizational scope,
  location, or scope of assets.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -454,7 +510,7 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>setScope</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setScope&#8203;(java.lang.String&nbsp;scope)</pre>
-<div class="block">Set up the context in which the governance officer is appointed. This may be an organizational scope,
+<div class="block">Set up the context in which the person is appointed. This may be an organizational scope,
  location, or scope of assets.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -497,9 +553,7 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>getDescription</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDescription()</pre>
-<div class="block">Return the description of the job role for this governance appointment.  This may relate to the specific
- governance responsibilities, or may be their main role if the governance responsibilities are
- just an adjunct to their main role.</div>
+<div class="block">Return the description of the job role.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>string description</dd>
@@ -513,12 +567,40 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>setDescription</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setDescription&#8203;(java.lang.String&nbsp;description)</pre>
-<div class="block">Set up the description of the job role for this governance officer.  This may relate to the specific
- governance responsibilities, or may be their main role if the governance responsibilities are
- just an adjunct to their main role.</div>
+<div class="block">Set up the description of the job role.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>description</code> - string description</dd>
+</dl>
+</li>
+</ul>
+<a id="getDomainIdentifier()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getDomainIdentifier</h4>
+<pre class="methodSignature">public&nbsp;int&nbsp;getDomainIdentifier()</pre>
+<div class="block">Return the identifier of the governance domain that this role belongs to.  Zero means that the
+ role is not specific to any domain.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>int</dd>
+</dl>
+</li>
+</ul>
+<a id="setDomainIdentifier(int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setDomainIdentifier</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setDomainIdentifier&#8203;(int&nbsp;domainIdentifier)</pre>
+<div class="block">Set up the identifier of the governance domain that this role belongs to.  Zero means that the
+ role is not specific to any domain.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>domainIdentifier</code> - int</dd>
 </dl>
 </li>
 </ul>
@@ -532,7 +614,7 @@ implements java.io.Serializable</pre>
 <div class="block">Return a copy of the additional properties.  Null means no additional properties are available.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>AdditionalProperties</dd>
+<dd>AdditionalProperties map</dd>
 </dl>
 </li>
 </ul>
@@ -546,7 +628,7 @@ implements java.io.Serializable</pre>
 <div class="block">Set up additional properties.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>additionalProperties</code> - Additional properties object</dd>
+<dd><code>additionalProperties</code> - Additional properties map</dd>
 </dl>
 </li>
 </ul>

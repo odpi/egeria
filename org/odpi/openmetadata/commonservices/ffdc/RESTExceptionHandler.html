@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":42,"i8":10,"i9":42,"i10":10,"i11":10,"i12":42,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":42,"i8":10,"i9":42,"i10":10,"i11":10,"i12":42,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -311,13 +311,21 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#handleInvalidPropertiesObject(java.lang.String,java.lang.String)">handleInvalidPropertiesObject</a></span>&#8203;(java.lang.String&nbsp;expectedClassName,
+                             java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Manage an unexpected exception</div>
+</td>
+</tr>
+<tr id="i16" class="altColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#handleMissingValue(java.lang.String,java.lang.String)">handleMissingValue</a></span>&#8203;(java.lang.String&nbsp;parameterName,
                   java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
 <div class="block">Manage an unexpected exception</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#handleNoRequestBody(java.lang.String,java.lang.String,java.lang.String)">handleNoRequestBody</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;methodName,
@@ -326,7 +334,7 @@ extends java.lang.Object</pre>
 <div class="block">Manage an unexpected exception</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#handleUnexpectedException(java.lang.Throwable,java.lang.String,java.lang.String,java.lang.String)">handleUnexpectedException</a></span>&#8203;(java.lang.Throwable&nbsp;error,
                          java.lang.String&nbsp;methodName,
@@ -420,6 +428,25 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
+<a id="handleInvalidPropertiesObject(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>handleInvalidPropertiesObject</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;handleInvalidPropertiesObject&#8203;(java.lang.String&nbsp;expectedClassName,
+                                          java.lang.String&nbsp;methodName)
+                                   throws <a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
+<div class="block">Manage an unexpected exception</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>expectedClassName</code> - name of expected properties class</dd>
+<dd><code>methodName</code> - method that caught the exception</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - exception to report error</dd>
+</dl>
+</li>
+</ul>
 <a id="handleBadType(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
@@ -435,7 +462,7 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>subTypeName</code> - subtype that does not match</dd>
-<dd><code>superTypeName</code> - expected uster type</dd>
+<dd><code>superTypeName</code> - expected (super) type</dd>
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - method that caught the exception</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

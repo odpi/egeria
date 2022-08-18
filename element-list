@@ -85,7 +85,11 @@ org.odpi.openmetadata.accessservices.itinfrastructure.events
 org.odpi.openmetadata.accessservices.itinfrastructure.ffdc
 org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements
 org.odpi.openmetadata.accessservices.itinfrastructure.properties
+org.odpi.openmetadata.accessservices.projectmanagement.api
+org.odpi.openmetadata.accessservices.projectmanagement.client
 org.odpi.openmetadata.accessservices.projectmanagement.ffdc
+org.odpi.openmetadata.accessservices.projectmanagement.metadataelements
+org.odpi.openmetadata.accessservices.projectmanagement.properties
 org.odpi.openmetadata.accessservices.securitymanager.api
 org.odpi.openmetadata.accessservices.securitymanager.client
 org.odpi.openmetadata.accessservices.securitymanager.events

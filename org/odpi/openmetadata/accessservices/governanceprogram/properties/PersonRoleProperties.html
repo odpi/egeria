@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -240,26 +240,33 @@ implements java.io.Serializable</pre>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRoleId()">getRoleId</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQualifiedName()">getQualifiedName</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the unique identifier for this job role/appointment.</div>
+<div class="block">Return the unique name for element in open metadata ecosystem.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRoleId()">getRoleId</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the unique identifier for this job role/appointment typically from an HR system.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getScope()">getScope</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the context in which the governance officer is appointed.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTitle()">getTitle</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the job role title.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTypeName()">getTypeName</a></span>()</code></th>
 <td class="colLast">
@@ -267,28 +274,28 @@ implements java.io.Serializable</pre>
  the referenceable.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties)</code></th>
 <td class="colLast">
 <div class="block">Set up additional properties.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
 <div class="block">Set up the description of the job role for this governance officer.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExtendedProperties(java.util.Map)">setExtendedProperties</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;extendedProperties)</code></th>
 <td class="colLast">
@@ -296,42 +303,49 @@ implements java.io.Serializable</pre>
  supported by the bean.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setHeadCount(int)">setHeadCount</a></span>&#8203;(int&nbsp;headCount)</code></th>
 <td class="colLast">
 <div class="block">Set up the number of people that can be appointed to this role.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setHeadCountLimitSet(boolean)">setHeadCountLimitSet</a></span>&#8203;(boolean&nbsp;headCountLimitSet)</code></th>
 <td class="colLast">
 <div class="block">Set up the indicator whether the head count limit is set for a person role.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setQualifiedName(java.lang.String)">setQualifiedName</a></span>&#8203;(java.lang.String&nbsp;qualifiedName)</code></th>
+<td class="colLast">
+<div class="block">Set up the unique name for element in open metadata ecosystem.</div>
+</td>
+</tr>
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRoleId(java.lang.String)">setRoleId</a></span>&#8203;(java.lang.String&nbsp;roleId)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique identifier for this job role/appointment.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setScope(java.lang.String)">setScope</a></span>&#8203;(java.lang.String&nbsp;scope)</code></th>
 <td class="colLast">
 <div class="block">Set up the context in which the governance officer is appointed.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTitle(java.lang.String)">setTitle</a></span>&#8203;(java.lang.String&nbsp;title)</code></th>
 <td class="colLast">
 <div class="block">Set up the job role title.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTypeName(java.lang.String)">setTypeName</a></span>&#8203;(java.lang.String&nbsp;typeName)</code></th>
 <td class="colLast">
@@ -339,7 +353,7 @@ implements java.io.Serializable</pre>
  the referenceable.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -404,6 +418,34 @@ implements java.io.Serializable</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getQualifiedName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getQualifiedName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getQualifiedName()</pre>
+<div class="block">Return the unique name for element in open metadata ecosystem.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique name</dd>
+</dl>
+</li>
+</ul>
+<a id="setQualifiedName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setQualifiedName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setQualifiedName&#8203;(java.lang.String&nbsp;qualifiedName)</pre>
+<div class="block">Set up the unique name for element in open metadata ecosystem.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>qualifiedName</code> - unique name</dd>
+</dl>
+</li>
+</ul>
 <a id="getRoleId()">
 <!--   -->
 </a>
@@ -411,10 +453,10 @@ implements java.io.Serializable</pre>
 <li class="blockList">
 <h4>getRoleId</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getRoleId()</pre>
-<div class="block">Return the unique identifier for this job role/appointment.</div>
+<div class="block">Return the unique identifier for this job role/appointment typically from an HR system.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique name</dd>
+<dd>unique identifier</dd>
 </dl>
 </li>
 </ul>
@@ -428,7 +470,7 @@ implements java.io.Serializable</pre>
 <div class="block">Set up the unique identifier for this job role/appointment.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>roleId</code> - unique name</dd>
+<dd><code>roleId</code> - unique identifier</dd>
 </dl>
 </li>
 </ul>

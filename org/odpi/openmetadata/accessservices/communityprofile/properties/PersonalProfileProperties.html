@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -266,96 +266,110 @@ extends <a href="ActorProfileProperties.html" title="class in org.odpi.openmetad
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPronouns()">getPronouns</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the person's preferred pronouns.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSurname()">getSurname</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the family name of the person.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTitle()">getTitle</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the courtesy title for the person.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Just use the GUID for the hash code as it should be unique.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEmployeeNumber(java.lang.String)">setEmployeeNumber</a></span>&#8203;(java.lang.String&nbsp;employeeNumber)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique identifier of the person used by their employer.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEmployeeType(java.lang.String)">setEmployeeType</a></span>&#8203;(java.lang.String&nbsp;employeeType)</code></th>
 <td class="colLast">
 <div class="block">Set up code used by employer typically to describe the type of employment contract.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setFullName(java.lang.String)">setFullName</a></span>&#8203;(java.lang.String&nbsp;fullName)</code></th>
 <td class="colLast">
 <div class="block">Set up the full legal name for this person.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGivenNames(java.lang.String)">setGivenNames</a></span>&#8203;(java.lang.String&nbsp;givenNames)</code></th>
 <td class="colLast">
 <div class="block">Set up the name strings that are the part of a person's name that is not their surname.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setInitials(java.lang.String)">setInitials</a></span>&#8203;(java.lang.String&nbsp;initials)</code></th>
 <td class="colLast">
 <div class="block">Set up first letter of each of the person's given names.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIsPublic(boolean)">setIsPublic</a></span>&#8203;(boolean&nbsp;isPublic)</code></th>
 <td class="colLast">
 <div class="block">Set up if the contents of this profile is to be shared with colleagues.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setJobTitle(java.lang.String)">setJobTitle</a></span>&#8203;(java.lang.String&nbsp;jobTitle)</code></th>
 <td class="colLast">
 <div class="block">Set up the primary job title for this person.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPreferredLanguage(java.lang.String)">setPreferredLanguage</a></span>&#8203;(java.lang.String&nbsp;preferredLanguage)</code></th>
 <td class="colLast">
 <div class="block">Set up spoken or written language preferred by the person.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPronouns(java.lang.String)">setPronouns</a></span>&#8203;(java.lang.String&nbsp;pronouns)</code></th>
+<td class="colLast">
+<div class="block">Set up the person's preferred pronouns.</div>
+</td>
+</tr>
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSurname(java.lang.String)">setSurname</a></span>&#8203;(java.lang.String&nbsp;surname)</code></th>
 <td class="colLast">
 <div class="block">Set up the family name of the person.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTitle(java.lang.String)">setTitle</a></span>&#8203;(java.lang.String&nbsp;title)</code></th>
 <td class="colLast">
 <div class="block">Set up the courtesy title for the person.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -459,6 +473,34 @@ extends <a href="ActorProfileProperties.html" title="class in org.odpi.openmetad
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>fullName</code> - string name</dd>
+</dl>
+</li>
+</ul>
+<a id="getPronouns()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPronouns</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getPronouns()</pre>
+<div class="block">Return the person's preferred pronouns.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string</dd>
+</dl>
+</li>
+</ul>
+<a id="setPronouns(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setPronouns</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setPronouns&#8203;(java.lang.String&nbsp;pronouns)</pre>
+<div class="block">Set up the person's preferred pronouns.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>pronouns</code> - string</dd>
 </dl>
 </li>
 </ul>

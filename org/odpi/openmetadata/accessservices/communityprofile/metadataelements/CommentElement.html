@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -200,69 +200,55 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAnsweredBy()">getAnsweredBy</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the list of comments that answer a question posed in this comment.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAnswers()">getAnswers</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the list of unique identifiers (guids) for comments that contain a question that this comment answers.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHeader()">getElementHeader</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CommentProperties</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProperties()">getProperties</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the properties of the comment.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedElement()">getRelatedElement</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return details of the relationship used to retrieve this element.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAnsweredBy(java.util.List)">setAnsweredBy</a></span>&#8203;(java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;&nbsp;answeredBy)</code></th>
-<td class="colLast">
-<div class="block">Set up the list of comments that answer a question posed in this comment.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAnswers(java.util.List)">setAnswers</a></span>&#8203;(java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;&nbsp;answers)</code></th>
-<td class="colLast">
-<div class="block">Set up the list of comments that contain a question that this comment answers.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementHeader(org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementHeader)">setElementHeader</a></span>&#8203;(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProperties(org.odpi.openmetadata.accessservices.communityprofile.properties.CommentProperties)">setProperties</a></span>&#8203;(<a href="../properties/CommentProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CommentProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Set up the comment properties.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRelatedElement(org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement)">setRelatedElement</a></span>&#8203;(<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&nbsp;relatedElement)</code></th>
+<td class="colLast">
+<div class="block">Set up details of the relationship used to retrieve this element.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -387,59 +373,33 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </dl>
 </li>
 </ul>
-<a id="getAnsweredBy()">
+<a id="getRelatedElement()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getAnsweredBy</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;&nbsp;getAnsweredBy()</pre>
-<div class="block">Return the list of comments that answer a question posed in this comment.</div>
+<h4>getRelatedElement</h4>
+<pre class="methodSignature">public&nbsp;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&nbsp;getRelatedElement()</pre>
+<div class="block">Return details of the relationship used to retrieve this element.
+ Will be null if the element was retrieved directly rather than via a relationship.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of related comments</dd>
+<dd>list of element stubs</dd>
 </dl>
 </li>
 </ul>
-<a id="setAnsweredBy(java.util.List)">
+<a id="setRelatedElement(org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setAnsweredBy</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setAnsweredBy&#8203;(java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;&nbsp;answeredBy)</pre>
-<div class="block">Set up the list of comments that answer a question posed in this comment.</div>
+<h4>setRelatedElement</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRelatedElement&#8203;(<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&nbsp;relatedElement)</pre>
+<div class="block">Set up details of the relationship used to retrieve this element.
+ Will be null if the element was retrieved directly rather than via a relationship.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>answeredBy</code> - list of related comments</dd>
-</dl>
-</li>
-</ul>
-<a id="getAnswers()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getAnswers</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;&nbsp;getAnswers()</pre>
-<div class="block">Return the list of unique identifiers (guids) for comments that contain a question that this comment answers.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of related comments</dd>
-</dl>
-</li>
-</ul>
-<a id="setAnswers(java.util.List)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setAnswers</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setAnswers&#8203;(java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ElementStub</a>&gt;&nbsp;answers)</pre>
-<div class="block">Set up the list of comments that contain a question that this comment answers.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>answers</code> - list of related comments</dd>
+<dd><code>relatedElement</code> - relationship details</dd>
 </dl>
 </li>
 </ul>

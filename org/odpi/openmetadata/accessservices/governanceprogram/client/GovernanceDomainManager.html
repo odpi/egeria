@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -138,9 +138,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 extends java.lang.Object
 implements <a href="../api/GovernanceDomainInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDomainInterface</a></pre>
 <div class="block">GovernanceDomainManager sets up the governance domains that are part of an organization governance.
- Each governance domain describes a focus for governance.  The governance domain typically focuses on a particular set of activity
- within the organization.  There is often overlap in the resources (assets) that each domain governs.  As a result, there is
- often linkage between the governance definitions from different governance domains.</div>
+ Each governance domain describes a focus for governance.</div>
 </li>
 </ul>
 </div>
@@ -224,6 +222,15 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDomainToSet(java.lang.String,java.lang.String,java.lang.String)">addDomainToSet</a></span>&#8203;(java.lang.String&nbsp;userId,
+              java.lang.String&nbsp;governanceDomainSetGUID,
+              java.lang.String&nbsp;governanceDomainGUID)</code></th>
+<td class="colLast">
+<div class="block">Create a parent-child relationship between a governance domain set and a governance domain.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createGovernanceDomain(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainProperties)">createGovernanceDomain</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;setGUID,
@@ -232,7 +239,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Create a new metadata element to represent a governance domain.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createGovernanceDomainSet(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties)">createGovernanceDomainSet</a></span>&#8203;(java.lang.String&nbsp;userId,
                          <a href="../properties/GovernanceDomainSetProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDomainSetProperties</a>&nbsp;properties)</code></th>
@@ -240,14 +247,14 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Create a new metadata element to represent the root of a Governance Domain Set.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createStandardGovernanceDomains(java.lang.String)">createStandardGovernanceDomains</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
 <div class="block">Create a governance domain set called "EgeriaStandardDomains" containing governance domain definitions for the following governance domains.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteGovernanceDomain(java.lang.String,java.lang.String)">deleteGovernanceDomain</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;governanceDomainGUID)</code></th>
@@ -255,7 +262,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Remove the metadata element representing a Governance Domain.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceDomainElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDomainElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findGovernanceDomains(java.lang.String,java.lang.String,int,int)">findGovernanceDomains</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;searchString,
@@ -265,7 +272,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Retrieve the list of Governance Domain metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceDomainSetElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDomainSetElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findGovernanceDomainSets(java.lang.String,java.lang.String,int,int)">findGovernanceDomainSets</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;searchString,
@@ -275,7 +282,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Retrieve the list of governanceDomainSet metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/GovernanceDomainElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDomainElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceDomainByGUID(java.lang.String,java.lang.String)">getGovernanceDomainByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;governanceDomainGUID)</code></th>
@@ -284,7 +291,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
  the metadata repository.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/GovernanceDomainElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDomainElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceDomainByIdentifier(java.lang.String,int)">getGovernanceDomainByIdentifier</a></span>&#8203;(java.lang.String&nbsp;userId,
                                int&nbsp;domainIdentifier)</code></th>
@@ -292,7 +299,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Retrieve the Governance Domain metadata element with the supplied domain identifier.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceDomainElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDomainElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceDomains(java.lang.String,int,int)">getGovernanceDomains</a></span>&#8203;(java.lang.String&nbsp;userId,
                     int&nbsp;startFrom,
@@ -301,7 +308,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Retrieve the list of Governance Domain metadata elements defined for the governance program.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceDomainElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDomainElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceDomainsByName(java.lang.String,java.lang.String,int,int)">getGovernanceDomainsByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;name,
@@ -311,7 +318,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Retrieve the list of Governance Domain metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/GovernanceDomainSetElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDomainSetElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceDomainSetByGUID(java.lang.String,java.lang.String)">getGovernanceDomainSetByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;governanceDomainSetGUID)</code></th>
@@ -319,7 +326,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Retrieve the governanceDomainSet metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceDomainSetElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDomainSetElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceDomainSetsByName(java.lang.String,java.lang.String,int,int)">getGovernanceDomainSetsByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;name,
@@ -329,7 +336,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Retrieve the list of governanceDomainSet metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceDomainSetElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDomainSetElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSetsForGovernanceDomain(java.lang.String,java.lang.String,int,int)">getSetsForGovernanceDomain</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;governanceDomainGUID,
@@ -339,7 +346,16 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Return the list of governance domain sets that a governance domain belong.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDomainFromSet(java.lang.String,java.lang.String,java.lang.String)">removeDomainFromSet</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   java.lang.String&nbsp;governanceDomainSetGUID,
+                   java.lang.String&nbsp;governanceDomainGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove a parent-child relationship between a governance domain set and a governance domain.</div>
+</td>
+</tr>
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeGovernanceDomainSet(java.lang.String,java.lang.String)">removeGovernanceDomainSet</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;governanceDomainSetGUID)</code></th>
@@ -347,7 +363,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Remove the metadata element representing a governanceDomainSet.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceDomain(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainProperties)">updateGovernanceDomain</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;governanceDomainGUID,
@@ -356,7 +372,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 <div class="block">Update the metadata element representing a Governance Domain.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceDomainSet(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties)">updateGovernanceDomainSet</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;governanceDomainSetGUID,
@@ -498,7 +514,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
                                org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient&nbsp;restClient,
                                int&nbsp;maxPageSize)
                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
-<div class="block">Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.</div>
+<div class="block">Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
@@ -541,7 +557,6 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
      <li>Software Development - The software development lifecycle (SDLC) governance domain.</li>
      <li>Corporate - The corporate governance domain.</li>
      <li>Asset Management - The physical asset management governance domain.</li>
-     <li>Other - The governance domain is locally defined.</li>
  </ul></div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -808,6 +823,60 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
 </dl>
 </li>
 </ul>
+<a id="addDomainToSet(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addDomainToSet</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addDomainToSet&#8203;(java.lang.String&nbsp;userId,
+                           java.lang.String&nbsp;governanceDomainSetGUID,
+                           java.lang.String&nbsp;governanceDomainGUID)
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a parent-child relationship between a governance domain set and a governance domain.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/GovernanceDomainInterface.html#addDomainToSet(java.lang.String,java.lang.String,java.lang.String)">addDomainToSet</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceDomainInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDomainInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>governanceDomainSetGUID</code> - unique identifier of the governance domain set</dd>
+<dd><code>governanceDomainGUID</code> - unique identifier of the governance domain</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="removeDomainFromSet(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>removeDomainFromSet</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;removeDomainFromSet&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;governanceDomainSetGUID,
+                                java.lang.String&nbsp;governanceDomainGUID)
+                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove a parent-child relationship between a governance domain set and a governance domain.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/GovernanceDomainInterface.html#removeDomainFromSet(java.lang.String,java.lang.String,java.lang.String)">removeDomainFromSet</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceDomainInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDomainInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>governanceDomainSetGUID</code> - unique identifier of the governance domain set</dd>
+<dd><code>governanceDomainGUID</code> - unique identifier of the governance domain</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
 <a id="getGovernanceDomains(java.lang.String,int,int)">
 <!--   -->
 </a>
@@ -820,8 +889,7 @@ implements <a href="../api/GovernanceDomainInterface.html" title="interface in o
                                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the list of Governance Domain metadata elements defined for the governance program.
- The search string is treated as a regular expression.</div>
+<div class="block">Retrieve the list of Governance Domain metadata elements defined for the governance program.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/GovernanceDomainInterface.html#getGovernanceDomains(java.lang.String,int,int)">getGovernanceDomains</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceDomainInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDomainInterface</a></code></dd>

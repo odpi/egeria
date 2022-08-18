@@ -146,7 +146,7 @@ extends <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.od
  will have their own instance of an OMRSAuditLog. OMRSAuditLog will ensure audit log records are written to
  disk in the common OMRSAuditLog for this local server.
 
- There are different severities of log record to cover all of the activity of the OMRS.
+ There are different severities of log record to cover all the activity of the OMRS.
 
  This audit log is critical to validate the behavior of the OMAG Service, particularly in the initial interaction of
  a new member in the OMRS Cohort.
@@ -273,14 +273,14 @@ extends <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.od
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#logException(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Throwable)">logException</a></span>&#8203;(java.lang.String&nbsp;actionDescription,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#logException(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Exception)">logException</a></span>&#8203;(java.lang.String&nbsp;actionDescription,
             java.lang.String&nbsp;logMessageId,
             <a href="OMRSAuditLogRecordSeverity.html" title="enum in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLogRecordSeverity</a>&nbsp;severity,
             java.lang.String&nbsp;logMessage,
             java.lang.String&nbsp;additionalInformation,
             java.lang.String&nbsp;systemAction,
             java.lang.String&nbsp;userAction,
-            java.lang.Throwable&nbsp;caughtException)</code></th>
+            java.lang.Exception&nbsp;caughtException)</code></th>
 <td class="colLast">
 <div class="block">Log details of an unexpected exception detected by the open metadata modules.</div>
 </td>
@@ -457,7 +457,7 @@ extends <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.od
 </dl>
 </li>
 </ul>
-<a id="logException(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Throwable)">
+<a id="logException(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Exception)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -470,7 +470,7 @@ extends <a href="../../frameworks/auditlog/AuditLog.html" title="class in org.od
                          java.lang.String&nbsp;additionalInformation,
                          java.lang.String&nbsp;systemAction,
                          java.lang.String&nbsp;userAction,
-                         java.lang.Throwable&nbsp;caughtException)</pre>
+                         java.lang.Exception&nbsp;caughtException)</pre>
 <div class="block">Log details of an unexpected exception detected by the open metadata modules.  These exceptions typically mean that the local
  server is not configured correctly, or there is a logic error in the code.  When exceptions are logged, it is
  important that they are investigated and the cause corrected since the local repository is not able to operate

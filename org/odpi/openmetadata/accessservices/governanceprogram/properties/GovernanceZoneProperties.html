@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -239,48 +239,62 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 </td>
 </tr>
 <tr id="i6" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getZoneName()">getZoneName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the unque name of the zone - this is the value configured in properties such as supportedZones and AssetZoneMembership.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCriteria(java.lang.String)">setCriteria</a></span>&#8203;(java.lang.String&nbsp;criteria)</code></th>
 <td class="colLast">
 <div class="block">Set up the details of the criteria that Assets have when they are placed in these zones.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
 <div class="block">Set up the description of the governance zone</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;displayName)</code></th>
 <td class="colLast">
 <div class="block">Set up the short name for the governance zone.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDomainIdentifier(int)">setDomainIdentifier</a></span>&#8203;(int&nbsp;domainIdentifier)</code></th>
 <td class="colLast">
 <div class="block">Set up the identifier of the governance domain that this zone is managed by.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setScope(java.lang.String)">setScope</a></span>&#8203;(java.lang.String&nbsp;scope)</code></th>
 <td class="colLast">
 <div class="block">Set up the scope definition of this zone.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setZoneName(java.lang.String)">setZoneName</a></span>&#8203;(java.lang.String&nbsp;zoneName)</code></th>
+<td class="colLast">
+<div class="block">Set up unique name for the zone - this is the value configured in properties such as supportedZones and AssetZoneMembership.</div>
+</td>
+</tr>
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -352,6 +366,34 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getZoneName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getZoneName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getZoneName()</pre>
+<div class="block">Return the unque name of the zone - this is the value configured in properties such as supportedZones and AssetZoneMembership.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string name</dd>
+</dl>
+</li>
+</ul>
+<a id="setZoneName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setZoneName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setZoneName&#8203;(java.lang.String&nbsp;zoneName)</pre>
+<div class="block">Set up unique name for the zone - this is the value configured in properties such as supportedZones and AssetZoneMembership.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>zoneName</code> - string name</dd>
+</dl>
+</li>
+</ul>
 <a id="getDisplayName()">
 <!--   -->
 </a>

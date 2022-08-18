@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -167,7 +167,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                   <a href="../properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ActorProfileProperties</a>&nbsp;properties,
                   <a href="../properties/ContributionRecord.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ContributionRecord</a>&nbsp;contributionRecord)</code></th>
 <td class="colLast">
-<div class="block">Create a definition of a actor profile.</div>
+<div class="block">Create a definition of an actor profile.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
@@ -212,20 +212,20 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findActorProfile(java.lang.String,java.lang.String,int,int)">findActorProfile</a></span>&#8203;(java.lang.String&nbsp;userId,
-                java.lang.String&nbsp;searchString,
-                int&nbsp;startFrom,
-                int&nbsp;pageSize)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findActorProfiles(java.lang.String,java.lang.String,int,int)">findActorProfiles</a></span>&#8203;(java.lang.String&nbsp;userId,
+                 java.lang.String&nbsp;searchString,
+                 int&nbsp;startFrom,
+                 int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of matching profiles for the search string.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findPersonRole(java.lang.String,java.lang.String,int,int)">findPersonRole</a></span>&#8203;(java.lang.String&nbsp;userId,
-              java.lang.String&nbsp;searchString,
-              int&nbsp;startFrom,
-              int&nbsp;pageSize)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findPersonRoles(java.lang.String,java.lang.String,int,int)">findPersonRoles</a></span>&#8203;(java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;searchString,
+               int&nbsp;startFrom,
+               int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of matching roles for the search string.</div>
 </td>
@@ -239,16 +239,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i9" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActorProfileByName(java.lang.String,java.lang.String,int,int)">getActorProfileByName</a></span>&#8203;(java.lang.String&nbsp;userId,
-                     java.lang.String&nbsp;name,
-                     int&nbsp;startFrom,
-                     int&nbsp;pageSize)</code></th>
-<td class="colLast">
-<div class="block">Return information about a named actor profile.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActorProfileByUserId(java.lang.String,java.lang.String)">getActorProfileByUserId</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;actorProfileUserId)</code></th>
@@ -256,7 +246,36 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return information about a specific actor profile.</div>
 </td>
 </tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActorProfiles(java.lang.String,int,int)">getActorProfiles</a></span>&#8203;(java.lang.String&nbsp;userId,
+                int&nbsp;startFrom,
+                int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about all actor profiles.</div>
+</td>
+</tr>
 <tr id="i11" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActorProfilesByLocation(java.lang.String,java.lang.String,int,int)">getActorProfilesByLocation</a></span>&#8203;(java.lang.String&nbsp;userId,
+                          java.lang.String&nbsp;locationGUID,
+                          int&nbsp;startFrom,
+                          int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the actor profiles associated with a location.</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getActorProfilesByName(java.lang.String,java.lang.String,int,int)">getActorProfilesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
+                      java.lang.String&nbsp;name,
+                      int&nbsp;startFrom,
+                      int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about matching named actor profiles.</div>
+</td>
+</tr>
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleAppointee.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleAppointee</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAppointees(java.lang.String,java.lang.String,java.util.Date,int,int)">getAppointees</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;personRoleGUID,
@@ -267,7 +286,27 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return the list of people appointed to a particular role.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLeadershipRolesForTeam(java.lang.String,java.lang.String,int,int)">getLeadershipRolesForTeam</a></span>&#8203;(java.lang.String&nbsp;userId,
+                         java.lang.String&nbsp;teamGUID,
+                         int&nbsp;startFrom,
+                         int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the leadership person roles linked to a team.</div>
+</td>
+</tr>
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMembershipRolesForTeam(java.lang.String,java.lang.String,int,int)">getMembershipRolesForTeam</a></span>&#8203;(java.lang.String&nbsp;userId,
+                         java.lang.String&nbsp;teamGUID,
+                         int&nbsp;startFrom,
+                         int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the membership person roles linked to a team.</div>
+</td>
+</tr>
+<tr id="i16" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRoleByGUID(java.lang.String,java.lang.String)">getPersonRoleByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;personRoleGUID)</code></th>
@@ -275,17 +314,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return information about a specific person role.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRoleByName(java.lang.String,java.lang.String,int,int)">getPersonRoleByName</a></span>&#8203;(java.lang.String&nbsp;userId,
-                   java.lang.String&nbsp;name,
-                   int&nbsp;startFrom,
-                   int&nbsp;pageSize)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRolesByName(java.lang.String,java.lang.String,int,int)">getPersonRolesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;name,
+                    int&nbsp;startFrom,
+                    int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Return information about a named person role.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkPersonRoleToProfile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties)">linkPersonRoleToProfile</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;externalSourceGUID,
@@ -297,7 +336,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Link a person role to a person profile to show that that person is performing the role.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkTeamPlayer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">linkTeamPlayer</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;externalSourceGUID,
@@ -310,7 +349,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Link a team leader person role or team member person role to a team profile.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkTeamsInHierarchy(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date)">linkTeamsInHierarchy</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;externalSourceGUID,
@@ -324,7 +363,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Link two related team/organization actor profiles together as part of a hierarchy.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkPersonRoleFromProfile(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">unlinkPersonRoleFromProfile</a></span>&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;externalSourceGUID,
@@ -334,7 +373,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the link between a person role and a person profile.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkTeamPlayer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">unlinkTeamPlayer</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;externalSourceGUID,
@@ -346,7 +385,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the link between a person role and a team profile.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkTeamsInHierarchy(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">unlinkTeamsInHierarchy</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;externalSourceGUID,
@@ -357,7 +396,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the link between two actor profiles in the actor profile hierarchy.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateActorProfile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties,org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord)">updateActorProfile</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;externalSourceGUID,
@@ -370,7 +409,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the definition of an actor profile.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAppointment(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties)">updateAppointment</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;externalSourceGUID,
@@ -382,7 +421,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the properties for the appointment of a person to a role.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updatePersonRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties)">updatePersonRole</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;externalSourceGUID,
@@ -425,7 +464,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create a definition of a actor profile.  This could be for the whole organization, a team, a person or a system.</div>
+<div class="block">Create a definition of an actor profile.  This could be for the whole organization, a team, a person or a system.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
@@ -675,24 +714,51 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getActorProfileByName(java.lang.String,java.lang.String,int,int)">
+<a id="getActorProfilesByName(java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getActorProfileByName</h4>
-<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;&nbsp;getActorProfileByName&#8203;(java.lang.String&nbsp;userId,
-                                                          java.lang.String&nbsp;name,
-                                                          int&nbsp;startFrom,
-                                                          int&nbsp;pageSize)
-                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Return information about a named actor profile.</div>
+<h4>getActorProfilesByName</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;&nbsp;getActorProfilesByName&#8203;(java.lang.String&nbsp;userId,
+                                                           java.lang.String&nbsp;name,
+                                                           int&nbsp;startFrom,
+                                                           int&nbsp;pageSize)
+                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about matching named actor profiles.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>name</code> - unique name for the actor profile</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching actor profiles</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - name or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getActorProfiles(java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getActorProfiles</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;&nbsp;getActorProfiles&#8203;(java.lang.String&nbsp;userId,
+                                                     int&nbsp;startFrom,
+                                                     int&nbsp;pageSize)
+                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about all actor profiles.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -704,19 +770,48 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="findActorProfile(java.lang.String,java.lang.String,int,int)">
+<a id="getActorProfilesByLocation(java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>findActorProfile</h4>
-<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;&nbsp;findActorProfile&#8203;(java.lang.String&nbsp;userId,
-                                                     java.lang.String&nbsp;searchString,
-                                                     int&nbsp;startFrom,
-                                                     int&nbsp;pageSize)
-                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<h4>getActorProfilesByLocation</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;&nbsp;getActorProfilesByLocation&#8203;(java.lang.String&nbsp;userId,
+                                                               java.lang.String&nbsp;locationGUID,
+                                                               int&nbsp;startFrom,
+                                                               int&nbsp;pageSize)
+                                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the actor profiles associated with a location.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>locationGUID</code> - unique locationGUID for the actor profile</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching actor profiles</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - locationGUID or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="findActorProfiles(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>findActorProfiles</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ActorProfileElement</a>&gt;&nbsp;findActorProfiles&#8203;(java.lang.String&nbsp;userId,
+                                                      java.lang.String&nbsp;searchString,
+                                                      int&nbsp;startFrom,
+                                                      int&nbsp;pageSize)
+                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Retrieve the list of matching profiles for the search string.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -967,7 +1062,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>teamRoleGUID</code> - unique identifier of the person role</dd>
 <dd><code>teamProfileGUID</code> - unique identifier of the team profile</dd>
 <dd><code>position</code> - position name of the role in the team</dd>
-<dd><code>leadershipPosition</code> - is this a leadership position</dd>
+<dd><code>leadershipPosition</code> - is this a leadership position?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known; the person role is not a team member or team leader</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -998,7 +1093,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>externalSourceName</code> - name of the software server capability entity that represented the external source</dd>
 <dd><code>teamRoleGUID</code> - unique identifier of the person role</dd>
 <dd><code>teamProfileGUID</code> - unique identifier of the team profile</dd>
-<dd><code>leadershipPosition</code> - is this a leadership position</dd>
+<dd><code>leadershipPosition</code> - is this a leadership position?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known; the person role is not a team member or team leader</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -1031,19 +1126,19 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getPersonRoleByName(java.lang.String,java.lang.String,int,int)">
+<a id="getPersonRolesByName(java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getPersonRoleByName</h4>
-<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;&nbsp;getPersonRoleByName&#8203;(java.lang.String&nbsp;userId,
-                                                      java.lang.String&nbsp;name,
-                                                      int&nbsp;startFrom,
-                                                      int&nbsp;pageSize)
-                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<h4>getPersonRolesByName</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;&nbsp;getPersonRolesByName&#8203;(java.lang.String&nbsp;userId,
+                                                       java.lang.String&nbsp;name,
+                                                       int&nbsp;startFrom,
+                                                       int&nbsp;pageSize)
+                                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return information about a named person role.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1060,19 +1155,77 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="findPersonRole(java.lang.String,java.lang.String,int,int)">
+<a id="getLeadershipRolesForTeam(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getLeadershipRolesForTeam</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;&nbsp;getLeadershipRolesForTeam&#8203;(java.lang.String&nbsp;userId,
+                                                            java.lang.String&nbsp;teamGUID,
+                                                            int&nbsp;startFrom,
+                                                            int&nbsp;pageSize)
+                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the leadership person roles linked to a team.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>teamGUID</code> - unique identifier for the Team actor profile</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching actor profiles (hopefully only one)</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - name or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getMembershipRolesForTeam(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getMembershipRolesForTeam</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;&nbsp;getMembershipRolesForTeam&#8203;(java.lang.String&nbsp;userId,
+                                                            java.lang.String&nbsp;teamGUID,
+                                                            int&nbsp;startFrom,
+                                                            int&nbsp;pageSize)
+                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the membership person roles linked to a team.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>teamGUID</code> - unique identifier for the Team actor profile</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching actor profiles (hopefully only one)</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - name or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="findPersonRoles(java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
-<h4>findPersonRole</h4>
-<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;&nbsp;findPersonRole&#8203;(java.lang.String&nbsp;userId,
-                                                 java.lang.String&nbsp;searchString,
-                                                 int&nbsp;startFrom,
-                                                 int&nbsp;pageSize)
-                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<h4>findPersonRoles</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;&nbsp;findPersonRoles&#8203;(java.lang.String&nbsp;userId,
+                                                  java.lang.String&nbsp;searchString,
+                                                  int&nbsp;startFrom,
+                                                  int&nbsp;pageSize)
+                                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Retrieve the list of matching roles for the search string.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

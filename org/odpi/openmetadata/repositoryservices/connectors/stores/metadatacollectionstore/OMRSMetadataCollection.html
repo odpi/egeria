@@ -514,7 +514,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findAttributeTypeDefsByCategory(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory)">findAttributeTypeDefsByCategory</a></span>&#8203;(java.lang.String&nbsp;userId,
                                org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory&nbsp;category)</code></th>
 <td class="colLast">
-<div class="block">Returns all of the AttributeTypeDefs for a specific category.</div>
+<div class="block">Returns all the AttributeTypeDefs for a specific category.</div>
 </td>
 </tr>
 <tr id="i22" class="altColor">
@@ -636,7 +636,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findTypeDefsByCategory(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory)">findTypeDefsByCategory</a></span>&#8203;(java.lang.String&nbsp;userId,
                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory&nbsp;category)</code></th>
 <td class="colLast">
-<div class="block">Returns all of the TypeDefs for a specific category.</div>
+<div class="block">Returns all the TypeDefs for a specific category.</div>
 </td>
 </tr>
 <tr id="i30" class="altColor">
@@ -772,7 +772,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
                   java.util.List&lt;org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus&gt;&nbsp;limitResultsByStatus,
                   java.util.Date&nbsp;asOfTime)</code></th>
 <td class="colLast">
-<div class="block">Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.</div>
+<div class="block">Return all the relationships and intermediate entities that connect the startEntity with the endEntity.</div>
 </td>
 </tr>
 <tr id="i45" class="rowColor">
@@ -1603,7 +1603,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
                                                                                                                                                                throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
                                                                                                                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
                                                                                                                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
-<div class="block">Returns all of the TypeDefs for a specific category.</div>
+<div class="block">Returns all the TypeDefs for a specific category.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
@@ -1628,7 +1628,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
                                                                                                                                                                                  throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
                                                                                                                                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException,
                                                                                                                                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
-<div class="block">Returns all of the AttributeTypeDefs for a specific category.</div>
+<div class="block">Returns all the AttributeTypeDefs for a specific category.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
@@ -3008,7 +3008,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
                                                                                                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
                                                                                                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException,
                                                                                                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</pre>
-<div class="block">Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.</div>
+<div class="block">Return all the relationships and intermediate entities that connect the startEntity with the endEntity.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
@@ -4499,7 +4499,7 @@ public&nbsp;org.odpi.openmetadata.repositoryservices.connectors.stores.metadatac
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
 <dd><code>entityGUID</code> - unique identifier of the entity with classifications to retrieve</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of all of the classifications for this entity that are homed in this repository</dd>
+<dd>list of all the classifications for this entity that are homed in this repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the entity is null.</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
@@ -4532,7 +4532,7 @@ public&nbsp;org.odpi.openmetadata.repositoryservices.connectors.stores.metadatac
 <dd><code>entityGUID</code> - unique identifier of the entity with classifications to retrieve</dd>
 <dd><code>asOfTime</code> - the time used to determine which version of the entity that is desired.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of all of the classifications for this entity that are homed in this repository</dd>
+<dd>list of all the classifications for this entity that are homed in this repository</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - the entity is null.</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where

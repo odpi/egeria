@@ -149,7 +149,7 @@ extends <a href="AssetOwner.html" title="class in org.odpi.openmetadata.accessse
 implements <a href="../api/AssetOnboardingValidValues.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingValidValues</a></pre>
 <div class="block">ValidValuesAssetOwner provides the API operations to create and maintain lists of valid
  value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- the same attributes and so inherit from ValidValue where all of the attributes are defined.
+ the same attributes and so inherit from ValidValue where all the attributes are defined.
 
  A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  valid value sets.</div>
@@ -260,17 +260,19 @@ implements <a href="../api/AssetOnboardingValidValues.html" title="interface in 
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String)">attachValidValueToSet</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String,boolean)">attachValidValueToSet</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;setGUID,
-                     java.lang.String&nbsp;validValueGUID)</code></th>
+                     java.lang.String&nbsp;validValueGUID,
+                     boolean&nbsp;isDefaultValue)</code></th>
 <td class="colLast">
 <div class="block">Create a link between a valid value set or definition and a set.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createValidValueDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">createValidValueDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createValidValueDefinition(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">createValidValueDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;setGUID,
+                          boolean&nbsp;isDefaultValue,
                           java.lang.String&nbsp;qualifiedName,
                           java.lang.String&nbsp;displayName,
                           java.lang.String&nbsp;description,
@@ -589,7 +591,7 @@ implements <a href="../api/AssetOnboardingValidValues.html" title="interface in 
 </dl>
 </li>
 </ul>
-<a id="createValidValueDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">
+<a id="createValidValueDefinition(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -597,6 +599,7 @@ implements <a href="../api/AssetOnboardingValidValues.html" title="interface in 
 <h4>createValidValueDefinition</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createValidValueDefinition&#8203;(java.lang.String&nbsp;userId,
                                                    java.lang.String&nbsp;setGUID,
+                                                   boolean&nbsp;isDefaultValue,
                                                    java.lang.String&nbsp;qualifiedName,
                                                    java.lang.String&nbsp;displayName,
                                                    java.lang.String&nbsp;description,
@@ -611,10 +614,11 @@ implements <a href="../api/AssetOnboardingValidValues.html" title="interface in 
 <div class="block">Create a new valid value definition.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/AssetOnboardingValidValues.html#createValidValueDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">createValidValueDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetOnboardingValidValues.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingValidValues</a></code></dd>
+<dd><code><a href="../api/AssetOnboardingValidValues.html#createValidValueDefinition(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">createValidValueDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetOnboardingValidValues.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingValidValues</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user.</dd>
 <dd><code>setGUID</code> - unique identifier of the set to attach this to.</dd>
+<dd><code>isDefaultValue</code> - is this the default value for the set?</dd>
 <dd><code>qualifiedName</code> - unique name.</dd>
 <dd><code>displayName</code> - displayable descriptive name.</dd>
 <dd><code>description</code> - further information.</dd>
@@ -705,7 +709,7 @@ implements <a href="../api/AssetOnboardingValidValues.html" title="interface in 
 </dl>
 </li>
 </ul>
-<a id="attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String)">
+<a id="attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String,boolean)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -713,7 +717,8 @@ implements <a href="../api/AssetOnboardingValidValues.html" title="interface in 
 <h4>attachValidValueToSet</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;attachValidValueToSet&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;setGUID,
-                                  java.lang.String&nbsp;validValueGUID)
+                                  java.lang.String&nbsp;validValueGUID,
+                                  boolean&nbsp;isDefaultValue)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -721,11 +726,12 @@ implements <a href="../api/AssetOnboardingValidValues.html" title="interface in 
  value is a member of the set.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/AssetOnboardingValidValues.html#attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String)">attachValidValueToSet</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetOnboardingValidValues.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingValidValues</a></code></dd>
+<dd><code><a href="../api/AssetOnboardingValidValues.html#attachValidValueToSet(java.lang.String,java.lang.String,java.lang.String,boolean)">attachValidValueToSet</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetOnboardingValidValues.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingValidValues</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user.</dd>
 <dd><code>setGUID</code> - unique identifier of the set.</dd>
 <dd><code>validValueGUID</code> - unique identifier of the valid value to add to the set.</dd>
+<dd><code>isDefaultValue</code> - is this the default value for the set?</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -210,26 +210,40 @@ extends <a href="ActorProfileProperties.html" title="class in org.odpi.openmetad
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIdentifier()">getIdentifier</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the code that uniquely identifies the team.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTeamType()">getTeamType</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the type of team.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Just use the GUID for the hash code as it should be unique.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIdentifier(java.lang.String)">setIdentifier</a></span>&#8203;(java.lang.String&nbsp;identifier)</code></th>
+<td class="colLast">
+<div class="block">Set up the code that uniquely identifies the team.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTeamType(java.lang.String)">setTeamType</a></span>&#8203;(java.lang.String&nbsp;teamType)</code></th>
 <td class="colLast">
 <div class="block">Set up the type of team.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -333,6 +347,34 @@ extends <a href="ActorProfileProperties.html" title="class in org.odpi.openmetad
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>teamType</code> - string name</dd>
+</dl>
+</li>
+</ul>
+<a id="getIdentifier()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getIdentifier</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getIdentifier()</pre>
+<div class="block">Return the code that uniquely identifies the team.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string code</dd>
+</dl>
+</li>
+</ul>
+<a id="setIdentifier(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setIdentifier</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setIdentifier&#8203;(java.lang.String&nbsp;identifier)</pre>
+<div class="block">Set up the code that uniquely identifies the team.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>identifier</code> - string code</dd>
 </dl>
 </li>
 </ul>

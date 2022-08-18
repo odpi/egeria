@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -206,34 +206,62 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">ValidValueProperties</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueProperties()">getValidValueProperties</a></span>()</code></th>
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getIsDefaultValue()">getIsDefaultValue</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the properties for a valid value definition or set.</div>
+<div class="block">Return whether this valid value is the default of the setGUID (if supplied)</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSetGUID()">getSetGUID</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the set unique identifier if the valid value is retrieved via a set.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code><a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">ValidValueProperties</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueProperties()">getValidValueProperties</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the properties for the valid value definition or set.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementHeader(org.odpi.openmetadata.accessservices.assetowner.metadataelements.ElementHeader)">setElementHeader</a></span>&#8203;(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setIsDefaultValue(boolean)">setIsDefaultValue</a></span>&#8203;(boolean&nbsp;defaultValue)</code></th>
+<td class="colLast">
+<div class="block">Set up whether this valid value is the default of the setGUID (if supplied).</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSetGUID(java.lang.String)">setSetGUID</a></span>&#8203;(java.lang.String&nbsp;setGUID)</code></th>
+<td class="colLast">
+<div class="block">Set up the set unique identifier if the valid value is retrieved via a set.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setValidValueProperties(org.odpi.openmetadata.accessservices.assetowner.properties.ValidValueProperties)">setValidValueProperties</a></span>&#8203;(<a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">ValidValueProperties</a>&nbsp;validValueProperties)</code></th>
 <td class="colLast">
-<div class="block">Set up the properties for a valid values definition of set.</div>
+<div class="block">Set up the properties for the valid value definition or set.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -337,7 +365,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li class="blockList">
 <h4>getValidValueProperties</h4>
 <pre class="methodSignature">public&nbsp;<a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">ValidValueProperties</a>&nbsp;getValidValueProperties()</pre>
-<div class="block">Return the properties for a valid value definition or set.</div>
+<div class="block">Return the properties for the valid value definition or set.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>properties bean</dd>
@@ -351,10 +379,66 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li class="blockList">
 <h4>setValidValueProperties</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setValidValueProperties&#8203;(<a href="../properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">ValidValueProperties</a>&nbsp;validValueProperties)</pre>
-<div class="block">Set up the properties for a valid values definition of set.</div>
+<div class="block">Set up the properties for the valid value definition or set.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>validValueProperties</code> - properties bean</dd>
+</dl>
+</li>
+</ul>
+<a id="getSetGUID()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getSetGUID</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getSetGUID()</pre>
+<div class="block">Return the set unique identifier if the valid value is retrieved via a set.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string identifier</dd>
+</dl>
+</li>
+</ul>
+<a id="setSetGUID(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setSetGUID</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setSetGUID&#8203;(java.lang.String&nbsp;setGUID)</pre>
+<div class="block">Set up the set unique identifier if the valid value is retrieved via a set.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>setGUID</code> - string identifier</dd>
+</dl>
+</li>
+</ul>
+<a id="getIsDefaultValue()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getIsDefaultValue</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;getIsDefaultValue()</pre>
+<div class="block">Return whether this valid value is the default of the setGUID (if supplied)</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>flag</dd>
+</dl>
+</li>
+</ul>
+<a id="setIsDefaultValue(boolean)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setIsDefaultValue</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setIsDefaultValue&#8203;(boolean&nbsp;defaultValue)</pre>
+<div class="block">Set up whether this valid value is the default of the setGUID (if supplied).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>defaultValue</code> - flag</dd>
 </dl>
 </li>
 </ul>

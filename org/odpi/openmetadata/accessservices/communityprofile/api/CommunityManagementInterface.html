@@ -26,6 +26,12 @@
     catch(err) {
     }
 //-->
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
+var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
+var altColor = "altColor";
+var rowColor = "rowColor";
+var tableTab = "tableTab";
+var activeTableTab = "activeTableTab";
 var pathtoroot = "../../../../../../";
 var useModuleDirectories = true;
 loadScripts(document, 'script');</script>
@@ -84,13 +90,13 @@ loadScripts(document, 'script');</script>
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
 <a id="skip.navbar.top">
@@ -115,10 +121,488 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt>All Known Implementing Classes:</dt>
+<dd><code><a href="../client/CommunityManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityManagement</a></code></dd>
+</dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">CommunityManagementInterface</span></pre>
 <div class="block">The CommunityManagementInterface provides methods for managing communities, their membership and content.
- Communities allow groups of subject matter experts to work together and share content and ideas.</div>
+ Communities allow groups of subject-matter experts to work together and share content and ideas.</div>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- ========== METHOD SUMMARY =========== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="method.summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="memberSummary">
+<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t3" class="tableTab"><span><a href="javascript:show(4);">Abstract Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colSecond" scope="col">Method</th>
+<th class="colLast" scope="col">Description</th>
+</tr>
+<tr id="i0" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearCommunityRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearCommunityRole</a></span>&#8203;(java.lang.String&nbsp;userId,
+                  java.lang.String&nbsp;externalSourceGUID,
+                  java.lang.String&nbsp;externalSourceName,
+                  java.lang.String&nbsp;communityGUID,
+                  java.lang.String&nbsp;personRoleGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove a membership relationship between a community and a person role.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createCommunity(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties)">createCommunity</a></span>&#8203;(java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;externalSourceGUID,
+               java.lang.String&nbsp;externalSourceName,
+               <a href="../properties/CommunityProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CommunityProperties</a>&nbsp;communityProperties)</code></th>
+<td class="colLast">
+<div class="block">Create a new metadata element to represent the community.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createCommunityFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties)">createCommunityFromTemplate</a></span>&#8203;(java.lang.String&nbsp;userId,
+                           java.lang.String&nbsp;externalSourceGUID,
+                           java.lang.String&nbsp;externalSourceName,
+                           java.lang.String&nbsp;templateGUID,
+                           <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
+<td class="colLast">
+<div class="block">Create a new metadata element to represent a community using an existing metadata element as a template.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/CommunityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CommunityElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findCommunities(java.lang.String,java.lang.String,int,int)">findCommunities</a></span>&#8203;(java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;searchString,
+               int&nbsp;startFrom,
+               int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of metadata elements that contain the search string.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/CommunityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CommunityElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCommunities(java.lang.String,int,int)">getCommunities</a></span>&#8203;(java.lang.String&nbsp;userId,
+              int&nbsp;startFrom,
+              int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of communities.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/CommunityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CommunityElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCommunitiesByName(java.lang.String,java.lang.String,int,int)">getCommunitiesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;name,
+                    int&nbsp;startFrom,
+                    int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of metadata elements with a matching qualified or display name.</div>
+</td>
+</tr>
+<tr id="i6" class="altColor">
+<td class="colFirst"><code><a href="../metadataelements/CommunityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CommunityElement</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCommunityByGUID(java.lang.String,java.lang.String)">getCommunityByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+                  java.lang.String&nbsp;communityGUID)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the community metadata element with the supplied unique identifier.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRolesForCommunity(java.lang.String,java.lang.String,int,int)">getRolesForCommunity</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;communityGUID,
+                    int&nbsp;startFrom,
+                    int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the person roles linked to a community.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeCommunity(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeCommunity</a></span>&#8203;(java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;externalSourceGUID,
+               java.lang.String&nbsp;externalSourceName,
+               java.lang.String&nbsp;communityGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove the metadata element representing a community.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupCommunityRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityMembershipProperties,java.lang.String)">setupCommunityRole</a></span>&#8203;(java.lang.String&nbsp;userId,
+                  java.lang.String&nbsp;externalSourceGUID,
+                  java.lang.String&nbsp;externalSourceName,
+                  java.lang.String&nbsp;communityGUID,
+                  <a href="../properties/CommunityMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CommunityMembershipProperties</a>&nbsp;membershipProperties,
+                  java.lang.String&nbsp;personRoleGUID)</code></th>
+<td class="colLast">
+<div class="block">Create a membership relationship between a community and a person role to show that anyone appointed to the role is a member of the community.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateCommunity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties)">updateCommunity</a></span>&#8203;(java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;externalSourceGUID,
+               java.lang.String&nbsp;externalSourceName,
+               java.lang.String&nbsp;communityGUID,
+               boolean&nbsp;isMergeUpdate,
+               <a href="../properties/CommunityProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CommunityProperties</a>&nbsp;communityProperties)</code></th>
+<td class="colLast">
+<div class="block">Update the metadata element representing a community.</div>
+</td>
+</tr>
+</table>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ============ METHOD DETAIL ========== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="method.detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a id="createCommunity(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createCommunity</h4>
+<pre class="methodSignature">java.lang.String&nbsp;createCommunity&#8203;(java.lang.String&nbsp;userId,
+                                 java.lang.String&nbsp;externalSourceGUID,
+                                 java.lang.String&nbsp;externalSourceName,
+                                 <a href="../properties/CommunityProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CommunityProperties</a>&nbsp;communityProperties)
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a new metadata element to represent the community.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
+<dd><code>communityProperties</code> - properties to store</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new metadata element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="createCommunityFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createCommunityFromTemplate</h4>
+<pre class="methodSignature">java.lang.String&nbsp;createCommunityFromTemplate&#8203;(java.lang.String&nbsp;userId,
+                                             java.lang.String&nbsp;externalSourceGUID,
+                                             java.lang.String&nbsp;externalSourceName,
+                                             java.lang.String&nbsp;templateGUID,
+                                             <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">TemplateProperties</a>&nbsp;templateProperties)
+                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a new metadata element to represent a community using an existing metadata element as a template.
+ The template defines additional classifications and relationships that should be added to the new community.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
+<dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
+<dd><code>templateProperties</code> - properties that override the template</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new metadata element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="updateCommunity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateCommunity</h4>
+<pre class="methodSignature">void&nbsp;updateCommunity&#8203;(java.lang.String&nbsp;userId,
+                     java.lang.String&nbsp;externalSourceGUID,
+                     java.lang.String&nbsp;externalSourceName,
+                     java.lang.String&nbsp;communityGUID,
+                     boolean&nbsp;isMergeUpdate,
+                     <a href="../properties/CommunityProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CommunityProperties</a>&nbsp;communityProperties)
+              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the metadata element representing a community.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
+<dd><code>communityGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>communityProperties</code> - new properties for this element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="setupCommunityRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityMembershipProperties,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setupCommunityRole</h4>
+<pre class="methodSignature">void&nbsp;setupCommunityRole&#8203;(java.lang.String&nbsp;userId,
+                        java.lang.String&nbsp;externalSourceGUID,
+                        java.lang.String&nbsp;externalSourceName,
+                        java.lang.String&nbsp;communityGUID,
+                        <a href="../properties/CommunityMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">CommunityMembershipProperties</a>&nbsp;membershipProperties,
+                        java.lang.String&nbsp;personRoleGUID)
+                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a membership relationship between a community and a person role to show that anyone appointed to the role is a member of the community.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
+<dd><code>communityGUID</code> - unique identifier of the community</dd>
+<dd><code>membershipProperties</code> - describes the permissions that the role has in the community</dd>
+<dd><code>personRoleGUID</code> - unique identifier of the role</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearCommunityRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearCommunityRole</h4>
+<pre class="methodSignature">void&nbsp;clearCommunityRole&#8203;(java.lang.String&nbsp;userId,
+                        java.lang.String&nbsp;externalSourceGUID,
+                        java.lang.String&nbsp;externalSourceName,
+                        java.lang.String&nbsp;communityGUID,
+                        java.lang.String&nbsp;personRoleGUID)
+                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove a membership relationship between a community and a person role.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
+<dd><code>communityGUID</code> - unique identifier of the community</dd>
+<dd><code>personRoleGUID</code> - unique identifier of the role</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="removeCommunity(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>removeCommunity</h4>
+<pre class="methodSignature">void&nbsp;removeCommunity&#8203;(java.lang.String&nbsp;userId,
+                     java.lang.String&nbsp;externalSourceGUID,
+                     java.lang.String&nbsp;externalSourceName,
+                     java.lang.String&nbsp;communityGUID)
+              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove the metadata element representing a community.  This will delete all anchored
+ elements such as comments.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
+<dd><code>communityGUID</code> - unique identifier of the metadata element to remove</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="findCommunities(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>findCommunities</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/CommunityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CommunityElement</a>&gt;&nbsp;findCommunities&#8203;(java.lang.String&nbsp;userId,
+                                                 java.lang.String&nbsp;searchString,
+                                                 int&nbsp;startFrom,
+                                                 int&nbsp;pageSize)
+                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the list of metadata elements that contain the search string.
+ The search string is treated as a regular expression.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>searchString</code> - string to find in the properties</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching metadata elements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getCommunitiesByName(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCommunitiesByName</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/CommunityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CommunityElement</a>&gt;&nbsp;getCommunitiesByName&#8203;(java.lang.String&nbsp;userId,
+                                                      java.lang.String&nbsp;name,
+                                                      int&nbsp;startFrom,
+                                                      int&nbsp;pageSize)
+                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the list of metadata elements with a matching qualified or display name.
+ There are no wildcards supported on this request.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>name</code> - name to search for</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching metadata elements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getCommunities(java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCommunities</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/CommunityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CommunityElement</a>&gt;&nbsp;getCommunities&#8203;(java.lang.String&nbsp;userId,
+                                                int&nbsp;startFrom,
+                                                int&nbsp;pageSize)
+                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the list of communities.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching metadata elements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getRolesForCommunity(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRolesForCommunity</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonRoleElement</a>&gt;&nbsp;getRolesForCommunity&#8203;(java.lang.String&nbsp;userId,
+                                                       java.lang.String&nbsp;communityGUID,
+                                                       int&nbsp;startFrom,
+                                                       int&nbsp;pageSize)
+                                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the person roles linked to a community.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>communityGUID</code> - unique identifier for the community</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching actor profiles (hopefully only one)</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - name or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getCommunityByGUID(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getCommunityByGUID</h4>
+<pre class="methodSignature"><a href="../metadataelements/CommunityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">CommunityElement</a>&nbsp;getCommunityByGUID&#8203;(java.lang.String&nbsp;userId,
+                                    java.lang.String&nbsp;communityGUID)
+                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the community metadata element with the supplied unique identifier.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>communityGUID</code> - unique identifier of the requested metadata element</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>matching metadata element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</section>
 </li>
 </ul>
 </div>
@@ -170,13 +654,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>Nested&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method.summary">Method</a></li>
 </ul>
 <ul class="subNavList">
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method.detail">Method</a></li>
 </ul>
 </div>
 <a id="skip.navbar.bottom">

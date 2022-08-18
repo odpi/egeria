@@ -160,7 +160,7 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
      using the OCF ConnectorBroker.  They use its metadata collection to retrieve and send the metadata they need.
  </p>
  <p>
-     Each EnterpriseOMRSRepositoryConnector instance needs to maintain an up to date list of OMRS Connectors to all of the
+     Each EnterpriseOMRSRepositoryConnector instance needs to maintain an up to date list of OMRS Connectors to all the
      repositories in the connected open metadata repository cohort(s).  It does by registering as an OMRSConnectorConsumer
      with the OMRSConnectorManager to be notified when connectors to new open metadata repositories are available.
  </p></div>
@@ -244,7 +244,7 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#disconnectAllConnectors()">disconnectAllConnectors</a></span>()</code></th>
 <td class="colLast">
-<div class="block">The OMRS is about to shutdown.</div>
+<div class="block">The OMRS is about to shut down.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
@@ -287,14 +287,14 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLocalMetadataCollectionId(java.lang.String)">setLocalMetadataCollectionId</a></span>&#8203;(java.lang.String&nbsp;localMetadataCollectionId)</code></th>
 <td class="colLast">
-<div class="block">Set the unique Id of the metadata collection that is collocated with the Enterprise Metadata Collection</div>
+<div class="block">Set the unique id of the metadata collection that is collocated with the Enterprise Metadata Collection</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMetadataCollectionId(java.lang.String)">setMetadataCollectionId</a></span>&#8203;(java.lang.String&nbsp;metadataCollectionId)</code></th>
 <td class="colLast">
-<div class="block">Set up the unique Id for this metadata collection.</div>
+<div class="block">Set up the unique id for this metadata collection.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
@@ -356,7 +356,7 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
 <li class="blockList">
 <h4>setMetadataCollectionId</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setMetadataCollectionId&#8203;(java.lang.String&nbsp;metadataCollectionId)</pre>
-<div class="block">Set up the unique Id for this metadata collection.</div>
+<div class="block">Set up the unique id for this metadata collection.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html#setMetadataCollectionId(java.lang.String)">setMetadataCollectionId</a></code>&nbsp;in interface&nbsp;<code><a href="../../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSMetadataCollectionManager.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSMetadataCollectionManager</a></code></dd>
@@ -374,7 +374,7 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
 <li class="blockList">
 <h4>setLocalMetadataCollectionId</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;setLocalMetadataCollectionId&#8203;(java.lang.String&nbsp;localMetadataCollectionId)</pre>
-<div class="block">Set the unique Id of the metadata collection that is collocated with the Enterprise Metadata Collection</div>
+<div class="block">Set the unique id of the metadata collection that is collocated with the Enterprise Metadata Collection</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>localMetadataCollectionId</code> - String unique Id</dd>
@@ -516,8 +516,8 @@ implements org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.
 <li class="blockList">
 <h4>disconnectAllConnectors</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;disconnectAllConnectors()</pre>
-<div class="block">The OMRS is about to shutdown.
- Call disconnect on all registered remote connectors and stop calling them.
+<div class="block">The OMRS is about to shut down.
+ Call disconnect() on all registered remote connectors and stop calling them.
  There is no need to disconnect the local connector - that is handled by the EnterpriseConnectorManager</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
