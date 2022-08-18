@@ -791,8 +791,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception {} with message {} occurred during REST call for {}."
-                    ,error.getClass().getName(),
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
                     error.getMessage(),
                     methodName);
 
@@ -873,8 +873,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception {} with message {} occurred during REST call for {}."
-                    ,error.getClass().getName(),
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
                     error.getMessage(),
                     methodName);
 
@@ -1029,8 +1029,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception {} with message {} occurred during REST call for {}."
-                    ,error.getClass().getName(),
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
                     error.getMessage(),
                     methodName);
 
