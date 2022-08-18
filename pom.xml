@@ -2851,11 +2851,6 @@
                 <version>${open-metadata.version}</version>
                 <type>pom</type>
             </dependency>
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>open-metadata-labs</artifactId>
-                <version>${open-metadata.version}</version>
-            </dependency>
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
