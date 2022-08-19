@@ -28,7 +28,7 @@ public class AssetRating extends AssetElementHeader
     /**
      * Bean constructor
      *
-     * @param ratingBean bean containing all of the properties
+     * @param ratingBean bean containing all the properties
      */
     public AssetRating(Rating ratingBean)
     {
@@ -49,7 +49,7 @@ public class AssetRating extends AssetElementHeader
      * Bean constructor with parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param ratingBean bean containing all of the properties
+     * @param ratingBean bean containing all the properties
      */
     public AssetRating(AssetDescriptor parentAsset,
                        Rating          ratingBean)
@@ -92,7 +92,7 @@ public class AssetRating extends AssetElementHeader
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return rating bean
      */

@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.rest.AppointmentReq
 import org.odpi.openmetadata.accessservices.communityprofile.rest.ContactMethodRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveDatesRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleAppointeeListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleRequestBody;
@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
 /**
  * The OrganizationResource provides a Spring based server-side REST API
  * that supports the OrganizationManagementInterface.   It delegates each request to the
@@ -46,7 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class OrganizationResource
 {
-    private OrganizationRESTServices restAPI = new OrganizationRESTServices();
+    private final OrganizationRESTServices restAPI = new OrganizationRESTServices();
 
     /**
      * Default constructor
@@ -57,7 +58,7 @@ public class OrganizationResource
 
 
     /**
-     * Create a definition of a actor profile.  This could be for the whole organization, a team, a person or a system.
+     * Create a definition of an actor profile.  This could be for the whole organization, a team, a person or a system.
      *
      * @param serverName called server
      * @param userId calling user
@@ -125,7 +126,7 @@ public class OrganizationResource
     public VoidResponse deleteActorProfile(@PathVariable String                    serverName,
                                            @PathVariable String                    userId,
                                            @PathVariable String                    actorProfileGUID,
-                                           @RequestBody  MetadataSourceRequestBody requestBody)
+                                           @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteActorProfile(serverName, userId, actorProfileGUID, requestBody);
     }
@@ -175,7 +176,7 @@ public class OrganizationResource
     public VoidResponse deleteContactMethod(@PathVariable String                    serverName,
                                             @PathVariable String                    userId,
                                             @PathVariable String                    contactMethodGUID,
-                                            @RequestBody  MetadataSourceRequestBody requestBody)
+                                            @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteContactMethod(serverName, userId, contactMethodGUID, requestBody);
     }
@@ -232,7 +233,7 @@ public class OrganizationResource
                                                @PathVariable String                    userId,
                                                @PathVariable String                    superTeamProfileGUID,
                                                @PathVariable String                    subTeamProfileGUID,
-                                               @RequestBody  MetadataSourceRequestBody requestBody)
+                                               @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.unlinkTeamsInHierarchy(serverName, userId, superTeamProfileGUID, subTeamProfileGUID, requestBody);
     }
@@ -266,7 +267,7 @@ public class OrganizationResource
      *
      * @param serverName called server
      * @param userId calling user
-     * @param actorProfileUserId unique identifier for the actor profile
+     * @param actorProfileUserId unique identifier for the userId
      *
      * @return properties of the actor profile
      *
@@ -281,6 +282,58 @@ public class OrganizationResource
                                                         @PathVariable String actorProfileUserId)
     {
         return restAPI.getActorProfileByUserId(serverName, userId, actorProfileUserId);
+    }
+
+
+    /**
+     * Return all actor profiles.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of the actor profiles
+     *
+     *   InvalidParameterException actorProfileUserId or userId is null
+     *   PropertyServerException problem accessing property server
+     *   UserNotAuthorizedException security access problem
+     */
+    @GetMapping(path = "/profiles")
+
+    public ActorProfileListResponse getActorProfiles(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @RequestParam int    startFrom,
+                                                     @RequestParam int    pageSize)
+    {
+        return restAPI.getActorProfiles(serverName, userId, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about a specific actor profile.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @param locationGUID unique identifier for the location
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return properties of the actor profile
+     *
+     *   InvalidParameterException actorProfileUserId or userId is null
+     *   PropertyServerException problem accessing property server
+     *   UserNotAuthorizedException security access problem
+     */
+    @GetMapping(path = "/profiles/locations/{locationGUID}")
+
+    public ActorProfileListResponse getActorProfilesByLocation(@PathVariable String serverName,
+                                                               @PathVariable String userId,
+                                                               @PathVariable String locationGUID,
+                                                               @RequestParam int    startFrom,
+                                                               @RequestParam int    pageSize)
+    {
+        return restAPI.getActorProfilesByLocation(serverName, userId, locationGUID, startFrom, pageSize);
     }
 
 
@@ -301,13 +354,13 @@ public class OrganizationResource
      */
     @PostMapping(path = "/profiles/by-name")
 
-    public ActorProfileListResponse getActorProfileByName(@PathVariable String          serverName,
-                                                          @PathVariable String          userId,
-                                                          @RequestParam int             startFrom,
-                                                          @RequestParam int             pageSize,
-                                                          @RequestBody  NameRequestBody requestBody)
+    public ActorProfileListResponse getActorProfilesByName(@PathVariable String          serverName,
+                                                           @PathVariable String          userId,
+                                                           @RequestParam int             startFrom,
+                                                           @RequestParam int             pageSize,
+                                                           @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getActorProfileByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getActorProfilesByName(serverName, userId, startFrom, pageSize, requestBody);
     }
 
 
@@ -334,7 +387,7 @@ public class OrganizationResource
                                                      @RequestParam int                     pageSize,
                                                      @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findActorProfile(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findActorProfiles(serverName, userId, startFrom, pageSize, requestBody);
     }
 
 
@@ -407,7 +460,7 @@ public class OrganizationResource
     public VoidResponse deletePersonRole(@PathVariable String                    serverName,
                                          @PathVariable String                    userId,
                                          @PathVariable String                    personRoleGUID,
-                                         @RequestBody  MetadataSourceRequestBody requestBody)
+                                         @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.deletePersonRole(serverName, userId, personRoleGUID, requestBody);
     }
@@ -438,8 +491,6 @@ public class OrganizationResource
     {
         return restAPI.linkPersonRoleToProfile(serverName, userId, personRoleGUID, personProfileGUID, requestBody);
     }
-
-
 
 
     /**
@@ -516,7 +567,7 @@ public class OrganizationResource
     public VoidResponse unlinkPersonRoleFromProfile(@PathVariable String                    serverName,
                                                     @PathVariable String                    userId,
                                                     @PathVariable String                    appointmentGUID,
-                                                    @RequestBody  MetadataSourceRequestBody requestBody)
+                                                    @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.unlinkPersonRoleFromProfile(serverName, userId, appointmentGUID, requestBody);
     }
@@ -608,7 +659,7 @@ public class OrganizationResource
      * @param pageSize   maximum number of elements to return.
      * @param requestBody unique name for the actor profile
      *
-     * @return list of matching actor profiles (hopefully only one)
+     * @return list of matching person roles
      *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
@@ -626,6 +677,60 @@ public class OrganizationResource
     }
 
 
+
+    /**
+     * Return information about a person role connected to the named team via the TeamLeadership relationship.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching person roles
+     *
+     *   InvalidParameterException name or userId is null
+     *   PropertyServerException problem accessing property server
+     *   UserNotAuthorizedException security access problem
+     */
+    @GetMapping(path = "/person-roles/by-team/{teamGUID}/leadership")
+
+    public PersonRoleListResponse getLeadershipRolesForTeam(@PathVariable String serverName,
+                                                            @PathVariable String userId,
+                                                            @PathVariable String teamGUID,
+                                                            @RequestParam int    startFrom,
+                                                            @RequestParam int    pageSize)
+    {
+        return restAPI.getLeadershipRolesForTeam(serverName, userId, teamGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about a person role connected to the named team via the TeamMembership relationship.
+     *
+     * @param serverName called server
+     * @param userId calling user
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching person roles
+     *
+     *   InvalidParameterException name or userId is null
+     *   PropertyServerException problem accessing property server
+     *   UserNotAuthorizedException security access problem
+     */
+    @GetMapping(path = "/person-roles/by-team/{teamGUID}/membership")
+
+    public PersonRoleListResponse getMembershipRolesForTeam(@PathVariable String serverName,
+                                                            @PathVariable String userId,
+                                                            @PathVariable String teamGUID,
+                                                            @RequestParam int    startFrom,
+                                                            @RequestParam int    pageSize)
+    {
+        return restAPI.getMembershipRolesForTeam(serverName, userId, teamGUID, startFrom, pageSize);
+    }
+
     /**
      * Retrieve the list of matching roles for the search string.
      *
@@ -635,7 +740,7 @@ public class OrganizationResource
      * @param pageSize   maximum number of elements to return.
      * @param requestBody RegEx string to search for
      *
-     * @return list of matching actor profiles
+     * @return list of matching person roles
      *
      *   InvalidParameterException guid invalid or the external references are not correctly specified, or are null.
      *   PropertyServerException the server is not available.
@@ -649,6 +754,6 @@ public class OrganizationResource
                                                  @RequestParam int                     pageSize,
                                                  @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findPersonRole(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findPersonRoles(serverName, userId, startFrom, pageSize, requestBody);
     }
 }

@@ -1073,17 +1073,17 @@ public class OCFMetadataRESTServices
             LocationHandler<Location> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getLocations(userId,
-                                                  assetGUID,
-                                                  guidParameterName,
-                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
-                                                  elementStart,
-                                                  maxElements,
-                                                  false,
-                                                  false,
-                                                  new Date(),
-                                                  methodName));
+            response.setList(handler.getAssetLocations(userId,
+                                                       assetGUID,
+                                                       guidParameterName,
+                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                       elementStart,
+                                                       maxElements,
+                                                       false,
+                                                       false,
+                                                       new Date(),
+                                                       methodName));
         }
         catch (Exception error)
         {

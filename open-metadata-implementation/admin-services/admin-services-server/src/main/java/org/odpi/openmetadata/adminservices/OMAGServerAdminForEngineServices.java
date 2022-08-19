@@ -560,7 +560,7 @@ public class OMAGServerAdminForEngineServices
 
 
     /**
-     * Set up the configuration for all of the open metadata engine services (OMESs).  This overrides
+     * Set up the configuration for all the open metadata engine services (OMESs).  This overrides
      * the current values.
      *
      * @param userId                user that is issuing the request.

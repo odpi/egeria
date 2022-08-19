@@ -79,10 +79,12 @@ public class PersonRoleConverter<B> extends SecurityManagerOMASConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
 
-                    roleProperties.setRoleId(this.removeQualifiedName(instanceProperties));
+                    roleProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    roleProperties.setRoleId(this.removeIdentifier(instanceProperties));
                     roleProperties.setTitle(this.removeTitle(instanceProperties));
                     roleProperties.setDescription(this.removeDescription(instanceProperties));
                     roleProperties.setScope(this.removeScope(instanceProperties));
+                    roleProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME) != null);
                     roleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
 

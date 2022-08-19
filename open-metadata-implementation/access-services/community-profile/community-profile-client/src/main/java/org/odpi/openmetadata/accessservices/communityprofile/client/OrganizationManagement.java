@@ -20,7 +20,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.rest.AppointmentReq
 import org.odpi.openmetadata.accessservices.communityprofile.rest.ContactMethodRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveDatesRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleAppointeeListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleRequestBody;
@@ -45,11 +45,11 @@ import java.util.List;
  */
 public class OrganizationManagement implements OrganizationManagementInterface
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
 
     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
 
@@ -304,7 +304,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -390,7 +390,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/contact-methods/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -481,7 +481,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}/sub-team-profiles/{3}/unlink";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -577,14 +577,14 @@ public class OrganizationManagement implements OrganizationManagementInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ActorProfileElement> getActorProfileByName(String userId,
-                                                           String name,
-                                                           int    startFrom,
-                                                           int    pageSize) throws InvalidParameterException,
+    public List<ActorProfileElement> getActorProfilesByName(String userId,
+                                                            String name,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
-        final String methodName         = "getActorProfileByName";
+        final String methodName         = "getActorProfilesByName";
         final String namePropertyName   = "name";
         final String nameParameterName  = "name";
 
@@ -612,6 +612,86 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
 
     /**
+     * Return information about all actor profiles.
+     *
+     * @param userId calling user
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ActorProfileElement> getActorProfiles(String userId,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        final String methodName = "getActorProfiles";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles?startFrom={2}&pageSize={3}";
+
+        ActorProfileListResponse restResult = restClient.callActorProfileListGetRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         Integer.toString(startFrom),
+                                                                                         Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Return information about the actor profiles associated with a location.
+     *
+     * @param userId calling user
+     * @param locationGUID unique identifier for the location
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException locationGUID or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ActorProfileElement> getActorProfilesByLocation(String userId,
+                                                                String locationGUID,
+                                                                int    startFrom,
+                                                                int    pageSize) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String methodName         = "getActorProfileByName";
+        final String guidParameterName  = "locationGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(locationGUID, guidParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/by-location/{2}?startFrom={3}&pageSize={4}";
+
+
+        ActorProfileListResponse restResult = restClient.callActorProfileListGetRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         locationGUID,
+                                                                                         Integer.toString(startFrom),
+                                                                                         Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
      * Retrieve the list of matching profiles for the search string.
      *
      * @param userId the name of the calling user.
@@ -626,10 +706,10 @@ public class OrganizationManagement implements OrganizationManagementInterface
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<ActorProfileElement> findActorProfile(String userId,
-                                                      String searchString,
-                                                      int    startFrom,
-                                                      int    pageSize) throws InvalidParameterException,
+    public List<ActorProfileElement> findActorProfiles(String userId,
+                                                       String searchString,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
                                                                               PropertyServerException,
                                                                               UserNotAuthorizedException
     {
@@ -779,7 +859,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -956,7 +1036,7 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/appointees/{2}/unlink";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -1107,14 +1187,14 @@ public class OrganizationManagement implements OrganizationManagementInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<PersonRoleElement> getPersonRoleByName(String userId,
-                                                       String name,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
+    public List<PersonRoleElement> getPersonRolesByName(String userId,
+                                                        String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        final String methodName         = "getPersonRoleByName";
+        final String methodName         = "getPersonRolesByName";
         final String namePropertyName   = "name";
         final String nameParameterName  = "name";
 
@@ -1142,6 +1222,91 @@ public class OrganizationManagement implements OrganizationManagementInterface
 
 
     /**
+     * Return information about the leadership person roles linked to a team.
+     *
+     * @param userId calling user
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<PersonRoleElement> getLeadershipRolesForTeam(String userId,
+                                                             String teamGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName        = "getLeadershipRolesForTeam";
+        final String guidPropertyName  = "teamGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(teamGUID, guidPropertyName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/by-team/{2}/leadership?startFrom={3}&pageSize={4}";
+
+        PersonRoleListResponse restResult = restClient.callPersonRoleListGetRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      teamGUID,
+                                                                                      Integer.toString(startFrom),
+                                                                                      Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+    /**
+     * Return information about the membership person roles linked to a team.
+     *
+     * @param userId calling user
+     * @param teamGUID unique identifier for the Team actor profile
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException name or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<PersonRoleElement> getMembershipRolesForTeam(String userId,
+                                                             String teamGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName        = "getMembershipRolesForTeam";
+        final String guidPropertyName  = "teamGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(teamGUID, guidPropertyName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/person-roles/by-team/{2}/membership?startFrom={3}&pageSize={4}";
+
+        PersonRoleListResponse restResult = restClient.callPersonRoleListGetRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     teamGUID,
+                                                                                     Integer.toString(startFrom),
+                                                                                     Integer.toString(pageSize));
+
+        return restResult.getElements();
+    }
+
+
+
+    /**
      * Retrieve the list of matching roles for the search string.
      *
      * @param userId the name of the calling user.
@@ -1156,14 +1321,14 @@ public class OrganizationManagement implements OrganizationManagementInterface
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @Override
-    public List<PersonRoleElement> findPersonRole(String userId,
-                                                  String searchString,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
+    public List<PersonRoleElement> findPersonRoles(String userId,
+                                                   String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        final String methodName                 = "findPersonRole";
+        final String methodName                 = "findPersonRoles";
         final String searchStringParameterName  = "searchString";
 
         invalidParameterHandler.validateUserId(userId, methodName);

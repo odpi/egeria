@@ -95,7 +95,7 @@ public class AssetExternalSchemaType extends AssetSchemaType
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return  schema choice bean
      */

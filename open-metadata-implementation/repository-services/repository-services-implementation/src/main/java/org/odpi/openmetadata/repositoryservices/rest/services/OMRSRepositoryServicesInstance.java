@@ -16,13 +16,13 @@ import org.odpi.openmetadata.repositoryservices.metadatahighway.OMRSMetadataHigh
  */
 public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
 {
-    private OMRSAuditLog                 masterAuditLog;
+    private final OMRSAuditLog                 masterAuditLog;
     private OMRSMetadataCollection       localMetadataCollection;
     private OMRSMetadataCollection       enterpriseMetadataCollection;
-    private Connection                   remoteEnterpriseOMRSTopicConnection;
-    private OMRSMetadataHighwayManager   metadataHighwayManager;
-    private String                       localServerURL;
-    private AuditLog                     auditLog;
+    private final Connection                   remoteEnterpriseOMRSTopicConnection;
+    private final OMRSMetadataHighwayManager   metadataHighwayManager;
+    private final String                       localServerURL;
+    private final AuditLog                     auditLog;
 
 
     /**
@@ -140,7 +140,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
 
     /**
      * Return the connection to the remote enterprise topic connection.  This may be null, but if it is enabled in the
-     * servers configuration, this call is ued to return the configured connection object to a remote client so it can listen for
+     * server's configuration, this call is ued to return the configured connection object to a remote client, so it can listen for
      * enterprise topic events.
      *
      * @return connection or null

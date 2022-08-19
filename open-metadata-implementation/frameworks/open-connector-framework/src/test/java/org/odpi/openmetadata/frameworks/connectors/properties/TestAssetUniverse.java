@@ -244,7 +244,7 @@ public class TestAssetUniverse
 
 
     /**
-     * Validate the subclass constructor works all of the way up the inheritance hierarchy.
+     * Validate the subclass constructor works all the way up the inheritance hierarchy.
      */
     @Test public void testSubclassInitialization()
     {

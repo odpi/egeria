@@ -83,6 +83,7 @@ public class GovernanceRoleProperties extends PersonRoleProperties
     {
         return "GovernanceRoleProperties{" +
                        "domainIdentifier=" + domainIdentifier +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", roleId='" + getRoleId() + '\'' +
                        ", scope='" + getScope() + '\'' +
                        ", title='" + getTitle() + '\'' +

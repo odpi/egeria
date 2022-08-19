@@ -102,7 +102,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return connection bean
      */

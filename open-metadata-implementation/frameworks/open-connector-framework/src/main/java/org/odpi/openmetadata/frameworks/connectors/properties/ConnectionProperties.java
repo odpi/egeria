@@ -146,7 +146,7 @@ public class ConnectionProperties extends AssetReferenceable
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return connection bean
      */

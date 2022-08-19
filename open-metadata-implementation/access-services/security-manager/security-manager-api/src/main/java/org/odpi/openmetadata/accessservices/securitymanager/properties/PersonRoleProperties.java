@@ -98,7 +98,6 @@ public class PersonRoleProperties extends PersonalRoleProperties
     }
 
 
-
     /**
      * JSON-style toString
      *
@@ -110,10 +109,12 @@ public class PersonRoleProperties extends PersonalRoleProperties
         return "PersonRoleProperties{" +
                        "headCountLimitSet=" + headCountLimitSet +
                        ", headCount=" + headCount +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", roleId='" + getRoleId() + '\'' +
                        ", scope='" + getScope() + '\'' +
                        ", title='" + getTitle() + '\'' +
                        ", description='" + getDescription() + '\'' +
+                       ", domainIdentifier=" + getDomainIdentifier() +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +

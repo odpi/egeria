@@ -115,7 +115,7 @@ public interface RightsManagementInterface
 
 
     /**
-     * Retrieve all of the license types for a particular title.  The title can include regEx wildcards.
+     * Retrieve all the license types for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
      * @param title identifier of role
@@ -137,7 +137,7 @@ public interface RightsManagementInterface
 
 
     /**
-     * Retrieve all of the license type definitions for a specific governance domain.
+     * Retrieve all the license type definitions for a specific governance domain.
      *
      * @param userId calling user
      * @param domainIdentifier identifier to search for

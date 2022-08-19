@@ -21,6 +21,7 @@ public class UserIdentityProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
+    private String userId = null;
     private String distinguishedName = null;
 
 
@@ -41,6 +42,34 @@ public class UserIdentityProperties extends ReferenceableProperties
     public UserIdentityProperties(UserIdentityProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            this.userId = template.getUserId();
+            this.distinguishedName = template.getDistinguishedName();
+        }
+    }
+
+
+    /**
+     * Return the identifier of the user's account
+     *
+     * @return string
+     */
+    public String getUserId()
+    {
+        return userId;
+    }
+
+
+    /**
+     * Return the identifier of the user's account.
+     *
+     * @param userId string
+     */
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
     }
 
 
@@ -75,11 +104,12 @@ public class UserIdentityProperties extends ReferenceableProperties
     public String toString()
     {
         return "UserIdentityProperties{" +
-                       "distinguishedName='" + distinguishedName + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       "qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", userId='" + userId + '\'' +
+                       ", distinguishedName='" + distinguishedName + '\'' +
                        '}';
     }
 
@@ -101,12 +131,13 @@ public class UserIdentityProperties extends ReferenceableProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         UserIdentityProperties that = (UserIdentityProperties) objectToCompare;
-        return Objects.equals(distinguishedName, that.distinguishedName);
+        return Objects.equals(userId, that.userId) &&
+                       Objects.equals(distinguishedName, that.distinguishedName);
     }
 
 
@@ -118,6 +149,6 @@ public class UserIdentityProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), distinguishedName);
+        return Objects.hash(super.hashCode(), userId, distinguishedName);
     }
 }

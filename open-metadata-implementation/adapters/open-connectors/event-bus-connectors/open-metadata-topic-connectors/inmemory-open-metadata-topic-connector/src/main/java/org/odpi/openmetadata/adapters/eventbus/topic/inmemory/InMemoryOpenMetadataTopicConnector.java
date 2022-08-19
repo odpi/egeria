@@ -38,7 +38,7 @@ public class InMemoryOpenMetadataTopicConnector extends OpenMetadataTopicConnect
 
 
     /**
-     * Returns all of the events found on the in memory OMRS Topic.
+     * Returns all the events found on the in memory OMRS Topic.
      *
      * @return list of received events.
      */

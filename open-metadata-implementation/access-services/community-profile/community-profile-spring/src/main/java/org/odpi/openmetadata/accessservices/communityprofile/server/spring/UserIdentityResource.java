@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityResponse;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class UserIdentityResource
 {
-    private UserIdentityRESTServices restAPI = new UserIdentityRESTServices();
+    private final UserIdentityRESTServices restAPI = new UserIdentityRESTServices();
 
     /**
      * Create a UserIdentity.  This is not connected to a profile.
@@ -96,7 +96,7 @@ public class UserIdentityResource
     public VoidResponse deleteUserIdentity(@PathVariable String                    serverName,
                                            @PathVariable String                    userId,
                                            @PathVariable String                    userIdentityGUID,
-                                           @RequestBody  MetadataSourceRequestBody requestBody)
+                                           @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteUserIdentity(serverName, userId, userIdentityGUID, requestBody);
     }
@@ -123,7 +123,7 @@ public class UserIdentityResource
                                               @PathVariable String                    userId,
                                               @PathVariable String                    userIdentityGUID,
                                               @PathVariable String                    profileGUID,
-                                              @RequestBody  MetadataSourceRequestBody requestBody)
+                                              @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.addIdentityToProfile(serverName, userId, userIdentityGUID, profileGUID, requestBody);
     }
@@ -150,7 +150,7 @@ public class UserIdentityResource
                                                   @PathVariable String                    userId,
                                                   @PathVariable String                    userIdentityGUID,
                                                   @PathVariable String                    profileGUID,
-                                                  @RequestBody  MetadataSourceRequestBody requestBody)
+                                                  @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeIdentityFromProfile(serverName, userId, userIdentityGUID, profileGUID, requestBody);
     }

@@ -182,7 +182,7 @@ public enum GovernanceEngineAuditCode implements AuditLogMessageSet
 
     SKIPPING_INSTANCE("OMAS-GOVERNANCE-ENGINE-0021",
                            OMRSAuditLogRecordSeverity.INFO,
-                           "The Governance Engine Open Metadata Access Service (OMAS) is ignoring event from {0} of type {1} for instance {2} because it does not have access to all of the information for the instance. Error message is: {3}",
+                           "The Governance Engine Open Metadata Access Service (OMAS) is ignoring event from {0} of type {1} for instance {2} because it does not have access to all the information for the instance. Error message is: {3}",
                            "The event could not be processed because additional information, such as the anchor entity, is not available to this server.  " +
                                    "This is not necessarily an error if the server is connected to a cohort where members are also connected to other cohorts, of there is strict security in place that is restricting what this server can see.",
                            "Review the exception to reassure yourself that this is expected behavior."),

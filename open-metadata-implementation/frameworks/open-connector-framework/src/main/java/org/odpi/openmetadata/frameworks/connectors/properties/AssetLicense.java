@@ -28,7 +28,7 @@ public class AssetLicense extends AssetReferenceable
     /**
      * Bean constructor
      *
-     * @param licenseBean bean with all of the properties in it
+     * @param licenseBean bean with all the properties in it
      */
     public AssetLicense(License   licenseBean)
     {
@@ -49,7 +49,7 @@ public class AssetLicense extends AssetReferenceable
      * Bean constructor with parent asset
      *
      * @param parentAsset descriptor for parent asset
-     * @param licenseBean bean with all of the properties in it
+     * @param licenseBean bean with all the properties in it
      */
     public AssetLicense(AssetDescriptor     parentAsset,
                         License             licenseBean)
@@ -89,7 +89,7 @@ public class AssetLicense extends AssetReferenceable
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return license bean
      */

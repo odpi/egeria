@@ -100,7 +100,7 @@ public abstract class AssetElementHeader extends AssetPropertyBase
     /**
      * Set up the bean that contains the properties of the element header.
      *
-     * @param elementBaseBean bean containing all of the properties
+     * @param elementBaseBean bean containing all the properties
      */
     protected void  setBean(ElementBase elementBaseBean)
     {

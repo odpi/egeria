@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class PersonalProfileResource
 {
-    private PersonalProfileRESTServices restAPI = new PersonalProfileRESTServices();
+    private final PersonalProfileRESTServices restAPI = new PersonalProfileRESTServices();
 
     /**
      * Default constructor

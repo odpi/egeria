@@ -93,7 +93,7 @@ public class AssetInformalTag extends AssetElementHeader
 
 
     /**
-     * Return the bean with all of the properties in it
+     * Return the bean with all the properties in it
      *
      * @return informal tag bean
      */

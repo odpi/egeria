@@ -25,10 +25,11 @@ public class ActorProfileElement implements Serializable, MetadataElement
 {
     private static final long          serialVersionUID = 1L;
 
-    private ElementHeader                elementHeader        = null;
-    private ActorProfileProperties       profileProperties    = null;
-    private List<ContactMethodElement>   contactMethods       = null;
+    private ElementHeader              elementHeader     = null;
+    private ActorProfileProperties     profileProperties = null;
+    private List<ContactMethodElement> contactMethods    = null;
     private List<ElementStub>            personRoles          = null; /* Person only */
+    private List<ProfileLocationElement> locations            = null;
     private List<ProfileIdentityElement> userIdentities       = null;
     private ElementStub                  superTeam            = null; /* Team only */
     private List<ElementStub>            subTeams             = null; /* Team only */
@@ -58,6 +59,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
             profileProperties = template.getProfileProperties();
             contactMethods = template.getContactMethods();
             personRoles = template.getPersonRoles();
+            locations = template.getLocations();
             userIdentities = template.getUserIdentities();
             superTeam = template.getSuperTeam();
             subTeams = template.getSubTeams();
@@ -137,7 +139,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
     /**
      * Return the headers of the person roles that this actor is appointed to.
      *
-     * @return role stub
+     * @return role stubs
      */
     public List<ElementStub> getPersonRoles()
     {
@@ -153,6 +155,29 @@ public class ActorProfileElement implements Serializable, MetadataElement
     public void setPersonRoles(List<ElementStub> personRoles)
     {
         this.personRoles = personRoles;
+    }
+
+
+
+    /**
+     * Return the headers of the location that this actor is linked to.
+     *
+     * @return location stubs
+     */
+    public List<ProfileLocationElement> getLocations()
+    {
+        return locations;
+    }
+
+
+    /**
+     * Set up the headers of the person roles that this actor is linked to.
+     *
+     * @param locations location stubs
+     */
+    public void setLocations(List<ProfileLocationElement> locations)
+    {
+        this.locations = locations;
     }
 
 
@@ -301,6 +326,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
                        ", profileProperties=" + profileProperties +
                        ", contactMethods=" + contactMethods +
                        ", personRoles=" + personRoles +
+                       ", locations=" + locations +
                        ", userIdentities=" + userIdentities +
                        ", superTeam=" + superTeam +
                        ", subTeams=" + subTeams +
@@ -333,6 +359,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
                        Objects.equals(profileProperties, that.profileProperties) &&
                        Objects.equals(contactMethods, that.contactMethods) &&
                        Objects.equals(personRoles, that.personRoles) &&
+                       Objects.equals(locations, that.locations) &&
                        Objects.equals(userIdentities, that.userIdentities) &&
                        Objects.equals(superTeam, that.superTeam) &&
                        Objects.equals(subTeams, that.subTeams) &&
@@ -351,6 +378,6 @@ public class ActorProfileElement implements Serializable, MetadataElement
     public int hashCode()
     {
         return Objects.hash(elementHeader, profileProperties, contactMethods, userIdentities, superTeam, subTeams,
-                            teamLeaderRoles, personRoles, teamMemberRoles, linkedInfrastructure);
+                            teamLeaderRoles, personRoles, locations, teamMemberRoles, linkedInfrastructure);
     }
 }

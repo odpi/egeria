@@ -26,6 +26,7 @@ public class CommunityElement implements MetadataElement, Serializable
 
     private ElementHeader       elementHeader = null;
     private CommunityProperties properties    = null;
+    private RelatedElement      relatedElement = null;
 
 
     /**
@@ -48,6 +49,7 @@ public class CommunityElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
+            relatedElement = template.getRelatedElement();
         }
     }
 
@@ -99,6 +101,30 @@ public class CommunityElement implements MetadataElement, Serializable
 
 
     /**
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @return list of element stubs
+     */
+    public RelatedElement getRelatedElement()
+    {
+        return relatedElement;
+    }
+
+
+    /**
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @param relatedElement relationship details
+     */
+    public void setRelatedElement(RelatedElement relatedElement)
+    {
+        this.relatedElement = relatedElement;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -107,9 +133,10 @@ public class CommunityElement implements MetadataElement, Serializable
     public String toString()
     {
         return "CommunityElement{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
-                '}';
+                       "elementHeader=" + elementHeader +
+                       ", properties=" + properties +
+                       ", relatedElement=" + relatedElement +
+                       '}';
     }
 
 
@@ -132,7 +159,8 @@ public class CommunityElement implements MetadataElement, Serializable
         }
         CommunityElement that = (CommunityElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties);
+                       Objects.equals(properties, that.properties) &&
+                       Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -144,6 +172,6 @@ public class CommunityElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
     }
 }
