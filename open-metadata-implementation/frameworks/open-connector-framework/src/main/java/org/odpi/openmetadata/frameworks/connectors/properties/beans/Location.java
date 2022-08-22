@@ -26,6 +26,7 @@ public class Location extends Referenceable
     /*
      * Properties that make up the location of the asset.
      */
+    protected String identifier = null;
     protected String displayName = null;
     protected String description = null;
 
@@ -50,9 +51,32 @@ public class Location extends Referenceable
 
         if (templateLocation != null)
         {
+            identifier = templateLocation.getIdentifier();
             displayName = templateLocation.getDisplayName();
             description = templateLocation.getDescription();
         }
+    }
+
+
+    /**
+     * Return the unique identifier of the location.
+     *
+     * @return string
+     */
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+
+    /**
+     * Set up the unique identifier of the location.
+     *
+     * @param identifier string
+     */
+    public void setIdentifier(String identifier)
+    {
+        this.identifier = identifier;
     }
 
 
@@ -111,15 +135,25 @@ public class Location extends Referenceable
     public String toString()
     {
         return "Location{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "url='" + url + '\'' +
+                       ", extendedProperties=" + extendedProperties +
+                       ", URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", identifier='" + identifier + '\'' +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + qualifiedName + '\'' +
+                       ", additionalProperties=" + additionalProperties +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
     }
 
 

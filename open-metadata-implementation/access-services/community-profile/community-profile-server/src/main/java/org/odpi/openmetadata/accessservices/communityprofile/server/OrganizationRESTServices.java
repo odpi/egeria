@@ -6,7 +6,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.converters.Communit
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties;
@@ -39,6 +38,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;

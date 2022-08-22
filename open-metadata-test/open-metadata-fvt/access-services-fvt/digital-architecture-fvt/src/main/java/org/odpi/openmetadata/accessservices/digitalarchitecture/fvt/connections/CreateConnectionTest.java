@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.client.Connectio
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectionProperties;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectorTypeProperties;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.Endpo
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;

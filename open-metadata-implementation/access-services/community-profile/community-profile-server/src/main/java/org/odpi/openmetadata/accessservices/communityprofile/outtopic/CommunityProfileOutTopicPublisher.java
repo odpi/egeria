@@ -5,8 +5,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.outtopic;
 import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.events.*;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 
 /**
@@ -19,9 +19,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
  */
 public class CommunityProfileOutTopicPublisher
 {
-    private CommunityProfileOutTopicServerConnector outTopicServerConnector;
-    private AuditLog                                outTopicAuditLog;
-    private String                                  outTopicName;
+    private final CommunityProfileOutTopicServerConnector outTopicServerConnector;
+    private final AuditLog                                outTopicAuditLog;
+    private final String                                  outTopicName;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 
@@ -141,7 +141,7 @@ public class CommunityProfileOutTopicPublisher
      * @param pointsTotal the number of points that the person has achieved
      * @param plateau the plateau achieved
      */
-    public void sendKarmaPointPlateauEvent(ElementStub  profileElementStub,
+    public void sendKarmaPointPlateauEvent(ElementStub profileElementStub,
                                            String       contributingUserId,
                                            boolean      isPublic,
                                            long         pointsTotal,

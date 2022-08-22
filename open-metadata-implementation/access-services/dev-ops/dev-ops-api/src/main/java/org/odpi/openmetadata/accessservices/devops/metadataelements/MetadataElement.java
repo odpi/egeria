@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.devops.metadataelements;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * MetadataElement is the common interface for all metadata elements.  It adds the header information that is stored with the properties.

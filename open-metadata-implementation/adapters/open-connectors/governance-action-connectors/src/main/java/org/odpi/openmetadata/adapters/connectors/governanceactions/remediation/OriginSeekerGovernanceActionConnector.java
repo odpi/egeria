@@ -68,7 +68,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                 /*
                  * Check that the AssetOrigin classification is not already set - this is an error if it is.
                  */
-                ElementClassification existingAssetOriginClassification = this.getAssetOriginClassification(targetElement);
+                AttachedClassification existingAssetOriginClassification = this.getAssetOriginClassification(targetElement);
 
                 if (existingAssetOriginClassification != null)
                 {
@@ -166,13 +166,13 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
      * @param asset asset element to check
      * @return null or located AssetOrigin classification
      */
-    private ElementClassification getAssetOriginClassification(OpenMetadataElement asset)
+    private AttachedClassification getAssetOriginClassification(OpenMetadataElement asset)
     {
-        List<ElementClassification> existingClassifications = asset.getClassifications();
+        List<AttachedClassification> existingClassifications = asset.getClassifications();
 
         if (existingClassifications != null)
         {
-            for (ElementClassification existingClassification : existingClassifications)
+            for (AttachedClassification existingClassification : existingClassifications)
             {
                 if (existingClassification != null)
                 {
@@ -242,7 +242,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                         /*
                          * If we find an origin classification on this asset we stop traversing the lineage graph.
                          */
-                        ElementClassification existingAssetOriginClassification = this.getAssetOriginClassification(nextAsset);
+                        AttachedClassification existingAssetOriginClassification = this.getAssetOriginClassification(nextAsset);
 
                         if (existingAssetOriginClassification == null)
                         {

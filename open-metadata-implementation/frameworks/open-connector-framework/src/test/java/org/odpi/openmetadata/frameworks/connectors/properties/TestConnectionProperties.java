@@ -28,7 +28,7 @@ public class TestConnectionProperties
      */
     public TestConnectionProperties()
     {
-        type.setElementTypeName("TestType");
+        type.setTypeName("TestType");
     }
 
 
@@ -120,10 +120,10 @@ public class TestConnectionProperties
      */
     private void validateResultObject(ConnectionProperties  resultObject)
     {
-        assertTrue(resultObject.getType().getElementTypeBean().equals(type));
+        assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
         assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getAssetClassifications() == null);
+        assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
@@ -146,7 +146,7 @@ public class TestConnectionProperties
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
         assertTrue(nullObject.getURL() == null);
-        assertTrue(nullObject.getAssetClassifications() == null);
+        assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
@@ -181,26 +181,6 @@ public class TestConnectionProperties
         nullObject = new ConnectionProperties(nullBean);
         validateNullObject(nullObject);
 
-        parentAsset = null;
-        nullBean = null;
-        nullObject = new ConnectionProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullBean = new Connection();
-        nullObject = new ConnectionProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullBean = new Connection(null);
-        nullObject = new ConnectionProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullTemplate = null;
-        nullObject = new ConnectionProperties(parentAsset, nullTemplate);
-        validateNullObject(nullObject);
-
-        nullTemplate = null;
-        nullObject = new ConnectionProperties(nullTemplate);
-        validateNullObject(nullObject);
     }
 
 
@@ -368,7 +348,7 @@ public class TestConnectionProperties
      */
     @Test public void testClone()
     {
-        validateResultObject(new ConnectionProperties(null, getTestObject()));
+        validateResultObject(new ConnectionProperties( getTestObject()));
     }
 
     /**

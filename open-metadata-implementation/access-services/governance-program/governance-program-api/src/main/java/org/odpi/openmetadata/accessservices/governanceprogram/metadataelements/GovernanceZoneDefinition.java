@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,8 +29,8 @@ public class GovernanceZoneDefinition extends GovernanceZoneElement
 {
     private static final long    serialVersionUID = 1L;
 
-    private ElementStub       parentGovernanceZone            = null;
-    private List<ElementStub> nestedGovernanceZones           = null;
+    private ElementStub       parentGovernanceZone  = null;
+    private List<ElementStub> nestedGovernanceZones = null;
     private List<ElementStub> associatedGovernanceDefinitions = null;
 
 

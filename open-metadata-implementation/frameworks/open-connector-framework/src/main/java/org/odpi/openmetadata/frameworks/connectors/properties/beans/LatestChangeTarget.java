@@ -41,11 +41,11 @@ public enum LatestChangeTarget implements Serializable
     public static final String ENUM_TYPE_GUID = "a0b7d7a0-4af5-4539-9b81-cbef52d8cc5d";
     public static final String ENUM_TYPE_NAME = "LatestChangeTarget";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

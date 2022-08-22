@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,9 +28,9 @@ public class ActorProfileElement implements Serializable, MetadataElement
     private static final long          serialVersionUID = 1L;
 
     private ElementHeader                elementHeader        = null;
-    private ActorProfileProperties     profileProperties  = null;
-    private List<ContactMethodElement> contactMethods     = null;
-    private ContributionRecordElement  contributionRecord = null; /* Person only */
+    private ActorProfileProperties       profileProperties    = null;
+    private List<ContactMethodElement>   contactMethods       = null;
+    private ContributionRecordElement    contributionRecord   = null; /* Person only */
     private List<ElementStub>            personRoles          = null; /* Person only */
     private List<ProfileLocationElement> locations            = null;
     private List<ProfileIdentityElement> userIdentities       = null;

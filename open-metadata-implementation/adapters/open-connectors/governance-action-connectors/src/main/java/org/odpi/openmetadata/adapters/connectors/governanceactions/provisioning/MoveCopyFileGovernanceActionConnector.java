@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
@@ -29,7 +30,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
      */
     private static volatile Map<String, Integer> fileIndexMap = new HashMap<>();
 
-    private PropertyHelper propertyHelper = new PropertyHelper();
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     private String  topLevelProcessName                  = this.getClass().getName();
     private String  destinationFileTemplateQualifiedName = null;
@@ -743,11 +744,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         if (childProcessLineage)
         {
             processGUID = governanceContext.createChildProcess(childProcessTypeName,
-                                                                    ElementStatus.ACTIVE,
-                                                                    topLevelProcessName + connectorInstanceId,
-                                                                    topLevelProcessName,
-                                                                    null,
-                                                                    topLevelProcessGUID);
+                                                               ElementStatus.ACTIVE,
+                                                               topLevelProcessName + connectorInstanceId,
+                                                               topLevelProcessName,
+                                                               null,
+                                                               topLevelProcessGUID);
         }
         else
         {

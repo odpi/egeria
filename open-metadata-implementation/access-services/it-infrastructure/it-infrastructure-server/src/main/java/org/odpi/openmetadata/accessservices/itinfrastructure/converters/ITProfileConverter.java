@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.converters;
 
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProfileIdentityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
@@ -14,6 +13,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProfileI
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.UserIdentityProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;

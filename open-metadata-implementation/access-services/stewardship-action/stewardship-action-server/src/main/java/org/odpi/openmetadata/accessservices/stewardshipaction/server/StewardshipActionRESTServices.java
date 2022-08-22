@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.server;
 
 import org.odpi.openmetadata.accessservices.stewardshipaction.converters.ElementStubConverter;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.DuplicateElement;
-import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.stewardshipaction.properties.DuplicateProperties;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesRequestBody;
 import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesResponse;
@@ -20,6 +19,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;

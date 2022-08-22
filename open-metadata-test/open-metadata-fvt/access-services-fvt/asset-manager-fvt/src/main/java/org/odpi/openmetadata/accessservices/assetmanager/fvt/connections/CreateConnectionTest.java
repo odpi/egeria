@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetMan
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties;
@@ -18,13 +17,13 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIden
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * CreateConnectionTest calls the ConnectionClient to create a connection with endpoints and connectorTypes

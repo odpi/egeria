@@ -47,7 +47,7 @@ public class TestAssetLineage
      */
     @Test public void testClone()
     {
-        validateResultObject(new AssetLineage(null, getTestObject()));
+        validateResultObject(new AssetLineage( getTestObject()));
     }
 
 

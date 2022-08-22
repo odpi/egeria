@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.Date;
 import java.util.Map;

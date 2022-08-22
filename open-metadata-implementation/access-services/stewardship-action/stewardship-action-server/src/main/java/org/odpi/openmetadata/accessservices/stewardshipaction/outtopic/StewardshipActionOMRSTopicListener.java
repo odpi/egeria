@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.stewardshipaction.outtopic;
 
 import org.odpi.openmetadata.accessservices.stewardshipaction.events.StewardshipActionEventType;
-import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -31,10 +31,10 @@ public class StewardshipActionOMRSTopicListener extends OMRSTopicListenerBase
     private static final Logger log = LoggerFactory.getLogger(StewardshipActionOMRSTopicListener.class);
 
 
-    private StewardshipActionOutTopicPublisher eventPublisher;
-    private ReferenceableHandler<ElementStub>  referenceableHandler;
-    private String                             localServerUserId;
-    private List<String>                       supportedZones;
+    private final StewardshipActionOutTopicPublisher eventPublisher;
+    private final ReferenceableHandler<ElementStub>  referenceableHandler;
+    private final String                             localServerUserId;
+    private final List<String>                       supportedZones;
 
     /**
      * Initialize the topic listener.

@@ -28,18 +28,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = Meaning.class, name = "Meaning"),
                 @JsonSubTypes.Type(value = Rating.class, name = "Rating")
         })
-public class ElementBase extends PropertyBase
+public class ElementBase extends ElementHeader
 {
     private static final long     serialVersionUID = 1L;
 
     /*
      * Common header for first class elements from a metadata repository
      */
-    protected ElementType type = null;
-    protected String      guid = null;
     protected String      url  = null;
-
-    protected List<ElementClassification> classifications    = null;
     protected Map<String, Object>         extendedProperties = null;
 
     /**
@@ -62,64 +58,9 @@ public class ElementBase extends PropertyBase
 
         if (template != null)
         {
-            type               = template.getType();
-            guid               = template.getGUID();
             url                = template.getURL();
-            classifications    = template.getClassifications();
             extendedProperties = template.getExtendedProperties();
         }
-    }
-
-
-    /**
-     * Return the element type properties for this properties object.  These values are set up by the metadata repository
-     * and define details to the metadata entity used to represent this element.
-     *
-     * @return ElementType type information.
-     */
-    public ElementType getType()
-    {
-        if (type == null)
-        {
-            return null;
-        }
-        else
-        {
-            return type;
-        }
-    }
-
-
-    /**
-     * Set up the type of this element.
-     *
-     * @param type element type properties
-     */
-    public void setType(ElementType type)
-    {
-        this.type = type;
-    }
-
-
-    /**
-     * Return the unique id for the properties object.  Null means no guid is assigned.
-     *
-     * @return String unique id
-     */
-    public String getGUID()
-    {
-        return guid;
-    }
-
-
-    /**
-     * Set up the guid for the element.
-     *
-     * @param guid String unique identifier
-     */
-    public void setGUID(String guid)
-    {
-        this.guid = guid;
     }
 
 
@@ -143,40 +84,6 @@ public class ElementBase extends PropertyBase
     public void setURL(String url)
     {
         this.url = url;
-    }
-
-
-    /**
-     * Return the list of classifications associated with the asset.   This is an  list and the
-     * pointers are set to the start of the list of classifications
-     *
-     * @return Classifications  list of classifications
-     */
-    public List<ElementClassification> getClassifications()
-    {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(classifications);
-        }
-    }
-
-
-    /**
-     * Set up the classifications associated with this connection.
-     *
-     * @param classifications list of classifications
-     */
-    public void setClassifications(List<ElementClassification> classifications)
-    {
-        this.classifications = classifications;
     }
 
 
@@ -224,12 +131,17 @@ public class ElementBase extends PropertyBase
     public String toString()
     {
         return "ElementBase{" +
-                "type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
-                '}';
+                       "url='" + url + '\'' +
+                       ", extendedProperties=" + extendedProperties +
+                       ", URL='" + getURL() + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 
@@ -246,16 +158,16 @@ public class ElementBase extends PropertyBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof ElementBase))
+        if (! (objectToCompare instanceof ElementBase))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ElementBase that = (ElementBase) objectToCompare;
-        return Objects.equals(getType(), that.getType()) &&
-                Objects.equals(guid, that.guid) &&
-                Objects.equals(url, that.url) &&
-                Objects.equals(getClassifications(), that.getClassifications()) &&
-                Objects.equals(getExtendedProperties(), that.getExtendedProperties());
+        return Objects.equals(url, that.url) && Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -267,6 +179,6 @@ public class ElementBase extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid);
+        return Objects.hash(super.hashCode(), url, extendedProperties);
     }
 }

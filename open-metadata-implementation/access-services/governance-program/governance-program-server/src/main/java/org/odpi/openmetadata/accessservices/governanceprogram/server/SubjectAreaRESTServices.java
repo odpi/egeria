@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.converters.ElementStubConverter;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
@@ -22,6 +21,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinition
 import org.odpi.openmetadata.commonservices.generichandlers.SubjectAreaHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;

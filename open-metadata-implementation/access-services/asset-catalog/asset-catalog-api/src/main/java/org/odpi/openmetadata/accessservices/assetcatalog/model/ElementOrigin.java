@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
 
 import java.io.Serializable;
 

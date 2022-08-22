@@ -120,19 +120,14 @@ public class Connection extends Referenceable
         final String        elementTypeName                 = "Connection";
         final long          elementTypeVersion              = 1;
         final String        elementTypeDescription          = "A set of properties to identify and configure a connector instance.";
-        final String        elementAccessServiceURL         = null;
-        final ElementOrigin elementOrigin                   = ElementOrigin.LOCAL_COHORT;
-        final String        elementHomeMetadataCollectionId = null;
 
         ElementType elementType = new ElementType();
 
-        elementType.setElementTypeId(elementTypeId);
-        elementType.setElementTypeName(elementTypeName);
-        elementType.setElementTypeVersion(elementTypeVersion);
-        elementType.setElementTypeDescription(elementTypeDescription);
-        elementType.setElementSourceServer(elementAccessServiceURL);
-        elementType.setElementOrigin(elementOrigin);
-        elementType.setElementMetadataCollectionId(elementHomeMetadataCollectionId);
+        elementType.setTypeId(elementTypeId);
+        elementType.setTypeName(elementTypeName);
+        elementType.setTypeVersion(elementTypeVersion);
+        elementType.setTypeDescription(elementTypeDescription);
+
 
         return elementType;
     }
@@ -450,39 +445,17 @@ public class Connection extends Referenceable
                        ", configurationProperties=" + configurationProperties +
                        ", securedProperties=" + securedProperties +
                        ", assetSummary='" + assetSummary + '\'' +
-                       ", qualifiedName='" + qualifiedName + '\'' +
-                       ", additionalProperties=" + additionalProperties +
-                       ", meanings=" + meanings +
-                       ", securityTags=" + securityTags +
-                       ", searchKeywords=" + searchKeywords +
-                       ", latestChange='" + latestChange + '\'' +
-                       ", latestChangeDetails=" + latestChangeDetails +
-                       ", confidentialityGovernanceClassification=" + confidentialityGovernanceClassification +
-                       ", confidenceGovernanceClassification=" + confidenceGovernanceClassification +
-                       ", criticalityGovernanceClassification=" + criticalityGovernanceClassification +
-                       ", retentionGovernanceClassification=" + retentionGovernanceClassification +
-                       ", type=" + type +
-                       ", guid='" + guid + '\'' +
-                       ", url='" + url + '\'' +
-                       ", classifications=" + classifications +
-                       ", extendedProperties=" + extendedProperties +
+                       ", URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", headerVersion=" + getHeaderVersion() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", meanings=" + getMeanings() +
-                       ", securityTags=" + getSecurityTags() +
-                       ", searchKeywords=" + getSearchKeywords() +
-                       ", latestChange='" + getLatestChange() + '\'' +
-                       ", latestChangeDetails=" + getLatestChangeDetails() +
-                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
-                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
-                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
-                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
-                       ", type=" + getType() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", URL='" + getURL() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", headerVersion=" + getHeaderVersion() +
                        '}';
     }
 

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.datamanager.listener;
 import org.odpi.openmetadata.accessservices.datamanager.converters.DataManagerOMASConverter;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEventType;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerAuditCode;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.datamanager.outtopic.DataManagerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerServicesInstance;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
@@ -13,6 +12,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMappe
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;

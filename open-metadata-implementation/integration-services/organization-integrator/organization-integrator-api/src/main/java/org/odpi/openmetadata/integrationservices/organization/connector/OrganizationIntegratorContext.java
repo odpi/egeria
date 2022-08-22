@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.client.Organization
 import org.odpi.openmetadata.accessservices.communityprofile.client.SecurityGroupManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.SecurityGroupElement;
@@ -28,6 +27,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.Date;
 import java.util.List;
