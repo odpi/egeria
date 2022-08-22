@@ -31,10 +31,10 @@ public class AssetOwnerOMRSTopicListener extends OMRSTopicListenerBase
     private static final Logger log = LoggerFactory.getLogger(AssetOwnerOMRSTopicListener.class);
 
 
-    private AssetOwnerOutTopicPublisher eventPublisher;
-    private AssetHandler<AssetElement>  assetHandler;
-    private String                      localServerUserId;
-    private List<String>                supportedZones;
+    private final AssetOwnerOutTopicPublisher eventPublisher;
+    private final AssetHandler<AssetElement>  assetHandler;
+    private final String                      localServerUserId;
+    private final List<String>                supportedZones;
 
     /**
      * Initialize the topic listener.
@@ -46,7 +46,7 @@ public class AssetOwnerOMRSTopicListener extends OMRSTopicListenerBase
      * @param supportedZones list of zones that the access service is allowed to serve instances from.
      * @param auditLog logging destination
      */
-    public AssetOwnerOMRSTopicListener(String                            serviceName,
+    public AssetOwnerOMRSTopicListener(String                        serviceName,
                                        String                         localServerUserId,
                                        AssetOwnerOutTopicPublisher eventPublisher,
                                        AssetHandler<AssetElement>     assetHandler,

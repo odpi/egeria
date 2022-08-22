@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.outtopic;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.events.DigitalArchitectureEventType;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementHeader;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -30,10 +30,10 @@ public class DigitalArchitectureOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final Logger log = LoggerFactory.getLogger(DigitalArchitectureOMRSTopicListener.class);
 
-    private DigitalArchitectureOutTopicPublisher eventPublisher;
-    private ReferenceableHandler<ElementHeader>  referenceableHandler;
-    private String                               localServerUserId;
-    private List<String>                         supportedZones;
+    private final DigitalArchitectureOutTopicPublisher eventPublisher;
+    private final ReferenceableHandler<ElementHeader>  referenceableHandler;
+    private final String                               localServerUserId;
+    private final List<String>                         supportedZones;
 
 
     /**

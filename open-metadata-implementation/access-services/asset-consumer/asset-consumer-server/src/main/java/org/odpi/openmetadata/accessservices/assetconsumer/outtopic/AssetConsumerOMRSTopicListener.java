@@ -31,10 +31,10 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerOMRSTopicListener.class);
 
 
-    private AssetConsumerOutTopicPublisher eventPublisher;
-    private AssetHandler<AssetElement>     assetHandler;
-    private String                         localServerUserId;
-    private List<String>                   supportedZones;
+    private final AssetConsumerOutTopicPublisher eventPublisher;
+    private final AssetHandler<AssetElement>     assetHandler;
+    private final String                         localServerUserId;
+    private final List<String>                   supportedZones;
 
     /**
      * Initialize the topic listener.
@@ -46,12 +46,12 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param supportedZones list of zones that the access service is allowed to serve instances from.
      * @param auditLog logging destination
      */
-    public AssetConsumerOMRSTopicListener(String                            serviceName,
-                                             String                         localServerUserId,
-                                             AssetConsumerOutTopicPublisher eventPublisher,
-                                             AssetHandler<AssetElement>     assetHandler,
-                                             List<String>                   supportedZones,
-                                             AuditLog                       auditLog)
+    public AssetConsumerOMRSTopicListener(String                         serviceName,
+                                          String                         localServerUserId,
+                                          AssetConsumerOutTopicPublisher eventPublisher,
+                                          AssetHandler<AssetElement>     assetHandler,
+                                          List<String>                   supportedZones,
+                                          AuditLog                       auditLog)
     {
         super(serviceName, auditLog);
 

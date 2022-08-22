@@ -7,7 +7,6 @@ package org.odpi.openmetadata.accessservices.securitymanager.client;
 import org.odpi.openmetadata.accessservices.securitymanager.api.SecurityManagerInterface;
 import org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
@@ -36,6 +35,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.Date;
 import java.util.List;

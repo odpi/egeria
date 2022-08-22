@@ -184,8 +184,8 @@ public class CertificationManager implements CertificationManagementInterface
     public String createCertificationType(String                      userId,
                                           CertificationTypeProperties properties,
                                           GovernanceDefinitionStatus  initialStatus) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String   methodName = "createCertificationType";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types";

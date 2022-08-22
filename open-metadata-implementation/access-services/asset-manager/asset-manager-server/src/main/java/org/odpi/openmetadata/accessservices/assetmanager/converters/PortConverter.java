@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.PortElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.PortProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;

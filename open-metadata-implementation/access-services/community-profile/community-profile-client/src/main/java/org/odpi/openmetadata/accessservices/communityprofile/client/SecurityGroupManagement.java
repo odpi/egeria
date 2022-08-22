@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.SecurityGroupInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.SecurityGroupElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.ElementStubsResponse;
@@ -20,6 +19,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 

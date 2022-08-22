@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt.common;
 import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProp
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
 import java.util.List;

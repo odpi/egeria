@@ -294,12 +294,12 @@ public class SimpleCatalogArchiveHelper
     private static final String API_PARAMETER_TYPE_NAME                  = "APIParameter";
     private static final String API_PARAMETER_LIST_TYPE_NAME             = "APIParameterList";
 
-    public static final String VALID_VALUE_DEFINITION_TYPE_NAME         = "ValidValueDefinition";
-    public static final String VALID_VALUE_SET_TYPE_NAME                = "ValidValueSet";
+    public static final String VALID_VALUE_DEFINITION_TYPE_NAME          = "ValidValueDefinition";
+    public static final String VALID_VALUE_SET_TYPE_NAME                 = "ValidValuesSet";
 
     private static final String VALID_VALUE_MEMBER_TYPE_NAME             = "ValidValueMember";
     private static final String VALID_VALUES_ASSIGNMENT_TYPE_NAME        = "ValidValuesAssignment";
-    private static final String VALID_VALUES_MAPPING_TYPE_NAME            = "ValidValuesMapping";
+    private static final String VALID_VALUES_MAPPING_TYPE_NAME           = "ValidValuesMapping";
     private static final String VALID_VALUES_IMPLEMENTATION_TYPE_NAME    = "ValidValuesImplementation";
     private static final String REFERENCE_VALUE_ASSIGNMENT_TYPE_NAME     = "ReferenceValueAssignment";
 
@@ -540,6 +540,40 @@ public class SimpleCatalogArchiveHelper
                                       long                       versionNumber,
                                       String                     versionName)
     {
+        this(archiveBuilder,
+             archiveGUID,
+             archiveRootName,
+             originatorName,
+             creationDate,
+             versionNumber,
+             versionName,
+             archiveRootName + guidMapFileNamePostFix);
+    }
+
+
+
+    /**
+     * Constructor passes parameters used to build the open metadata archive's property header.
+     * This version is used for multiple dependant archives, and they need to share the guid map.
+     *
+     * @param archiveBuilder builder where content is cached
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveRootName non-spaced root name of the open metadata archive elements.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param creationDate data that this archive was created.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     * @param guidMapFileName name of the guid map file.
+     */
+    public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                                      String                     archiveGUID,
+                                      String                     archiveRootName,
+                                      String                     originatorName,
+                                      Date                       creationDate,
+                                      long                       versionNumber,
+                                      String                     versionName,
+                                      String                     guidMapFileName)
+    {
         this.archiveBuilder = archiveBuilder;
 
         this.archiveHelper = new OMRSArchiveHelper(archiveBuilder,
@@ -549,7 +583,7 @@ public class SimpleCatalogArchiveHelper
                                                    versionNumber,
                                                    versionName);
 
-        this.idToGUIDMap = new OMRSArchiveGUIDMap(archiveRootName + guidMapFileNamePostFix);
+        this.idToGUIDMap = new OMRSArchiveGUIDMap(guidMapFileName);
 
         this.archiveRootName = archiveRootName;
         this.originatorName = originatorName;
@@ -2616,6 +2650,77 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(referenceableEntityProxy, subjectAreaClassification));
     }
+
+
+
+    /**
+     * Create a business area entity.
+     *
+     * @param qualifiedName unique name for the business area entity
+     * @param identifier unique name for the business area
+     * @param displayName display name for the business area
+     * @param description description about the business area
+     * @param additionalProperties any other properties
+     *
+     * @return unique identifier for business area (businessAreaGUID)
+     */
+    public String addBusinessArea(String               qualifiedName,
+                                  String               identifier,
+                                  String               displayName,
+                                  String               description,
+                                  Map<String, String>  additionalProperties)
+    {
+        final String methodName = "addBusinessArea";
+
+        EnumElementDef businessCapabilityTypeEnum = archiveHelper.getEnumElement(BUSINESS_CAPABILITY_TYPE_ENUM_NAME, BUSINESS_CAPABILITY_TYPE_BUSINESS_AREA);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IDENTIFIER_PROPERTY, identifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, BUSINESS_CAPABILITY_TYPE_PROPERTY, businessCapabilityTypeEnum.getOrdinal(), businessCapabilityTypeEnum.getValue(), businessCapabilityTypeEnum.getDescription(), methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(BUSINESS_CAPABILITY_TYPE_NAME,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               null);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Add an OrganizationalCapability relationship.
+     *
+     * @param businessCapabilityQName qualified name of the specialized term
+     * @param teamQName qualified name of the generalized term
+     * @param scope scope of the team's ability to support the business capability
+     */
+    public void addOrganizationalCapabilityRelationship(String businessCapabilityQName,
+                                                        String teamQName,
+                                                        String scope)
+    {
+        final String methodName = "addOrganizationalCapabilityRelationship";
+
+        String end1GUID = idToGUIDMap.getGUID(businessCapabilityQName);
+        String end2GUID = idToGUIDMap.getGUID(teamQName);
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end1GUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end2GUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, SCOPE_PROPERTY, scope, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(IS_A_TYPE_OF_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(end1GUID + "_to_" + end2GUID + "_organizational_capability_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
 
 
     /**

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -46,7 +45,7 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      * Secured properties are protected properties from the connection.  They are retrieved as a protected
      * variable to allow subclasses of ConnectorBase to access them.
      */
-    protected AdditionalProperties securedProperties = null;
+    protected Map<String, String> securedProperties = null;
 
     private static final int      hashCode = UUID.randomUUID().hashCode();
     private static final Logger   log = LoggerFactory.getLogger(MockRuntimeExceptionConnector.class);
@@ -71,7 +70,7 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
     public void initialize(String               connectorInstanceId,
                            ConnectionProperties connectionProperties)
     {
-        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                       this.getClass().getName(),
                                       "getCachedList");
     }

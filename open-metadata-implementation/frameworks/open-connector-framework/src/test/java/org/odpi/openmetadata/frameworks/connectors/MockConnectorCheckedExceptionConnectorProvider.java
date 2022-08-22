@@ -36,7 +36,7 @@ public class MockConnectorCheckedExceptionConnectorProvider extends ConnectorPro
     @Override
     public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        throw new ConnectorCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        throw new ConnectorCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                             this.getClass().getName(),
                                             "getCachedList");
     }

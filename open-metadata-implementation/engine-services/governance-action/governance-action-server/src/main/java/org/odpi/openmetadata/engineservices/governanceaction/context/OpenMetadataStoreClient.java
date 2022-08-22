@@ -5,6 +5,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.context;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;

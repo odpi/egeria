@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * for the asset's properties.  Metadata repository implementations extend this class to add their
  * implementation of the refresh() method that calls to the metadata repository to populate the metadata properties.
  */
-public abstract class ConnectedAssetProperties extends AssetPropertyElementBase
+public abstract class ConnectedAssetProperties extends PropertyBase
 {
     private static final long     serialVersionUID = 1L;
 

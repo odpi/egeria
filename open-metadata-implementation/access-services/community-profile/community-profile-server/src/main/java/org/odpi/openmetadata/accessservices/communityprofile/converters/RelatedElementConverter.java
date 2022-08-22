@@ -3,24 +3,10 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionOrder;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 
 /**

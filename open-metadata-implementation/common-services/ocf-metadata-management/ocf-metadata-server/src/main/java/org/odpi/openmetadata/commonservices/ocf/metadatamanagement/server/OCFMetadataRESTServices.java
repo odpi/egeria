@@ -316,9 +316,9 @@ public class OCFMetadataRESTServices
             LicenseHandler<License>                     licenseHandler      = instanceHandler.getLicenseHandler(userId, serverName,
                                                                                                                        methodName);
             LikeHandler<Like>                           likeHandler         = instanceHandler.getLikeHandler(userId, serverName, methodName);
-            LocationHandler<Location>                   locationHandler     = instanceHandler.getLocationHandler(userId, serverName, methodName);
-            NoteLogHandler<NoteLog>                     noteLogHandler      = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
-            RatingHandler<Rating>                       ratingHandler       = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            LocationHandler<Location>     locationHandler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+            NoteLogHandler<NoteLogHeader> noteLogHandler  = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+            RatingHandler<Rating>         ratingHandler   = instanceHandler.getRatingHandler(userId, serverName, methodName);
             RelatedMediaHandler<RelatedMediaReference>  relatedMediaHandler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
             SearchKeywordHandler<SearchKeyword>         keywordHandler      = instanceHandler.getKeywordHandler(userId, serverName, methodName);
             SchemaTypeHandler<SchemaType>               schemaTypeHandler   = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
@@ -1128,26 +1128,26 @@ public class OCFMetadataRESTServices
 
         try
         {
-            NoteLogHandler<NoteLog> handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+            NoteLogHandler<NoteLogHeader> handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            List<NoteLog>          noteLogs = handler.getAttachedNoteLogs(userId,
-                                                                          assetGUID,
-                                                                          guidParameterName,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
-                                                                          elementStart,
-                                                                          maxElements,
-                                                                          false,
-                                                                          false,
-                                                                          new Date(),
-                                                                          methodName);
+            List<NoteLogHeader>          noteLogs = handler.getAttachedNoteLogs(userId,
+                                                                                assetGUID,
+                                                                                guidParameterName,
+                                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                                instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                                elementStart,
+                                                                                maxElements,
+                                                                                false,
+                                                                                false,
+                                                                                new Date(),
+                                                                                methodName);
             List<NoteLogResponse>  results = new ArrayList<>();
 
             if (noteLogs != null)
             {
                 NoteHandler<Note>  noteHandler = instanceHandler.getNoteHandler(userId, serverName, methodName);
-                for (NoteLog noteLog : noteLogs)
+                for (NoteLogHeader noteLog : noteLogs)
                 {
                     if (noteLog != null)
                     {

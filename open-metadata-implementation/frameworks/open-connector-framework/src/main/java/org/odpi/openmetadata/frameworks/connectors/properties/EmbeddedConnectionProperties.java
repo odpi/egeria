@@ -12,7 +12,7 @@ import java.util.Objects;
  * EmbeddedConnectionProperties provides a facade for the properties of a Connection that is embedded in a
  * VirtualConnection.
  */
-public class EmbeddedConnectionProperties extends AssetPropertyBase
+public class EmbeddedConnectionProperties extends AssetPropertyElementBase
 {
     private static final long     serialVersionUID = 1L;
 
@@ -26,29 +26,7 @@ public class EmbeddedConnectionProperties extends AssetPropertyBase
      */
     public EmbeddedConnectionProperties(EmbeddedConnection embeddedConnectionBean)
     {
-        super(null);
-
-        if (embeddedConnectionBean == null)
-        {
-            this.embeddedConnectionBean = new EmbeddedConnection();
-        }
-        else
-        {
-            this.embeddedConnectionBean = embeddedConnectionBean;
-        }
-    }
-
-
-    /**
-     * Bean constructor with parent asset
-     *
-     * @param parentAsset   descriptor of parent asset
-     * @param embeddedConnectionBean bean containing all the properties
-     */
-    public EmbeddedConnectionProperties(AssetDescriptor    parentAsset,
-                                        EmbeddedConnection embeddedConnectionBean)
-    {
-        super(parentAsset);
+        super();
 
         if (embeddedConnectionBean == null)
         {
@@ -64,12 +42,11 @@ public class EmbeddedConnectionProperties extends AssetPropertyBase
     /**
      * Copy/clone constructor   makes a copy of the supplied object.
      *
-     * @param parentAsset   descriptor of parent asset
      * @param template   template object to copy
      */
-    public EmbeddedConnectionProperties(AssetDescriptor parentAsset, EmbeddedConnectionProperties template)
+    public EmbeddedConnectionProperties(EmbeddedConnectionProperties template)
     {
-        super(parentAsset, template);
+        super(template);
 
         if (template == null)
         {
@@ -127,7 +104,7 @@ public class EmbeddedConnectionProperties extends AssetPropertyBase
         }
         else
         {
-            return new ConnectionProperties(super.parentAsset, embeddedConnection);
+            return new ConnectionProperties(embeddedConnection);
         }
     }
 

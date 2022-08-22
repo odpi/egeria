@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.accessservices.stewardshipaction.server;
 
 import org.odpi.openmetadata.accessservices.stewardshipaction.converters.ElementStubConverter;
-import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementStub;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 
 /**

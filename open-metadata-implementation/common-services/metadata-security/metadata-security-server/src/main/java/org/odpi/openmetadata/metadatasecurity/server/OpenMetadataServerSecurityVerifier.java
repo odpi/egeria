@@ -243,7 +243,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
         if (ocfAsset.getType() != null)
         {
-            asset.setTypeName(ocfAsset.getType().getElementTypeName());
+            asset.setTypeName(ocfAsset.getType().getTypeName());
         }
         asset.setGUID(ocfAsset.getGUID());
         asset.setQualifiedName(ocfAsset.getQualifiedName());

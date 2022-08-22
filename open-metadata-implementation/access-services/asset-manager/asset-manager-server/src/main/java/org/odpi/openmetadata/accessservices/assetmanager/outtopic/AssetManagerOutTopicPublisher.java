@@ -8,8 +8,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementHeade
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerEventType;
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerAuditCode;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -21,11 +21,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class AssetManagerOutTopicPublisher
 {
-    private AssetManagerOutTopicServerConnector   outTopicServerConnector;
-    private AuditLog                              outTopicAuditLog;
-    private String                                outTopicName;
-    private ElementHeaderConverter<ElementHeader> headerConverter;
-    private OMRSRepositoryHelper                  repositoryHelper;
+    private final AssetManagerOutTopicServerConnector   outTopicServerConnector;
+    private final AuditLog                              outTopicAuditLog;
+    private final String                                outTopicName;
+    private final ElementHeaderConverter<ElementHeader> headerConverter;
+    private final OMRSRepositoryHelper                  repositoryHelper;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 

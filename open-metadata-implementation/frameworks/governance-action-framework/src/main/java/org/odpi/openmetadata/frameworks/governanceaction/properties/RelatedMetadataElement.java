@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.governanceaction.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.*;
@@ -199,20 +201,11 @@ public class RelatedMetadataElement extends ElementControlHeader
                        ", effectiveToTime=" + effectiveToTime +
                        ", relationshipProperties=" + relationshipProperties +
                        ", elementProperties=" + elementProperties +
-                       ", headerVersion=" + getHeaderVersion() +
-                       ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                       ", elementOriginCategory=" + getElementOriginCategory() +
-                       ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
-                       ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
-                       ", elementLicense='" + getElementLicense() + '\'' +
                        ", status=" + getStatus() +
-                       ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
-                       ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
-                       ", elementMaintainedBy=" + getElementMaintainedBy() +
-                       ", elementCreateTime=" + getElementCreateTime() +
-                       ", elementUpdateTime=" + getElementUpdateTime() +
-                       ", elementVersion=" + getElementVersion() +
-                       ", mappingProperties=" + getMappingProperties() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", headerVersion=" + getHeaderVersion() +
                        '}';
     }
 

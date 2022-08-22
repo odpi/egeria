@@ -140,16 +140,21 @@ public class Note extends Referenceable
     public String toString()
     {
         return "Note{" +
-                "text='" + text + '\'' +
-                ", lastUpdate=" + lastUpdate +
-                ", user='" + user + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", text='" + text + '\'' +
+                       ", lastUpdate=" + lastUpdate +
+                       ", user='" + user + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
     }
 
 

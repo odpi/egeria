@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.SecurityGroupElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -146,7 +146,7 @@ public interface SecurityGroupInterface
      */
     SecurityGroupElement getSecurityGroupByGUID(String userId,
                                                 String securityGroupGUID) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
 
 }

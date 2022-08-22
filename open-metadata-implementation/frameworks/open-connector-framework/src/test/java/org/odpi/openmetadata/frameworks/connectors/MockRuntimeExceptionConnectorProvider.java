@@ -36,7 +36,7 @@ public class MockRuntimeExceptionConnectorProvider extends ConnectorProviderBase
     @Override
     public Connector getConnector(ConnectionProperties connection) throws ConnectionCheckedException, ConnectorCheckedException
     {
-        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                       this.getClass().getName(),
                                       "getCachedList");
     }

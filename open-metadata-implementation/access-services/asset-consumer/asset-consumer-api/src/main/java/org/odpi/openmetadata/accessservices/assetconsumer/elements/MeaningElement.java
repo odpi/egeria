@@ -7,12 +7,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.MeaningProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * MeaningElement contains the properties and header for a GlossaryTerm entity retrieved from the metadata repository.
@@ -24,7 +26,7 @@ public class MeaningElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader     elementHeader = null;
+    private ElementHeader     elementHeader     = null;
     private MeaningProperties meaningProperties = null;
 
 

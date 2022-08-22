@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,20 +16,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The ElementType bean provides details of the type information associated with a metadata element.
- * It also includes the control information related the element's origin and how this element was created and maintained.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ElementType extends ElementControlHeader
+public class ElementType implements Serializable
 {
-    private static final long     serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private String       elementTypeId          = null;
-    private String       elementTypeName        = null;
-    private List<String> elementSuperTypeNames  = null;
-    private long         elementTypeVersion     = 0;
-    private String       elementTypeDescription = null;
+    private String       typeId          = null;
+    private String       typeName        = null;
+    private List<String> superTypeNames  = null;
+    private long         typeVersion     = 0;
+    private String       typeDescription = null;
 
 
     /**
@@ -36,7 +36,6 @@ public class ElementType extends ElementControlHeader
      */
     public ElementType()
     {
-        super();
     }
 
 
@@ -47,15 +46,13 @@ public class ElementType extends ElementControlHeader
      */
     public ElementType(ElementType templateType)
     {
-        super(templateType);
-
         if (templateType != null)
         {
-            elementTypeId = templateType.getElementTypeId();
-            elementTypeName = templateType.getElementTypeName();
-            elementSuperTypeNames = templateType.getElementSuperTypeNames();
-            elementTypeVersion = templateType.getElementTypeVersion();
-            elementTypeDescription = templateType.getElementTypeDescription();
+            typeId                            = templateType.getTypeId();
+            typeName                          = templateType.getTypeName();
+            superTypeNames                    = templateType.getSuperTypeNames();
+            typeVersion                       = templateType.getTypeVersion();
+            typeDescription                   = templateType.getTypeDescription();
         }
     }
 
@@ -63,11 +60,11 @@ public class ElementType extends ElementControlHeader
     /**
      * Set up the unique identifier for the element's type.
      *
-     * @param elementTypeId String identifier
+     * @param typeId String identifier
      */
-    public void setElementTypeId(String elementTypeId)
+    public void setTypeId(String typeId)
     {
-        this.elementTypeId = elementTypeId;
+        this.typeId = typeId;
     }
 
 
@@ -76,20 +73,20 @@ public class ElementType extends ElementControlHeader
      *
      * @return element type id
      */
-    public String getElementTypeId()
+    public String getTypeId()
     {
-        return elementTypeId;
+        return typeId;
     }
 
 
     /**
      * Set up the name of this element's type
      *
-     * @param elementTypeName String name
+     * @param typeName String name
      */
-    public void setElementTypeName(String elementTypeName)
+    public void setTypeName(String typeName)
     {
-        this.elementTypeName = elementTypeName;
+        this.typeName = typeName;
     }
 
 
@@ -98,20 +95,20 @@ public class ElementType extends ElementControlHeader
      *
      * @return elementTypeName
      */
-    public String getElementTypeName()
+    public String getTypeName()
     {
-        return elementTypeName;
+        return typeName;
     }
 
 
     /**
      * Set up the list of type names for this type's supertypes.
      *
-     * @param elementSuperTypeNames list of type names
+     * @param superTypeNames list of type names
      */
-    public void setElementSuperTypeNames(List<String> elementSuperTypeNames)
+    public void setSuperTypeNames(List<String> superTypeNames)
     {
-        this.elementSuperTypeNames = elementSuperTypeNames;
+        this.superTypeNames = superTypeNames;
     }
 
 
@@ -120,19 +117,19 @@ public class ElementType extends ElementControlHeader
      *
      * @return list of type names
      */
-    public List<String> getElementSuperTypeNames()
+    public List<String> getSuperTypeNames()
     {
-        if (elementSuperTypeNames == null)
+        if (superTypeNames == null)
         {
             return null;
         }
-        else if (elementSuperTypeNames.isEmpty())
+        else if (superTypeNames.isEmpty())
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(elementSuperTypeNames);
+            return new ArrayList<>(superTypeNames);
         }
     }
 
@@ -140,11 +137,11 @@ public class ElementType extends ElementControlHeader
     /**
      * Set up the version number for this element's type
      *
-     * @param elementTypeVersion version number for the element type.
+     * @param typeVersion version number for the element type.
      */
-    public void setElementTypeVersion(long elementTypeVersion)
+    public void setTypeVersion(long typeVersion)
     {
-        this.elementTypeVersion = elementTypeVersion;
+        this.typeVersion = typeVersion;
     }
 
 
@@ -153,20 +150,20 @@ public class ElementType extends ElementControlHeader
      *
      * @return elementTypeVersion version number for the element type.
      */
-    public long getElementTypeVersion()
+    public long getTypeVersion()
     {
-        return elementTypeVersion;
+        return typeVersion;
     }
 
 
     /**
      * Set up a short description of this element's type.
      *
-     * @param elementTypeDescription set up the description for this element's type
+     * @param typeDescription set up the description for this element's type
      */
-    public void setElementTypeDescription(String elementTypeDescription)
+    public void setTypeDescription(String typeDescription)
     {
-        this.elementTypeDescription = elementTypeDescription;
+        this.typeDescription = typeDescription;
     }
 
 
@@ -175,9 +172,9 @@ public class ElementType extends ElementControlHeader
      *
      * @return elementTypeDescription String description for the element type
      */
-    public String getElementTypeDescription()
+    public String getTypeDescription()
     {
-        return elementTypeDescription;
+        return typeDescription;
     }
 
 
@@ -190,26 +187,12 @@ public class ElementType extends ElementControlHeader
     public String toString()
     {
         return "ElementType{" +
-                "elementTypeId='" + elementTypeId + '\'' +
-                ", elementTypeName='" + elementTypeName + '\'' +
-                ", elementSuperTypeNames=" + elementSuperTypeNames +
-                ", elementTypeVersion=" + elementTypeVersion +
-                ", elementTypeDescription='" + elementTypeDescription + '\'' +
-                ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                ", elementOrigin=" + getElementOrigin() +
-                ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
-                ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
-                ", elementLicense='" + getElementLicense() + '\'' +
-                ", status=" + getStatus() +
-                ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
-                ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
-                ", elementMaintainedBy=" + getElementMaintainedBy() +
-                ", elementCreateTime=" + getElementCreateTime() +
-                ", elementUpdateTime=" + getElementUpdateTime() +
-                ", elementVersion=" + getElementVersion() +
-                ", mappingProperties=" + getMappingProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "elementTypeId='" + typeId + '\'' +
+                       ", elementTypeName='" + typeName + '\'' +
+                       ", elementSuperTypeNames=" + superTypeNames +
+                       ", elementTypeVersion=" + typeVersion +
+                       ", elementTypeDescription='" + typeDescription +
+                       '}';
     }
 
 
@@ -226,20 +209,16 @@ public class ElementType extends ElementControlHeader
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
+        if (!(objectToCompare instanceof ElementType))
         {
             return false;
         }
         ElementType that = (ElementType) objectToCompare;
-        return elementTypeVersion == that.elementTypeVersion &&
-                Objects.equals(elementTypeId, that.elementTypeId) &&
-                Objects.equals(elementTypeName, that.elementTypeName) &&
-                Objects.equals(elementSuperTypeNames, that.elementSuperTypeNames) &&
-                Objects.equals(elementTypeDescription, that.elementTypeDescription);
+        return getTypeVersion() == that.getTypeVersion() &&
+                Objects.equals(getTypeId(), that.getTypeId()) &&
+                Objects.equals(getTypeName(), that.getTypeName()) &&
+                Objects.equals(getSuperTypeNames(), that.getSuperTypeNames()) &&
+                Objects.equals(getTypeDescription(), that.getTypeDescription());
     }
 
 
@@ -251,6 +230,6 @@ public class ElementType extends ElementControlHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementTypeId, elementTypeName, elementSuperTypeNames, elementTypeVersion, elementTypeDescription);
+        return Objects.hash(getTypeId(), getTypeName(), getSuperTypeNames(), getTypeVersion(), getTypeDescription());
     }
 }

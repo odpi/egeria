@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 /**
- * NoteLogHeaderConverter generates a NoteLogHeaderElement from an NoteLog entity
+ * NoteLogHeaderConverter generates a NoteLogHeaderElement from an NoteLogHeader entity
  */
 public class NoteLogHeaderConverter<B> extends CommunityProfileOMASConverter<B>
 {

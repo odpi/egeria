@@ -4671,7 +4671,7 @@ class GraphOMRSMetadataStore {
                          * This could occur if any of the type defined attributes of the type has had a name clash,
                          * even if it has subsequently been deprecated. The type of the clashing TDA may conflict
                          * with the core property. For example the core property 'version' is a Java 'long', whereas
-                         * the (deprecated) SoftwareServerCapability property 'version' was a Java 'String'. It still
+                         * the (deprecated) SoftwareCapability property 'version' was a Java 'String'. It still
                          * exists in the type definition, so need to avoid it here.
                          * Therefore check that any propertyName is NOT in the keySet of relevantCoreProperties (whether
                          * that property was included in stringMatchProperties or is of another (non-string) type.

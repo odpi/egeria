@@ -10,6 +10,12 @@ import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHand
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementVersions;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassificationEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
@@ -504,10 +510,10 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
         if (instanceType != null)
         {
-            elementType.setElementTypeId(instanceType.getTypeDefGUID());
-            elementType.setElementTypeName(instanceType.getTypeDefName());
-            elementType.setElementTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setElementTypeDescription(instanceType.getTypeDefDescription());
+            elementType.setTypeId(instanceType.getTypeDefGUID());
+            elementType.setTypeName(instanceType.getTypeDefName());
+            elementType.setTypeVersion(instanceType.getTypeDefVersion());
+            elementType.setTypeDescription(instanceType.getTypeDefDescription());
 
             List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
 
@@ -525,7 +531,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 if (! superTypes.isEmpty())
                 {
-                    elementType.setElementSuperTypeNames(superTypes);
+                    elementType.setSuperTypeNames(superTypes);
                 }
             }
         }
@@ -547,19 +553,50 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         if (header != null)
         {
-            elementControlHeader.setElementSourceServer(sourceName);
-            elementControlHeader.setElementOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
-            elementControlHeader.setElementMetadataCollectionId(header.getMetadataCollectionId());
-            elementControlHeader.setElementMetadataCollectionName(header.getMetadataCollectionName());
-            elementControlHeader.setElementLicense(header.getInstanceLicense());
-            elementControlHeader.setElementCreatedBy(header.getCreatedBy());
-            elementControlHeader.setElementUpdatedBy(header.getUpdatedBy());
-            elementControlHeader.setElementMaintainedBy(header.getMaintainedBy());
-            elementControlHeader.setElementCreateTime(header.getCreateTime());
-            elementControlHeader.setElementUpdateTime(header.getUpdateTime());
-            elementControlHeader.setElementVersion(header.getVersion());
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(sourceName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementControlHeader.setOrigin(elementOrigin);
+
+            ElementVersions elementVersions = new ElementVersions();
+
+            elementVersions.setCreatedBy(header.getCreatedBy());
+            elementVersions.setUpdatedBy(header.getUpdatedBy());
+            elementVersions.setMaintainedBy(header.getMaintainedBy());
+            elementVersions.setCreateTime(header.getCreateTime());
+            elementVersions.setUpdateTime(header.getUpdateTime());
+            elementVersions.setVersion(header.getVersion());
+
+            elementControlHeader.setVersions(elementVersions);
+
             elementControlHeader.setStatus(this.getElementStatus(header.getStatus()));
-            elementControlHeader.setMappingProperties(header.getMappingProperties());
+
+            ElementType elementType = new ElementType();
+
+            elementType.setTypeId(header.getType().getTypeDefGUID());
+            elementType.setTypeName(header.getType().getTypeDefName());
+
+            if (header.getType().getTypeDefSuperTypes() != null)
+            {
+                List<String> superTypeNames = new ArrayList<>();
+
+                for (TypeDefLink typeDefLink : header.getType().getTypeDefSuperTypes())
+                {
+                    superTypeNames.add(typeDefLink.getName());
+                }
+
+                elementType.setSuperTypeNames(superTypeNames);
+            }
+
+            elementType.setTypeDescription(header.getType().getTypeDefDescription());
+            elementType.setTypeVersion(header.getType().getTypeDefVersion());
+
+            elementControlHeader.setType(elementType);
         }
     }
 
@@ -571,12 +608,12 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param classification from the repository services
      * @return open metadata element object
      */
-    private ElementClassification getClassification(String         sourceName,
-                                                    Classification classification)
+    private AttachedClassification getClassification(String         sourceName,
+                                                     Classification classification)
     {
         if (classification != null)
         {
-            ElementClassification beanClassification = new ElementClassification();
+            AttachedClassification beanClassification = new AttachedClassification();
 
             fillElementControlHeader(sourceName, beanClassification, classification);
 

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ProfileIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ProfileLocationElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
@@ -18,6 +17,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileL
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -207,8 +207,8 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
 
                     if (relationships != null)
                     {
-                        ElementStub                  superTeam            = null;
-                        List<ElementStub>            subTeams             = new ArrayList<>();
+                        ElementStub                  superTeam = null;
+                        List<ElementStub>            subTeams  = new ArrayList<>();
                         List<ElementStub>            teamLeaders          = new ArrayList<>();
                         List<ElementStub>            teamMembers          = new ArrayList<>();
                         List<ProfileIdentityElement> profileIdentities    = new ArrayList<>();

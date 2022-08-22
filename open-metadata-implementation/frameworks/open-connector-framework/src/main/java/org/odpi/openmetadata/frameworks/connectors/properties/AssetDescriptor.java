@@ -118,14 +118,14 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
 
             if (elementType != null)
             {
-                String typeName = elementType.getElementTypeName();
+                String typeName = elementType.getTypeName();
 
                 if ((typeName != null) && (! typeName.equals("")))
                 {
                     assetTypeName = typeName;
                 }
 
-                assetSuperTypeNames = elementType.getElementSuperTypeNames();
+                assetSuperTypeNames = elementType.getSuperTypeNames();
             }
         }
     }

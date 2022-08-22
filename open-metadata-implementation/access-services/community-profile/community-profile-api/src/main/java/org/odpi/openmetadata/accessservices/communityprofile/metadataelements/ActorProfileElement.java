@@ -13,6 +13,8 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 
 /**
@@ -28,9 +30,9 @@ public class ActorProfileElement implements Serializable, MetadataElement
     private ElementHeader                elementHeader        = null;
     private ActorProfileProperties       profileProperties    = null;
     private List<ContactMethodElement>   contactMethods       = null;
-    private ContributionRecordElement    contributionRecord   = null; /* Person only */
-    private List<ElementStub>            personRoles          = null; /* Person only */
-    private List<ProfileLocationElement> locations            = null;
+    private ContributionRecordElement    contributionRecord = null; /* Person only */
+    private List<ElementStub>            personRoles        = null; /* Person only */
+    private List<ProfileLocationElement> locations          = null;
     private List<ProfileIdentityElement> userIdentities       = null;
     private ElementStub                  superTeam            = null; /* Team only */
     private List<ElementStub>            subTeams             = null; /* Team only */

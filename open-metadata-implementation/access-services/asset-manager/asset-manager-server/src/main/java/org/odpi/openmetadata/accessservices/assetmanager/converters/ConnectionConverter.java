@@ -41,7 +41,7 @@ public class ConnectionConverter<B> extends AssetManagerOMASConverter<B>
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
      * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
-     * relationships between them.  The relationships may be omitted if they do not have an properties.
+     * relationships between them.  The relationships may be omitted if they do not have any properties.
      *
      * @param beanClass name of the class to create
      * @param primaryEntity entity that is the root of the cluster of entities that make up the
@@ -53,7 +53,6 @@ public class ConnectionConverter<B> extends AssetManagerOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
-    @SuppressWarnings(value = "unchecked")
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<EntityDetail> supplementaryEntities,

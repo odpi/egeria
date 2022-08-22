@@ -160,17 +160,23 @@ public class Comment extends Referenceable
     public String toString()
     {
         return "Comment{" +
-                "commentType=" + commentType +
-                ", commentText='" + commentText + '\'' +
-                ", user='" + user + '\'' +
-                ", isPublic='" + isPublic + '\'' +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "commentType=" + commentType +
+                       ", commentText='" + commentText + '\'' +
+                       ", user='" + user + '\'' +
+                       ", isPublic=" + isPublic +
+                       ", URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
     }
-
 
 
     /**

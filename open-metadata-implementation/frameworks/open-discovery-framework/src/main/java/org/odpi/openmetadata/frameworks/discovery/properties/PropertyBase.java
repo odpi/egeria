@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public abstract class PropertyBase implements Serializable
     /*
      * The Element header is only set when items are retrieved from the metadata repositories.
      */
-    private ElementHeader       elementHeader = null;
+    private ElementHeader elementHeader = null;
 
 
     /*

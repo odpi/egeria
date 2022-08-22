@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic.Data
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEventType;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerAuditCode;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 /**
  * DataManagerOutTopicPublisher is responsible for sending events on the Data Manager OMAS's out topic.
@@ -16,9 +16,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
  */
 public class DataManagerOutTopicPublisher
 {
-    private DataManagerOutTopicServerConnector outTopicServerConnector;
-    private AuditLog                           outTopicAuditLog;
-    private String                             outTopicName;
+    private final DataManagerOutTopicServerConnector outTopicServerConnector;
+    private final AuditLog                           outTopicAuditLog;
+    private final String                             outTopicName;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 
