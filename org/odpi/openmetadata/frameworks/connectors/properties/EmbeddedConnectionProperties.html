@@ -125,12 +125,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase</a></li>
-<li>
-<ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.connectors.properties.EmbeddedConnectionProperties</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -145,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">EmbeddedConnectionProperties</span>
-extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></pre>
+extends <a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyElementBase</a></pre>
 <div class="block">EmbeddedConnectionProperties provides a facade for the properties of a Connection that is embedded in a
  VirtualConnection.</div>
 <dl>
@@ -178,13 +173,6 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
-<ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#parentAsset">parentAsset</a></code></li>
-</ul>
 </li>
 </ul>
 </section>
@@ -202,23 +190,15 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection)">EmbeddedConnectionProperties</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                            org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection&nbsp;embeddedConnectionBean)</code></th>
-<td class="colLast">
-<div class="block">Bean constructor with parent asset</div>
-</td>
-</tr>
-<tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.EmbeddedConnectionProperties)">EmbeddedConnectionProperties</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                            <a href="EmbeddedConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EmbeddedConnectionProperties</a>&nbsp;template)</code></th>
-<td class="colLast">
-<div class="block">Copy/clone constructor   makes a copy of the supplied object.</div>
-</td>
-</tr>
-<tr class="altColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection)">EmbeddedConnectionProperties</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection&nbsp;embeddedConnectionBean)</code></th>
 <td class="colLast">
 <div class="block">Bean constructor</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.EmbeddedConnectionProperties)">EmbeddedConnectionProperties</a></span>&#8203;(<a href="EmbeddedConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EmbeddedConnectionProperties</a>&nbsp;template)</code></th>
+<td class="colLast">
+<div class="block">Copy/clone constructor   makes a copy of the supplied object.</div>
 </td>
 </tr>
 </table>
@@ -297,13 +277,6 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#getParentAsset()">getParentAsset</a>, <a href="AssetPropertyBase.html#getParentAssetName()">getParentAssetName</a>, <a href="AssetPropertyBase.html#getParentAssetTypeName()">getParentAssetTypeName</a></code></li>
-</ul>
-<ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
 </a>
@@ -359,34 +332,16 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>EmbeddedConnectionProperties</h4>
-<pre>public&nbsp;EmbeddedConnectionProperties&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                                    org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection&nbsp;embeddedConnectionBean)</pre>
-<div class="block">Bean constructor with parent asset</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - descriptor of parent asset</dd>
-<dd><code>embeddedConnectionBean</code> - bean containing all the properties</dd>
-</dl>
-</li>
-</ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.EmbeddedConnectionProperties)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.EmbeddedConnectionProperties)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>EmbeddedConnectionProperties</h4>
-<pre>public&nbsp;EmbeddedConnectionProperties&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                                    <a href="EmbeddedConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EmbeddedConnectionProperties</a>&nbsp;template)</pre>
+<pre>public&nbsp;EmbeddedConnectionProperties&#8203;(<a href="EmbeddedConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EmbeddedConnectionProperties</a>&nbsp;template)</pre>
 <div class="block">Copy/clone constructor   makes a copy of the supplied object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - descriptor of parent asset</dd>
 <dd><code>template</code> - template object to copy</dd>
 </dl>
 </li>
@@ -497,7 +452,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="AssetPropertyBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></code></dd>
+<dd><code><a href="AssetPropertyElementBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyElementBase</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -515,7 +470,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <div class="block">Create a hash code for this element type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="AssetPropertyBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></code></dd>
+<dd><code><a href="AssetPropertyElementBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyElementBase</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int hash code</dd>
 </dl>

@@ -26,12 +26,6 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":42,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10};
-var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
-var altColor = "altColor";
-var rowColor = "rowColor";
-var tableTab = "tableTab";
-var activeTableTab = "activeTableTab";
 var pathtoroot = "../../../../../../";
 var useModuleDirectories = true;
 loadScripts(document, 'script');</script>
@@ -96,7 +90,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Method</li>
 </ul>
 </div>
 <a id="skip.navbar.top">
@@ -122,13 +116,38 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase</a></li>
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</li>
 <li>
 <ul class="inheritance">
-<li><a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor</a></li>
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</li>
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.connectors.properties.AssetSummary</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -149,7 +168,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">AssetSummary</span>
-extends <a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a></pre>
+extends org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</pre>
 <div class="block">AssetSummary holds asset properties that are used for displaying details of
  an asset in summary lists or hover text.  It includes the following properties:
  <ul>
@@ -195,11 +214,39 @@ extends <a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.fra
 </a>
 <h3>Field Summary</h3>
 <ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset">
 <!--   -->
 </a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a></h3>
-<code><a href="AssetDescriptor.html#assetBean">assetBean</a></code></li>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</h3>
+<code>description, displayName, isReferenceData, origin, owner, ownerPropertyName, ownerType, ownerTypeName, shortDescription, zoneMembership</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</h3>
+<code>confidenceGovernanceClassification, confidentialityGovernanceClassification, criticalityGovernanceClassification, latestChange, latestChangeDetails, meanings, retentionGovernanceClassification, searchKeywords, securityTags</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</h3>
+<code>additionalProperties, qualifiedName</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</h3>
+<code>extendedProperties, url</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</h3>
+<code>CURRENT_AUDIT_HEADER_VERSION</code></li>
 </ul>
 </li>
 </ul>
@@ -250,146 +297,54 @@ extends <a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.fra
 <!--   -->
 </a>
 <h3>Method Summary</h3>
-<table class="memberSummary">
-<caption><span id="t0" class="activeTableTab"><span>All Methods</span><span class="tabEnd">&nbsp;</span></span><span id="t2" class="tableTab"><span><a href="javascript:show(2);">Instance Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t4" class="tableTab"><span><a href="javascript:show(8);">Concrete Methods</a></span><span class="tabEnd">&nbsp;</span></span><span id="t6" class="tableTab"><span><a href="javascript:show(32);">Deprecated Methods</a></span><span class="tabEnd">&nbsp;</span></span></caption>
-<tr>
-<th class="colFirst" scope="col">Modifier and Type</th>
-<th class="colSecond" scope="col">Method</th>
-<th class="colLast" scope="col">Description</th>
-</tr>
-<tr id="i0" class="altColor">
-<td class="colFirst"><code><a href="AdditionalProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AdditionalProperties</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAdditionalProperties()">getAdditionalProperties</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the set of additional properties.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="AssetClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetClassification</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssetClassifications()">getAssetClassifications</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the list of classifications associated with the asset.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDescription()">getDescription</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the stored description property for the asset.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDisplayName()">getDisplayName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the stored display name property for the asset.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExtendedProperties()">getExtendedProperties</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the set of properties that are specific to the particular type of asset.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGUID()">getGUID</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the unique id for the properties object.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLatestChange()">getLatestChange</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return a short description of the last change to the asset.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOrigins()">getOrigins</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the properties that characterize where this asset is from.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwner()">getOwner</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the name of the owner for this asset.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwnerPropertyName()">getOwnerPropertyName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the property name that is being used to identify the owner.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwnerType()">getOwnerType</a></span>()</code></th>
-<td class="colLast">
-<div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
-</td>
-</tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwnerTypeName()">getOwnerTypeName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the type name of the element representing the owner.</div>
-</td>
-</tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQualifiedName()">getQualifiedName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the stored qualified name property for the asset.</div>
-</td>
-</tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getShortDescription()">getShortDescription</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the short description of the asset from relationship with Connection.</div>
-</td>
-</tr>
-<tr id="i14" class="altColor">
-<td class="colFirst"><code><a href="AssetElementType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetElementType</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getType()">getType</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the element type properties for this asset.</div>
-</td>
-</tr>
-<tr id="i15" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getURL()">getURL</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the URL to access the properties object in the metadata repository.</div>
-</td>
-</tr>
-<tr id="i16" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getZoneMembership()">getZoneMembership</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the names of the zones that this asset is a member of.</div>
-</td>
-</tr>
-<tr id="i17" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Standard toString method.</div>
-</td>
-</tr>
-</table>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a></h3>
-<code><a href="AssetDescriptor.html#equals(java.lang.Object)">equals</a>, <a href="AssetDescriptor.html#getAssetBean()">getAssetBean</a>, <a href="AssetDescriptor.html#getAssetName()">getAssetName</a>, <a href="AssetDescriptor.html#getAssetSuperTypeNames()">getAssetSuperTypeNames</a>, <a href="AssetDescriptor.html#getAssetTypeName()">getAssetTypeName</a>, <a href="AssetDescriptor.html#hashCode()">hashCode</a>, <a href="AssetDescriptor.html#setAssetBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset)">setAssetBean</a></code></li>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</h3>
+<code>equals, getAssetOrigin, getDescription, getDisplayName, getOwner, getOwnerPropertyName, getOwnerType, getOwnerTypeName, getShortDescription, getZoneMembership, hashCode, isReferenceData, setAssetOrigin, setDescription, setDisplayName, setOwner, setOwnerPropertyName, setOwnerType, setOwnerTypeName, setReferenceData, setShortDescription, setZoneMembership, toString</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</h3>
+<code>getConfidenceGovernanceClassification, getConfidentialityGovernanceClassification, getCriticalityGovernanceClassification, getLatestChange, getLatestChangeDetails, getMeanings, getRetentionGovernanceClassification, getSearchKeywords, getSecurityTags, setConfidenceGovernanceClassification, setConfidentialityGovernanceClassification, setCriticalityGovernanceClassification, setLatestChange, setLatestChangeDetails, setMeanings, setRetentionGovernanceClassification, setSearchKeywords, setSecurityTags</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</h3>
+<code>getAdditionalProperties, getQualifiedName, setAdditionalProperties, setQualifiedName</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</h3>
+<code>getExtendedProperties, getURL, setExtendedProperties, setURL</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</h3>
+<code>getClassifications, getGUID, setClassifications, setGUID</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</h3>
+<code>getOrigin, getStatus, getType, getVersions, setOrigin, setStatus, setType, setVersions</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</h3>
+<code>getHeaderVersion, setHeaderVersion</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -455,278 +410,6 @@ extends <a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.fra
 </li>
 </ul>
 </section>
-<!-- ============ METHOD DETAIL ========== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="method.detail">
-<!--   -->
-</a>
-<h3>Method Detail</h3>
-<a id="getType()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getType</h4>
-<pre class="methodSignature">public&nbsp;<a href="AssetElementType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetElementType</a>&nbsp;getType()</pre>
-<div class="block">Return the element type properties for this asset.  These values are set up by the metadata repository
- and define details to the metadata entity used to represent this element.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>AssetElementType type information.</dd>
-</dl>
-</li>
-</ul>
-<a id="getGUID()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getGUID</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getGUID()</pre>
-<div class="block">Return the unique id for the properties object.  Null means no guid is assigned.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>String unique id</dd>
-</dl>
-</li>
-</ul>
-<a id="getURL()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getURL</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getURL()</pre>
-<div class="block">Returns the URL to access the properties object in the metadata repository.
- If no url is available then null is returned.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>String URL</dd>
-</dl>
-</li>
-</ul>
-<a id="getQualifiedName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getQualifiedName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getQualifiedName()</pre>
-<div class="block">Returns the stored qualified name property for the asset.
- If no qualified name is provided then null is returned.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>qualifiedName</dd>
-</dl>
-</li>
-</ul>
-<a id="getDisplayName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDisplayName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDisplayName()</pre>
-<div class="block">Returns the stored display name property for the asset.
- If no display name is available then null is returned.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>displayName</dd>
-</dl>
-</li>
-</ul>
-<a id="getShortDescription()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getShortDescription</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getShortDescription()</pre>
-<div class="block">Returns the short description of the asset from relationship with Connection.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>shortDescription String</dd>
-</dl>
-</li>
-</ul>
-<a id="getDescription()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDescription</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDescription()</pre>
-<div class="block">Returns the stored description property for the asset.
- If no description is provided then null is returned.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>description String</dd>
-</dl>
-</li>
-</ul>
-<a id="getOwner()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOwner</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getOwner()</pre>
-<div class="block">Returns the name of the owner for this asset.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>owner String</dd>
-</dl>
-</li>
-</ul>
-<a id="getOwnerType()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOwnerType</h4>
-<pre class="methodSignature">@Deprecated
-public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType&nbsp;getOwnerType()</pre>
-<div class="deprecationBlock"><span class="deprecatedLabel">Deprecated.</span></div>
-<div class="block">Return the type of owner stored in the owner property.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>OwnerType enum</dd>
-</dl>
-</li>
-</ul>
-<a id="getOwnerTypeName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOwnerTypeName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getOwnerTypeName()</pre>
-<div class="block">Return the type name of the element representing the owner.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>type name String</dd>
-</dl>
-</li>
-</ul>
-<a id="getOwnerPropertyName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOwnerPropertyName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getOwnerPropertyName()</pre>
-<div class="block">Return the property name that is being used to identify the owner.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>property name String</dd>
-</dl>
-</li>
-</ul>
-<a id="getZoneMembership()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getZoneMembership</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getZoneMembership()</pre>
-<div class="block">Return the names of the zones that this asset is a member of.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of zone names</dd>
-</dl>
-</li>
-</ul>
-<a id="getAssetClassifications()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getAssetClassifications</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="AssetClassification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetClassification</a>&gt;&nbsp;getAssetClassifications()</pre>
-<div class="block">Return the list of classifications associated with the asset.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of classifications</dd>
-</dl>
-</li>
-</ul>
-<a id="getOrigins()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOrigins</h4>
-<pre class="methodSignature">public&nbsp;java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;getOrigins()</pre>
-<div class="block">Return the properties that characterize where this asset is from.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>map of name value pairs, all strings</dd>
-</dl>
-</li>
-</ul>
-<a id="getLatestChange()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getLatestChange</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getLatestChange()</pre>
-<div class="block">Return a short description of the last change to the asset.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string description</dd>
-</dl>
-</li>
-</ul>
-<a id="getExtendedProperties()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getExtendedProperties</h4>
-<pre class="methodSignature">public&nbsp;java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt;&nbsp;getExtendedProperties()</pre>
-<div class="block">Return the set of properties that are specific to the particular type of asset.  The caller is given their
- own copy of the property object.  The properties are named entityName.attributeName. The values are all strings.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>asset properties using the name of attributes from the model.</dd>
-</dl>
-</li>
-</ul>
-<a id="getAdditionalProperties()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getAdditionalProperties</h4>
-<pre class="methodSignature">public&nbsp;<a href="AdditionalProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AdditionalProperties</a>&nbsp;getAdditionalProperties()</pre>
-<div class="block">Return the set of additional properties.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>AdditionalProperties object.</dd>
-</dl>
-</li>
-</ul>
-<a id="toString()">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>toString</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
-<div class="block">Standard toString method.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>print out of variables in a JSON-style</dd>
-</dl>
-</li>
-</ul>
-</li>
-</ul>
-</section>
 </li>
 </ul>
 </div>
@@ -784,7 +467,7 @@ public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerTy
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method.detail">Method</a></li>
+<li>Method</li>
 </ul>
 </div>
 <a id="skip.navbar.bottom">

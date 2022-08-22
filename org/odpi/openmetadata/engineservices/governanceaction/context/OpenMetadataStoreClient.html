@@ -237,8 +237,8 @@ extends org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient</pr
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">createMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;metadataElementTypeName,
-                            <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;initialStatus,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">createMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;metadataElementTypeName,
+                            org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus&nbsp;initialStatus,
                             java.util.Date&nbsp;effectiveFrom,
                             java.util.Date&nbsp;effectiveTo,
                             org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
@@ -294,7 +294,7 @@ extends org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient</pr
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMetadataElements(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.util.Date,int,int)">findMetadataElements</a></span>&#8203;(java.lang.String&nbsp;metadataElementTypeName,
                     java.util.List&lt;java.lang.String&gt;&nbsp;metadataElementSubtypeName,
                     org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties&nbsp;searchProperties,
-                    java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
+                    java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus&gt;&nbsp;limitResultsByStatus,
                     org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications&nbsp;matchClassifications,
                     java.lang.String&nbsp;sequencingProperty,
                     org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder&nbsp;sequencingOrder,
@@ -530,10 +530,10 @@ extends org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient</pr
 </tr>
 <tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatusInStore(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus,java.util.Date)">updateMetadataElementStatusInStore</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatusInStore(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date)">updateMetadataElementStatusInStore</a></span>&#8203;(java.lang.String&nbsp;metadataElementGUID,
                                   boolean&nbsp;forLineage,
                                   boolean&nbsp;forDuplicateProcessing,
-                                  <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;newElementStatus,
+                                  org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus&nbsp;newElementStatus,
                                   java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update the status of specific metadata element.</div>
@@ -821,7 +821,7 @@ extends org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient</pr
 <pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;&nbsp;findMetadataElements&#8203;(java.lang.String&nbsp;metadataElementTypeName,
                                                                 java.util.List&lt;java.lang.String&gt;&nbsp;metadataElementSubtypeName,
                                                                 org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties&nbsp;searchProperties,
-                                                                java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
+                                                                java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus&gt;&nbsp;limitResultsByStatus,
                                                                 org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications&nbsp;matchClassifications,
                                                                 java.lang.String&nbsp;sequencingProperty,
                                                                 org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder&nbsp;sequencingOrder,
@@ -909,14 +909,14 @@ extends org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient</pr
 </dl>
 </li>
 </ul>
-<a id="createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">
+<a id="createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createMetadataElementInStore</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createMetadataElementInStore&#8203;(java.lang.String&nbsp;metadataElementTypeName,
-                                                     <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;initialStatus,
+                                                     org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus&nbsp;initialStatus,
                                                      java.util.Date&nbsp;effectiveFrom,
                                                      java.util.Date&nbsp;effectiveTo,
                                                      org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;properties,
@@ -984,7 +984,7 @@ extends org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient</pr
 </dl>
 </li>
 </ul>
-<a id="updateMetadataElementStatusInStore(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus,java.util.Date)">
+<a id="updateMetadataElementStatusInStore(java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -993,7 +993,7 @@ extends org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataClient</pr
 <pre class="methodSignature">public&nbsp;void&nbsp;updateMetadataElementStatusInStore&#8203;(java.lang.String&nbsp;metadataElementGUID,
                                                boolean&nbsp;forLineage,
                                                boolean&nbsp;forDuplicateProcessing,
-                                               <a href="../../../frameworks/governanceaction/properties/ElementStatus.html" title="enum in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementStatus</a>&nbsp;newElementStatus,
+                                               org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus&nbsp;newElementStatus,
                                                java.util.Date&nbsp;effectiveTime)
                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,

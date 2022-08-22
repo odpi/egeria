@@ -125,12 +125,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase</a></li>
-<li>
-<ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -145,11 +140,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetFeedback.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">ConnectedAssetFeedback</a></code></dd>
+<dd><code><a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedFeedback.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">ConnectedFeedback</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">AssetFeedback</span>
-extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></pre>
+extends <a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyElementBase</a></pre>
 <div class="block">Feedback contains the comments, tags, ratings and likes that consumers of the asset have created.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
@@ -176,33 +171,26 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>protected <a href="AssetComments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetComments</a></code></td>
+<td class="colFirst"><code>protected <a href="Comments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Comments</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#comments">comments</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>protected <a href="AssetInformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetInformalTags</a></code></td>
+<td class="colFirst"><code>protected <a href="InformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">InformalTags</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#informalTags">informalTags</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>protected <a href="AssetLikes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLikes</a></code></td>
+<td class="colFirst"><code>protected <a href="Likes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Likes</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#likes">likes</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>protected <a href="AssetRatings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRatings</a></code></td>
+<td class="colFirst"><code>protected <a href="Ratings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Ratings</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#ratings">ratings</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
-<ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#parentAsset">parentAsset</a></code></li>
-</ul>
 </li>
 </ul>
 </section>
@@ -222,28 +210,24 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor)">AssetFeedback</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E()">AssetFeedback</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Simple constructor only for subclasses</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>&nbsp;</code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback)">AssetFeedback</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-             <a href="AssetFeedback.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetFeedback</a>&nbsp;templateFeedback)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback)">AssetFeedback</a></span>&#8203;(<a href="AssetFeedback.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetFeedback</a>&nbsp;templateFeedback)</code></th>
 <td class="colLast">
-<div class="block">Copy/clone constructor the parentAsset is passed separately to the template because it is also
- likely to be being cloned in the same operation and we want the feedback clone to point to the
- asset clone and not the original asset.</div>
+<div class="block">Copy/clone constructor.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>&nbsp;</code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.AssetInformalTags,org.odpi.openmetadata.frameworks.connectors.properties.AssetLikes,org.odpi.openmetadata.frameworks.connectors.properties.AssetRatings,org.odpi.openmetadata.frameworks.connectors.properties.AssetComments)">AssetFeedback</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-             <a href="AssetInformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetInformalTags</a>&nbsp;informalTags,
-             <a href="AssetLikes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLikes</a>&nbsp;likes,
-             <a href="AssetRatings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRatings</a>&nbsp;ratings,
-             <a href="AssetComments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetComments</a>&nbsp;comments)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.InformalTags,org.odpi.openmetadata.frameworks.connectors.properties.Likes,org.odpi.openmetadata.frameworks.connectors.properties.Ratings,org.odpi.openmetadata.frameworks.connectors.properties.Comments)">AssetFeedback</a></span>&#8203;(<a href="InformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">InformalTags</a>&nbsp;informalTags,
+             <a href="Likes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Likes</a>&nbsp;likes,
+             <a href="Ratings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Ratings</a>&nbsp;ratings,
+             <a href="Comments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Comments</a>&nbsp;comments)</code></th>
 <td class="colLast">
 <div class="block">Typical Constructor</div>
 </td>
@@ -274,28 +258,28 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="AssetComments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetComments</a></code></td>
+<td class="colFirst"><code><a href="Comments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Comments</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getComments()">getComments</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns a copy of the comments for the asset in an iterator.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="AssetInformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetInformalTags</a></code></td>
+<td class="colFirst"><code><a href="InformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">InformalTags</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getInformalTags()">getInformalTags</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns a copy of the information tags for the asset in an iterator.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
-<td class="colFirst"><code><a href="AssetLikes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLikes</a></code></td>
+<td class="colFirst"><code><a href="Likes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Likes</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLikes()">getLikes</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns a copy of the likes for the asset in an iterator.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code><a href="AssetRatings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRatings</a></code></td>
+<td class="colFirst"><code><a href="Ratings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Ratings</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRatings()">getRatings</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns a copy of the ratings for the asset in an iterator.</div>
@@ -316,13 +300,6 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </td>
 </tr>
 </table>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#getParentAsset()">getParentAsset</a>, <a href="AssetPropertyBase.html#getParentAssetName()">getParentAssetName</a>, <a href="AssetPropertyBase.html#getParentAssetTypeName()">getParentAssetTypeName</a></code></li>
-</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -352,7 +329,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockList">
 <li class="blockList">
 <h4>informalTags</h4>
-<pre>protected&nbsp;<a href="AssetInformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetInformalTags</a> informalTags</pre>
+<pre>protected&nbsp;<a href="InformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">InformalTags</a> informalTags</pre>
 </li>
 </ul>
 <a id="likes">
@@ -361,7 +338,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockList">
 <li class="blockList">
 <h4>likes</h4>
-<pre>protected&nbsp;<a href="AssetLikes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLikes</a> likes</pre>
+<pre>protected&nbsp;<a href="Likes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Likes</a> likes</pre>
 </li>
 </ul>
 <a id="ratings">
@@ -370,7 +347,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockList">
 <li class="blockList">
 <h4>ratings</h4>
-<pre>protected&nbsp;<a href="AssetRatings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRatings</a> ratings</pre>
+<pre>protected&nbsp;<a href="Ratings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Ratings</a> ratings</pre>
 </li>
 </ul>
 <a id="comments">
@@ -379,7 +356,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockListLast">
 <li class="blockList">
 <h4>comments</h4>
-<pre>protected&nbsp;<a href="AssetComments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetComments</a> comments</pre>
+<pre>protected&nbsp;<a href="Comments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Comments</a> comments</pre>
 </li>
 </ul>
 </li>
@@ -392,35 +369,29 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor)">
+<a id="&lt;init&gt;()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>AssetFeedback</h4>
-<pre>protected&nbsp;AssetFeedback&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset)</pre>
+<pre>protected&nbsp;AssetFeedback()</pre>
 <div class="block">Simple constructor only for subclasses</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - linked asset</dd>
-</dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.AssetInformalTags,org.odpi.openmetadata.frameworks.connectors.properties.AssetLikes,org.odpi.openmetadata.frameworks.connectors.properties.AssetRatings,org.odpi.openmetadata.frameworks.connectors.properties.AssetComments)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.InformalTags,org.odpi.openmetadata.frameworks.connectors.properties.Likes,org.odpi.openmetadata.frameworks.connectors.properties.Ratings,org.odpi.openmetadata.frameworks.connectors.properties.Comments)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>AssetFeedback</h4>
-<pre>public&nbsp;AssetFeedback&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                     <a href="AssetInformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetInformalTags</a>&nbsp;informalTags,
-                     <a href="AssetLikes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLikes</a>&nbsp;likes,
-                     <a href="AssetRatings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRatings</a>&nbsp;ratings,
-                     <a href="AssetComments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetComments</a>&nbsp;comments)</pre>
+<pre>public&nbsp;AssetFeedback&#8203;(<a href="InformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">InformalTags</a>&nbsp;informalTags,
+                     <a href="Likes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Likes</a>&nbsp;likes,
+                     <a href="Ratings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Ratings</a>&nbsp;ratings,
+                     <a href="Comments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Comments</a>&nbsp;comments)</pre>
 <div class="block">Typical Constructor</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - description of the asset that this feedback is attached to.</dd>
 <dd><code>informalTags</code> - list of tags for the asset.</dd>
 <dd><code>likes</code> - list of likes (one object per person liking the asset) for the asset.</dd>
 <dd><code>ratings</code> - list of ratings that people have given the asset one Rating object for each person's rating.</dd>
@@ -428,20 +399,16 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>AssetFeedback</h4>
-<pre>public&nbsp;AssetFeedback&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                     <a href="AssetFeedback.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetFeedback</a>&nbsp;templateFeedback)</pre>
-<div class="block">Copy/clone constructor the parentAsset is passed separately to the template because it is also
- likely to be being cloned in the same operation and we want the feedback clone to point to the
- asset clone and not the original asset.</div>
+<pre>public&nbsp;AssetFeedback&#8203;(<a href="AssetFeedback.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetFeedback</a>&nbsp;templateFeedback)</pre>
+<div class="block">Copy/clone constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - description of the asset that this feedback is attached to.</dd>
 <dd><code>templateFeedback</code> - template object to copy.</dd>
 </dl>
 </li>
@@ -462,7 +429,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockList">
 <li class="blockList">
 <h4>getInformalTags</h4>
-<pre class="methodSignature">public&nbsp;<a href="AssetInformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetInformalTags</a>&nbsp;getInformalTags()</pre>
+<pre class="methodSignature">public&nbsp;<a href="InformalTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">InformalTags</a>&nbsp;getInformalTags()</pre>
 <div class="block">Returns a copy of the information tags for the asset in an iterator.  This iterator can be used to step
  through the tags once.  Therefore call getInformalTags() for each scan of the asset's tags.</div>
 <dl>
@@ -477,7 +444,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockList">
 <li class="blockList">
 <h4>getLikes</h4>
-<pre class="methodSignature">public&nbsp;<a href="AssetLikes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLikes</a>&nbsp;getLikes()</pre>
+<pre class="methodSignature">public&nbsp;<a href="Likes.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Likes</a>&nbsp;getLikes()</pre>
 <div class="block">Returns a copy of the likes for the asset in an iterator.  This iterator can be used to step
  through the list of like once.  Therefore call getLikes() for each scan of the asset's like objects.</div>
 <dl>
@@ -492,7 +459,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockList">
 <li class="blockList">
 <h4>getRatings</h4>
-<pre class="methodSignature">public&nbsp;<a href="AssetRatings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRatings</a>&nbsp;getRatings()</pre>
+<pre class="methodSignature">public&nbsp;<a href="Ratings.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Ratings</a>&nbsp;getRatings()</pre>
 <div class="block">Returns a copy of the ratings for the asset in an iterator.  This iterator can be used to step
  through the ratings once.  Therefore call getRatings() for each scan of the asset's ratings.</div>
 <dl>
@@ -507,9 +474,9 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockList">
 <li class="blockList">
 <h4>getComments</h4>
-<pre class="methodSignature">public&nbsp;<a href="AssetComments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetComments</a>&nbsp;getComments()</pre>
+<pre class="methodSignature">public&nbsp;<a href="Comments.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Comments</a>&nbsp;getComments()</pre>
 <div class="block">Returns a copy of the comments for the asset in an iterator.  This iterator can be used to step
- through the comments once.  Therefore call getComments() for each scan of the asset's comments.</div>
+ through the comments once.  Therefore, call getComments() for each scan of the asset's comments.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Comments comment list</dd>
@@ -542,7 +509,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="AssetPropertyBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></code></dd>
+<dd><code><a href="AssetPropertyElementBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyElementBase</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -560,7 +527,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <div class="block">Hash of properties</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="AssetPropertyBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></code></dd>
+<dd><code><a href="AssetPropertyElementBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyElementBase</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int</dd>
 </dl>

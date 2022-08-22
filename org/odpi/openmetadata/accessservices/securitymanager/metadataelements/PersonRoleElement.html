@@ -199,14 +199,14 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">ElementStub</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAppointees()">getAppointees</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of Person profiles that are appointed to the role.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">ElementHeader</a></code></td>
+<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHeader()">getElementHeader</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the element header associated with the properties.</div>
@@ -228,14 +228,14 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAppointees(java.util.List)">setAppointees</a></span>&#8203;(java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">ElementStub</a>&gt;&nbsp;appointees)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAppointees(java.util.List)">setAppointees</a></span>&#8203;(java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;appointees)</code></th>
 <td class="colLast">
 <div class="block">Set up  the list of Person profiles that are appointed to the role.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementHeader(org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementHeader)">setElementHeader</a></span>&#8203;(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">ElementHeader</a>&nbsp;header)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;header)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with the properties.</div>
 </td>
@@ -318,7 +318,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <ul class="blockList">
 <li class="blockList">
 <h4>getElementHeader</h4>
-<pre class="methodSignature">public&nbsp;<a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">ElementHeader</a>&nbsp;getElementHeader()</pre>
+<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;getElementHeader()</pre>
 <div class="block">Return the element header associated with the properties.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -328,17 +328,17 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </dl>
 </li>
 </ul>
-<a id="setElementHeader(org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementHeader)">
+<a id="setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setElementHeader</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setElementHeader&#8203;(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">ElementHeader</a>&nbsp;header)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setElementHeader&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;header)</pre>
 <div class="block">Set up the element header associated with the properties.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="MetadataElement.html#setElementHeader(org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementHeader)">setElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="MetadataElement.html#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">MetadataElement</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>header</code> - element header object</dd>
 </dl>
@@ -378,7 +378,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <ul class="blockList">
 <li class="blockList">
 <h4>getAppointees</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">ElementStub</a>&gt;&nbsp;getAppointees()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;getAppointees()</pre>
 <div class="block">Return the list of Person profiles that are appointed to the role.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -392,7 +392,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <ul class="blockList">
 <li class="blockList">
 <h4>setAppointees</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setAppointees&#8203;(java.util.List&lt;<a href="ElementStub.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.metadataelements">ElementStub</a>&gt;&nbsp;appointees)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setAppointees&#8203;(java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;appointees)</pre>
 <div class="block">Set up  the list of Person profiles that are appointed to the role.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>

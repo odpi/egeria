@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10,"i61":10,"i62":10,"i63":10,"i64":10,"i65":10,"i66":10,"i67":10,"i68":10,"i69":10,"i70":10,"i71":10,"i72":10,"i73":10,"i74":10,"i75":10,"i76":10,"i77":10,"i78":10,"i79":10,"i80":10,"i81":10,"i82":10,"i83":10,"i84":10,"i85":10,"i86":10,"i87":10,"i88":10,"i89":10,"i90":10,"i91":10,"i92":10,"i93":10,"i94":10,"i95":10,"i96":10,"i97":10,"i98":10,"i99":10,"i100":10,"i101":10,"i102":10,"i103":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10,"i61":10,"i62":10,"i63":10,"i64":10,"i65":10,"i66":10,"i67":10,"i68":10,"i69":10,"i70":10,"i71":10,"i72":10,"i73":10,"i74":10,"i75":10,"i76":10,"i77":10,"i78":10,"i79":10,"i80":10,"i81":10,"i82":10,"i83":10,"i84":10,"i85":10,"i86":10,"i87":10,"i88":10,"i89":10,"i90":10,"i91":10,"i92":10,"i93":10,"i94":10,"i95":10,"i96":10,"i97":10,"i98":10,"i99":10,"i100":10,"i101":10,"i102":10,"i103":10,"i104":10,"i105":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -766,6 +766,19 @@ extends java.lang.Object</pre>
 <div class="block">Typical constructor passes parameters used to build the open metadata archive's property header.</div>
 </td>
 </tr>
+<tr class="rowColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,java.lang.String)">SimpleCatalogArchiveHelper</a></span>&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
+                          java.lang.String&nbsp;archiveGUID,
+                          java.lang.String&nbsp;archiveRootName,
+                          java.lang.String&nbsp;originatorName,
+                          java.util.Date&nbsp;creationDate,
+                          long&nbsp;versionNumber,
+                          java.lang.String&nbsp;versionName,
+                          java.lang.String&nbsp;guidMapFileName)</code></th>
+<td class="colLast">
+<div class="block">Constructor passes parameters used to build the open metadata archive's property header.</div>
+</td>
+</tr>
 </table>
 </li>
 </ul>
@@ -900,6 +913,17 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addBusinessArea(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addBusinessArea</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
+               java.lang.String&nbsp;identifier,
+               java.lang.String&nbsp;displayName,
+               java.lang.String&nbsp;description,
+               java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties)</code></th>
+<td class="colLast">
+<div class="block">Create a business area entity.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCategory(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addCategory</a></span>&#8203;(java.lang.String&nbsp;glossaryGUID,
            java.lang.String&nbsp;qualifiedName,
            java.lang.String&nbsp;displayName,
@@ -909,7 +933,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a glossary category to the archive and connect it to glossary.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCategory(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addCategory</a></span>&#8203;(java.lang.String&nbsp;glossaryGUID,
            java.lang.String&nbsp;qualifiedName,
@@ -921,7 +945,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a glossary category to the archive and connect it to glossary.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCategoryToCategory(java.lang.String,java.lang.String)">addCategoryToCategory</a></span>&#8203;(java.lang.String&nbsp;parentCategoryGUID,
                      java.lang.String&nbsp;childCategoryGUID)</code></th>
@@ -929,7 +953,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two categories together as part of the parent child hierarchy.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCollection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">addCollection</a></span>&#8203;(java.lang.String&nbsp;suppliedTypeName,
              java.lang.String&nbsp;classificationName,
@@ -942,7 +966,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a governance definition entity.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCommunity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">addCommunity</a></span>&#8203;(java.lang.String&nbsp;suppliedTypeName,
             java.lang.String&nbsp;qualifiedName,
@@ -955,7 +979,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a new community.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCommunityMembershipRelationship(java.lang.String,java.lang.String,int)">addCommunityMembershipRelationship</a></span>&#8203;(java.lang.String&nbsp;communityQName,
                                   java.lang.String&nbsp;membershipRoleQName,
@@ -964,7 +988,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a community to a person role.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addConceptBeadAttributeLink(java.lang.String,java.lang.String,int,int,int,boolean,boolean)">addConceptBeadAttributeLink</a></span>&#8203;(java.lang.String&nbsp;conceptBeadGUID,
                            java.lang.String&nbsp;conceptBeadAttributeGUID,
@@ -977,7 +1001,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a concept bead link and the concept bead at one of its ends.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addConceptBeadRelationshipEnd(java.lang.String,java.lang.String,java.lang.String,int,int,int,int,boolean,boolean,boolean)">addConceptBeadRelationshipEnd</a></span>&#8203;(java.lang.String&nbsp;conceptBeadLinkGUID,
                              java.lang.String&nbsp;conceptBeadGUID,
@@ -993,7 +1017,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a concept bead link and the concept bead at one of its ends.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.lang.String,java.lang.String)">addConnection</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
              java.lang.String&nbsp;displayName,
@@ -1010,7 +1034,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a connection entity.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addConnectionForAsset(java.lang.String,java.lang.String,java.lang.String)">addConnectionForAsset</a></span>&#8203;(java.lang.String&nbsp;assetGUID,
                      java.lang.String&nbsp;assetSummary,
@@ -1019,7 +1043,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between an asset and its connection.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addConnectorCategory(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.util.Map,java.util.Map)">addConnectorCategory</a></span>&#8203;(java.lang.String&nbsp;connectorTypeDirectoryGUID,
                     java.lang.String&nbsp;qualifiedName,
@@ -1035,7 +1059,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a connector category entity.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.Map)">addConnectorType</a></span>&#8203;(java.lang.String&nbsp;connectorCategoryGUID,
                 java.lang.String&nbsp;connectorTypeGUID,
@@ -1060,7 +1084,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a connector type entity.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>protected java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addConnectorType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.String,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.List,java.util.List,java.util.Map)">addConnectorType</a></span>&#8203;(java.lang.String&nbsp;connectorCategoryGUID,
                 java.lang.String&nbsp;qualifiedName,
@@ -1084,7 +1108,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a connector type entity.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addConnectorTypeDirectory(java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addConnectorTypeDirectory</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                          java.lang.String&nbsp;displayName,
@@ -1094,7 +1118,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a connector category entity.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addContactDetails(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String)">addContactDetails</a></span>&#8203;(java.lang.String&nbsp;profileGUID,
                  java.lang.String&nbsp;name,
@@ -1106,7 +1130,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a contact method to a profile.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addCyberLocation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addCyberLocation</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                 java.lang.String&nbsp;identifier,
@@ -1118,7 +1142,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a location entity with the CyberLocation classification to the archive.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataContentForDataSet(java.lang.String,java.lang.String)">addDataContentForDataSet</a></span>&#8203;(java.lang.String&nbsp;dataContentGUID,
                         java.lang.String&nbsp;dataSetGUID)</code></th>
@@ -1126,7 +1150,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a data set and an asset that is providing all or part of its content.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDataContentForDataSet(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addDataContentForDataSet</a></span>&#8203;(java.lang.String&nbsp;dataContentGUID,
                         java.lang.String&nbsp;dataSetGUID,
@@ -1136,7 +1160,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a data set and an asset that is providing all or part of its content.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDesignModel(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">addDesignModel</a></span>&#8203;(java.lang.String&nbsp;typeName,
               java.lang.String&nbsp;classificationName,
@@ -1152,7 +1176,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a design model entity.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDesignModelElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.util.List)">addDesignModelElement</a></span>&#8203;(java.lang.String&nbsp;designModelGUID,
                      java.lang.String&nbsp;typeName,
@@ -1169,7 +1193,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a design model element entity.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addDesignModelGroupMembership(java.lang.String,java.lang.String)">addDesignModelGroupMembership</a></span>&#8203;(java.lang.String&nbsp;groupGUID,
                              java.lang.String&nbsp;memberGUID)</code></th>
@@ -1177,7 +1201,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a design model group and one of its members.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addEndpoint(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addEndpoint</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
            java.lang.String&nbsp;displayName,
@@ -1189,7 +1213,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a endpoint entity.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i33" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addExternalReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.lang.String,java.lang.String,java.util.List,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.util.Map)">addExternalReference</a></span>&#8203;(java.lang.String&nbsp;typeName,
                     java.lang.String&nbsp;qualifiedName,
@@ -1222,7 +1246,7 @@ extends java.lang.Object</pre>
 <div class="block">Create an external reference entity.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addExternalReferenceLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addExternalReferenceLink</a></span>&#8203;(java.lang.String&nbsp;referenceableGUID,
                         java.lang.String&nbsp;externalReferenceGUID,
@@ -1233,7 +1257,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a referenceable and an external reference.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i35" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addFixedLocation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addFixedLocation</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                 java.lang.String&nbsp;identifier,
@@ -1248,7 +1272,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a location with a FixedLocation classification.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i36" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGlossary(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addGlossary</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
            java.lang.String&nbsp;displayName,
@@ -1261,7 +1285,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a glossary entity.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGlossary(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addGlossary</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
            java.lang.String&nbsp;displayName,
@@ -1275,7 +1299,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a glossary entity.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.List,java.util.Map,java.util.Map)">addGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;suppliedTypeName,
                        java.lang.String&nbsp;qualifiedName,
@@ -1294,7 +1318,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a governance definition entity.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGovernanceDefinitionDelegationRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addGovernanceDefinitionDelegationRelationship</a></span>&#8203;(java.lang.String&nbsp;relationshipTypeName,
                                              java.lang.String&nbsp;governanceDefinition1QName,
@@ -1304,7 +1328,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two governance definitions at the same level.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGovernanceDefinitionPeerRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addGovernanceDefinitionPeerRelationship</a></span>&#8203;(java.lang.String&nbsp;relationshipTypeName,
                                        java.lang.String&nbsp;governanceDefinition1QName,
@@ -1314,7 +1338,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two governance definitions at the same level.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i41" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGovernanceDefinitionScopeRelationship(java.lang.String,java.lang.String)">addGovernanceDefinitionScopeRelationship</a></span>&#8203;(java.lang.String&nbsp;referenceableQName,
                                         java.lang.String&nbsp;governanceDefinitionQName)</code></th>
@@ -1322,7 +1346,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a referenceable to a governance definition to define the scope there it applies.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i42" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGovernanceDomainDescription(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.util.Map)">addGovernanceDomainDescription</a></span>&#8203;(java.lang.String&nbsp;governanceDomainSetGUID,
                               java.lang.String&nbsp;qualifiedName,
@@ -1334,7 +1358,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a governance domain description entity.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGovernanceRole(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,int,java.util.Map,java.util.Map)">addGovernanceRole</a></span>&#8203;(java.lang.String&nbsp;suppliedTypeName,
                  java.lang.String&nbsp;qualifiedName,
@@ -1351,7 +1375,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a new person role.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGovernanceZone(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Map)">addGovernanceZone</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                  java.lang.String&nbsp;zoneName,
@@ -1365,7 +1389,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a governance zone entity.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addGovernedByRelationship(java.lang.String,java.lang.String)">addGovernedByRelationship</a></span>&#8203;(java.lang.String&nbsp;referenceableQName,
                          java.lang.String&nbsp;governanceDefinitionQName)</code></th>
@@ -1373,13 +1397,13 @@ extends java.lang.Object</pre>
 <div class="block">Link a referenceable to a governance definition to indicate that it is governed by the governance definition.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addHasARelationship(java.lang.String,java.lang.String)">addHasARelationship</a></span>&#8203;(java.lang.String&nbsp;conceptQName,
                    java.lang.String&nbsp;propertyQName)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addIsATypeOfRelationship(java.lang.String,java.lang.String)">addIsATypeOfRelationship</a></span>&#8203;(java.lang.String&nbsp;specialTermQName,
                         java.lang.String&nbsp;generalizedTermQName)</code></th>
@@ -1387,7 +1411,7 @@ extends java.lang.Object</pre>
 <div class="block">Add an is-a-type-of relationship</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addITProfileToAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addITProfileToAsset</a></span>&#8203;(java.lang.String&nbsp;assetGUID,
                    java.lang.String&nbsp;qualifiedName,
@@ -1398,7 +1422,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a new IT profile.</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLibraryCategoryReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">addLibraryCategoryReference</a></span>&#8203;(java.lang.String&nbsp;categoryGUID,
                            java.lang.String&nbsp;externalGlossaryLinkGUID,
@@ -1410,7 +1434,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a category to an external glossary link with information on which category in the external glossary it corresponds to.</div>
 </td>
 </tr>
-<tr id="i49" class="rowColor">
+<tr id="i50" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLibraryTermReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">addLibraryTermReference</a></span>&#8203;(java.lang.String&nbsp;termGUID,
                        java.lang.String&nbsp;externalGlossaryLinkGUID,
@@ -1422,7 +1446,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a glossary term to an external glossary link with information on which term in the external glossary it corresponds to.</div>
 </td>
 </tr>
-<tr id="i50" class="altColor">
+<tr id="i51" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLocation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addLocation</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
            java.lang.String&nbsp;identifier,
@@ -1433,7 +1457,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a location entity to the archive.</div>
 </td>
 </tr>
-<tr id="i51" class="rowColor">
+<tr id="i52" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addLocationHierarchy(java.lang.String,java.lang.String)">addLocationHierarchy</a></span>&#8203;(java.lang.String&nbsp;broaderLocationGUID,
                     java.lang.String&nbsp;nestedLocationGUID)</code></th>
@@ -1441,7 +1465,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a locations and one of the locations nested within it.</div>
 </td>
 </tr>
-<tr id="i52" class="altColor">
+<tr id="i53" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addMediaReference(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,int,java.lang.String,java.util.List,java.util.Map,java.util.Map)">addMediaReference</a></span>&#8203;(java.lang.String&nbsp;typeName,
                  java.lang.String&nbsp;qualifiedName,
@@ -1465,7 +1489,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a media reference entity.</div>
 </td>
 </tr>
-<tr id="i53" class="rowColor">
+<tr id="i54" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addMediaReferenceLink(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.lang.String)">addMediaReferenceLink</a></span>&#8203;(java.lang.String&nbsp;referenceableGUID,
                      java.lang.String&nbsp;mediaReferenceGUID,
@@ -1477,7 +1501,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a referenceable and an external reference.</div>
 </td>
 </tr>
-<tr id="i54" class="altColor">
+<tr id="i55" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addMemberToCollection(java.lang.String,java.lang.String,java.lang.String)">addMemberToCollection</a></span>&#8203;(java.lang.String&nbsp;collectionGUID,
                      java.lang.String&nbsp;memberGUID,
@@ -1486,14 +1510,14 @@ extends java.lang.Object</pre>
 <div class="block">Add a member to a collection.</div>
 </td>
 </tr>
-<tr id="i55" class="rowColor">
+<tr id="i56" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addMobileAssetClassification(java.lang.String)">addMobileAssetClassification</a></span>&#8203;(java.lang.String&nbsp;assetGUID)</code></th>
 <td class="colLast">
 <div class="block">Add the MobileAsset classification to the requested asset.</div>
 </td>
 </tr>
-<tr id="i56" class="altColor">
+<tr id="i57" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addMoreInformationLink(java.lang.String,java.lang.String)">addMoreInformationLink</a></span>&#8203;(java.lang.String&nbsp;describedElementId,
                       java.lang.String&nbsp;describerElementId)</code></th>
@@ -1501,7 +1525,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a navigation link from one referenceable to another to show they provide more information.</div>
 </td>
 </tr>
-<tr id="i57" class="rowColor">
+<tr id="i58" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addNestedSchemaAttribute(java.lang.String,java.lang.String)">addNestedSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;parentSchemaAttributeGUID,
                         java.lang.String&nbsp;childSchemaAttributeGUID)</code></th>
@@ -1509,7 +1533,16 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a SchemaAttribute element and a child SchemaAttribute element using the NestedSchemaAttribute relationship.</div>
 </td>
 </tr>
-<tr id="i58" class="altColor">
+<tr id="i59" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addOrganizationalCapabilityRelationship(java.lang.String,java.lang.String,java.lang.String)">addOrganizationalCapabilityRelationship</a></span>&#8203;(java.lang.String&nbsp;businessCapabilityQName,
+                                       java.lang.String&nbsp;teamQName,
+                                       java.lang.String&nbsp;scope)</code></th>
+<td class="colLast">
+<div class="block">Add an OrganizationalCapability relationship.</div>
+</td>
+</tr>
+<tr id="i60" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addPeerLocations(java.lang.String,java.lang.String)">addPeerLocations</a></span>&#8203;(java.lang.String&nbsp;location1GUID,
                 java.lang.String&nbsp;location2GUID)</code></th>
@@ -1517,7 +1550,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two locations as peers using the AdjacentLocation relationship.</div>
 </td>
 </tr>
-<tr id="i59" class="rowColor">
+<tr id="i61" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addPeerRelationship(java.lang.String,java.lang.String)">addPeerRelationship</a></span>&#8203;(java.lang.String&nbsp;person1QName,
                    java.lang.String&nbsp;person2QName)</code></th>
@@ -1525,7 +1558,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a person profile to another person as a peer.</div>
 </td>
 </tr>
-<tr id="i60" class="altColor">
+<tr id="i62" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addPerson(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Map)">addPerson</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
          java.lang.String&nbsp;name,
@@ -1546,7 +1579,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a new person profile.</div>
 </td>
 </tr>
-<tr id="i61" class="rowColor">
+<tr id="i63" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addPersonRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,int,java.util.Map,java.util.Map)">addPersonRole</a></span>&#8203;(java.lang.String&nbsp;suppliedTypeName,
              java.lang.String&nbsp;qualifiedName,
@@ -1562,7 +1595,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a new person role.</div>
 </td>
 </tr>
-<tr id="i62" class="altColor">
+<tr id="i64" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addPersonRoleAppointmentRelationship(java.lang.String,java.lang.String,boolean)">addPersonRoleAppointmentRelationship</a></span>&#8203;(java.lang.String&nbsp;personQName,
                                     java.lang.String&nbsp;personRoleQName,
@@ -1571,7 +1604,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a person profile to a person role.</div>
 </td>
 </tr>
-<tr id="i63" class="rowColor">
+<tr id="i65" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addProcess(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map,java.util.List)">addProcess</a></span>&#8203;(java.lang.String&nbsp;typeName,
           java.lang.String&nbsp;qualifiedName,
@@ -1585,7 +1618,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a process entity.</div>
 </td>
 </tr>
-<tr id="i64" class="altColor">
+<tr id="i66" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addProfileIdentity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addProfileIdentity</a></span>&#8203;(java.lang.String&nbsp;profileGUID,
                   java.lang.String&nbsp;userIdentityGUID,
@@ -1596,7 +1629,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a profile and one of its userIds.</div>
 </td>
 </tr>
-<tr id="i65" class="rowColor">
+<tr id="i67" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addProfileLocationRelationship(java.lang.String,java.lang.String,java.lang.String)">addProfileLocationRelationship</a></span>&#8203;(java.lang.String&nbsp;profileQName,
                               java.lang.String&nbsp;locationQName,
@@ -1605,7 +1638,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a location to a profile.</div>
 </td>
 </tr>
-<tr id="i66" class="altColor">
+<tr id="i68" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addProject(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,java.util.Date,java.lang.String,boolean,boolean,java.lang.String,java.util.Map,java.util.Map)">addProject</a></span>&#8203;(java.lang.String&nbsp;suppliedTypeName,
           java.lang.String&nbsp;qualifiedName,
@@ -1624,7 +1657,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a new project.</div>
 </td>
 </tr>
-<tr id="i67" class="rowColor">
+<tr id="i69" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addProjectDependencyRelationship(java.lang.String,java.lang.String,java.lang.String)">addProjectDependencyRelationship</a></span>&#8203;(java.lang.String&nbsp;projectQName,
                                 java.lang.String&nbsp;dependsOnProjectQName,
@@ -1633,7 +1666,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a project to another project that it depends on.</div>
 </td>
 </tr>
-<tr id="i68" class="altColor">
+<tr id="i70" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addProjectHierarchyRelationship(java.lang.String,java.lang.String)">addProjectHierarchyRelationship</a></span>&#8203;(java.lang.String&nbsp;projectQName,
                                java.lang.String&nbsp;subprojectQName)</code></th>
@@ -1641,7 +1674,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a project to a subproject.</div>
 </td>
 </tr>
-<tr id="i69" class="rowColor">
+<tr id="i71" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addProjectManagementRelationship(java.lang.String,java.lang.String)">addProjectManagementRelationship</a></span>&#8203;(java.lang.String&nbsp;projectQName,
                                 java.lang.String&nbsp;projectManagerRoleQName)</code></th>
@@ -1649,7 +1682,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a project to a person role that represents the project manager(s).</div>
 </td>
 </tr>
-<tr id="i70" class="altColor">
+<tr id="i72" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addProjectTeamRelationship(java.lang.String,java.lang.String,java.lang.String)">addProjectTeamRelationship</a></span>&#8203;(java.lang.String&nbsp;personQName,
                           java.lang.String&nbsp;personRoleQName,
@@ -1658,14 +1691,14 @@ extends java.lang.Object</pre>
 <div class="block">Link a project to a team.</div>
 </td>
 </tr>
-<tr id="i71" class="rowColor">
+<tr id="i73" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addReferenceDataClassification(java.lang.String)">addReferenceDataClassification</a></span>&#8203;(java.lang.String&nbsp;assetGUID)</code></th>
 <td class="colLast">
 <div class="block">Add the ReferenceData classification to the requested element.</div>
 </td>
 </tr>
-<tr id="i72" class="altColor">
+<tr id="i74" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addReferenceValueAssignmentRelationship(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addReferenceValueAssignmentRelationship</a></span>&#8203;(java.lang.String&nbsp;referenceableQName,
                                        java.lang.String&nbsp;validValueQName,
@@ -1678,13 +1711,13 @@ extends java.lang.Object</pre>
 <div class="block">Link a referenceable element to a valid value that is acting as a tag.</div>
 </td>
 </tr>
-<tr id="i73" class="rowColor">
+<tr id="i75" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addRelatedTermRelationship(java.lang.String,java.lang.String)">addRelatedTermRelationship</a></span>&#8203;(java.lang.String&nbsp;conceptQName,
                           java.lang.String&nbsp;propertyQName)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
-<tr id="i74" class="altColor">
+<tr id="i76" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,java.util.Map)">addSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;typeName,
                   java.lang.String&nbsp;schemaTypeName,
@@ -1699,7 +1732,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a schema attribute with a TypeEmbeddedAttribute classification.</div>
 </td>
 </tr>
-<tr id="i75" class="rowColor">
+<tr id="i77" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSchemaTypeOption(java.lang.String,java.lang.String)">addSchemaTypeOption</a></span>&#8203;(java.lang.String&nbsp;schemaTypeChoiceGUID,
                    java.lang.String&nbsp;schemaTypeOptionGUID)</code></th>
@@ -1707,7 +1740,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a SchemaTypeChoice element and a child element using the SchemaTypeOption relationship.</div>
 </td>
 </tr>
-<tr id="i76" class="altColor">
+<tr id="i78" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSecureLocation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addSecureLocation</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                  java.lang.String&nbsp;identifier,
@@ -1720,7 +1753,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a location with a SecureLocation classification.</div>
 </td>
 </tr>
-<tr id="i77" class="rowColor">
+<tr id="i79" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSoftwareCapability(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.Map)">addSoftwareCapability</a></span>&#8203;(java.lang.String&nbsp;typeName,
                      java.lang.String&nbsp;qualifiedName,
@@ -1736,7 +1769,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a software capability entity.</div>
 </td>
 </tr>
-<tr id="i78" class="altColor">
+<tr id="i80" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addStakeHolderRelationship(java.lang.String,java.lang.String)">addStakeHolderRelationship</a></span>&#8203;(java.lang.String&nbsp;referenceableQName,
                           java.lang.String&nbsp;actorQName)</code></th>
@@ -1744,7 +1777,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a referenceable to its stakeholders.</div>
 </td>
 </tr>
-<tr id="i79" class="rowColor">
+<tr id="i81" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSubjectAreaClassification(java.lang.String,java.lang.String)">addSubjectAreaClassification</a></span>&#8203;(java.lang.String&nbsp;referenceableGUID,
                             java.lang.String&nbsp;subjectAreaQualifiedName)</code></th>
@@ -1752,7 +1785,7 @@ extends java.lang.Object</pre>
 <div class="block">Add the subject area classification to the requested element.</div>
 </td>
 </tr>
-<tr id="i80" class="altColor">
+<tr id="i82" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSubjectAreaDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Map,java.util.Map)">addSubjectAreaDefinition</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                         java.lang.String&nbsp;subjectAreaName,
@@ -1767,7 +1800,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a subject area definition entity.</div>
 </td>
 </tr>
-<tr id="i81" class="rowColor">
+<tr id="i83" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSubjectAreaHierarchy(java.lang.String,java.lang.String)">addSubjectAreaHierarchy</a></span>&#8203;(java.lang.String&nbsp;broaderSubjectAreaGUID,
                        java.lang.String&nbsp;nestedSubjectAreaGUID)</code></th>
@@ -1775,7 +1808,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a subject area and one of its nested subject areas.</div>
 </td>
 </tr>
-<tr id="i82" class="altColor">
+<tr id="i84" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTeam(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addTeam</a></span>&#8203;(java.lang.String&nbsp;suppliedTypeName,
        java.lang.String&nbsp;qualifiedName,
@@ -1788,7 +1821,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a new team profile.</div>
 </td>
 </tr>
-<tr id="i83" class="rowColor">
+<tr id="i85" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTeamLeadershipRelationship(java.lang.String,java.lang.String,java.lang.String)">addTeamLeadershipRelationship</a></span>&#8203;(java.lang.String&nbsp;personRoleQName,
                              java.lang.String&nbsp;teamQName,
@@ -1797,7 +1830,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a person role as a team's leader.</div>
 </td>
 </tr>
-<tr id="i84" class="altColor">
+<tr id="i86" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTeamMembershipRelationship(java.lang.String,java.lang.String,java.lang.String)">addTeamMembershipRelationship</a></span>&#8203;(java.lang.String&nbsp;personRoleQName,
                              java.lang.String&nbsp;teamQName,
@@ -1806,7 +1839,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a person role as a team's member.</div>
 </td>
 </tr>
-<tr id="i85" class="rowColor">
+<tr id="i87" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTeamStructureRelationship(java.lang.String,java.lang.String,boolean)">addTeamStructureRelationship</a></span>&#8203;(java.lang.String&nbsp;superTeamQName,
                             java.lang.String&nbsp;subTeamQName,
@@ -1815,7 +1848,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a person role as a team's member.</div>
 </td>
 </tr>
-<tr id="i86" class="altColor">
+<tr id="i88" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTerm(java.lang.String,java.util.List,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.lang.String,java.lang.String,java.util.Map)">addTerm</a></span>&#8203;(java.lang.String&nbsp;glossaryGUID,
        java.util.List&lt;java.lang.String&gt;&nbsp;categoryIds,
@@ -1837,7 +1870,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a term and link it to the glossary and an arbitrary number of categories.</div>
 </td>
 </tr>
-<tr id="i87" class="rowColor">
+<tr id="i89" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTerm(java.lang.String,java.util.List,java.lang.String,java.lang.String,java.lang.String)">addTerm</a></span>&#8203;(java.lang.String&nbsp;glossaryGUID,
        java.util.List&lt;java.lang.String&gt;&nbsp;categoryGUIDs,
@@ -1848,7 +1881,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a term and link it to the glossary and an arbitrary number of categories.</div>
 </td>
 </tr>
-<tr id="i88" class="altColor">
+<tr id="i90" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTermToCategory(java.lang.String,java.lang.String)">addTermToCategory</a></span>&#8203;(java.lang.String&nbsp;categoryGUID,
                  java.lang.String&nbsp;termGUID)</code></th>
@@ -1856,7 +1889,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two categories together as part of the parent child hierarchy.</div>
 </td>
 </tr>
-<tr id="i89" class="rowColor">
+<tr id="i91" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTermToCategory(java.lang.String,java.lang.String,int,java.lang.String)">addTermToCategory</a></span>&#8203;(java.lang.String&nbsp;categoryGUID,
                  java.lang.String&nbsp;termGUID,
@@ -1866,7 +1899,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two categories together as part of the parent child hierarchy.</div>
 </td>
 </tr>
-<tr id="i90" class="altColor">
+<tr id="i92" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTermToContext(java.lang.String,java.lang.String,int,java.lang.String)">addTermToContext</a></span>&#8203;(java.lang.String&nbsp;contextGUID,
                 java.lang.String&nbsp;termGUID,
@@ -1876,7 +1909,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a term to a context referenceable to show that the term is valid in the context of the other.</div>
 </td>
 </tr>
-<tr id="i91" class="rowColor">
+<tr id="i93" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTermToSynonym(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addTermToSynonym</a></span>&#8203;(java.lang.String&nbsp;synonymGUID,
                 java.lang.String&nbsp;termGUID,
@@ -1889,7 +1922,7 @@ extends java.lang.Object</pre>
 <div class="block">Link two terms together to show that one is valid in the context of the other.</div>
 </td>
 </tr>
-<tr id="i92" class="altColor">
+<tr id="i94" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addTopLevelSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addTopLevelSchemaType</a></span>&#8203;(java.lang.String&nbsp;assetGUID,
                      java.lang.String&nbsp;typeName,
@@ -1901,7 +1934,7 @@ extends java.lang.Object</pre>
 <div class="block">Create the top level schema type for an asset.</div>
 </td>
 </tr>
-<tr id="i93" class="rowColor">
+<tr id="i95" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addUserIdentity(java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addUserIdentity</a></span>&#8203;(java.lang.String&nbsp;qualifiedName,
                java.lang.String&nbsp;userId,
@@ -1911,7 +1944,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a user identity entity to the archive.</div>
 </td>
 </tr>
-<tr id="i94" class="altColor">
+<tr id="i96" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Map)">addValidValue</a></span>&#8203;(java.lang.String&nbsp;typeName,
              java.lang.String&nbsp;qualifiedName,
@@ -1926,7 +1959,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a valid value definition/set.</div>
 </td>
 </tr>
-<tr id="i95" class="rowColor">
+<tr id="i97" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValueMembershipRelationship(java.lang.String,java.lang.String,boolean)">addValidValueMembershipRelationship</a></span>&#8203;(java.lang.String&nbsp;setQName,
                                    java.lang.String&nbsp;memberQName,
@@ -1935,7 +1968,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a valid value as a member of a valid value set.</div>
 </td>
 </tr>
-<tr id="i96" class="altColor">
+<tr id="i98" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValuesAssignmentRelationship(java.lang.String,java.lang.String,boolean)">addValidValuesAssignmentRelationship</a></span>&#8203;(java.lang.String&nbsp;dataFieldQName,
                                     java.lang.String&nbsp;validValueQName,
@@ -1944,7 +1977,7 @@ extends java.lang.Object</pre>
 <div class="block">Link an element that represents a data field (either directly or indirectly) to a valid value (typically a valid value set).</div>
 </td>
 </tr>
-<tr id="i97" class="rowColor">
+<tr id="i99" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValuesImplementationRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">addValidValuesImplementationRelationship</a></span>&#8203;(java.lang.String&nbsp;validValueQName,
                                         java.lang.String&nbsp;assetQName,
@@ -1955,7 +1988,7 @@ extends java.lang.Object</pre>
 <div class="block">Link a valid value definition to the asset where it is implemented.</div>
 </td>
 </tr>
-<tr id="i98" class="altColor">
+<tr id="i100" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addValidValuesMappingRelationship(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">addValidValuesMappingRelationship</a></span>&#8203;(java.lang.String&nbsp;matchingValue1QName,
                                  java.lang.String&nbsp;matchingValue2QName,
@@ -1969,7 +2002,7 @@ extends java.lang.Object</pre>
 <div class="block">Add a mapping between two valid values.</div>
 </td>
 </tr>
-<tr id="i99" class="rowColor">
+<tr id="i101" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addZoneHierarchy(java.lang.String,java.lang.String)">addZoneHierarchy</a></span>&#8203;(java.lang.String&nbsp;broaderGovernanceZoneGUID,
                 java.lang.String&nbsp;nestedGovernanceZoneGUID)</code></th>
@@ -1977,14 +2010,14 @@ extends java.lang.Object</pre>
 <div class="block">Create the relationship between a governance zone and one of its nested governance zones.</div>
 </td>
 </tr>
-<tr id="i100" class="altColor">
+<tr id="i102" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGUID(java.lang.String)">getGUID</a></span>&#8203;(java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
 <div class="block">Return the guid of an element based on its qualified name.</div>
 </td>
 </tr>
-<tr id="i101" class="rowColor">
+<tr id="i103" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkTermToReferenceable(java.lang.String,java.lang.String)">linkTermToReferenceable</a></span>&#8203;(java.lang.String&nbsp;termId,
                        java.lang.String&nbsp;referenceableId)</code></th>
@@ -1992,14 +2025,14 @@ extends java.lang.Object</pre>
 <div class="block">Create a semantic assignment between a term and a Referenceable - for example a model element.</div>
 </td>
 </tr>
-<tr id="i102" class="altColor">
+<tr id="i104" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#queryGUID(java.lang.String)">queryGUID</a></span>&#8203;(java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
 <div class="block">Return the guid of an element based on its qualified name.</div>
 </td>
 </tr>
-<tr id="i103" class="rowColor">
+<tr id="i105" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveGUIDs()">saveGUIDs</a></span>()</code></th>
 <td class="colLast">
@@ -3523,7 +3556,7 @@ extends java.lang.Object</pre>
 <a id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>SimpleCatalogArchiveHelper</h4>
 <pre>public&nbsp;SimpleCatalogArchiveHelper&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
@@ -3543,6 +3576,35 @@ extends java.lang.Object</pre>
 <dd><code>creationDate</code> - data that this archive was created.</dd>
 <dd><code>versionNumber</code> - version number of the archive.</dd>
 <dd><code>versionName</code> - version name for the archive.</dd>
+</dl>
+</li>
+</ul>
+<a id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>SimpleCatalogArchiveHelper</h4>
+<pre>public&nbsp;SimpleCatalogArchiveHelper&#8203;(<a href="../../repositoryservices/connectors/stores/archivestore/OpenMetadataArchiveBuilder.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveBuilder</a>&nbsp;archiveBuilder,
+                                  java.lang.String&nbsp;archiveGUID,
+                                  java.lang.String&nbsp;archiveRootName,
+                                  java.lang.String&nbsp;originatorName,
+                                  java.util.Date&nbsp;creationDate,
+                                  long&nbsp;versionNumber,
+                                  java.lang.String&nbsp;versionName,
+                                  java.lang.String&nbsp;guidMapFileName)</pre>
+<div class="block">Constructor passes parameters used to build the open metadata archive's property header.
+ This version is used for multiple dependant archives, and they need to share the guid map.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>archiveBuilder</code> - builder where content is cached</dd>
+<dd><code>archiveGUID</code> - unique identifier for this open metadata archive.</dd>
+<dd><code>archiveRootName</code> - non-spaced root name of the open metadata archive elements.</dd>
+<dd><code>originatorName</code> - name of the originator (person or organization) of the archive.</dd>
+<dd><code>creationDate</code> - data that this archive was created.</dd>
+<dd><code>versionNumber</code> - version number of the archive.</dd>
+<dd><code>versionName</code> - version name for the archive.</dd>
+<dd><code>guidMapFileName</code> - name of the guid map file.</dd>
 </dl>
 </li>
 </ul>
@@ -4774,6 +4836,48 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>referenceableGUID</code> - unique identifier of the element to classify</dd>
 <dd><code>subjectAreaQualifiedName</code> - name of the subject area.  The suggestion is that the name used is the qualified name.</dd>
+</dl>
+</li>
+</ul>
+<a id="addBusinessArea(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addBusinessArea</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;addBusinessArea&#8203;(java.lang.String&nbsp;qualifiedName,
+                                        java.lang.String&nbsp;identifier,
+                                        java.lang.String&nbsp;displayName,
+                                        java.lang.String&nbsp;description,
+                                        java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;additionalProperties)</pre>
+<div class="block">Create a business area entity.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>qualifiedName</code> - unique name for the business area entity</dd>
+<dd><code>identifier</code> - unique name for the business area</dd>
+<dd><code>displayName</code> - display name for the business area</dd>
+<dd><code>description</code> - description about the business area</dd>
+<dd><code>additionalProperties</code> - any other properties</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier for business area (businessAreaGUID)</dd>
+</dl>
+</li>
+</ul>
+<a id="addOrganizationalCapabilityRelationship(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addOrganizationalCapabilityRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;addOrganizationalCapabilityRelationship&#8203;(java.lang.String&nbsp;businessCapabilityQName,
+                                                    java.lang.String&nbsp;teamQName,
+                                                    java.lang.String&nbsp;scope)</pre>
+<div class="block">Add an OrganizationalCapability relationship.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>businessCapabilityQName</code> - qualified name of the specialized term</dd>
+<dd><code>teamQName</code> - qualified name of the generalized term</dd>
+<dd><code>scope</code> - scope of the team's ability to support the business capability</dd>
 </dl>
 </li>
 </ul>

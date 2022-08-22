@@ -297,10 +297,10 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateInstanceProvenanceForUpdate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateInstanceProvenanceForUpdate</a></span>&#8203;(java.lang.String&nbsp;instanceGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateInstanceProvenanceForUpdate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateInstanceProvenanceForUpdate</a></span>&#8203;(java.lang.String&nbsp;instanceGUID,
                                    java.lang.String&nbsp;parameterName,
                                    org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;instanceHeader,
-                                   org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin&nbsp;expectedOrigin,
+                                   org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory&nbsp;expectedOriginCategory,
                                    java.lang.String&nbsp;expectedMetadataCollectionGUID,
                                    java.lang.String&nbsp;expectedMetadataCollectionName,
                                    java.lang.String&nbsp;serviceName,
@@ -803,7 +803,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a id="validateInstanceProvenanceForUpdate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="validateInstanceProvenanceForUpdate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -812,7 +812,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateInstanceProvenanceForUpdate&#8203;(java.lang.String&nbsp;instanceGUID,
                                                 java.lang.String&nbsp;parameterName,
                                                 org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;instanceHeader,
-                                                org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin&nbsp;expectedOrigin,
+                                                org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory&nbsp;expectedOriginCategory,
                                                 java.lang.String&nbsp;expectedMetadataCollectionGUID,
                                                 java.lang.String&nbsp;expectedMetadataCollectionName,
                                                 java.lang.String&nbsp;serviceName,
@@ -824,7 +824,7 @@ extends java.lang.Object</pre>
 <dd><code>instanceGUID</code> - unique identifier of the instance</dd>
 <dd><code>parameterName</code> - name of the parameter tha supplied the instance</dd>
 <dd><code>instanceHeader</code> - header of the instance</dd>
-<dd><code>expectedOrigin</code> - expected origin (defined by the type of API) - null means any</dd>
+<dd><code>expectedOriginCategory</code> - expected origin (defined by the type of API) - null means any</dd>
 <dd><code>expectedMetadataCollectionGUID</code> - unique identifier of expected metadata collection id - null means any</dd>
 <dd><code>expectedMetadataCollectionName</code> - unique name of expected metadata collection id - used for error logging</dd>
 <dd><code>serviceName</code> - name of calling service</dd>
@@ -848,7 +848,7 @@ extends java.lang.Object</pre>
                                          java.lang.String&nbsp;methodName)
                                   throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
 <div class="block">Compare the supported zones with the zones stored in the asset.  If the asset is not in
- one of the supported zones then throw an exception. Otherwise return ok.
+ one of the supported zones then throw an exception. Otherwise, return ok.
  Null values in either returns ok.
 
  Note the error message implies that the asset does not exist.  This is because the consequence

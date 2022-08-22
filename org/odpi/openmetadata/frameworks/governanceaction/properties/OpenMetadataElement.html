@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -122,10 +122,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li><a href="ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.ElementControlHeader</a></li>
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</li>
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -140,7 +145,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">OpenMetadataElement</span>
-extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementControlHeader</a></pre>
+extends org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</pre>
 <div class="block">OpenMetadataElement describes an entity in an open metadata repository.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
@@ -160,11 +165,11 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 </a>
 <h3>Field Summary</h3>
 <ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.governanceaction.properties.ElementControlHeader">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">
 <!--   -->
 </a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.properties.<a href="ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementControlHeader</a></h3>
-<code><a href="ElementControlHeader.html#CURRENT_AUDIT_HEADER_VERSION">CURRENT_AUDIT_HEADER_VERSION</a></code></li>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</h3>
+<code>CURRENT_AUDIT_HEADER_VERSION</code></li>
 </ul>
 </li>
 </ul>
@@ -221,7 +226,7 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="ElementClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementClassification</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="AttachedClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">AttachedClassification</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getClassifications()">getClassifications</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of classifications associated with the metadata element.</div>
@@ -256,62 +261,48 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code><a href="ElementType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementType</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementType()">getElementType</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the element type properties for this metadata element.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Create a hash code for this element type.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setClassifications(java.util.List)">setClassifications</a></span>&#8203;(java.util.List&lt;<a href="ElementClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementClassification</a>&gt;&nbsp;classifications)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setClassifications(java.util.List)">setClassifications</a></span>&#8203;(java.util.List&lt;<a href="AttachedClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">AttachedClassification</a>&gt;&nbsp;classifications)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of classifications associated with the metadata element.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEffectiveFromTime(java.util.Date)">setEffectiveFromTime</a></span>&#8203;(java.util.Date&nbsp;effectiveFromTime)</code></th>
 <td class="colLast">
 <div class="block">Set up the date/time that this instance should start to be used (null means it can be used from creationTime).</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEffectiveToTime(java.util.Date)">setEffectiveToTime</a></span>&#8203;(java.util.Date&nbsp;effectiveToTime)</code></th>
 <td class="colLast">
 <div class="block">Set up the date/time that this instance should no longer be used.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementGUID(java.lang.String)">setElementGUID</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique id for the metadata element.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementProperties(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">setElementProperties</a></span>&#8203;(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties&nbsp;elementProperties)</code></th>
 <td class="colLast">
 <div class="block">Set up the properties that are stored with the metadata element.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementType(org.odpi.openmetadata.frameworks.governanceaction.properties.ElementType)">setElementType</a></span>&#8203;(<a href="ElementType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementType</a>&nbsp;type)</code></th>
-<td class="colLast">
-<div class="block">Set up the element type properties for this metadata element.</div>
-</td>
-</tr>
-<tr id="i14" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -320,11 +311,18 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.governanceaction.properties.ElementControlHeader">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.properties.<a href="ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementControlHeader</a></h3>
-<code><a href="ElementControlHeader.html#getElementCreatedBy()">getElementCreatedBy</a>, <a href="ElementControlHeader.html#getElementCreateTime()">getElementCreateTime</a>, <a href="ElementControlHeader.html#getElementLicense()">getElementLicense</a>, <a href="ElementControlHeader.html#getElementMaintainedBy()">getElementMaintainedBy</a>, <a href="ElementControlHeader.html#getElementMetadataCollectionId()">getElementMetadataCollectionId</a>, <a href="ElementControlHeader.html#getElementMetadataCollectionName()">getElementMetadataCollectionName</a>, <a href="ElementControlHeader.html#getElementOriginCategory()">getElementOriginCategory</a>, <a href="ElementControlHeader.html#getElementSourceServer()">getElementSourceServer</a>, <a href="ElementControlHeader.html#getElementUpdatedBy()">getElementUpdatedBy</a>, <a href="ElementControlHeader.html#getElementUpdateTime()">getElementUpdateTime</a>, <a href="ElementControlHeader.html#getElementVersion()">getElementVersion</a>, <a href="ElementControlHeader.html#getHeaderVersion()">getHeaderVersion</a>, <a href="ElementControlHeader.html#getMappingProperties()">getMappingProperties</a>, <a href="ElementControlHeader.html#getStatus()">getStatus</a>, <a href="ElementControlHeader.html#setElementCreatedBy(java.lang.String)">setElementCreatedBy</a>, <a href="ElementControlHeader.html#setElementCreateTime(java.util.Date)">setElementCreateTime</a>, <a href="ElementControlHeader.html#setElementLicense(java.lang.String)">setElementLicense</a>, <a href="ElementControlHeader.html#setElementMaintainedBy(java.util.List)">setElementMaintainedBy</a>, <a href="ElementControlHeader.html#setElementMetadataCollectionId(java.lang.String)">setElementMetadataCollectionId</a>, <a href="ElementControlHeader.html#setElementMetadataCollectionName(java.lang.String)">setElementMetadataCollectionName</a>, <a href="ElementControlHeader.html#setElementOriginCategory(org.odpi.openmetadata.frameworks.governanceaction.properties.ElementOriginCategory)">setElementOriginCategory</a>, <a href="ElementControlHeader.html#setElementSourceServer(java.lang.String)">setElementSourceServer</a>, <a href="ElementControlHeader.html#setElementUpdatedBy(java.lang.String)">setElementUpdatedBy</a>, <a href="ElementControlHeader.html#setElementUpdateTime(java.util.Date)">setElementUpdateTime</a>, <a href="ElementControlHeader.html#setElementVersion(long)">setElementVersion</a>, <a href="ElementControlHeader.html#setHeaderVersion(long)">setHeaderVersion</a>, <a href="ElementControlHeader.html#setMappingProperties(java.util.Map)">setMappingProperties</a>, <a href="ElementControlHeader.html#setStatus(org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus)">setStatus</a></code></li>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</h3>
+<code>getOrigin, getStatus, getType, getVersions, setOrigin, setStatus, setType, setVersions</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</h3>
+<code>getHeaderVersion, setHeaderVersion</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -412,34 +410,6 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 </dl>
 </li>
 </ul>
-<a id="getElementType()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getElementType</h4>
-<pre class="methodSignature">public&nbsp;<a href="ElementType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementType</a>&nbsp;getElementType()</pre>
-<div class="block">Return the element type properties for this metadata element.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>ElementType type information.</dd>
-</dl>
-</li>
-</ul>
-<a id="setElementType(org.odpi.openmetadata.frameworks.governanceaction.properties.ElementType)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setElementType</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setElementType&#8203;(<a href="ElementType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementType</a>&nbsp;type)</pre>
-<div class="block">Set up the element type properties for this metadata element.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>type</code> - element type properties</dd>
-</dl>
-</li>
-</ul>
 <a id="getEffectiveFromTime()">
 <!--   -->
 </a>
@@ -502,7 +472,7 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 <ul class="blockList">
 <li class="blockList">
 <h4>getClassifications</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="ElementClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementClassification</a>&gt;&nbsp;getClassifications()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="AttachedClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">AttachedClassification</a>&gt;&nbsp;getClassifications()</pre>
 <div class="block">Return the list of classifications associated with the metadata element.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -516,7 +486,7 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 <ul class="blockList">
 <li class="blockList">
 <h4>setClassifications</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setClassifications&#8203;(java.util.List&lt;<a href="ElementClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementClassification</a>&gt;&nbsp;classifications)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setClassifications&#8203;(java.util.List&lt;<a href="AttachedClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">AttachedClassification</a>&gt;&nbsp;classifications)</pre>
 <div class="block">Set up the list of classifications associated with the metadata element.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -564,7 +534,7 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 <div class="block">Standard toString method.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ElementControlHeader.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementControlHeader</a></code></dd>
+<dd><code>toString</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -580,7 +550,7 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ElementControlHeader.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementControlHeader</a></code></dd>
+<dd><code>equals</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -598,7 +568,7 @@ extends <a href="ElementControlHeader.html" title="class in org.odpi.openmetadat
 <div class="block">Create a hash code for this element type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ElementControlHeader.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ElementControlHeader</a></code></dd>
+<dd><code>hashCode</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int hash code</dd>
 </dl>

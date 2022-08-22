@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -125,15 +125,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase</a></li>
-<li>
-<ul class="inheritance">
 <li><a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetElementHeader</a></li>
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.connectors.properties.AssetReferenceable</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -150,13 +145,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="AssetCertification.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetCertification</a></code>, <code><a href="AssetExternalIdentifier.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetExternalIdentifier</a></code>, <code><a href="AssetExternalReference.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetExternalReference</a></code>, <code><a href="AssetLicense.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLicense</a></code>, <code><a href="AssetLocation.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLocation</a></code>, <code><a href="AssetNote.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetNote</a></code>, <code><a href="AssetNoteLog.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetNoteLog</a></code>, <code><a href="AssetRelatedAsset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRelatedAsset</a></code>, <code><a href="AssetSchemaAttribute.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSchemaAttribute</a></code>, <code><a href="AssetSchemaElement.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSchemaElement</a></code>, <code><a href="ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></code>, <code><a href="ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeProperties</a></code>, <code><a href="EndpointProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EndpointProperties</a></code></dd>
+<dd><code><a href="ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a></code>, <code><a href="ConnectorTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectorTypeProperties</a></code>, <code><a href="EndpointProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EndpointProperties</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">AssetReferenceable</span>
 extends <a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetElementHeader</a></pre>
 <div class="block">Many open metadata entities are referenceable.  It means that they have a qualified name and additional
- properties.  In addition the Referenceable class adds support for the parent asset, guid, url and type
+ properties.  In addition, the Referenceable class adds support for the parent asset, guid, url and type
  for the entity through extending ElementBase.  There is also the possibility that referenceable may have
  meanings (glossary terms) and security tags assigned.
 
@@ -191,13 +186,6 @@ extends <a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
-<ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#parentAsset">parentAsset</a></code></li>
-</ul>
 </li>
 </ul>
 </section>
@@ -217,28 +205,19 @@ extends <a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>protected </code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor)">AssetReferenceable</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E()">AssetReferenceable</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Constructor used by the subclasses</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>&nbsp;</code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.AssetReferenceable)">AssetReferenceable</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                  <a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a>&nbsp;template)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetReferenceable)">AssetReferenceable</a></span>&#8203;(<a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a>&nbsp;template)</code></th>
 <td class="colLast">
 <div class="block">Copy/clone constructor with parent asset.</div>
 </td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>protected </code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable)">AssetReferenceable</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                  org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable&nbsp;referenceableBean)</code></th>
-<td class="colLast">
-<div class="block">Bean constructor with parent asset</div>
-</td>
-</tr>
-<tr class="rowColor">
 <td class="colFirst"><code>protected </code></td>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable)">AssetReferenceable</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable&nbsp;referenceableBean)</code></th>
 <td class="colLast">
@@ -271,55 +250,41 @@ extends <a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code><a href="AdditionalProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AdditionalProperties</a></code></td>
+<td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAdditionalProperties()">getAdditionalProperties</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return a copy of the additional properties.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="AssetMeaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetMeaning</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeanings()">getMeanings</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return a list of the glossary terms attached to this referenceable object.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQualifiedName()">getQualifiedName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the stored qualified name property for the metadata entity.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>protected org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReferenceableBean()">getReferenceableBean</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the bean for this referenceable.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code><a href="AssetSecurityTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSecurityTags</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSecurityTags()">getSecurityTags</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the information used by security engines to secure access to the asset's content.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Hash of properties</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>protected void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable)">setBean</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable&nbsp;referenceableBean)</code></th>
 <td class="colLast">
 <div class="block">Set up the bean that contains the properties of the referenceable.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -332,14 +297,7 @@ extends <a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetElementHeader</a></h3>
-<code><a href="AssetElementHeader.html#getAssetClassifications()">getAssetClassifications</a>, <a href="AssetElementHeader.html#getElementHeaderBean()">getElementHeaderBean</a>, <a href="AssetElementHeader.html#getExtendedProperties()">getExtendedProperties</a>, <a href="AssetElementHeader.html#getGUID()">getGUID</a>, <a href="AssetElementHeader.html#getType()">getType</a>, <a href="AssetElementHeader.html#getURL()">getURL</a>, <a href="AssetElementHeader.html#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">setBean</a></code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#getParentAsset()">getParentAsset</a>, <a href="AssetPropertyBase.html#getParentAssetName()">getParentAssetName</a>, <a href="AssetPropertyBase.html#getParentAssetTypeName()">getParentAssetTypeName</a></code></li>
+<code><a href="AssetElementHeader.html#getClassifications()">getClassifications</a>, <a href="AssetElementHeader.html#getElementHeaderBean()">getElementHeaderBean</a>, <a href="AssetElementHeader.html#getExtendedProperties()">getExtendedProperties</a>, <a href="AssetElementHeader.html#getGUID()">getGUID</a>, <a href="AssetElementHeader.html#getOrigin()">getOrigin</a>, <a href="AssetElementHeader.html#getStatus()">getStatus</a>, <a href="AssetElementHeader.html#getType()">getType</a>, <a href="AssetElementHeader.html#getURL()">getURL</a>, <a href="AssetElementHeader.html#getVersions()">getVersions</a>, <a href="AssetElementHeader.html#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">setBean</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -383,18 +341,14 @@ extends <a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor)">
+<a id="&lt;init&gt;()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>AssetReferenceable</h4>
-<pre>protected&nbsp;AssetReferenceable&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset)</pre>
+<pre>protected&nbsp;AssetReferenceable()</pre>
 <div class="block">Constructor used by the subclasses</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - descriptor of asset that this property relates to.</dd>
-</dl>
 </li>
 </ul>
 <a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable)">
@@ -411,34 +365,16 @@ extends <a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>AssetReferenceable</h4>
-<pre>protected&nbsp;AssetReferenceable&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                             org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable&nbsp;referenceableBean)</pre>
-<div class="block">Bean constructor with parent asset</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - descriptor for parent asset</dd>
-<dd><code>referenceableBean</code> - bean containing properties</dd>
-</dl>
-</li>
-</ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.AssetReferenceable)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetReferenceable)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>AssetReferenceable</h4>
-<pre>public&nbsp;AssetReferenceable&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                          <a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a>&nbsp;template)</pre>
+<pre>public&nbsp;AssetReferenceable&#8203;(<a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a>&nbsp;template)</pre>
 <div class="block">Copy/clone constructor with parent asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - descriptor for parent asset</dd>
 <dd><code>template</code> - element to copy</dd>
 </dl>
 </li>
@@ -496,41 +432,13 @@ extends <a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.
 </dl>
 </li>
 </ul>
-<a id="getMeanings()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getMeanings</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="AssetMeaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetMeaning</a>&gt;&nbsp;getMeanings()</pre>
-<div class="block">Return a list of the glossary terms attached to this referenceable object.  Null means no terms available.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of glossary terms (summary)</dd>
-</dl>
-</li>
-</ul>
-<a id="getSecurityTags()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getSecurityTags</h4>
-<pre class="methodSignature">public&nbsp;<a href="AssetSecurityTags.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSecurityTags</a>&nbsp;getSecurityTags()</pre>
-<div class="block">Return the information used by security engines to secure access to the asset's content.  Null means no tags available.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>security labels and properties</dd>
-</dl>
-</li>
-</ul>
 <a id="getAdditionalProperties()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getAdditionalProperties</h4>
-<pre class="methodSignature">public&nbsp;<a href="AdditionalProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AdditionalProperties</a>&nbsp;getAdditionalProperties()</pre>
+<pre class="methodSignature">public&nbsp;java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;getAdditionalProperties()</pre>
 <div class="block">Return a copy of the additional properties.  Null means no additional properties are available.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>

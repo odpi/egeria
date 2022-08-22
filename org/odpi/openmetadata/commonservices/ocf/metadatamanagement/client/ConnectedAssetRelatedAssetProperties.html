@@ -122,13 +122,48 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li><a href="../../../../frameworks/connectors/properties/AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase</a></li>
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset</li>
 <li>
 <ul class="inheritance">
 <li><a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.RelatedAssetProperties</a></li>
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetRelatedAssetProperties</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -146,14 +181,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">ConnectedAssetRelatedAssetProperties</span>
 extends <a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedAssetProperties</a></pre>
-<div class="block">RelatedAssetProperties is associated a related asset for a connector's ConnectedAssetProperties.  Connectors provide access to
- assets.   ConnectedAssetProperties returns properties (metadata) about the connector's asset.  RelatedAssetProperties
+<div class="block">RelatedAssetProperties is associated a related asset for a connector's EgeriaConnectedAssetProperties.  Connectors provide access to
+ assets.   EgeriaConnectedAssetProperties returns properties (metadata) about the connector's asset.  RelatedAssetProperties
  returns similar information for an asset related to the connected asset
 
  It is a generic interface for all types of open metadata assets.  However, it assumes the asset's metadata model
  inherits from <b>Asset</b> (see model 0010 in Area 0).
 
- The ConnectedAssetProperties returns metadata about the asset at three levels of detail:
+ The EgeriaConnectedAssetProperties returns metadata about the asset at three levels of detail:
  <ul>
      <li><b>assetSummary</b> - used for displaying details of the asset in summary lists or hover text</li>
      <li><b>assetDetail</b> - used to display all the information known about the asset with summaries
@@ -186,7 +221,42 @@ extends <a href="../../../../frameworks/connectors/properties/RelatedAssetProper
 <!--   -->
 </a>
 <h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedAssetProperties</a></h3>
-<code><a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html#assetProperties">assetProperties</a>, <a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html#connectedAsset">connectedAsset</a>, <a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html#relatedAsset">relatedAsset</a></code></li>
+<code><a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html#assetProperties">assetProperties</a></code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</h3>
+<code>description, displayName, isReferenceData, origin, owner, ownerPropertyName, ownerType, ownerTypeName, shortDescription, zoneMembership</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</h3>
+<code>confidenceGovernanceClassification, confidentialityGovernanceClassification, criticalityGovernanceClassification, latestChange, latestChangeDetails, meanings, retentionGovernanceClassification, searchKeywords, securityTags</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</h3>
+<code>additionalProperties, qualifiedName</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</h3>
+<code>extendedProperties, url</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</h3>
+<code>CURRENT_AUDIT_HEADER_VERSION</code></li>
 </ul>
 </li>
 </ul>
@@ -205,7 +275,14 @@ extends <a href="../../../../frameworks/connectors/properties/RelatedAssetProper
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient)">ConnectedAssetRelatedAssetProperties</a></span>&#8203;(java.lang.String&nbsp;serviceName,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetRelatedAssetProperties)">ConnectedAssetRelatedAssetProperties</a></span>&#8203;(<a href="ConnectedAssetRelatedAssetProperties.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">ConnectedAssetRelatedAssetProperties</a>&nbsp;template)</code></th>
+<td class="colLast">
+<div class="block">Copy/clone constructor.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient)">ConnectedAssetRelatedAssetProperties</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset&nbsp;bean,
+                                    java.lang.String&nbsp;serviceName,
                                     java.lang.String&nbsp;serverName,
                                     java.lang.String&nbsp;userId,
                                     java.lang.String&nbsp;omasServerURL,
@@ -213,12 +290,6 @@ extends <a href="../../../../frameworks/connectors/properties/RelatedAssetProper
                                     <a href="OCFRESTClient.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">OCFRESTClient</a>&nbsp;restClient)</code></th>
 <td class="colLast">
 <div class="block">Typical constructor.</div>
-</td>
-</tr>
-<tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetRelatedAssetProperties)">ConnectedAssetRelatedAssetProperties</a></span>&#8203;(<a href="ConnectedAssetRelatedAssetProperties.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">ConnectedAssetRelatedAssetProperties</a>&nbsp;template)</code></th>
-<td class="colLast">
-<div class="block">Copy/clone constructor.</div>
 </td>
 </tr>
 </table>
@@ -243,7 +314,7 @@ extends <a href="../../../../frameworks/connectors/properties/RelatedAssetProper
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#refresh()">refresh</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Request the values in the ConnectedAssetProperties are refreshed with the current values from the
+<div class="block">Request the values in the EgeriaConnectedAssetProperties are refreshed with the current values from the
  metadata repository.</div>
 </td>
 </tr>
@@ -263,11 +334,60 @@ extends <a href="../../../../frameworks/connectors/properties/RelatedAssetProper
 <code><a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html#getAssetDetail()">getAssetDetail</a>, <a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html#getAssetSummary()">getAssetSummary</a>, <a href="../../../../frameworks/connectors/properties/RelatedAssetProperties.html#getAssetUniverse()">getAssetUniverse</a></code></li>
 </ul>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="../../../../frameworks/connectors/properties/AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyElementBase</a></h3>
-<code><a href="../../../../frameworks/connectors/properties/AssetPropertyElementBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/properties/AssetPropertyElementBase.html#hashCode()">hashCode</a></code></li>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset</h3>
+<code>equals, getAttributeName, getRelationshipName, hashCode, setAttributeName, setRelationshipName</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</h3>
+<code>getAssetOrigin, getDescription, getDisplayName, getOwner, getOwnerPropertyName, getOwnerType, getOwnerTypeName, getShortDescription, getZoneMembership, isReferenceData, setAssetOrigin, setDescription, setDisplayName, setOwner, setOwnerPropertyName, setOwnerType, setOwnerTypeName, setReferenceData, setShortDescription, setZoneMembership</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</h3>
+<code>getConfidenceGovernanceClassification, getConfidentialityGovernanceClassification, getCriticalityGovernanceClassification, getLatestChange, getLatestChangeDetails, getMeanings, getRetentionGovernanceClassification, getSearchKeywords, getSecurityTags, setConfidenceGovernanceClassification, setConfidentialityGovernanceClassification, setCriticalityGovernanceClassification, setLatestChange, setLatestChangeDetails, setMeanings, setRetentionGovernanceClassification, setSearchKeywords, setSecurityTags</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</h3>
+<code>getAdditionalProperties, getQualifiedName, setAdditionalProperties, setQualifiedName</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</h3>
+<code>getExtendedProperties, getURL, setExtendedProperties, setURL</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</h3>
+<code>getClassifications, getGUID, setClassifications, setGUID</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</h3>
+<code>getOrigin, getStatus, getType, getVersions, setOrigin, setStatus, setType, setVersions</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</h3>
+<code>getHeaderVersion, setHeaderVersion</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -292,13 +412,14 @@ extends <a href="../../../../frameworks/connectors/properties/RelatedAssetProper
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>ConnectedAssetRelatedAssetProperties</h4>
-<pre>public&nbsp;ConnectedAssetRelatedAssetProperties&#8203;(java.lang.String&nbsp;serviceName,
+<pre>public&nbsp;ConnectedAssetRelatedAssetProperties&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset&nbsp;bean,
+                                            java.lang.String&nbsp;serviceName,
                                             java.lang.String&nbsp;serverName,
                                             java.lang.String&nbsp;userId,
                                             java.lang.String&nbsp;omasServerURL,
@@ -307,6 +428,7 @@ extends <a href="../../../../frameworks/connectors/properties/RelatedAssetProper
 <div class="block">Typical constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>bean</code> - content for the superclass</dd>
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>serverName</code> - name of the server.</dd>
 <dd><code>userId</code> - identifier of calling user</dd>
@@ -349,7 +471,7 @@ extends <a href="../../../../frameworks/connectors/properties/RelatedAssetProper
 <pre class="methodSignature">public&nbsp;void&nbsp;refresh()
              throws <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                     <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Request the values in the ConnectedAssetProperties are refreshed with the current values from the
+<div class="block">Request the values in the EgeriaConnectedAssetProperties are refreshed with the current values from the
  metadata repository.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>

@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
@@ -125,12 +125,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase</a></li>
-<li>
-<ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -149,7 +144,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">AssetLineage</span>
-extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></pre>
+extends <a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyElementBase</a></pre>
 <div class="block">Lineage shows the origin of the connected asset.  It covers:
  <ul>
      <li>Design lineage - the known data movement and data stores that can supply data to this asset.</li>
@@ -168,23 +163,6 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- =========== FIELD SUMMARY =========== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="field.summary">
-<!--   -->
-</a>
-<h3>Field Summary</h3>
-<ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#parentAsset">parentAsset</a></code></li>
-</ul>
-</li>
-</ul>
-</section>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <section role="region">
 <ul class="blockList">
@@ -195,32 +173,19 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <table class="memberSummary">
 <caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
 <tr>
-<th class="colFirst" scope="col">Modifier</th>
-<th class="colSecond" scope="col">Constructor</th>
+<th class="colFirst" scope="col">Constructor</th>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>protected </code></td>
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E()">AssetLineage</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Default constructor</div>
-</td>
-</tr>
-<tr class="rowColor">
-<td class="colFirst"><code>&nbsp;</code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor)">AssetLineage</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset)</code></th>
 <td class="colLast">
 <div class="block">Typical constructor.</div>
 </td>
 </tr>
-<tr class="altColor">
-<td class="colFirst"><code>&nbsp;</code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage)">AssetLineage</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-            <a href="AssetLineage.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLineage</a>&nbsp;templateLineage)</code></th>
+<tr class="rowColor">
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage)">AssetLineage</a></span>&#8203;(<a href="AssetLineage.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLineage</a>&nbsp;templateLineage)</code></th>
 <td class="colLast">
-<div class="block">Copy/clone constructor - the parentAsset is passed separately to the template because it is also
- likely to be being cloned in the same operation and we want the lineage clone to point to the
- asset clone and not the original asset.</div>
+<div class="block">Copy/clone constructor.</div>
 </td>
 </tr>
 </table>
@@ -250,11 +215,11 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#equals(java.lang.Object)">equals</a>, <a href="AssetPropertyBase.html#getParentAsset()">getParentAsset</a>, <a href="AssetPropertyBase.html#getParentAssetName()">getParentAssetName</a>, <a href="AssetPropertyBase.html#getParentAssetTypeName()">getParentAssetTypeName</a>, <a href="AssetPropertyBase.html#hashCode()">hashCode</a></code></li>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyElementBase</a></h3>
+<code><a href="AssetPropertyElementBase.html#equals(java.lang.Object)">equals</a>, <a href="AssetPropertyElementBase.html#hashCode()">hashCode</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -285,38 +250,20 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="blockList">
 <li class="blockList">
 <h4>AssetLineage</h4>
-<pre>protected&nbsp;AssetLineage()</pre>
-<div class="block">Default constructor</div>
-</li>
-</ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>AssetLineage</h4>
-<pre>public&nbsp;AssetLineage&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset)</pre>
+<pre>public&nbsp;AssetLineage()</pre>
 <div class="block">Typical constructor.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - description of the asset that this lineage is attached to.</dd>
-</dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>AssetLineage</h4>
-<pre>public&nbsp;AssetLineage&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                    <a href="AssetLineage.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLineage</a>&nbsp;templateLineage)</pre>
-<div class="block">Copy/clone constructor - the parentAsset is passed separately to the template because it is also
- likely to be being cloned in the same operation and we want the lineage clone to point to the
- asset clone and not the original asset.</div>
+<pre>public&nbsp;AssetLineage&#8203;(<a href="AssetLineage.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLineage</a>&nbsp;templateLineage)</pre>
+<div class="block">Copy/clone constructor.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - description of the asset that this lineage is attached to.</dd>
 <dd><code>templateLineage</code> - lineage object to copy.</dd>
 </dl>
 </li>
@@ -399,7 +346,7 @@ extends <a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.f
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>

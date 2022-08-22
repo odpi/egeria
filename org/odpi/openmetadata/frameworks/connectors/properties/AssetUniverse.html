@@ -122,10 +122,25 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase</a></li>
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</li>
 <li>
 <ul class="inheritance">
-<li><a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor</a></li>
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</li>
+<li>
+<ul class="inheritance">
+<li>org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</li>
 <li>
 <ul class="inheritance">
 <li><a href="AssetSummary.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetSummary</a></li>
@@ -135,6 +150,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -200,7 +225,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>protected <a href="AssetLocations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLocations</a></code></td>
+<td class="colFirst"><code>protected <a href="Locations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Locations</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#knownLocations">knownLocations</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -210,17 +235,17 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>protected java.util.List&lt;<a href="AssetMeaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetMeaning</a>&gt;</code></td>
+<td class="colFirst"><code>protected java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#meanings">meanings</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>protected <a href="AssetRelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRelatedAssets</a></code></td>
+<td class="colFirst"><code>protected <a href="RelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedAssets</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#relatedAssets">relatedAssets</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>protected <a href="AssetSchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSchemaType</a></code></td>
+<td class="colFirst"><code>protected org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#schema">schema</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -233,11 +258,39 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <code><a href="AssetDetail.html#certifications">certifications</a>, <a href="AssetDetail.html#connections">connections</a>, <a href="AssetDetail.html#externalIdentifiers">externalIdentifiers</a>, <a href="AssetDetail.html#externalReferences">externalReferences</a>, <a href="AssetDetail.html#licenses">licenses</a>, <a href="AssetDetail.html#noteLogs">noteLogs</a>, <a href="AssetDetail.html#relatedMediaReferences">relatedMediaReferences</a></code></li>
 </ul>
 <ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset">
 <!--   -->
 </a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a></h3>
-<code><a href="AssetDescriptor.html#assetBean">assetBean</a></code></li>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</h3>
+<code>description, displayName, isReferenceData, origin, owner, ownerPropertyName, ownerType, ownerTypeName, shortDescription, zoneMembership</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</h3>
+<code>confidenceGovernanceClassification, confidentialityGovernanceClassification, criticalityGovernanceClassification, latestChange, latestChangeDetails, retentionGovernanceClassification, searchKeywords, securityTags</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</h3>
+<code>additionalProperties, qualifiedName</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</h3>
+<code>extendedProperties, url</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</h3>
+<code>CURRENT_AUDIT_HEADER_VERSION</code></li>
 </ul>
 </li>
 </ul>
@@ -272,20 +325,20 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>&nbsp;</code></td>
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset,org.odpi.openmetadata.frameworks.connectors.properties.AssetExternalIdentifiers,org.odpi.openmetadata.frameworks.connectors.properties.AssetRelatedMediaReferences,org.odpi.openmetadata.frameworks.connectors.properties.AssetNoteLogs,org.odpi.openmetadata.frameworks.connectors.properties.AssetExternalReferences,org.odpi.openmetadata.frameworks.connectors.properties.AssetConnections,org.odpi.openmetadata.frameworks.connectors.properties.AssetLicenses,org.odpi.openmetadata.frameworks.connectors.properties.AssetCertifications,java.util.List,org.odpi.openmetadata.frameworks.connectors.properties.AssetSchemaType,org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback,org.odpi.openmetadata.frameworks.connectors.properties.AssetLocations,org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage,org.odpi.openmetadata.frameworks.connectors.properties.AssetRelatedAssets)">AssetUniverse</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset&nbsp;assetBean,
-             <a href="AssetExternalIdentifiers.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetExternalIdentifiers</a>&nbsp;externalIdentifiers,
-             <a href="AssetRelatedMediaReferences.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRelatedMediaReferences</a>&nbsp;relatedMediaReferences,
-             <a href="AssetNoteLogs.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetNoteLogs</a>&nbsp;noteLogs,
-             <a href="AssetExternalReferences.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetExternalReferences</a>&nbsp;externalReferences,
-             <a href="AssetConnections.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetConnections</a>&nbsp;connections,
-             <a href="AssetLicenses.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLicenses</a>&nbsp;licenses,
-             <a href="AssetCertifications.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetCertifications</a>&nbsp;certifications,
-             java.util.List&lt;<a href="AssetMeaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetMeaning</a>&gt;&nbsp;meanings,
-             <a href="AssetSchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSchemaType</a>&nbsp;schema,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset,org.odpi.openmetadata.frameworks.connectors.properties.ExternalIdentifiers,org.odpi.openmetadata.frameworks.connectors.properties.RelatedMediaReferences,org.odpi.openmetadata.frameworks.connectors.properties.NoteLogs,org.odpi.openmetadata.frameworks.connectors.properties.ExternalReferences,org.odpi.openmetadata.frameworks.connectors.properties.Connections,org.odpi.openmetadata.frameworks.connectors.properties.Licenses,org.odpi.openmetadata.frameworks.connectors.properties.Certifications,java.util.List,org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType,org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback,org.odpi.openmetadata.frameworks.connectors.properties.Locations,org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage,org.odpi.openmetadata.frameworks.connectors.properties.RelatedAssets)">AssetUniverse</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset&nbsp;assetBean,
+             <a href="ExternalIdentifiers.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ExternalIdentifiers</a>&nbsp;externalIdentifiers,
+             <a href="RelatedMediaReferences.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedMediaReferences</a>&nbsp;relatedMediaReferences,
+             <a href="NoteLogs.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">NoteLogs</a>&nbsp;noteLogs,
+             <a href="ExternalReferences.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ExternalReferences</a>&nbsp;externalReferences,
+             <a href="Connections.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Connections</a>&nbsp;connections,
+             <a href="Licenses.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Licenses</a>&nbsp;licenses,
+             <a href="Certifications.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Certifications</a>&nbsp;certifications,
+             java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning&gt;&nbsp;meanings,
+             org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType&nbsp;schema,
              <a href="AssetFeedback.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetFeedback</a>&nbsp;feedback,
-             <a href="AssetLocations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLocations</a>&nbsp;knownLocations,
+             <a href="Locations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Locations</a>&nbsp;knownLocations,
              <a href="AssetLineage.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLineage</a>&nbsp;lineage,
-             <a href="AssetRelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRelatedAssets</a>&nbsp;relatedAssets)</code></th>
+             <a href="RelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedAssets</a>&nbsp;relatedAssets)</code></th>
 <td class="colLast">
 <div class="block">Typical Constructor</div>
 </td>
@@ -323,7 +376,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code><a href="AssetLocations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLocations</a></code></td>
+<td class="colFirst"><code><a href="Locations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Locations</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getKnownLocations()">getKnownLocations</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of locations for the asset.</div>
@@ -337,21 +390,21 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="AssetMeaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetMeaning</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMeanings()">getMeanings</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of glossary definitions assigned directly to this asset.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code><a href="AssetRelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRelatedAssets</a></code></td>
+<td class="colFirst"><code><a href="RelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedAssets</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedAssets()">getRelatedAssets</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of assets related to this asset.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code><a href="AssetSchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSchemaType</a></code></td>
+<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchema()">getSchema</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return details of the schema associated with the asset.</div>
@@ -380,18 +433,53 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <code><a href="AssetDetail.html#getCertifications()">getCertifications</a>, <a href="AssetDetail.html#getConnections()">getConnections</a>, <a href="AssetDetail.html#getExternalIdentifiers()">getExternalIdentifiers</a>, <a href="AssetDetail.html#getExternalReferences()">getExternalReferences</a>, <a href="AssetDetail.html#getLicenses()">getLicenses</a>, <a href="AssetDetail.html#getNoteLogs()">getNoteLogs</a>, <a href="AssetDetail.html#getRelatedMediaReferences()">getRelatedMediaReferences</a></code></li>
 </ul>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetSummary">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetSummary.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSummary</a></h3>
-<code><a href="AssetSummary.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="AssetSummary.html#getAssetClassifications()">getAssetClassifications</a>, <a href="AssetSummary.html#getDescription()">getDescription</a>, <a href="AssetSummary.html#getDisplayName()">getDisplayName</a>, <a href="AssetSummary.html#getExtendedProperties()">getExtendedProperties</a>, <a href="AssetSummary.html#getGUID()">getGUID</a>, <a href="AssetSummary.html#getLatestChange()">getLatestChange</a>, <a href="AssetSummary.html#getOrigins()">getOrigins</a>, <a href="AssetSummary.html#getOwner()">getOwner</a>, <a href="AssetSummary.html#getOwnerPropertyName()">getOwnerPropertyName</a>, <a href="AssetSummary.html#getOwnerType()">getOwnerType</a>, <a href="AssetSummary.html#getOwnerTypeName()">getOwnerTypeName</a>, <a href="AssetSummary.html#getQualifiedName()">getQualifiedName</a>, <a href="AssetSummary.html#getShortDescription()">getShortDescription</a>, <a href="AssetSummary.html#getType()">getType</a>, <a href="AssetSummary.html#getURL()">getURL</a>, <a href="AssetSummary.html#getZoneMembership()">getZoneMembership</a></code></li>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset</h3>
+<code>getAssetOrigin, getDescription, getDisplayName, getOwner, getOwnerPropertyName, getOwnerType, getOwnerTypeName, getShortDescription, getZoneMembership, isReferenceData, setAssetOrigin, setDescription, setDisplayName, setOwner, setOwnerPropertyName, setOwnerType, setOwnerTypeName, setReferenceData, setShortDescription, setZoneMembership</code></li>
 </ul>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a></h3>
-<code><a href="AssetDescriptor.html#getAssetBean()">getAssetBean</a>, <a href="AssetDescriptor.html#getAssetName()">getAssetName</a>, <a href="AssetDescriptor.html#getAssetSuperTypeNames()">getAssetSuperTypeNames</a>, <a href="AssetDescriptor.html#getAssetTypeName()">getAssetTypeName</a>, <a href="AssetDescriptor.html#setAssetBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset)">setAssetBean</a></code></li>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</h3>
+<code>getConfidenceGovernanceClassification, getConfidentialityGovernanceClassification, getCriticalityGovernanceClassification, getLatestChange, getLatestChangeDetails, getRetentionGovernanceClassification, getSearchKeywords, getSecurityTags, setConfidenceGovernanceClassification, setConfidentialityGovernanceClassification, setCriticalityGovernanceClassification, setLatestChange, setLatestChangeDetails, setMeanings, setRetentionGovernanceClassification, setSearchKeywords, setSecurityTags</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable</h3>
+<code>getAdditionalProperties, getQualifiedName, setAdditionalProperties, setQualifiedName</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase</h3>
+<code>getExtendedProperties, getURL, setExtendedProperties, setURL</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</h3>
+<code>getClassifications, getGUID, setClassifications, setGUID</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader</h3>
+<code>getOrigin, getStatus, getType, getVersions, setOrigin, setStatus, setType, setVersions</code></li>
+</ul>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase</h3>
+<code>getHeaderVersion, setHeaderVersion</code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -422,7 +510,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <ul class="blockList">
 <li class="blockList">
 <h4>meanings</h4>
-<pre>protected&nbsp;java.util.List&lt;<a href="AssetMeaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetMeaning</a>&gt; meanings</pre>
+<pre>protected&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning&gt; meanings</pre>
 </li>
 </ul>
 <a id="schema">
@@ -431,7 +519,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <ul class="blockList">
 <li class="blockList">
 <h4>schema</h4>
-<pre>protected&nbsp;<a href="AssetSchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSchemaType</a> schema</pre>
+<pre>protected&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType schema</pre>
 </li>
 </ul>
 <a id="feedback">
@@ -449,7 +537,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <ul class="blockList">
 <li class="blockList">
 <h4>knownLocations</h4>
-<pre>protected&nbsp;<a href="AssetLocations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLocations</a> knownLocations</pre>
+<pre>protected&nbsp;<a href="Locations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Locations</a> knownLocations</pre>
 </li>
 </ul>
 <a id="lineage">
@@ -467,7 +555,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <ul class="blockListLast">
 <li class="blockList">
 <h4>relatedAssets</h4>
-<pre>protected&nbsp;<a href="AssetRelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRelatedAssets</a> relatedAssets</pre>
+<pre>protected&nbsp;<a href="RelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedAssets</a> relatedAssets</pre>
 </li>
 </ul>
 </li>
@@ -490,26 +578,26 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <div class="block">Default constructor only for subclasses</div>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset,org.odpi.openmetadata.frameworks.connectors.properties.AssetExternalIdentifiers,org.odpi.openmetadata.frameworks.connectors.properties.AssetRelatedMediaReferences,org.odpi.openmetadata.frameworks.connectors.properties.AssetNoteLogs,org.odpi.openmetadata.frameworks.connectors.properties.AssetExternalReferences,org.odpi.openmetadata.frameworks.connectors.properties.AssetConnections,org.odpi.openmetadata.frameworks.connectors.properties.AssetLicenses,org.odpi.openmetadata.frameworks.connectors.properties.AssetCertifications,java.util.List,org.odpi.openmetadata.frameworks.connectors.properties.AssetSchemaType,org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback,org.odpi.openmetadata.frameworks.connectors.properties.AssetLocations,org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage,org.odpi.openmetadata.frameworks.connectors.properties.AssetRelatedAssets)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset,org.odpi.openmetadata.frameworks.connectors.properties.ExternalIdentifiers,org.odpi.openmetadata.frameworks.connectors.properties.RelatedMediaReferences,org.odpi.openmetadata.frameworks.connectors.properties.NoteLogs,org.odpi.openmetadata.frameworks.connectors.properties.ExternalReferences,org.odpi.openmetadata.frameworks.connectors.properties.Connections,org.odpi.openmetadata.frameworks.connectors.properties.Licenses,org.odpi.openmetadata.frameworks.connectors.properties.Certifications,java.util.List,org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType,org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback,org.odpi.openmetadata.frameworks.connectors.properties.Locations,org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage,org.odpi.openmetadata.frameworks.connectors.properties.RelatedAssets)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>AssetUniverse</h4>
 <pre>public&nbsp;AssetUniverse&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset&nbsp;assetBean,
-                     <a href="AssetExternalIdentifiers.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetExternalIdentifiers</a>&nbsp;externalIdentifiers,
-                     <a href="AssetRelatedMediaReferences.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRelatedMediaReferences</a>&nbsp;relatedMediaReferences,
-                     <a href="AssetNoteLogs.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetNoteLogs</a>&nbsp;noteLogs,
-                     <a href="AssetExternalReferences.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetExternalReferences</a>&nbsp;externalReferences,
-                     <a href="AssetConnections.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetConnections</a>&nbsp;connections,
-                     <a href="AssetLicenses.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLicenses</a>&nbsp;licenses,
-                     <a href="AssetCertifications.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetCertifications</a>&nbsp;certifications,
-                     java.util.List&lt;<a href="AssetMeaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetMeaning</a>&gt;&nbsp;meanings,
-                     <a href="AssetSchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSchemaType</a>&nbsp;schema,
+                     <a href="ExternalIdentifiers.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ExternalIdentifiers</a>&nbsp;externalIdentifiers,
+                     <a href="RelatedMediaReferences.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedMediaReferences</a>&nbsp;relatedMediaReferences,
+                     <a href="NoteLogs.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">NoteLogs</a>&nbsp;noteLogs,
+                     <a href="ExternalReferences.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ExternalReferences</a>&nbsp;externalReferences,
+                     <a href="Connections.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Connections</a>&nbsp;connections,
+                     <a href="Licenses.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Licenses</a>&nbsp;licenses,
+                     <a href="Certifications.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Certifications</a>&nbsp;certifications,
+                     java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning&gt;&nbsp;meanings,
+                     org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType&nbsp;schema,
                      <a href="AssetFeedback.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetFeedback</a>&nbsp;feedback,
-                     <a href="AssetLocations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLocations</a>&nbsp;knownLocations,
+                     <a href="Locations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Locations</a>&nbsp;knownLocations,
                      <a href="AssetLineage.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLineage</a>&nbsp;lineage,
-                     <a href="AssetRelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRelatedAssets</a>&nbsp;relatedAssets)</pre>
+                     <a href="RelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedAssets</a>&nbsp;relatedAssets)</pre>
 <div class="block">Typical Constructor</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -526,7 +614,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <dd><code>feedback</code> - Feedback object to query the feedback.</dd>
 <dd><code>knownLocations</code> - Locations list</dd>
 <dd><code>lineage</code> - lineage object to query the origin of the asset.</dd>
-<dd><code>relatedAssets</code> - AssetRelatedAssets list</dd>
+<dd><code>relatedAssets</code> - RelatedAssets list</dd>
 </dl>
 </li>
 </ul>
@@ -560,9 +648,11 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <ul class="blockList">
 <li class="blockList">
 <h4>getMeanings</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="AssetMeaning.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetMeaning</a>&gt;&nbsp;getMeanings()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning&gt;&nbsp;getMeanings()</pre>
 <div class="block">Return the list of glossary definitions assigned directly to this asset.</div>
 <dl>
+<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
+<dd><code>getMeanings</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable</code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>Meanings list of glossary definitions.</dd>
 </dl>
@@ -574,7 +664,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <ul class="blockList">
 <li class="blockList">
 <h4>getSchema</h4>
-<pre class="methodSignature">public&nbsp;<a href="AssetSchemaType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSchemaType</a>&nbsp;getSchema()</pre>
+<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType&nbsp;getSchema()</pre>
 <div class="block">Return details of the schema associated with the asset.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -592,7 +682,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <div class="block">Return details of the people, products and feedback that are connected to the asset.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Feedback feedback object to query the feedback on the asset.</dd>
+<dd>Feedback object to query the feedback on the asset.</dd>
 </dl>
 </li>
 </ul>
@@ -602,7 +692,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <ul class="blockList">
 <li class="blockList">
 <h4>getKnownLocations</h4>
-<pre class="methodSignature">public&nbsp;<a href="AssetLocations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetLocations</a>&nbsp;getKnownLocations()</pre>
+<pre class="methodSignature">public&nbsp;<a href="Locations.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">Locations</a>&nbsp;getKnownLocations()</pre>
 <div class="block">Return the list of locations for the asset.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -620,7 +710,7 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <div class="block">Return details of the lineage for the asset.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Lineage  lineage object that allows queries about the lineage of the asset.</dd>
+<dd>Lineage object that allows queries about the lineage of the asset.</dd>
 </dl>
 </li>
 </ul>
@@ -630,11 +720,11 @@ extends <a href="AssetDetail.html" title="class in org.odpi.openmetadata.framewo
 <ul class="blockList">
 <li class="blockList">
 <h4>getRelatedAssets</h4>
-<pre class="methodSignature">public&nbsp;<a href="AssetRelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetRelatedAssets</a>&nbsp;getRelatedAssets()</pre>
+<pre class="methodSignature">public&nbsp;<a href="RelatedAssets.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">RelatedAssets</a>&nbsp;getRelatedAssets()</pre>
 <div class="block">Return the list of assets related to this asset.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>AssetRelatedAssets list</dd>
+<dd>RelatedAssets list</dd>
 </dl>
 </li>
 </ul>

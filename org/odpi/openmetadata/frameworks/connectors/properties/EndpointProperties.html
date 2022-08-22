@@ -125,9 +125,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="AssetPropertyElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyElementBase</a></li>
 <li>
 <ul class="inheritance">
-<li><a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase</a></li>
-<li>
-<ul class="inheritance">
 <li><a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">org.odpi.openmetadata.frameworks.connectors.properties.AssetElementHeader</a></li>
 <li>
 <ul class="inheritance">
@@ -135,8 +132,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties</li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -240,13 +235,6 @@ extends <a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.
 <h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a></h3>
 <code><a href="AssetReferenceable.html#referenceableBean">referenceableBean</a></code></li>
 </ul>
-<ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#parentAsset">parentAsset</a></code></li>
-</ul>
 </li>
 </ul>
 </section>
@@ -264,23 +252,9 @@ extends <a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint)">EndpointProperties</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                  org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint&nbsp;endpointBean)</code></th>
-<td class="colLast">
-<div class="block">Bean constructor with parent asset</div>
-</td>
-</tr>
-<tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties)">EndpointProperties</a></span>&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                  <a href="EndpointProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EndpointProperties</a>&nbsp;templateEndpoint)</code></th>
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint)">EndpointProperties</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint&nbsp;templateEndpoint)</code></th>
 <td class="colLast">
 <div class="block">Copy/clone constructor for an Endpoint that is connected to an Asset (either directly or indirectly).</div>
-</td>
-</tr>
-<tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint)">EndpointProperties</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint&nbsp;endpointBean)</code></th>
-<td class="colLast">
-<div class="block">Bean constructor</div>
 </td>
 </tr>
 <tr class="rowColor">
@@ -376,21 +350,14 @@ extends <a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetReferenceable</a></h3>
-<code><a href="AssetReferenceable.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="AssetReferenceable.html#getMeanings()">getMeanings</a>, <a href="AssetReferenceable.html#getQualifiedName()">getQualifiedName</a>, <a href="AssetReferenceable.html#getReferenceableBean()">getReferenceableBean</a>, <a href="AssetReferenceable.html#getSecurityTags()">getSecurityTags</a>, <a href="AssetReferenceable.html#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable)">setBean</a></code></li>
+<code><a href="AssetReferenceable.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="AssetReferenceable.html#getQualifiedName()">getQualifiedName</a>, <a href="AssetReferenceable.html#getReferenceableBean()">getReferenceableBean</a>, <a href="AssetReferenceable.html#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable)">setBean</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetElementHeader">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetElementHeader</a></h3>
-<code><a href="AssetElementHeader.html#getAssetClassifications()">getAssetClassifications</a>, <a href="AssetElementHeader.html#getElementHeaderBean()">getElementHeaderBean</a>, <a href="AssetElementHeader.html#getExtendedProperties()">getExtendedProperties</a>, <a href="AssetElementHeader.html#getGUID()">getGUID</a>, <a href="AssetElementHeader.html#getType()">getType</a>, <a href="AssetElementHeader.html#getURL()">getURL</a>, <a href="AssetElementHeader.html#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">setBean</a></code></li>
-</ul>
-<ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase">
-<!--   -->
-</a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="AssetPropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetPropertyBase</a></h3>
-<code><a href="AssetPropertyBase.html#getParentAsset()">getParentAsset</a>, <a href="AssetPropertyBase.html#getParentAssetName()">getParentAssetName</a>, <a href="AssetPropertyBase.html#getParentAssetTypeName()">getParentAssetTypeName</a></code></li>
+<code><a href="AssetElementHeader.html#getClassifications()">getClassifications</a>, <a href="AssetElementHeader.html#getElementHeaderBean()">getElementHeaderBean</a>, <a href="AssetElementHeader.html#getExtendedProperties()">getExtendedProperties</a>, <a href="AssetElementHeader.html#getGUID()">getGUID</a>, <a href="AssetElementHeader.html#getOrigin()">getOrigin</a>, <a href="AssetElementHeader.html#getStatus()">getStatus</a>, <a href="AssetElementHeader.html#getType()">getType</a>, <a href="AssetElementHeader.html#getURL()">getURL</a>, <a href="AssetElementHeader.html#getVersions()">getVersions</a>, <a href="AssetElementHeader.html#setBean(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">setBean</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -440,37 +407,7 @@ extends <a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.
 <ul class="blockList">
 <li class="blockList">
 <h4>EndpointProperties</h4>
-<pre>public&nbsp;EndpointProperties&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint&nbsp;endpointBean)</pre>
-<div class="block">Bean constructor</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>endpointBean</code> - bean containing the properties</dd>
-</dl>
-</li>
-</ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>EndpointProperties</h4>
-<pre>public&nbsp;EndpointProperties&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                          org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint&nbsp;endpointBean)</pre>
-<div class="block">Bean constructor with parent asset</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - description of the asset that this endpoint is attached to.</dd>
-<dd><code>endpointBean</code> - bean containing the properties</dd>
-</dl>
-</li>
-</ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>EndpointProperties</h4>
-<pre>public&nbsp;EndpointProperties&#8203;(<a href="EndpointProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EndpointProperties</a>&nbsp;templateEndpoint)</pre>
+<pre>public&nbsp;EndpointProperties&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint&nbsp;templateEndpoint)</pre>
 <div class="block">Copy/clone constructor for an Endpoint that is connected to an Asset (either directly or indirectly).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -478,18 +415,16 @@ extends <a href="AssetReferenceable.html" title="class in org.odpi.openmetadata.
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor,org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>EndpointProperties</h4>
-<pre>public&nbsp;EndpointProperties&#8203;(<a href="AssetDescriptor.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetDescriptor</a>&nbsp;parentAsset,
-                          <a href="EndpointProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EndpointProperties</a>&nbsp;templateEndpoint)</pre>
+<pre>public&nbsp;EndpointProperties&#8203;(<a href="EndpointProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">EndpointProperties</a>&nbsp;templateEndpoint)</pre>
 <div class="block">Copy/clone constructor for an Endpoint that is connected to an Asset (either directly or indirectly).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>parentAsset</code> - description of the asset that this endpoint is attached to.</dd>
 <dd><code>templateEndpoint</code> - template object to copy.</dd>
 </dl>
 </li>

@@ -161,7 +161,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ElementStub</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementsGovernedByDefinition(java.lang.String,java.lang.String,int,int)">getElementsGovernedByDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
                                java.lang.String&nbsp;governanceDefinitionGUID,
                                int&nbsp;startFrom,
@@ -219,7 +219,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ElementStub</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceZoneMembers(java.lang.String,java.lang.String,int,int)">getGovernanceZoneMembers</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;zoneGUID,
                         int&nbsp;startFrom,
@@ -338,13 +338,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>getElementsGovernedByDefinition</h4>
-<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ElementStub</a>&gt;&nbsp;getElementsGovernedByDefinition&#8203;(java.lang.String&nbsp;userId,
-                                                            java.lang.String&nbsp;governanceDefinitionGUID,
-                                                            int&nbsp;startFrom,
-                                                            int&nbsp;pageSize)
-                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;getElementsGovernedByDefinition&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                         java.lang.String&nbsp;governanceDefinitionGUID,
+                                                                                                                         int&nbsp;startFrom,
+                                                                                                                         int&nbsp;pageSize)
+                                                                                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the elements that are governed by the supplied governance definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -452,13 +452,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getGovernanceZoneMembers</h4>
-<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ElementStub</a>&gt;&nbsp;getGovernanceZoneMembers&#8203;(java.lang.String&nbsp;userId,
-                                                     java.lang.String&nbsp;zoneGUID,
-                                                     int&nbsp;startFrom,
-                                                     int&nbsp;pageSize)
-                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;getGovernanceZoneMembers&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                  java.lang.String&nbsp;zoneGUID,
+                                                                                                                  int&nbsp;startFrom,
+                                                                                                                  int&nbsp;pageSize)
+                                                                                                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the list of assets that are members of a particular zone.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
