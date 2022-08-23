@@ -22,8 +22,6 @@ public class ConfidentialityGovernanceClassification extends GovernanceClassific
 {
     private static final long     serialVersionUID = 1L;
 
-    private int confidentialityLevel = 0;
-
     /**
      * Default constructor
      */
@@ -41,34 +39,8 @@ public class ConfidentialityGovernanceClassification extends GovernanceClassific
     public ConfidentialityGovernanceClassification(ConfidentialityGovernanceClassification template)
     {
         super(template);
-
-        if (template != null)
-        {
-            confidentialityLevel = template.getConfidentialityLevel();
-        }
     }
 
-
-    /**
-     * Return how confidential this data item is to the organization.
-     *
-     * @return int defined by the GovernanceConfidentialityLevel
-     */
-    public int getConfidentialityLevel()
-    {
-        return confidentialityLevel;
-    }
-
-
-    /**
-     * Set up how confidential this data item is to the organization.
-     *
-     * @param confidentialityLevel int defined by the GovernanceConfidentialityLevel
-     */
-    public void setConfidentialityLevel(int confidentialityLevel)
-    {
-        this.confidentialityLevel = confidentialityLevel;
-    }
 
     /**
      * Standard toString method.
@@ -79,56 +51,21 @@ public class ConfidentialityGovernanceClassification extends GovernanceClassific
     public String toString()
     {
         return "ConfidentialityGovernanceClassification{" +
-                "confidentialityLevel=" + confidentialityLevel +
-                ", status=" + getStatus() +
-                ", confidence=" + getConfidence() +
-                ", steward='" + getSteward() + '\'' +
-                ", source='" + getSource() + '\'' +
-                ", notes='" + getNotes() + '\'' +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        ConfidentialityGovernanceClassification that = (ConfidentialityGovernanceClassification) objectToCompare;
-        return confidentialityLevel == that.confidentialityLevel;
-    }
-
-
-    /**
-     * Return code value representing the contents of this object.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), confidentialityLevel);
+                       "classificationOrigin=" + getClassificationOrigin() +
+                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", governanceStatus=" + getGovernanceStatus() +
+                       ", confidence=" + getConfidence() +
+                       ", steward='" + getSteward() + '\'' +
+                       ", stewardTypeName='" + getStewardTypeName() + '\'' +
+                       ", stewardPropertyName='" + getStewardPropertyName() + '\'' +
+                       ", source='" + getSource() + '\'' +
+                       ", notes='" + getNotes() + '\'' +
+                       ", levelIdentifier=" + getLevelIdentifier() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 }

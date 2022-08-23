@@ -13,6 +13,7 @@ import java.util.Map;
  */
 public class SubjectAreaBuilder extends ReferenceableBuilder
 {
+    private final String subjectAreaName;
     private final String displayName;
     private final String description;
     private final String usage;
@@ -23,7 +24,8 @@ public class SubjectAreaBuilder extends ReferenceableBuilder
     /**
      * Create constructor
      *
-     * @param qualifiedName unique name for the subject area - used in other configuration
+     * @param qualifiedName unique name for the subject area entity
+     * @param subjectAreaName unique name for the subject area - used in other configuration
      * @param displayName short display name for the subject area
      * @param description description of the subject area
      * @param usage the usage for inclusion in a subject area
@@ -38,6 +40,7 @@ public class SubjectAreaBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     SubjectAreaBuilder(String               qualifiedName,
+                       String               subjectAreaName,
                        String               displayName,
                        String               description,
                        String               usage,
@@ -60,6 +63,7 @@ public class SubjectAreaBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
+        this.subjectAreaName = subjectAreaName;
         this.displayName = displayName;
         this.description = description;
         this.usage = usage;
@@ -79,6 +83,12 @@ public class SubjectAreaBuilder extends ReferenceableBuilder
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.SUBJECT_AREA_NAME_PROPERTY_NAME,
+                                                                  subjectAreaName,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

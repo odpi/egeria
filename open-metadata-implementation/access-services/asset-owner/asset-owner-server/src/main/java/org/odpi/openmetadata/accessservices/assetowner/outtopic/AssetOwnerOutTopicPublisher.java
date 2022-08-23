@@ -5,11 +5,11 @@ package org.odpi.openmetadata.accessservices.assetowner.outtopic;
 
 import org.odpi.openmetadata.accessservices.assetowner.connectors.outtopic.AssetOwnerOutTopicServerConnector;
 import org.odpi.openmetadata.accessservices.assetowner.converters.ElementHeaderConverter;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.assetowner.events.AssetOwnerEventType;
 import org.odpi.openmetadata.accessservices.assetowner.events.AssetOwnerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -20,11 +20,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class AssetOwnerOutTopicPublisher
 {
-    private AssetOwnerOutTopicServerConnector     outTopicServerConnector;
-    private AuditLog                              outTopicAuditLog;
-    private String                                outTopicName;
-    private ElementHeaderConverter<ElementHeader> headerConverter;
-    private OMRSRepositoryHelper                  repositoryHelper;
+    private final AssetOwnerOutTopicServerConnector     outTopicServerConnector;
+    private final AuditLog                              outTopicAuditLog;
+    private final String                                outTopicName;
+    private final ElementHeaderConverter<ElementHeader> headerConverter;
+    private final OMRSRepositoryHelper                  repositoryHelper;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 

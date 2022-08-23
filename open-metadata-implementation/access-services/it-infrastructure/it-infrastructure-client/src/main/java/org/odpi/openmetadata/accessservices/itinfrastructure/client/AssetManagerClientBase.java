@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfra
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetRelationshipElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties;
@@ -33,6 +32,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -221,7 +221,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
                        String          infrastructureManagerName,
                        boolean         infrastructureManagerIsHome,
                        AssetProperties assetProperties,
-                       ElementStatus   initialStatus,
+                       ElementStatus initialStatus,
                        String          methodName) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException

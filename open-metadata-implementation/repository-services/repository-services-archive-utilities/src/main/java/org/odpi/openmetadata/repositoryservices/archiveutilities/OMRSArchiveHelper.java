@@ -15,15 +15,15 @@ import java.util.*;
  */
 public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 {
-    private OpenMetadataArchiveBuilder archiveBuilder;
-    private String                     archiveGUID;
-    private String                     archiveName;
-    private String                     originatorName;
-    private Date                       creationDate;
-    private long                       versionNumber;
-    private String                     versionName;
-    private InstanceProvenanceType     instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
-    private String                     license = null;
+    private final OpenMetadataArchiveBuilder archiveBuilder;
+    private final String                     archiveGUID;
+    private       String                     archiveName;
+    private final String                     originatorName;
+    private final Date                       creationDate;
+    private final long                       versionNumber;
+    private final String                     versionName;
+    private       InstanceProvenanceType     instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
+    private       String                     license = null;
 
 
     /**

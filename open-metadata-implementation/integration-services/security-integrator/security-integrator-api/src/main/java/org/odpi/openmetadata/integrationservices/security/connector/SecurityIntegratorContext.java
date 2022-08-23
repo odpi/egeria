@@ -7,12 +7,10 @@ import org.odpi.openmetadata.accessservices.securitymanager.api.SecurityManagerE
 import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerClient;
 import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerEventClient;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityGroupProperties;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -21,6 +19,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.Date;
 import java.util.List;

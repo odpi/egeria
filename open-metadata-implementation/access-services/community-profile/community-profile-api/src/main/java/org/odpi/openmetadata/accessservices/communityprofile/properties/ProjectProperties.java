@@ -21,6 +21,7 @@ public class ProjectProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
+    private String identifier     = null;
     private String name           = null;
     private String description    = null;
     private String status         = null;
@@ -48,12 +49,35 @@ public class ProjectProperties extends ReferenceableProperties
 
         if (template != null)
         {
+            this.identifier = template.getIdentifier();
             this.name = template.getName();
             this.description = template.getDescription();
             this.status = template.getStatus();
             this.startDate = template.getStartDate();
             this.plannedEndDate = template.getPlannedEndDate();
         }
+    }
+
+
+    /**
+     * Return the code value or symbol used to identify the project - typically unique.
+     *
+     * @return string identifier
+     */
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+
+    /**
+     * Set up the code value or symbol used to identify the project - typically unique.
+     *
+     * @param identifier string identifier
+     */
+    public void setIdentifier(String identifier)
+    {
+        this.identifier = identifier;
     }
 
 
@@ -192,7 +216,8 @@ public class ProjectProperties extends ReferenceableProperties
     public String toString()
     {
         return "ProjectProperties{" +
-                       "name='" + name + '\'' +
+                       "identifier='" + identifier + '\'' +
+                       ", name='" + name + '\'' +
                        ", description='" + description + '\'' +
                        ", status='" + status + '\'' +
                        ", startDate=" + startDate +
@@ -225,14 +250,15 @@ public class ProjectProperties extends ReferenceableProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ProjectProperties that = (ProjectProperties) objectToCompare;
-        return Objects.equals(status, that.status) &&
-                       Objects.equals(getName(), that.getName()) &&
-                       Objects.equals(getDescription(), that.getDescription()) &&
+        return Objects.equals(identifier, that.identifier) &&
+                       Objects.equals(name, that.name) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(status, that.status) &&
                        Objects.equals(startDate, that.startDate) &&
                        Objects.equals(plannedEndDate, that.plannedEndDate);
     }
@@ -246,6 +272,6 @@ public class ProjectProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getName(), getDescription(), getStatus(), getStartDate(), getPlannedEndDate());
+        return Objects.hash(super.hashCode(), identifier, name, description, status, startDate, plannedEndDate);
     }
 }

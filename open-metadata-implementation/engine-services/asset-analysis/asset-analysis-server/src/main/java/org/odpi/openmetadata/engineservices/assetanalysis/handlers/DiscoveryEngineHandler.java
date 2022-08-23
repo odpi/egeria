@@ -207,10 +207,10 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
             {
                 if ((actionTargetElement != null)
                             && (actionTargetElement.getTargetElement() != null)
-                            && (actionTargetElement.getTargetElement().getElementType() != null))
+                            && (actionTargetElement.getTargetElement().getType() != null))
                 {
-                    String       typeName       = actionTargetElement.getTargetElement().getElementType().getElementTypeName();
-                    List<String> superTypeNames = actionTargetElement.getTargetElement().getElementType().getElementSuperTypeNames();
+                    String       typeName       = actionTargetElement.getTargetElement().getType().getTypeName();
+                    List<String> superTypeNames = actionTargetElement.getTargetElement().getType().getSuperTypeNames();
 
                     if ((assetTypeName.equals(typeName)) || ((superTypeNames != null) && (superTypeNames.contains(assetTypeName))))
                     {

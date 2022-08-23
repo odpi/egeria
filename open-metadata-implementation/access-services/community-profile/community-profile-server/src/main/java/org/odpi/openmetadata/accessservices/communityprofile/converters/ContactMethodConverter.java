@@ -73,9 +73,11 @@ public class ContactMethodConverter<B> extends CommunityProfileOMASConverter<B>
                 {
                     entityProperties = new InstanceProperties(entity.getProperties());
 
-                    contactMethodProperties.setType(this.getContactMethodTypeFromProperties(entityProperties));
-                    contactMethodProperties.setService(this.removeContactMethodService(entityProperties));
-                    contactMethodProperties.setValue(this.removeContactMethodValue(entityProperties));
+                    contactMethodProperties.setName(this.removeName(entityProperties));
+                    contactMethodProperties.setContactType(this.removeContactType(entityProperties));
+                    contactMethodProperties.setContactMethodType(this.getContactMethodTypeFromProperties(entityProperties));
+                    contactMethodProperties.setContactMethodService(this.removeContactMethodService(entityProperties));
+                    contactMethodProperties.setContactMethodValue(this.removeContactMethodValue(entityProperties));
                     contactMethodProperties.setEffectiveFrom(entityProperties.getEffectiveFromTime());
                     contactMethodProperties.setEffectiveTo(entityProperties.getEffectiveToTime());
 

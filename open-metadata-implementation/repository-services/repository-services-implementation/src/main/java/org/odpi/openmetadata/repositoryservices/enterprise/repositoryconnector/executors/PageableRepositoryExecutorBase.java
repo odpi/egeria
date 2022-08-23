@@ -17,6 +17,8 @@ import java.util.List;
  */
 abstract class PageableRepositoryExecutorBase extends CloneableRepositoryExecutorBase
 {
+    private final QueryInstanceAccumulatorBase queryInstanceAccumulator;
+
     int  startingElement;
     int  pageSize;
 
@@ -26,7 +28,6 @@ abstract class PageableRepositoryExecutorBase extends CloneableRepositoryExecuto
     SequencingOrder      sequencingOrder;
     Date                 asOfTime;
 
-    private QueryInstanceAccumulatorBase queryInstanceAccumulator;
 
     /**
      * Create the executor.  The parameters provide the parameters for issuing the requests and

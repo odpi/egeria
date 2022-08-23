@@ -26,12 +26,12 @@ import java.util.List;
  */
 public class GovernanceZoneManager implements GovernanceZonesInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
+    private final String                      serverName;               /* Initialized in constructor */
+    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
 
     /**
@@ -140,7 +140,7 @@ public class GovernanceZoneManager implements GovernanceZonesInterface
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -168,7 +168,7 @@ public class GovernanceZoneManager implements GovernanceZonesInterface
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
      * to the supportedZones, publishedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
+     * and how they are set up.  In addition, the qualified names of zones can be added to Asset definitions
      * to indicate which zone(s) they belong to.
      *
      * @param userId calling user

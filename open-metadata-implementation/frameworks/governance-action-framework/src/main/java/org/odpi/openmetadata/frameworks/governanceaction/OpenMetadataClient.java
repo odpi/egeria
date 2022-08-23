@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -250,7 +251,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments such as nested content, schema
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
      *
      * @return unique identifier of the new metadata element
@@ -271,7 +272,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
 
     /**
      * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
-     * metadata element when it was created.  However, it is possible to update a few properties, or replace all of them by
+     * metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
      * the value used in the replaceProperties flag.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update
@@ -599,7 +600,7 @@ public abstract class OpenMetadataClient implements OpenMetadataStore
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)

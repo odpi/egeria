@@ -10,7 +10,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 /**
  * PurgeEntityExecutor provides the executor for the purgeEntity method.
- * This is a tricky request because the entity has been deleted so it is
+ * This is a tricky request because the entity has been deleted, so it is
  * not retrievable until restored.
  *
  * The only possible approach is to step through the repositories hoping that one
@@ -18,10 +18,11 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class PurgeEntityExecutor extends RepositoryExecutorBase
 {
-    private MaintenanceAccumulator accumulator;
-    private String                 entityGUID;
-    private String                 typeDefGUID;
-    private String                 typeDefName;
+    private final MaintenanceAccumulator accumulator;
+    private final String                 entityGUID;
+    private final String                 typeDefGUID;
+    private final String                 typeDefName;
+
     private boolean                entityDeleted = false;
 
 

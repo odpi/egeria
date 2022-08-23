@@ -26,7 +26,7 @@ public class EnterpriseOMRSConnectorProperties extends ConnectedAssetProperties
 
 
     /**
-     * Request the values in the ConnectedAssetProperties are refreshed with the current values from the
+     * Request the values in the EgeriaConnectedAssetProperties are refreshed with the current values from the
      * metadata repository.  In the case of the
      *
      * @throws PropertyServerException there is a problem connecting to the server to retrieve metadata.

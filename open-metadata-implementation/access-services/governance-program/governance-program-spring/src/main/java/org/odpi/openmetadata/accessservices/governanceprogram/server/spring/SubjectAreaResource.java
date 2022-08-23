@@ -126,7 +126,7 @@ public class SubjectAreaResource
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/nested-subject area/{childSubjectAreaGUID}/link")
+    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/nested-subject-area/{childSubjectAreaGUID}/link")
 
     public VoidResponse linkSubjectAreasInHierarchy(@PathVariable String          serverName,
                                                     @PathVariable String          userId,
@@ -153,7 +153,7 @@ public class SubjectAreaResource
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/nested-subject area/{childSubjectAreaGUID}/unlink")
+    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/nested-subject-area/{childSubjectAreaGUID}/unlink")
 
     public VoidResponse unlinkSubjectAreasInHierarchy(@PathVariable String          serverName,
                                                       @PathVariable String          userId,

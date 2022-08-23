@@ -594,17 +594,17 @@ public abstract class AccessServiceAdmin
         final String connectionDescription = "OMRS default cohort topic connection.";
         final String eventSource = "Server Event Bus";
 
-        ElementType elementType = VirtualConnection.getVirtualConnectionType();
-
-        elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
 
         String connectionName = "OutTopicConnector." + accessServiceFullName;
 
         VirtualConnection connection = new VirtualConnection();
 
-        elementType = VirtualConnection.getVirtualConnectionType();
+        ElementOrigin elementOrigin = new ElementOrigin();
+        elementOrigin.setOriginCategory(ElementOriginCategory.CONFIGURATION);
+        elementOrigin.setSourceServer(eventSource);
 
-        connection.setType(elementType);
+        connection.setOrigin(elementOrigin);
+        connection.setType(VirtualConnection.getVirtualConnectionType());
         connection.setGUID(UUID.randomUUID().toString());
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);

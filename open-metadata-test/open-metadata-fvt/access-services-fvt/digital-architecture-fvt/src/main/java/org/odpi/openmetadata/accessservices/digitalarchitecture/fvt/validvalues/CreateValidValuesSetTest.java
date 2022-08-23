@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.validvalues;
 
 
+import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ReferenceDataManager;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ValidValuesManager;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ValidValueProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 
 /**
- * CreateValidValuesSetTest calls the ValidValuesManager to create a valid values set with nested definitions
+ * CreateValidValuesSetTest calls the ReferenceDataManager to create a valid values set with nested definitions
  * and then retrieve the results.
  */
 public class CreateValidValuesSetTest
@@ -62,7 +62,7 @@ public class CreateValidValuesSetTest
 
 
     /**
-     * Run all of the defined tests and capture the results.
+     * Run all the defined tests and capture the results.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -91,7 +91,7 @@ public class CreateValidValuesSetTest
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server
@@ -107,14 +107,14 @@ public class CreateValidValuesSetTest
         CreateValidValuesSetTest thisTest = new CreateValidValuesSetTest();
 
         AuditLog auditLog = new AuditLog(auditLogDestination,
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceCode(),
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceDevelopmentStatus(),
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceName(),
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceDescription(),
-                                         AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceWiki());
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceCode(),
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceDevelopmentStatus(),
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceName(),
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceDescription(),
+                                         AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceWiki());
 
-        ValidValuesManager client              = thisTest.getValidValuesManagerClient(serverName, serverPlatformRootURL, auditLog);
-        String             validValuesSet      = thisTest.createValidValueSet(client, userId);
+        ReferenceDataManager client         = thisTest.getValidValuesManagerClient(serverName, serverPlatformRootURL, auditLog);
+        String               validValuesSet = thisTest.createValidValueSet(client, userId);
 
         thisTest.createValidValueDefinitions(client, validValuesSet, userId);
 
@@ -123,7 +123,7 @@ public class CreateValidValuesSetTest
 
 
     /**
-     * Create and return a valid values manager client.
+     * Create and return a valid values' manager client.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -131,9 +131,9 @@ public class CreateValidValuesSetTest
      * @return client
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private ValidValuesManager getValidValuesManagerClient(String   serverName,
-                                                           String   serverPlatformRootURL,
-                                                           AuditLog auditLog) throws FVTUnexpectedCondition
+    private ReferenceDataManager getValidValuesManagerClient(String   serverName,
+                                                             String   serverPlatformRootURL,
+                                                             AuditLog auditLog) throws FVTUnexpectedCondition
     {
         final String activityName = "getValidValuesManagerClient";
 
@@ -141,7 +141,7 @@ public class CreateValidValuesSetTest
         {
             DigitalArchitectureRESTClient restClient = new DigitalArchitectureRESTClient(serverName, serverPlatformRootURL);
 
-            return new ValidValuesManager(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            return new ReferenceDataManager(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }
         catch (Exception unexpectedError)
         {
@@ -158,7 +158,7 @@ public class CreateValidValuesSetTest
      * @return guid of set
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private String createValidValueSet(ValidValuesManager client,
+    private String createValidValueSet(ReferenceDataManager client,
                                        String             userId) throws FVTUnexpectedCondition
     {
         final String activityName = "createValidValueSet";
@@ -279,7 +279,7 @@ public class CreateValidValuesSetTest
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void   createValidValueDefinitions(ValidValuesManager client,
+    private void   createValidValueDefinitions(ReferenceDataManager client,
                                                String             validValueSetGUID,
                                                String             userId) throws FVTUnexpectedCondition
     {
@@ -292,6 +292,7 @@ public class CreateValidValuesSetTest
 
             String validValue1GUID = client.createValidValueDefinition(userId,
                                                                        validValueSetGUID,
+                                                                       true,
                                                                        validValue1Name,
                                                                        validValue1DisplayName,
                                                                        validValue1Description,
@@ -474,6 +475,7 @@ public class CreateValidValuesSetTest
             {
                 client.createValidValueDefinition(userId,
                                                   validValueSetGUID,
+                                                  false,
                                                   validValue1Name,
                                                   validValue1DisplayName,
                                                   validValue1Description,
@@ -496,6 +498,7 @@ public class CreateValidValuesSetTest
              */
             String validValue2GUID = client.createValidValueDefinition(userId,
                                                                        validValueSetGUID,
+                                                                       false,
                                                                        validValue2Name,
                                                                        validValue2DisplayName,
                                                                        validValue2Description,
@@ -644,6 +647,7 @@ public class CreateValidValuesSetTest
                                     validValue2PreferredValue,
                                     true,
                                     null,
+                                    false,
                                     null,
                                     null);
 
@@ -681,7 +685,7 @@ public class CreateValidValuesSetTest
 
 
             /*
-             * Update value value 2 with valid value 1's qualified name - this should fail
+             * Update valid value 2 with valid value 1's qualified name - this should fail
              */
             try
             {
@@ -695,6 +699,7 @@ public class CreateValidValuesSetTest
                                         validValue2PreferredValue,
                                         true,
                                         null,
+                                        true,
                                         null,
                                         null);
 
@@ -742,7 +747,7 @@ public class CreateValidValuesSetTest
 
 
             /*
-             * Update value value 2 with a new qualified name - this should work ok
+             * Update valid value 2 with a new qualified name - this should work ok
              */
 
             client.updateValidValue(userId,
@@ -755,6 +760,7 @@ public class CreateValidValuesSetTest
                                         validValue2PreferredValue,
                                         true,
                                         null,
+                                        true,
                                         null,
                                         null);
 
@@ -854,7 +860,7 @@ public class CreateValidValuesSetTest
             /*
              * Now reattach value 2 and check it reappears in the set.
              */
-            client.attachValidValueToSet(userId, validValueSetGUID, validValue2GUID);
+            client.attachValidValueToSet(userId, validValueSetGUID, validValue2GUID, true);
 
             validValueList = client.getValidValueSetMembers(userId, validValueSetGUID, 0, maxPageSize);
 
@@ -892,7 +898,7 @@ public class CreateValidValuesSetTest
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void   deleteValidValuesSet(ValidValuesManager client,
+    private void   deleteValidValuesSet(ReferenceDataManager client,
                                         String             validValueSetGUID,
                                         String             userId) throws FVTUnexpectedCondition
     {

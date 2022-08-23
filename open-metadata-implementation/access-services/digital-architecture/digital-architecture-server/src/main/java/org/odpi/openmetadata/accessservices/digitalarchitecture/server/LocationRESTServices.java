@@ -79,6 +79,7 @@ public class LocationRESTServices
                                                         null,
                                                         null,
                                                         locationProperties.getQualifiedName(),
+                                                        locationProperties.getIdentifier(),
                                                         locationProperties.getDisplayName(),
                                                         locationProperties.getDescription(),
                                                         locationProperties.getAdditionalProperties(),
@@ -142,6 +143,7 @@ public class LocationRESTServices
                                                                     null,
                                                                     templateGUID,
                                                                     templateProperties.getQualifiedName(),
+                                                                    templateProperties.getIdentifier(),
                                                                     templateProperties.getDisplayName(),
                                                                     templateProperties.getDescription(),
                                                                     methodName));
@@ -202,6 +204,7 @@ public class LocationRESTServices
                                        locationGUID,
                                        guidParameter,
                                        locationProperties.getQualifiedName(),
+                                       locationProperties.getIdentifier(),
                                        locationProperties.getDisplayName(),
                                        locationProperties.getDescription(),
                                        locationProperties.getAdditionalProperties(),

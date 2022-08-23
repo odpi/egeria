@@ -34,7 +34,7 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -84,7 +84,7 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
                  * Any remaining properties are returned in the extended properties.  They are
                  * assumed to be defined in a subtype.
                  */
-                bean.setTypeName(bean.getElementHeader().getType().getElementTypeName());
+                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
                 bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
             }
 
@@ -100,7 +100,7 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

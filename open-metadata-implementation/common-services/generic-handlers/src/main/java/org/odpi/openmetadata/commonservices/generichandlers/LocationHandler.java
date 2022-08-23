@@ -9,8 +9,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +79,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param qualifiedName unique name for the location - used in other configuration
+     * @param identifier code value or symbol used to identify the location - typically unique.
      * @param displayName short display name for the location
      * @param description description of the governance location
      * @param additionalProperties additional properties for a location
@@ -96,6 +99,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  String              externalSourceGUID,
                                  String              externalSourceName,
                                  String              qualifiedName,
+                                 String              identifier,
                                  String              displayName,
                                  String              description,
                                  Map<String, String> additionalProperties,
@@ -127,6 +131,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                                    repositoryHelper);
 
         LocationBuilder locationBuilder = new LocationBuilder(qualifiedName,
+                                                              identifier,
                                                               displayName,
                                                               description,
                                                               additionalProperties,
@@ -163,6 +168,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param templateGUID unique identifier of the metadata element to copy
+     * @param identifier code value or symbol used to identify the location - typically unique.
      * @param qualifiedName unique name for the location - used in other configuration
      * @param displayName short display name for the location
      * @param description description of the governance location
@@ -179,6 +185,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                              String externalSourceName,
                                              String templateGUID,
                                              String qualifiedName,
+                                             String identifier,
                                              String displayName,
                                              String description,
                                              String methodName) throws InvalidParameterException,
@@ -193,6 +200,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         LocationBuilder locationBuilder = new LocationBuilder(qualifiedName,
+                                                              identifier,
                                                               displayName,
                                                               description,
                                                               repositoryHelper,
@@ -222,6 +230,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @param locationGUID unique identifier of the location to update
      * @param locationGUIDParameterName parameter passing the locationGUID
      * @param qualifiedName unique name for the location - used in other configuration
+     * @param identifier code value or symbol used to identify the location - typically unique.
      * @param displayName short display name for the location
      * @param description description of the governance location
      * @param additionalProperties additional properties for a governance location
@@ -245,6 +254,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                  String              locationGUID,
                                  String              locationGUIDParameterName,
                                  String              qualifiedName,
+                                 String              identifier,
                                  String              displayName,
                                  String              description,
                                  Map<String, String> additionalProperties,
@@ -280,6 +290,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                                    repositoryHelper);
 
         LocationBuilder locationBuilder = new LocationBuilder(qualifiedName,
+                                                              identifier,
                                                               displayName,
                                                               description,
                                                               additionalProperties,
@@ -854,6 +865,123 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
     }
 
 
+
+    /**
+     * Create a relationship between an actor profile and an associated location.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param actorProfileGUID unique identifier of the first location
+     * @param actorProfileGUIDParameterName parameter supplying the first location
+     * @param locationGUID unique identifier of the second location
+     * @param locationGUIDParameterName parameter supplying the second location
+     * @param associationType type of association with the location
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupProfileLocation(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  actorProfileGUID,
+                                     String  actorProfileGUIDParameterName,
+                                     String  locationGUID,
+                                     String  locationGUIDParameterName,
+                                     String  associationType,
+                                     Date    effectiveFrom,
+                                     Date    effectiveTo,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.ASSOCIATION_TYPE_PROPERTY_NAME, associationType, methodName);
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  actorProfileGUID,
+                                  actorProfileGUIDParameterName,
+                                  OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                  locationGUID,
+                                  locationGUIDParameterName,
+                                  OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_GUID,
+                                  OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME,
+                                  setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove a relationship between an actor profile and an associated location.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param actorProfileGUID unique identifier of the first location
+     * @param actorProfileGUIDParameterName parameter supplying the first location
+     * @param locationGUID unique identifier of the second location
+     * @param locationGUIDParameterName parameter supplying the second location
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearProfileLocation(String  userId,
+                                     String  externalSourceGUID,
+                                     String  externalSourceName,
+                                     String  actorProfileGUID,
+                                     String  actorProfileGUIDParameterName,
+                                     String  locationGUID,
+                                     String  locationGUIDParameterName,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing,
+                                     Date    effectiveTime,
+                                     String  methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      actorProfileGUID,
+                                      actorProfileGUIDParameterName,
+                                      OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                      locationGUID,
+                                      locationGUIDParameterName,
+                                      OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
+                                      OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_GUID,
+                                      OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+
     /**
      * Create a relationship between a location and an asset.
      *
@@ -1012,6 +1140,172 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Retrieve the list of adjacent location metadata elements linked to locationGUID.
+     *
+     * @param userId     calling user
+     * @param elementGUID identifier for the entity that the location is attached to
+     * @param elementGUIDParameterName name of parameter supplying the GUID
+     * @param elementTypeName name of the type of object being attached to
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B> getAdjacentLocations(String       userId,
+                                        String       elementGUID,
+                                        String       elementGUIDParameterName,
+                                        String       elementTypeName,
+                                        int          startingFrom,
+                                        int          pageSize,
+                                        boolean      forLineage,
+                                        boolean      forDuplicateProcessing,
+                                        Date         effectiveTime,
+                                        String       methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        elementGUID,
+                                        elementGUIDParameterName,
+                                        elementTypeName,
+                                        OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_GUID,
+                                        OpenMetadataAPIMapper.ADJACENT_LOCATION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the list of nested location metadata elements linked to locationGUID.
+     *
+     * @param userId     calling user
+     * @param elementGUID identifier for the entity that the location is attached to
+     * @param elementGUIDParameterName name of parameter supplying the GUID
+     * @param elementTypeName name of the type of object being attached to
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B> getNestedLocations(String       userId,
+                                      String       elementGUID,
+                                      String       elementGUIDParameterName,
+                                      String       elementTypeName,
+                                      int          startingFrom,
+                                      int          pageSize,
+                                      boolean      forLineage,
+                                      boolean      forDuplicateProcessing,
+                                      Date         effectiveTime,
+                                      String       methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        elementGUID,
+                                        elementGUIDParameterName,
+                                        elementTypeName,
+                                        OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
+                                        OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the list of location metadata elements that has the location identifier with locationGUID nested inside it.
+     *
+     * @param userId     calling user
+     * @param elementGUID identifier for the entity that the location is attached to
+     * @param elementGUIDParameterName name of parameter supplying the GUID
+     * @param elementTypeName name of the type of object being attached to
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B> getGroupingLocations(String       userId,
+                                        String       elementGUID,
+                                        String       elementGUIDParameterName,
+                                        String       elementTypeName,
+                                        int          startingFrom,
+                                        int          pageSize,
+                                        boolean      forLineage,
+                                        boolean      forDuplicateProcessing,
+                                        Date         effectiveTime,
+                                        String       methodName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        elementGUID,
+                                        elementGUIDParameterName,
+                                        elementTypeName,
+                                        OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_GUID,
+                                        OpenMetadataAPIMapper.NESTED_LOCATION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+
+    /**
      * Count the number of locations attached to an entity.
      *
      * @param userId     calling user
@@ -1036,10 +1330,10 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
     {
         return super.countAttachments(userId,
                                       elementGUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_GUID,
                                       OpenMetadataAPIMapper.ASSET_LOCATION_TYPE_NAME,
-                                      2,
+                                      1,
                                       forLineage,
                                       forDuplicateProcessing,
                                       effectiveTime,
@@ -1048,10 +1342,10 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return the locations attached to an entity.
+     * Return the locations attached to an asset.
      *
      * @param userId     calling user
-     * @param elementGUID identifier for the entity that the feedback is attached to
+     * @param elementGUID identifier for the entity that the location is attached to
      * @param elementGUIDParameterName name of parameter supplying the GUID
      * @param elementTypeName name of the type of object being attached to
      * @param startingFrom where to start from in the list
@@ -1067,28 +1361,28 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public List<B>  getLocations(String       userId,
-                                 String       elementGUID,
-                                 String       elementGUIDParameterName,
-                                 String       elementTypeName,
-                                 int          startingFrom,
-                                 int          pageSize,
-                                 boolean      forLineage,
-                                 boolean      forDuplicateProcessing,
-                                 Date         effectiveTime,
-                                 String       methodName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public List<B> getAssetLocations(String       userId,
+                                     String       elementGUID,
+                                     String       elementGUIDParameterName,
+                                     String       elementTypeName,
+                                     int          startingFrom,
+                                     int          pageSize,
+                                     boolean      forLineage,
+                                     boolean      forDuplicateProcessing,
+                                     Date         effectiveTime,
+                                     String       methodName) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
-        return this.getLocations(userId, elementGUID, elementGUIDParameterName, elementTypeName, supportedZones, startingFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        return this.getAssetLocations(userId, elementGUID, elementGUIDParameterName, elementTypeName, supportedZones, startingFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
     /**
-     * Return the locations attached to an entity.
+     * Return the locations attached to an asset.
      *
      * @param userId     calling user
-     * @param elementGUID identifier for the entity that the feedback is attached to
+     * @param elementGUID identifier for the entity that the location is attached to
      * @param elementGUIDParameterName name of parameter supplying the GUID
      * @param elementTypeName name of the type of object being attached to
      * @param serviceSupportedZones supported zones for calling service
@@ -1105,17 +1399,17 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public List<B>  getLocations(String       userId,
-                                 String       elementGUID,
-                                 String       elementGUIDParameterName,
-                                 String       elementTypeName,
-                                 List<String> serviceSupportedZones,
-                                 int          startingFrom,
-                                 int          pageSize,
-                                 boolean      forLineage,
-                                 boolean      forDuplicateProcessing,
-                                 Date         effectiveTime,
-                                 String       methodName) throws InvalidParameterException,
+    public List<B> getAssetLocations(String       userId,
+                                     String       elementGUID,
+                                     String       elementGUIDParameterName,
+                                     String       elementTypeName,
+                                     List<String> serviceSupportedZones,
+                                     int          startingFrom,
+                                     int          pageSize,
+                                     boolean      forLineage,
+                                     boolean      forDuplicateProcessing,
+                                     Date         effectiveTime,
+                                     String       methodName) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
     {
@@ -1130,7 +1424,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
                                         null,
                                         null,
-                                        0,
+                                        1,
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,
@@ -1138,5 +1432,246 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                         pageSize,
                                         effectiveTime,
                                         methodName);
+    }
+
+
+    /**
+     * Return the locations attached to an actor profile.
+     *
+     * @param userId     calling user
+     * @param elementGUID identifier for the entity that the location is attached to
+     * @param elementGUIDParameterName name of parameter supplying the GUID
+     * @param elementTypeName name of the type of object being attached to
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B> getProfileLocations(String       userId,
+                                       String       elementGUID,
+                                       String       elementGUIDParameterName,
+                                       String       elementTypeName,
+                                       int          startingFrom,
+                                       int          pageSize,
+                                       boolean      forLineage,
+                                       boolean      forDuplicateProcessing,
+                                       Date         effectiveTime,
+                                       String       methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        return this.getProfileLocations(userId, elementGUID, elementGUIDParameterName, elementTypeName, supportedZones, startingFrom, pageSize, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Return the locations attached to an actor profile.
+     *
+     * @param userId     calling user
+     * @param elementGUID identifier for the entity that the location is attached to
+     * @param elementGUIDParameterName name of parameter supplying the GUID
+     * @param elementTypeName name of the type of object being attached to
+     * @param serviceSupportedZones supported zones for calling service
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B> getProfileLocations(String       userId,
+                                       String       elementGUID,
+                                       String       elementGUIDParameterName,
+                                       String       elementTypeName,
+                                       List<String> serviceSupportedZones,
+                                       int          startingFrom,
+                                       int          pageSize,
+                                       boolean      forLineage,
+                                       boolean      forDuplicateProcessing,
+                                       Date         effectiveTime,
+                                       String       methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        elementGUID,
+                                        elementGUIDParameterName,
+                                        elementTypeName,
+                                        OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_GUID,
+                                        OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        serviceSupportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the list of community metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param searchStringParameterName name of parameter supplying the search string
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> findLocations(String  userId,
+                                 String  searchString,
+                                 String  searchStringParameterName,
+                                 int     startFrom,
+                                 int     pageSize,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        return this.findBeans(userId,
+                              searchString,
+                              searchStringParameterName,
+                              OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
+                              OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                              null,
+                              startFrom,
+                              pageSize,
+                              forLineage,
+                              forDuplicateProcessing,
+                              effectiveTime,
+                              methodName);
+    }
+
+
+    /**
+     * Retrieve the list of location metadata elements with a matching qualified name, identifier or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param nameParameterName parameter supplying name
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>   getLocationsByName(String  userId,
+                                        String  name,
+                                        String  nameParameterName,
+                                        int     startFrom,
+                                        int     pageSize,
+                                        boolean forLineage,
+                                        boolean forDuplicateProcessing,
+                                        Date    effectiveTime,
+                                        String  methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    name,
+                                    nameParameterName,
+                                    OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    supportedZones,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    effectiveTime,
+                                    methodName);
+    }
+
+
+    /**
+     * Retrieve the list of location metadata elements.
+     *
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B>   getLocations(String  userId,
+                                  int     startFrom,
+                                  int     pageSize,
+                                  boolean forLineage,
+                                  boolean forDuplicateProcessing,
+                                  Date    effectiveTime,
+                                  String  methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        return this.getBeansByType(userId,
+                                    OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
+                                    OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                    null,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    supportedZones,
+                                    startFrom,
+                                    pageSize,
+                                    effectiveTime,
+                                    methodName);
     }
 }

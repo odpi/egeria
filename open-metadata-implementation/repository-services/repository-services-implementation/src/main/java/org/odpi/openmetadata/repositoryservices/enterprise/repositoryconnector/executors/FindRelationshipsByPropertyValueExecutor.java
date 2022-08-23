@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class FindRelationshipsByPropertyValueExecutor extends PageableRepositoryExecutorBase
 {
-    private String searchCriteria;
+    private final String searchCriteria;
 
-    private RelationshipsAccumulator accumulator;
+    private final RelationshipsAccumulator accumulator;
 
 
     /**

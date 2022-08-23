@@ -80,7 +80,8 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
-     * @param qualifiedName unique name for the subjectArea - used in other configuration
+     * @param qualifiedName unique name for the subject area entity
+     * @param subjectAreaName unique name for the subject area - used in other configuration
      * @param displayName short display name for the subjectArea
      * @param description description of the subject area
      * @param usage the usage for inclusion in a subject area
@@ -102,6 +103,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     String              externalSourceGUID,
                                     String              externalSourceName,
                                     String              qualifiedName,
+                                    String              subjectAreaName,
                                     String              displayName,
                                     String              description,
                                     String              usage,
@@ -129,6 +131,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    repositoryHelper);
 
         SubjectAreaBuilder builder = new SubjectAreaBuilder(qualifiedName,
+                                                            subjectAreaName,
                                                             displayName,
                                                             description,
                                                             usage,
@@ -166,7 +169,8 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param subjectAreaGUID unique identifier of subject area
      * @param subjectAreaGUIDParameterName parameter name for subjectAreaGUID
-     * @param qualifiedName unique name for the subjectArea - used in other configuration
+     * @param qualifiedName unique name for the subject area entity
+     * @param subjectAreaName unique name for the subject area - used in other configuration
      * @param displayName short display name for the subjectArea
      * @param description description of the subject area
      * @param criteria the criteria for inclusion in a subject area
@@ -188,6 +192,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   String              subjectAreaGUID,
                                   String              subjectAreaGUIDParameterName,
                                   String              qualifiedName,
+                                  String              subjectAreaName,
                                   String              displayName,
                                   String              description,
                                   String              criteria,
@@ -215,6 +220,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    repositoryHelper);
 
         SubjectAreaBuilder builder = new SubjectAreaBuilder(qualifiedName,
+                                                            subjectAreaName,
                                                             displayName,
                                                             description,
                                                             criteria,
@@ -249,8 +255,8 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Return information about a specific subject area.
      *
      * @param userId calling user
-     * @param qualifiedName unique name for the subjectArea
-     * @param qualifiedNameParameter name of parameter supplying the qualifiedName
+     * @param name unique name for the subjectArea
+     * @param nameParameter name of parameter supplying the name
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -258,13 +264,13 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @return properties of the subject area
      *
-     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws InvalidParameterException name or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     public B getSubjectArea(String   userId,
-                            String   qualifiedName,
-                            String   qualifiedNameParameter,
+                            String   name,
+                            String   nameParameter,
                             boolean  forLineage,
                             boolean  forDuplicateProcessing,
                             Date     effectiveTime,
@@ -272,16 +278,20 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         UserNotAuthorizedException,
                                                         PropertyServerException
     {
-        return this.getBeanByUniqueName(userId,
-                                        qualifiedName,
-                                        qualifiedNameParameter,
-                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                        OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
-                                        OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        effectiveTime,
-                                        methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.SUBJECT_AREA_NAME_PROPERTY_NAME);
+
+        return this.getBeanByValue(userId,
+                                   name,
+                                   nameParameter,
+                                   OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_GUID,
+                                   OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
+                                   specificMatchPropertyNames,
+                                   forLineage,
+                                   forDuplicateProcessing,
+                                   effectiveTime,
+                                   methodName);
     }
 
 
@@ -318,7 +328,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                      OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                                      1,
                                                      forLineage,
                                                      forDuplicateProcessing,
@@ -370,7 +380,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                                                OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                                                OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
-                                                               OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                               OpenMetadataAPIMapper.SUBJECT_AREA_TYPE_NAME,
                                                                null,
                                                                null,
                                                                0,

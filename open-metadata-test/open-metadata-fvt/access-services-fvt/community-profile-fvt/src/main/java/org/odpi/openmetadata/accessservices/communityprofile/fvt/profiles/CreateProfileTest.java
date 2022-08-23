@@ -73,7 +73,7 @@ public class CreateProfileTest
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server

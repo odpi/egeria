@@ -13,6 +13,7 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * SecurityGroupElement is the superclass used to return the common properties of a governance definition stored in the
@@ -27,6 +28,7 @@ public class SecurityGroupElement implements Serializable, MetadataElement
 
     private ElementHeader           elementHeader = null;
     private SecurityGroupProperties properties    = null;
+    private RelatedElement          relatedElement = null;
 
 
     /**
@@ -49,6 +51,7 @@ public class SecurityGroupElement implements Serializable, MetadataElement
         {
             this.elementHeader = template.getElementHeader();
             this.properties = template.getProperties();
+            this.relatedElement = template.getRelatedElement();
         }
     }
 
@@ -98,6 +101,30 @@ public class SecurityGroupElement implements Serializable, MetadataElement
 
 
     /**
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @return list of element stubs
+     */
+    public RelatedElement getRelatedElement()
+    {
+        return relatedElement;
+    }
+
+
+    /**
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @param relatedElement relationship details
+     */
+    public void setRelatedElement(RelatedElement relatedElement)
+    {
+        this.relatedElement = relatedElement;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -108,6 +135,7 @@ public class SecurityGroupElement implements Serializable, MetadataElement
         return "SecurityGroupElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
+                       ", relatedElement=" + relatedElement +
                        '}';
     }
 
@@ -131,7 +159,8 @@ public class SecurityGroupElement implements Serializable, MetadataElement
         }
         SecurityGroupElement that = (SecurityGroupElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties);
+                       Objects.equals(properties, that.properties) &&
+                       Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -143,6 +172,6 @@ public class SecurityGroupElement implements Serializable, MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
     }
 }

@@ -182,7 +182,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
 
     /**
-     * Retrieve all of the Endpoints
+     * Retrieve all the Endpoints
      */
     private void getRESTClients()
     {
@@ -358,7 +358,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                             }
 
                             /*
-                             * All of the discovered APIs are added to the server's endpoint.
+                             * all the discovered APIs are added to the server's endpoint.
                              */
                             String endpointGUID = this.getEndpointGUID(url, openAPISpecification);
 

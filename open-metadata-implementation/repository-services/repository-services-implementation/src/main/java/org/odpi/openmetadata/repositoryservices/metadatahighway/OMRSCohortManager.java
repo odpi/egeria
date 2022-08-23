@@ -50,7 +50,7 @@ public class OMRSCohortManager
     private String                       localMetadataCollectionId        = null;
     private OMRSRepositoryEventPublisher outboundRepositoryEventPublisher = null;
 
-    private AuditLog                     auditLog;
+    private final AuditLog                     auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSCohortManager.class);
 
@@ -313,7 +313,7 @@ public class OMRSCohortManager
         }
 
         /*
-         * Start the cohort's event manager so it is able to pass events.
+         * Start the cohort's event manager, so it is able to pass events.
          */
         if (this.cohortRepositoryEventManager != null)
         {

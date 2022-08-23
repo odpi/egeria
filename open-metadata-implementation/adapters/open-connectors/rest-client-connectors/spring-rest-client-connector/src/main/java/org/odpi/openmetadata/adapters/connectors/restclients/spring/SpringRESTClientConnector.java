@@ -106,13 +106,13 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
         if ((userId != null) && (password != null))
         {
-            log.debug("Using basic authentication to call server " + this.serverName + " on platform " + this.serverPlatformURLRoot + ".");
+            log.debug("Using basic authentication to call server {}  on platform {} .", this.serverName, this.serverPlatformURLRoot);
 
             basicAuthorizationHeader = this.createHeaders(userId, password);
         }
         else
         {
-            log.debug("Using no authentication to call server " + this.serverName + " on platform " + this.serverPlatformURLRoot + ".");
+            log.debug("Using no authentication to call server {} on platform {} .", this.serverName, this.serverPlatformURLRoot );
 
         }
     }
@@ -157,7 +157,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and no parameters.");
+            log.debug("Calling {} with URL template {} and no parameters.",  methodName, urlTemplate);
 
             T responseObject;
 
@@ -189,7 +189,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
+                    error.getMessage(),
+                    methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -230,7 +233,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
+            if(log.isDebugEnabled()) 
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             T  responseObject;
 
@@ -262,7 +273,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
+                    error.getMessage(),
+                    methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -304,7 +318,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and no parameters.");
+            log.debug("Calling {} with URL template {} and no parameters.",  methodName, urlTemplate);
 
             T  responseObject;
 
@@ -322,7 +336,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 }
                 else
                 {
-                    log.warn("Poorly formed POST call made by " + methodName);
+                    log.warn("Poorly formed POST call made by {}.", methodName);
                     request = new HttpEntity<>(basicAuthorizationHeader);
                 }
 
@@ -347,7 +361,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
+                    error.getMessage(),
+                    methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -392,8 +409,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
-
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
             T  responseObject;
 
             if (basicAuthorizationHeader == null)
@@ -410,7 +434,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 }
                 else
                 {
-                    log.warn("Poorly formed POST call made by " + methodName);
+                    log.warn("Poorly formed POST call made by {}.", methodName);
                     request = new HttpEntity<>(basicAuthorizationHeader);
                 }
 
@@ -433,7 +457,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
+                    error.getMessage(),
+                    methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -475,14 +502,22 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             HttpEntity<?> request = new HttpEntity<>(requestBody);
 
             if (requestBody == null)
             {
                 // continue with a null body, we may want to fail this request here in the future.
-                log.warn("Poorly formed PUT call made by " + methodName);
+                log.warn("Poorly formed PUT call made by {}.", methodName);
             }
             if (basicAuthorizationHeader != null)
             {
@@ -506,7 +541,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
+                    error.getMessage(),
+                    methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -546,7 +584,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and no parameters.");
+            log.debug("Calling {} with URL template {} and no parameters.",  methodName, urlTemplate);
 
             T  responseObject = null;
 
@@ -564,7 +602,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 }
                 else
                 {
-                    log.warn("Poorly formed POST call made by " + methodName);
+                    log.warn("Poorly formed POST call made by {}.", methodName);
                     request = new HttpEntity<>(basicAuthorizationHeader);
                 }
 
@@ -587,7 +625,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.error("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
+                    error.getMessage(),
+                    methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -631,7 +672,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             // requestBody may be null
             HttpEntity<?> request = new HttpEntity<>(requestBody) ;
@@ -696,7 +745,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             T responseObject;
 
@@ -712,7 +769,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 }
                 else
                 {
-                    log.warn("Poorly formed POST call made by " + methodName);
+                    log.warn("Poorly formed POST call made by {}.", methodName);
                     request = new HttpEntity<>(basicAuthorizationHeader);
                 }
             }
@@ -734,7 +791,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
+                    error.getMessage(),
+                    methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -774,7 +834,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             T responseObject;
 
@@ -805,7 +873,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
+                    error.getMessage(),
+                    methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
@@ -847,7 +918,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             // requestBody may be null
             HttpEntity<?> request = new HttpEntity<>(requestBody);
@@ -911,14 +990,22 @@ public class SpringRESTClientConnector extends RESTClientConnector
                                   Object... params) throws RESTServerException
     {
         try {
-            log.debug("Calling " + methodName + " with URL template " + urlTemplate + " and parameters " + Arrays.toString(params) + ".");
+            if(log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                        methodName,
+                        urlTemplate,
+                        Arrays.toString(params)
+                );
+            }
 
             HttpEntity<?> request = new HttpEntity<>(requestBody);
 
             if (requestBody == null)
             {
                 // continue with a null body, we may want to fail this request here in the future.
-                log.warn("Poorly formed PUT call made by " + methodName);
+                log.warn("Poorly formed PUT call made by {}", methodName);
             }
             if (basicAuthorizationHeader != null)
             {
@@ -942,7 +1029,10 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
         catch (Exception error)
         {
-            log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+            log.debug("Exception {} with message {} occurred during REST call for {}.",
+                    error.getClass().getName(),
+                    error.getMessage(),
+                    methodName);
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),

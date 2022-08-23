@@ -29,11 +29,11 @@ public enum RelatedMediaUsage implements Serializable
     public static final String ENUM_TYPE_GUID  = "c6861a72-7485-48c9-8040-876f6c342b61";
     public static final String ENUM_TYPE_NAME  = "MediaUsage";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

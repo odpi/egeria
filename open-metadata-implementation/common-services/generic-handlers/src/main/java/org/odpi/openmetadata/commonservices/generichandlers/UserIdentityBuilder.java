@@ -13,12 +13,14 @@ import java.util.Map;
  */
 public class UserIdentityBuilder extends ReferenceableBuilder
 {
+    private final String userId;
     private String distinguishedName = null;
 
     /**
      * Create constructor
      *
      * @param qualifiedName unique name for the user identity
+     * @param userId user account identifier
      * @param distinguishedName LDAP distinguished name
      * @param additionalProperties additional properties for a user identity
      * @param typeGUID unique identifier of this element's type
@@ -29,6 +31,7 @@ public class UserIdentityBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     UserIdentityBuilder(String               qualifiedName,
+                        String               userId,
                         String               distinguishedName,
                         Map<String, String>  additionalProperties,
                         String               typeGUID,
@@ -47,6 +50,7 @@ public class UserIdentityBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
+        this.userId = userId;
         this.distinguishedName = distinguishedName;
     }
 
@@ -55,6 +59,7 @@ public class UserIdentityBuilder extends ReferenceableBuilder
      * Create constructor
      *
      * @param qualifiedName unique name for the user identity
+     * @param userId user account identifier
      * @param additionalProperties additional properties for a user identity
      * @param extendedProperties  properties for a user identity subtype
      * @param repositoryHelper helper methods
@@ -62,6 +67,7 @@ public class UserIdentityBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     UserIdentityBuilder(String               qualifiedName,
+                        String               userId,
                         Map<String, String>  additionalProperties,
                         Map<String, Object>  extendedProperties,
                         OMRSRepositoryHelper repositoryHelper,
@@ -76,6 +82,8 @@ public class UserIdentityBuilder extends ReferenceableBuilder
               repositoryHelper,
               serviceName,
               serverName);
+
+        this.userId = userId;
     }
 
 
@@ -90,6 +98,12 @@ public class UserIdentityBuilder extends ReferenceableBuilder
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.USER_ID_PROPERTY_NAME,
+                                                                  userId,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

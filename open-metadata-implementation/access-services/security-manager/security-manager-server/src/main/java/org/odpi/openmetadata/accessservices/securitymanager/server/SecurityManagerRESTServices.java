@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.securitymanager.server;
 
 import org.odpi.openmetadata.accessservices.securitymanager.converters.SecurityManagerOMASConverter;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
@@ -48,6 +47,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -686,6 +686,7 @@ public class SecurityManagerRESTServices
                                                                      null,
                                                                      null,
                                                                      requestBody.getQualifiedName(),
+                                                                     requestBody.getUserId(),
                                                                      requestBody.getDistinguishedName(),
                                                                      requestBody.getAdditionalProperties(),
                                                                      requestBody.getTypeName(),
@@ -753,6 +754,7 @@ public class SecurityManagerRESTServices
                                            userIdentityGUID,
                                            guidParameterName,
                                            requestBody.getQualifiedName(),
+                                           requestBody.getUserId(),
                                            requestBody.getDistinguishedName(),
                                            requestBody.getAdditionalProperties(),
                                            requestBody.getTypeName(),

@@ -37,9 +37,9 @@ public enum OMRSAuditLogRecordSeverity implements AuditLogRecordSeverity
     ;
 
 
-    private  int    severityCode;
-    private  String severityName;
-    private  String severityDescription;
+    private  final int    severityCode;
+    private  final String severityName;
+    private  final String severityDescription;
 
 
     /**
