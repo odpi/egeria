@@ -35,7 +35,7 @@ dependencies {
 
 }
 
-description = 'CommunityProperties Profile OMAS FVT'
+description = 'ProjectProperties Profile OMAS FVT'
 
 java {
     withJavadocJar()

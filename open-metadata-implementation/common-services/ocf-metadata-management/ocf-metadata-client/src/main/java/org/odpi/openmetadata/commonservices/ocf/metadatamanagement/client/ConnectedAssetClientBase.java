@@ -232,15 +232,15 @@ public class ConnectedAssetClientBase
             /*
              * If the connector is successfully created, set up the Connected Asset Properties for the connector.
              * The properties should be retrieved from the open metadata repositories, so use an OMAS implementation
-             * of the ConnectedAssetProperties object.
+             * of the EgeriaConnectedAssetProperties object.
              */
-            ConnectedAssetProperties connectedAssetProperties = new ConnectedAssetProperties(serviceName,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             serverPlatformURLRoot,
-                                                                                             newConnector.getConnectorInstanceId(),
-                                                                                             newConnector.getConnection(),
-                                                                                             assetGUID);
+            EgeriaConnectedAssetProperties connectedAssetProperties = new EgeriaConnectedAssetProperties(serviceName,
+                                                                                                         serverName,
+                                                                                                         userId,
+                                                                                                         serverPlatformURLRoot,
+                                                                                                         newConnector.getConnectorInstanceId(),
+                                                                                                         newConnector.getConnection(),
+                                                                                                         assetGUID);
 
             /*
              * Pass the new connected asset properties to the connector

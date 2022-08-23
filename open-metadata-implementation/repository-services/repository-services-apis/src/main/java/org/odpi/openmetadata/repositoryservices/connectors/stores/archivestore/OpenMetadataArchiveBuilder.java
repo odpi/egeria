@@ -24,7 +24,7 @@ import java.util.List;
  * OpenMetadataArchiveBuilder defines the interface for an open metadata archive store connector that is able
  * to manage individual elements of the open metadata archive.  It is an optional interface for an open metadata
  * archive store connector.  For connectors where this interface is not implemented, the OMRS provides
- * the OMRSArchiveBuilder utility that manages the content of an archive in memory so it can be passed
+ * the OMRSArchiveBuilder utility that manages the content of an archive in memory, so it can be passed
  * to the open metadata archive store connector as a single structure
  */
 public interface OpenMetadataArchiveBuilder

@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.accessservices.securitymanager.converters;
 
 
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.PersonRoleProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -79,10 +79,12 @@ public class PersonRoleConverter<B> extends SecurityManagerOMASConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
 
-                    roleProperties.setRoleId(this.removeQualifiedName(instanceProperties));
+                    roleProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    roleProperties.setRoleId(this.removeIdentifier(instanceProperties));
                     roleProperties.setTitle(this.removeTitle(instanceProperties));
                     roleProperties.setDescription(this.removeDescription(instanceProperties));
                     roleProperties.setScope(this.removeScope(instanceProperties));
+                    roleProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME) != null);
                     roleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
 

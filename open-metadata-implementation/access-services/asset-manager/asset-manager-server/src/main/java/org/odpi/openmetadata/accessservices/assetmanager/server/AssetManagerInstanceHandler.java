@@ -15,6 +15,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 class AssetManagerInstanceHandler extends OMASServiceInstanceHandler
 {

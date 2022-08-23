@@ -35,11 +35,11 @@ public enum CriticalityLevel implements Serializable
     public static final String ENUM_TYPE_GUID  = "22bcbf49-83e1-4432-b008-e09a8f842a1e";
     public static final String ENUM_TYPE_NAME  = "CriticalityLevel";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

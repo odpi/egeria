@@ -27,11 +27,11 @@ public enum LatestChangeAction implements Serializable
     public static final String ENUM_TYPE_GUID  = "032d844b-868f-4c4a-bc5d-81f0f9704c4d";
     public static final String ENUM_TYPE_NAME  = "LatestChangeAction";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

@@ -107,7 +107,7 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
                                         null,
                                         null,
-                                        0,
+                                        2,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -126,6 +126,8 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param profileGUID   unique identifier for the connected entity (Referenceable).
      * @param profileGUIDParameterName parameter supplying the profileGUID
+     * @param contactName name of this contact method - eg my office phone number
+     * @param contactType type of contact eg "Office phone number" - typically controlled from a valid value set
      * @param contactMethodType  ordinal for contact type
      * @param contactMethodService   name of the service to call
      * @param contactMethodValue   identity value to use for this profile through this contact method
@@ -146,6 +148,8 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       String              externalSourceName,
                                       String              profileGUID,
                                       String              profileGUIDParameterName,
+                                      String              contactName,
+                                      String              contactType,
                                       int                 contactMethodType,
                                       String              contactMethodService,
                                       String              contactMethodValue,
@@ -158,7 +162,9 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {
-        ContactDetailsBuilder builder = new ContactDetailsBuilder(contactMethodType,
+        ContactDetailsBuilder builder = new ContactDetailsBuilder(contactName,
+                                                                  contactType,
+                                                                  contactMethodType,
                                                                   contactMethodService,
                                                                   contactMethodValue,
                                                                   repositoryHelper,

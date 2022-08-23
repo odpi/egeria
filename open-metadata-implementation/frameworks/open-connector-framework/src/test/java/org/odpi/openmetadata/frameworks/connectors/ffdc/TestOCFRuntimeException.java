@@ -35,7 +35,7 @@ public class TestOCFRuntimeException
      */
     @Test public void testNewException()
     {
-        OCFRuntimeException exception = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        OCFRuntimeException exception = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                 reportingClassName,
                                                                 reportingActionDescription);
 
@@ -51,7 +51,7 @@ public class TestOCFRuntimeException
      */
     @Test public void testWrappingException()
     {
-        OCFRuntimeException exception = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        OCFRuntimeException exception = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                 reportingClassName,
                                                                 reportingActionDescription,
                                                                 reportedCaughtException);
@@ -69,12 +69,12 @@ public class TestOCFRuntimeException
      */
     @Test public void testHashCode()
     {
-        OCFRuntimeException exception = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        OCFRuntimeException exception = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                 reportingClassName,
                                                                 reportingActionDescription,
                                                                 reportedCaughtException);
 
-        OCFRuntimeException exception2 = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        OCFRuntimeException exception2 = new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                  reportingClassName,
                                                                  reportingActionDescription,
                                                                  reportedCaughtException);

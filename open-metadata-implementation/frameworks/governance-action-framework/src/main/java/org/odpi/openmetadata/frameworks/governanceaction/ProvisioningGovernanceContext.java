@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.PortType;
 
 
@@ -51,7 +51,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * governance action service has created a new asset as part of the provisioning process.
      * This interface includes an optional templateGUID to copy the structure of an existing asset of the same type.
      *
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all of the attachments
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments
      *                     such as nested content, schema, connection etc)
      * @param qualifiedName the unique name of the new asset
      * @param name the technical display name of the asset
@@ -98,7 +98,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
     /**
      * Create a new process to represent the processing of this governance action process.
      *
-     * @param templateGUID the unique identifier of the existing process to copy (this will copy all of the attachments such as ports, nested content,
+     * @param templateGUID the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
      *                     schema, connection etc)
      * @param initialStatus status value of the process
      * @param qualifiedName the unique name of the new process
@@ -127,7 +127,7 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @param qualifiedName the unique name of the new process
      * @param name the technical display name of the process
      * @param description the description of the process
-     * @param parentGUID the unique identifier of the existing process to copy (this will copy all of the attachments such as ports, nested content,
+     * @param parentGUID the unique identifier of the existing process to copy (this will copy all the attachments such as ports, nested content,
      *                     schema, connection etc)
      *
      * @return unique identifier of the new process

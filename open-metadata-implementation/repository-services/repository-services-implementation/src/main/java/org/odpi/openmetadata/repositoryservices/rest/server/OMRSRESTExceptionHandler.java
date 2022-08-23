@@ -26,7 +26,7 @@ import java.util.Map;
 class OMRSRESTExceptionHandler
 {
     private static final MessageFormatter messageFormatter = new MessageFormatter();
-    private OMRSRepositoryServicesInstanceHandler instanceHandler;
+    private final OMRSRepositoryServicesInstanceHandler instanceHandler;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSRESTExceptionHandler.class);
 

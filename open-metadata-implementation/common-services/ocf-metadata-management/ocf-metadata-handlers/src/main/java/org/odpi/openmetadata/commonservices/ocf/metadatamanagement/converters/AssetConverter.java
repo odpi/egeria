@@ -266,7 +266,7 @@ public class AssetConverter extends ReferenceableConverter
 
                 if (! origins.isEmpty())
                 {
-                    bean.setOrigin(origins);
+                    bean.setAssetOrigin(origins);
                 }
             }
         }

@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.Date;
@@ -23,10 +25,10 @@ public class RelatedMetadataElements extends ElementControlHeader
 {
     private static final long serialVersionUID = 1L;
 
-    private String            relationshipGUID  = null;
-    private ElementType       relationshipType  = null;
-    private Date              effectiveFromTime = null;
-    private Date              effectiveToTime   = null;
+    private String            relationshipGUID       = null;
+    private ElementType       relationshipType       = null;
+    private Date              effectiveFromTime      = null;
+    private Date              effectiveToTime        = null;
     private ElementProperties relationshipProperties = null;
     private String            elementGUIDAtEnd1      = null;
     private String            elementGUIDAtEnd2      = null;
@@ -224,20 +226,11 @@ public class RelatedMetadataElements extends ElementControlHeader
                        ", relationshipProperties=" + relationshipProperties +
                        ", elementGUIDAtEnd1='" + elementGUIDAtEnd1 + '\'' +
                        ", elementGUIDAtEnd2='" + elementGUIDAtEnd2 + '\'' +
-                       ", headerVersion=" + getHeaderVersion() +
-                       ", elementSourceServer='" + getElementSourceServer() + '\'' +
-                       ", elementOriginCategory=" + getElementOriginCategory() +
-                       ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
-                       ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
-                       ", elementLicense='" + getElementLicense() + '\'' +
                        ", status=" + getStatus() +
-                       ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
-                       ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
-                       ", elementMaintainedBy=" + getElementMaintainedBy() +
-                       ", elementCreateTime=" + getElementCreateTime() +
-                       ", elementUpdateTime=" + getElementUpdateTime() +
-                       ", elementVersion=" + getElementVersion() +
-                       ", mappingProperties=" + getMappingProperties() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", headerVersion=" + getHeaderVersion() +
                        '}';
     }
 

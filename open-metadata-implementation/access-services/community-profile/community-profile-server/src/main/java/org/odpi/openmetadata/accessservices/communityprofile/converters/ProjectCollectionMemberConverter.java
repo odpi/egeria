@@ -34,7 +34,7 @@ public class ProjectCollectionMemberConverter<B> extends CommunityProfileOMASCon
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -78,6 +78,8 @@ public class ProjectCollectionMemberConverter<B> extends CommunityProfileOMASCon
 
                     projectProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     projectProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+
+                    projectProperties.setIdentifier(this.removeIdentifier(instanceProperties));
                     projectProperties.setName(this.removeName(instanceProperties));
                     projectProperties.setDescription(this.removeDescription(instanceProperties));
                     projectProperties.setStartDate(this.removeStartDate(instanceProperties));

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.stewardshipaction.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,11 +28,11 @@ public class ConnectionElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ConnectionProperties            connectionProperties = null;
-    private ElementHeader                   elementHeader        = null;
-    private ElementStub                     connectorType        = null;
-    private ElementStub                     endpoint             = null;
-    private List<EmbeddedConnection>        embeddedConnections  = null;
+    private ConnectionProperties     connectionProperties = null;
+    private ElementHeader            elementHeader        = null;
+    private ElementStub              connectorType        = null;
+    private ElementStub              endpoint             = null;
+    private List<EmbeddedConnection> embeddedConnections  = null;
 
 
     /**

@@ -30,7 +30,7 @@ public class GetEntityDetailExecutor extends GetEntityExecutor
     private boolean      allExceptions = true;
     private Date         asOfTime      = null;
 
-    private EntityDetailAccumulator accumulator;
+    private final EntityDetailAccumulator accumulator;
 
 
     /**

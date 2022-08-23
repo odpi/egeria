@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -22,11 +23,11 @@ import java.util.List;
  */
 public class GovernanceProgramReviewManager implements GovernanceProgramReviewInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
+    private final String                      serverName;               /* Initialized in constructor */
+    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -134,7 +135,7 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -205,7 +206,7 @@ public class GovernanceProgramReviewManager implements GovernanceProgramReviewIn
 
 
     /**
-     * Return the list of governance definitions associated with a unique docId.  In an ideal world, the should be only one.
+     * Return the list of governance definitions associated with a unique docId.  In an ideal world, there should be only one.
      *
      * @param userId calling user
      * @param typeName option types name to restrict retrieval to a specific type

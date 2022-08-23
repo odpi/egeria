@@ -85,7 +85,7 @@ public class EngineConfig extends AdminServicesConfigHeader
     }
 
     /**
-     * Return the name of the engine.  This is the qualified name of the SoftwareServerCapability entity in the metadata repository that
+     * Return the name of the engine.  This is the qualified name of the SoftwareCapability entity in the metadata repository that
      * represents the engine.
      *
      * @return String name
@@ -97,7 +97,7 @@ public class EngineConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the name of the engine service.   This is the qualified name of the SoftwareServerCapability entity in the metadata repository that
+     * Set up the name of the engine service.   This is the qualified name of the SoftwareCapability entity in the metadata repository that
      * represents the engine.
      *
      * @param engineQualifiedName String name

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -30,26 +31,18 @@ class TypeConverter
      * Convert information from a repository instance into an Open Connector Framework ElementType.
      *
      * @param instanceType type information from the instance
-     * @param instanceProvenanceType provenance information from the instance
-     * @param metadataCollectionId home of the instance
-     * @param metadataCollectionName name of the instance's home
-     * @param elementLicense any attached license
      * @return OCF ElementType object
      */
-    ElementType getElementType(InstanceType            instanceType,
-                               InstanceProvenanceType  instanceProvenanceType,
-                               String                  metadataCollectionId,
-                               String                  metadataCollectionName,
-                               String                  elementLicense)
+    ElementType getElementType(InstanceType            instanceType)
     {
         ElementType  elementType = new ElementType();
 
         if (instanceType != null)
         {
-            elementType.setElementTypeId(instanceType.getTypeDefGUID());
-            elementType.setElementTypeName(instanceType.getTypeDefName());
-            elementType.setElementTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setElementTypeDescription(instanceType.getTypeDefDescription());
+            elementType.setTypeId(instanceType.getTypeDefGUID());
+            elementType.setTypeName(instanceType.getTypeDefName());
+            elementType.setTypeVersion(instanceType.getTypeDefVersion());
+            elementType.setTypeDescription(instanceType.getTypeDefDescription());
 
             List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
 
@@ -67,16 +60,10 @@ class TypeConverter
 
                 if (! superTypes.isEmpty())
                 {
-                    elementType.setElementSuperTypeNames(superTypes);
+                    elementType.setSuperTypeNames(superTypes);
                 }
             }
         }
-
-        elementType.setElementMetadataCollectionId(metadataCollectionId);
-        elementType.setElementMetadataCollectionName(metadataCollectionName);
-        elementType.setElementOrigin(this.getElementOrigin(instanceProvenanceType));
-        elementType.setElementSourceServer(metadataCollectionName);
-        elementType.setElementLicense(elementLicense);
 
         return elementType;
     }
@@ -88,35 +75,35 @@ class TypeConverter
      * @param instanceProvenanceType value from the repository services
      * @return ElementOrigin enum
      */
-    private ElementOrigin getElementOrigin(InstanceProvenanceType   instanceProvenanceType)
+    public ElementOriginCategory getElementOrigin(InstanceProvenanceType   instanceProvenanceType)
     {
         if (instanceProvenanceType != null)
         {
             switch (instanceProvenanceType)
             {
                 case DEREGISTERED_REPOSITORY:
-                    return ElementOrigin.DEREGISTERED_REPOSITORY;
+                    return ElementOriginCategory.DEREGISTERED_REPOSITORY;
 
                 case EXTERNAL_SOURCE:
-                    return ElementOrigin.EXTERNAL_SOURCE;
+                    return ElementOriginCategory.EXTERNAL_SOURCE;
 
                 case EXPORT_ARCHIVE:
-                    return ElementOrigin.EXPORT_ARCHIVE;
+                    return ElementOriginCategory.EXPORT_ARCHIVE;
 
                 case LOCAL_COHORT:
-                    return ElementOrigin.LOCAL_COHORT;
+                    return ElementOriginCategory.LOCAL_COHORT;
 
                 case CONTENT_PACK:
-                    return ElementOrigin.CONTENT_PACK;
+                    return ElementOriginCategory.CONTENT_PACK;
 
                 case CONFIGURATION:
-                    return ElementOrigin.CONFIGURATION;
+                    return ElementOriginCategory.CONFIGURATION;
 
                 case UNKNOWN:
-                    return ElementOrigin.UNKNOWN;
+                    return ElementOriginCategory.UNKNOWN;
             }
         }
 
-        return ElementOrigin.UNKNOWN;
+        return ElementOriginCategory.UNKNOWN;
     }
 }

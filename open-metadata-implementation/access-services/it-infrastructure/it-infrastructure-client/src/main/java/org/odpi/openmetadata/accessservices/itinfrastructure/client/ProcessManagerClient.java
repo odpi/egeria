@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfra
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
@@ -27,7 +26,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ControlFlowReq
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowElementResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowElementsResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveDatesRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeMetadataSourceRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.LineageMappingElementResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.LineageMappingElementsResponse;
@@ -42,6 +40,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,14 +25,14 @@ public class DigitalArchitectureOutTopicEvent implements Serializable
 {
     private static final long      serialVersionUID = 1L;
 
-    private long                       eventVersionId    = 1L;
+    private long                         eventVersionId    = 1L;
     private DigitalArchitectureEventType eventType         = null;
-    private Date                       eventTime         = null;
-    private ElementHeader              elementHeader     = null;
-    private Map<String, Object>        elementProperties = null;
+    private Date                         eventTime         = null;
+    private ElementHeader                elementHeader     = null;
+    private Map<String, Object>          elementProperties = null;
 
-    private ElementHeader          previousElementHeader     = null;
-    private Map<String, Object>    previousElementProperties = null;
+    private ElementHeader       previousElementHeader     = null;
+    private Map<String, Object> previousElementProperties = null;
 
     private String                 classificationName               = null;
     private Map<String, Object>    previousClassificationProperties = null;

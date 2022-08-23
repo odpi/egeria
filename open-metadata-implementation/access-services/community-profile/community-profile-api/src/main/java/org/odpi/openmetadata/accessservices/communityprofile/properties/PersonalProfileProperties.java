@@ -28,6 +28,7 @@ public class PersonalProfileProperties extends ActorProfileProperties
     private String givenNames        = null;
     private String surname           = null;
     private String fullName          = null;
+    private String pronouns          = null;
     private String jobTitle          = null;
     private String employeeNumber    = null;
     private String employeeType      = null;
@@ -90,6 +91,28 @@ public class PersonalProfileProperties extends ActorProfileProperties
     public void setFullName(String fullName)
     {
         this.fullName = fullName;
+    }
+
+
+    /**
+     * Return the person's preferred pronouns.
+     *
+     * @return string
+     */
+    public String getPronouns()
+    {
+        return pronouns;
+    }
+
+
+    /**
+     * Set up the person's preferred pronouns.
+     *
+     * @param pronouns string
+     */
+    public void setPronouns(String pronouns)
+    {
+        this.pronouns = pronouns;
     }
 
 

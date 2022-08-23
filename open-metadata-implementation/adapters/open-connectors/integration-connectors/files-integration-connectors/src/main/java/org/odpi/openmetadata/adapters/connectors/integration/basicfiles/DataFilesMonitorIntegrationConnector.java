@@ -105,7 +105,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
      * as well as any external REST API calls to explicitly refresh the connector.
      *
      * This method performs two sweeps.  It first retrieves the files in the directory and validates that are in the
-     * catalog - adding or updating them if necessary.  The second sweep is to ensure that all of the assets catalogued
+     * catalog - adding or updating them if necessary.  The second sweep is to ensure that all the assets catalogued
      * in this directory actually exist on the file system.
      *
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.

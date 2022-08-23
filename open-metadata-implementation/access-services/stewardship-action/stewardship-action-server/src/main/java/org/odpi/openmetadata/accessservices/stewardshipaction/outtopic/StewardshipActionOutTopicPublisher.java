@@ -9,8 +9,8 @@ import org.odpi.openmetadata.accessservices.stewardshipaction.converters.Element
 import org.odpi.openmetadata.accessservices.stewardshipaction.events.StewardshipActionEventType;
 import org.odpi.openmetadata.accessservices.stewardshipaction.events.StewardshipActionOutTopicEvent;
 import org.odpi.openmetadata.accessservices.stewardshipaction.ffdc.StewardshipActionAuditCode;
-import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -21,11 +21,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class StewardshipActionOutTopicPublisher
 {
-    private StewardshipActionOutTopicServerConnector outTopicServerConnector;
-    private AuditLog                                 outTopicAuditLog;
-    private String                                   outTopicName;
-    private ElementHeaderConverter<ElementHeader>    headerConverter;
-    private OMRSRepositoryHelper                     repositoryHelper;
+    private final StewardshipActionOutTopicServerConnector outTopicServerConnector;
+    private final AuditLog                                 outTopicAuditLog;
+    private final String                                   outTopicName;
+    private final ElementHeaderConverter<ElementHeader>    headerConverter;
+    private final OMRSRepositoryHelper                     repositoryHelper;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 

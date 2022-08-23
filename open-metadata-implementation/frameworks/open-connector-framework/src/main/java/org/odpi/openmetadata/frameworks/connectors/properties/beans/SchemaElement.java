@@ -34,7 +34,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SchemaType.class, name = "SchemaType")
         })
 
-public abstract class SchemaElement extends Referenceable
+public abstract class SchemaElement extends GovernedReferenceable
 {
     private static final long     serialVersionUID = 1L;
 
@@ -45,7 +45,7 @@ public abstract class SchemaElement extends Referenceable
 
     /*
      * Some schema elements are calculated values rather than stored values.  These values are stored in the CalculatedValue
-     * classification.  They logically belong to the SchemaType but they appear on the Schema Attribute if the type information
+     * classification.  They logically belong to the SchemaType, but they appear on the Schema Attribute if the type information
      * us stored in TypeEmbeddedAttribute classification
      */
     protected boolean isCalculatedValue = false;
@@ -76,6 +76,8 @@ public abstract class SchemaElement extends Referenceable
             displayName = template.getDisplayName();
             description = template.getDescription();
             anchorGUID = template.getAnchorGUID();
+            isCalculatedValue = template.isCalculatedValue();
+            expression = template.getExpression();
         }
     }
 

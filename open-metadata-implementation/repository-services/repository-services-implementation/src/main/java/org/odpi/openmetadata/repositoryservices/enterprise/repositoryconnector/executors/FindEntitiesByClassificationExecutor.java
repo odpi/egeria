@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class FindEntitiesByClassificationExecutor extends PageableEntityRepositoryExecutorBase
 {
-    private String             classificationName;
-    private InstanceProperties matchClassificationProperties;
-    private MatchCriteria      matchCriteria;
+    private final String             classificationName;
+    private final InstanceProperties matchClassificationProperties;
+    private final MatchCriteria      matchCriteria;
 
     /**
      * Create the executor.  The parameters provide the parameters for issuing the requests and
@@ -32,7 +32,7 @@ public class FindEntitiesByClassificationExecutor extends PageableEntityReposito
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties Optional list of entity properties to match (contains wildcards).
      * @param matchCriteria Enum defining how the match properties should be matched to the classifications in the repository.
@@ -91,7 +91,7 @@ public class FindEntitiesByClassificationExecutor extends PageableEntityReposito
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties Optional list of entity properties to match (contains wildcards).
      * @param matchCriteria Enum defining how the match properties should be matched to the classifications in the repository.

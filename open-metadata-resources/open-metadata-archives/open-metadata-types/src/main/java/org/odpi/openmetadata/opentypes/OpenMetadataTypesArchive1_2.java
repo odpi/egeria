@@ -5152,7 +5152,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "73cf5658-6a73-4ebc-8f4d-44fdfac0b437";
         final String name            = "ResourceList";
-        final String description     = "Links supporting resources to an anchor object (typically an Actor Profile, Project, Meeting or Community).";
+        final String description     = "Links supporting resources to a referenceable (typically an Actor Profile, Governance Domain, Project, Meeting or Community).";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;

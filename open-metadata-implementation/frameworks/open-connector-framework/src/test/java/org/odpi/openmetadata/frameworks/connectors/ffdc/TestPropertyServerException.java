@@ -36,7 +36,7 @@ public class TestPropertyServerException
      */
     @Test public void testNewException()
     {
-        PropertyServerException exception = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        PropertyServerException exception = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                         reportingClassName,
                                                                         reportingActionDescription);
 
@@ -52,7 +52,7 @@ public class TestPropertyServerException
      */
     @Test public void testWrappingException()
     {
-        PropertyServerException exception = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        PropertyServerException exception = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                         reportingClassName,
                                                                         reportingActionDescription,
                                                                         reportedCaughtException);
@@ -70,12 +70,12 @@ public class TestPropertyServerException
      */
     @Test public void testHashCode()
     {
-        PropertyServerException exception = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        PropertyServerException exception = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                         reportingClassName,
                                                                         reportingActionDescription,
                                                                         reportedCaughtException);
 
-        PropertyServerException exception2 = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        PropertyServerException exception2 = new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                          reportingClassName,
                                                                          reportingActionDescription,
                                                                          reportedCaughtException);

@@ -136,6 +136,7 @@ public class ITProfileRESTServices
                                                            requestBody.getExternalSourceName(),
                                                            profileGUID,
                                                            profileGUIDParameterName,
+                                                           "UserIdentity:" + requestBody.getItUserId(),
                                                            requestBody.getItUserId(),
                                                            null,
                                                            null,
@@ -372,11 +373,11 @@ public class ITProfileRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                int contactType = 0;
+                int contactMethodTypeOrdinal = 0;
 
-                if (requestBody.getProperties().getType() != null)
+                if (requestBody.getProperties().getContactMethodType() != null)
                 {
-                    contactType = requestBody.getProperties().getType().getOpenTypeOrdinal();
+                    contactMethodTypeOrdinal = requestBody.getProperties().getContactMethodType().getOpenTypeOrdinal();
                 }
 
                 handler.createContactMethod(userId,
@@ -384,9 +385,11 @@ public class ITProfileRESTServices
                                             requestBody.getExternalSourceName(),
                                             itProfileGUID,
                                             guidParameterName,
-                                            contactType,
-                                            requestBody.getProperties().getService(),
-                                            requestBody.getProperties().getValue(),
+                                            requestBody.getProperties().getName(),
+                                            requestBody.getProperties().getContactType(),
+                                            contactMethodTypeOrdinal,
+                                            requestBody.getProperties().getContactMethodService(),
+                                            requestBody.getProperties().getContactMethodValue(),
                                             null,
                                             null,
                                             false,
@@ -731,6 +734,7 @@ public class ITProfileRESTServices
                                                                      null,
                                                                      null,
                                                                      requestBody.getProperties().getQualifiedName(),
+                                                                     requestBody.getProperties().getUserId(),
                                                                      requestBody.getProperties().getDistinguishedName(),
                                                                      requestBody.getProperties().getAdditionalProperties(),
                                                                      requestBody.getProperties().getTypeName(),
@@ -798,6 +802,7 @@ public class ITProfileRESTServices
                                            userIdentityGUID,
                                            guidParameterName,
                                            requestBody.getProperties().getQualifiedName(),
+                                           requestBody.getProperties().getUserId(),
                                            requestBody.getProperties().getDistinguishedName(),
                                            requestBody.getProperties().getAdditionalProperties(),
                                            requestBody.getProperties().getTypeName(),

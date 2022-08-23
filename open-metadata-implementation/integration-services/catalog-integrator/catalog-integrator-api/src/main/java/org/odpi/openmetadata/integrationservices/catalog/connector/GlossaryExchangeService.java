@@ -526,6 +526,7 @@ public class GlossaryExchangeService
     /**
      * Create a new metadata element to represent a glossary category.
      *
+     * @param glossaryGUID unique identifier of anchor glossary
      * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param glossaryCategoryProperties properties about the glossary category to store
      *

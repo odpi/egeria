@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 
 import java.util.Objects;
@@ -44,7 +43,7 @@ import java.util.Objects;
  *     </li>
  *     <li>
  *         encryptionMethod - Describes the encryption method to use (if any).  This is an open value allowing
- *         information needed by the connector user to retrieve all of the information they need to work with
+ *         information needed by the connector user to retrieve all the information they need to work with
  *         the endpoint.
  *     </li>
  *     <li>
@@ -64,46 +63,24 @@ public class EndpointProperties extends AssetReferenceable
 
 
     /**
-     * Bean constructor
+     * Copy/clone constructor for an Endpoint that is connected to an Asset (either directly or indirectly).
      *
-     * @param endpointBean bean containing the properties
+     * @param templateEndpoint template object to copy.
      */
-    public EndpointProperties(Endpoint  endpointBean)
+    public EndpointProperties(Endpoint templateEndpoint)
     {
-        super(endpointBean);
+        super(templateEndpoint);
 
-        if (endpointBean == null)
+        if (templateEndpoint == null)
         {
             this.endpointBean = new Endpoint();
         }
         else
         {
-            this.endpointBean = endpointBean;
+            this.endpointBean = templateEndpoint;
         }
     }
 
-
-
-    /**
-     * Bean constructor with parent asset
-     *
-     * @param parentAsset description of the asset that this endpoint is attached to.
-     * @param endpointBean bean containing the properties
-     */
-    public EndpointProperties(AssetDescriptor parentAsset,
-                              Endpoint        endpointBean)
-    {
-        super(parentAsset, endpointBean);
-
-        if (endpointBean == null)
-        {
-            this.endpointBean = new Endpoint();
-        }
-        else
-        {
-            this.endpointBean = endpointBean;
-        }
-    }
 
 
     /**
@@ -113,20 +90,7 @@ public class EndpointProperties extends AssetReferenceable
      */
     public EndpointProperties(EndpointProperties templateEndpoint)
     {
-        this(null, templateEndpoint);
-    }
-
-
-    /**
-     * Copy/clone constructor for an Endpoint that is connected to an Asset (either directly or indirectly).
-     *
-     * @param parentAsset description of the asset that this endpoint is attached to.
-     * @param templateEndpoint template object to copy.
-     */
-    public EndpointProperties(AssetDescriptor    parentAsset,
-                              EndpointProperties templateEndpoint)
-    {
-        super(parentAsset, templateEndpoint);
+        super(templateEndpoint);
 
         if (templateEndpoint == null)
         {
@@ -138,9 +102,8 @@ public class EndpointProperties extends AssetReferenceable
         }
     }
 
-
     /**
-     * Return the Endpoint bean that contains all of the properties.
+     * Return the Endpoint bean that contains all the properties.
      *
      * @return Endpoint bean
      */

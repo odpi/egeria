@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.*
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public interface GovernanceProgramReviewInterface
 
 
     /**
-     * Return the list of governance definitions associated with a unique docId.  In an ideal world, the should be only one.
+     * Return the list of governance definitions associated with a unique docId.  In an ideal world, there should be only one.
      *
      * @param userId calling user
      * @param typeName option type name to restrict retrieval to a specific type

@@ -602,16 +602,6 @@ public class SchemaAttribute extends SchemaElement
                 ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", headerVersion=" + getHeaderVersion() +
                 '}';
     }
 

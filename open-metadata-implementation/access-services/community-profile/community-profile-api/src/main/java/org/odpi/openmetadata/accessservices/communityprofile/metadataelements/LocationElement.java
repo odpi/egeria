@@ -13,6 +13,7 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * LocationElement contains the properties and header for a location definition retrieved from the metadata repository.
@@ -26,6 +27,7 @@ public class LocationElement implements MetadataElement, Serializable
 
     private ElementHeader      elementHeader = null;
     private LocationProperties locationProperties = null;
+    private RelatedElement     relatedElement   = null;
 
 
     /**
@@ -48,6 +50,7 @@ public class LocationElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             locationProperties = template.getLocationProperties();
+            relatedElement = template.getRelatedElement();
         }
     }
 
@@ -99,6 +102,30 @@ public class LocationElement implements MetadataElement, Serializable
 
 
     /**
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @return list of element stubs
+     */
+    public RelatedElement getRelatedElement()
+    {
+        return relatedElement;
+    }
+
+
+    /**
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @param relatedElement relationship details
+     */
+    public void setRelatedElement(RelatedElement relatedElement)
+    {
+        this.relatedElement = relatedElement;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -107,9 +134,10 @@ public class LocationElement implements MetadataElement, Serializable
     public String toString()
     {
         return "LocationElement{" +
-                "elementHeader=" + elementHeader +
-                ", locationProperties=" + locationProperties +
-                '}';
+                       "elementHeader=" + elementHeader +
+                       ", locationProperties=" + locationProperties +
+                       ", relatedElement=" + relatedElement +
+                       '}';
     }
 
 
@@ -136,7 +164,8 @@ public class LocationElement implements MetadataElement, Serializable
         }
         LocationElement that = (LocationElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(locationProperties, that.locationProperties);
+                       Objects.equals(locationProperties, that.locationProperties) &&
+                       Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -148,6 +177,6 @@ public class LocationElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, locationProperties);
+        return Objects.hash(super.hashCode(), elementHeader, locationProperties, relatedElement);
     }
 }

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -102,11 +103,17 @@ public class ElementHeaderConverter
         {
             TypeConverter typeConverter = new TypeConverter();
 
-            bean.setType(typeConverter.getElementType(entity.getType(),
-                                                      entity.getInstanceProvenanceType(),
-                                                      entity.getMetadataCollectionId(),
-                                                      entity.getMetadataCollectionName(),
-                                                      entity.getInstanceLicense()));
+            bean.setType(typeConverter.getElementType(entity.getType()));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setHomeMetadataCollectionId(entity.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(entity.getMetadataCollectionName());
+            elementOrigin.setOriginCategory(typeConverter.getElementOrigin(entity.getInstanceProvenanceType()));
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setLicense(entity.getInstanceLicense());
+
+            bean.setOrigin(elementOrigin);
             bean.setGUID(entity.getGUID());
             bean.setURL(entity.getInstanceURL());
         }
@@ -114,7 +121,7 @@ public class ElementHeaderConverter
         {
             ElementType type = new ElementType();
 
-            type.setElementTypeName(typeName);
+            type.setTypeName(typeName);
 
             bean.setType(type);
         }

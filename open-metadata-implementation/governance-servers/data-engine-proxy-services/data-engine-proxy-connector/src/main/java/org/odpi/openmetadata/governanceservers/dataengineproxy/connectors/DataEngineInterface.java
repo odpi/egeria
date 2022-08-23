@@ -23,7 +23,7 @@ public interface DataEngineInterface {
     /**
      * Retrieve the details about the data engine to which we are connected.
      *
-     * @return SoftwareServerCapability
+     * @return SoftwareCapability
      */
     SoftwareServerCapability getDataEngineDetails();
 

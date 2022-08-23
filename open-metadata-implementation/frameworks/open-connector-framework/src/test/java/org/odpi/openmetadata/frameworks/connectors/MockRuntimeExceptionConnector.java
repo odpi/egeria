@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -29,7 +28,7 @@ import java.util.UUID;
  * identifier, a connection object and a metadata properties object for its connected asset.
  * These are supplied to the connector during its initialization.
  *
- * The ConnectorBase base class implements all of the methods required by the Connector interface.
+ * The ConnectorBase base class implements all the methods required by the Connector interface.
  * Each specific implementation of a connector then extends this interface to add the methods to work with the
  * particular type of asset it supports.  For example, a JDBC connector would add the standard JDBC SQL interface, the
  * OMRS Connectors add the metadata repository management APIs...
@@ -46,7 +45,7 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      * Secured properties are protected properties from the connection.  They are retrieved as a protected
      * variable to allow subclasses of ConnectorBase to access them.
      */
-    protected AdditionalProperties securedProperties = null;
+    protected Map<String, String> securedProperties = null;
 
     private static final int      hashCode = UUID.randomUUID().hashCode();
     private static final Logger   log = LoggerFactory.getLogger(MockRuntimeExceptionConnector.class);
@@ -71,7 +70,7 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
     public void initialize(String               connectorInstanceId,
                            ConnectionProperties connectionProperties)
     {
-        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                       this.getClass().getName(),
                                       "getCachedList");
     }
