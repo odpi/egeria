@@ -4,9 +4,11 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementVersions;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +18,7 @@ import java.util.Objects;
  * that link off of the asset and have a guid associated with them.  This typically means it is
  * represented by an entity in the metadata repository.
  */
-public abstract class AssetElementHeader extends AssetPropertyBase
+public abstract class AssetElementHeader extends AssetPropertyElementBase
 {
     private static final long     serialVersionUID = 1L;
 
@@ -25,45 +27,21 @@ public abstract class AssetElementHeader extends AssetPropertyBase
 
     /**
      * Constructor used by the subclasses
-     *
-     * @param parentAsset descriptor of asset that this property relates to.
      */
-    protected AssetElementHeader(AssetDescriptor parentAsset)
+    protected AssetElementHeader()
     {
-        super(parentAsset);
-    }
-
-
-    /**
-     * Bean constructor
-     *
-     * @param elementBaseBean bean containing all to the properties
-     */
-    protected AssetElementHeader(ElementBase elementBaseBean)
-    {
-        super(null);
-
-        if (elementBaseBean == null)
-        {
-            this.elementBaseBean = new ElementBase();
-        }
-        else
-        {
-            this.elementBaseBean = elementBaseBean;
-        }
+        super();
     }
 
 
     /**
      * Bean constructor with parent asset
      *
-     * @param parentAsset descriptor for parent asset
      * @param elementBaseBean bean containing properties
      */
-    protected AssetElementHeader(AssetDescriptor parentAsset,
-                                 ElementBase elementBaseBean)
+    protected AssetElementHeader(ElementBase elementBaseBean)
     {
-        super(parentAsset);
+        super();
 
         if (elementBaseBean == null)
         {
@@ -79,12 +57,11 @@ public abstract class AssetElementHeader extends AssetPropertyBase
     /**
      * Copy/clone constructor.
      *
-     * @param parentAsset descriptor for parent asset
      * @param assetElementHeader element to copy
      */
-    protected AssetElementHeader(AssetDescriptor parentAsset, AssetElementHeader assetElementHeader)
+    protected AssetElementHeader(AssetElementHeader assetElementHeader)
     {
-        super(parentAsset, assetElementHeader);
+        super(assetElementHeader);
 
         if (assetElementHeader == null)
         {
@@ -100,7 +77,7 @@ public abstract class AssetElementHeader extends AssetPropertyBase
     /**
      * Set up the bean that contains the properties of the element header.
      *
-     * @param elementBaseBean bean containing all of the properties
+     * @param elementBaseBean bean containing all the properties
      */
     protected void  setBean(ElementBase elementBaseBean)
     {
@@ -121,11 +98,11 @@ public abstract class AssetElementHeader extends AssetPropertyBase
 
     /**
      * Return the element type properties for this properties object.  These values are set up by the metadata repository
-     * and define details to the metadata entity used to represent this element.
+     * and define details of the metadata entity used to represent this element.
      *
-     * @return AssetElementType type information.
+     * @return ElementType type information.
      */
-    public AssetElementType getType()
+    public ElementType getType()
     {
         if (elementBaseBean == null)
         {
@@ -140,13 +117,51 @@ public abstract class AssetElementHeader extends AssetPropertyBase
         }
         else
         {
-            return new AssetElementType(elementTypeBean);
+            return new ElementType(elementTypeBean);
         }
     }
 
 
     /**
-     * Return the unique id for the properties object.  Null means no guid is assigned.
+     * Return the element type properties for this properties object.  These values are set up by the metadata repository
+     * and define details of the metadata entity used to represent this element.
+     *
+     * @return AssetElementOrigin origin information.
+     */
+    public ElementOrigin getOrigin()
+    {
+        if (elementBaseBean == null)
+        {
+            return null;
+        }
+        else
+        {
+            return elementBaseBean.getOrigin();
+        }
+    }
+
+
+    /**
+     * Return the element version properties for this properties object.  These values are set up by the metadata repository
+     * and define details of the metadata entity used to represent this element.
+     *
+     * @return ElementVersions version information.
+     */
+    public ElementVersions getVersions()
+    {
+        if (elementBaseBean == null)
+        {
+            return null;
+        }
+        else
+        {
+            return elementBaseBean.getVersions();
+        }
+    }
+
+
+    /**
+     * Return the unique id for the properties object.  Null means that no guid is assigned.
      *
      * @return String unique id
      */
@@ -158,6 +173,22 @@ public abstract class AssetElementHeader extends AssetPropertyBase
         }
 
         return elementBaseBean.getGUID();
+    }
+
+
+    /**
+     * Return the status of the element.
+     *
+     * @return status enum
+     */
+    public ElementStatus getStatus()
+    {
+        if (elementBaseBean == null)
+        {
+            return null;
+        }
+
+        return elementBaseBean.getStatus();
     }
 
 
@@ -183,7 +214,7 @@ public abstract class AssetElementHeader extends AssetPropertyBase
      *
      * @return Classifications  list of classifications
      */
-    public List<AssetClassification> getAssetClassifications()
+    public List<ElementClassification> getClassifications()
     {
         if (elementBaseBean == null)
         {
@@ -196,32 +227,19 @@ public abstract class AssetElementHeader extends AssetPropertyBase
         {
             return null;
         }
+        else if (classifications.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            List<AssetClassification> assetClassifications = new ArrayList<>();
-
-            for (ElementClassification classification : classifications)
-            {
-                if (classification != null)
-                {
-                    assetClassifications.add(new AssetClassification(this.getParentAsset(), classification));
-                }
-            }
-
-            if (assetClassifications.isEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                return assetClassifications;
-            }
+            return classifications;
         }
     }
 
 
     /**
-     * Return any properties defined for a sub type that are not explicitly supported by the connected
+     * Return any properties defined for a subtype that are not explicitly supported by the connected
      * asset API.
      *
      * @return property map

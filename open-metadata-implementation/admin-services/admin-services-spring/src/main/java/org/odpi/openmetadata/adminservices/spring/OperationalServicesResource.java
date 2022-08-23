@@ -184,7 +184,7 @@ public class OperationalServicesResource
     @Operation(summary="Retrieve active server's status",
                description="Retrieve the status for a running instance of a server. The stored configuration " +
                                    "document may have changed since the server was started.  This operation makes it possible to verify that " +
-                                   "all of the services. \n" +
+                                   "all the services. \n" +
                                    "\n" +
                                    "An InvalidParameterException is returned if the server is not running.",
                externalDocs=@ExternalDocumentation(description="OMAG Server",

@@ -179,7 +179,7 @@ public class OpenMetadataTypesArchive2_10
 
     /**
      * This change means that the campaign classification connects to a referenceable.  It should have connected to a project -but
-     * a mistake connected it to a Collection.  This change allows it to be connected to a Project without braking backward compatibility.
+     * a mistake connected it to a Collection.  This change allows it to be connected to a Project without breaking backward compatibility.
      *
      * @return patched type
      */

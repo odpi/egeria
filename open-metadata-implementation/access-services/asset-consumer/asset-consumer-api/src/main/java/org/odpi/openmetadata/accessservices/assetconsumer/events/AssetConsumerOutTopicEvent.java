@@ -3,12 +3,13 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.events;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.ElementHeader;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;

@@ -50,7 +50,7 @@ import java.util.*;
  * <p>
  *     Updates and deletes are routed to the owning (home) repository.  Searches are made to each repository in turn
  *     and the duplicates are removed.  Queries are directed to the local repository and then the remote repositories
- *     until all of the requested metadata is assembled.
+ *     until all the requested metadata is assembled.
  * </p>
  */
 class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
@@ -195,7 +195,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
      * @param category enum value for the category of TypeDef to return.
@@ -233,7 +233,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
      * @param category enum value for the category of an AttributeTypeDef to return.
@@ -2084,7 +2084,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
@@ -4395,7 +4395,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws FunctionNotSupportedException this method is not supported
      */
     @Override
@@ -4416,7 +4416,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws FunctionNotSupportedException this method is not supported
      */
     @Override
@@ -4931,7 +4931,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Throw a FunctionNotSupportedException if it was returned by all of the calls to the cohort connectors.
+     * Throw a FunctionNotSupportedException if it was returned by all the calls to the cohort connectors.
      *
      * @param exception captured exception
      * @throws FunctionNotSupportedException the requested function is not supported in any of the federated repositories

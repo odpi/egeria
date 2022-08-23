@@ -1310,7 +1310,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
     /**
      * Removes a tag from the repository.
-     * A private tag can be deleted by its creator and all of the references are lost;
+     * A private tag can be deleted by its creator and all the references are lost;
      * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
      *
      * @param userId    userId of user making request.

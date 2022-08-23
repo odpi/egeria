@@ -95,20 +95,6 @@ jobs:
           tags: odpi/egeria-configure:${{ env.VERSION }}, odpi/egeria-configure:latest, quay.io/odpi/egeria-configure:${{ env.VERSION }}, quay.io/odpi/egeria-configure:latest
           context: ./open-metadata-resources/open-metadata-deployment/docker/configure
           platforms: linux/amd64,linux/arm64
-      # Publish container images(jupyter) to quay.io and docker.io
-      - name: Copy the deploy content to be used in docker copy command
-        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
-        run: |
-          mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/jupyter/target/assembly
-          cp -r open-metadata-distribution/open-metadata-assemblies/target/egeria-${{ env.VERSION }}-deploy/egeria-deploy-${{ env.VERSION }}/. open-metadata-resources/open-metadata-deployment/docker/jupyter/target/assembly
-      - name: Build and push(jupyter) to quay.io and docker.io
-        if: ${{ github.repository == 'odpi/egeria' && github.ref == 'refs/heads/master'}}
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: odpi/jupyter:${{ env.VERSION }}, odpi/jupyter:latest, quay.io/odpi/jupyter:${{ env.VERSION }}, quay.io/odpi/jupyter:latest
-          context: ./open-metadata-resources/open-metadata-deployment/docker/jupyter
-          platforms: linux/amd64,linux/arm64
       # --
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies

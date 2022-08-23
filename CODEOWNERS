@@ -72,7 +72,6 @@ open-metadata-resources/open-metadata-samples/ @mandy-chessell
 open-metadata-resources/open-metadata-samples/postman-rest-samples/ @planetf1
 open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/  @davidradl
 
-open-metadata-resources/open-metadata-labs/ @mandy-chessell @planetf1
 # Test
 
 open-metadata-test/ @mandy-chessell

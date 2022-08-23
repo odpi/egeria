@@ -141,7 +141,7 @@ public enum AssetOwnerErrorCode implements ExceptionMessageSet
             "Only an entity proxy for requested connection {0} is found in the open metadata server {1}, error message was: {2}",
             "The system is unable to populate the requested connection object because only a stub of the object from a relationship was found.",
             "Check that the connection name is correct and the caller is connecting to the correct OMAG Server Platform and server. Verify that " +
-                                   "all of the members of the cohorts that this server is connecting to are running.  " +
+                                   "all the members of the cohorts that this server is connecting to are running.  " +
                                    "Retry the request when the connection is available in the OMAS Service"),
     UNKNOWN_ASSET(404, "OMAS-ASSET-OWNER-404-008",
             "The asset with unique identifier {0} is not found for method {1} of access service {2} in open metadata server {3}, error message was: {4}",
@@ -163,7 +163,7 @@ public enum AssetOwnerErrorCode implements ExceptionMessageSet
                            "no errors being reported by the open metadata repositories. Once all errors have been resolved, retry the request."),
     NO_RELATIONSHIPS_FOUND(404, "OMAS-ASSET-OWNER-404-012",
                            "No {0} relationships are connected to the {1} entity with unique identifier {2}: the calling method is {3} and the server is {4}",
-                           "The system is unable to process a request because no relationships have been discovered and it is unable to retrieve all of the information it needs.",
+                           "The system is unable to process a request because no relationships have been discovered and it is unable to retrieve all the information it needs.",
                            "Check that the unique identifier is correct and the property server(s) supporting the assets is/are running."),
     NULL_ENTITY_RETURNED(404, "OMAS-ASSET-OWNER-404-013",
                          "A null entity was returned to method {0} of server {1} during a request to create a new entity of type {2} (guid {3}) and properties of: {4}",

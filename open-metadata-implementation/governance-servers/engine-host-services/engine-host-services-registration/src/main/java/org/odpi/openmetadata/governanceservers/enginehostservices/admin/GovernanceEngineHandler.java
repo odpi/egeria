@@ -4,7 +4,6 @@ package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
@@ -181,8 +180,8 @@ public abstract class GovernanceEngineHandler
         else
         {
             this.governanceEngineGUID = governanceEngineElement.getElementHeader().getGUID();
-            this.governanceEngineTypeName = governanceEngineElement.getElementHeader().getType().getElementTypeName();
-            this.governanceEngineSuperTypeNames = governanceEngineElement.getElementHeader().getType().getElementSuperTypeNames();
+            this.governanceEngineTypeName = governanceEngineElement.getElementHeader().getType().getTypeName();
+            this.governanceEngineSuperTypeNames = governanceEngineElement.getElementHeader().getType().getSuperTypeNames();
             this.governanceEngineProperties = governanceEngineElement.getProperties();
 
             refreshAllServiceConfig();

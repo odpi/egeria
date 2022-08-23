@@ -103,7 +103,6 @@
             <modules>
                 <module>configure</module>
                 <module>egeria</module>
-                <module>jupyter</module>
             </modules>
         </profile>
     </profiles>

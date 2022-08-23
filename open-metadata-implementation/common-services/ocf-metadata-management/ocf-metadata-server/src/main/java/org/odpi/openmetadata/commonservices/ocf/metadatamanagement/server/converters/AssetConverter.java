@@ -127,7 +127,9 @@ public class AssetConverter<B> extends OCFConverter<B>
                     }
                 }
 
-                bean.setOrigin(originMap);
+                bean.setAssetOrigin(originMap);
+
+                // todo set up SecurityTags and the governance classifications
             }
 
             return returnBean;

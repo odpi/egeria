@@ -32,7 +32,7 @@ public abstract class RepositoryElementHeader implements Serializable
     private static final long serialVersionUID = 1L;
 
     /*
-     * Version number for this header.  This is used to ensure that all of the critical header information
+     * Version number for this header.  This is used to ensure that all the critical header information
      * in read in a back-level version of the OMRS.  The default is 0 to indicate that the element came from
      * a version of the OMRS that does not have a version number encoded.
      */
@@ -69,7 +69,7 @@ public abstract class RepositoryElementHeader implements Serializable
     /**
      * Return the version of this header.  This is used by the OMRS to determine if it is back level and
      * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
+     * to receive all the header properties.
      *
      * @return long version number - the value is incremented each time a new non-informational field is added
      * to the type definition.
@@ -83,7 +83,7 @@ public abstract class RepositoryElementHeader implements Serializable
     /**
      * Return the version of this header.  This is used by the OMRS to determine if it is back level and
      * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
+     * to receive all the header properties.
      *
      * @param headerVersion long version number - the value is incremented each time a new non-informational field is added
      * to the type definition.

@@ -77,7 +77,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The system is unable to perform the request because the match criteria is needed.",
             "Correct the calling code and retry the request."),
     NO_EXTERNAL_ID(400, "OMRS-REPOSITORY-400-012",
-            "Null values for all of the parameters describing an external id for a standard has been passed on a {0} request to open metadata repository {1}",
+            "Null values for all the parameters describing an external id for a standard has been passed on a {0} request to open metadata repository {1}",
             "The system is unable to perform the request because at least one of the values are needed.",
             "Correct the caller's code and repeat the request."),
     NO_SEARCH_CRITERIA(400, "OMRS-REPOSITORY-400-013",
@@ -245,7 +245,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The pageSize parameter is supplied by the caller to the API. This call needs to be corrected before the server will operate correctly."),
     ENTITY_PROXY_ONLY(400, "OMRS-REPOSITORY-400-051",
             "A request for entity {0} has been passed to repository {1} as the {2} parameter of the {3} operation but only an entity proxy has been found",
-            "The system is unable to return all of the details of the entity.  It can only supply an entity summary.",
+            "The system is unable to return all the details of the entity.  It can only supply an entity summary.",
             "The fact that the system has a proxy means that the entity exists in one of the members of the connected cohorts.  " +
                               "The repository where it is located may be unavailable, or the entity has been deleted " +
                               "but the delete request has not propagated through to this repository."),

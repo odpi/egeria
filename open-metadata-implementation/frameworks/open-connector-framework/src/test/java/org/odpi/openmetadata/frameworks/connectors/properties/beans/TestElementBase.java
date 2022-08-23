@@ -29,7 +29,7 @@ public class TestElementBase
         classifications.add(new ElementClassification());
         superTypes.add("Referenceable");
 
-        type.setElementSuperTypeNames(superTypes);
+        type.setSuperTypeNames(superTypes);
     }
 
 

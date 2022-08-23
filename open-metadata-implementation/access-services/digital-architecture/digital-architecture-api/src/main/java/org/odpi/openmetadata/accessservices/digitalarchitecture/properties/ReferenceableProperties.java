@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 
 import java.io.Serializable;
 import java.util.*;

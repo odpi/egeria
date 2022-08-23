@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This is the base class for a connected asset.  It is passed to all of the embedded property objects so the name
+ * This is the base class for a connected asset.  It is passed to all the embedded property objects so the name
  * and type can be used for error messages and other diagnostics.  It also carries the URL of the asset in the
  * metadata repository where this is known to enable properties to be retrieved on request.
  */
@@ -44,7 +44,7 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
      * Bean constructor - the asset descriptor is effectively empty - and the protected
      * set methods need to be called to add useful content to it.
      *
-     * @param assetBean bean containing all of the properties
+     * @param assetBean bean containing all the properties
      */
     public AssetDescriptor(Asset assetBean)
     {
@@ -80,7 +80,7 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
     /**
      * Set up private attributes based on the supplied asset bean.
      *
-     * @param assetBean bean containing all of the properties
+     * @param assetBean bean containing all the properties
      */
     protected void setAssetBean(Asset assetBean)
     {
@@ -118,14 +118,14 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
 
             if (elementType != null)
             {
-                String typeName = elementType.getElementTypeName();
+                String typeName = elementType.getTypeName();
 
                 if ((typeName != null) && (! typeName.equals("")))
                 {
                     assetTypeName = typeName;
                 }
 
-                assetSuperTypeNames = elementType.getElementSuperTypeNames();
+                assetSuperTypeNames = elementType.getSuperTypeNames();
             }
         }
     }

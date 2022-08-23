@@ -18,7 +18,7 @@ import java.util.List;
  * OMRSFixedTypeMetadataCollectionBase provides a base class for an open metadata repository that
  * has a fixed type system.  Its constructor requires the fixed list of types and attribute types
  * that its implementing repository supports.  Once this is in place,
- * OMRSFixedTypeMetadataCollectionBase can support all of the type management methods.
+ * OMRSFixedTypeMetadataCollectionBase can support all the type management methods.
  */
 public abstract class OMRSFixedTypeMetadataCollectionBase extends OMRSMetadataCollectionBase
 {

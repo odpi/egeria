@@ -116,7 +116,7 @@ public class EnterpriseRepositoryServicesResource
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
@@ -138,7 +138,7 @@ public class EnterpriseRepositoryServicesResource
 
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
@@ -1039,7 +1039,7 @@ public class EnterpriseRepositoryServicesResource
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
@@ -1070,7 +1070,7 @@ public class EnterpriseRepositoryServicesResource
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.

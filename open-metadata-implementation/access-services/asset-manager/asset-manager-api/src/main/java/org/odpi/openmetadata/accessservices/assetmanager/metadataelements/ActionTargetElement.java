@@ -13,6 +13,7 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 /**
  * ActionTargetElement describes an element that a governance action service should process.
@@ -31,7 +32,7 @@ public class ActionTargetElement implements Serializable
     private Date                   startDate        = null;
     private Date                   completionDate   = null;
 
-    private ElementStub            targetElement    = null;
+    private ElementStub            targetElement = null;
 
 
     /**

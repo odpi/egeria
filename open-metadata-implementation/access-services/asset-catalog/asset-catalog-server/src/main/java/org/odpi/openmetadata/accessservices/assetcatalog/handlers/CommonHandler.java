@@ -80,7 +80,7 @@ public class CommonHandler {
     }
 
     /**
-     * Returns a list containing the type and all of the sub-types of the provided type
+     * Returns a list containing the type and all the sub-types of the provided type
      *
      * @param userId      user identifier that issues the call
      * @param typeDefName the type definition name

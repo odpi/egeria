@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -37,7 +37,7 @@ public class ElementStubConverter<B> extends AssetManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entityProxy and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -77,7 +77,7 @@ public class ElementStubConverter<B> extends AssetManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an relationship and that of a connected relationship.
      *
      * @param beanClass name of the class to create

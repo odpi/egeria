@@ -49,7 +49,6 @@ public class TestReferenceable
 
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
-        testObject.setMeanings(meanings);
 
         return testObject;
     }
@@ -69,7 +68,6 @@ public class TestReferenceable
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
-        assertTrue(resultObject.getMeanings() != null);
     }
 
 
@@ -87,7 +85,6 @@ public class TestReferenceable
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
-        assertTrue(nullObject.getMeanings() == null);
 
         nullObject = new Referenceable(null);
 
@@ -98,11 +95,6 @@ public class TestReferenceable
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
-        assertTrue(nullObject.getMeanings() == null);
-
-        nullObject.setMeanings(new ArrayList<>());
-
-        assertTrue(nullObject.getMeanings() == null);
     }
 
 

@@ -5,11 +5,11 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement;
@@ -713,7 +713,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
     /**
      * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
-     * metadata element when it was created.  However, it is possible to update a few properties, or replace all of them by
+     * metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
      * the value used in the replaceProperties flag.
      *
      * @param metadataElementGUID unique identifier of the metadata element to update

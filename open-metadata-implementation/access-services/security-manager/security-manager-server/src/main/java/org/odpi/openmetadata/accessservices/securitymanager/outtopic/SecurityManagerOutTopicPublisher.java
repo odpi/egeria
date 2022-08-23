@@ -8,8 +8,8 @@ import org.odpi.openmetadata.accessservices.securitymanager.converters.ElementHe
 import org.odpi.openmetadata.accessservices.securitymanager.events.SecurityManagerEventType;
 import org.odpi.openmetadata.accessservices.securitymanager.events.SecurityManagerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.securitymanager.ffdc.SecurityManagerAuditCode;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -20,12 +20,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class SecurityManagerOutTopicPublisher
 {
-    private SecurityManagerOutTopicServerConnector outTopicServerConnector;
-    private AuditLog                               outTopicAuditLog;
-    private String                                 outTopicName;
+    private final SecurityManagerOutTopicServerConnector outTopicServerConnector;
+    private final AuditLog                               outTopicAuditLog;
+    private final String                                 outTopicName;
 
-    private ElementHeaderConverter<ElementHeader> headerConverter;
-    private OMRSRepositoryHelper                  repositoryHelper;
+    private final ElementHeaderConverter<ElementHeader> headerConverter;
+    private final OMRSRepositoryHelper                  repositoryHelper;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 

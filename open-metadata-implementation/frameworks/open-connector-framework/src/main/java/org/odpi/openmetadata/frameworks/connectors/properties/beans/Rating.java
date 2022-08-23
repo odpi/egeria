@@ -160,15 +160,20 @@ public class Rating extends ElementBase
     public String toString()
     {
         return "Rating{" +
-                "starRating=" + starRating +
-                ", review='" + review + '\'' +
-                ", user='" + user + '\'' +
-                ", isPublic='" + isPublic + '\'' +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", starRating=" + starRating +
+                       ", review='" + review + '\'' +
+                       ", user='" + user + '\'' +
+                       ", isPublic=" + isPublic +
+                       '}';
     }
 
 

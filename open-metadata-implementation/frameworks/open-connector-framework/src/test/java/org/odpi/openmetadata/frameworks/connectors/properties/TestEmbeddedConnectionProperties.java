@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.testng.annotations.Test;
@@ -56,14 +55,13 @@ public class TestEmbeddedConnectionProperties
      */
     private EmbeddedConnectionProperties getDifferentObject()
     {
-        AssetSummary       parentAsset = new AssetSummary(new Asset());
         EmbeddedConnection testBean    = new EmbeddedConnection();
 
-        testBean.setDisplayName("TestDisplayName");
+        testBean.setDisplayName("TestName");
         testBean.setEmbeddedConnection(connection);
         testBean.setArguments(arguments);
 
-        return new EmbeddedConnectionProperties(parentAsset, testBean);
+        return new EmbeddedConnectionProperties( testBean);
     }
 
 
@@ -132,22 +130,6 @@ public class TestEmbeddedConnectionProperties
         nullObject = new EmbeddedConnectionProperties(nullBean);
         validateNullObject(nullObject);
 
-        parentAsset = null;
-        nullBean = null;
-        nullObject = new EmbeddedConnectionProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullBean = new EmbeddedConnection();
-        nullObject = new EmbeddedConnectionProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullBean = new EmbeddedConnection(null);
-        nullObject = new EmbeddedConnectionProperties(parentAsset, nullBean);
-        validateNullObject(nullObject);
-
-        nullTemplate = null;
-        nullObject = new EmbeddedConnectionProperties(parentAsset, nullTemplate);
-        validateNullObject(nullObject);
     }
 
 
@@ -183,7 +165,7 @@ public class TestEmbeddedConnectionProperties
      */
     @Test public void testClone()
     {
-        validateResultObject(new EmbeddedConnectionProperties(null, getTestObject()));
+        validateResultObject(new EmbeddedConnectionProperties(getTestObject()));
     }
 
 

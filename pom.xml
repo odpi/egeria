@@ -11,7 +11,7 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/master</url>
     </scm>
 
     <name>Egeria</name>
@@ -2850,11 +2850,6 @@
                 <artifactId>open-metadata-assemblies</artifactId>
                 <version>${open-metadata.version}</version>
                 <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>open-metadata-labs</artifactId>
-                <version>${open-metadata.version}</version>
             </dependency>
 
             <dependency>

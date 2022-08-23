@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ValidValueProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -35,7 +36,7 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -60,7 +61,17 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
 
             if (returnBean instanceof ValidValueElement)
             {
-                this.updateSimpleMetadataElement(beanClass, (ValidValueElement) returnBean, entity, methodName);
+                ValidValueElement bean = (ValidValueElement) returnBean;
+                this.updateSimpleMetadataElement(beanClass, bean, entity, methodName);
+
+                if (relationship != null)
+                {
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME))
+                    {
+                        bean.setSetGUID(relationship.getEntityOneProxy().getGUID());
+                        bean.setIsDefaultValue(this.removeIsDefaultValue(relationship.getProperties()));
+                    }
+                }
             }
 
             return returnBean;
@@ -75,7 +86,7 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

@@ -19,9 +19,9 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     protected String                  localMetadataCollectionId;
     protected OMRSRepositoryValidator repositoryValidator;
 
-    private int                  responsesRequired  = 0;
-    private Map<String, Integer> resultsContributed = new HashMap<>();
-    private boolean              resultsReturned = false;
+    private int                        responsesRequired  = 0;
+    private final Map<String, Integer> resultsContributed = new HashMap<>();
+    private boolean                    resultsReturned = false;
 
 
     /**

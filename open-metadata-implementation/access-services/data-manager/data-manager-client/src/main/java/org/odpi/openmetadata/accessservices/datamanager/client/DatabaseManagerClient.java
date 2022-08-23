@@ -31,14 +31,14 @@ public class DatabaseManagerClient implements DatabaseManagerInterface
     private final String retrieveURLTemplatePrefix   = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
     private final String governanceURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
 
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
-    private AuditLog auditLog = null;          /* Initialized in constructor */
+    private final String   serverName;               /* Initialized in constructor */
+    private final String   serverPlatformURLRoot;    /* Initialized in constructor */
+    private       AuditLog auditLog = null;          /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private DataManagerRESTClient   restClient;               /* Initialized in constructor */
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final DataManagerRESTClient   restClient;               /* Initialized in constructor */
 
-    private static NullRequestBody nullRequestBody   = new NullRequestBody();
+    private final static NullRequestBody nullRequestBody   = new NullRequestBody();
 
 
     /**

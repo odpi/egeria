@@ -134,7 +134,7 @@ public class TypesAccumulator extends QueryAccumulatorBase
 
     /**
      * Extract the results - this will the a unique list of types selected from the responses
-     * supplied to this accumulator.  It should be called once all of the executors have completed processing
+     * supplied to this accumulator.  It should be called once all the executors have completed processing
      * their request(s).
      *
      * @return type definition gallery

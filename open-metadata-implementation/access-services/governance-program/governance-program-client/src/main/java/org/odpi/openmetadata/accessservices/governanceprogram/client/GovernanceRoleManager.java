@@ -23,18 +23,18 @@ import java.util.List;
 
 /**
  * GovernanceRoleManager provides one of the client-side interface for the Governance Program Open Metadata Access Service (OMAS).
- * This client manages all of the interaction with an open metadata repository.  It is initialized with the URL
+ * This client manages all the interaction with an open metadata repository.  It is initialized with the URL
  * of the server that is running the Open Metadata Access Services.  This server is responsible for locating and
  * managing the governance program definitions exchanged with this client.
  */
 public class GovernanceRoleManager implements GovernanceRolesInterface
 {
-    private String                      serverName;               /* Initialized in constructor */
-    private String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
+    private final String                      serverName;               /* Initialized in constructor */
+    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
+    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -142,7 +142,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
 
 
     /**
-     * Create a new client that uses the supplied rest client.  This is typically used when called fro manother OMAG Server.
+     * Create a new client that uses the supplied rest client.  This is typically used when called from another OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -188,13 +188,13 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
         final String   methodName = "createGovernanceRole";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles";
 
-        final String   roleIdParameterName = "roleId";
+        final String   qualifiedNameParameterName = "qualifiedName";
         final String   titleParameterName = "title";
         final String   propertiesParameterName = "properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getRoleId(), roleIdParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
         invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
@@ -215,7 +215,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
      * @param properties the description of the governance role
      *
-     * @throws InvalidParameterException the title is null or the governanceDomain/appointmentId does not match the
+     * @throws InvalidParameterException the title is null or the governanceDomain/appointmentId does not match
      *                                   the existing values associated with the governanceRoleGUID.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
@@ -513,7 +513,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
     /**
      * Retrieve the properties of a governance role using its unique name.  The results are returned as a list
      * since it is possible that two roles have the same identifier due to the distributed nature of the
-     * open metadata ecosystem.  By returning all of the search results here it is possible to manage the
+     * open metadata ecosystem.  By returning all the search results here it is possible to manage the
      * duplicates through this interface.
      *
      * @param userId calling user
@@ -550,7 +550,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
 
 
     /**
-     * Return all of the defined governance roles for a specific governance domain.
+     * Return all the defined governance roles for a specific governance domain.
      *
      * @param userId the name of the calling user
      * @param domainIdentifier domain of interest - 0 means all domains
@@ -592,7 +592,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
 
 
     /**
-     * Retrieve all of the governance roles for a particular title.  The title can include regEx wildcards.
+     * Retrieve all the governance roles for a particular title.  The title can include regEx wildcards.
      *
      * @param userId calling user
      * @param title short description of the role
@@ -640,7 +640,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
 
 
     /**
-     * Return all of the governance roles and their incumbents (if any).
+     * Return all the governance roles and their incumbents (if any).
      *
      * @param userId the name of the calling user
      * @param domainIdentifier identifier of domain - 0 means all

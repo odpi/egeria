@@ -4516,6 +4516,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param methodName calling method
      *
+     * @return entity containing the supplementary properties
+     *
      * @throws InvalidParameterException  the parameters are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem detected in the repository services

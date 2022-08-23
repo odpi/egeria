@@ -28,11 +28,11 @@ import java.util.List;
  */
 public class UserIdentityManagement implements UserIdentityManagementInterface
 {
-    private String                     serverName;               /* Initialized in constructor */
-    private String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private CommunityProfileRESTClient restClient;               /* Initialized in constructor */
+    private final String                     serverName;               /* Initialized in constructor */
+    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
+    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
 
     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/user-identities";
 
@@ -286,7 +286,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -419,7 +419,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/profiles/{3}/unlink";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
