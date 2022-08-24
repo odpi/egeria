@@ -2658,6 +2658,7 @@ public class AssetOwnerRESTServices
                                                  null,
                                                  null,
                                                  null,
+                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                  methodName);
         }
         catch (Exception error)
@@ -2711,6 +2712,7 @@ public class AssetOwnerRESTServices
                                                    element1GUIDParameter,
                                                    element2GUID,
                                                    element2GUIDParameter,
+                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                    methodName);
         }
         catch (Exception error)

@@ -2,11 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
+import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+
+import java.util.List;
 
 /**
  * OMAGServerServiceInstanceHandler retrieves information from the instance map for
@@ -18,6 +22,7 @@ public abstract class OMAGServerServiceInstanceHandler
     protected  OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
     protected String serviceName;
+
 
     /**
      * Constructor passes the service name that is used on all calls to this instance.
@@ -43,7 +48,7 @@ public abstract class OMAGServerServiceInstanceHandler
 
     /**
      * Return whether a particular server is registered with the platform.
-     * This is used by the admin services when there being no instance is not an error.
+     * This is used by the admin services when finding no instance is not an error.
      *
      * @param userId calling user or null if it is an anonymous request
      * @param serverName name of the server
