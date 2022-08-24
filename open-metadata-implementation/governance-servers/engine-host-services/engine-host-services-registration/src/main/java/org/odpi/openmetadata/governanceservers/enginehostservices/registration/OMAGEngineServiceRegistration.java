@@ -23,7 +23,7 @@ public class OMAGEngineServiceRegistration
      * A map is used so multiple registrations from the same engine service are ignored.
      * The last registration is used.
      */
-    static private Map<String, EngineServiceRegistration> engineServiceRegistrationMap = new HashMap<>();
+    static final private Map<String, EngineServiceRegistration> engineServiceRegistrationMap = new HashMap<>();
 
 
     /**

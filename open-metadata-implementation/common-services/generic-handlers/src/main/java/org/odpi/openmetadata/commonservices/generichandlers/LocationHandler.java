@@ -217,6 +217,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            locationBuilder,
+                                           supportedZones,
                                            methodName);
     }
 

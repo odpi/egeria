@@ -2806,6 +2806,367 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
 
+    /**
+     * Add a governedBy relationship between a governance definition and a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param governanceDefinitionGUID unique identifier of the governance definition
+     * @param governanceDefinitionGUIDParameterName parameter supplying the governanceDefinitionGUID
+     * @param referenceableGUID unique identifier of the referenceable being governed
+     * @param referenceableGUIDParameterName parameter supplying the referenceableGUID
+     * @param stakeholderRole what are the responsibilities of a stakeholder?
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addGovernedBy(String  userId,
+                              String  externalSourceGUID,
+                              String  externalSourceName,
+                              String  governanceDefinitionGUID,
+                              String  governanceDefinitionGUIDParameterName,
+                              String  referenceableGUID,
+                              String  referenceableGUIDParameterName,
+                              String  stakeholderRole,
+                              Date    effectiveFrom,
+                              Date    effectiveTo,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing,
+                              Date    effectiveTime,
+                              String  methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.STAKEHOLDER_ROLE_PROPERTY_NAME,
+                                                                                     stakeholderRole,
+                                                                                     methodName);
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  governanceDefinitionGUID,
+                                  governanceDefinitionGUIDParameterName,
+                                  OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                  referenceableGUID,
+                                  referenceableGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                  OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                  properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove a governedBy relationship between a governance definition and a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param governanceDefinitionGUID unique identifier of the governance definition
+     * @param governanceDefinitionGUIDParameterName parameter supplying the governanceDefinitionGUID
+     * @param referenceableGUID unique identifier of the referenceable being governed
+     * @param referenceableGUIDParameterName parameter supplying the referenceableGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeGovernedBy(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
+                                 String  governanceDefinitionGUID,
+                                 String  governanceDefinitionGUIDParameterName,
+                                 String  referenceableGUID,
+                                 String  referenceableGUIDParameterName,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing,
+                                 Date    effectiveTime,
+                                 String  methodName) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      governanceDefinitionGUID,
+                                      governanceDefinitionGUIDParameterName,
+                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                      referenceableGUID,
+                                      referenceableGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                      OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+
+    /**
+     * Returns the list of elements that are governed by a governance definition.
+     *
+     * @param userId       String   userId of user making request.
+     * @param governanceDefinitionGUID    String   unique id for element.
+     * @param governanceDefinitionGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedResultingTypeName name of the type of object that the search returns - null mean referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getGovernedElements(String       userId,
+                                       String       governanceDefinitionGUID,
+                                       String       governanceDefinitionGUIDParameterName,
+                                       String       suppliedResultingTypeName,
+                                       int          startFrom,
+                                       int          pageSize,
+                                       boolean      forLineage,
+                                       boolean      forDuplicateProcessing,
+                                       Date         effectiveTime,
+                                       String       methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
+    {
+        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedResultingTypeName != null)
+        {
+            resultingTypeName = suppliedResultingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        governanceDefinitionGUID,
+                                        governanceDefinitionGUIDParameterName,
+                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                        OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Add a governedBy relationship between a governance definition and a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param governanceDefinitionGUID unique identifier of the governance definition
+     * @param governanceDefinitionGUIDParameterName parameter supplying the governanceDefinitionGUID
+     * @param referenceableGUID unique identifier of the referenceable being governed
+     * @param referenceableGUIDParameterName parameter supplying the referenceableGUID
+     * @param stakeholderRole what are the responsibilities of a stakeholder?
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addGovernanceDefinitionScope(String  userId,
+                                             String  externalSourceGUID,
+                                             String  externalSourceName,
+                                             String  governanceDefinitionGUID,
+                                             String  governanceDefinitionGUIDParameterName,
+                                             String  referenceableGUID,
+                                             String  referenceableGUIDParameterName,
+                                             String  stakeholderRole,
+                                             Date    effectiveFrom,
+                                             Date    effectiveTo,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing,
+                                             Date    effectiveTime,
+                                             String  methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.STAKEHOLDER_ROLE_PROPERTY_NAME,
+                                                                                     stakeholderRole,
+                                                                                     methodName);
+
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  referenceableGUID,
+                                  referenceableGUIDParameterName,
+                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  governanceDefinitionGUID,
+                                  governanceDefinitionGUIDParameterName,
+                                  OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
+                                  OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
+                                  properties,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove a governedBy relationship between a governance definition and a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param governanceDefinitionGUID unique identifier of the governance definition
+     * @param governanceDefinitionGUIDParameterName parameter supplying the governanceDefinitionGUID
+     * @param referenceableGUID unique identifier of the referenceable being governed
+     * @param referenceableGUIDParameterName parameter supplying the referenceableGUID
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeGovernanceDefinitionScope(String  userId,
+                                                String  externalSourceGUID,
+                                                String  externalSourceName,
+                                                String  governanceDefinitionGUID,
+                                                String  governanceDefinitionGUIDParameterName,
+                                                String  referenceableGUID,
+                                                String  referenceableGUIDParameterName,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing,
+                                                Date    effectiveTime,
+                                                String  methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      referenceableGUID,
+                                      referenceableGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                      governanceDefinitionGUID,
+                                      governanceDefinitionGUIDParameterName,
+                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_GUID,
+                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
+                                      OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+
+    /**
+     * Returns the list of one or more referenceables that define the scope of a governance definition.
+     *
+     * @param userId       String   userId of user making request.
+     * @param governanceDefinitionGUID    String   unique id for element.
+     * @param governanceDefinitionGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedResultingTypeName name of the type of object that the search returns - null mean referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getGovernanceDefinitionScope(String       userId,
+                                                String       governanceDefinitionGUID,
+                                                String       governanceDefinitionGUIDParameterName,
+                                                String       suppliedResultingTypeName,
+                                                int          startFrom,
+                                                int          pageSize,
+                                                boolean      forLineage,
+                                                boolean      forDuplicateProcessing,
+                                                Date         effectiveTime,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        String resultingTypeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
+        if (suppliedResultingTypeName != null)
+        {
+            resultingTypeName = suppliedResultingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        governanceDefinitionGUID,
+                                        governanceDefinitionGUIDParameterName,
+                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
+                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
 
     /**
      * Add a link between a design artifact and its implementation.
@@ -3001,6 +3362,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param entity retrieved entity
      * @param guidParameterName parameter name to use of the requested GUID
+     * @param serviceSupportedZones list of supported zones for this service
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -3010,6 +3372,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
     private void setKnowDuplicateClassification(String       userId,
                                                 EntityDetail entity,
                                                 String       guidParameterName,
+                                                List<String> serviceSupportedZones,
                                                 String       methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -3044,6 +3407,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                true,
                                                false,
                                                true,
+                                               serviceSupportedZones,
                                                new Date(),
                                                methodName);
         }
@@ -3107,6 +3471,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         return properties;
     }
 
+
     /**
      * Create a simple relationship between two elements in an Asset description (typically the asset itself or
      * attributes in their schema).
@@ -3123,27 +3488,29 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param stewardPropertyName property name used to identify steward
      * @param source source of the duplicate detection processing
      * @param notes notes for the steward
+     * @param serviceSupportedZones list of supported zones for this service
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void linkElementsAsPeerDuplicates(String  userId,
-                                             String  element1GUID,
-                                             String  element1GUIDParameter,
-                                             String  element2GUID,
-                                             String  element2GUIDParameter,
-                                             boolean setKnownDuplicate,
-                                             int     statusIdentifier,
-                                             String  steward,
-                                             String  stewardTypeName,
-                                             String  stewardPropertyName,
-                                             String  source,
-                                             String  notes,
-                                             String  methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public void linkElementsAsPeerDuplicates(String       userId,
+                                             String       element1GUID,
+                                             String       element1GUIDParameter,
+                                             String       element2GUID,
+                                             String       element2GUIDParameter,
+                                             boolean      setKnownDuplicate,
+                                             int          statusIdentifier,
+                                             String       steward,
+                                             String       stewardTypeName,
+                                             String       stewardPropertyName,
+                                             String       source,
+                                             String       notes,
+                                             List<String> serviceSupportedZones,
+                                             String       methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
@@ -3158,9 +3525,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                             null,
                                                             null,
+                                                            false,
                                                             true,
-                                                            true,
-                                                            supportedZones,
+                                                            serviceSupportedZones,
                                                             null,
                                                             methodName);
 
@@ -3170,9 +3537,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                             null,
                                                             null,
+                                                            false,
                                                             true,
-                                                            true,
-                                                            supportedZones,
+                                                            serviceSupportedZones,
                                                             null,
                                                             methodName);
 
@@ -3181,8 +3548,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
          */
         if (setKnownDuplicate)
         {
-            this.setKnowDuplicateClassification(userId, entity1, element1GUIDParameter, methodName);
-            this.setKnowDuplicateClassification(userId, entity2, element2GUIDParameter, methodName);
+            this.setKnowDuplicateClassification(userId, entity1, element1GUIDParameter, serviceSupportedZones, methodName);
+            this.setKnowDuplicateClassification(userId, entity2, element2GUIDParameter, serviceSupportedZones, methodName);
         }
 
         /*
@@ -3205,9 +3572,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   element2GUID,
                                   element2GUIDParameter,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  false,
                                   true,
-                                  true,
-                                  supportedZones,
+                                  serviceSupportedZones,
                                   OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_GUID,
                                   OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_NAME,
                                   properties,
@@ -3226,20 +3593,22 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param element1GUIDParameter name of parameter supplying element1GUID
      * @param element2GUID unique identifier of second element
      * @param element2GUIDParameter name of parameter supplying element2GUID
+     * @param serviceSupportedZones list of supported zones for this service
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid or the elements are not linked as duplicates
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void unlinkElementsAsPeerDuplicates(String userId,
-                                               String element1GUID,
-                                               String element1GUIDParameter,
-                                               String element2GUID,
-                                               String element2GUIDParameter,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void unlinkElementsAsPeerDuplicates(String       userId,
+                                               String       element1GUID,
+                                               String       element1GUIDParameter,
+                                               String       element2GUID,
+                                               String       element2GUIDParameter,
+                                               List<String> serviceSupportedZones,
+                                               String       methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
@@ -3275,7 +3644,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     0,
                                     true,
                                     true,
-                                    supportedZones,
+                                    serviceSupportedZones,
                                     0,
                                     invalidParameterHandler.getMaxPagingSize(),
                                     null,
@@ -3291,6 +3660,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                     true,
                                                     true,
+                                                    serviceSupportedZones,
                                                     null,
                                                     methodName);
         }
@@ -3305,9 +3675,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     null,
                                     null,
                                     0,
+                                    false,
                                     true,
-                                    true,
-                                    supportedZones,
+                                    serviceSupportedZones,
                                     0,
                                     invalidParameterHandler.getMaxPagingSize(),
                                     null,
@@ -3323,6 +3693,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                     OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                     false,
                                                     true,
+                                                    serviceSupportedZones,
                                                     null,
                                                     methodName);
         }
@@ -3341,6 +3712,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param stewardPropertyName property name used to identify steward
      * @param source source of the duplicate detection processing
      * @param notes notes for the steward
+     * @param serviceSupportedZones list of supported zones for this service
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -3356,6 +3728,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         String       stewardPropertyName,
                                                         String       source,
                                                         String       notes,
+                                                        List<String> serviceSupportedZones,
                                                         String       methodName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
@@ -3379,6 +3752,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            false,
                                            false,
                                            true,
+                                           serviceSupportedZones,
                                            null,
                                            methodName);
     }
@@ -3402,6 +3776,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param sourceElementGUIDs List of the source elements that must be linked to the consolidated element.  It is assumed that they already
      *                           have the KnownDuplicateClassification.
      * @param sourceElementGUIDsParameterName parameter name for the source GUIDs
+     * @param serviceSupportedZones list of supported zones for this service
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -3419,6 +3794,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                           String       notes,
                                           List<String> sourceElementGUIDs,
                                           String       sourceElementGUIDsParameterName,
+                                          List<String> serviceSupportedZones,
                                           String       methodName) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -3437,7 +3813,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                        null,
                                                                        false,
                                                                        true,
-                                                                       supportedZones,
+                                                                       serviceSupportedZones,
                                                                        null,
                                                                        methodName);
 
@@ -3452,6 +3828,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         stewardPropertyName,
                                                         source,
                                                         notes,
+                                                        serviceSupportedZones,
                                                         methodName);
 
             if (sourceElementGUIDs != null)
@@ -3471,7 +3848,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                                   false,
                                                   true,
-                                                  supportedZones,
+                                                  serviceSupportedZones,
                                                   OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
                                                   OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
                                                   null,
