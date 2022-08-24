@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class ReferenceDataResource
 {
-    private ReferenceDataRESTServices restAPI = new ReferenceDataRESTServices();
+    private final ReferenceDataRESTServices restAPI = new ReferenceDataRESTServices();
 
 
     /**
@@ -154,6 +154,7 @@ public class ReferenceDataResource
      * @param userId calling user.
      * @param setGUID unique identifier of the set.
      * @param validValueGUID unique identifier of the valid value to add to the set.
+     * @param isDefaultValue     is this the default value for the set?
      * @param requestBody null request body supplied to satisfy REST protocol
      * @return void or
      * InvalidParameterException one of the parameters is invalid or
@@ -168,7 +169,7 @@ public class ReferenceDataResource
                                                  @PathVariable                  String          validValueGUID,
                                                  @RequestParam
                                                          (required = false, defaultValue = "false")
-                                                         boolean isDefaultValue,
+                                                                                boolean isDefaultValue,
                                                  @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.attachValidValueToSet(serverName, userId, setGUID, validValueGUID, isDefaultValue, requestBody);

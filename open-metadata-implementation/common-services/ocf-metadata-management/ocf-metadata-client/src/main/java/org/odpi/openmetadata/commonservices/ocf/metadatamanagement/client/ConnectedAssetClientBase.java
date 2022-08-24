@@ -260,7 +260,7 @@ public class ConnectedAssetClientBase
          * to be made, which contacts the OMAG server and retrieves the asset properties.
          *
          * Delaying the population of the connected asset properties ensures the latest values are returned to the
-         * caller (consider a long running connection).  Alternatively, these properties may not ever be used by the
+         * caller (consider a long-running connection).  Alternatively, these properties may not ever be used by the
          * caller so retrieving the properties at this point would be unnecessary.
          */
 

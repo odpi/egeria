@@ -19,12 +19,12 @@ import java.util.*;
  */
 class OMAGServerInstance
 {
-    private String                                 serverName;
-    private String                                 serverType;
-    private List<OMAGServerInstanceHistory>        serverHistory      = new ArrayList<>();
-    private Map<String, OMAGServerServiceInstance> serviceInstanceMap = new HashMap<>();
-    private Date                                   serverStartTime    = new Date();
-    private OpenMetadataServerSecurityVerifier     securityVerifier   = new OpenMetadataServerSecurityVerifier();
+    private final String                             serverName;
+    private String                                   serverType;
+    private final List<OMAGServerInstanceHistory>    serverHistory      = new ArrayList<>();
+    private Map<String, OMAGServerServiceInstance>   serviceInstanceMap = new HashMap<>();
+    private Date                                     serverStartTime    = new Date();
+    private final OpenMetadataServerSecurityVerifier securityVerifier   = new OpenMetadataServerSecurityVerifier();
 
 
     /**
@@ -81,11 +81,11 @@ class OMAGServerInstance
 
 
     /**
-     * Return the list of services configure for this server.
+     * Return the list of services configured for this server.
      *
      * @return list of service names
      */
-    synchronized List<String>  getRegisteredServices()
+    synchronized List<String> getConfiguredServices()
     {
         Set<String>  keySet = serviceInstanceMap.keySet();
 

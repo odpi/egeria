@@ -1081,12 +1081,12 @@ public class ProjectManagementRESTServices
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private ProjectElement setUpVendorProperties(String                             userId,
-                                                 ProjectElement                   element,
+    private ProjectElement setUpVendorProperties(String                         userId,
+                                                 ProjectElement                 element,
                                                  ProjectHandler<ProjectElement> handler,
-                                                 String                             methodName) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+                                                 String                         methodName) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         final String elementGUIDParameterName = "element.getElementHeader().getGUID()";
 
@@ -1105,8 +1105,6 @@ public class ProjectManagementRESTServices
 
         return element;
     }
-
-
 
 
     /**
@@ -1304,17 +1302,17 @@ public class ProjectManagementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getMoreInformation(userId,
-                                       elementGUID,
-                                       guidPropertyName,
-                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                       startFrom,
-                                       pageSize,
-                                       false,
-                                       false,
-                                       new Date(),
-                                       methodName);
+            response.setElements(handler.getMoreInformation(userId,
+                                                            elementGUID,
+                                                            guidPropertyName,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            startFrom,
+                                                            pageSize,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -1361,17 +1359,17 @@ public class ProjectManagementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getDescriptiveElements(userId,
-                                           detailGUID,
-                                           guidPropertyName,
-                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                           startFrom,
-                                           pageSize,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
+            response.setElements(handler.getDescriptiveElements(userId,
+                                                                detailGUID,
+                                                                guidPropertyName,
+                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                startFrom,
+                                                                pageSize,
+                                                                false,
+                                                                false,
+                                                                new Date(),
+                                                                methodName));
         }
         catch (Exception error)
         {
@@ -1442,13 +1440,14 @@ public class ProjectManagementRESTServices
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.addMoreInformation(userId,
+                    handler.addStakeholder(userId,
                                                requestBody.getExternalSourceGUID(),
                                                requestBody.getExternalSourceName(),
                                                elementGUID,
                                                elementGUIDParameterName,
                                                stakeholderGUID,
                                                stakeholderGUIDParameterName,
+                                               null,
                                                null,
                                                null,
                                                false,
@@ -1586,17 +1585,17 @@ public class ProjectManagementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getStakeholders(userId,
-                                    elementGUID,
-                                    guidPropertyName,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                    startFrom,
-                                    pageSize,
-                                    false,
-                                    false,
-                                    new Date(),
-                                    methodName);
+            response.setElements(handler.getStakeholders(userId,
+                                                         elementGUID,
+                                                         guidPropertyName,
+                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                         startFrom,
+                                                         pageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(),
+                                                         methodName));
         }
         catch (Exception error)
         {
@@ -1643,17 +1642,17 @@ public class ProjectManagementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getCommissionedByStakeholder(userId,
-                                                 stakeholderGUID,
-                                                 guidPropertyName,
-                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                 startFrom,
-                                                 pageSize,
-                                                 false,
-                                                 false,
-                                                 new Date(),
-                                                 methodName);
+            response.setElements(handler.getCommissionedByStakeholder(userId,
+                                                                      stakeholderGUID,
+                                                                      guidPropertyName,
+                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
+                                                                      methodName));
         }
         catch (Exception error)
         {
@@ -1871,17 +1870,17 @@ public class ProjectManagementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getAssignmentScope(userId,
-                                       elementGUID,
-                                       guidPropertyName,
-                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                       startFrom,
-                                       pageSize,
-                                       false,
-                                       false,
-                                       new Date(),
-                                       methodName);
+            response.setElements(handler.getAssignmentScope(userId,
+                                                            elementGUID,
+                                                            guidPropertyName,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            startFrom,
+                                                            pageSize,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -1928,17 +1927,17 @@ public class ProjectManagementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getAssignedActors(userId,
-                                      scopeGUID,
-                                      guidPropertyName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      startFrom,
-                                      pageSize,
-                                      false,
-                                      false,
-                                      new Date(),
-                                      methodName);
+            response.setElements(handler.getAssignedActors(userId,
+                                                           scopeGUID,
+                                                           guidPropertyName,
+                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                           startFrom,
+                                                           pageSize,
+                                                           false,
+                                                           false,
+                                                           new Date(),
+                                                           methodName));
         }
         catch (Exception error)
         {
@@ -2156,16 +2155,16 @@ public class ProjectManagementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getResourceList(userId,
-                                    elementGUID,
-                                    guidPropertyName,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                    startFrom,
-                                    pageSize,
-                                    false,
-                                    false,
-                                    new Date(),
-                                    methodName);
+            response.setElements(handler.getResourceList(userId,
+                                                         elementGUID,
+                                                         guidPropertyName,
+                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                         startFrom,
+                                                         pageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(),
+                                                         methodName));
         }
         catch (Exception error)
         {
@@ -2213,16 +2212,16 @@ public class ProjectManagementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getSupportedByResource(userId,
-                                           resourceGUID,
-                                           guidPropertyName,
-                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                           startFrom,
-                                           pageSize,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
+            response.setElements(handler.getSupportedByResource(userId,
+                                                                resourceGUID,
+                                                                guidPropertyName,
+                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                startFrom,
+                                                                pageSize,
+                                                                false,
+                                                                false,
+                                                                new Date(),
+                                                                methodName));
         }
         catch (Exception error)
         {

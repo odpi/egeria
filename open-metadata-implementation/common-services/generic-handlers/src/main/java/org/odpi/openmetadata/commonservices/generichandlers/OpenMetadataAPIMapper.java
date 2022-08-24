@@ -1399,6 +1399,10 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNED_BY_TYPE_NAME                     = "GovernedBy";  /* from Area 4 */
     /* End1 = GovernanceDefinition; End 2 = Referenceable */
 
+    public static final String GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID     = "3845b5cc-8c85-462f-b7e6-47472a568793";
+    public static final String GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME     = "GovernanceDefinitionScope";  /* from Area 4 */
+    /* End1 = Referenceable; End 2 = GovernanceDefinition */
+
     public static final String GOVERNANCE_RESPONSE_TYPE_GUID             = "8845990e-7fd9-4b79-a19d-6c4730dadd6b";
     public static final String GOVERNANCE_RESPONSE_TYPE_NAME             = "GovernanceResponse";  /* from Area 4 */
     /* End1 = GovernanceDriver; End 2 = GovernancePolicy */
