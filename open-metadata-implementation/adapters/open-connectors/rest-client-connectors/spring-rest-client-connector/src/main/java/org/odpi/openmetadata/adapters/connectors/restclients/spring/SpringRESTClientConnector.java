@@ -1052,6 +1052,12 @@ public class SpringRESTClientConnector extends RESTClientConnector
         }
     }
 
+    /**
+     * Creates the http headers for the requests. It checks if there are headers saved in the thread local or
+     * any basic authorisation headers and adds them to the list.
+     *
+     * @return http headers
+     */
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
 
