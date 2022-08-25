@@ -3,9 +3,9 @@
 
 ![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
 
-# Governance Engine Open Metadata Access Service (OMAS)
+# Metadata Store Service
 
-The **Governance Engine OMAS** supports the implementation of a [governance program](../governance-program)
+The **Metadata Store Service** supports the implementation of a [governance program](../governance-program)
 by providing the metadata services for running
 **[governance engines](https://egeria-project.org/concepts/governance-engine)**.
 
@@ -14,7 +14,7 @@ by providing the metadata services for running
 
 ## Design Information
 
-The module structure for the Governance Engine OMAS is as follows:
+The module structure for the Metadata Store Service is as follows:
 
 * [governance-engine-client](gaf-metadata-client) supports the client library.
 * [governance-engine-api](gaf-metadata-api) supports the common Java classes that are used both by the client and the server.

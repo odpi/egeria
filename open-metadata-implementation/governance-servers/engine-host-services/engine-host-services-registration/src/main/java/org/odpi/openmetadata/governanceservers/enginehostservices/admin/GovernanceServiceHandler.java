@@ -32,7 +32,7 @@ public abstract class GovernanceServiceHandler implements Runnable
     protected String                     governanceServiceGUID;
     protected String                     governanceServiceName;
 
-    private GovernanceEngineClient governanceActionClient;
+    private final GovernanceEngineClient governanceActionClient;
 
     protected Connector governanceService;
     protected String    governanceActionGUID;

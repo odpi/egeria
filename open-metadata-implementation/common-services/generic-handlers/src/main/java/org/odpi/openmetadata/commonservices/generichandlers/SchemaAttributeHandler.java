@@ -168,6 +168,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  qualifiedName,
                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                  builder,
+                                                                 supportedZones,
                                                                  methodName);
 
         if (schemaAttributeGUID != null)
@@ -1785,6 +1786,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                           isMergeUpdate,
                                           forLineage,
                                           forDuplicateProcessing,
+                                          supportedZones,
                                           effectiveTime,
                                           methodName);
 
@@ -1807,6 +1809,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                               isMergeUpdate,
                                               forLineage,
                                               forDuplicateProcessing,
+                                              supportedZones,
                                               effectiveTime,
                                               methodName);
             }
