@@ -10,9 +10,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.G
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceLevelIdentifierProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceLevelIdentifierSetProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -23,16 +21,8 @@ import java.util.List;
 /**
  * GovernanceClassificationLevelManager is the Java client used to manage the definitions of the level values used in governance classifications.
  */
-public class GovernanceClassificationLevelManager implements GovernanceClassificationLevelInterface
+public class GovernanceClassificationLevelManager extends GovernanceProgramBaseClient implements GovernanceClassificationLevelInterface
 {
-    private final String                      serverName;               /* Initialized in constructor */
-    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
-
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -44,13 +34,7 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
     public GovernanceClassificationLevelManager(String serverName,
                                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -70,13 +54,7 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
                                                 String userId,
                                                 String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -96,14 +74,7 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
                                                 int      maxPageSize,
                                                 AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
 
 
@@ -127,14 +98,7 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
                                                 int      maxPageSize,
                                                 AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
@@ -153,14 +117,7 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
                                                 GovernanceProgramRESTClient restClient,
                                                 int                         maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -236,22 +193,13 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
         final String classificationNameParameter = "classificationName";
         final String identifierPropertyNameParameter = "identifierPropertyName";
         final String propertiesParameter = "properties";
-        final String qualifiedNameParameter = "qualifiedName";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameter, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
         invalidParameterHandler.validateName(properties.getClassificationName(), classificationNameParameter, methodName);
         invalidParameterHandler.validateName(properties.getIdentifierPropertyName(), identifierPropertyNameParameter, methodName);
 
-        GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
-                                                                serverPlatformURLRoot + urlTemplate,
-                                                                properties,
-                                                                serverName,
-                                                                userId);
-
-        return response.getGUID();
+        return super.createReferenceable(userId, properties, propertiesParameter, urlTemplate, methodName);
     }
 
 
@@ -279,22 +227,13 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
         final String identifierPropertyNameParameter = "identifierPropertyName";
         final String guidParameter = "setGUID";
         final String propertiesParameter = "properties";
-        final String qualifiedNameParameter = "qualifiedName";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/{2}/update";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(setGUID, guidParameter, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameter, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
         invalidParameterHandler.validateName(properties.getClassificationName(), classificationNameParameter, methodName);
         invalidParameterHandler.validateName(properties.getIdentifierPropertyName(), identifierPropertyNameParameter, methodName);
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        setGUID);
+        super.updateReferenceable(userId, setGUID, guidParameter, false, properties, propertiesParameter, urlTemplate, methodName);
     }
 
 
@@ -315,19 +254,10 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
                                                                           PropertyServerException
     {
         final String methodName = "removeGovernanceLevelIdentifierSet";
-
         final String guidParameter = "setGUID";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/{2}/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(setGUID, guidParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        setGUID);
+        super.removeReferenceable(userId, setGUID, guidParameter, urlTemplate, methodName);
     }
 
 
@@ -460,22 +390,10 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
         final String methodName = "createGovernanceLevelIdentifier";
 
         final String guidParameter = "setGUID";
-        final String qualifiedNameParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/{2}/identifier";
+        final String propertiesParameter = "qualifiedName";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/identifier";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(setGUID, guidParameter, methodName);
-        invalidParameterHandler.validateObject(properties, qualifiedNameParameter, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
-
-        GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
-                                                                serverPlatformURLRoot + urlTemplate,
-                                                                properties,
-                                                                serverName,
-                                                                userId,
-                                                                setGUID);
-
-        return response.getGUID();
+        return super.createReferenceableWithAnchor(userId, setGUID, guidParameter, properties, propertiesParameter, urlTemplate, methodName);
     }
 
 
@@ -500,20 +418,10 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
         final String methodName = "updateGovernanceLevelIdentifier";
 
         final String guidParameter = "identifierGUID";
-        final String qualifiedNameParameter = "qualifiedName";
+        final String propertiesParameter = "properties";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/identifier/{2}/update";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(identifierGUID, guidParameter, methodName);
-        invalidParameterHandler.validateObject(properties, qualifiedNameParameter, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        identifierGUID);
+        super.updateReferenceable(userId, identifierGUID, guidParameter, false, properties, propertiesParameter, urlTemplate, methodName);
     }
 
 
@@ -538,15 +446,7 @@ public class GovernanceClassificationLevelManager implements GovernanceClassific
         final String guidParameter = "identifierGUID";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/identifier/{2}/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(identifierGUID, guidParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        identifierGUID);
+        super.removeReferenceable(userId, identifierGUID, guidParameter, urlTemplate, methodName);
     }
 
 
