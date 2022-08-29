@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -210,24 +210,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkZoneToGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">linkZoneToGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
-                              java.lang.String&nbsp;zoneGUID,
-                              java.lang.String&nbsp;definitionGUID)</code></th>
-<td class="colLast">
-<div class="block">Link a governance zone to a governance definition that controls how the assets in the zone should be governed.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkZoneFromGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">unlinkZoneFromGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
-                                  java.lang.String&nbsp;zoneGUID,
-                                  java.lang.String&nbsp;definitionGUID)</code></th>
-<td class="colLast">
-<div class="block">Remove the link between a zone and a governance definition.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkZonesInHierarchy(java.lang.String,java.lang.String,java.lang.String)">unlinkZonesInHierarchy</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;parentZoneGUID,
                       java.lang.String&nbsp;childZoneGUID)</code></th>
@@ -235,7 +217,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the link between two zones in the zone hierarchy.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceZone(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties)">updateGovernanceZone</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;zoneGUID,
@@ -384,56 +366,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - calling user</dd>
 <dd><code>parentZoneGUID</code> - unique identifier of the parent zone</dd>
 <dd><code>childZoneGUID</code> - unique identifier of the child zone</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="linkZoneToGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>linkZoneToGovernanceDefinition</h4>
-<pre class="methodSignature">void&nbsp;linkZoneToGovernanceDefinition&#8203;(java.lang.String&nbsp;userId,
-                                    java.lang.String&nbsp;zoneGUID,
-                                    java.lang.String&nbsp;definitionGUID)
-                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Link a governance zone to a governance definition that controls how the assets in the zone should be governed.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>zoneGUID</code> - unique identifier of the zone</dd>
-<dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="unlinkZoneFromGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>unlinkZoneFromGovernanceDefinition</h4>
-<pre class="methodSignature">void&nbsp;unlinkZoneFromGovernanceDefinition&#8203;(java.lang.String&nbsp;userId,
-                                        java.lang.String&nbsp;zoneGUID,
-                                        java.lang.String&nbsp;definitionGUID)
-                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Remove the link between a zone and a governance definition.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>zoneGUID</code> - unique identifier of the zone</dd>
-<dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>

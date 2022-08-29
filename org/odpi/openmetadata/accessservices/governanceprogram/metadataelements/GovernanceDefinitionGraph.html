@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -122,7 +122,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionGraph</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -135,8 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">GovernanceDefinitionGraph</span>
-extends java.lang.Object
-implements java.io.Serializable, <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">MetadataElement</a></pre>
+extends <a href="GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDefinitionElement</a></pre>
 <div class="block">GovernanceDefinitionGraph documents the linked governance definitions of the governance program.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
@@ -199,111 +203,83 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getChildren()">getChildren</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the governance definitions that support this governance definition.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHeader()">getElementHeader</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the element header associated with the properties.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferences()">getExternalReferences</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return details of the external references that have been linked to this governance definition.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;</code></td>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetrics()">getMetrics</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the governance metrics that measure this governance definition.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;</code></td>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getParents()">getParents</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of governance definitions that are requirements for this governance definition.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="GovernanceLink.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceLink</a>&gt;</code></td>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPeers()">getPeers</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of peer governance definitions that are related to this governance definition.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code><a href="../properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionProperties</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProperties()">getProperties</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the properties of this governance definition.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return has code based on properties.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setChildren(java.util.List)">setChildren</a></span>&#8203;(java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;&nbsp;children)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setChildren(java.util.List)">setChildren</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;children)</code></th>
 <td class="colLast">
 <div class="block">Set up the governance definitions that support this governance definition.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;elementHeader)</code></th>
-<td class="colLast">
-<div class="block">Set up the element header associated with the properties.</div>
-</td>
-</tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExternalReferneces(java.util.List)">setExternalReferneces</a></span>&#8203;(java.util.List&lt;<a href="ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;&nbsp;externalReferences)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExternalReferences(java.util.List)">setExternalReferences</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;externalReferences)</code></th>
 <td class="colLast">
 <div class="block">Set up the details of the external references that have been linked to this governance definition.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMetrics(java.util.List)">setMetrics</a></span>&#8203;(java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;&nbsp;metrics)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMetrics(java.util.List)">setMetrics</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;metrics)</code></th>
 <td class="colLast">
 <div class="block">Set up the governance metrics that measure this governance definition.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setParents(java.util.List)">setParents</a></span>&#8203;(java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;&nbsp;parents)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setParents(java.util.List)">setParents</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;parents)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of governance definition that are requirements for this governance definition.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPeers(java.util.List)">setPeers</a></span>&#8203;(java.util.List&lt;<a href="GovernanceLink.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceLink</a>&gt;&nbsp;peers)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPeers(java.util.List)">setPeers</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;peers)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of governance definitions that are related to this governance definition.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProperties(org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties)">setProperties</a></span>&#8203;(<a href="../properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionProperties</a>&nbsp;properties)</code></th>
-<td class="colLast">
-<div class="block">Set up the properties of this governance definition.</div>
-</td>
-</tr>
-<tr id="i16" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -311,6 +287,13 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.<a href="GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDefinitionElement</a></h3>
+<code><a href="GovernanceDefinitionElement.html#getElementHeader()">getElementHeader</a>, <a href="GovernanceDefinitionElement.html#getProperties()">getProperties</a>, <a href="GovernanceDefinitionElement.html#getRelatedElement()">getRelatedElement</a>, <a href="GovernanceDefinitionElement.html#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a>, <a href="GovernanceDefinitionElement.html#setProperties(org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties)">setProperties</a>, <a href="GovernanceDefinitionElement.html#setRelatedElement(org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement)">setRelatedElement</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -368,73 +351,13 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getElementHeader()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getElementHeader</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;getElementHeader()</pre>
-<div class="block">Return the element header associated with the properties.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="MetadataElement.html#getElementHeader()">getElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">MetadataElement</a></code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>element header object</dd>
-</dl>
-</li>
-</ul>
-<a id="setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setElementHeader</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setElementHeader&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;elementHeader)</pre>
-<div class="block">Set up the element header associated with the properties.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="MetadataElement.html#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">MetadataElement</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>elementHeader</code> - element header object</dd>
-</dl>
-</li>
-</ul>
-<a id="getProperties()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getProperties</h4>
-<pre class="methodSignature">public&nbsp;<a href="../properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionProperties</a>&nbsp;getProperties()</pre>
-<div class="block">Return the properties of this governance definition.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>properties bean</dd>
-</dl>
-</li>
-</ul>
-<a id="setProperties(org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setProperties</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setProperties&#8203;(<a href="../properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionProperties</a>&nbsp;properties)</pre>
-<div class="block">Set up the properties of this governance definition.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>properties</code> - properties bean</dd>
-</dl>
-</li>
-</ul>
 <a id="getParents()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>getParents</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;&nbsp;getParents()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getParents()</pre>
 <div class="block">Return the list of governance definitions that are requirements for this governance definition.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -448,7 +371,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <ul class="blockList">
 <li class="blockList">
 <h4>setParents</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setParents&#8203;(java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;&nbsp;parents)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setParents&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;parents)</pre>
 <div class="block">Set up the list of governance definition that are requirements for this governance definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -462,7 +385,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <ul class="blockList">
 <li class="blockList">
 <h4>getPeers</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="GovernanceLink.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceLink</a>&gt;&nbsp;getPeers()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getPeers()</pre>
 <div class="block">Return the list of peer governance definitions that are related to this governance definition.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -476,7 +399,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <ul class="blockList">
 <li class="blockList">
 <h4>setPeers</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setPeers&#8203;(java.util.List&lt;<a href="GovernanceLink.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceLink</a>&gt;&nbsp;peers)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setPeers&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;peers)</pre>
 <div class="block">Set up the list of governance definitions that are related to this governance definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -490,7 +413,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <ul class="blockList">
 <li class="blockList">
 <h4>getChildren</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;&nbsp;getChildren()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getChildren()</pre>
 <div class="block">Return the governance definitions that support this governance definition.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -504,7 +427,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <ul class="blockList">
 <li class="blockList">
 <h4>setChildren</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setChildren&#8203;(java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;&nbsp;children)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setChildren&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;children)</pre>
 <div class="block">Set up the governance definitions that support this governance definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -518,7 +441,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <ul class="blockList">
 <li class="blockList">
 <h4>getMetrics</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;&nbsp;getMetrics()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getMetrics()</pre>
 <div class="block">Return the governance metrics that measure this governance definition.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -532,7 +455,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <ul class="blockList">
 <li class="blockList">
 <h4>setMetrics</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setMetrics&#8203;(java.util.List&lt;<a href="GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt;&nbsp;metrics)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setMetrics&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;metrics)</pre>
 <div class="block">Set up the governance metrics that measure this governance definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -546,7 +469,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <ul class="blockList">
 <li class="blockList">
 <h4>getExternalReferences</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;&nbsp;getExternalReferences()</pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getExternalReferences()</pre>
 <div class="block">Return details of the external references that have been linked to this governance definition.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -554,13 +477,13 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 </dl>
 </li>
 </ul>
-<a id="setExternalReferneces(java.util.List)">
+<a id="setExternalReferences(java.util.List)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setExternalReferneces</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setExternalReferneces&#8203;(java.util.List&lt;<a href="ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;&nbsp;externalReferences)</pre>
+<h4>setExternalReferences</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setExternalReferences&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;externalReferences)</pre>
 <div class="block">Set up the details of the external references that have been linked to this governance definition.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -578,7 +501,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <div class="block">JSON-style toString</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>toString</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+<dd><code><a href="GovernanceDefinitionElement.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDefinitionElement</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>string containing the properties and their values</dd>
 </dl>
@@ -594,7 +517,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>equals</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+<dd><code><a href="GovernanceDefinitionElement.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDefinitionElement</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -612,7 +535,7 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <div class="block">Return has code based on properties.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code>hashCode</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
+<dd><code><a href="GovernanceDefinitionElement.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDefinitionElement</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int</dd>
 </dl>

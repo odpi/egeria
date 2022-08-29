@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -121,6 +121,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
+<dl>
+<dt>All Known Implementing Classes:</dt>
+<dd><code><a href="../client/GovernanceStatusLevelManager.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceStatusLevelManager</a></code></dd>
+</dl>
 <hr>
 <pre>public interface <span class="typeNameLabel">GovernanceStatusLevelInterface</span></pre>
 <div class="block">GovernanceStatusLevelInterface defines the status levels of status for governance elements.</div>
@@ -178,28 +182,20 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/GovernanceStatusIdentifierSetElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceStatusIdentifierSetElement</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceStatusIdentifierSet(java.lang.String,java.lang.String)">getGovernanceStatusIdentifierSet</a></span>&#8203;(java.lang.String&nbsp;userId,
-                                java.lang.String&nbsp;classificationName)</code></th>
-<td class="colLast">
-<div class="block">Retrieve the Governance Level Identifier Set for a requested governance status.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code><a href="../metadataelements/GovernanceStatusIdentifierSetElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceStatusIdentifierSetElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceStatusIdentifierSetByGUID(java.lang.String,java.lang.String)">getGovernanceStatusIdentifierSetByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                                       java.lang.String&nbsp;setGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the Governance Level Identifier Set metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceStatusIdentifierSetElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceStatusIdentifierSetElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceStatusIdentifierSets(java.lang.String)">getGovernanceStatusIdentifierSets</a></span>&#8203;(java.lang.String&nbsp;userId)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the list of Governance Status Level Identifier Sets.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeGovernanceStatusIdentifier(java.lang.String,java.lang.String)">removeGovernanceStatusIdentifier</a></span>&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;identifierGUID)</code></th>
@@ -207,7 +203,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the metadata element representing a governance status level identifier.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeGovernanceStatusIdentifierSet(java.lang.String,java.lang.String)">removeGovernanceStatusIdentifierSet</a></span>&#8203;(java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;setGUID)</code></th>
@@ -215,7 +211,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the metadata element representing a Governance Status Level Identifier Sets and all linked level identifiers.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceStatusIdentifier(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceStatusIdentifierProperties)">updateGovernanceStatusIdentifier</a></span>&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;identifierGUID,
@@ -224,7 +220,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the metadata element representing a governance status level identifier.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceStatusIdentifierSet(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceStatusIdentifierSetProperties)">updateGovernanceStatusIdentifierSet</a></span>&#8203;(java.lang.String&nbsp;userId,
                                    java.lang.String&nbsp;setGUID,
@@ -360,31 +356,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of matching metadata elements</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
-</dl>
-</li>
-</ul>
-<a id="getGovernanceStatusIdentifierSet(java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getGovernanceStatusIdentifierSet</h4>
-<pre class="methodSignature"><a href="../metadataelements/GovernanceStatusIdentifierSetElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceStatusIdentifierSetElement</a>&nbsp;getGovernanceStatusIdentifierSet&#8203;(java.lang.String&nbsp;userId,
-                                                                      java.lang.String&nbsp;classificationName)
-                                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the Governance Level Identifier Set for a requested governance status.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>classificationName</code> - classificationName to search for</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of matching metadata elements</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

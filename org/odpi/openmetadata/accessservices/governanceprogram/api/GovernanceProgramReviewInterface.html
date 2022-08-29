@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -161,13 +161,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementsGovernedByDefinition(java.lang.String,java.lang.String,int,int)">getElementsGovernedByDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
-                               java.lang.String&nbsp;governanceDefinitionGUID,
-                               int&nbsp;startFrom,
-                               int&nbsp;pageSize)</code></th>
+<td class="colFirst"><code><a href="../metadataelements/GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDefinitionElement</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceDefinitionByGUID(java.lang.String,java.lang.String)">getGovernanceDefinitionByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
+                             java.lang.String&nbsp;definitionGUID)</code></th>
 <td class="colLast">
-<div class="block">Return the elements that are governed by the supplied governance definition.</div>
+<div class="block">Retrieve the governance definition by the unique identifier assigned by this service when it was created.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
@@ -211,17 +209,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code><a href="../metadataelements/GovernanceZoneInAction.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceZoneInAction</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceZoneInAction(java.lang.String,java.lang.String)">getGovernanceZoneInAction</a></span>&#8203;(java.lang.String&nbsp;userId,
-                         java.lang.String&nbsp;zoneGUID)</code></th>
-<td class="colLast">
-<div class="block">Return detailed information about the requested governance zone.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceZoneMembers(java.lang.String,java.lang.String,int,int)">getGovernanceZoneMembers</a></span>&#8203;(java.lang.String&nbsp;userId,
-                        java.lang.String&nbsp;zoneGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceZoneMembers(java.lang.String,java.lang.String,java.lang.String,int,int)">getGovernanceZoneMembers</a></span>&#8203;(java.lang.String&nbsp;userId,
+                        java.lang.String&nbsp;zoneName,
+                        java.lang.String&nbsp;subTypeName,
                         int&nbsp;startFrom,
                         int&nbsp;pageSize)</code></th>
 <td class="colLast">
@@ -245,6 +236,31 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getGovernanceDefinitionByGUID(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGovernanceDefinitionByGUID</h4>
+<pre class="methodSignature"><a href="../metadataelements/GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDefinitionElement</a>&nbsp;getGovernanceDefinitionByGUID&#8203;(java.lang.String&nbsp;userId,
+                                                          java.lang.String&nbsp;definitionGUID)
+                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the governance definition by the unique identifier assigned by this service when it was created.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>definitionGUID</code> - identifier of the governance definition to retrieve</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>properties of the governance definition</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid or userId is null; guid is not recognized</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
 <a id="getGovernanceDefinitionsForDomain(java.lang.String,java.lang.String,int,int,int)">
 <!--   -->
 </a>
@@ -332,35 +348,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getElementsGovernedByDefinition(java.lang.String,java.lang.String,int,int)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getElementsGovernedByDefinition</h4>
-<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;getElementsGovernedByDefinition&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                         java.lang.String&nbsp;governanceDefinitionGUID,
-                                                                                                                         int&nbsp;startFrom,
-                                                                                                                         int&nbsp;pageSize)
-                                                                                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                                                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                                                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Return the elements that are governed by the supplied governance definition.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>governanceDefinitionGUID</code> - unique name of the governance definition</dd>
-<dd><code>startFrom</code> - where to start from in the list of definitions</dd>
-<dd><code>pageSize</code> - max number of results to return in one call</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of headers for the associated elements</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to issue the request</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the metadata service has problems</dd>
-</dl>
-</li>
-</ul>
 <a id="findGovernanceDefinitions(java.lang.String,java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
@@ -421,39 +408,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getGovernanceZoneInAction(java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getGovernanceZoneInAction</h4>
-<pre class="methodSignature"><a href="../metadataelements/GovernanceZoneInAction.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceZoneInAction</a>&nbsp;getGovernanceZoneInAction&#8203;(java.lang.String&nbsp;userId,
-                                                 java.lang.String&nbsp;zoneGUID)
-                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Return detailed information about the requested governance zone.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>zoneGUID</code> - unique identifier of the zone to search for</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>detailed information about the requested zone</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the caller is not authorized to issue the request</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the metadata service has problems</dd>
-</dl>
-</li>
-</ul>
-<a id="getGovernanceZoneMembers(java.lang.String,java.lang.String,int,int)">
+<a id="getGovernanceZoneMembers(java.lang.String,java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getGovernanceZoneMembers</h4>
 <pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;getGovernanceZoneMembers&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                  java.lang.String&nbsp;zoneGUID,
+                                                                                                                  java.lang.String&nbsp;zoneName,
+                                                                                                                  java.lang.String&nbsp;subTypeName,
                                                                                                                   int&nbsp;startFrom,
                                                                                                                   int&nbsp;pageSize)
                                                                                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
@@ -463,7 +426,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>zoneGUID</code> - unique identifier of the zone to search for</dd>
+<dd><code>zoneName</code> - unique name of the zone to search for</dd>
+<dd><code>subTypeName</code> - optional asset subtypeName to limit the results</dd>
 <dd><code>startFrom</code> - where to start from in the list of assets</dd>
 <dd><code>pageSize</code> - max number of results to return in one call</dd>
 <dt><span class="returnLabel">Returns:</span></dt>

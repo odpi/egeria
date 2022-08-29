@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -159,6 +159,39 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearGovernanceExpectations(java.lang.String,java.lang.String)">clearGovernanceExpectations</a></span>&#8203;(java.lang.String&nbsp;userId,
+                           java.lang.String&nbsp;elementGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove the governance expectations classification from the element.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearGovernanceMeasurements(java.lang.String,java.lang.String)">clearGovernanceMeasurements</a></span>&#8203;(java.lang.String&nbsp;userId,
+                           java.lang.String&nbsp;elementGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove the measurements from the element.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearGovernanceMeasurementsDataSet(java.lang.String,java.lang.String)">clearGovernanceMeasurementsDataSet</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                  java.lang.String&nbsp;dataSetGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove the governance data designation from the data set.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearGovernanceResults(java.lang.String,java.lang.String,java.lang.String)">clearGovernanceResults</a></span>&#8203;(java.lang.String&nbsp;userId,
+                      java.lang.String&nbsp;metricGUID,
+                      java.lang.String&nbsp;dataSetGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove the link between a governance metric and a data set.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createGovernanceMetric(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties)">createGovernanceMetric</a></span>&#8203;(java.lang.String&nbsp;userId,
                       <a href="../properties/GovernanceMetricProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceMetricProperties</a>&nbsp;metricProperties)</code></th>
@@ -166,7 +199,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a new governance metric.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteGovernanceMetric(java.lang.String,java.lang.String)">deleteGovernanceMetric</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;metricGUID)</code></th>
@@ -174,7 +207,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Delete a specific governance metric.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/GovernanceMetricElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceMetricElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findGovernanceMetrics(java.lang.String,java.lang.String,int,int)">findGovernanceMetrics</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;searchString,
@@ -184,7 +217,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of governance metrics for this search string.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/GovernanceMetricElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceMetricElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGovernanceMetricByGUID(java.lang.String,java.lang.String)">getGovernanceMetricByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;metricGUID)</code></th>
@@ -192,17 +225,54 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return information about a specific governance metric.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupGovernanceDefinitionMetric(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setupGovernanceDefinitionMetric</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceExpectations(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceExpectationsProperties)">setGovernanceExpectations</a></span>&#8203;(java.lang.String&nbsp;userId,
+                         java.lang.String&nbsp;elementGUID,
+                         <a href="../properties/GovernanceExpectationsProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceExpectationsProperties</a>&nbsp;properties)</code></th>
+<td class="colLast">
+<div class="block">Classify the element to indicate the expected values of the governance measurements.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceMeasurements(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsProperties)">setGovernanceMeasurements</a></span>&#8203;(java.lang.String&nbsp;userId,
+                         java.lang.String&nbsp;elementGUID,
+                         <a href="../properties/GovernanceMeasurementsProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceMeasurementsProperties</a>&nbsp;properties)</code></th>
+<td class="colLast">
+<div class="block">Classify the element with relevant governance measurements.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGovernanceMeasurementsDataSet(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsDataSetProperties)">setGovernanceMeasurementsDataSet</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                java.lang.String&nbsp;dataSetGUID,
+                                <a href="../properties/GovernanceMeasurementsDataSetProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceMeasurementsDataSetProperties</a>&nbsp;properties)</code></th>
+<td class="colLast">
+<div class="block">Classify the data set to indicate that contains governance measurements.</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupGovernanceDefinitionMetric(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetricProperties)">setupGovernanceDefinitionMetric</a></span>&#8203;(java.lang.String&nbsp;userId,
                                java.lang.String&nbsp;metricGUID,
                                java.lang.String&nbsp;governanceDefinitionGUID,
-                               java.lang.String&nbsp;rationale)</code></th>
+                               <a href="../properties/GovernanceDefinitionMetricProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionMetricProperties</a>&nbsp;rationale)</code></th>
 <td class="colLast">
 <div class="block">Create a link to show that a governance metric supports the requirements of one of the governance policies.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupGovernanceResults(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResultsProperties)">setupGovernanceResults</a></span>&#8203;(java.lang.String&nbsp;userId,
+                      java.lang.String&nbsp;metricGUID,
+                      java.lang.String&nbsp;dataSetGUID,
+                      <a href="../properties/GovernanceResultsProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceResultsProperties</a>&nbsp;properties)</code></th>
+<td class="colLast">
+<div class="block">Create a link to show which data set holds the measurements for a data set.</div>
+</td>
+</tr>
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceMetric(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties)">updateGovernanceMetric</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;metricGUID,
@@ -304,7 +374,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="setupGovernanceDefinitionMetric(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="setupGovernanceDefinitionMetric(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetricProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -313,7 +383,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre class="methodSignature">void&nbsp;setupGovernanceDefinitionMetric&#8203;(java.lang.String&nbsp;userId,
                                      java.lang.String&nbsp;metricGUID,
                                      java.lang.String&nbsp;governanceDefinitionGUID,
-                                     java.lang.String&nbsp;rationale)
+                                     <a href="../properties/GovernanceDefinitionMetricProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionMetricProperties</a>&nbsp;rationale)
                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -354,6 +424,202 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="setupGovernanceResults(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResultsProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setupGovernanceResults</h4>
+<pre class="methodSignature">void&nbsp;setupGovernanceResults&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;metricGUID,
+                            java.lang.String&nbsp;dataSetGUID,
+                            <a href="../properties/GovernanceResultsProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceResultsProperties</a>&nbsp;properties)
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a link to show which data set holds the measurements for a data set.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>metricGUID</code> - unique identifier of the governance metric</dd>
+<dd><code>dataSetGUID</code> - unique identifier of the governance definition</dd>
+<dd><code>properties</code> - description of how the data set supports the metric</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="clearGovernanceResults(java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearGovernanceResults</h4>
+<pre class="methodSignature">void&nbsp;clearGovernanceResults&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;metricGUID,
+                            java.lang.String&nbsp;dataSetGUID)
+                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove the link between a governance metric and a data set.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>metricGUID</code> - unique identifier of the governance metric</dd>
+<dd><code>dataSetGUID</code> - unique identifier of the data set</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="setGovernanceMeasurementsDataSet(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsDataSetProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setGovernanceMeasurementsDataSet</h4>
+<pre class="methodSignature">void&nbsp;setGovernanceMeasurementsDataSet&#8203;(java.lang.String&nbsp;userId,
+                                      java.lang.String&nbsp;dataSetGUID,
+                                      <a href="../properties/GovernanceMeasurementsDataSetProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceMeasurementsDataSetProperties</a>&nbsp;properties)
+                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Classify the data set to indicate that contains governance measurements.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>dataSetGUID</code> - unique identifier of the metadata element to classify</dd>
+<dd><code>properties</code> - properties of the data set's measurements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearGovernanceMeasurementsDataSet(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearGovernanceMeasurementsDataSet</h4>
+<pre class="methodSignature">void&nbsp;clearGovernanceMeasurementsDataSet&#8203;(java.lang.String&nbsp;userId,
+                                        java.lang.String&nbsp;dataSetGUID)
+                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove the governance data designation from the data set.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>dataSetGUID</code> - unique identifier of the metadata element to classify</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="setGovernanceExpectations(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceExpectationsProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setGovernanceExpectations</h4>
+<pre class="methodSignature">void&nbsp;setGovernanceExpectations&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;elementGUID,
+                               <a href="../properties/GovernanceExpectationsProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceExpectationsProperties</a>&nbsp;properties)
+                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Classify the element to indicate the expected values of the governance measurements. Can be used to create or update the values.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>elementGUID</code> - unique identifier of the metadata element to classify</dd>
+<dd><code>properties</code> - properties of the data set's measurements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearGovernanceExpectations(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearGovernanceExpectations</h4>
+<pre class="methodSignature">void&nbsp;clearGovernanceExpectations&#8203;(java.lang.String&nbsp;userId,
+                                 java.lang.String&nbsp;elementGUID)
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove the governance expectations classification from the element.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>elementGUID</code> - unique identifier of the metadata element to classify</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="setGovernanceMeasurements(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setGovernanceMeasurements</h4>
+<pre class="methodSignature">void&nbsp;setGovernanceMeasurements&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;elementGUID,
+                               <a href="../properties/GovernanceMeasurementsProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceMeasurementsProperties</a>&nbsp;properties)
+                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Classify the element with relevant governance measurements. Can be used to create or update the values.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>elementGUID</code> - unique identifier of the metadata element to classify</dd>
+<dd><code>properties</code> - properties of the data set's measurements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearGovernanceMeasurements(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearGovernanceMeasurements</h4>
+<pre class="methodSignature">void&nbsp;clearGovernanceMeasurements&#8203;(java.lang.String&nbsp;userId,
+                                 java.lang.String&nbsp;elementGUID)
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove the measurements from the element.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>elementGUID</code> - unique identifier of the metadata element to classify</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
 </dl>
 </li>
 </ul>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
@@ -122,7 +122,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.governanceprogram.client.CertificationManager</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -131,11 +136,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/CertificationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">CertificationManagementInterface</a></code></dd>
+<dd><code><a href="../api/CertificationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">CertificationManagementInterface</a></code>, <code><a href="../api/RelatedElementsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RelatedElementsManagementInterface</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">CertificationManager</span>
-extends java.lang.Object
+extends <a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a>
 implements <a href="../api/CertificationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">CertificationManagementInterface</a></pre>
 <div class="block">CertificationManager is the java client for managing certification types and the certification of elements.</div>
 </li>
@@ -144,6 +149,23 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.client.<a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a></h3>
+<code><a href="GovernanceProgramBaseClient.html#nullRequestBody">nullRequestBody</a></code></li>
+</ul>
+</li>
+</ul>
+</section>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <section role="region">
 <ul class="blockList">
@@ -221,7 +243,7 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>void</code></td>
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#certifyElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties)">certifyElement</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;elementGUID,
               java.lang.String&nbsp;certificationTypeGUID,
@@ -241,10 +263,8 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#decertifyElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">decertifyElement</a></span>&#8203;(java.lang.String&nbsp;userId,
-                java.lang.String&nbsp;elementGUID,
-                java.lang.String&nbsp;certificationTypeGUID,
-                java.lang.String&nbsp;certificateId)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#decertifyElement(java.lang.String,java.lang.String)">decertifyElement</a></span>&#8203;(java.lang.String&nbsp;userId,
+                java.lang.String&nbsp;certificationGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the certification for an element.</div>
 </td>
@@ -258,6 +278,16 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 </td>
 </tr>
 <tr id="i4" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCertifications(java.lang.String,java.lang.String,int,int)">getCertifications</a></span>&#8203;(java.lang.String&nbsp;userId,
+                 java.lang.String&nbsp;elementGUID,
+                 int&nbsp;startFrom,
+                 int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the certifications linked to an element.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/CertificationTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">CertificationTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCertificationTypeByDocId(java.lang.String,java.lang.String)">getCertificationTypeByDocId</a></span>&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;documentIdentifier)</code></th>
@@ -265,7 +295,7 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <div class="block">Retrieve the certification type by its assigned unique document identifier.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/CertificationTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">CertificationTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCertificationTypeByDomainId(java.lang.String,int,int,int)">getCertificationTypeByDomainId</a></span>&#8203;(java.lang.String&nbsp;userId,
                               int&nbsp;domainIdentifier,
@@ -275,7 +305,7 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <div class="block">Retrieve all the certification type definitions for a specific governance domain.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/CertificationTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">CertificationTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCertificationTypeByGUID(java.lang.String,java.lang.String)">getCertificationTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;certificationTypeGUID)</code></th>
@@ -283,7 +313,7 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <div class="block">Retrieve the certification type by the unique identifier assigned by this service when it was created.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/CertificationTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">CertificationTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCertificationTypesByTitle(java.lang.String,java.lang.String,int,int)">getCertificationTypesByTitle</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;title,
@@ -293,18 +323,27 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <div class="block">Retrieve all the certification types for a particular title.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCertifiedElements(java.lang.String,java.lang.String,int,int)">getCertifiedElements</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;certificationTypeGUID,
+                    int&nbsp;startFrom,
+                    int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the elements linked to a certification.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateCertification(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties)">updateCertification</a></span>&#8203;(java.lang.String&nbsp;userId,
-                   java.lang.String&nbsp;elementGUID,
-                   java.lang.String&nbsp;certificationTypeGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateCertification(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties)">updateCertification</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   java.lang.String&nbsp;certificationGUID,
                    boolean&nbsp;isMergeUpdate,
                    <a href="../properties/CertificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">CertificationProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Update the properties of a certification.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateCertificationType(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties)">updateCertificationType</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;certificationTypeGUID,
@@ -315,6 +354,13 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.client.<a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a></h3>
+<code><a href="GovernanceProgramBaseClient.html#clearAssignmentScope(java.lang.String,java.lang.String,java.lang.String)">clearAssignmentScope</a>, <a href="GovernanceProgramBaseClient.html#clearGovernanceDefinitionScope(java.lang.String,java.lang.String,java.lang.String)">clearGovernanceDefinitionScope</a>, <a href="GovernanceProgramBaseClient.html#clearGovernanceResponsibilityAssignment(java.lang.String,java.lang.String,java.lang.String)">clearGovernanceResponsibilityAssignment</a>, <a href="GovernanceProgramBaseClient.html#clearGovernedBy(java.lang.String,java.lang.String,java.lang.String)">clearGovernedBy</a>, <a href="GovernanceProgramBaseClient.html#clearMoreInformation(java.lang.String,java.lang.String,java.lang.String)">clearMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#clearResource(java.lang.String,java.lang.String,java.lang.String)">clearResource</a>, <a href="GovernanceProgramBaseClient.html#clearStakeholder(java.lang.String,java.lang.String,java.lang.String)">clearStakeholder</a>, <a href="GovernanceProgramBaseClient.html#getAssignedActors(java.lang.String,java.lang.String,int,int)">getAssignedActors</a>, <a href="GovernanceProgramBaseClient.html#getAssignedScopes(java.lang.String,java.lang.String,int,int)">getAssignedScopes</a>, <a href="GovernanceProgramBaseClient.html#getDescriptiveElements(java.lang.String,java.lang.String,int,int)">getDescriptiveElements</a>, <a href="GovernanceProgramBaseClient.html#getGovernanceDefinitionScopes(java.lang.String,java.lang.String,int,int)">getGovernanceDefinitionScopes</a>, <a href="GovernanceProgramBaseClient.html#getGovernanceDefinitionsForElement(java.lang.String,java.lang.String,int,int)">getGovernanceDefinitionsForElement</a>, <a href="GovernanceProgramBaseClient.html#getGovernedElements(java.lang.String,java.lang.String,int,int)">getGovernedElements</a>, <a href="GovernanceProgramBaseClient.html#getMoreInformation(java.lang.String,java.lang.String,int,int)">getMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#getResourceList(java.lang.String,java.lang.String,int,int)">getResourceList</a>, <a href="GovernanceProgramBaseClient.html#getResponsibleRoles(java.lang.String,java.lang.String,int,int)">getResponsibleRoles</a>, <a href="GovernanceProgramBaseClient.html#getRoleResponsibilities(java.lang.String,java.lang.String,int,int)">getRoleResponsibilities</a>, <a href="GovernanceProgramBaseClient.html#getScopedGovernanceDefinitions(java.lang.String,java.lang.String,int,int)">getScopedGovernanceDefinitions</a>, <a href="GovernanceProgramBaseClient.html#getStakeholderCommissionedElements(java.lang.String,java.lang.String,int,int)">getStakeholderCommissionedElements</a>, <a href="GovernanceProgramBaseClient.html#getStakeholders(java.lang.String,java.lang.String,int,int)">getStakeholders</a>, <a href="GovernanceProgramBaseClient.html#getSupportedByResource(java.lang.String,java.lang.String,int,int)">getSupportedByResource</a>, <a href="GovernanceProgramBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a>, <a href="GovernanceProgramBaseClient.html#setupAssignmentScope(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.AssignmentScopeProperties,java.lang.String)">setupAssignmentScope</a>, <a href="GovernanceProgramBaseClient.html#setupGovernanceDefinitionScope(java.lang.String,java.lang.String,java.lang.String)">setupGovernanceDefinitionScope</a>, <a href="GovernanceProgramBaseClient.html#setupGovernanceResponsibilityAssignment(java.lang.String,java.lang.String,java.lang.String)">setupGovernanceResponsibilityAssignment</a>, <a href="GovernanceProgramBaseClient.html#setupGovernedBy(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String)">setupGovernedBy</a>, <a href="GovernanceProgramBaseClient.html#setupMoreInformation(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String)">setupMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#setupResource(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties,java.lang.String)">setupResource</a>, <a href="GovernanceProgramBaseClient.html#setupStakeholder(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.StakeholderProperties,java.lang.String)">setupStakeholder</a>, <a href="GovernanceProgramBaseClient.html#updateGovernanceDefinitionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus,java.lang.String,java.lang.String)">updateGovernanceDefinitionStatus</a>, <a href="GovernanceProgramBaseClient.html#updateRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String,java.lang.String)">updateRelationship</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -625,7 +671,7 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <dd><code>startFrom</code> - where to start from in the list of definitions</dd>
 <dd><code>pageSize</code> - max number of results to return in one call</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of matching roles (null if no matching elements)</dd>
+<dd>list of matching certification types (null if no matching elements)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - title or userId is null</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -670,13 +716,13 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <ul class="blockList">
 <li class="blockList">
 <h4>certifyElement</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;certifyElement&#8203;(java.lang.String&nbsp;userId,
-                           java.lang.String&nbsp;elementGUID,
-                           java.lang.String&nbsp;certificationTypeGUID,
-                           <a href="../properties/CertificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">CertificationProperties</a>&nbsp;properties)
-                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;certifyElement&#8203;(java.lang.String&nbsp;userId,
+                                       java.lang.String&nbsp;elementGUID,
+                                       java.lang.String&nbsp;certificationTypeGUID,
+                                       <a href="../properties/CertificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">CertificationProperties</a>&nbsp;properties)
+                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link an element to a certification type and include details of the certification in the relationship properties.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -686,6 +732,8 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <dd><code>elementGUID</code> - unique identifier of the element being certified</dd>
 <dd><code>certificationTypeGUID</code> - unique identifier for the certification type</dd>
 <dd><code>properties</code> - the properties of the certification</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the properties is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -693,29 +741,26 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 </dl>
 </li>
 </ul>
-<a id="updateCertification(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties)">
+<a id="updateCertification(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateCertification</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateCertification&#8203;(java.lang.String&nbsp;userId,
-                                java.lang.String&nbsp;elementGUID,
-                                java.lang.String&nbsp;certificationTypeGUID,
+                                java.lang.String&nbsp;certificationGUID,
                                 boolean&nbsp;isMergeUpdate,
                                 <a href="../properties/CertificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">CertificationProperties</a>&nbsp;properties)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Update the properties of a certification.  Remember to include the certificationId in the properties if the element has multiple
- certifications for the same certification type.</div>
+<div class="block">Update the properties of a certification.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/CertificationManagementInterface.html#updateCertification(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties)">updateCertification</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CertificationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">CertificationManagementInterface</a></code></dd>
+<dd><code><a href="../api/CertificationManagementInterface.html#updateCertification(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties)">updateCertification</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CertificationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">CertificationManagementInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>elementGUID</code> - unique identifier of the element being certified</dd>
-<dd><code>certificationTypeGUID</code> - unique identifier for the certification type</dd>
+<dd><code>certificationGUID</code> - unique identifier of the certification relationship being updated</dd>
 <dd><code>isMergeUpdate</code> - should the supplied properties overlay the existing properties or replace them</dd>
 <dd><code>properties</code> - the properties of the certification</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -725,30 +770,88 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 </dl>
 </li>
 </ul>
-<a id="decertifyElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="decertifyElement(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>decertifyElement</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;decertifyElement&#8203;(java.lang.String&nbsp;userId,
-                             java.lang.String&nbsp;elementGUID,
-                             java.lang.String&nbsp;certificationTypeGUID,
-                             java.lang.String&nbsp;certificateId)
+                             java.lang.String&nbsp;certificationGUID)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the certification for an element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/CertificationManagementInterface.html#decertifyElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">decertifyElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CertificationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">CertificationManagementInterface</a></code></dd>
+<dd><code><a href="../api/CertificationManagementInterface.html#decertifyElement(java.lang.String,java.lang.String)">decertifyElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CertificationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">CertificationManagementInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>elementGUID</code> - unique identifier of the element being certified</dd>
-<dd><code>certificationTypeGUID</code> - unique identifier for the certification type</dd>
-<dd><code>certificateId</code> - optional unique identifier from the certification authority - it is used to disambiguate the certifications for the element.</dd>
+<dd><code>certificationGUID</code> - unique identifier of the certification relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the properties is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getCertifiedElements(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getCertifiedElements</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getCertifiedElements&#8203;(java.lang.String&nbsp;userId,
+                                                           java.lang.String&nbsp;certificationTypeGUID,
+                                                           int&nbsp;startFrom,
+                                                           int&nbsp;pageSize)
+                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the elements linked to a certification.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/CertificationManagementInterface.html#getCertifiedElements(java.lang.String,java.lang.String,int,int)">getCertifiedElements</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CertificationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">CertificationManagementInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>certificationTypeGUID</code> - unique identifier for the certification</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>properties of the certification</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getCertifications(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getCertifications</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getCertifications&#8203;(java.lang.String&nbsp;userId,
+                                                        java.lang.String&nbsp;elementGUID,
+                                                        int&nbsp;startFrom,
+                                                        int&nbsp;pageSize)
+                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the certifications linked to an element.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/CertificationManagementInterface.html#getCertifications(java.lang.String,java.lang.String,int,int)">getCertifications</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CertificationManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">CertificationManagementInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>elementGUID</code> - unique identifier for the certification</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>properties of the certification</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
@@ -806,7 +909,7 @@ implements <a href="../api/CertificationManagementInterface.html" title="interfa
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>

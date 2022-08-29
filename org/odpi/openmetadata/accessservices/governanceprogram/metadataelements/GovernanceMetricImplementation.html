@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -211,129 +211,24 @@ extends <a href="GovernanceMetricElement.html" title="class in org.odpi.openmeta
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataSetConnectionGUIDs()">getDataSetConnectionGUIDs</a></span>()</code></th>
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getImplementations()">getImplementations</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the list of connection identifiers associated with the data set.</div>
+<div class="block">Return the list of relationships that links the governance metric to the measurement data set.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataSetDisplayName()">getDataSetDisplayName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the display name for the data set.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataSetGUID()">getDataSetGUID</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the unique identifier of the data set where the measurements are stored.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataSetQualifiedName()">getDataSetQualifiedName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the unique name for the data set.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataSetType()">getDataSetType</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the type name of the data set.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getImplementationDescription()">getImplementationDescription</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the description of how the data set supports the governance metric.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getImplementationGUID()">getImplementationGUID</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the unique identifier of the relationship that links the governance metric to the measurement data set.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQuery()">getQuery</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the query to use on the data set.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Just use the GUID for the hash code as it should be unique.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDataSetConnectionGUIDs(java.util.List)">setDataSetConnectionGUIDs</a></span>&#8203;(java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;dataSetConnectionGUIDs)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setImplementations(java.util.List)">setImplementations</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;implementations)</code></th>
 <td class="colLast">
-<div class="block">Set up the list of connection identifiers associated with the data set.</div>
-</td>
-</tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDataSetDisplayName(java.lang.String)">setDataSetDisplayName</a></span>&#8203;(java.lang.String&nbsp;dataSetDisplayName)</code></th>
-<td class="colLast">
-<div class="block">Set up the display name for the data set.</div>
-</td>
-</tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDataSetGUID(java.lang.String)">setDataSetGUID</a></span>&#8203;(java.lang.String&nbsp;dataSetGUID)</code></th>
-<td class="colLast">
-<div class="block">Set up the unique identifier of the data set where the measurements are stored.</div>
-</td>
-</tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDataSetQualifiedName(java.lang.String)">setDataSetQualifiedName</a></span>&#8203;(java.lang.String&nbsp;dataSetQualifiedName)</code></th>
-<td class="colLast">
-<div class="block">Set up the unique name for the data set.</div>
-</td>
-</tr>
-<tr id="i14" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDataSetType(java.lang.String)">setDataSetType</a></span>&#8203;(java.lang.String&nbsp;dataSetType)</code></th>
-<td class="colLast">
-<div class="block">Set up the type name for the data set.</div>
-</td>
-</tr>
-<tr id="i15" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setImplementationDescription(java.lang.String)">setImplementationDescription</a></span>&#8203;(java.lang.String&nbsp;implementationDescription)</code></th>
-<td class="colLast">
-<div class="block">Set up the description of how the data set supports the governance metric.</div>
-</td>
-</tr>
-<tr id="i16" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setImplementationGUID(java.lang.String)">setImplementationGUID</a></span>&#8203;(java.lang.String&nbsp;implementationGUID)</code></th>
-<td class="colLast">
-<div class="block">Set up the unique identifier of the relationship that links the governance metric to the measurement data set.</div>
-</td>
-</tr>
-<tr id="i17" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setQuery(java.lang.String)">setQuery</a></span>&#8203;(java.lang.String&nbsp;query)</code></th>
-<td class="colLast">
-<div class="block">Set up the query to use on the data set.</div>
-</td>
-</tr>
-<tr id="i18" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
-<td class="colLast">
-<div class="block">JSON-style toString</div>
+<div class="block">Set up the list of relationships that links the governance metric to the measurement data set.</div>
 </td>
 </tr>
 </table>
@@ -342,7 +237,7 @@ extends <a href="GovernanceMetricElement.html" title="class in org.odpi.openmeta
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.<a href="GovernanceMetricElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceMetricElement</a></h3>
-<code><a href="GovernanceMetricElement.html#getElementHeader()">getElementHeader</a>, <a href="GovernanceMetricElement.html#getProperties()">getProperties</a>, <a href="GovernanceMetricElement.html#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a>, <a href="GovernanceMetricElement.html#setProperties(org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties)">setProperties</a></code></li>
+<code><a href="GovernanceMetricElement.html#getElementHeader()">getElementHeader</a>, <a href="GovernanceMetricElement.html#getProperties()">getProperties</a>, <a href="GovernanceMetricElement.html#getRelatedElement()">getRelatedElement</a>, <a href="GovernanceMetricElement.html#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a>, <a href="GovernanceMetricElement.html#setProperties(org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties)">setProperties</a>, <a href="GovernanceMetricElement.html#setRelatedElement(org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement)">setRelatedElement</a>, <a href="GovernanceMetricElement.html#toString()">toString</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -415,249 +310,31 @@ extends <a href="GovernanceMetricElement.html" title="class in org.odpi.openmeta
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getImplementationGUID()">
+<a id="getImplementations()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getImplementationGUID</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getImplementationGUID()</pre>
-<div class="block">Return the unique identifier of the relationship that links the governance metric to the measurement data set.</div>
+<h4>getImplementations</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getImplementations()</pre>
+<div class="block">Return the list of relationships that links the governance metric to the measurement data set.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>string guid</dd>
+<dd>related elements</dd>
 </dl>
 </li>
 </ul>
-<a id="setImplementationGUID(java.lang.String)">
+<a id="setImplementations(java.util.List)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setImplementationGUID</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setImplementationGUID&#8203;(java.lang.String&nbsp;implementationGUID)</pre>
-<div class="block">Set up the unique identifier of the relationship that links the governance metric to the measurement data set.</div>
+<h4>setImplementations</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setImplementations&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;implementations)</pre>
+<div class="block">Set up the list of relationships that links the governance metric to the measurement data set.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>implementationGUID</code> - string guid</dd>
-</dl>
-</li>
-</ul>
-<a id="getImplementationDescription()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getImplementationDescription</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getImplementationDescription()</pre>
-<div class="block">Return the description of how the data set supports the governance metric.  This is stored in the
- GovernanceMeasurementsDataSet classification on the DataSet.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string description</dd>
-</dl>
-</li>
-</ul>
-<a id="setImplementationDescription(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setImplementationDescription</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setImplementationDescription&#8203;(java.lang.String&nbsp;implementationDescription)</pre>
-<div class="block">Set up the description of how the data set supports the governance metric.  This is stored in the
- GovernanceMeasurementsDataSet classification on the DataSet.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>implementationDescription</code> - string description</dd>
-</dl>
-</li>
-</ul>
-<a id="getQuery()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getQuery</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getQuery()</pre>
-<div class="block">Return the query to use on the data set.  If this is null then the contents of the data set should be
- used directly.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>query string</dd>
-</dl>
-</li>
-</ul>
-<a id="setQuery(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setQuery</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setQuery&#8203;(java.lang.String&nbsp;query)</pre>
-<div class="block">Set up the query to use on the data set.  If this is null then the contents of the data set should be
- used directly.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>query</code> - string</dd>
-</dl>
-</li>
-</ul>
-<a id="getDataSetGUID()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDataSetGUID</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDataSetGUID()</pre>
-<div class="block">Return the unique identifier of the data set where the measurements are stored.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string guid</dd>
-</dl>
-</li>
-</ul>
-<a id="setDataSetGUID(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setDataSetGUID</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setDataSetGUID&#8203;(java.lang.String&nbsp;dataSetGUID)</pre>
-<div class="block">Set up the unique identifier of the data set where the measurements are stored.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>dataSetGUID</code> - string guid</dd>
-</dl>
-</li>
-</ul>
-<a id="getDataSetType()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDataSetType</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDataSetType()</pre>
-<div class="block">Return the type name of the data set.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string name</dd>
-</dl>
-</li>
-</ul>
-<a id="setDataSetType(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setDataSetType</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setDataSetType&#8203;(java.lang.String&nbsp;dataSetType)</pre>
-<div class="block">Set up the type name for the data set.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>dataSetType</code> - string name</dd>
-</dl>
-</li>
-</ul>
-<a id="getDataSetQualifiedName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDataSetQualifiedName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDataSetQualifiedName()</pre>
-<div class="block">Return the unique name for the data set.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string name</dd>
-</dl>
-</li>
-</ul>
-<a id="setDataSetQualifiedName(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setDataSetQualifiedName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setDataSetQualifiedName&#8203;(java.lang.String&nbsp;dataSetQualifiedName)</pre>
-<div class="block">Set up the unique name for the data set.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>dataSetQualifiedName</code> - string name</dd>
-</dl>
-</li>
-</ul>
-<a id="getDataSetDisplayName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDataSetDisplayName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDataSetDisplayName()</pre>
-<div class="block">Return the display name for the data set.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string name</dd>
-</dl>
-</li>
-</ul>
-<a id="setDataSetDisplayName(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setDataSetDisplayName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setDataSetDisplayName&#8203;(java.lang.String&nbsp;dataSetDisplayName)</pre>
-<div class="block">Set up the display name for the data set.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>dataSetDisplayName</code> - string name</dd>
-</dl>
-</li>
-</ul>
-<a id="getDataSetConnectionGUIDs()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getDataSetConnectionGUIDs</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;getDataSetConnectionGUIDs()</pre>
-<div class="block">Return the list of connection identifiers associated with the data set.  These identifiers can be used
- to retrieve the measurement values.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of connection headers</dd>
-</dl>
-</li>
-</ul>
-<a id="setDataSetConnectionGUIDs(java.util.List)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setDataSetConnectionGUIDs</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setDataSetConnectionGUIDs&#8203;(java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;dataSetConnectionGUIDs)</pre>
-<div class="block">Set up the list of connection identifiers associated with the data set.  These identifiers can be used
- to retrieve the measurement values.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>dataSetConnectionGUIDs</code> - list of connection headers</dd>
-</dl>
-</li>
-</ul>
-<a id="toString()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>toString</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
-<div class="block">JSON-style toString</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="GovernanceMetricElement.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="GovernanceMetricElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceMetricElement</a></code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string containing the properties and their values</dd>
+<dd><code>implementations</code> - related elements</dd>
 </dl>
 </li>
 </ul>

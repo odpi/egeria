@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -199,181 +199,195 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getBusinessCapability()">getBusinessCapability</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the business capability linked via the organizational capability relationship.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ContactMethodElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getContactMethods()">getContactMethods</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the contact methods for this profile.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="ContributionRecordElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ContributionRecordElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getContributionRecord()">getContributionRecord</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the contribution record (only if this profile is for a person).</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementHeader()">getElementHeader</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLinkedInfrastructure()">getLinkedInfrastructure</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the stubs of the pieces of IT infrastructure linked to the profile.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="ProfileLocationElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ProfileLocationElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLocations()">getLocations</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the headers of the location that this actor is linked to.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRoles()">getPersonRoles</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the headers of the person roles that this actor is appointed to.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ActorProfileProperties</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProfileProperties()">getProfileProperties</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the properties of the profile.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubTeams()">getSubTeams</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of team that report to this team.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSuperTeam()">getSuperTeam</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return a summary of the team that is above this team in the organizational hierarchy.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTeamLeaderRoles()">getTeamLeaderRoles</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of leader roles assigned to this team.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTeamMemberRoles()">getTeamMemberRoles</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of member roles assigned to this team.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="ProfileIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ProfileIdentityElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUserIdentities()">getUserIdentities</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of user identities for this profile.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code for this object</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setBusinessCapability(java.util.List)">setBusinessCapability</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&gt;&nbsp;businessCapability)</code></th>
+<td class="colLast">
+<div class="block">Set up the business capability linked via the organizational capability relationship.</div>
+</td>
+</tr>
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setContactMethods(java.util.List)">setContactMethods</a></span>&#8203;(java.util.List&lt;<a href="ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ContactMethodElement</a>&gt;&nbsp;contactMethods)</code></th>
 <td class="colLast">
 <div class="block">Set up the contact methods for this profile.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setContributionRecord(org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement)">setContributionRecord</a></span>&#8203;(<a href="ContributionRecordElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ContributionRecordElement</a>&nbsp;contributionRecord)</code></th>
 <td class="colLast">
 <div class="block">Set up the contribution record (only if this profile is for a person).</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;elementHeader)</code></th>
 <td class="colLast">
 <div class="block">Set up the element header associated with the properties.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLinkedInfrastructure(java.util.List)">setLinkedInfrastructure</a></span>&#8203;(java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;linkedInfrastructure)</code></th>
 <td class="colLast">
 <div class="block">Set up the stubs of the pieces of IT infrastructure linked to the profile.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLocations(java.util.List)">setLocations</a></span>&#8203;(java.util.List&lt;<a href="ProfileLocationElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ProfileLocationElement</a>&gt;&nbsp;locations)</code></th>
 <td class="colLast">
 <div class="block">Set up the headers of the person roles that this actor is linked to.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPersonRoles(java.util.List)">setPersonRoles</a></span>&#8203;(java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;personRoles)</code></th>
 <td class="colLast">
 <div class="block">Set up the headers of the person roles that this actor is appointed to.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProfileProperties(org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties)">setProfileProperties</a></span>&#8203;(<a href="../properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ActorProfileProperties</a>&nbsp;profileProperties)</code></th>
 <td class="colLast">
 <div class="block">Set up the profile properties.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSubTeams(java.util.List)">setSubTeams</a></span>&#8203;(java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;subTeams)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of team that report to this team.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setSuperTeam(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub)">setSuperTeam</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&nbsp;superTeam)</code></th>
 <td class="colLast">
 <div class="block">Set up a summary of the team that is above this team in the organizational hierarchy.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTeamLeaderRoles(java.util.List)">setTeamLeaderRoles</a></span>&#8203;(java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;teamLeaderRoles)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of leader roles assigned to this team.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTeamMemberRoles(java.util.List)">setTeamMemberRoles</a></span>&#8203;(java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;teamMemberRoles)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of member roles assigned to this team.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setUserIdentities(java.util.List)">setUserIdentities</a></span>&#8203;(java.util.List&lt;<a href="ProfileIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ProfileIdentityElement</a>&gt;&nbsp;userIdentities)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of user identities for this profile.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -747,6 +761,34 @@ implements java.io.Serializable, <a href="MetadataElement.html" title="interface
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>teamMemberRoles</code> - list of role stubs</dd>
+</dl>
+</li>
+</ul>
+<a id="getBusinessCapability()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getBusinessCapability</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&gt;&nbsp;getBusinessCapability()</pre>
+<div class="block">Return the business capability linked via the organizational capability relationship.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of capabilities</dd>
+</dl>
+</li>
+</ul>
+<a id="setBusinessCapability(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setBusinessCapability</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setBusinessCapability&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&gt;&nbsp;businessCapability)</pre>
+<div class="block">Set up the business capability linked via the organizational capability relationship.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>businessCapability</code> - list of capabilities</dd>
 </dl>
 </li>
 </ul>

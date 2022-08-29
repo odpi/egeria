@@ -206,17 +206,17 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferences()">getExternalReferences</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return details of the external references that have been linked to this governance definition.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../properties/LicenseTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseTypeProperties</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getProperties()">getProperties</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the properties of the license type.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code><a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedElement()">getRelatedElement</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return details of the relationship used to retrieve this element.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
@@ -235,16 +235,16 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExternalReferneces(java.util.List)">setExternalReferneces</a></span>&#8203;(java.util.List&lt;<a href="ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;&nbsp;externalReferences)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProperties(org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties)">setProperties</a></span>&#8203;(<a href="../properties/LicenseTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseTypeProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
-<div class="block">Set up the details of the external references that have been linked to this governance definition.</div>
+<div class="block">Set up the license type properties.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setProperties(org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties)">setProperties</a></span>&#8203;(<a href="../properties/LicenseTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseTypeProperties</a>&nbsp;properties)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setRelatedElement(org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement)">setRelatedElement</a></span>&#8203;(<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&nbsp;relatedElement)</code></th>
 <td class="colLast">
-<div class="block">Set up the license type properties.</div>
+<div class="block">Set up details of the relationship used to retrieve this element.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
@@ -372,31 +372,33 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </dl>
 </li>
 </ul>
-<a id="getExternalReferences()">
+<a id="getRelatedElement()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getExternalReferences</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;&nbsp;getExternalReferences()</pre>
-<div class="block">Return details of the external references that have been linked to this governance definition.</div>
+<h4>getRelatedElement</h4>
+<pre class="methodSignature">public&nbsp;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&nbsp;getRelatedElement()</pre>
+<div class="block">Return details of the relationship used to retrieve this element.
+ Will be null if the element was retrieved directly rather than via a relationship.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of links to external references</dd>
+<dd>list of element stubs</dd>
 </dl>
 </li>
 </ul>
-<a id="setExternalReferneces(java.util.List)">
+<a id="setRelatedElement(org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setExternalReferneces</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setExternalReferneces&#8203;(java.util.List&lt;<a href="ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;&nbsp;externalReferences)</pre>
-<div class="block">Set up the details of the external references that have been linked to this governance definition.</div>
+<h4>setRelatedElement</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setRelatedElement&#8203;(<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&nbsp;relatedElement)</pre>
+<div class="block">Set up details of the relationship used to retrieve this element.
+ Will be null if the element was retrieved directly rather than via a relationship.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>externalReferences</code> - list of links to external references</dd>
+<dd><code>relatedElement</code> - relationship details</dd>
 </dl>
 </li>
 </ul>

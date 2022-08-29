@@ -922,7 +922,7 @@ implements <a href="../api/AssetConsumerAssetInterface.html" title="interface in
                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Returns a list of assets that match the token. The following calls are issued in
+<div class="block">Returns a list of assets that match the token. The following calls are issued
  in order for find the asset.
  - getAssetProperties passing the token as the GUID
  - getAssetByName passing the token as the name</div>
@@ -964,7 +964,7 @@ implements <a href="../api/AssetConsumerAssetInterface.html" title="interface in
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>connectionName</code> - this may be the qualifiedName or displayName of the connection.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Connector   connector instance - or null if there is no connection</dd>
+<dd>connector instance - or null if there is no connection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
@@ -996,7 +996,7 @@ implements <a href="../api/AssetConsumerAssetInterface.html" title="interface in
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>assetGUID</code> - the unique id for the asset within the metadata repository.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Connector   connector instance - or null if there is no connection</dd>
+<dd>connector instance - or null if there is no connection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
@@ -1028,7 +1028,7 @@ implements <a href="../api/AssetConsumerAssetInterface.html" title="interface in
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>connectionGUID</code> - the unique id for the connection within the metadata repository.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Connector   connector instance - or null if there is no connection</dd>
+<dd>connector instance - or null if there is no connection</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
@@ -1058,7 +1058,7 @@ implements <a href="../api/AssetConsumerAssetInterface.html" title="interface in
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>connection</code> - the connection object that contains the properties needed to create the connection.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>Connector   connector instance</dd>
+<dd>connector instance</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
@@ -1355,7 +1355,7 @@ implements <a href="../api/AssetConsumerAssetInterface.html" title="interface in
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of glossary terms that contain the properties that describe the term and its meaning.</dd>
+<dd>list of glossary terms that contain the properties that describe the term name, and it's meaning.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the userId is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>

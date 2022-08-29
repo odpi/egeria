@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -230,24 +230,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkRoleToResource(java.lang.String,java.lang.String,java.lang.String)">linkRoleToResource</a></span>&#8203;(java.lang.String&nbsp;userId,
-                  java.lang.String&nbsp;governanceRoleGUID,
-                  java.lang.String&nbsp;resourceGUID)</code></th>
-<td class="colLast">
-<div class="block">Link a governance role to the description of a resource that the role is responsible for.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkRoleToResponsibility(java.lang.String,java.lang.String,java.lang.String)">linkRoleToResponsibility</a></span>&#8203;(java.lang.String&nbsp;userId,
-                        java.lang.String&nbsp;governanceRoleGUID,
-                        java.lang.String&nbsp;responsibilityGUID)</code></th>
-<td class="colLast">
-<div class="block">Link a governance role to a governance control that defines a governance responsibility that a person fulfils.</div>
-</td>
-</tr>
-<tr id="i11" class="rowColor">
-<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#relieveGovernanceRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">relieveGovernanceRole</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;roleGUID,
                      java.lang.String&nbsp;profileGUID,
@@ -257,25 +239,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Unlink a person from a governance role appointment.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkRoleFromResource(java.lang.String,java.lang.String,java.lang.String)">unlinkRoleFromResource</a></span>&#8203;(java.lang.String&nbsp;userId,
-                      java.lang.String&nbsp;governanceRoleGUID,
-                      java.lang.String&nbsp;resourceGUID)</code></th>
-<td class="colLast">
-<div class="block">Remove the link between a governance role and a resource.</div>
-</td>
-</tr>
-<tr id="i13" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkRoleFromResponsibility(java.lang.String,java.lang.String,java.lang.String)">unlinkRoleFromResponsibility</a></span>&#8203;(java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;governanceRoleGUID,
-                            java.lang.String&nbsp;responsibilityGUID)</code></th>
-<td class="colLast">
-<div class="block">Remove the link between a governance role and a governance responsibility.</div>
-</td>
-</tr>
-<tr id="i14" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceRole(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties)">updateGovernanceRole</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;roleGUID,
@@ -346,106 +310,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>properties</code> - properties to change</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="linkRoleToResponsibility(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>linkRoleToResponsibility</h4>
-<pre class="methodSignature">void&nbsp;linkRoleToResponsibility&#8203;(java.lang.String&nbsp;userId,
-                              java.lang.String&nbsp;governanceRoleGUID,
-                              java.lang.String&nbsp;responsibilityGUID)
-                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Link a governance role to a governance control that defines a governance responsibility that a person fulfils.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>governanceRoleGUID</code> - unique identifier of the governance role</dd>
-<dd><code>responsibilityGUID</code> - unique identifier of the governance responsibility control</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="unlinkRoleFromResponsibility(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>unlinkRoleFromResponsibility</h4>
-<pre class="methodSignature">void&nbsp;unlinkRoleFromResponsibility&#8203;(java.lang.String&nbsp;userId,
-                                  java.lang.String&nbsp;governanceRoleGUID,
-                                  java.lang.String&nbsp;responsibilityGUID)
-                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Remove the link between a governance role and a governance responsibility.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>governanceRoleGUID</code> - unique identifier of the governance role</dd>
-<dd><code>responsibilityGUID</code> - unique identifier of the governance responsibility control</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="linkRoleToResource(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>linkRoleToResource</h4>
-<pre class="methodSignature">void&nbsp;linkRoleToResource&#8203;(java.lang.String&nbsp;userId,
-                        java.lang.String&nbsp;governanceRoleGUID,
-                        java.lang.String&nbsp;resourceGUID)
-                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Link a governance role to the description of a resource that the role is responsible for.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>governanceRoleGUID</code> - unique identifier of the governance role</dd>
-<dd><code>resourceGUID</code> - unique identifier of the resource description</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="unlinkRoleFromResource(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>unlinkRoleFromResource</h4>
-<pre class="methodSignature">void&nbsp;unlinkRoleFromResource&#8203;(java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;governanceRoleGUID,
-                            java.lang.String&nbsp;resourceGUID)
-                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Remove the link between a governance role and a resource.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>governanceRoleGUID</code> - unique identifier of the governance role</dd>
-<dd><code>resourceGUID</code> - unique identifier of the resource description</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>

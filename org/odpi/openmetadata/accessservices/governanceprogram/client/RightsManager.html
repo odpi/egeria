@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
@@ -122,7 +122,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.governanceprogram.client.RightsManager</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -131,11 +136,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
+<dd><code><a href="../api/RelatedElementsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RelatedElementsManagementInterface</a></code>, <code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">RightsManager</span>
-extends java.lang.Object
+extends <a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a>
 implements <a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></pre>
 <div class="block">RightsManager is the java client for managing license types and the licensing of elements.</div>
 </li>
@@ -144,6 +149,23 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.client.<a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a></h3>
+<code><a href="GovernanceProgramBaseClient.html#nullRequestBody">nullRequestBody</a></code></li>
+</ul>
+</li>
+</ul>
+</section>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <section role="region">
 <ul class="blockList">
@@ -238,6 +260,26 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicensedElements(java.lang.String,java.lang.String,int,int)">getLicensedElements</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   java.lang.String&nbsp;licenseGUID,
+                   int&nbsp;startFrom,
+                   int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the elements linked to a license.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/LicenseElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenses(java.lang.String,java.lang.String,int,int)">getLicenses</a></span>&#8203;(java.lang.String&nbsp;userId,
+           java.lang.String&nbsp;elementGUID,
+           int&nbsp;startFrom,
+           int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the licenses linked to an element.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenseTypeByDocId(java.lang.String,java.lang.String)">getLicenseTypeByDocId</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;documentIdentifier)</code></th>
@@ -245,7 +287,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <div class="block">Retrieve the license type by its assigned unique document identifier.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenseTypeByDomainId(java.lang.String,int,int,int)">getLicenseTypeByDomainId</a></span>&#8203;(java.lang.String&nbsp;userId,
                         int&nbsp;domainIdentifier,
@@ -255,7 +297,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <div class="block">Retrieve all the license type definitions for a specific governance domain.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenseTypeByGUID(java.lang.String,java.lang.String)">getLicenseTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;licenseTypeGUID)</code></th>
@@ -263,7 +305,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <div class="block">Retrieve the license type by the unique identifier assigned by this service when it was created.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/LicenseTypeElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getLicenseTypesByTitle(java.lang.String,java.lang.String,int,int)">getLicenseTypesByTitle</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;title,
@@ -273,8 +315,8 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <div class="block">Retrieve all the license types for a particular title.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>void</code></td>
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#licenseElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties)">licenseElement</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;elementGUID,
               java.lang.String&nbsp;licenseTypeGUID,
@@ -283,28 +325,34 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <div class="block">Link an element to a license type and include details of the license in the relationship properties.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlicenseElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">unlicenseElement</a></span>&#8203;(java.lang.String&nbsp;userId,
-                java.lang.String&nbsp;elementGUID,
-                java.lang.String&nbsp;licenseTypeGUID,
-                java.lang.String&nbsp;certificateId)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLicenseTypeStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus)">setLicenseTypeStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
+                    java.lang.String&nbsp;licenseTypeGUID,
+                    <a href="../properties/GovernanceDefinitionStatus.html" title="enum in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionStatus</a>&nbsp;newStatus)</code></th>
+<td class="colLast">
+<div class="block">Update the status of a license type</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlicenseElement(java.lang.String,java.lang.String)">unlicenseElement</a></span>&#8203;(java.lang.String&nbsp;userId,
+                java.lang.String&nbsp;licenseGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the license for an element.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateLicense(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties)">updateLicense</a></span>&#8203;(java.lang.String&nbsp;userId,
-             java.lang.String&nbsp;elementGUID,
-             java.lang.String&nbsp;licenseTypeGUID,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateLicense(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties)">updateLicense</a></span>&#8203;(java.lang.String&nbsp;userId,
+             java.lang.String&nbsp;licenseGUID,
              boolean&nbsp;isMergeUpdate,
              <a href="../properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Update the properties of a license.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateLicenseType(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties)">updateLicenseType</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;licenseTypeGUID,
@@ -315,6 +363,13 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.client.<a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a></h3>
+<code><a href="GovernanceProgramBaseClient.html#clearAssignmentScope(java.lang.String,java.lang.String,java.lang.String)">clearAssignmentScope</a>, <a href="GovernanceProgramBaseClient.html#clearGovernanceDefinitionScope(java.lang.String,java.lang.String,java.lang.String)">clearGovernanceDefinitionScope</a>, <a href="GovernanceProgramBaseClient.html#clearGovernanceResponsibilityAssignment(java.lang.String,java.lang.String,java.lang.String)">clearGovernanceResponsibilityAssignment</a>, <a href="GovernanceProgramBaseClient.html#clearGovernedBy(java.lang.String,java.lang.String,java.lang.String)">clearGovernedBy</a>, <a href="GovernanceProgramBaseClient.html#clearMoreInformation(java.lang.String,java.lang.String,java.lang.String)">clearMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#clearResource(java.lang.String,java.lang.String,java.lang.String)">clearResource</a>, <a href="GovernanceProgramBaseClient.html#clearStakeholder(java.lang.String,java.lang.String,java.lang.String)">clearStakeholder</a>, <a href="GovernanceProgramBaseClient.html#getAssignedActors(java.lang.String,java.lang.String,int,int)">getAssignedActors</a>, <a href="GovernanceProgramBaseClient.html#getAssignedScopes(java.lang.String,java.lang.String,int,int)">getAssignedScopes</a>, <a href="GovernanceProgramBaseClient.html#getDescriptiveElements(java.lang.String,java.lang.String,int,int)">getDescriptiveElements</a>, <a href="GovernanceProgramBaseClient.html#getGovernanceDefinitionScopes(java.lang.String,java.lang.String,int,int)">getGovernanceDefinitionScopes</a>, <a href="GovernanceProgramBaseClient.html#getGovernanceDefinitionsForElement(java.lang.String,java.lang.String,int,int)">getGovernanceDefinitionsForElement</a>, <a href="GovernanceProgramBaseClient.html#getGovernedElements(java.lang.String,java.lang.String,int,int)">getGovernedElements</a>, <a href="GovernanceProgramBaseClient.html#getMoreInformation(java.lang.String,java.lang.String,int,int)">getMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#getResourceList(java.lang.String,java.lang.String,int,int)">getResourceList</a>, <a href="GovernanceProgramBaseClient.html#getResponsibleRoles(java.lang.String,java.lang.String,int,int)">getResponsibleRoles</a>, <a href="GovernanceProgramBaseClient.html#getRoleResponsibilities(java.lang.String,java.lang.String,int,int)">getRoleResponsibilities</a>, <a href="GovernanceProgramBaseClient.html#getScopedGovernanceDefinitions(java.lang.String,java.lang.String,int,int)">getScopedGovernanceDefinitions</a>, <a href="GovernanceProgramBaseClient.html#getStakeholderCommissionedElements(java.lang.String,java.lang.String,int,int)">getStakeholderCommissionedElements</a>, <a href="GovernanceProgramBaseClient.html#getStakeholders(java.lang.String,java.lang.String,int,int)">getStakeholders</a>, <a href="GovernanceProgramBaseClient.html#getSupportedByResource(java.lang.String,java.lang.String,int,int)">getSupportedByResource</a>, <a href="GovernanceProgramBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a>, <a href="GovernanceProgramBaseClient.html#setupAssignmentScope(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.AssignmentScopeProperties,java.lang.String)">setupAssignmentScope</a>, <a href="GovernanceProgramBaseClient.html#setupGovernanceDefinitionScope(java.lang.String,java.lang.String,java.lang.String)">setupGovernanceDefinitionScope</a>, <a href="GovernanceProgramBaseClient.html#setupGovernanceResponsibilityAssignment(java.lang.String,java.lang.String,java.lang.String)">setupGovernanceResponsibilityAssignment</a>, <a href="GovernanceProgramBaseClient.html#setupGovernedBy(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String)">setupGovernedBy</a>, <a href="GovernanceProgramBaseClient.html#setupMoreInformation(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String)">setupMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#setupResource(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties,java.lang.String)">setupResource</a>, <a href="GovernanceProgramBaseClient.html#setupStakeholder(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.StakeholderProperties,java.lang.String)">setupStakeholder</a>, <a href="GovernanceProgramBaseClient.html#updateGovernanceDefinitionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus,java.lang.String,java.lang.String)">updateGovernanceDefinitionStatus</a>, <a href="GovernanceProgramBaseClient.html#updateRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String,java.lang.String)">updateRelationship</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -523,6 +578,33 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </dl>
 </li>
 </ul>
+<a id="setLicenseTypeStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setLicenseTypeStatus</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setLicenseTypeStatus&#8203;(java.lang.String&nbsp;userId,
+                                 java.lang.String&nbsp;licenseTypeGUID,
+                                 <a href="../properties/GovernanceDefinitionStatus.html" title="enum in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionStatus</a>&nbsp;newStatus)
+                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the status of a license type</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/RightsManagementInterface.html#setLicenseTypeStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus)">setLicenseTypeStatus</a></code>&nbsp;in interface&nbsp;<code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>licenseTypeGUID</code> - identifier of the governance definition to change</dd>
+<dd><code>newStatus</code> - new status</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid, documentIdentifier or userId is null; documentIdentifier is not unique</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
 <a id="deleteLicenseType(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
@@ -670,13 +752,13 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <ul class="blockList">
 <li class="blockList">
 <h4>licenseElement</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;licenseElement&#8203;(java.lang.String&nbsp;userId,
-                           java.lang.String&nbsp;elementGUID,
-                           java.lang.String&nbsp;licenseTypeGUID,
-                           <a href="../properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseProperties</a>&nbsp;properties)
-                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;licenseElement&#8203;(java.lang.String&nbsp;userId,
+                                       java.lang.String&nbsp;elementGUID,
+                                       java.lang.String&nbsp;licenseTypeGUID,
+                                       <a href="../properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseProperties</a>&nbsp;properties)
+                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Link an element to a license type and include details of the license in the relationship properties.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -686,6 +768,8 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <dd><code>elementGUID</code> - unique identifier of the element being certified</dd>
 <dd><code>licenseTypeGUID</code> - unique identifier for the license type</dd>
 <dd><code>properties</code> - the properties of the license</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the properties is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -693,29 +777,26 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </dl>
 </li>
 </ul>
-<a id="updateLicense(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties)">
+<a id="updateLicense(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateLicense</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;updateLicense&#8203;(java.lang.String&nbsp;userId,
-                          java.lang.String&nbsp;elementGUID,
-                          java.lang.String&nbsp;licenseTypeGUID,
+                          java.lang.String&nbsp;licenseGUID,
                           boolean&nbsp;isMergeUpdate,
                           <a href="../properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseProperties</a>&nbsp;properties)
                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Update the properties of a license.  Remember to include the licenseId in the properties if the element has multiple
- licenses for the same license type.</div>
+<div class="block">Update the properties of a license.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/RightsManagementInterface.html#updateLicense(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties)">updateLicense</a></code>&nbsp;in interface&nbsp;<code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
+<dd><code><a href="../api/RightsManagementInterface.html#updateLicense(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties)">updateLicense</a></code>&nbsp;in interface&nbsp;<code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>elementGUID</code> - unique identifier of the element being certified</dd>
-<dd><code>licenseTypeGUID</code> - unique identifier for the license type</dd>
+<dd><code>licenseGUID</code> - unique identifier for the license relationship</dd>
 <dd><code>isMergeUpdate</code> - should the supplied properties overlay the existing properties or replace them</dd>
 <dd><code>properties</code> - the properties of the license</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -725,30 +806,88 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 </dl>
 </li>
 </ul>
-<a id="unlicenseElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="unlicenseElement(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>unlicenseElement</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;unlicenseElement&#8203;(java.lang.String&nbsp;userId,
-                             java.lang.String&nbsp;elementGUID,
-                             java.lang.String&nbsp;licenseTypeGUID,
-                             java.lang.String&nbsp;certificateId)
+                             java.lang.String&nbsp;licenseGUID)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the license for an element.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/RightsManagementInterface.html#unlicenseElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">unlicenseElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
+<dd><code><a href="../api/RightsManagementInterface.html#unlicenseElement(java.lang.String,java.lang.String)">unlicenseElement</a></code>&nbsp;in interface&nbsp;<code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>elementGUID</code> - unique identifier of the element being certified</dd>
-<dd><code>licenseTypeGUID</code> - unique identifier for the license type</dd>
-<dd><code>certificateId</code> - optional unique identifier from the license authority - it is used to disambiguate the licenses for the element.</dd>
+<dd><code>licenseGUID</code> - unique identifier for the license relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the properties is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getLicensedElements(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getLicensedElements</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getLicensedElements&#8203;(java.lang.String&nbsp;userId,
+                                                          java.lang.String&nbsp;licenseGUID,
+                                                          int&nbsp;startFrom,
+                                                          int&nbsp;pageSize)
+                                                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the elements linked to a license.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/RightsManagementInterface.html#getLicensedElements(java.lang.String,java.lang.String,int,int)">getLicensedElements</a></code>&nbsp;in interface&nbsp;<code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>licenseGUID</code> - unique identifier for the license</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>properties of the subject area</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getLicenses(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getLicenses</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../metadataelements/LicenseElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">LicenseElement</a>&gt;&nbsp;getLicenses&#8203;(java.lang.String&nbsp;userId,
+                                                  java.lang.String&nbsp;elementGUID,
+                                                  int&nbsp;startFrom,
+                                                  int&nbsp;pageSize)
+                                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the licenses linked to an element.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/RightsManagementInterface.html#getLicenses(java.lang.String,java.lang.String,int,int)">getLicenses</a></code>&nbsp;in interface&nbsp;<code><a href="../api/RightsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RightsManagementInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>elementGUID</code> - unique identifier for the license</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>properties of the subject area</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
@@ -806,7 +945,7 @@ implements <a href="../api/RightsManagementInterface.html" title="interface in o
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>

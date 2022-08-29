@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
@@ -122,7 +122,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceZoneManager</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -131,11 +136,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/GovernanceZonesInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceZonesInterface</a></code></dd>
+<dd><code><a href="../api/GovernanceZonesInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceZonesInterface</a></code>, <code><a href="../api/RelatedElementsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RelatedElementsManagementInterface</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">GovernanceZoneManager</span>
-extends java.lang.Object
+extends <a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a>
 implements <a href="../api/GovernanceZonesInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceZonesInterface</a></pre>
 <div class="block">GovernanceZoneManager is the Java client used to manage governance zones.</div>
 </li>
@@ -144,6 +149,23 @@ implements <a href="../api/GovernanceZonesInterface.html" title="interface in or
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.client.<a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a></h3>
+<code><a href="GovernanceProgramBaseClient.html#nullRequestBody">nullRequestBody</a></code></li>
+</ul>
+</li>
+</ul>
+</section>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <section role="region">
 <ul class="blockList">
@@ -281,24 +303,6 @@ implements <a href="../api/GovernanceZonesInterface.html" title="interface in or
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkZoneToGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">linkZoneToGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
-                              java.lang.String&nbsp;zoneGUID,
-                              java.lang.String&nbsp;definitionGUID)</code></th>
-<td class="colLast">
-<div class="block">Link a governance zone to a governance definition that controls how the assets in the zone should be governed.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkZoneFromGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">unlinkZoneFromGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
-                                  java.lang.String&nbsp;zoneGUID,
-                                  java.lang.String&nbsp;definitionGUID)</code></th>
-<td class="colLast">
-<div class="block">Remove the link between a zone and a governance definition.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkZonesInHierarchy(java.lang.String,java.lang.String,java.lang.String)">unlinkZonesInHierarchy</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;parentZoneGUID,
                       java.lang.String&nbsp;childZoneGUID)</code></th>
@@ -306,7 +310,7 @@ implements <a href="../api/GovernanceZonesInterface.html" title="interface in or
 <div class="block">Remove the link between two zones in the zone hierarchy.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateGovernanceZone(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties)">updateGovernanceZone</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;zoneGUID,
@@ -317,6 +321,13 @@ implements <a href="../api/GovernanceZonesInterface.html" title="interface in or
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.client.<a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a></h3>
+<code><a href="GovernanceProgramBaseClient.html#clearAssignmentScope(java.lang.String,java.lang.String,java.lang.String)">clearAssignmentScope</a>, <a href="GovernanceProgramBaseClient.html#clearGovernanceDefinitionScope(java.lang.String,java.lang.String,java.lang.String)">clearGovernanceDefinitionScope</a>, <a href="GovernanceProgramBaseClient.html#clearGovernanceResponsibilityAssignment(java.lang.String,java.lang.String,java.lang.String)">clearGovernanceResponsibilityAssignment</a>, <a href="GovernanceProgramBaseClient.html#clearGovernedBy(java.lang.String,java.lang.String,java.lang.String)">clearGovernedBy</a>, <a href="GovernanceProgramBaseClient.html#clearMoreInformation(java.lang.String,java.lang.String,java.lang.String)">clearMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#clearResource(java.lang.String,java.lang.String,java.lang.String)">clearResource</a>, <a href="GovernanceProgramBaseClient.html#clearStakeholder(java.lang.String,java.lang.String,java.lang.String)">clearStakeholder</a>, <a href="GovernanceProgramBaseClient.html#getAssignedActors(java.lang.String,java.lang.String,int,int)">getAssignedActors</a>, <a href="GovernanceProgramBaseClient.html#getAssignedScopes(java.lang.String,java.lang.String,int,int)">getAssignedScopes</a>, <a href="GovernanceProgramBaseClient.html#getDescriptiveElements(java.lang.String,java.lang.String,int,int)">getDescriptiveElements</a>, <a href="GovernanceProgramBaseClient.html#getGovernanceDefinitionScopes(java.lang.String,java.lang.String,int,int)">getGovernanceDefinitionScopes</a>, <a href="GovernanceProgramBaseClient.html#getGovernanceDefinitionsForElement(java.lang.String,java.lang.String,int,int)">getGovernanceDefinitionsForElement</a>, <a href="GovernanceProgramBaseClient.html#getGovernedElements(java.lang.String,java.lang.String,int,int)">getGovernedElements</a>, <a href="GovernanceProgramBaseClient.html#getMoreInformation(java.lang.String,java.lang.String,int,int)">getMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#getResourceList(java.lang.String,java.lang.String,int,int)">getResourceList</a>, <a href="GovernanceProgramBaseClient.html#getResponsibleRoles(java.lang.String,java.lang.String,int,int)">getResponsibleRoles</a>, <a href="GovernanceProgramBaseClient.html#getRoleResponsibilities(java.lang.String,java.lang.String,int,int)">getRoleResponsibilities</a>, <a href="GovernanceProgramBaseClient.html#getScopedGovernanceDefinitions(java.lang.String,java.lang.String,int,int)">getScopedGovernanceDefinitions</a>, <a href="GovernanceProgramBaseClient.html#getStakeholderCommissionedElements(java.lang.String,java.lang.String,int,int)">getStakeholderCommissionedElements</a>, <a href="GovernanceProgramBaseClient.html#getStakeholders(java.lang.String,java.lang.String,int,int)">getStakeholders</a>, <a href="GovernanceProgramBaseClient.html#getSupportedByResource(java.lang.String,java.lang.String,int,int)">getSupportedByResource</a>, <a href="GovernanceProgramBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a>, <a href="GovernanceProgramBaseClient.html#setupAssignmentScope(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.AssignmentScopeProperties,java.lang.String)">setupAssignmentScope</a>, <a href="GovernanceProgramBaseClient.html#setupGovernanceDefinitionScope(java.lang.String,java.lang.String,java.lang.String)">setupGovernanceDefinitionScope</a>, <a href="GovernanceProgramBaseClient.html#setupGovernanceResponsibilityAssignment(java.lang.String,java.lang.String,java.lang.String)">setupGovernanceResponsibilityAssignment</a>, <a href="GovernanceProgramBaseClient.html#setupGovernedBy(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String)">setupGovernedBy</a>, <a href="GovernanceProgramBaseClient.html#setupMoreInformation(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String)">setupMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#setupResource(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties,java.lang.String)">setupResource</a>, <a href="GovernanceProgramBaseClient.html#setupStakeholder(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.StakeholderProperties,java.lang.String)">setupStakeholder</a>, <a href="GovernanceProgramBaseClient.html#updateGovernanceDefinitionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus,java.lang.String,java.lang.String)">updateGovernanceDefinitionStatus</a>, <a href="GovernanceProgramBaseClient.html#updateRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String,java.lang.String)">updateRelationship</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -610,60 +621,6 @@ implements <a href="../api/GovernanceZonesInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="linkZoneToGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>linkZoneToGovernanceDefinition</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;linkZoneToGovernanceDefinition&#8203;(java.lang.String&nbsp;userId,
-                                           java.lang.String&nbsp;zoneGUID,
-                                           java.lang.String&nbsp;definitionGUID)
-                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Link a governance zone to a governance definition that controls how the assets in the zone should be governed.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/GovernanceZonesInterface.html#linkZoneToGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">linkZoneToGovernanceDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceZonesInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceZonesInterface</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>zoneGUID</code> - unique identifier of the zone</dd>
-<dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="unlinkZoneFromGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>unlinkZoneFromGovernanceDefinition</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;unlinkZoneFromGovernanceDefinition&#8203;(java.lang.String&nbsp;userId,
-                                               java.lang.String&nbsp;zoneGUID,
-                                               java.lang.String&nbsp;definitionGUID)
-                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Remove the link between a zone and a governance definition.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/GovernanceZonesInterface.html#unlinkZoneFromGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">unlinkZoneFromGovernanceDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceZonesInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceZonesInterface</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>zoneGUID</code> - unique identifier of the zone</dd>
-<dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
 <a id="getGovernanceZoneByGUID(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
@@ -828,7 +785,7 @@ implements <a href="../api/GovernanceZonesInterface.html" title="interface in or
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>

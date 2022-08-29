@@ -228,11 +228,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">linkPeerDefinitions</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties)">linkPeerDefinitions</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;definitionOneGUID,
                    java.lang.String&nbsp;definitionTwoGUID,
                    java.lang.String&nbsp;relationshipTypeName,
-                   java.lang.String&nbsp;description)</code></th>
+                   <a href="../properties/PeerDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">PeerDefinitionProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Link two related governance definitions together.</div>
 </td>
@@ -248,11 +248,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setupSupportingDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties)">setupSupportingDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;definitionGUID,
                          java.lang.String&nbsp;supportingDefinitionGUID,
                          java.lang.String&nbsp;relationshipTypeName,
-                         java.lang.String&nbsp;rationale)</code></th>
+                         <a href="../properties/SupportingDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SupportingDefinitionProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Create a link to show that a governance definition supports the requirements of another governance definition.</div>
 </td>
@@ -396,7 +396,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -406,7 +406,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                          java.lang.String&nbsp;definitionOneGUID,
                          java.lang.String&nbsp;definitionTwoGUID,
                          java.lang.String&nbsp;relationshipTypeName,
-                         java.lang.String&nbsp;description)
+                         <a href="../properties/PeerDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">PeerDefinitionProperties</a>&nbsp;properties)
                   throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                          <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                          <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -423,7 +423,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>definitionOneGUID</code> - unique identifier of the first definition</dd>
 <dd><code>definitionTwoGUID</code> - unique identifier of the second definition</dd>
 <dd><code>relationshipTypeName</code> - the name of the relationship to create</dd>
-<dd><code>description</code> - description of their relationship</dd>
+<dd><code>properties</code> - description of their relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -458,7 +458,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -468,7 +468,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                java.lang.String&nbsp;definitionGUID,
                                java.lang.String&nbsp;supportingDefinitionGUID,
                                java.lang.String&nbsp;relationshipTypeName,
-                               java.lang.String&nbsp;rationale)
+                               <a href="../properties/SupportingDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SupportingDefinitionProperties</a>&nbsp;properties)
                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -485,7 +485,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
 <dd><code>supportingDefinitionGUID</code> - unique identifier of the supporting governance definition</dd>
 <dd><code>relationshipTypeName</code> - the name of the relationship to create</dd>
-<dd><code>rationale</code> - description of how the supporting definition provides support</dd>
+<dd><code>properties</code> - description of how the supporting definition provides support</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>

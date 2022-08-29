@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -176,6 +176,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementsForExternalReference(java.lang.String,java.lang.String,int,int)">getElementsForExternalReference</a></span>&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;externalReferenceGUID,
+                               int&nbsp;startFrom,
+                               int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the elements linked to a externalReference.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferenceByGUID(java.lang.String,java.lang.String)">getExternalReferenceByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;externalReferenceGUID)</code></th>
@@ -183,7 +193,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return information about a specific external reference.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getExternalReferencesByURL(java.lang.String,java.lang.String,int,int)">getExternalReferencesByURL</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;url,
@@ -193,7 +203,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of external references for this URL.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkExternalReferenceToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceLinkProperties)">linkExternalReferenceToElement</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;attachedToGUID,
@@ -203,7 +213,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Link an external reference to an object.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#retrieveAttachedExternalReferences(java.lang.String,java.lang.String,int,int)">retrieveAttachedExternalReferences</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;attachedToGUID,
@@ -213,7 +223,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the list of external references attached to the supplied object.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkExternalReferenceFromElement(java.lang.String,java.lang.String,java.lang.String)">unlinkExternalReferenceFromElement</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;attachedToGUID,
@@ -222,7 +232,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the link between an external reference and an element.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateExternalReference(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceProperties)">updateExternalReference</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;externalReferenceGUID,
@@ -465,7 +475,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <a id="retrieveAttachedExternalReferences(java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>retrieveAttachedExternalReferences</h4>
 <pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt;&nbsp;retrieveAttachedExternalReferences&#8203;(java.lang.String&nbsp;userId,
@@ -488,6 +498,35 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid invalid or the external references are not correctly specified, or are null.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the server is not available.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the calling user is not authorized to issue the call.</dd>
+</dl>
+</li>
+</ul>
+<a id="getElementsForExternalReference(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getElementsForExternalReference</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getElementsForExternalReference&#8203;(java.lang.String&nbsp;userId,
+                                                               java.lang.String&nbsp;externalReferenceGUID,
+                                                               int&nbsp;startFrom,
+                                                               int&nbsp;pageSize)
+                                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the elements linked to a externalReference.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>externalReferenceGUID</code> - unique identifier for the externalReference</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>properties of the related elements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>

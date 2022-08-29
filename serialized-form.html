@@ -5266,6 +5266,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
+<h4>businessCapability</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/communityprofile/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">RelatedElement</a>&gt; businessCapability</pre>
+</li>
+<li class="blockList">
 <h4>contactMethods</h4>
 <pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/communityprofile/metadataelements/ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ContactMethodElement</a>&gt; contactMethods</pre>
 </li>
@@ -14508,6 +14512,38 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/CertificationElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>certificationHeader</h4>
+<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader certificationHeader</pre>
+</li>
+<li class="blockList">
+<h4>certificationProperties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> certificationProperties</pre>
+</li>
+<li class="blockList">
+<h4>certificationTypeHeader</h4>
+<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader certificationTypeHeader</pre>
+</li>
+<li class="blockListLast">
+<h4>certificationTypeProperties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/CertificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">CertificationProperties</a> certificationTypeProperties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationTypeElement">
 <!--   -->
 </a>
@@ -14525,12 +14561,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader elementHeader</pre>
 </li>
 <li class="blockList">
-<h4>externalReferences</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt; externalReferences</pre>
-</li>
-<li class="blockListLast">
 <h4>properties</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/CertificationTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">CertificationTypeProperties</a> properties</pre>
+</li>
+<li class="blockListLast">
+<h4>relatedElement</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a> relatedElement</pre>
 </li>
 </ul>
 </li>
@@ -14657,12 +14693,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader elementHeader</pre>
 </li>
 <li class="blockList">
-<h4>externalReferences</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt; externalReferences</pre>
-</li>
-<li class="blockListLast">
 <h4>properties</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionProperties</a> properties</pre>
+</li>
+<li class="blockListLast">
+<h4>relatedElement</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a> relatedElement</pre>
 </li>
 </ul>
 </li>
@@ -14671,7 +14707,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionGraph">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/GovernanceDefinitionGraph.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionGraph</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/GovernanceDefinitionGraph.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionGraph</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/GovernanceDefinitionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDefinitionElement</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -14682,31 +14718,23 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <h4>children</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt; children</pre>
-</li>
-<li class="blockList">
-<h4>elementHeader</h4>
-<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader elementHeader</pre>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt; children</pre>
 </li>
 <li class="blockList">
 <h4>externalReferences</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt; externalReferences</pre>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt; externalReferences</pre>
 </li>
 <li class="blockList">
 <h4>metrics</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt; metrics</pre>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt; metrics</pre>
 </li>
 <li class="blockList">
 <h4>parents</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/GovernanceDelegation.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceDelegation</a>&gt; parents</pre>
-</li>
-<li class="blockList">
-<h4>peers</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/GovernanceLink.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceLink</a>&gt; peers</pre>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt; parents</pre>
 </li>
 <li class="blockListLast">
-<h4>properties</h4>
-<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionProperties</a> properties</pre>
+<h4>peers</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt; peers</pre>
 </li>
 </ul>
 </li>
@@ -14872,9 +14900,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>elementHeader</h4>
 <pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader elementHeader</pre>
 </li>
-<li class="blockListLast">
+<li class="blockList">
 <h4>properties</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceMetricProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceMetricProperties</a> properties</pre>
+</li>
+<li class="blockListLast">
+<h4>relatedElement</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a> relatedElement</pre>
 </li>
 </ul>
 </li>
@@ -14892,37 +14924,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h3>Serialized Fields</h3>
 <ul class="blockList">
-<li class="blockList">
-<h4>dataSetConnectionGUIDs</h4>
-<pre>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt; dataSetConnectionGUIDs</pre>
-</li>
-<li class="blockList">
-<h4>dataSetDisplayName</h4>
-<pre>java.lang.String dataSetDisplayName</pre>
-</li>
-<li class="blockList">
-<h4>dataSetGUID</h4>
-<pre>java.lang.String dataSetGUID</pre>
-</li>
-<li class="blockList">
-<h4>dataSetQualifiedName</h4>
-<pre>java.lang.String dataSetQualifiedName</pre>
-</li>
-<li class="blockList">
-<h4>dataSetType</h4>
-<pre>java.lang.String dataSetType</pre>
-</li>
-<li class="blockList">
-<h4>implementationDescription</h4>
-<pre>java.lang.String implementationDescription</pre>
-</li>
-<li class="blockList">
-<h4>implementationGUID</h4>
-<pre>java.lang.String implementationGUID</pre>
-</li>
 <li class="blockListLast">
-<h4>query</h4>
-<pre>java.lang.String query</pre>
+<h4>implementations</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt; implementations</pre>
 </li>
 </ul>
 </li>
@@ -15100,10 +15104,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneInAction">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseElement">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/GovernanceZoneInAction.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneInAction</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/GovernanceZoneDefinition.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">GovernanceZoneDefinition</a> implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/LicenseElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseElement</a> extends java.lang.Object implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -15112,9 +15116,21 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h3>Serialized Fields</h3>
 <ul class="blockList">
+<li class="blockList">
+<h4>licenseHeader</h4>
+<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader licenseHeader</pre>
+</li>
+<li class="blockList">
+<h4>licenseProperties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> licenseProperties</pre>
+</li>
+<li class="blockList">
+<h4>licenseTypeHeader</h4>
+<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader licenseTypeHeader</pre>
+</li>
 <li class="blockListLast">
-<h4>zoneMembershipCount</h4>
-<pre>int zoneMembershipCount</pre>
+<h4>licenseTypeProperties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseProperties</a> licenseTypeProperties</pre>
 </li>
 </ul>
 </li>
@@ -15137,12 +15153,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader elementHeader</pre>
 </li>
 <li class="blockList">
-<h4>externalReferences</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/ExternalReferenceElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">ExternalReferenceElement</a>&gt; externalReferences</pre>
-</li>
-<li class="blockListLast">
 <h4>properties</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/LicenseTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">LicenseTypeProperties</a> properties</pre>
+</li>
+<li class="blockListLast">
+<h4>relatedElement</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a> relatedElement</pre>
 </li>
 </ul>
 </li>
@@ -15167,6 +15183,30 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>profileProperties</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/PersonalProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">PersonalProfileProperties</a> profileProperties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.PersonRoleElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.PersonRoleElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>elementHeader</h4>
+<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader elementHeader</pre>
+</li>
+<li class="blockListLast">
+<h4>role</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">PersonRoleProperties</a> role</pre>
 </li>
 </ul>
 </li>
@@ -15199,6 +15239,34 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>userIdentities</h4>
 <pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">UserIdentityElement</a>&gt; userIdentities</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>relatedElement</h4>
+<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub relatedElement</pre>
+</li>
+<li class="blockList">
+<h4>relationshipHeader</h4>
+<pre>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader relationshipHeader</pre>
+</li>
+<li class="blockListLast">
+<h4>relationshipProperties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> relationshipProperties</pre>
 </li>
 </ul>
 </li>
@@ -15335,10 +15403,34 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.AssignmentScopeProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/AssignmentScopeProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.AssignmentScopeProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>assignmentType</h4>
+<pre>java.lang.String assignmentType</pre>
+</li>
+<li class="blockListLast">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/CertificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/CertificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -15427,6 +15519,34 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.ClassificationProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.ClassificationProperties</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>effectiveFrom</h4>
+<pre>java.util.Date effectiveFrom</pre>
+</li>
+<li class="blockList">
+<h4>effectiveTo</h4>
+<pre>java.util.Date effectiveTo</pre>
+</li>
+<li class="blockListLast">
+<h4>extendedProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; extendedProperties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.ContactMethodProperties">
 <!--   -->
 </a>
@@ -15506,7 +15626,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceLinkProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceLinkProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/ExternalReferenceLinkProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceLinkProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -15519,9 +15639,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>linkDescription</h4>
 <pre>java.lang.String linkDescription</pre>
 </li>
-<li class="blockListLast">
+<li class="blockList">
 <h4>linkId</h4>
 <pre>java.lang.String linkId</pre>
+</li>
+<li class="blockListLast">
+<h4>pages</h4>
+<pre>java.lang.String pages</pre>
 </li>
 </ul>
 </li>
@@ -15571,10 +15695,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetric">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetricProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceDefinitionMetric.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetric</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceMetricProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceMetricProperties</a> implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceDefinitionMetricProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetricProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -15711,6 +15835,34 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceExpectationsProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceExpectationsProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceExpectationsProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">ClassificationProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>counts</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Integer&gt; counts</pre>
+</li>
+<li class="blockList">
+<h4>flags</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Boolean&gt; flags</pre>
+</li>
+<li class="blockListLast">
+<h4>values</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; values</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceLevelIdentifierProperties">
 <!--   -->
 </a>
@@ -15775,6 +15927,54 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsDataSetProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceMeasurementsDataSetProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsDataSetProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">ClassificationProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceMeasurementsProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">ClassificationProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>counts</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Integer&gt; counts</pre>
+</li>
+<li class="blockList">
+<h4>flags</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Boolean&gt; flags</pre>
+</li>
+<li class="blockListLast">
+<h4>values</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; values</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties">
 <!--   -->
 </a>
@@ -15806,6 +16006,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>target</h4>
 <pre>java.lang.String target</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResultsProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceResultsProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResultsProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>query</h4>
+<pre>java.lang.String query</pre>
 </li>
 </ul>
 </li>
@@ -15939,7 +16159,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -16037,6 +16257,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>1L</dd>
 </dl>
 </li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/PeerDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.PersonalProfileProperties">
 <!--   -->
 </a>
@@ -16080,6 +16320,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>description</h4>
 <pre>java.lang.String description</pre>
+</li>
+<li class="blockList">
+<h4>effectiveFrom</h4>
+<pre>java.util.Date effectiveFrom</pre>
+</li>
+<li class="blockList">
+<h4>effectiveTo</h4>
+<pre>java.util.Date effectiveTo</pre>
 </li>
 <li class="blockList">
 <h4>extendedProperties</h4>
@@ -16134,6 +16382,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; additionalProperties</pre>
 </li>
 <li class="blockList">
+<h4>effectiveFrom</h4>
+<pre>java.util.Date effectiveFrom</pre>
+</li>
+<li class="blockList">
+<h4>effectiveTo</h4>
+<pre>java.util.Date effectiveTo</pre>
+</li>
+<li class="blockList">
 <h4>extendedProperties</h4>
 <pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; extendedProperties</pre>
 </li>
@@ -16144,6 +16400,78 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>typeName</h4>
 <pre>java.lang.String typeName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>effectiveFrom</h4>
+<pre>java.util.Date effectiveFrom</pre>
+</li>
+<li class="blockList">
+<h4>effectiveTo</h4>
+<pre>java.util.Date effectiveTo</pre>
+</li>
+<li class="blockListLast">
+<h4>extendedProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; extendedProperties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/ResourceListProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>resourceUse</h4>
+<pre>java.lang.String resourceUse</pre>
+</li>
+<li class="blockListLast">
+<h4>watchResource</h4>
+<pre>boolean watchResource</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.SecurityGroupProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/SecurityGroupProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.SecurityGroupProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">GovernanceDefinitionProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>distinguishedName</h4>
+<pre>java.lang.String distinguishedName</pre>
 </li>
 </ul>
 </li>
@@ -16164,6 +16492,46 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>securityProperties</h4>
 <pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; securityProperties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.StakeholderProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/StakeholderProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.StakeholderProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>stakeholderRole</h4>
+<pre>java.lang.String stakeholderRole</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/SubjectAreaClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">ClassificationProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>subjectAreaName</h4>
+<pre>java.lang.String subjectAreaName</pre>
 </li>
 </ul>
 </li>
@@ -16240,6 +16608,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockListLast">
 <h4>usage</h4>
 <pre>java.lang.String usage</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/SupportingDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties</a> extends <a href="org/odpi/openmetadata/accessservices/governanceprogram/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>rationale</h4>
+<pre>java.lang.String rationale</pre>
 </li>
 </ul>
 </li>

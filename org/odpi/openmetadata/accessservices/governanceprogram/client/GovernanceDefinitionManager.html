@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
@@ -122,7 +122,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceDefinitionManager</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -131,11 +136,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/GovernanceDefinitionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDefinitionsInterface</a></code></dd>
+<dd><code><a href="../api/GovernanceDefinitionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDefinitionsInterface</a></code>, <code><a href="../api/RelatedElementsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">RelatedElementsManagementInterface</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">GovernanceDefinitionManager</span>
-extends java.lang.Object
+extends <a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a>
 implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDefinitionsInterface</a></pre>
 <div class="block">GovernanceDefinitionManager is the java client for managing the definitions for the governance drivers, policies and controls
  that define the motivation, goals and implementation approach for the governance program.
@@ -195,6 +200,23 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
+<!-- =========== FIELD SUMMARY =========== -->
+<section role="region">
+<ul class="blockList">
+<li class="blockList"><a id="field.summary">
+<!--   -->
+</a>
+<h3>Field Summary</h3>
+<ul class="blockList">
+<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient">
+<!--   -->
+</a>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.client.<a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a></h3>
+<code><a href="GovernanceProgramBaseClient.html#nullRequestBody">nullRequestBody</a></code></li>
+</ul>
+</li>
+</ul>
+</section>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <section role="region">
 <ul class="blockList">
@@ -300,11 +322,11 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">linkPeerDefinitions</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties)">linkPeerDefinitions</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;definitionOneGUID,
                    java.lang.String&nbsp;definitionTwoGUID,
                    java.lang.String&nbsp;relationshipTypeName,
-                   java.lang.String&nbsp;description)</code></th>
+                   <a href="../properties/PeerDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">PeerDefinitionProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Link two related governance definitions together.</div>
 </td>
@@ -320,11 +342,11 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setupSupportingDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties)">setupSupportingDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;definitionGUID,
                          java.lang.String&nbsp;supportingDefinitionGUID,
                          java.lang.String&nbsp;relationshipTypeName,
-                         java.lang.String&nbsp;rationale)</code></th>
+                         <a href="../properties/SupportingDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SupportingDefinitionProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
 <div class="block">Create a link to show that a governance definition supports the requirements of another governance definition.</div>
 </td>
@@ -350,6 +372,13 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramBaseClient">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.governanceprogram.client.<a href="GovernanceProgramBaseClient.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.client">GovernanceProgramBaseClient</a></h3>
+<code><a href="GovernanceProgramBaseClient.html#clearAssignmentScope(java.lang.String,java.lang.String,java.lang.String)">clearAssignmentScope</a>, <a href="GovernanceProgramBaseClient.html#clearGovernanceDefinitionScope(java.lang.String,java.lang.String,java.lang.String)">clearGovernanceDefinitionScope</a>, <a href="GovernanceProgramBaseClient.html#clearGovernanceResponsibilityAssignment(java.lang.String,java.lang.String,java.lang.String)">clearGovernanceResponsibilityAssignment</a>, <a href="GovernanceProgramBaseClient.html#clearGovernedBy(java.lang.String,java.lang.String,java.lang.String)">clearGovernedBy</a>, <a href="GovernanceProgramBaseClient.html#clearMoreInformation(java.lang.String,java.lang.String,java.lang.String)">clearMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#clearResource(java.lang.String,java.lang.String,java.lang.String)">clearResource</a>, <a href="GovernanceProgramBaseClient.html#clearStakeholder(java.lang.String,java.lang.String,java.lang.String)">clearStakeholder</a>, <a href="GovernanceProgramBaseClient.html#getAssignedActors(java.lang.String,java.lang.String,int,int)">getAssignedActors</a>, <a href="GovernanceProgramBaseClient.html#getAssignedScopes(java.lang.String,java.lang.String,int,int)">getAssignedScopes</a>, <a href="GovernanceProgramBaseClient.html#getDescriptiveElements(java.lang.String,java.lang.String,int,int)">getDescriptiveElements</a>, <a href="GovernanceProgramBaseClient.html#getGovernanceDefinitionScopes(java.lang.String,java.lang.String,int,int)">getGovernanceDefinitionScopes</a>, <a href="GovernanceProgramBaseClient.html#getGovernanceDefinitionsForElement(java.lang.String,java.lang.String,int,int)">getGovernanceDefinitionsForElement</a>, <a href="GovernanceProgramBaseClient.html#getGovernedElements(java.lang.String,java.lang.String,int,int)">getGovernedElements</a>, <a href="GovernanceProgramBaseClient.html#getMoreInformation(java.lang.String,java.lang.String,int,int)">getMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#getResourceList(java.lang.String,java.lang.String,int,int)">getResourceList</a>, <a href="GovernanceProgramBaseClient.html#getResponsibleRoles(java.lang.String,java.lang.String,int,int)">getResponsibleRoles</a>, <a href="GovernanceProgramBaseClient.html#getRoleResponsibilities(java.lang.String,java.lang.String,int,int)">getRoleResponsibilities</a>, <a href="GovernanceProgramBaseClient.html#getScopedGovernanceDefinitions(java.lang.String,java.lang.String,int,int)">getScopedGovernanceDefinitions</a>, <a href="GovernanceProgramBaseClient.html#getStakeholderCommissionedElements(java.lang.String,java.lang.String,int,int)">getStakeholderCommissionedElements</a>, <a href="GovernanceProgramBaseClient.html#getStakeholders(java.lang.String,java.lang.String,int,int)">getStakeholders</a>, <a href="GovernanceProgramBaseClient.html#getSupportedByResource(java.lang.String,java.lang.String,int,int)">getSupportedByResource</a>, <a href="GovernanceProgramBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a>, <a href="GovernanceProgramBaseClient.html#setupAssignmentScope(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.AssignmentScopeProperties,java.lang.String)">setupAssignmentScope</a>, <a href="GovernanceProgramBaseClient.html#setupGovernanceDefinitionScope(java.lang.String,java.lang.String,java.lang.String)">setupGovernanceDefinitionScope</a>, <a href="GovernanceProgramBaseClient.html#setupGovernanceResponsibilityAssignment(java.lang.String,java.lang.String,java.lang.String)">setupGovernanceResponsibilityAssignment</a>, <a href="GovernanceProgramBaseClient.html#setupGovernedBy(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String)">setupGovernedBy</a>, <a href="GovernanceProgramBaseClient.html#setupMoreInformation(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String)">setupMoreInformation</a>, <a href="GovernanceProgramBaseClient.html#setupResource(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties,java.lang.String)">setupResource</a>, <a href="GovernanceProgramBaseClient.html#setupStakeholder(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.StakeholderProperties,java.lang.String)">setupStakeholder</a>, <a href="GovernanceProgramBaseClient.html#updateGovernanceDefinitionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus,java.lang.String,java.lang.String)">updateGovernanceDefinitionStatus</a>, <a href="GovernanceProgramBaseClient.html#updateRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties,java.lang.String,java.lang.String)">updateRelationship</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -579,9 +608,9 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
 <dd><code>definitionGUID</code> - unique identifier</dd>
 <dd><code>newStatus</code> - new status</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid, status or userId is null; guid is not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid, documentIdentifier or userId is null; documentIdentifier is not unique; guid is not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
 </li>
 </ul>
@@ -610,7 +639,7 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
 </dl>
 </li>
 </ul>
-<a id="linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -620,7 +649,7 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
                                 java.lang.String&nbsp;definitionOneGUID,
                                 java.lang.String&nbsp;definitionTwoGUID,
                                 java.lang.String&nbsp;relationshipTypeName,
-                                java.lang.String&nbsp;description)
+                                <a href="../properties/PeerDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">PeerDefinitionProperties</a>&nbsp;properties)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -633,13 +662,13 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
  If the link already exists the description is updated.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/GovernanceDefinitionsInterface.html#linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">linkPeerDefinitions</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceDefinitionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDefinitionsInterface</a></code></dd>
+<dd><code><a href="../api/GovernanceDefinitionsInterface.html#linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties)">linkPeerDefinitions</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceDefinitionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDefinitionsInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>definitionOneGUID</code> - unique identifier of the first definition</dd>
 <dd><code>definitionTwoGUID</code> - unique identifier of the second definition</dd>
 <dd><code>relationshipTypeName</code> - the name of the relationship to create</dd>
-<dd><code>description</code> - description of their relationship</dd>
+<dd><code>properties</code> - description of their relationship</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -676,7 +705,7 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
 </dl>
 </li>
 </ul>
-<a id="setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -686,7 +715,7 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
                                       java.lang.String&nbsp;definitionGUID,
                                       java.lang.String&nbsp;supportingDefinitionGUID,
                                       java.lang.String&nbsp;relationshipTypeName,
-                                      java.lang.String&nbsp;rationale)
+                                      <a href="../properties/SupportingDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SupportingDefinitionProperties</a>&nbsp;properties)
                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -699,13 +728,13 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
  If the link already exists the rationale is updated.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/GovernanceDefinitionsInterface.html#setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setupSupportingDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceDefinitionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDefinitionsInterface</a></code></dd>
+<dd><code><a href="../api/GovernanceDefinitionsInterface.html#setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties)">setupSupportingDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../api/GovernanceDefinitionsInterface.html" title="interface in org.odpi.openmetadata.accessservices.governanceprogram.api">GovernanceDefinitionsInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
 <dd><code>supportingDefinitionGUID</code> - unique identifier of the supporting governance definition</dd>
 <dd><code>relationshipTypeName</code> - the name of the relationship to create</dd>
-<dd><code>rationale</code> - description of how the supporting definition provides support</dd>
+<dd><code>properties</code> - description of how the supporting definition provides support</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -794,7 +823,7 @@ implements <a href="../api/GovernanceDefinitionsInterface.html" title="interface
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -149,6 +149,15 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addSubjectAreaMemberClassification(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties)">addSubjectAreaMemberClassification</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                  java.lang.String&nbsp;elementGUID,
+                                  <a href="../properties/SubjectAreaClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SubjectAreaClassificationProperties</a>&nbsp;properties)</code></th>
+<td class="colLast">
+<div class="block">Add a subject area classification to a referenceable element.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSubjectArea(java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties)">createSubjectArea</a></span>&#8203;(java.lang.String&nbsp;userId,
                  <a href="../properties/SubjectAreaProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SubjectAreaProperties</a>&nbsp;properties)</code></th>
@@ -156,7 +165,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Create a definition of a subject area.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteSubjectArea(java.lang.String,java.lang.String)">deleteSubjectArea</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;subjectAreaGUID)</code></th>
@@ -164,7 +173,25 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the definition of a subject area.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteSubjectAreaMemberClassification(java.lang.String,java.lang.String)">deleteSubjectAreaMemberClassification</a></span>&#8203;(java.lang.String&nbsp;userId,
+                                     java.lang.String&nbsp;elementGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove a subject area classification from a referenceable.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMembersOfSubjectArea(java.lang.String,java.lang.String,int,int)">getMembersOfSubjectArea</a></span>&#8203;(java.lang.String&nbsp;userId,
+                       java.lang.String&nbsp;subjectAreaName,
+                       int&nbsp;startFrom,
+                       int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/SubjectAreaElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubjectAreaByGUID(java.lang.String,java.lang.String)">getSubjectAreaByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;subjectAreaGUID)</code></th>
@@ -172,7 +199,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return information about a specific subject area.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/SubjectAreaElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubjectAreaByName(java.lang.String,java.lang.String)">getSubjectAreaByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;qualifiedName)</code></th>
@@ -180,7 +207,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return information about a specific subject area.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/SubjectAreaDefinition.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaDefinition</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubjectAreaDefinitionByGUID(java.lang.String,java.lang.String)">getSubjectAreaDefinitionByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;subjectAreaGUID)</code></th>
@@ -188,7 +215,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return information about a specific subject area and its linked governance definitions.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/SubjectAreaElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSubjectAreasForDomain(java.lang.String,int,int,int)">getSubjectAreasForDomain</a></span>&#8203;(java.lang.String&nbsp;userId,
                         int&nbsp;domainIdentifier,
@@ -198,7 +225,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return information about the defined subject areas.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkSubjectAreasInHierarchy(java.lang.String,java.lang.String,java.lang.String)">linkSubjectAreasInHierarchy</a></span>&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;parentSubjectAreaGUID,
@@ -207,25 +234,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Link two related subject areas together as part of a hierarchy.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkSubjectAreaToGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">linkSubjectAreaToGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
-                                     java.lang.String&nbsp;subjectAreaGUID,
-                                     java.lang.String&nbsp;definitionGUID)</code></th>
-<td class="colLast">
-<div class="block">Link a subject area to a governance definition that controls how the definitions in the subject area should be governed.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkSubjectAreaFromGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">unlinkSubjectAreaFromGovernanceDefinition</a></span>&#8203;(java.lang.String&nbsp;userId,
-                                         java.lang.String&nbsp;subjectAreaGUID,
-                                         java.lang.String&nbsp;definitionGUID)</code></th>
-<td class="colLast">
-<div class="block">Remove the link between a subject area and a governance definition.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unlinkSubjectAreasInHierarchy(java.lang.String,java.lang.String,java.lang.String)">unlinkSubjectAreasInHierarchy</a></span>&#8203;(java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;parentSubjectAreaGUID,
@@ -234,7 +243,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Remove the link between two subject areas in the subject area hierarchy.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSubjectArea(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties)">updateSubjectArea</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;subjectAreaGUID,
@@ -387,56 +396,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="linkSubjectAreaToGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>linkSubjectAreaToGovernanceDefinition</h4>
-<pre class="methodSignature">void&nbsp;linkSubjectAreaToGovernanceDefinition&#8203;(java.lang.String&nbsp;userId,
-                                           java.lang.String&nbsp;subjectAreaGUID,
-                                           java.lang.String&nbsp;definitionGUID)
-                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Link a subject area to a governance definition that controls how the definitions in the subject area should be governed.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>subjectAreaGUID</code> - unique identifier of the subject area</dd>
-<dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
-<a id="unlinkSubjectAreaFromGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>unlinkSubjectAreaFromGovernanceDefinition</h4>
-<pre class="methodSignature">void&nbsp;unlinkSubjectAreaFromGovernanceDefinition&#8203;(java.lang.String&nbsp;userId,
-                                               java.lang.String&nbsp;subjectAreaGUID,
-                                               java.lang.String&nbsp;definitionGUID)
-                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Remove the link between a subject area and a governance definition.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>subjectAreaGUID</code> - unique identifier of the subject area</dd>
-<dd><code>definitionGUID</code> - unique identifier of the governance definition</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the guids is null or not known</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
-</dl>
-</li>
-</ul>
 <a id="getSubjectAreaByGUID(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
@@ -519,7 +478,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <a id="getSubjectAreaDefinitionByGUID(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getSubjectAreaDefinitionByGUID</h4>
 <pre class="methodSignature"><a href="../metadataelements/SubjectAreaDefinition.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">SubjectAreaDefinition</a>&nbsp;getSubjectAreaDefinitionByGUID&#8203;(java.lang.String&nbsp;userId,
@@ -536,6 +495,83 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>properties of the subject area</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - subjectAreaGUID or userId is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="addSubjectAreaMemberClassification(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addSubjectAreaMemberClassification</h4>
+<pre class="methodSignature">void&nbsp;addSubjectAreaMemberClassification&#8203;(java.lang.String&nbsp;userId,
+                                        java.lang.String&nbsp;elementGUID,
+                                        <a href="../properties/SubjectAreaClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.properties">SubjectAreaClassificationProperties</a>&nbsp;properties)
+                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Add a subject area classification to a referenceable element.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>elementGUID</code> - unique identifier for the element</dd>
+<dd><code>properties</code> - identifier for a subject area</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null; qualifiedName is not unique</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="deleteSubjectAreaMemberClassification(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>deleteSubjectAreaMemberClassification</h4>
+<pre class="methodSignature">void&nbsp;deleteSubjectAreaMemberClassification&#8203;(java.lang.String&nbsp;userId,
+                                           java.lang.String&nbsp;elementGUID)
+                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove a subject area classification from a referenceable.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>elementGUID</code> - unique identifier for the element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid or userId is null; guid is not known</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getMembersOfSubjectArea(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getMembersOfSubjectArea</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getMembersOfSubjectArea&#8203;(java.lang.String&nbsp;userId,
+                                                       java.lang.String&nbsp;subjectAreaName,
+                                                       int&nbsp;startFrom,
+                                                       int&nbsp;pageSize)
+                                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>subjectAreaName</code> - unique identifier for the subject area</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>properties of the subject area</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
 </dl>
