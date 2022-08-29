@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client.rest;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -12,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 /**
  * RESTClient is responsible for issuing calls to the Governance Program OMAS REST APIs.
  */
-public class GovernanceProgramRESTClient extends FFDCRESTClient
+public class GovernanceProgramRESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication with audit log.

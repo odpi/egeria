@@ -345,7 +345,7 @@ public class ConnectedAssetClientBase
      * @param userId       userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository.
      *
-     * @return Connector   connector instance.
+     * @return   connector instance.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).

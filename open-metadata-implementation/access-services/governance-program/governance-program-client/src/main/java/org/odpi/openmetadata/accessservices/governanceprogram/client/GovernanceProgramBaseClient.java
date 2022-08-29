@@ -502,6 +502,10 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
      * @param newStatus                 new status
      * @param propertiesParameterName  name of parameter passing the properties
      * @param methodName               calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateGovernanceDefinitionStatus(String                     userId,
                                                  String                     elementGUID,
