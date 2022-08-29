@@ -869,9 +869,8 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (relationship != null)
         {
             ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, null, methodName);
-            ElementStub   elementStub   = new ElementStub(elementHeader);
 
-            return elementStub;
+            return new ElementStub(elementHeader);
         }
         else
         {
@@ -4531,7 +4530,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract the pronouns property from the supplied instance properties.
+     * Extract the "pronouns" property from the supplied instance properties.
      *
      * @param instanceProperties properties from governance entities
      * @return string property or null
@@ -4903,6 +4902,52 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
 
         return 0;
+    }
+
+
+    /**
+     * Extract and delete the measurement property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeMeasurement(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeMeasurement";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.MEASUREMENT_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the target property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeTarget(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeTarget";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.TARGET_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
     }
 
 

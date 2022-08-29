@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceDefinitionRequestBody extends GovernanceProgramOMASAPIRequestBody
+public class GovernanceDefinitionRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
@@ -105,7 +105,9 @@ public class GovernanceDefinitionRequestBody extends GovernanceProgramOMASAPIReq
     public String toString()
     {
         return "GovernanceDefinitionRequestBody{" +
-                       "properties=" + properties +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", properties=" + properties +
                        ", initialStatus=" + initialStatus +
                        '}';
     }
@@ -124,13 +126,16 @@ public class GovernanceDefinitionRequestBody extends GovernanceProgramOMASAPIReq
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof GovernanceDefinitionRequestBody))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         GovernanceDefinitionRequestBody that = (GovernanceDefinitionRequestBody) objectToCompare;
-        return Objects.equals(properties, that.properties) &&
-                       initialStatus == that.initialStatus;
+        return Objects.equals(properties, that.properties) && initialStatus == that.initialStatus;
     }
 
 
@@ -142,6 +147,6 @@ public class GovernanceDefinitionRequestBody extends GovernanceProgramOMASAPIReq
     @Override
     public int hashCode()
     {
-        return Objects.hash(properties, initialStatus);
+        return Objects.hash(super.hashCode(), properties, initialStatus);
     }
 }

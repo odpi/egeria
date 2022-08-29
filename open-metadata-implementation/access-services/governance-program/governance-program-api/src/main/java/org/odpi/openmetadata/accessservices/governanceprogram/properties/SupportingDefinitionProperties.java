@@ -1,6 +1,7 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.properties;
+
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,22 +13,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceDefinitionMetric defines the metric for a governance definition.
+ * SupportingDefinitionProperties provides a details of why a governance definition is supporting other governance definition.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceDefinitionMetric extends GovernanceMetricProperties
+public class SupportingDefinitionProperties extends RelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String rationale = null;
-
+    String rationale = null;
 
     /**
      * Default constructor
      */
-    public GovernanceDefinitionMetric()
+    public SupportingDefinitionProperties()
     {
         super();
     }
@@ -38,22 +38,21 @@ public class GovernanceDefinitionMetric extends GovernanceMetricProperties
      *
      * @param template object to copy
      */
-    public GovernanceDefinitionMetric(GovernanceDefinitionMetric  template)
+    public SupportingDefinitionProperties(SupportingDefinitionProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            this.rationale = getRationale();
+            this.rationale = template.getRationale();
         }
     }
 
 
     /**
-     * Return the rationale as to why this metric is a good measure of the activity associated with the
-     * governance definition.
+     * Return the reason why the new definition supports the original definition.
      *
-     * @return string description
+     * @return rationale
      */
     public String getRationale()
     {
@@ -62,10 +61,9 @@ public class GovernanceDefinitionMetric extends GovernanceMetricProperties
 
 
     /**
-     * Set up the rationale as to why this metric is a good measure of the activity associated with the
-     * governance definition.
+     * Set up the reason why the new definition supports the original definition.
      *
-     * @param rationale string description
+     * @param rationale rationale
      */
     public void setRationale(String rationale)
     {
@@ -73,23 +71,19 @@ public class GovernanceDefinitionMetric extends GovernanceMetricProperties
     }
 
 
-
     /**
      * JSON-style toString
      *
-     * @return string containing the properties and their values
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
-        return "GovernanceDefinitionMetric{" +
-                       "rationale='" + rationale + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", measurement='" + getMeasurement() + '\'' +
-                       ", target='" + getTarget() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
+        return "SupportingDefinitionProperties{" +
+                       "effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", rationale='" + rationale + '\'' +
                        '}';
     }
 
@@ -111,11 +105,11 @@ public class GovernanceDefinitionMetric extends GovernanceMetricProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
-        GovernanceDefinitionMetric that = (GovernanceDefinitionMetric) objectToCompare;
+        SupportingDefinitionProperties that = (SupportingDefinitionProperties) objectToCompare;
         return Objects.equals(rationale, that.rationale);
     }
 
