@@ -48,7 +48,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
     final InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
     final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/related-elements";
+    private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/related-elements";
 
     protected NullRequestBody nullRequestBody = new NullRequestBody();
 
