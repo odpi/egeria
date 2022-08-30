@@ -22,11 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalReferenceRequestBody implements Serializable
+public class ExternalReferenceRequestBody extends UpdateRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private MetadataCorrelationProperties metadataCorrelationProperties = null;
     private ExternalReferenceProperties   elementProperties = null;
     private String                        anchorGUID = null;
 
@@ -47,34 +46,13 @@ public class ExternalReferenceRequestBody implements Serializable
      */
     public ExternalReferenceRequestBody(ExternalReferenceRequestBody template)
     {
+        super (template);
+
         if (template != null)
         {
-            metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             elementProperties = template.getElementProperties();
             anchorGUID = template.getAnchorGUID();
         }
-    }
-
-
-    /**
-     * Return the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @return properties object
-     */
-    public MetadataCorrelationProperties getMetadataCorrelationProperties()
-    {
-        return metadataCorrelationProperties;
-    }
-
-
-    /**
-     * Set up the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @param metadataCorrelationProperties properties object
-     */
-    public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
-    {
-        this.metadataCorrelationProperties = metadataCorrelationProperties;
     }
 
 
@@ -133,9 +111,10 @@ public class ExternalReferenceRequestBody implements Serializable
     public String toString()
     {
         return "ExternalReferenceRequestBody{" +
-                       "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       ", elementProperties=" + elementProperties +
+                       "elementProperties=" + elementProperties +
                        ", anchorGUID='" + anchorGUID + '\'' +
+                       ", metadataCorrelationProperties=" + getMetadataCorrelationProperties() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -157,10 +136,12 @@ public class ExternalReferenceRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ExternalReferenceRequestBody that = (ExternalReferenceRequestBody) objectToCompare;
-        return Objects.equals(metadataCorrelationProperties, that.metadataCorrelationProperties) &&
-                       Objects.equals(elementProperties, that.elementProperties) &&
-                       Objects.equals(anchorGUID, that.anchorGUID);
+        return Objects.equals(elementProperties, that.elementProperties) && Objects.equals(anchorGUID, that.anchorGUID);
     }
 
 
@@ -172,6 +153,6 @@ public class ExternalReferenceRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, anchorGUID, elementProperties);
+        return Objects.hash(super.hashCode(), anchorGUID, elementProperties);
     }
 }

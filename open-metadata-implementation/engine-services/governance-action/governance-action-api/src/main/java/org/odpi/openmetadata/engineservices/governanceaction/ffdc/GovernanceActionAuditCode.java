@@ -91,7 +91,7 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The Governance Action OMES in server {0} has initialized",
                        "The engine service has completed initialization.",
-                       "Verify that all of the configured governance action engines have successfully started and retrieved their configuration."),
+                       "Verify that all the configured governance action engines have successfully started and retrieved their configuration."),
 
     SERVER_SHUTTING_DOWN("OMES-GOVERNANCE-ACTION-0014",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,

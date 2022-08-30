@@ -32,8 +32,22 @@ public class SimpleCatalogArchiveHelper
     private static final String CONNECTOR_TYPE_DIRECTORY_TYPE_NAME       = "ConnectorTypeDirectory";
     private static final String CONNECTOR_IMPL_CHOICE_TYPE_NAME          = "ConnectorImplementationChoice";
 
+    private static final String LOCATION_TYPE_NAME                       = "Location";
+    private static final String FIXED_LOCATION_CLASSIFICATION_NAME       = "FixedLocation";
+    private static final String SECURE_LOCATION_CLASSIFICATION_NAME      = "SecureLocation";
+    private static final String CYBER_LOCATION_CLASSIFICATION_NAME       = "CyberLocation";
+    private static final String MOBILE_ASSET_CLASSIFICATION_NAME         = "MobileAsset";
+    private static final String NESTED_LOCATION_RELATIONSHIP_NAME        = "NestedLocation";
+    private static final String ADJACENT_LOCATION_RELATIONSHIP_NAME      = "AdjacentLocation";
+    private static final String ASSET_LOCATION_RELATIONSHIP_NAME         = "AssetLocation";
+
     private static final String COLLECTION_TYPE_NAME                     = "Collection";
-    private static final String COLLECTION_MEMBER_TYPE_NAME              = "CollectionMembership";
+    private static final String COLLECTION_MEMBER_RELATIONSHIP_NAME      = "CollectionMembership";
+    public  static final String NAMING_STANDARD_RULE_SET_TYPE_NAME       = "NamingStandardRuleSet";
+
+    public  static final String GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME         = "GovernanceDomainSet";
+    public  static final String GOVERNANCE_CLASSIFICATION_SET_CLASSIFICATION_NAME = "GovernanceClassificationSet";
+    public  static final String GOVERNANCE_STATUS_SET_CLASSIFICATION_NAME         = "GovernanceStatusSet";
 
     private static final String SEARCH_KEYWORD_TYPE_NAME                 = "SearchKeyword";
     private static final String SEARCH_KEYWORD_LINK_RELATIONSHIP_NAME    = "SearchKeywordLink";
@@ -61,6 +75,63 @@ public class SimpleCatalogArchiveHelper
     private static final String LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME  = "LibraryCategoryReference";
     private static final String LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME      = "LibraryTermReference";
 
+    private static final String GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME       = "GovernanceDomainDescription";
+
+    private static final String GOVERNANCE_DEFINITION_TYPE_NAME               = "GovernanceDefinition";
+      public static final String GOVERNANCE_DRIVER_TYPE_NAME                  = "GovernanceDriver";
+      public static final String GOVERNANCE_STRATEGY_TYPE_NAME                = "GovernanceStrategy";
+      public static final String BUSINESS_IMPERATIVE_TYPE_NAME                = "BusinessImperative";
+      public static final String REGULATION_TYPE_NAME                         = "Regulation";
+      public static final String REGULATION_ARTICLE_TYPE_NAME                 = "RegulationArticle";
+      public static final String THREAT_TYPE_NAME                             = "Threat";
+      public static final String GOVERNANCE_POLICY_TYPE_NAME                  = "GovernancePolicy";
+      public static final String GOVERNANCE_PRINCIPLE_TYPE_NAME               = "GovernancePrinciple";
+      public static final String GOVERNANCE_OBLIGATION_TYPE_NAME              = "GovernanceObligation";
+      public static final String GOVERNANCE_APPROACH_TYPE_NAME                = "GovernanceApproach";
+      public static final String GOVERNANCE_CONTROL_TYPE_NAME                 = "GovernanceControl";
+      public static final String TECHNICAL_CONTROL_TYPE_NAME                  = "TechnicalControl";
+      public static final String SECURITY_GROUP_TYPE_NAME                     = "SecurityGroup";
+      public static final String GOVERNANCE_RULE_TYPE_NAME                    = "GovernanceRule";
+      public static final String NAMING_STANDARD_RULE_TYPE_NAME               = "NamingStandardRule";
+      public static final String GOVERNANCE_PROCESS_TYPE_NAME                 = "GovernanceProcess";
+      public static final String ORGANIZATIONAL_CONTROL_TYPE_NAME             = "OrganizationalControl";
+      public static final String GOVERNANCE_RESPONSIBILITY_TYPE_NAME          = "GovernanceResponsibility";
+      public static final String GOVERNANCE_PROCEDURE_TYPE_NAME               = "GovernanceProcedure";
+      public static final String LICENSE_TYPE_TYPE_NAME                       = "LicenseType";
+      public static final String CERTIFICATION_TYPE_TYPE_NAME                 = "CertificationType";
+      public static final String DATA_PROCESSING_PURPOSE_TYPE_NAME            = "DataProcessingPurpose";
+
+    private static final String GOVERNANCE_DEFINITION_SCOPE_RELATIONSHIP_NAME = "GovernanceDefinitionScope";
+    private static final String GOVERNED_BY_RELATIONSHIP_NAME                 = "GovernedBy";
+
+    public static final String GOVERNANCE_DRIVER_LINK_RELATIONSHIP_NAME      = "GovernanceDriverLink";
+    public static final String GOVERNANCE_RESPONSE_RELATIONSHIP_NAME         = "GovernanceResponse";
+    public static final String GOVERNANCE_POLICY_LINK_RELATIONSHIP_NAME      = "GovernanceDriverLink";
+    public static final String GOVERNANCE_IMPLEMENTATION_RELATIONSHIP_NAME   = "GovernanceImplementation";
+    public static final String GOVERNANCE_CONTROL_LINK_RELATIONSHIP_NAME     = "GovernanceControlLink";
+
+    public  static final String GOVERNANCE_RULE_IMPLEMENTATION_RELATIONSHIP_NAME       = "GovernanceRuleImplementation";
+    public  static final String GOVERNANCE_PROCESS_IMPLEMENTATION_RELATIONSHIP_NAME    = "GovernanceProcessImplementation";
+    public  static final String GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_RELATIONSHIP_NAME = "GovernanceResponsibilityAssignment";
+
+    private static final String GOVERNANCE_ZONE_TYPE_NAME                     = "GovernanceZone";
+    private static final String ZONE_HIERARCHY_RELATIONSHIP_NAME              = "ZoneHierarchy";
+    private static final String ASSET_ZONE_MEMBERSHIP_CLASSIFICATION_NAME     = "AssetZoneMembership";
+
+    private static final String BUSINESS_CAPABILITY_TYPE_NAME                 = "BusinessCapability";
+    private static final String BUSINESS_CAPABILITY_TYPE_ENUM_NAME            = "BusinessCapabilityType";
+    public  static final int       BUSINESS_CAPABILITY_TYPE_UNCLASSIFIED      = 0;
+    public  static final int       BUSINESS_CAPABILITY_TYPE_BUSINESS_SERVICE  = 1;
+    public  static final int       BUSINESS_CAPABILITY_TYPE_BUSINESS_AREA     = 2;
+    public  static final int       BUSINESS_CAPABILITY_TYPE_OTHER             = 99;
+    private static final String ORGANIZATIONAL_CAPABILITY_RELATIONSHIP_NAME   = "OrganizationalCapability";
+    private static final String ASSET_ORIGIN_CLASSIFICATION_NAME              = "AssetOrigin";
+
+    private static final String PROJECT_CHARTER_TYPE_NAME                = "ProjectCharter";
+    private static final String PROJECT_CHARTER_LINK_RELATIONSHIP_NAME   = "ProjectCharterLink";
+
+    private static final String OWNER_CLASSIFICATION_NAME                = "Owner";
+
     private static final String SUBJECT_AREA_DEFINITION_TYPE_NAME        = "SubjectAreaDefinition";
     private static final String SUBJECT_AREA_HIERARCHY_RELATIONSHIP_NAME = "SubjectAreaHierarchy";
     private static final String SUBJECT_AREA_CLASSIFICATION_NAME         = "SubjectArea";
@@ -73,6 +144,7 @@ public class SimpleCatalogArchiveHelper
     private static final String GLOSSARY_TERM_TYPE_NAME                  = "GlossaryTerm";
     private static final String TERM_ANCHOR_TYPE_NAME                    = "TermAnchor";
     private static final String TERM_CATEGORIZATION_TYPE_NAME            = "TermCategorization";
+    private static final String SYNONYM_RELATIONSHIP_TYPE_NAME           = "Synonym";
     private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME            = "TermAnchor";
     private static final String MORE_INFORMATION_TYPE_NAME               = "MoreInformation";
     private static final String SPINE_OBJECT_NAME                        = "SpineObject";
@@ -87,6 +159,73 @@ public class SimpleCatalogArchiveHelper
     public static final int      TERM_RELATIONSHIP_STATUS_DEPRECATED     = 2;
     public static final int      TERM_RELATIONSHIP_STATUS_OBSOLETE       = 3;
     public static final int      TERM_RELATIONSHIP_STATUS_OTHER          = 4;
+
+    private static final String PERSON_TYPE_NAME                         = "Person";
+    private static final String TEAM_TYPE_NAME                           = "Team";
+    public  static final String ORGANIZATION_TYPE_NAME                   = "Organization";
+    private static final String IT_PROFILE_TYPE_NAME                     = "ITProfile";
+    private static final String USER_IDENTITY_TYPE_NAME                  = "UserIdentity";
+    private static final String CONTACT_DETAILS_TYPE_NAME                = "ContactDetails";
+
+    private static final String SECURITY_GROUP_MEMBERSHIP_CLASSIFICATION_NAME = "SecurityGroupMembership";
+    private static final String SECURITY_TAGS_CLASSIFICATION_NAME             = "SecurityTags";
+
+    private static final String CONTACT_METHOD_TYPE_ENUM_NAME             = "ContactMethodType";
+    public  static final int       CONTACT_METHOD_TYPE_EMAIL              = 0;
+    public  static final int       CONTACT_METHOD_TYPE_PHONE              = 1;
+    public  static final int       CONTACT_METHOD_TYPE_CHAT               = 2;
+    public  static final int       CONTACT_METHOD_TYPE_PROFILE            = 3;
+    public  static final int       CONTACT_METHOD_TYPE_ACCOUNT            = 4;
+    public  static final int       CONTACT_METHOD_TYPE_OTHER              = 99;
+
+    private static final String PROFILE_LOCATION_RELATIONSHIP_NAME          = "ProfileLocation";
+    private static final String PROFILE_IDENTITY_RELATIONSHIP_NAME          = "ProfileIdentity";
+    private static final String CONTACT_THROUGH_RELATIONSHIP_NAME           = "ContactThrough";
+    private static final String PEER_RELATIONSHIP_NAME                      = "Peer";
+    private static final String PERSONAL_ROLE_APPOINTMENT_RELATIONSHIP_NAME = "PersonalRoleAppointment";
+    private static final String TEAM_STRUCTURE_RELATIONSHIP_NAME            = "TeamStructure";
+    private static final String TEAM_MEMBERSHIP_RELATIONSHIP_NAME           = "TeamMembership";
+    private static final String TEAM_LEADERSHIP_RELATIONSHIP_NAME           = "TeamLeadership";
+    private static final String IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_NAME = "ITInfrastructureProfile";
+    private static final String ASSIGNMENT_SCOPE_RELATIONSHIP_NAME          = "AssignmentScope";
+
+    private static final String PERSON_ROLE_TYPE_NAME                    = "PersonRole";
+    public  static final String TEAM_LEADER_TYPE_NAME                    = "TeamLeader";
+    public  static final String TEAM_MEMBER_TYPE_NAME                    = "TeamMember";
+    public  static final String PROJECT_MANAGER_TYPE_NAME                = "ProjectManager";
+    public  static final String COMMUNITY_MEMBER_TYPE_NAME               = "CommunityMember";
+    public  static final String NOTE_LOG_AUTHOR_TYPE_NAME                = "NoteLogAuthor";
+    public  static final String GOVERNANCE_ROLE_TYPE_NAME                = "GovernanceRole";
+    public  static final String GOVERNANCE_OFFICER_TYPE_NAME             = "GovernanceOfficer";
+    public  static final String GOVERNANCE_REPRESENTATIVE_TYPE_NAME      = "GovernanceRepresentative";
+    public  static final String LOCATION_OWNER_TYPE_NAME                 = "LocationOwner";
+    public  static final String BUSINESS_OWNER_TYPE_NAME                 = "BusinessOwner";
+    public  static final String SOLUTION_OWNER_TYPE_NAME                 = "SolutionOwner";
+    public  static final String ASSET_OWNER_TYPE_NAME                    = "AssetOwner";
+    public  static final String SUBJECT_AREA_OWNER_TYPE_NAME             = "SubjectAreaOwner";
+    public  static final String COMPONENT_OWNER_TYPE_NAME                = "ComponentOwner";
+    public  static final String DATA_ITEM_OWNER_TYPE_NAME                = "DataItemOwner";
+
+    public  static final String PROJECT_TYPE_NAME                         = "Project";
+    public  static final String CAMPAIGN_CLASSIFICATION_NAME              = "Campaign";
+    public  static final String TASK_CLASSIFICATION_NAME                  = "Task";
+    public  static final String GLOSSARY_PROJECT_CLASSIFICATION_NAME      = "GlossaryProject";
+    public  static final String GOVERNANCE_PROJECT_CLASSIFICATION_NAME    = "GovernanceProject";
+    private static final String PROJECT_HIERARCHY_RELATIONSHIP_NAME       = "ProjectHierarchy";
+    private static final String PROJECT_DEPENDENCY_RELATIONSHIP_NAME      = "ProjectDependency";
+    private static final String PROJECT_TEAM_RELATIONSHIP_NAME            = "ProjectTeam";
+    private static final String PROJECT_MANAGEMENT_RELATIONSHIP_NAME      = "ProjectManagement";
+
+    private static final String STAKEHOLDER_RELATIONSHIP_NAME             = "Stakeholder";
+
+    public  static final String COMMUNITY_TYPE_NAME                      = "Community";
+    private static final String COMMUNITY_MEMBERSHIP_RELATIONSHIP_NAME   = "CommunityMembership";
+    private static final String COMMUNITY_MEMBERSHIP_TYPE_ENUM_NAME      = "CommunityMembershipType";
+    public static final int      COMMUNITY_MEMBERSHIP_TYPE_CONTRIBUTOR   = 0;
+    public static final int      COMMUNITY_MEMBERSHIP_TYPE_ADMINISTRATOR = 1;
+    public static final int      COMMUNITY_MEMBERSHIP_TYPE_LEADER        = 2;
+    public static final int      COMMUNITY_MEMBERSHIP_TYPE_OBSERVER      = 3;
+    public static final int      COMMUNITY_MEMBERSHIP_TYPE_OTHER         = 99;
 
     private static final String CONTEXT_DEFINITION_CLASSIFICATION_NAME   = "ContextDefinition";
     private static final String USED_IN_CONTEXT_RELATIONSHIP_NAME        = "UsedInContext";
@@ -128,6 +267,7 @@ public class SimpleCatalogArchiveHelper
     private static final String SOFTWARE_CAPABILITY_TYPE_NAME            = "SoftwareCapability";
 
     private static final String ASSET_TYPE_NAME                          = "Asset";
+    private static final String PROCESS_TYPE_NAME                        = "Process";
     private static final String CONNECTION_TO_ASSET_TYPE_NAME            = "ConnectionToAsset";
     private static final String DATA_CONTENT_FOR_DATA_SET_TYPE_NAME      = "DataContentForDataSet";
     private static final String ASSET_SCHEMA_TYPE_TYPE_NAME              = "AssetSchemaType";
@@ -154,17 +294,89 @@ public class SimpleCatalogArchiveHelper
     private static final String API_PARAMETER_TYPE_NAME                  = "APIParameter";
     private static final String API_PARAMETER_LIST_TYPE_NAME             = "APIParameterList";
 
+    public static final String VALID_VALUE_DEFINITION_TYPE_NAME          = "ValidValueDefinition";
+    public static final String VALID_VALUE_SET_TYPE_NAME                 = "ValidValuesSet";
+
+    private static final String VALID_VALUE_MEMBER_TYPE_NAME             = "ValidValueMember";
+    private static final String VALID_VALUES_ASSIGNMENT_TYPE_NAME        = "ValidValuesAssignment";
+    private static final String VALID_VALUES_MAPPING_TYPE_NAME           = "ValidValuesMapping";
+    private static final String VALID_VALUES_IMPLEMENTATION_TYPE_NAME    = "ValidValuesImplementation";
+    private static final String REFERENCE_VALUE_ASSIGNMENT_TYPE_NAME     = "ReferenceValueAssignment";
+
+    private static final String REFERENCE_DATA_CLASSIFICATION_NAME       = "ReferenceData";
+
     /*
      * Properties
      */
-    private static final String QUALIFIED_NAME_PROPERTY                      = "qualifiedName";
-    private static final String ADDITIONAL_PROPERTIES_PROPERTY               = "additionalProperties";
+    protected static final String QUALIFIED_NAME_PROPERTY                    = "qualifiedName";
+    protected static final String ADDITIONAL_PROPERTIES_PROPERTY             = "additionalProperties";
 
-    private static final String NAME_PROPERTY                                = "name";
+    protected static final String NAME_PROPERTY                              = "name";
+    protected static final String DISPLAY_NAME_PROPERTY                      = "displayName";
+    protected static final String DESCRIPTION_PROPERTY                       = "description";
+
+    private static final String COORDINATES_PROPERTY                         = "coordinates";
+    private static final String MAP_PROJECTION_PROPERTY                      = "mapProjection";
+    private static final String POSTAL_ADDRESS_PROPERTY                      = "postalAddress";
+    private static final String TIME_ZONE_PROPERTY                           = "timeZone";
+    private static final String LEVEL_PROPERTY                               = "level";
+
+    private static final String ASSOCIATION_TYPE_PROPERTY                    = "associationType";
+    private static final String CONTACT_TYPE_PROPERTY                        = "contactType";
+    private static final String CONTACT_METHOD_TYPE_PROPERTY                 = "contactMethodType";
+    private static final String CONTACT_METHOD_SERVICE_PROPERTY              = "contactMethodService";
+    private static final String CONTACT_METHOD_VALUE_PROPERTY                = "contactMethodValue";
+    private static final String DISTINGUISHED_NAME_PROPERTY                  = "distinguishedName";
+    private static final String ROLE_TYPE_NAME_PROPERTY                      = "roleTypeName";
+    private static final String ROLE_GUID_PROPERTY                           = "roleGUID";
+    private static final String IS_PUBLIC_PROPERTY                           = "isPublic";
+    private static final String HEAD_COUNT_PROPERTY                          = "headCount";
+    private static final String PRONOUNS_PROPERTY                            = "pronouns";
+    private static final String TITLE_PROPERTY                               = "title";
+    private static final String INITIALS_PROPERTY                            = "initials";
+    private static final String GIVEN_NAMES_PROPERTY                         = "givenNames";
+    private static final String SURNAME_PROPERTY                             = "surname";
+    private static final String FULL_NAME_PROPERTY                           = "fullName";
+    private static final String JOB_TITLE_PROPERTY                           = "jobTitle";
+    private static final String EMPLOYEE_NUMBER_PROPERTY                     = "employeeNumber";
+    private static final String EMPLOYEE_TYPE_PROPERTY                       = "employeeType";
+    private static final String PREFERRED_LANGUAGE_PROPERTY                  = "preferredLanguage";
+    private static final String DELEGATION_ESCALATION_AUTHORITY_PROPERTY     = "delegationEscalationAuthority";
+    private static final String TEAM_TYPE_PROPERTY                           = "teamType";
+    private static final String ASSIGNMENT_TYPE_PROPERTY                     = "assignmentType";
+
+    private static final String DEPENDENCY_SUMMARY_PROPERTY                  = "dependencySummary";
+    private static final String TEAM_ROLE_PROPERTY                           = "teamRole";
+    private static final String START_DATE_PROPERTY                          = "startDate";
+    private static final String PLANNED_END_DATE_PROPERTY                    = "plannedEndDate";
+    private static final String PROJECT_STATUS_PROPERTY                      = "projectStatus";
+
+    private static final String MISSION_PROPERTY                             = "mission";
+    private static final String MEMBERSHIP_TYPE_PROPERTY                     = "membershipType";
+    private static final String MEMBERSHIP_RATIONALE_PROPERTY                = "membershipRationale";
+    private static final String PROJECT_TYPE_PROPERTY                        = "projectType";
+    private static final String PURPOSES_PROPERTY                            = "purposes";
+    private static final String DETAILS_PROPERTY                             = "details";
+
+    private static final String GROUPS_PROPERTY                              = "groups";
+    private static final String SECURITY_LABELS_PROPERTY                     = "securityLabels";
+    private static final String SECURITY_PROPERTIES_PROPERTY                 = "securityProperties";
+
+    private static final String IDENTIFIER_PROPERTY                          = "identifier";
+
+    private static final String ORGANIZATION_PROPERTY                        = "organization";
+    private static final String ORGANIZATION_PROPERTY_NAME_PROPERTY          = "organizationPropertyName";
+    private static final String BUSINESS_CAPABILITY_PROPERTY                 = "businessCapability";
+    private static final String BUSINESS_CAPABILITY_TYPE_PROPERTY            = "businessCapabilityType";
+    private static final String BUSINESS_CAPABILITY_PROPERTY_NAME_PROPERTY   = "businessCapabilityPropertyName";
+    private static final String OTHER_ORIGIN_VALUES_PROPERTY                 = "otherOriginValues";
+
+    private static final String OWNER_PROPERTY                               = "owner";
+    private static final String OWNER_TYPE_NAME_PROPERTY                     = "ownerTypeName";
+    private static final String OWNER_PROPERTY_NAME_PROPERTY                 = "ownerPropertyName";
+
     private static final String ATTRIBUTE_NAME_PROPERTY                      = "attributeName";
-    private static final String DISPLAY_NAME_PROPERTY                        = "displayName";
     private static final String TECHNICAL_NAME_PROPERTY                      = "technicalName";
-    private static final String DESCRIPTION_PROPERTY                         = "description";
     private static final String DECORATION_PROPERTY                          = "decoration";
     private static final String VERSION_NUMBER_PROPERTY                      = "versionNumber";
     private static final String AUTHOR_PROPERTY                              = "author";
@@ -177,6 +389,15 @@ public class SimpleCatalogArchiveHelper
 
     private static final String ASSET_SUMMARY_PROPERTY                       = "assetSummary";
     private static final String ZONE_MEMBERSHIP_PROPERTY                     = "zoneMembership";
+    private static final String ZONE_NAME_PROPERTY                           = "zoneName";
+    private static final String SUBJECT_AREA_NAME_PROPERTY                   = "subjectAreaName";
+    public  static final String DOMAIN_IDENTIFIER_PROPERTY                   = "domainIdentifier";
+    private static final String PRIORITY_PROPERTY                            = "priority";
+    private static final String IMPLICATIONS_PROPERTY                        = "implications";
+    private static final String OUTCOMES_PROPERTY                            = "outcomes";
+    private static final String RESULTS_PROPERTY                             = "results";
+    private static final String JURISDICTION_PROPERTY                        = "jurisdiction";
+    private static final String RATIONALE_PROPERTY                           = "rationale";
 
     private static final String CAPABILITY_TYPE_PROPERTY                     = "capabilityType";
     private static final String CAPABILITY_VERSION_PROPERTY                  = "capabilityVersion";
@@ -205,10 +426,10 @@ public class SimpleCatalogArchiveHelper
     private static final String PROTOCOL_PROPERTY                            = "protocol";
     private static final String REQUIRED_PROPERTY                            = "required";
     private static final String PARAMETER_TYPE_PROPERTY                      = "parameterType";
-    private static final String PATH_TYPE_PROPERTY                           = "path";
-    private static final String COMMAND_TYPE_PROPERTY                        = "command";
-    private static final String CONFIDENCE_TYPE_PROPERTY                     = "confidence";
+    private static final String PATH_PROPERTY                                = "path";
+    private static final String COMMAND_PROPERTY                             = "command";
     private static final String SCOPE_PROPERTY                               = "scope";
+    private static final String CRITERIA_PROPERTY                            = "criteria";
     private static final String STATUS_PROPERTY                              = "status";
     private static final String STEWARD_PROPERTY                             = "steward";
     private static final String STEWARD_TYPE_NAME_PROPERTY                   = "stewardTypeName";
@@ -238,10 +459,10 @@ public class SimpleCatalogArchiveHelper
     private static final String DEFAULT_VALUE_PROPERTY                       = "defaultValue";
     private static final String FIXED_VALUE_PROPERTY                         = "fixedValue";
 
-    private static final String DOMAIN_IDENTIFIER_PROPERTY                   = "domainIdentifier";
+    private static final String SUMMARY_PROPERTY                             = "summary";
     private static final String EXAMPLES_PROPERTY                            = "examples";
+    private static final String ABBREVIATION_PROPERTY                        = "abbreviation";
     private static final String LANGUAGE_PROPERTY                            = "language";
-    private static final String IDENTIFIER_PROPERTY                          = "identifier";
     private static final String LAST_VERIFIED_PROPERTY                       = "lastVerified";
 
     private static final String REFERENCE_ID_PROPERTY                        = "referenceId";
@@ -257,7 +478,6 @@ public class SimpleCatalogArchiveHelper
     private static final String AUTHORS_PROPERTY                             = "authors";
     private static final String NUMBER_OF_PAGES_PROPERTY                     = "numberOfPages";
     private static final String PAGE_RANGE_PROPERTY                          = "pageRange";
-    private static final String ORGANIZATION_PROPERTY                        = "organization";
     private static final String PUBLICATION_SERIES_PROPERTY                  = "publicationSeries";
     private static final String PUBLICATION_SERIES_VOLUME_PROPERTY           = "publicationSeriesVolume";
     private static final String EDITION_PROPERTY                             = "edition";
@@ -281,6 +501,15 @@ public class SimpleCatalogArchiveHelper
     private static final String STATUS_IDENTIFIER_PROPERTY                   = "statusIdentifier";
     private static final String CONFIDENCE_PROPERTY                          = "confidence";
     private static final String ATTRIBUTE_PROPERTY                           = "attribute";
+
+    private static final String STRICT_REQUIREMENT_PROPERTY                  = "strictRequirement";
+    private static final String PREFERRED_VALUE_PROPERTY                     = "preferredValue";
+    private static final String SYMBOLIC_NAME_PROPERTY                       = "symbolicName";
+    private static final String IMPLEMENTATION_VALUE_PROPERTY                = "implementationValue";
+    private static final String ADDITIONAL_VALUES_PROPERTY                   = "additionalValues";
+    private static final String ASSOCIATION_DESCRIPTION_PROPERTY             = "associationDescription";
+    private static final String IS_DEFAULT_VALUE_PROPERTY                    = "isDefaultValue";
+
 
     protected OpenMetadataArchiveBuilder archiveBuilder;
     protected OMRSArchiveHelper          archiveHelper;
@@ -311,6 +540,40 @@ public class SimpleCatalogArchiveHelper
                                       long                       versionNumber,
                                       String                     versionName)
     {
+        this(archiveBuilder,
+             archiveGUID,
+             archiveRootName,
+             originatorName,
+             creationDate,
+             versionNumber,
+             versionName,
+             archiveRootName + guidMapFileNamePostFix);
+    }
+
+
+
+    /**
+     * Constructor passes parameters used to build the open metadata archive's property header.
+     * This version is used for multiple dependant archives, and they need to share the guid map.
+     *
+     * @param archiveBuilder builder where content is cached
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveRootName non-spaced root name of the open metadata archive elements.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param creationDate data that this archive was created.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     * @param guidMapFileName name of the guid map file.
+     */
+    public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
+                                      String                     archiveGUID,
+                                      String                     archiveRootName,
+                                      String                     originatorName,
+                                      Date                       creationDate,
+                                      long                       versionNumber,
+                                      String                     versionName,
+                                      String                     guidMapFileName)
+    {
         this.archiveBuilder = archiveBuilder;
 
         this.archiveHelper = new OMRSArchiveHelper(archiveBuilder,
@@ -320,7 +583,7 @@ public class SimpleCatalogArchiveHelper
                                                    versionNumber,
                                                    versionName);
 
-        this.idToGUIDMap = new OMRSArchiveGUIDMap(archiveRootName + guidMapFileNamePostFix);
+        this.idToGUIDMap = new OMRSArchiveGUIDMap(guidMapFileName);
 
         this.archiveRootName = archiveRootName;
         this.originatorName = originatorName;
@@ -331,7 +594,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Return the guid of an element based on its qualified name.  This is a look up in the GUID map not the archive.
+     * Return the guid of an element based on its qualified name.  This is a lookup in the GUID map not the archive.
      * This means if the qualified name is not known, a new GUID is generated.
      *
      * @param qualifiedName qualified name ot look up
@@ -340,6 +603,20 @@ public class SimpleCatalogArchiveHelper
     public String getGUID(String qualifiedName)
     {
         return idToGUIDMap.getGUID(qualifiedName);
+    }
+
+
+
+    /**
+     * Return the guid of an element based on its qualified name.  This is a query in the GUID map not the archive.
+     * This means if the qualified name is not known, null is returned.
+     *
+     * @param qualifiedName qualified name ot look up
+     * @return guid or null
+     */
+    public String queryGUID(String qualifiedName)
+    {
+        return idToGUIDMap.queryGUID(qualifiedName);
     }
 
 
@@ -465,19 +742,23 @@ public class SimpleCatalogArchiveHelper
                 if (keyword != null)
                 {
                     String keywordGUID = idToGUIDMap.queryGUID(SEARCH_KEYWORD_TYPE_NAME + ":" + keyword);
-                    EntityDetail keywordEntity;
+                    EntityDetail keywordEntity = null;
+
+                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, KEYWORD_PROPERTY, keyword, methodName);
 
                     if (keywordGUID != null)
                     {
-                        keywordEntity = archiveBuilder.getEntity(keywordGUID);
+                        keywordEntity = archiveBuilder.queryEntity(keywordGUID);
                     }
-                    else
+
+                    if (keywordEntity == null)
                     {
                         keywordEntity  = archiveHelper.getEntityDetail(SEARCH_KEYWORD_TYPE_NAME,
                                                                        idToGUIDMap.getGUID(SEARCH_KEYWORD_TYPE_NAME + ":" + keyword),
-                                                                       properties,
+                                                                       keywordProperties,
                                                                        InstanceStatus.ACTIVE,
                                                                        null);
+                        archiveBuilder.addEntity(keywordEntity);
                     }
 
                     if (keywordEntity != null)
@@ -486,7 +767,7 @@ public class SimpleCatalogArchiveHelper
                         EntityProxy end2 = archiveHelper.getEntityProxy(keywordEntity);
 
                         archiveBuilder.addRelationship(archiveHelper.getRelationship(SEARCH_KEYWORD_LINK_RELATIONSHIP_NAME,
-                                                                                     idToGUIDMap.getGUID(externalReferenceEntity.getGUID() + "_to_" + keywordGUID + "_search_keyword_link_relationship"),
+                                                                                     idToGUIDMap.getGUID(externalReferenceEntity.getGUID() + "_to_" + keywordEntity.getGUID() + "_search_keyword_link_relationship"),
                                                                                      null,
                                                                                      InstanceStatus.ACTIVE,
                                                                                      end1,
@@ -501,7 +782,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create the relationship between a design mode group and one of its members.
+     * Create the relationship between a referenceable and an external reference.
      *
      * @param referenceableGUID unique identifier of the element making the reference
      * @param externalReferenceGUID unique identifier of the external reference
@@ -527,7 +808,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PAGES_PROPERTY, pages, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(EXTERNAL_GLOSSARY_LINK_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(EXTERNAL_REFERENCE_LINK_RELATIONSHIP_NAME,
                                                                      idToGUIDMap.getGUID(referenceableGUID + "_to_" + externalReferenceGUID + "_external_reference_link_relationship" + referenceId),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -537,9 +818,1745 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create a subject area entity.
+     * Create a media reference entity.  This typically describes an image, audio clip or video clip.
      *
-     * @param qualifiedName unique name for the subject area
+     * @param typeName name of element subtype to use - default is RelatedMedia
+     * @param qualifiedName unique name for the element
+     * @param displayName display name for the element
+     * @param description description about the element
+     * @param authors authors of the element
+     * @param authorOrganization organization that the information is from
+     * @param versionNumber version number for the element
+     * @param referenceURL link to the external source
+     * @param license name of the license associated with this external source
+     * @param copyright copyright statement associated with this external source
+     * @param attribution attribution statement to use when consuming this external source
+     * @param mediaType type of media
+     * @param mediaTypeOtherId if media type is "other" add type here
+     * @param defaultMediaUsage usage of media if not supplied on media reference link relationship
+     * @param defaultMediaUsageOtherId if default media usage is "other" add usage type here
+     * @param searchKeywords list of keywords
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     * @return unique identifier for new media reference (mediaReferenceGUID)
+     */
+    public String addMediaReference(String               typeName,
+                                    String               qualifiedName,
+                                    String               displayName,
+                                    String               description,
+                                    List<String>         authors,
+                                    String               authorOrganization,
+                                    String               versionNumber,
+                                    String               referenceURL,
+                                    String               license,
+                                    String               copyright,
+                                    String               attribution,
+                                    int                  mediaType,
+                                    String               mediaTypeOtherId,
+                                    int                  defaultMediaUsage,
+                                    String               defaultMediaUsageOtherId,
+                                    List<String>         searchKeywords,
+                                    Map<String, String>  additionalProperties,
+                                    Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addMediaReference";
+
+        String elementTypeName = RELATED_MEDIA_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            elementTypeName = typeName;
+        }
+
+        EnumElementDef typeEnumElement = archiveHelper.getEnumElement(MEDIA_TYPE_ENUM_NAME, mediaType);
+        EnumElementDef usageEnumElement = archiveHelper.getEnumElement(MEDIA_USAGE_ENUM_NAME, defaultMediaUsage);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, AUTHORS_PROPERTY, authors, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, ORGANIZATION_PROPERTY, authorOrganization, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, REFERENCE_VERSION_PROPERTY, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, URL_PROPERTY, referenceURL, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, LICENSE_PROPERTY, license, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, COPYRIGHT_PROPERTY, copyright, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, ATTRIBUTION_PROPERTY, attribution, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, MEDIA_TYPE_PROPERTY, typeEnumElement.getOrdinal(), typeEnumElement.getValue(), typeEnumElement.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, MEDIA_TYPE_OTHER_ID_PROPERTY, mediaTypeOtherId, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, DEFAULT_MEDIA_USAGE_PROPERTY, usageEnumElement.getOrdinal(), usageEnumElement.getValue(), usageEnumElement.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DEFAULT_MEDIA_USAGE_OTHER_ID_PROPERTY, defaultMediaUsageOtherId, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail mediaReferenceEntity = archiveHelper.getEntityDetail(elementTypeName,
+                                                                          idToGUIDMap.getGUID(qualifiedName),
+                                                                          properties,
+                                                                          InstanceStatus.ACTIVE,
+                                                                          null);
+
+        archiveBuilder.addEntity(mediaReferenceEntity);
+
+        if (searchKeywords != null)
+        {
+            for (String keyword : searchKeywords)
+            {
+                if (keyword != null)
+                {
+                    String keywordGUID = idToGUIDMap.queryGUID(SEARCH_KEYWORD_TYPE_NAME + ":" + keyword);
+                    EntityDetail keywordEntity = null;
+
+                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, KEYWORD_PROPERTY, keyword, methodName);
+
+                    if (keywordGUID != null)
+                    {
+                        keywordEntity = archiveBuilder.queryEntity(keywordGUID);
+                    }
+
+                    if (keywordEntity == null)
+                    {
+                        keywordEntity  = archiveHelper.getEntityDetail(SEARCH_KEYWORD_TYPE_NAME,
+                                                                       idToGUIDMap.getGUID(SEARCH_KEYWORD_TYPE_NAME + ":" + keyword),
+                                                                       keywordProperties,
+                                                                       InstanceStatus.ACTIVE,
+                                                                       null);
+                        archiveBuilder.addEntity(keywordEntity);
+                    }
+
+                    if (keywordEntity != null)
+                    {
+                        EntityProxy end1 = archiveHelper.getEntityProxy(mediaReferenceEntity);
+                        EntityProxy end2 = archiveHelper.getEntityProxy(keywordEntity);
+
+                        archiveBuilder.addRelationship(archiveHelper.getRelationship(SEARCH_KEYWORD_LINK_RELATIONSHIP_NAME,
+                                                                                     idToGUIDMap.getGUID(mediaReferenceEntity.getGUID() + "_to_" + keywordEntity.getGUID() + "_search_keyword_link_relationship"),
+                                                                                     null,
+                                                                                     InstanceStatus.ACTIVE,
+                                                                                     end1,
+                                                                                     end2));
+                    }
+                }
+            }
+        }
+
+        return mediaReferenceEntity.getGUID();
+    }
+
+
+    /**
+     * Create the relationship between a referenceable and an external reference.
+     *
+     * @param referenceableGUID unique identifier of the element making the reference
+     * @param mediaReferenceGUID unique identifier of the media reference
+     * @param mediaId unique reference id for this media element
+     * @param description description of the relevance of the media reference
+     * @param mediaUsage type of usage
+     * @param mediaUsageOtherId other type of media usage (for example if using a valid value set).
+     */
+    public void addMediaReferenceLink(String referenceableGUID,
+                                      String mediaReferenceGUID,
+                                      String mediaId,
+                                      String description,
+                                      int    mediaUsage,
+                                      String mediaUsageOtherId)
+    {
+        final String methodName = "addMediaReferenceLink";
+
+        EnumElementDef enumElement = archiveHelper.getEnumElement(MEDIA_USAGE_ENUM_NAME, mediaUsage);
+
+        EntityDetail referenceableEntity = archiveBuilder.getEntity(referenceableGUID);
+        EntityDetail externalReferenceEntity = archiveBuilder.getEntity(mediaReferenceGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(referenceableEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(externalReferenceEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, MEDIA_ID_PROPERTY, mediaId, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, MEDIA_USAGE_PROPERTY, enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, MEDIA_TYPE_OTHER_ID_PROPERTY, mediaUsageOtherId, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(MEDIA_REFERENCE_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(referenceableGUID + "_to_" + mediaReferenceGUID + "_media_reference_relationship" + mediaId),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a location entity to the archive.
+     *
+     * @param qualifiedName unique name of the location
+     * @param identifier code value or symbol used to identify the location - typically unique
+     * @param displayName display name of the location
+     * @param description description of the location
+     * @param additionalProperties any additional properties
+     * @return unique identifier of the location
+     */
+    public String addLocation(String              qualifiedName,
+                              String              identifier,
+                              String              displayName,
+                              String              description,
+                              Map<String, String> additionalProperties)
+    {
+        final String methodName = "addLocation";
+
+        return addClassifiedLocation(qualifiedName, identifier, displayName, description, additionalProperties, null, null, methodName);
+    }
+
+
+    /**
+     * Add a location with a FixedLocation classification.
+     *
+     * @param qualifiedName unique name of the location
+     * @param identifier code value or symbol used to identify the location - typically unique
+     * @param displayName display name of the location
+     * @param description description of the location
+     * @param coordinates location coordinates
+     * @param mapProjection type of location coordinates
+     * @param postalAddress full postal address
+     * @param timeZone timezone of location
+     * @param additionalProperties any additional properties
+     * @return unique identifier of the new location
+     */
+    public String addFixedLocation(String              qualifiedName,
+                                   String              identifier,
+                                   String              displayName,
+                                   String              description,
+                                   String              coordinates,
+                                   String              mapProjection,
+                                   String              postalAddress,
+                                   String              timeZone,
+                                   Map<String, String> additionalProperties)
+    {
+        final String methodName = "addFixedLocation";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, COORDINATES_PROPERTY, coordinates, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, MAP_PROJECTION_PROPERTY, mapProjection, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, POSTAL_ADDRESS_PROPERTY, postalAddress, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TIME_ZONE_PROPERTY, timeZone, methodName);
+
+        return addClassifiedLocation(qualifiedName, identifier, displayName, description, additionalProperties, FIXED_LOCATION_CLASSIFICATION_NAME, properties, methodName);
+    }
+
+
+    /**
+     * Add a location with a SecureLocation classification.
+     *
+     * @param qualifiedName unique name of the location
+     * @param identifier code value or symbol used to identify the location - typically unique
+     * @param displayName display name of the location
+     * @param description description of the location
+     * @param level level of security
+     * @param securityDescription description of security provision
+     * @param additionalProperties additional properties for the location
+     * @return unique identifier of the new location
+     */
+    public String addSecureLocation(String              qualifiedName,
+                                    String              identifier,
+                                    String              displayName,
+                                    String              description,
+                                    String              level,
+                                    String              securityDescription,
+                                    Map<String, String> additionalProperties)
+    {
+        final String methodName = "addSecureLocation";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, LEVEL_PROPERTY, level, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, securityDescription, methodName);
+
+        return addClassifiedLocation(qualifiedName, identifier, displayName, description, additionalProperties, SECURE_LOCATION_CLASSIFICATION_NAME, properties, methodName);
+    }
+
+
+    /**
+     * Add a location entity with the CyberLocation classification to the archive.
+     *
+     * @param qualifiedName unique name of the location
+     * @param identifier code value or symbol used to identify the location - typically unique
+     * @param displayName display name of the location
+     * @param description description of the location
+     * @param networkAddress address of the cyber location
+     * @param additionalProperties any additional properties
+     * @return unique identifier of the location
+     */
+    public String addCyberLocation(String              qualifiedName,
+                                   String              identifier,
+                                   String              displayName,
+                                   String              description,
+                                   String              networkAddress,
+                                   Map<String, String> additionalProperties)
+    {
+        final String methodName = "addCyberLocation";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, NETWORK_ADDRESS_PROPERTY, networkAddress, methodName);
+
+        return addClassifiedLocation(qualifiedName, identifier, displayName, description, additionalProperties, CYBER_LOCATION_CLASSIFICATION_NAME, properties, methodName);
+    }
+
+
+    /**
+     * Add a location entity to the archive.
+     *
+     * @param qualifiedName unique name of the location
+     * @param identifier code value or symbol used to identify the location - typically unique
+     * @param displayName display name of the location
+     * @param description description of the location
+     * @param additionalProperties any additional properties
+     * @return unique identifier of the location
+     */
+    private String addClassifiedLocation(String              qualifiedName,
+                                         String              identifier,
+                                         String              displayName,
+                                         String              description,
+                                         Map<String, String> additionalProperties,
+                                         String              classificationName,
+                                         InstanceProperties  classificationProperties,
+                                         String              methodName)
+    {
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IDENTIFIER_PROPERTY, identifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        List<Classification> classifications = new ArrayList<>();
+
+        Classification classification = archiveHelper.getClassification(classificationName, classificationProperties, InstanceStatus.ACTIVE);
+
+        classifications.add(classification);
+
+        EntityDetail location = archiveHelper.getEntityDetail(LOCATION_TYPE_NAME,
+                                                              idToGUIDMap.getGUID(qualifiedName),
+                                                              properties,
+                                                              InstanceStatus.ACTIVE,
+                                                              classifications);
+
+        archiveBuilder.addEntity(location);
+
+        return location.getGUID();
+    }
+
+
+    /**
+     * Add the MobileAsset classification to the requested asset.
+     *
+     * @param assetGUID unique identifier of the element to classify
+     */
+    public void addMobileAssetClassification(String assetGUID)
+    {
+        EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
+
+        EntityProxy entityProxy = archiveHelper.getEntityProxy(assetEntity);
+
+        Classification  classification = archiveHelper.getClassification(MOBILE_ASSET_CLASSIFICATION_NAME,
+                                                                         null,
+                                                                         InstanceStatus.ACTIVE);
+
+        archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(entityProxy, classification));
+    }
+
+
+    /**
+     * Create the relationship between a locations and one of the locations nested within it.
+     *
+     * @param broaderLocationGUID unique identifier of the broader location
+     * @param nestedLocationGUID unique identifier of the nested location
+     */
+    public void addLocationHierarchy(String broaderLocationGUID,
+                                     String nestedLocationGUID)
+    {
+        EntityDetail entity1 = archiveBuilder.getEntity(broaderLocationGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(nestedLocationGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(NESTED_LOCATION_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(broaderLocationGUID + "_to_" + nestedLocationGUID + "_nested_location_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link two locations as peers using the AdjacentLocation relationship.
+     *
+     * @param location1GUID unique identifier of the broader location
+     * @param location2GUID unique identifier of the nested location
+     */
+    public void addPeerLocations(String location1GUID,
+                                 String location2GUID)
+    {
+        EntityDetail referenceableEntity = archiveBuilder.getEntity(location1GUID);
+        EntityDetail externalReferenceEntity = archiveBuilder.getEntity(location2GUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(referenceableEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(externalReferenceEntity);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(ADJACENT_LOCATION_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(location1GUID + "_to_" + location2GUID + "_adjacent_location_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a location to an asset.
+     *
+     * @param locationQName qualified name of the location
+     * @param assetQName qualified name of the asset
+     */
+    public void addAssetLocationRelationship(String locationQName,
+                                             String assetQName)
+    {
+        String validValueId = idToGUIDMap.getGUID(locationQName);
+        String assetId = idToGUIDMap.getGUID(assetQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(validValueId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(assetId));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(ASSET_LOCATION_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(validValueId + "_to_" + assetId + "_asset_location_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Add a user identity entity to the archive.
+     *
+     * @param qualifiedName unique name of the user identity
+     * @param userId  name of the user account
+     * @param distinguishedName LDAP name for the user
+     * @param additionalProperties any additional properties
+     * @return unique identifier of the user identity
+     */
+    public String addUserIdentity(String              qualifiedName,
+                                  String              userId,
+                                  String              distinguishedName,
+                                  Map<String, String> additionalProperties)
+    {
+        final String methodName = "addUserIdentity";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, USER_ID_PROPERTY, userId, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISTINGUISHED_NAME_PROPERTY, distinguishedName, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        EntityDetail userIdentity = archiveHelper.getEntityDetail(USER_IDENTITY_TYPE_NAME,
+                                                                  idToGUIDMap.getGUID(qualifiedName),
+                                                                  properties,
+                                                                  InstanceStatus.ACTIVE,
+                                                                  null);
+
+        archiveBuilder.addEntity(userIdentity);
+
+        return userIdentity.getGUID();
+    }
+
+
+    /**
+     * Link a location to a profile.
+     *
+     * @param profileQName qualified name of the profile
+     * @param locationQName qualified name of the location
+     * @param associationType identifier that describes the purpose of the association.
+     */
+    public void addProfileLocationRelationship(String profileQName,
+                                               String locationQName,
+                                               String associationType)
+    {
+        final String methodName = "addProfileLocationRelationship";
+
+        String entity1GUID = idToGUIDMap.getGUID(locationQName);
+        String entity2GUID = idToGUIDMap.getGUID(profileQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(entity1GUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(entity2GUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ASSOCIATION_TYPE_PROPERTY, associationType, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(PROFILE_LOCATION_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(entity1GUID + "_to_" + entity2GUID + "_profile_location_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create the relationship between a profile and one of its userIds.
+     *
+     * @param profileGUID unique identifier of the actor profile
+     * @param userIdentityGUID unique identifier of the user identity
+     * @param roleTypeName type of role that uses this userId
+     * @param roleGUID unique identifier of role that uses this userId
+     * @param description description of why role uses this userId
+     */
+    public void addProfileIdentity(String profileGUID,
+                                   String userIdentityGUID,
+                                   String roleTypeName,
+                                   String roleGUID,
+                                   String description)
+    {
+        final String methodName = "addProfileIdentity";
+
+        EntityDetail profileEntity = archiveBuilder.getEntity(profileGUID);
+        EntityDetail userIdentityEntity = archiveBuilder.getEntity(userIdentityGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(profileEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(userIdentityEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ROLE_TYPE_NAME_PROPERTY, roleTypeName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, ROLE_GUID_PROPERTY, roleGUID, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(PROFILE_IDENTITY_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(profileGUID + "_to_" + userIdentityGUID + "_profile_identity_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a contact method to a profile.
+     *
+     * @param profileGUID unique identifier for a profile
+     * @param name name of the contact method
+     * @param contactType type of contact - eg home address, work mobile, emergency contact ...
+     * @param contactMethodType type of contact address
+     * @param contactMethodService service used in the contact method
+     * @param contactMethodValue name/account/url used to contact the individual
+     */
+    public  void addContactDetails(String  profileGUID,
+                                   String  name,
+                                   String  contactType,
+                                   int     contactMethodType,
+                                   String  contactMethodService,
+                                   String  contactMethodValue)
+    {
+        final String methodName = "addContactDetails";
+
+        EntityDetail profileEntity = archiveBuilder.getEntity(profileGUID);
+
+        EnumElementDef enumElement = archiveHelper.getEnumElement(CONTACT_METHOD_TYPE_ENUM_NAME, contactMethodType);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, CONTACT_TYPE_PROPERTY, contactType, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, CONTACT_METHOD_TYPE_PROPERTY, enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, CONTACT_METHOD_SERVICE_PROPERTY, contactMethodService, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, CONTACT_METHOD_VALUE_PROPERTY, contactMethodValue, methodName);
+
+        EntityDetail contactDetails = archiveHelper.getEntityDetail(CONTACT_DETAILS_TYPE_NAME,
+                                                                    idToGUIDMap.getGUID(contactMethodValue),
+                                                                    properties,
+                                                                    InstanceStatus.ACTIVE,
+                                                                    null);
+
+        archiveBuilder.addEntity(contactDetails);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(profileEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(contactDetails);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(CONTACT_THROUGH_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(profileGUID + "_to_" + contactDetails.getGUID() + "_contact_through_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a new person role.
+     *
+     * @param suppliedTypeName type name to use for the person role
+     * @param qualifiedName qualified name of role
+     * @param identifier unique code
+     * @param name display name
+     * @param description description (eg job description)
+     * @param scope scope of role's responsibilities
+     * @param setHeadCount should the headcount field be set?
+     * @param headCount number of people that may be appointed to the role (default = 1)
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @return unique identifier of the new profile
+     */
+    public  String addPersonRole(String              suppliedTypeName,
+                                 String              qualifiedName,
+                                 String              identifier,
+                                 String              name,
+                                 String              description,
+                                 String              scope,
+                                 boolean             setHeadCount,
+                                 int                 headCount,
+                                 Map<String, String> additionalProperties,
+                                 Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addPersonRole";
+
+        String typeName = suppliedTypeName;
+
+        if (typeName == null)
+        {
+            typeName = PERSON_ROLE_TYPE_NAME;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IDENTIFIER_PROPERTY, identifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SCOPE_PROPERTY, scope, methodName);
+        if (setHeadCount)
+        {
+            properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, HEAD_COUNT_PROPERTY, headCount, methodName);
+        }
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail role = archiveHelper.getEntityDetail(typeName,
+                                                          idToGUIDMap.getGUID(qualifiedName),
+                                                          properties,
+                                                          InstanceStatus.ACTIVE,
+                                                          null);
+
+        archiveBuilder.addEntity(role);
+
+        return role.getGUID();
+    }
+
+
+
+    /**
+     * Add a new person role.
+     *
+     * @param suppliedTypeName type name to use for the person role
+     * @param qualifiedName qualified name of role
+     * @param domainIdentifier identifier of governance domain
+     * @param identifier unique code
+     * @param name display name
+     * @param description description (eg job description)
+     * @param scope scope of role's responsibilities
+     * @param setHeadCount should the headcount field be set?
+     * @param headCount number of people that may be appointed to the role (default = 1)
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @return unique identifier of the new profile
+     */
+    public  String addGovernanceRole(String              suppliedTypeName,
+                                     String              qualifiedName,
+                                     int                 domainIdentifier,
+                                     String              identifier,
+                                     String              name,
+                                     String              description,
+                                     String              scope,
+                                     boolean             setHeadCount,
+                                     int                 headCount,
+                                     Map<String, String> additionalProperties,
+                                     Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addPersonRole";
+
+        String typeName = suppliedTypeName;
+
+        if (typeName == null)
+        {
+            typeName = PERSON_ROLE_TYPE_NAME;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IDENTIFIER_PROPERTY, identifier, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, DOMAIN_IDENTIFIER_PROPERTY, domainIdentifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SCOPE_PROPERTY, scope, methodName);
+        if (setHeadCount)
+        {
+            properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, HEAD_COUNT_PROPERTY, headCount, methodName);
+        }
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail role = archiveHelper.getEntityDetail(typeName,
+                                                          idToGUIDMap.getGUID(qualifiedName),
+                                                          properties,
+                                                          InstanceStatus.ACTIVE,
+                                                          null);
+
+        archiveBuilder.addEntity(role);
+
+        return role.getGUID();
+    }
+
+
+    /**
+     * Link a person profile to a person role.
+     *
+     * @param personQName qualified name of the person profile
+     * @param personRoleQName qualified name of the person role
+     * @param isPublic is this appointment public?
+     */
+    public void addPersonRoleAppointmentRelationship(String  personQName,
+                                                     String  personRoleQName,
+                                                     boolean isPublic)
+    {
+        final String methodName = "addPersonRoleAppointmentRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(personQName);
+        String guid2 = idToGUIDMap.getGUID(personRoleQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, null, IS_PUBLIC_PROPERTY, isPublic, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(PERSONAL_ROLE_APPOINTMENT_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_person_role_appointment_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a person profile to another person as a peer.
+     *
+     * @param person1QName qualified name of the first person profile
+     * @param person2QName qualified name of the second person profile
+     */
+    public void addPeerRelationship(String  person1QName,
+                                    String  person2QName)
+    {
+        String guid1 = idToGUIDMap.getGUID(person1QName);
+        String guid2 = idToGUIDMap.getGUID(person2QName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(PEER_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_peer_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a new person profile.
+     *
+     * @param qualifiedName qualified name of profile
+     * @param name display name (preferred name of individual)
+     * @param pronouns preferred pronouns
+     * @param description description (eg job description)
+     * @param title courtesy title
+     * @param initials given names initials
+     * @param givenNames list of given names
+     * @param surname family name
+     * @param fullName full legal name
+     * @param jobTitle job title
+     * @param employeeNumber unique employee contract number
+     * @param employeeType type of employee
+     * @param preferredLanguage preferred language to communicate with
+     * @param isPublic is this profile public
+     * @param additionalProperties are there any additional properties to add
+     * @return unique identifier of the new profile
+     */
+    public  String addPerson(String              qualifiedName,
+                             String              name,
+                             String              pronouns,
+                             String              description,
+                             String              initials,
+                             String              title,
+                             String              givenNames,
+                             String              surname,
+                             String              fullName,
+                             String              jobTitle,
+                             String              employeeNumber,
+                             String              employeeType,
+                             String              preferredLanguage,
+                             boolean             isPublic,
+                             Map<String, String> additionalProperties)
+    {
+        final String methodName = "addPerson";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PRONOUNS_PROPERTY, pronouns, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TITLE_PROPERTY, title, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, INITIALS_PROPERTY, initials, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, GIVEN_NAMES_PROPERTY, givenNames, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SURNAME_PROPERTY, surname, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, FULL_NAME_PROPERTY, fullName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, JOB_TITLE_PROPERTY, jobTitle, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, EMPLOYEE_NUMBER_PROPERTY, employeeNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, EMPLOYEE_TYPE_PROPERTY, employeeType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PREFERRED_LANGUAGE_PROPERTY, preferredLanguage, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, IS_PUBLIC_PROPERTY, isPublic, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        EntityDetail person = archiveHelper.getEntityDetail(PERSON_TYPE_NAME,
+                                                            idToGUIDMap.getGUID(qualifiedName),
+                                                            properties,
+                                                            InstanceStatus.ACTIVE,
+                                                            null);
+
+        archiveBuilder.addEntity(person);
+
+        return person.getGUID();
+    }
+
+
+    /**
+     * Add a new team profile.
+     *
+     * @param suppliedTypeName type name for the team
+     * @param qualifiedName qualified name of profile
+     * @param name display name (preferred name of individual)
+     * @param description description (eg job description)
+     * @param teamType type of team
+     * @param identifier code value identifier for the team
+     * @param additionalProperties are there any additional properties to add
+     * @return unique identifier of the new profile
+     */
+    public  String addTeam(String              suppliedTypeName,
+                           String              qualifiedName,
+                           String              name,
+                           String              description,
+                           String              teamType,
+                           String              identifier,
+                           Map<String, String> additionalProperties)
+    {
+        final String methodName = "addTeam";
+
+        String typeName = suppliedTypeName;
+        if (typeName == null)
+        {
+            typeName = TEAM_TYPE_NAME;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TEAM_TYPE_PROPERTY, teamType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IDENTIFIER_PROPERTY, teamType, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        EntityDetail profile = archiveHelper.getEntityDetail(typeName,
+                                                            idToGUIDMap.getGUID(qualifiedName),
+                                                            properties,
+                                                            InstanceStatus.ACTIVE,
+                                                            null);
+
+        archiveBuilder.addEntity(profile);
+
+        return profile.getGUID();
+    }
+
+
+    /**
+     * Link a person role as a team's leader.
+     *
+     * @param personRoleQName qualified name of the person role
+     * @param teamQName qualified name of the team profile
+     * @param position position of the role
+     */
+    public void addTeamLeadershipRelationship(String personRoleQName,
+                                              String teamQName,
+                                              String position)
+    {
+        final String methodName = "addTeamLeadershipRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(personRoleQName);
+        String guid2 = idToGUIDMap.getGUID(teamQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, POSITION_PROPERTY, position, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(TEAM_LEADERSHIP_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_team_leadership_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a person role as a team's member.
+     *
+     * @param personRoleQName qualified name of the person role
+     * @param teamQName qualified name of the team profile
+     * @param position position of the role
+     */
+    public void addTeamMembershipRelationship(String personRoleQName,
+                                              String teamQName,
+                                              String position)
+    {
+        final String methodName = "addTeamMembershipRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(personRoleQName);
+        String guid2 = idToGUIDMap.getGUID(teamQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, POSITION_PROPERTY, position, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(TEAM_MEMBERSHIP_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_team_membership_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a person role as a team's member.
+     *
+     * @param superTeamQName qualified name of the super team profile
+     * @param subTeamQName qualified name of the subteam profile
+     * @param delegationEscalationAuthority delegationEscalationAuthority of the role
+     */
+    public void addTeamStructureRelationship(String  superTeamQName,
+                                             String  subTeamQName,
+                                             boolean delegationEscalationAuthority)
+    {
+        final String methodName = "addTeamStructureRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(superTeamQName);
+        String guid2 = idToGUIDMap.getGUID(subTeamQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, null, DELEGATION_ESCALATION_AUTHORITY_PROPERTY, delegationEscalationAuthority, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(TEAM_STRUCTURE_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_team_structure_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a new IT profile.
+     *
+     * @param assetGUID unique identifier of asset to connect the profile to.
+     * @param qualifiedName qualified name of profile
+     * @param name display name (preferred name of individual)
+     * @param description description (eg job description)
+     * @param additionalProperties are there any additional properties to add
+     * @return unique identifier of the new profile
+     */
+    public  String addITProfileToAsset(String              assetGUID,
+                                       String              qualifiedName,
+                                       String              name,
+                                       String              description,
+                                       Map<String, String> additionalProperties)
+    {
+        final String methodName = "addITProfile";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        EntityDetail profile = archiveHelper.getEntityDetail(IT_PROFILE_TYPE_NAME,
+                                                            idToGUIDMap.getGUID(qualifiedName),
+                                                            properties,
+                                                            InstanceStatus.ACTIVE,
+                                                            null);
+
+        archiveBuilder.addEntity(profile);
+
+        if (assetGUID != null)
+        {
+            EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
+
+            EntityProxy end1 = archiveHelper.getEntityProxy(assetEntity);
+            EntityProxy end2 = archiveHelper.getEntityProxy(profile);
+
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_NAME,
+                                                                         idToGUIDMap.getGUID(assetGUID + "_to_" + profile.getGUID() + "_it_infrastructure_profile_relationship"),
+                                                                         properties,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         end1,
+                                                                         end2));
+        }
+
+        return profile.getGUID();
+    }
+
+
+
+    /**
+     * Link an actor (profile/person role) to a scope.
+     *
+     * @param actorQName qualified name of the actor
+     * @param scopeQName qualified name of the scope
+     * @param assignmentType type of the assignment
+     * @param description description of the assignment
+     */
+    public void addAssignmentScopeRelationship(String actorQName,
+                                               String scopeQName,
+                                               String assignmentType,
+                                               String description)
+    {
+        final String methodName = "addAssignmentScopeRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(actorQName);
+        String guid2 = idToGUIDMap.getGUID(scopeQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ASSIGNMENT_TYPE_PROPERTY, assignmentType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(ASSIGNMENT_SCOPE_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_assignment_scope_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a new project.
+     *
+     * @param suppliedTypeName subtype information
+     * @param qualifiedName qualified name of project
+     * @param identifier unique identifier of project - typically allocated externally
+     * @param name display name
+     * @param description description
+     * @param startDate date the project started
+     * @param plannedEndDate date the project is expected to end
+     * @param projectStatus status of the project
+     * @param setCampaignClassification should the Campaign classification be set?
+     * @param setTaskClassification should the Task classification be set?
+     * @param projectTypeClassification add special classification that defines the type of project - eg GlossaryProject or GovernanceProject
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @return unique identifier of the new profile
+     */
+    public  String addProject(String              suppliedTypeName,
+                              String              qualifiedName,
+                              String              identifier,
+                              String              name,
+                              String              description,
+                              Date                startDate,
+                              Date                plannedEndDate,
+                              String              projectStatus,
+                              boolean             setCampaignClassification,
+                              boolean             setTaskClassification,
+                              String              projectTypeClassification,
+                              Map<String, String> additionalProperties,
+                              Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addProject";
+
+        String typeName = suppliedTypeName;
+
+        if (typeName == null)
+        {
+            typeName = PROJECT_TYPE_NAME;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IDENTIFIER_PROPERTY, identifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, START_DATE_PROPERTY, startDate, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, PLANNED_END_DATE_PROPERTY, plannedEndDate, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PROJECT_STATUS_PROPERTY, projectStatus, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        List<Classification> classifications = new ArrayList<>();
+
+        if (setCampaignClassification)
+        {
+            Classification classification = archiveHelper.getClassification(CAMPAIGN_CLASSIFICATION_NAME, null, InstanceStatus.ACTIVE);
+
+            classifications.add(classification);
+        }
+        if (setTaskClassification)
+        {
+            Classification classification = archiveHelper.getClassification(TASK_CLASSIFICATION_NAME, null, InstanceStatus.ACTIVE);
+
+            classifications.add(classification);
+        }
+        if (projectTypeClassification != null)
+        {
+            Classification classification = archiveHelper.getClassification(projectTypeClassification, null, InstanceStatus.ACTIVE);
+
+            classifications.add(classification);
+        }
+
+        if (classifications.isEmpty())
+        {
+            classifications = null;
+        }
+
+        EntityDetail project = archiveHelper.getEntityDetail(typeName,
+                                                             idToGUIDMap.getGUID(qualifiedName),
+                                                             properties,
+                                                             InstanceStatus.ACTIVE,
+                                                             classifications);
+
+        archiveBuilder.addEntity(project);
+
+        return project.getGUID();
+    }
+
+
+    /**
+     * Link a project to a subproject.
+     *
+     * @param projectQName qualified name of the parent project
+     * @param subprojectQName qualified name of the subproject
+     */
+    public void addProjectHierarchyRelationship(String  projectQName,
+                                                String  subprojectQName)
+    {
+        String guid1 = idToGUIDMap.getGUID(projectQName);
+        String guid2 = idToGUIDMap.getGUID(subprojectQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(PROJECT_HIERARCHY_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_hierarchy_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a referenceable to its stakeholders.
+     *
+     * @param referenceableQName qualified name of the parent project
+     * @param actorQName qualified name of the subproject
+     */
+    public void addStakeHolderRelationship(String  referenceableQName,
+                                           String  actorQName)
+    {
+        String guid1 = idToGUIDMap.getGUID(referenceableQName);
+        String guid2 = idToGUIDMap.getGUID(actorQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(STAKEHOLDER_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_stakeholder_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a project to another project that it depends on.
+     *
+     * @param projectQName qualified name of the project
+     * @param dependsOnProjectQName qualified name of the project that it depends on
+     * @param dependencySummary description of what makes them dependent
+     */
+    public void addProjectDependencyRelationship(String  projectQName,
+                                                 String  dependsOnProjectQName,
+                                                 String  dependencySummary)
+    {
+        final String methodName = "addProjectDependencyRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(projectQName);
+        String guid2 = idToGUIDMap.getGUID(dependsOnProjectQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, DEPENDENCY_SUMMARY_PROPERTY, dependencySummary, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(PROJECT_DEPENDENCY_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_dependency_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Link a project to a team.  A project may have multiple teams.
+     *
+     * @param personQName qualified name of the person profile
+     * @param personRoleQName qualified name of the person role
+     * @param teamRole role of this team in the project
+     */
+    public void addProjectTeamRelationship(String  personQName,
+                                           String  personRoleQName,
+                                           String  teamRole)
+    {
+        final String methodName = "addProjectTeamRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(personQName);
+        String guid2 = idToGUIDMap.getGUID(personRoleQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, TEAM_ROLE_PROPERTY, teamRole, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(PROJECT_TEAM_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_team_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a project to a person role that represents the project manager(s).
+     *
+     * @param projectQName qualified name of the project
+     * @param projectManagerRoleQName qualified name of the person role
+     */
+    public void addProjectManagementRelationship(String  projectQName,
+                                                 String  projectManagerRoleQName)
+    {
+        String guid1 = idToGUIDMap.getGUID(projectQName);
+        String guid2 = idToGUIDMap.getGUID(projectManagerRoleQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(PROJECT_MANAGEMENT_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_management_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a new community.
+     *
+     * @param suppliedTypeName subtype information
+     * @param qualifiedName qualified name of community
+     * @param name display name
+     * @param description description
+     * @param mission why is the community formed?
+     * @param additionalProperties are there any additional properties to add
+     * @param extendedProperties any additional properties associated with a subtype
+     * @return unique identifier of the new profile
+     */
+    public  String addCommunity(String              suppliedTypeName,
+                                String              qualifiedName,
+                                String              name,
+                                String              description,
+                                String              mission,
+                                Map<String, String> additionalProperties,
+                                Map<String, Object> extendedProperties)
+    {
+        final String methodName = "addCommunity";
+
+        String typeName = suppliedTypeName;
+
+        if (typeName == null)
+        {
+            typeName = COMMUNITY_TYPE_NAME;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, MISSION_PROPERTY, mission, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail project = archiveHelper.getEntityDetail(typeName,
+                                                             idToGUIDMap.getGUID(qualifiedName),
+                                                             properties,
+                                                             InstanceStatus.ACTIVE,
+                                                             null);
+
+        archiveBuilder.addEntity(project);
+
+        return project.getGUID();
+    }
+
+
+    /**
+     * Link a community to a person role.
+     *
+     * @param communityQName qualified name of the community
+     * @param membershipRoleQName qualified name of the membership role
+     * @param membershipType ordinal of enum
+     */
+    public void addCommunityMembershipRelationship(String  communityQName,
+                                                   String  membershipRoleQName,
+                                                   int     membershipType)
+    {
+        final String methodName = "addCommunityMembershipRelationship";
+
+        EnumElementDef enumElement = archiveHelper.getEnumElement(COMMUNITY_MEMBERSHIP_TYPE_ENUM_NAME, membershipType);
+
+        String guid1 = idToGUIDMap.getGUID(communityQName);
+        String guid2 = idToGUIDMap.getGUID(membershipRoleQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, MEMBERSHIP_TYPE_PROPERTY, enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(COMMUNITY_MEMBERSHIP_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_community_membership_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Create a governance definition entity.
+     *
+     * @param suppliedTypeName type of collection
+     * @param classificationName name of classification to attach
+     * @param qualifiedName unique name for the collection entity
+     * @param displayName display name for the collection
+     * @param description description about the collection
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return unique identifier for subject area (collectionGUID)
+     */
+    public String addCollection(String               suppliedTypeName,
+                                String               classificationName,
+                                String               qualifiedName,
+                                String               displayName,
+                                String               description,
+                                Map<String, String>  additionalProperties,
+                                Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addCollection";
+
+        String typeName = COLLECTION_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        List<Classification> classifications = null;
+
+        if (classificationName != null)
+        {
+            classifications = new ArrayList<>();
+
+            Classification classification = archiveHelper.getClassification(classificationName, null, InstanceStatus.ACTIVE);
+
+            classifications.add(classification);
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(typeName,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               classifications);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Add a member to a collection.
+     *
+     * @param collectionGUID unique identifier of the collection
+     * @param memberGUID unique identifier of the member
+     * @param membershipRationale why is this member in this collection
+     */
+    public void addMemberToCollection(String collectionGUID,
+                                      String memberGUID,
+                                      String membershipRationale)
+    {
+        final String methodName = "addMemberToCollection";
+
+        EntityDetail entity1 = archiveBuilder.getEntity(collectionGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(memberGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, MEMBERSHIP_RATIONALE_PROPERTY, membershipRationale, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(COLLECTION_MEMBER_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(collectionGUID + "_to_" + memberGUID + "_collection_membership_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create a governance domain description entity.
+     *
+     * @param qualifiedName unique name for the governance domain entity
+     * @param domainIdentifier unique identifier of the governance domain
+     * @param displayName display name for the governance domain
+     * @param description description about the governance domain
+     * @param additionalProperties any other properties
+     * @param governanceDomainSetGUID unique identifier of the collection for the domain definitions
+     *
+     * @return unique identifier for the governance domain (governanceDomainGUID)
+     */
+    public String addGovernanceDomainDescription(String               governanceDomainSetGUID,
+                                                 String               qualifiedName,
+                                                 int                  domainIdentifier,
+                                                 String               displayName,
+                                                 String               description,
+                                                 Map<String, String>  additionalProperties)
+    {
+        final String methodName = "addGovernanceDomainDescription";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, DOMAIN_IDENTIFIER_PROPERTY, domainIdentifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(GOVERNANCE_DOMAIN_DESCRIPTION_TYPE_NAME,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               null);
+
+        archiveBuilder.addEntity(newEntity);
+
+        if (governanceDomainSetGUID != null)
+        {
+            addMemberToCollection(governanceDomainSetGUID, newEntity.getGUID(), null);
+        }
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Create a governance definition entity.
+     *
+     * @param suppliedTypeName type of governance definition to add
+     * @param qualifiedName unique name for the governance definition entity
+     * @param title title for the governance definition
+     * @param summary short description for the governance definition
+     * @param description description about the governance definition
+     * @param scope scope where the governance definition is used
+     * @param priority how important is the governance definition
+     * @param domainIdentifier unique identifier of the governance domain
+     * @param implications expected impact of adopting this definition
+     * @param outcomes expected outcomes from adopting this definition
+     * @param results results from adopting this definition
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return unique identifier for governance definition (governanceDefinitionGUID)
+     */
+    public String addGovernanceDefinition(String               suppliedTypeName,
+                                          String               qualifiedName,
+                                          String               title,
+                                          String               summary,
+                                          String               description,
+                                          String               scope,
+                                          int                  domainIdentifier,
+                                          String               priority,
+                                          List<String>         implications,
+                                          List<String>         outcomes,
+                                          List<String>         results,
+                                          Map<String, String>  additionalProperties,
+                                          Map<String, Object>  extendedProperties)
+    {
+        final String methodName = "addGovernanceDefinition";
+
+        String typeName = GOVERNANCE_DEFINITION_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, TITLE_PROPERTY, title, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SUMMARY_PROPERTY, summary, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SCOPE_PROPERTY, scope, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PRIORITY_PROPERTY, priority, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, DOMAIN_IDENTIFIER_PROPERTY, domainIdentifier, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, IMPLICATIONS_PROPERTY, implications, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OUTCOMES_PROPERTY, outcomes, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, RESULTS_PROPERTY, results, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(typeName,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               null);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Link a referenceable to a governance definition to define the scope there it applies.
+     *
+     * @param referenceableQName qualified name of the referenceable
+     * @param governanceDefinitionQName qualified name of the governance definition
+     */
+    public void addGovernanceDefinitionScopeRelationship(String  referenceableQName,
+                                                         String  governanceDefinitionQName)
+    {
+        String guid1 = idToGUIDMap.getGUID(referenceableQName);
+        String guid2 = idToGUIDMap.getGUID(governanceDefinitionQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(GOVERNANCE_DEFINITION_SCOPE_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_governance_definition_scope_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a referenceable to a governance definition to indicate that it is governed by the governance definition.
+     *
+     * @param referenceableQName qualified name of the referenceable
+     * @param governanceDefinitionQName qualified name of the governance definition
+     */
+    public void addGovernedByRelationship(String  referenceableQName,
+                                          String  governanceDefinitionQName)
+    {
+        String guid1 = idToGUIDMap.getGUID(referenceableQName);
+        String guid2 = idToGUIDMap.getGUID(governanceDefinitionQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(GOVERNED_BY_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_governed_by_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link two governance definitions at the same level.
+     *
+     * @param relationshipTypeName type of relationship
+     * @param governanceDefinition1QName qualified name of the referenceable
+     * @param governanceDefinition2QName qualified name of the governance definition
+     * @param description description of the peer relationship
+     */
+    public void addGovernanceDefinitionPeerRelationship(String  relationshipTypeName,
+                                                        String  governanceDefinition1QName,
+                                                        String  governanceDefinition2QName,
+                                                        String  description)
+    {
+        final String methodName = "addGovernanceDefinitionPeerRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(governanceDefinition1QName);
+        String guid2 = idToGUIDMap.getGUID(governanceDefinition2QName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, DESCRIPTION_PROPERTY, description, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(relationshipTypeName,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_governance_definition_" + relationshipTypeName + "_peer_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link two governance definitions at the same level.
+     *
+     * @param relationshipTypeName type of relationship
+     * @param governanceDefinition1QName qualified name of the referenceable
+     * @param governanceDefinition2QName qualified name of the governance definition
+     * @param rationale description of the delegation relationship
+     */
+    public void addGovernanceDefinitionDelegationRelationship(String  relationshipTypeName,
+                                                              String  governanceDefinition1QName,
+                                                              String  governanceDefinition2QName,
+                                                              String  rationale)
+    {
+        final String methodName = "addGovernanceDefinitionDelegationRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(governanceDefinition1QName);
+        String guid2 = idToGUIDMap.getGUID(governanceDefinition2QName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, RATIONALE_PROPERTY, rationale, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(relationshipTypeName,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_governance_definition_" + relationshipTypeName + "_delegation_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create a governance zone entity.
+     *
+     * @param qualifiedName unique name for the zone entity
+     * @param zoneName unique name for the zone
+     * @param displayName display name for the zone
+     * @param description description about the zone
+     * @param scope scope where the zone is used
+     * @param criteria what is the common characteristic of assets in this zone?
+     * @param domainIdentifier unique identifier of the governance domain (0 means all/any)
+     * @param additionalProperties any other properties
+     *
+     * @return unique identifier for governance zone (governanceZoneGUID)
+     */
+    public String addGovernanceZone(String               qualifiedName,
+                                    String               zoneName,
+                                    String               displayName,
+                                    String               description,
+                                    String               criteria,
+                                    String               scope,
+                                    int                  domainIdentifier,
+                                    Map<String, String>  additionalProperties)
+    {
+        final String methodName = "addGovernanceZone";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, ZONE_NAME_PROPERTY, zoneName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SCOPE_PROPERTY, scope, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, CRITERIA_PROPERTY, criteria, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, DOMAIN_IDENTIFIER_PROPERTY, domainIdentifier, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(GOVERNANCE_ZONE_TYPE_NAME,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               null);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Create the relationship between a governance zone and one of its nested governance zones.
+     *
+     * @param broaderGovernanceZoneGUID unique identifier of the broader zone
+     * @param nestedGovernanceZoneGUID unique identifier of the nested (narrower) zone
+     */
+    public void addZoneHierarchy(String broaderGovernanceZoneGUID,
+                                 String nestedGovernanceZoneGUID)
+    {
+        EntityDetail entity1 = archiveBuilder.getEntity(broaderGovernanceZoneGUID);
+        EntityDetail entity2 = archiveBuilder.getEntity(nestedGovernanceZoneGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
+        EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(ZONE_HIERARCHY_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(broaderGovernanceZoneGUID + "_to_" + nestedGovernanceZoneGUID + "_zone_hierarchy_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add the asset zone membership classification to the requested asset.
+     *
+     * @param assetGUID unique identifier of the asset to classify
+     * @param zones list of zones that the asset is a member of.
+     */
+    public void addAssetZoneMembershipClassification(String       assetGUID,
+                                                     List<String> zones)
+    {
+        final String methodName = "addAssetZoneMembershipClassification";
+
+        EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
+        EntityProxy  entityProxy = archiveHelper.getEntityProxy(assetEntity);
+
+        Classification  classification = archiveHelper.getClassification(ASSET_ZONE_MEMBERSHIP_CLASSIFICATION_NAME,
+                                                                         archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
+                                                                                                                        null,
+                                                                                                                        ZONE_MEMBERSHIP_PROPERTY,
+                                                                                                                        zones,
+                                                                                                                        methodName),
+                                                                         InstanceStatus.ACTIVE);
+
+        archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(entityProxy, classification));
+    }
+
+
+    /**
+     * Create a subject area definition entity.
+     *
+     * @param qualifiedName unique name for the subject area entity
+     * @param subjectAreaName unique name for the subject area
      * @param displayName display name for the subject area
      * @param description description about the subject area
      * @param scope scope where the subject area is used
@@ -551,6 +2568,7 @@ public class SimpleCatalogArchiveHelper
      * @return unique identifier for subject area (subjectAreaGUID)
      */
     public String addSubjectAreaDefinition(String               qualifiedName,
+                                           String               subjectAreaName,
                                            String               displayName,
                                            String               description,
                                            String               scope,
@@ -562,7 +2580,8 @@ public class SimpleCatalogArchiveHelper
         final String methodName = "addSubjectAreaDefinition";
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName); // it's an asset
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SUBJECT_AREA_NAME_PROPERTY, subjectAreaName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SCOPE_PROPERTY, scope, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, USAGE_PROPERTY, usage, methodName);
@@ -583,7 +2602,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create the relationship between a design mode group and one of its members.
+     * Create the relationship between a subject area and one of its nested subject areas.
      *
      * @param broaderSubjectAreaGUID unique identifier of the broader subject area
      * @param nestedSubjectAreaGUID unique identifier of the nested (narrower) subject area
@@ -631,6 +2650,77 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(referenceableEntityProxy, subjectAreaClassification));
     }
+
+
+
+    /**
+     * Create a business area entity.
+     *
+     * @param qualifiedName unique name for the business area entity
+     * @param identifier unique name for the business area
+     * @param displayName display name for the business area
+     * @param description description about the business area
+     * @param additionalProperties any other properties
+     *
+     * @return unique identifier for business area (businessAreaGUID)
+     */
+    public String addBusinessArea(String               qualifiedName,
+                                  String               identifier,
+                                  String               displayName,
+                                  String               description,
+                                  Map<String, String>  additionalProperties)
+    {
+        final String methodName = "addBusinessArea";
+
+        EnumElementDef businessCapabilityTypeEnum = archiveHelper.getEnumElement(BUSINESS_CAPABILITY_TYPE_ENUM_NAME, BUSINESS_CAPABILITY_TYPE_BUSINESS_AREA);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IDENTIFIER_PROPERTY, identifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, BUSINESS_CAPABILITY_TYPE_PROPERTY, businessCapabilityTypeEnum.getOrdinal(), businessCapabilityTypeEnum.getValue(), businessCapabilityTypeEnum.getDescription(), methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        EntityDetail newEntity = archiveHelper.getEntityDetail(BUSINESS_CAPABILITY_TYPE_NAME,
+                                                               idToGUIDMap.getGUID(qualifiedName),
+                                                               properties,
+                                                               InstanceStatus.ACTIVE,
+                                                               null);
+
+        archiveBuilder.addEntity(newEntity);
+
+        return newEntity.getGUID();
+    }
+
+
+    /**
+     * Add an OrganizationalCapability relationship.
+     *
+     * @param businessCapabilityQName qualified name of the specialized term
+     * @param teamQName qualified name of the generalized term
+     * @param scope scope of the team's ability to support the business capability
+     */
+    public void addOrganizationalCapabilityRelationship(String businessCapabilityQName,
+                                                        String teamQName,
+                                                        String scope)
+    {
+        final String methodName = "addOrganizationalCapabilityRelationship";
+
+        String end1GUID = idToGUIDMap.getGUID(businessCapabilityQName);
+        String end2GUID = idToGUIDMap.getGUID(teamQName);
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end1GUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end2GUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, SCOPE_PROPERTY, scope, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(IS_A_TYPE_OF_RELATIONSHIP_NAME,
+                                                                     idToGUIDMap.getGUID(end1GUID + "_to_" + end2GUID + "_organizational_capability_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
 
 
     /**
@@ -958,6 +3048,57 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Create a process entity.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param qualifiedName unique name for the asset
+     * @param displayName display name for the asset
+     * @param description description about the asset
+     * @param formula description of the logic that this process performs
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     * @param classifications list of classifications (if any)
+     *
+     * @return id for the asset
+     */
+    public String addProcess(String               typeName,
+                             String               qualifiedName,
+                             String               displayName,
+                             String               description,
+                             String               formula,
+                             Map<String, String>  additionalProperties,
+                             Map<String, Object>  extendedProperties,
+                             List<Classification> classifications)
+    {
+        final String methodName = "addProcess";
+
+        String processTypeName = PROCESS_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            processTypeName = typeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, FORMULA_PROPERTY, formula, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail assetEntity = archiveHelper.getEntityDetail(processTypeName,
+                                                                 idToGUIDMap.getGUID(qualifiedName),
+                                                                 properties,
+                                                                 InstanceStatus.ACTIVE,
+                                                                 classifications);
+
+        archiveBuilder.addEntity(assetEntity);
+
+        return assetEntity.getGUID();
+    }
+
+
+    /**
      * Create an asset entity.
      *
      * @param typeName name of asset subtype to use - default is Asset
@@ -965,7 +3106,7 @@ public class SimpleCatalogArchiveHelper
      * @param displayName display name for the asset
      * @param description description about the asset
      * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the sub type
+     * @param extendedProperties additional properties defined in the subtype
      *
      * @return id for the asset
      */
@@ -989,7 +3130,7 @@ public class SimpleCatalogArchiveHelper
      * @param description description about the asset
      * @param governanceZones list of zones to add to the asset
      * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the sub type
+     * @param extendedProperties additional properties defined in the subtype
      *
      * @return id for the asset
      */
@@ -1125,15 +3266,37 @@ public class SimpleCatalogArchiveHelper
     public void addDataContentForDataSet(String dataContentGUID,
                                          String dataSetGUID)
     {
+        addDataContentForDataSet(dataContentGUID, dataSetGUID, null, null);
+    }
+
+
+    /**
+     * Create the relationship between a data set and an asset that is providing all or part of its content.
+     *
+     * @param dataContentGUID unique identifier of the data store
+     * @param dataSetGUID unique identifier of the consuming data set
+     * @param queryId identifier of the query used to combine results in a broader formula of the data set
+     * @param query query to issue against this data content
+     */
+    public void addDataContentForDataSet(String dataContentGUID,
+                                         String dataSetGUID,
+                                         String queryId,
+                                         String query)
+    {
+        final String methodName = "addDataContentForDataSet";
+
         EntityDetail dataContentEntity = archiveBuilder.getEntity(dataContentGUID);
         EntityDetail dataSetEntity = archiveBuilder.getEntity(dataSetGUID);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(dataContentEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(dataSetEntity);
 
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUERY_ID_PROPERTY, queryId, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, QUERY_PROPERTY, query, methodName);
+
         archiveBuilder.addRelationship(archiveHelper.getRelationship(DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(dataContentGUID + "_to_" + dataSetGUID + "_data_content_for_data_set_relationship"),
-                                                                     null,
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -1226,8 +3389,8 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PATH_TYPE_PROPERTY, path, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, COMMAND_TYPE_PROPERTY, command, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PATH_PROPERTY, path, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, COMMAND_PROPERTY, command, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
 
         EntityDetail schemaTypeEntity = archiveHelper.getEntityDetail(API_OPERATION_TYPE_NAME,
@@ -1317,6 +3480,78 @@ public class SimpleCatalogArchiveHelper
         }
 
         return parameterListEntity.getGUID();
+    }
+
+
+    /**
+     * Create a schema attribute with a TypeEmbeddedAttribute classification.
+     *
+     * @param typeName name of schema attribute subtype to use - default is SchemaAttribute
+     * @param schemaTypeName name of schema type subtype to use - default is PrimitiveSchemaType
+     * @param qualifiedName unique name for the schema attribute
+     * @param displayName display name for the schema attribute
+     * @param description description about the schema attribute
+     * @param dataType data type for the schema attribute
+     * @param length length of the storage used by the schema attribute
+     * @param position position in the schema at this level
+     * @param parameterType type of parameter
+     * @param additionalProperties any other properties.
+     *
+     * @return id for the schema attribute
+     */
+    public String addAPIParameter(String              typeName,
+                                  String              schemaTypeName,
+                                  String              qualifiedName,
+                                  String              displayName,
+                                  String              description,
+                                  String              dataType,
+                                  int                 length,
+                                  int                 position,
+                                  String              parameterType,
+                                  Map<String, String> additionalProperties)
+    {
+        final String methodName = "addAPIParameter";
+
+        String schemaAttributeTypeName = API_PARAMETER_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            schemaAttributeTypeName = typeName;
+        }
+
+        String schemaTypeTypeName = PRIMITIVE_SCHEMA_TYPE_TYPE_NAME;
+
+        if (schemaTypeName != null)
+        {
+            schemaTypeTypeName = schemaTypeName;
+        }
+
+        InstanceProperties entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, DESCRIPTION_PROPERTY, description, methodName);
+        entityProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, entityProperties, POSITION_PROPERTY, position, methodName);
+        entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, PARAMETER_TYPE_PROPERTY, parameterType, methodName);
+        entityProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, entityProperties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+        InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, SCHEMA_TYPE_NAME_PROPERTY, schemaTypeTypeName, methodName);
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties, DATA_TYPE_PROPERTY, dataType, methodName);
+        classificationProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, classificationProperties, LENGTH_PROPERTY, length, methodName);
+
+        Classification classification = archiveHelper.getClassification(TYPE_EMBEDDED_ATTRIBUTE_TYPE_NAME, classificationProperties, InstanceStatus.ACTIVE);
+
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(classification);
+
+        EntityDetail schemaAttributeEntity = archiveHelper.getEntityDetail(schemaAttributeTypeName,
+                                                                           idToGUIDMap.getGUID(qualifiedName),
+                                                                           entityProperties,
+                                                                           InstanceStatus.ACTIVE,
+                                                                           classifications);
+
+        archiveBuilder.addEntity(schemaAttributeEntity);
+
+        return schemaAttributeEntity.getGUID();
     }
 
 
@@ -1436,6 +3671,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, DESCRIPTION_PROPERTY, description, methodName);
+        entityProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, entityProperties, POSITION_PROPERTY, position, methodName);
         entityProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, entityProperties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
 
         InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, SCHEMA_TYPE_NAME_PROPERTY, schemaTypeTypeName, methodName);
@@ -1725,7 +3961,7 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create a connector category entity.
      *
-     * @param connectorTypeDirectoryGUID unique identifier of connector type directory that this connector connector belongs to - or null for an independent connector category
+     * @param connectorTypeDirectoryGUID unique identifier of connector type directory that this connector belongs to - or null for an independent connector category
      * @param qualifiedName unique name for the connector category
      * @param displayName display name for the connector category
      * @param description description about the connector category
@@ -1776,7 +4012,7 @@ public class SimpleCatalogArchiveHelper
             EntityProxy end1 = archiveHelper.getEntityProxy(connectorTypeDirectoryEntity);
             EntityProxy end2 = archiveHelper.getEntityProxy(connectorCategoryEntity);
 
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(COLLECTION_MEMBER_TYPE_NAME,
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(COLLECTION_MEMBER_RELATIONSHIP_NAME,
                                                                          idToGUIDMap.getGUID(qualifiedName + "_connector_type_directory_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,
@@ -1890,6 +4126,34 @@ public class SimpleCatalogArchiveHelper
                               String   externalLink,
                               String   scope)
     {
+        return addGlossary(qualifiedName, displayName, description, language, usage, externalLink, scope, null);
+    }
+
+    /**
+     * Create a glossary entity.  If the external link is specified, the glossary entity is linked to an
+     * ExternalGlossaryLink entity.  If the scope is specified, the glossary entity is classified as
+     * a CanonicalGlossary.
+     *
+     * @param qualifiedName unique name for the glossary
+     * @param displayName display name for the glossary
+     * @param description description about the glossary
+     * @param language language that the glossary is written in
+     * @param usage how the glossary should be used
+     * @param externalLink link to material
+     * @param scope scope of the content.
+     * @param additionalProperties any other properties.
+     *
+     * @return id for the glossary
+     */
+    public String addGlossary(String              qualifiedName,
+                              String              displayName,
+                              String              description,
+                              String              language,
+                              String              usage,
+                              String              externalLink,
+                              String              scope,
+                              Map<String, String> additionalProperties)
+    {
         final String methodName = "addGlossary";
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
@@ -1897,6 +4161,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, LANGUAGE_PROPERTY, language, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, USAGE_PROPERTY, usage, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
 
         List<Classification> classifications = null;
 
@@ -1964,17 +4229,41 @@ public class SimpleCatalogArchiveHelper
      *
      * @return identifier of the category
      */
-    public String addCategory(String   glossaryGUID,
-                              String   qualifiedName,
-                              String   displayName,
-                              String   description,
-                              String   subjectArea)
+    public String addCategory(String              glossaryGUID,
+                              String              qualifiedName,
+                              String              displayName,
+                              String              description,
+                              String              subjectArea)
+    {
+        return addCategory(glossaryGUID, qualifiedName, displayName, description, subjectArea, null);
+    }
+
+
+    /**
+     * Add a glossary category to the archive and connect it to glossary.
+     *
+     * @param glossaryGUID identifier of the glossary.
+     * @param qualifiedName unique name for the category.
+     * @param displayName display name for the category.
+     * @param description description of the category.
+     * @param subjectArea name of the subject area if this category contains terms for the subject area.
+     * @param additionalProperties any other properties.
+     *
+     * @return identifier of the category
+     */
+    public String addCategory(String              glossaryGUID,
+                              String              qualifiedName,
+                              String              displayName,
+                              String              description,
+                              String              subjectArea,
+                              Map<String, String> additionalProperties)
     {
         final String methodName = "addCategory";
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
 
         List<Classification> classifications = null;
 
@@ -2031,46 +4320,7 @@ public class SimpleCatalogArchiveHelper
                           String       displayName,
                           String       description)
     {
-        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, description,null,false, false, false, null, null);
-    }
-
-
-    /**
-     * Add a term and link it to the glossary and an arbitrary number of categories.
-     *
-     * @param glossaryGUID unique identifier of the glossary
-     * @param categoryIds unique identifiers of the categories
-     * @param qualifiedName unique name of the term
-     * @param displayName display name of the term
-     * @param description description of the term
-     * @param examples examples of the term
-     * @param isSpineObject term is a spine object
-     * @param isSpineAttribute term is a spine attribute
-     * @param categoriesAsNames when true the categories are specified as qualified names, otherwise they are guids.
-     * @return unique identifier of the term
-     */
-    public String addTerm(String       glossaryGUID,
-                          List<String> categoryIds,
-                          String       qualifiedName,
-                          String       displayName,
-                          String       description,
-                          String       examples,
-                          boolean      isSpineObject,
-                          boolean      isSpineAttribute,
-                          boolean      categoriesAsNames)
-    {
-        return addTerm(glossaryGUID,
-                       categoryIds,
-                       categoriesAsNames,
-                       qualifiedName,
-                       displayName,
-                       description,
-                       examples,
-                       isSpineObject,
-                       isSpineAttribute,
-                       false,
-                       null,
-                       null);
+        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, description, null, null, null,null, false, false, false, null, null, null);
     }
 
 
@@ -2082,34 +4332,47 @@ public class SimpleCatalogArchiveHelper
      * @param categoriesAsNames when true the categories are specified as qualified names, otherwise they are guids.
      * @param qualifiedName unique name of the term
      * @param displayName display name of the term
+     * @param summary short description of the term
      * @param description description of the term
      * @param examples examples of the term
+     * @param abbreviation abbreviation
+     * @param usage how is the term used
      * @param isSpineObject term is a spine object
      * @param isSpineAttribute term is a spine attribute
      * @param isContext is this term a context definition?
      * @param contextDescription description to add to the ContextDefinition classification
      * @param contextScope scope to add to the context classification
+     * @param additionalProperties any other properties.
      *
      * @return unique identifier of the term
      */
-    public String addTerm(String       glossaryGUID,
-                          List<String> categoryIds,
-                          boolean      categoriesAsNames,
-                          String       qualifiedName,
-                          String       displayName,
-                          String       description,
-                          String       examples,
-                          boolean      isSpineObject,
-                          boolean      isSpineAttribute,
-                          boolean      isContext,
-                          String       contextDescription,
-                          String       contextScope)
+    public String addTerm(String              glossaryGUID,
+                          List<String>        categoryIds,
+                          boolean             categoriesAsNames,
+                          String              qualifiedName,
+                          String              displayName,
+                          String              summary,
+                          String              description,
+                          String              examples,
+                          String              abbreviation,
+                          String              usage,
+                          boolean             isSpineObject,
+                          boolean             isSpineAttribute,
+                          boolean             isContext,
+                          String              contextDescription,
+                          String              contextScope,
+                          Map<String, String> additionalProperties)
     {
         final String methodName = "addTerm";
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SUMMARY_PROPERTY, summary, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, EXAMPLES_PROPERTY, examples, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, ABBREVIATION_PROPERTY, abbreviation, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, USAGE_PROPERTY, usage, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
 
         if (examples !=null)
         {
@@ -2120,26 +4383,26 @@ public class SimpleCatalogArchiveHelper
 
         if (isSpineObject)
         {
-            Classification  subjectAreaClassification = archiveHelper.getClassification(SPINE_OBJECT_NAME,
-                                                                                        null,
-                                                                                        InstanceStatus.ACTIVE);
+            Classification  newClassification = archiveHelper.getClassification(SPINE_OBJECT_NAME,
+                                                                                null,
+                                                                                InstanceStatus.ACTIVE);
 
             classifications = new ArrayList<>();
-            classifications.add(subjectAreaClassification);
+            classifications.add(newClassification);
         }
 
         if (isSpineAttribute)
         {
-            Classification  subjectAreaClassification = archiveHelper.getClassification(SPINE_ATTRIBUTE_NAME,
-                                                                                        null,
-                                                                                        InstanceStatus.ACTIVE);
+            Classification newClassification = archiveHelper.getClassification(SPINE_ATTRIBUTE_NAME,
+                                                                               null,
+                                                                               InstanceStatus.ACTIVE);
 
             if (classifications == null)
             {
                 classifications = new ArrayList<>();
             }
 
-            classifications.add(subjectAreaClassification);
+            classifications.add(newClassification);
         }
 
         if (isContext)
@@ -2147,16 +4410,16 @@ public class SimpleCatalogArchiveHelper
             InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, DESCRIPTION_PROPERTY, contextDescription, methodName);
             classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties, SCOPE_PROPERTY, contextScope, methodName);
 
-            Classification  subjectAreaClassification = archiveHelper.getClassification(CONTEXT_DEFINITION_CLASSIFICATION_NAME,
-                                                                                        classificationProperties,
-                                                                                        InstanceStatus.ACTIVE);
+            Classification  newClassification = archiveHelper.getClassification(CONTEXT_DEFINITION_CLASSIFICATION_NAME,
+                                                                                classificationProperties,
+                                                                                InstanceStatus.ACTIVE);
 
             if (classifications == null)
             {
                 classifications = new ArrayList<>();
             }
 
-            classifications.add(subjectAreaClassification);
+            classifications.add(newClassification);
         }
 
         EntityDetail  termEntity = archiveHelper.getEntityDetail(GLOSSARY_TERM_TYPE_NAME,
@@ -2232,25 +4495,23 @@ public class SimpleCatalogArchiveHelper
     }
 
 
-
-
     /**
-     * Link two categories together as part of the parent child hierarchy.
+     * Link a term to a context referenceable to show that the term is valid in the context of the other.
      *
-     * @param categoryGUID unique identifier for the parent category
-     * @param termGUID unique identifier for the child category
+     * @param contextGUID unique identifier for the context
+     * @param termGUID unique identifier for the term
      * @param status ordinal for the relationship status
      * @param description description of the relationship between the term and the category.
      */
-    public void addTermToContext(String  categoryGUID,
+    public void addTermToContext(String  contextGUID,
                                  String  termGUID,
                                  int     status,
                                  String  description)
     {
         final String methodName = "addTermToContext";
 
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(categoryGUID));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termGUID));
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(contextGUID));
 
         EnumElementDef termStatus = archiveHelper.getEnumElement(TERM_RELATIONSHIP_STATUS_ENUM_NAME, status);
 
@@ -2258,7 +4519,49 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(USED_IN_CONTEXT_RELATIONSHIP_NAME,
-                                                                     idToGUIDMap.getGUID(categoryGUID + "_to_" + termGUID + "_used_in_context_relationship"),
+                                                                     idToGUIDMap.getGUID(contextGUID + "_to_" + termGUID + "_used_in_context_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Link two terms together to show that one is valid in the context of the other.
+     *
+     * @param synonymGUID unique identifier for the context
+     * @param termGUID unique identifier for the term
+     * @param status ordinal for the relationship status
+     * @param description description of the relationship between the term and the category.
+     * @param expression the expression that indicates how close a synonym this is
+     * @param steward the identifier of the steward that created this relationship
+     * @param source source of the information that indicates this is a synonym
+     */
+    public void addTermToSynonym(String  synonymGUID,
+                                 String  termGUID,
+                                 int     status,
+                                 String  description,
+                                 String  expression,
+                                 String  steward,
+                                 String  source)
+    {
+        final String methodName = "addTermToSynonym";
+
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(synonymGUID));
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(termGUID));
+
+        EnumElementDef termStatus = archiveHelper.getEnumElement(TERM_RELATIONSHIP_STATUS_ENUM_NAME, status);
+
+        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, STATUS_PROPERTY, termStatus.getOrdinal(), termStatus.getValue(), termStatus.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, EXPRESSION_PROPERTY, expression, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_PROPERTY, steward, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SOURCE_PROPERTY, source, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(SYNONYM_RELATIONSHIP_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(synonymGUID + "_to_" + termGUID + "_synonym_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -2270,7 +4573,20 @@ public class SimpleCatalogArchiveHelper
      * Link two categories together as part of the parent child hierarchy.
      *
      * @param categoryGUID unique identifier for the parent category
-     * @param termGUID unique identifier for the child category
+     * @param termGUID unique identifier for the  term
+     */
+    public void addTermToCategory(String  categoryGUID,
+                                  String  termGUID)
+    {
+        addTermToCategory(categoryGUID, termGUID, 1, null);
+    }
+
+
+    /**
+     * Link two categories together as part of the parent child hierarchy.
+     *
+     * @param categoryGUID unique identifier for the parent category
+     * @param termGUID unique identifier for the term
      * @param status ordinal for the relationship status
      * @param description description of the relationship between the term and the category.
      */
@@ -2303,6 +4619,10 @@ public class SimpleCatalogArchiveHelper
      *
      * @param categoryGUID unique identifier for the category
      * @param externalGlossaryLinkGUID unique identifier for the description of the external glossary (a type of external reference)
+     * @param identifier identifier of the category in the external glossary
+     * @param description description of the link
+     * @param steward steward who created link
+     * @param lastVerified last time this was verified
      */
     public void addLibraryCategoryReference(String categoryGUID,
                                             String externalGlossaryLinkGUID,
@@ -2337,6 +4657,10 @@ public class SimpleCatalogArchiveHelper
      *
      * @param termGUID unique identifier for the term
      * @param externalGlossaryLinkGUID unique identifier for the description of the external glossary (a type of external reference)
+     * @param identifier identifier of the term in the external glossary
+     * @param description description of the link
+     * @param steward steward who created link
+     * @param lastVerified last time this was verified
      */
     public void addLibraryTermReference(String termGUID,
                                         String externalGlossaryLinkGUID,
@@ -2458,5 +4782,256 @@ public class SimpleCatalogArchiveHelper
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
+    }
+
+
+    /**
+     * Add a valid value definition/set.
+     *
+     * @param typeName unique name of the valid value - ie a definition or a set
+     * @param qualifiedName unique name of the valid value
+     * @param displayName display name of the valid value
+     * @param scope short description of the valid value
+     * @param description description of the valid value
+     * @param preferredValue preferredValue of the valid value
+     * @param usage how is the valid value used
+     * @param isDeprecated is value active
+     * @param additionalProperties any other properties.
+     *
+     * @return unique identifier of the valid value
+     */
+    public String addValidValue(String              typeName,
+                                String              qualifiedName,
+                                String              displayName,
+                                String              description,
+                                String              usage,
+                                String              scope,
+                                String              preferredValue,
+                                boolean             isDeprecated,
+                                Map<String, String> additionalProperties)
+    {
+        final String methodName = "addValidValue";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, QUALIFIED_NAME_PROPERTY, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DISPLAY_NAME_PROPERTY, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, DESCRIPTION_PROPERTY, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, USAGE_PROPERTY, usage, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, SCOPE_PROPERTY, scope, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, PREFERRED_VALUE_PROPERTY, preferredValue, methodName);
+        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, IS_DEPRECATED_PROPERTY, isDeprecated, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_PROPERTIES_PROPERTY, additionalProperties, methodName);
+
+
+        EntityDetail  termEntity = archiveHelper.getEntityDetail(typeName,
+                                                                 idToGUIDMap.getGUID(qualifiedName),
+                                                                 properties,
+                                                                 InstanceStatus.ACTIVE,
+                                                                 null);
+
+        archiveBuilder.addEntity(termEntity);
+
+        return termEntity.getGUID();
+    }
+
+
+    /**
+     * Link a valid value as a member of a valid value set.
+     *
+     * @param setQName qualified name of the set to add to
+     * @param memberQName qualified name of the member to add
+     * @param isDefaultValue is this the default value (only set to true for one member).
+     */
+    public void addValidValueMembershipRelationship(String  setQName,
+                                                    String  memberQName,
+                                                    boolean isDefaultValue)
+    {
+        final String methodName = "addValidValuesAssignmentRelationship";
+
+        String setId = idToGUIDMap.getGUID(setQName);
+        String memberId = idToGUIDMap.getGUID(memberQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(setId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(memberId));
+
+        InstanceProperties properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, null, IS_DEFAULT_VALUE_PROPERTY, isDefaultValue, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(VALID_VALUE_MEMBER_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(setId + "_to_" + memberId + "_valid_value_member_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link an element that represents a data field (either directly or indirectly) to a valid value (typically a valid value set).
+     *
+     * @param dataFieldQName qualified name of element that represents the data field
+     * @param validValueQName qualified name of the valid value set/definition
+     * @param strictRequirement do the valid values mandate the values stored in the data field?
+     */
+    public void addValidValuesAssignmentRelationship(String  dataFieldQName,
+                                                     String  validValueQName,
+                                                     boolean strictRequirement)
+    {
+        final String methodName = "addValidValuesAssignmentRelationship";
+
+        String dataFieldId = idToGUIDMap.getGUID(dataFieldQName);
+        String validValueId = idToGUIDMap.getGUID(validValueQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(dataFieldId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(validValueId));
+
+        InstanceProperties properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, null, STRICT_REQUIREMENT_PROPERTY, strictRequirement, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(VALID_VALUES_ASSIGNMENT_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(dataFieldId + "_to_" + validValueId + "_valid_values_assignment_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add a mapping between two valid values.  Typically they are in different valid value sets.
+     *
+     * @param matchingValue1QName qualified name of one of the valid values.
+     * @param matchingValue2QName qualified name of the other valid value.
+     * @param associationDescription a description of the meaning of the association
+     * @param confidence how likely is the relationship correct - 0=unlikely; 100=certainty
+     * @param steward who was the steward that made the link
+     * @param stewardTypeName what is the type of the element used to represent the steward?
+     * @param stewardPropertyName what is the name of the property used to represent the steward?
+     * @param notes any notes on the relationship.
+     */
+    public void addValidValuesMappingRelationship(String matchingValue1QName,
+                                                  String matchingValue2QName,
+                                                  String associationDescription,
+                                                  int    confidence,
+                                                  String steward,
+                                                  String stewardTypeName,
+                                                  String stewardPropertyName,
+                                                  String notes)
+    {
+        final String methodName = "addValidValuesMappingRelationship";
+
+        String matchingValue1Id = idToGUIDMap.getGUID(matchingValue1QName);
+        String matchingValueId = idToGUIDMap.getGUID(matchingValue2QName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(matchingValue1Id));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(matchingValueId));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, ASSOCIATION_DESCRIPTION_PROPERTY, associationDescription, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, CONFIDENCE_PROPERTY, confidence, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_PROPERTY, steward, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_TYPE_NAME_PROPERTY, stewardTypeName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_PROPERTY_NAME_PROPERTY, stewardPropertyName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NOTES_PROPERTY, notes, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(VALID_VALUES_MAPPING_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(matchingValue1Id + "_to_" + matchingValueId + "_valid_values_mapping_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a referenceable element to a valid value that is acting as a tag.
+     *
+     * @param referenceableQName qualified name of referenceable
+     * @param validValueQName qualified name of valid value
+     * @param confidence how likely is the relationship correct - 0=unlikely; 100=certainty
+     * @param steward who was the steward that made the link
+     * @param stewardTypeName what is the type of the element used to represent the steward?
+     * @param stewardPropertyName what is the name of the property used to represent the steward?
+     * @param notes any notes on the relationship.
+     */
+    public void addReferenceValueAssignmentRelationship(String referenceableQName,
+                                                        String validValueQName,
+                                                        int    confidence,
+                                                        String steward,
+                                                        String stewardTypeName,
+                                                        String stewardPropertyName,
+                                                        String notes)
+    {
+        final String methodName = "addReferenceValueAssignmentRelationship";
+
+        String referenceableId = idToGUIDMap.getGUID(referenceableQName);
+        String validValueId = idToGUIDMap.getGUID(validValueQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(referenceableId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(validValueId));
+
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, CONFIDENCE_PROPERTY, confidence, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_PROPERTY, steward, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_TYPE_NAME_PROPERTY, stewardTypeName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, STEWARD_PROPERTY_NAME_PROPERTY, stewardPropertyName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, NOTES_PROPERTY, notes, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(REFERENCE_VALUE_ASSIGNMENT_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(referenceableId + "_to_" + validValueId + "_reference_value_assignment_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Link a valid value definition to the asset where it is implemented.
+     *
+     * @param validValueQName qualified name of the valid value
+     * @param assetQName qualified name of the asset
+     * @param symbolicName property name used in the asset to represent the valid value
+     * @param implementationValue value used in the asset to represent the valid value
+     * @param additionalValues additional mapping values
+     */
+    public void addValidValuesImplementationRelationship(String              validValueQName,
+                                                         String              assetQName,
+                                                         String              symbolicName,
+                                                         String              implementationValue,
+                                                         Map<String, String> additionalValues)
+    {
+        final String methodName = "addValidValuesImplementationRelationship";
+
+        String validValueId = idToGUIDMap.getGUID(validValueQName);
+        String assetId = idToGUIDMap.getGUID(assetQName);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(validValueId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(assetId));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, SYMBOLIC_NAME_PROPERTY, symbolicName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, IMPLEMENTATION_VALUE_PROPERTY, implementationValue, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, ADDITIONAL_VALUES_PROPERTY, additionalValues, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(VALID_VALUES_IMPLEMENTATION_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(validValueId + "_to_" + assetId + "_valid_values_implementation_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Add the ReferenceData classification to the requested element.
+     *
+     * @param assetGUID unique identifier of the element to classify
+     */
+    public void addReferenceDataClassification(String assetGUID)
+    {
+        EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
+
+        EntityProxy referenceableEntityProxy = archiveHelper.getEntityProxy(assetEntity);
+
+        Classification  classification = archiveHelper.getClassification(REFERENCE_DATA_CLASSIFICATION_NAME,
+                                                                         null,
+                                                                         InstanceStatus.ACTIVE);
+
+        archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(referenceableEntityProxy, classification));
     }
 }

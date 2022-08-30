@@ -4,7 +4,6 @@ package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveCache;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.slf4j.Logger;
@@ -34,28 +33,28 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
      * The maps accumulate content from both dependent archives and the new archive being built.
      * The lists contain only the new content, and will ultimately be used when assembling the archive.
      */
-    private Map<String, PrimitiveDef>                  primitiveDefMap       = new HashMap<>();
-    private List<PrimitiveDef>                         primitiveDefList      = new ArrayList<>();
-    private Map<String, EnumDef>                       enumDefMap            = new HashMap<>();
-    private List<EnumDef>                              enumDefList           = new ArrayList<>();
-    private Map<String, CollectionDef>                 collectionDefMap      = new HashMap<>();
-    private List<CollectionDef>                        collectionDefList     = new ArrayList<>();
-    private Map<String, ClassificationDef>             classificationDefMap  = new HashMap<>();
-    private List<ClassificationDef>                    classificationDefList = new ArrayList<>();
-    private Map<String, EntityDef>                     entityDefMap          = new HashMap<>();
-    private List<EntityDef>                            entityDefList         = new ArrayList<>();
-    private Map<String, RelationshipDef>               relationshipDefMap    = new HashMap<>();
-    private List<RelationshipDef>                      relationshipDefList   = new ArrayList<>();
-    private List<TypeDefPatch>                         typeDefPatchList      = new ArrayList<>();
-    private Map<String, EntityDetail>                  entityDetailMap       = new HashMap<>();
-    private List<EntityDetail>                         entityDetailList      = new ArrayList<>();
-    private Map<String, Relationship>                  relationshipMap       = new HashMap<>();
-    private List<Relationship>                         relationshipList      = new ArrayList<>();
-    private Map<String, ClassificationEntityExtension> classificationMap     = new HashMap<>();
-    private List<ClassificationEntityExtension>        classificationList    = new ArrayList<>();
-    private Map<String, Object>                        guidMap               = new HashMap<>();
-    private Map<String, Object>                        nameMap               = new HashMap<>();
-    private Map<String, Set<String>>                   entityAttributeMap    = new HashMap<>();
+    private final Map<String, PrimitiveDef>                  primitiveDefMap       = new HashMap<>();
+    private final List<PrimitiveDef>                         primitiveDefList      = new ArrayList<>();
+    private final Map<String, EnumDef>                       enumDefMap            = new HashMap<>();
+    private final List<EnumDef>                              enumDefList           = new ArrayList<>();
+    private final Map<String, CollectionDef>                 collectionDefMap      = new HashMap<>();
+    private final List<CollectionDef>                        collectionDefList     = new ArrayList<>();
+    private final Map<String, ClassificationDef>             classificationDefMap  = new HashMap<>();
+    private final List<ClassificationDef>                    classificationDefList = new ArrayList<>();
+    private final Map<String, EntityDef>                     entityDefMap          = new HashMap<>();
+    private final List<EntityDef>                            entityDefList         = new ArrayList<>();
+    private final Map<String, RelationshipDef>               relationshipDefMap    = new HashMap<>();
+    private final List<RelationshipDef>                      relationshipDefList   = new ArrayList<>();
+    private final List<TypeDefPatch>                         typeDefPatchList      = new ArrayList<>();
+    private final Map<String, EntityDetail>                  entityDetailMap       = new HashMap<>();
+    private final List<EntityDetail>                         entityDetailList      = new ArrayList<>();
+    private final Map<String, Relationship>                  relationshipMap       = new HashMap<>();
+    private final List<Relationship>                         relationshipList      = new ArrayList<>();
+    private final Map<String, ClassificationEntityExtension> classificationMap     = new HashMap<>();
+    private final List<ClassificationEntityExtension>        classificationList    = new ArrayList<>();
+    private final Map<String, Object>                        guidMap               = new HashMap<>();
+    private final Map<String, Object>                        nameMap               = new HashMap<>();
+    private final Map<String, Set<String>>                   entityAttributeMap    = new HashMap<>();
 
 
     private static final Logger log = LoggerFactory.getLogger(OMRSArchiveBuilder.class);
@@ -457,7 +456,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
         if (primitiveDef != null)
         {
-            log.debug("Adding PrimitiveDef: " + primitiveDef.toString());
+            log.debug("Adding PrimitiveDef: " + primitiveDef);
             this.checkForBlanksInTypeName(primitiveDef.getName());
 
             PrimitiveDef duplicateElement = primitiveDefMap.put(primitiveDef.getName(), primitiveDef);
@@ -547,7 +546,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
         if (collectionDef != null)
         {
-            log.debug("Adding CollectionDef: " + collectionDef.toString());
+            log.debug("Adding CollectionDef: " + collectionDef);
             
             this.checkForBlanksInTypeName(collectionDef.getName());
 
@@ -638,7 +637,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
         if (enumDef != null)
         {
-            log.debug("Adding EnumDef: " + enumDef.toString());
+            log.debug("Adding EnumDef: " + enumDef);
 
             this.checkForBlanksInTypeName(enumDef.getName());
 
@@ -729,7 +728,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
         if (classificationDef != null)
         {
-            log.debug("Adding ClassificationDef: " + classificationDef.toString());
+            log.debug("Adding ClassificationDef: " + classificationDef);
             
             this.checkForBlanksInTypeName(classificationDef.getName());
 
@@ -805,7 +804,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
         if (entityDef != null)
         {
-            log.debug("Adding EntityDef: " + entityDef.toString());
+            log.debug("Adding EntityDef: " + entityDef);
             
             this.checkForBlanksInTypeName(entityDef.getName());
 
@@ -988,7 +987,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
         if (relationshipDef != null)
         {
-            log.debug("Adding RelationshipDef: " + relationshipDef.toString());
+            log.debug("Adding RelationshipDef: " + relationshipDef);
             
             this.checkForBlanksInTypeName(relationshipDef.getName());
             RelationshipDef duplicateElement = relationshipDefMap.put(relationshipDef.getName(), relationshipDef);
@@ -1274,7 +1273,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
     {
         if (typeDefPatch != null)
         {
-            log.debug("Adding TypeDefPatch: " + typeDefPatch.toString());
+            log.debug("Adding TypeDefPatch: " + typeDefPatch);
 
             this.checkForBlanksInTypeName(typeDefPatch.getTypeDefName());
 
@@ -1318,7 +1317,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
         if (entity != null)
         {
-            log.debug("Adding Entity: " + entity.toString());
+            log.debug("Adding Entity: " + entity);
 
             EntityDetail   duplicateElement = entityDetailMap.put(entity.getGUID(), entity);
 
@@ -1373,6 +1372,19 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
 
     /**
+     * Retrieve an entity from the archive.  Return null if it does not exist
+     *
+     * @param guid unique identifier
+     * @return requested entity
+     */
+    @Override
+    public EntityDetail queryEntity(String   guid)
+    {
+        return entityDetailMap.get(guid);
+    }
+
+
+    /**
      * Add a new relationship to the archive.
      *
      * @param relationship instance to add
@@ -1384,7 +1396,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
         if (relationship != null)
         {
-            log.debug("Adding Relationship: " + relationship.toString());
+            log.debug("Adding Relationship: " + relationship);
 
             Relationship   duplicateElement = relationshipMap.put(relationship.getGUID(), relationship);
 
@@ -1438,6 +1450,20 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
     }
 
 
+
+    /**
+     * Retrieve a relationship from the archive.
+     *
+     * @param guid unique identifier
+     * @return requested relationship
+     */
+    @Override
+    public Relationship queryRelationship(String   guid)
+    {
+        return relationshipMap.get(guid);
+    }
+
+
     /**
      * Add a new classification to the archive.
      *
@@ -1450,7 +1476,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
         if (classification != null)
         {
-            log.debug("Adding Classification: " + classification.toString());
+            log.debug("Adding Classification: " + classification);
 
             String classificationId = classification.getEntityToClassify().getGUID() + ":" + classification.getClassification().getName();
 
@@ -1499,10 +1525,28 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
     }
 
 
+
+    /**
+     * Retrieve a classification extension from the archive if it exists
+     *
+     * @param entityGUID unique identifier of entity
+     * @param classificationName name of the classification
+     * @return requested classification extension
+     */
+    @Override
+    public ClassificationEntityExtension queryClassification(String entityGUID,
+                                                             String classificationName)
+    {
+        String identifier = entityGUID + ":" + classificationName;
+
+        return classificationMap.get(identifier);
+    }
+
+
     /**
      * Once the content of the archive has been added to the archive builder, an archive object can be retrieved.
      *
-     * @return open metadata archive object with all of the supplied content in it.
+     * @return open metadata archive object with all the supplied content in it.
      */
     public OpenMetadataArchive getOpenMetadataArchive()
     {
@@ -1576,7 +1620,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
 
         /*
-         * Finally set up the instance store
+         * Finally, set up the instance store
          */
         List<EntityDetail>                  entities        = new ArrayList<>();
         List<Relationship>                  relationships   = new ArrayList<>();

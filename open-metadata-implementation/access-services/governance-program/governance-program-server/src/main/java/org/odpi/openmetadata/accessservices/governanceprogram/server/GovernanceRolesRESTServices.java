@@ -16,6 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -29,12 +30,12 @@ import java.util.Map;
  */
 public class GovernanceRolesRESTServices
 {
-    static private GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
+    static private final GovernanceProgramInstanceHandler instanceHandler = new GovernanceProgramInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceRolesRESTServices.class),
-                                                                                  instanceHandler.getServiceName());
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceRolesRESTServices.class),
+                                                                                        instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -96,17 +97,20 @@ public class GovernanceRolesRESTServices
                 response.setGUID(handler.createPersonRole(userId,
                                                           null,
                                                           null,
+                                                          requestBody.getQualifiedName(),
                                                           requestBody.getRoleId(),
                                                           requestBody.getTitle(),
                                                           requestBody.getDescription(),
                                                           requestBody.getScope(),
                                                           requestBody.getHeadCount(),
                                                           requestBody.getHeadCountLimitSet(),
+                                                          requestBody.getDomainIdentifier(),
                                                           requestBody.getAdditionalProperties(),
                                                           typeName,
                                                           extendedProperties,
                                                           null,
                                                           null,
+                                                          new Date(),
                                                           methodName));
             }
             else
@@ -134,7 +138,7 @@ public class GovernanceRolesRESTServices
      * @param requestBody  properties of the governance role
      * @return void response or
      * UnrecognizedGUIDException the unique identifier of the governance role is either null or invalid or
-     * InvalidParameterException the title is null or the governanceDomain/appointmentId does not match the
+     * InvalidParameterException the title is null or the governanceDomain/appointmentId does not match
      *                           the existing values associated with the governanceRoleGUID or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
@@ -180,20 +184,25 @@ public class GovernanceRolesRESTServices
                                          null,
                                          governanceRoleGUID,
                                          governanceRoleGUIDParameterName,
-                                         requestBody.getRoleId(),
+                                         requestBody.getQualifiedName(),
                                          roleIdParameterName,
+                                         requestBody.getRoleId(),
                                          requestBody.getTitle(),
                                          titleParameterName,
                                          requestBody.getDescription(),
                                          requestBody.getScope(),
                                          requestBody.getHeadCount(),
                                          requestBody.getHeadCountLimitSet(),
+                                         requestBody.getDomainIdentifier(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getTypeName(),
                                          extendedProperties,
                                          isMergeUpdate,
                                          null,
                                          null,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
             }
             else
@@ -261,7 +270,10 @@ public class GovernanceRolesRESTServices
                                              false,
                                              OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                             (InstanceProperties) null,
                                              null,
+                                             null,
+                                             new Date(),
                                              methodName);
             }
             else
@@ -331,7 +343,7 @@ public class GovernanceRolesRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
-                                                 null,
+                                                 new Date(),
                                                  methodName);
             }
             else
@@ -399,7 +411,10 @@ public class GovernanceRolesRESTServices
                                              false,
                                              OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
                                              OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
+                                             (InstanceProperties) null,
                                              null,
+                                             null,
+                                             new Date(),
                                              methodName);
             }
             else
@@ -469,7 +484,7 @@ public class GovernanceRolesRESTServices
                                                  false,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_GUID,
                                                  OpenMetadataAPIMapper.GOVERNANCE_ROLE_ASSIGNMENT_TYPE_NAME,
-                                                 null,
+                                                 new Date(),
                                                  methodName);
             }
             else
@@ -522,6 +537,9 @@ public class GovernanceRolesRESTServices
             handler.removePersonRole(userId,
                                      governanceRoleGUID,
                                      governanceRoleGUIDParameterName,
+                                     false,
+                                     false,
+                                     new Date(),
                                      methodName);
 
         }
@@ -628,7 +646,7 @@ public class GovernanceRolesRESTServices
     /**
      * Retrieve the properties of a governance role using its unique name.  The results are returned as a list
      * since it is possible that two roles have the same identifier due to the distributed nature of the
-     * open metadata ecosystem.  By returning all of the search results here it is possible to manage the
+     * open metadata ecosystem.  By returning all the search results here it is possible to manage the
      * duplicates through this interface.
      *
      * @param serverName name of server instance to call
@@ -661,7 +679,9 @@ public class GovernanceRolesRESTServices
                                                               governanceRoleGUIDParameterName,
                                                               0,
                                                               0,
-                                                              null,
+                                                              false,
+                                                              false,
+                                                              new Date(),
                                                               methodName));
         }
         catch (Exception error)
@@ -675,7 +695,7 @@ public class GovernanceRolesRESTServices
 
 
     /**
-     * Return all of the defined governance roles.
+     * Return all the defined governance roles.
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
@@ -709,7 +729,9 @@ public class GovernanceRolesRESTServices
                                                                    domainIdentifier,
                                                                    startFrom,
                                                                    pageSize,
-                                                                   null,
+                                                                   false,
+                                                                   false,
+                                                                   new Date(),
                                                                    methodName));
 
         }
@@ -724,7 +746,7 @@ public class GovernanceRolesRESTServices
 
 
     /**
-     * Retrieve all of the governance roles for a particular title.  The title can include regEx wildcards.
+     * Retrieve all the governance roles for a particular title.  The title can include regEx wildcards.
      *
      * @param serverName name of server instance to call
      * @param userId calling user
@@ -760,7 +782,9 @@ public class GovernanceRolesRESTServices
                                                                 titleParameterName,
                                                                 startFrom,
                                                                 pageSize,
-                                                                null,
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
         }
         catch (Exception error)
@@ -774,7 +798,7 @@ public class GovernanceRolesRESTServices
 
 
     /**
-     * Return all of the governance roles and their incumbents (if any).
+     * Return all the governance roles and their incumbents (if any).
      *
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
@@ -864,6 +888,9 @@ public class GovernanceRolesRESTServices
                                                                      true,
                                                                      requestBody.getEffectiveDate(),
                                                                      null,
+                                                                     false,
+                                                                     false,
+                                                                     null,
                                                                      methodName);
 
                 response.setGUID(appointmentGUID);
@@ -930,6 +957,7 @@ public class GovernanceRolesRESTServices
                                               appointmentGUID,
                                               appointmentGUIDParameterName,
                                               requestBody.getEffectiveDate(),
+                                              null,
                                               methodName);
             }
             else

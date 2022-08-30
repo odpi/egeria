@@ -224,11 +224,11 @@ public class TestExternalIdentifier
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -237,7 +237,7 @@ public class TestExternalIdentifier
 
         try
         {
-            validateResultObject((ExternalIdentifier) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((ExternalIdentifier) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

@@ -18,7 +18,8 @@ import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapab
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ExternalDataEnginePropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareServerCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -30,6 +31,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -71,7 +73,7 @@ class DataEngineRegistrationHandlerTest {
     private OMRSRepositoryHelper repositoryHelper;
 
     @Mock
-    private SoftwareServerCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler;
+    private SoftwareCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler;
 
     @Mock
     private InvalidParameterHandler invalidParameterHandler;
@@ -91,12 +93,14 @@ class DataEngineRegistrationHandlerTest {
 
         SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
 
-        when(softwareServerCapabilityHandler.createSoftwareServerCapability(USER, null,
-               null, SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
-                softwareServerCapability.getQualifiedName(),
-                softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
-                softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
-                softwareServerCapability.getAdditionalProperties(), null, methodName)).thenReturn(GUID);
+        when(softwareServerCapabilityHandler.createSoftwareCapability(USER, null,
+                 null, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
+                 softwareServerCapability.getQualifiedName(),
+                 softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
+                 softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
+                 softwareServerCapability.getAdditionalProperties(), null,
+                 null, null, null, false, false, null, methodName)).thenReturn(GUID);
+
 
         String response = registrationHandler.upsertExternalDataEngine(USER, softwareServerCapability);
 
@@ -149,11 +153,12 @@ class DataEngineRegistrationHandlerTest {
                 "serviceName", "serverName");
         SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
 
-        when(softwareServerCapabilityHandler.createSoftwareServerCapability(USER, null,
-                null, SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
+        when(softwareServerCapabilityHandler.createSoftwareCapability(USER, null,
+                null, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
                 softwareServerCapability.getQualifiedName(), softwareServerCapability.getName(), softwareServerCapability.getDescription(),
                 softwareServerCapability.getEngineType(), softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(),
                 softwareServerCapability.getSource(), softwareServerCapability.getAdditionalProperties(),
+                null, null, null, null, false, false,
                 null, methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->

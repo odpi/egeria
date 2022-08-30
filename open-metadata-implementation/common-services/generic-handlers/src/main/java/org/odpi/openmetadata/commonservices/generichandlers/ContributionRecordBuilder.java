@@ -15,8 +15,8 @@ import java.util.Map;
  */
 public class ContributionRecordBuilder extends ReferenceableBuilder
 {
-    private long karmaPoints;
-    private boolean isPublic;
+    private final long karmaPoints;
+    private final boolean isPublic;
 
 
     /**

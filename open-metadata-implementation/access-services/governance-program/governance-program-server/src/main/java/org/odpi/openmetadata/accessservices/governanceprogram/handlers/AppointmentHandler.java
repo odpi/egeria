@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -28,11 +29,11 @@ import java.util.List;
  */
 public class AppointmentHandler
 {
-    private PersonRoleHandler<GovernanceRoleElement> roleHandler;
-    private ActorProfileHandler<ProfileElement>      profileHandler;
+    private final PersonRoleHandler<GovernanceRoleElement> roleHandler;
+    private final ActorProfileHandler<ProfileElement>      profileHandler;
 
-    private GovernanceProgramOMASConverter<GovernanceAppointee> converter;
-    private RepositoryErrorHandler                              errorHandler;
+    private final GovernanceProgramOMASConverter<GovernanceAppointee> converter;
+    private final RepositoryErrorHandler                              errorHandler;
 
 
     public AppointmentHandler(PersonRoleHandler<GovernanceRoleElement> roleHandler,
@@ -51,7 +52,7 @@ public class AppointmentHandler
 
 
     /**
-     * Return all of the governance roles and their incumbents (if any).
+     * Return all the governance roles and their incumbents (if any).
      *
      * @param userId the name of the calling user
      * @param domainIdentifier identifier of domain - 0 means all
@@ -75,7 +76,14 @@ public class AppointmentHandler
     {
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
 
-        List<GovernanceRoleElement> governanceRoles = roleHandler.getPersonRolesForDomainId(userId, domainIdentifier, startFrom, pageSize, null, methodName);
+        List<GovernanceRoleElement> governanceRoles = roleHandler.getPersonRolesForDomainId(userId,
+                                                                                            domainIdentifier,
+                                                                                            startFrom,
+                                                                                            pageSize,
+                                                                                            false,
+                                                                                            false,
+                                                                                            new Date(),
+                                                                                            methodName);
 
         if (governanceRoles != null)
         {
@@ -96,6 +104,7 @@ public class AppointmentHandler
                                                                                                   null,
                                                                                                   OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                                                   1,
+                                                                                                  false,
                                                                                                   false,
                                                                                                   0,
                                                                                                   0,
@@ -195,6 +204,7 @@ public class AppointmentHandler
                                                                                           null,
                                                                                           OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
                                                                                           1,
+                                                                                          false,
                                                                                           false,
                                                                                           0,
                                                                                           0,
@@ -296,7 +306,9 @@ public class AppointmentHandler
                                                                           relationship.getEntityOneProxy().getGUID(),
                                                                           profileGUIDParameterName,
                                                                           OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                                          null,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
                                                                           methodName);
 
             appointee.setProfile(profile);

@@ -7,15 +7,14 @@ import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
 import org.odpi.openmetadata.http.HttpHelper;
 
 /**
- * CreateCSVFileAssetSample creates a simple asset definition in the open metadata repositories for
- * a file.
+ * CreateCSVFileAssetSample creates a simple asset definition in the open metadata repositories for a file.
  */
 public class CreateCSVFileAssetSample
 {
-    private String  fileName;
-    private String  serverName;
-    private String  serverURLRoot;
-    private String  clientUserId;
+    private final String  fileName;
+    private final String  serverName;
+    private final String  serverURLRoot;
+    private final String  clientUserId;
 
 
     /**

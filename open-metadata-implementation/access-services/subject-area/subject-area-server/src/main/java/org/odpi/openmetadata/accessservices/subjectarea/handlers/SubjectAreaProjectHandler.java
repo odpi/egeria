@@ -98,8 +98,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                     effectiveTo = new Date(suppliedProject.getEffectiveToTime());
                 }
 
-                ProjectBuilder builder = new ProjectBuilder(
-                                                            suppliedProject.getQualifiedName(),
+                ProjectBuilder builder = new ProjectBuilder(suppliedProject.getQualifiedName(),
+                                                            suppliedProject.getIdentifier(),
                                                             suppliedProject.getName(),
                                                             suppliedProject.getDescription(),
                                                             suppliedProject.getStartDate(),
@@ -123,6 +123,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                                                 null,
                                                                                 null,
                                                                                 builder,
+                                                                                null,
                                                                                 methodName);
                 if (entityDetailGuid != null) {
                     response = getProjectByGuid(userId, entityDetailGuid);
@@ -331,6 +332,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
             if (genericHandler.isBeanIsolated(userId,
                                               guid,
                                               OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                              false,
+                                              false,
+                                              null,
                                               methodName)) {
 
                 issueDelete = true;

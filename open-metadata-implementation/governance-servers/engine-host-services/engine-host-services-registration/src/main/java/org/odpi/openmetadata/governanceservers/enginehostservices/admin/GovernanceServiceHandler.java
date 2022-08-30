@@ -32,7 +32,7 @@ public abstract class GovernanceServiceHandler implements Runnable
     protected String                     governanceServiceGUID;
     protected String                     governanceServiceName;
 
-    private GovernanceEngineClient governanceActionClient;
+    private final GovernanceEngineClient governanceActionClient;
 
     protected Connector governanceService;
     protected String    governanceActionGUID;
@@ -172,7 +172,7 @@ public abstract class GovernanceServiceHandler implements Runnable
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)

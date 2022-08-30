@@ -5,16 +5,15 @@ package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
 import org.odpi.openmetadata.accessservices.assetmanager.client.*;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * CatalogIntegratorContext provides a wrapper around the Asset Manager OMAS client.
@@ -244,6 +243,23 @@ public class CatalogIntegratorContext
     }
 
 
+    /* ========================================================
+     * Returning the asset manager name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the asset manager that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getAssetManagerName()
+    {
+        return assetManagerName;
+    }
+
+
 
     /* ========================================================
      * Register for inbound events from the Asset Manager OMAS OutTopic
@@ -284,39 +300,24 @@ public class CatalogIntegratorContext
      *
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifier unique identifier of this element in the third party asset manager
-     * @param externalIdentifierName name of the identifier in the third party asset manager
-     * @param externalIdentifierUsage description of how the open metadata element maps to the identifier
-     * @param keyPattern style of the external identifier
-     * @param mappingProperties additional mapping properties
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void addExternalIdentifier(String                   openMetadataElementGUID,
-                                      String                   openMetadataElementTypeName,
-                                      String                   externalIdentifier,
-                                      String                   externalIdentifierName,
-                                      String                   externalIdentifierUsage,
-                                      KeyPattern               keyPattern,
-                                      Map<String, String>      mappingProperties) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public void addExternalIdentifier(String                       openMetadataElementGUID,
+                                      String                       openMetadataElementTypeName,
+                                      ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
     {
         assetManagerClient.addExternalIdentifier(userId,
                                                  assetManagerGUID,
                                                  assetManagerName,
-                                                 synchronizationDirection,
-                                                 null,
                                                  openMetadataElementGUID,
                                                  openMetadataElementTypeName,
-                                                 externalIdentifier,
-                                                 externalIdentifierName,
-                                                 externalIdentifierUsage,
-                                                 connectorName,
-                                                 keyPattern,
-                                                 mappingProperties);
+                                                 externalIdentifierProperties);
     }
 
 
@@ -325,39 +326,24 @@ public class CatalogIntegratorContext
      *
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifier unique identifier of this element in the external asset manager
-     * @param externalIdentifierName name of the identifier in the third party asset manager
-     * @param externalIdentifierUsage description of how the open metadata element maps to the identifier
-     * @param keyPattern style of the external identifier
-     * @param mappingProperties additional mapping properties
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void updateExternalIdentifier(String              openMetadataElementGUID,
-                                         String              openMetadataElementTypeName,
-                                         String              externalIdentifier,
-                                         String              externalIdentifierName,
-                                         String              externalIdentifierUsage,
-                                         KeyPattern          keyPattern,
-                                         Map<String, String> mappingProperties) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public void updateExternalIdentifier(String                       openMetadataElementGUID,
+                                         String                       openMetadataElementTypeName,
+                                         ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         assetManagerClient.updateExternalIdentifier(userId,
                                                     assetManagerGUID,
                                                     assetManagerName,
-                                                    synchronizationDirection,
-                                                    null,
                                                     openMetadataElementGUID,
                                                     openMetadataElementTypeName,
-                                                    externalIdentifier,
-                                                    externalIdentifierName,
-                                                    externalIdentifierUsage,
-                                                    connectorName,
-                                                    keyPattern,
-                                                    mappingProperties);
+                                                    externalIdentifierProperties);
     }
 
 
@@ -368,38 +354,23 @@ public class CatalogIntegratorContext
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param externalIdentifier unique identifier of this element in the third party asset manager
-     * @param externalIdentifierName name of the identifier in the third party asset manager
-     * @param externalIdentifierUsage description of how the open metadata element maps to the identifier
-     * @param keyPattern style of the external identifier
-     * @param mappingProperties additional mapping properties
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeExternalIdentifier(String                   openMetadataElementGUID,
-                                         String                   openMetadataElementTypeName,
-                                         String                   externalIdentifier,
-                                         String                   externalIdentifierName,
-                                         String                   externalIdentifierUsage,
-                                         KeyPattern               keyPattern,
-                                         Map<String, String>      mappingProperties) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public void removeExternalIdentifier(String openMetadataElementGUID,
+                                         String openMetadataElementTypeName,
+                                         String externalIdentifier) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         assetManagerClient.removeExternalIdentifier(userId,
                                                     assetManagerGUID,
                                                     assetManagerName,
-                                                    synchronizationDirection,
-                                                    null,
                                                     openMetadataElementGUID,
                                                     openMetadataElementTypeName,
-                                                    externalIdentifier,
-                                                    externalIdentifierName,
-                                                    externalIdentifierUsage,
-                                                    connectorName,
-                                                    keyPattern,
-                                                    mappingProperties);
+                                                    externalIdentifier);
     }
 
 

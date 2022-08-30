@@ -350,7 +350,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param userId  unique identifier for requesting user.
      * @param category  enum value for the category of TypeDef to return.
@@ -365,7 +365,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                           UserNotAuthorizedException;
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param userId  unique identifier for requesting user.
      * @param category  enum value for the category of an AttributeTypeDef to return.
@@ -902,7 +902,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
-     * @param relationshipTypeGUID String GUID of the the type of relationship required (null for all).
+     * @param relationshipTypeGUID String GUID of the type of relationship required (null for all).
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -1424,7 +1424,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
@@ -2729,7 +2729,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -2761,7 +2761,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -2788,7 +2788,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove or
      * soft delete relationships attached to the entity.
@@ -2830,7 +2830,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove
      * relationships attached to the entity.
@@ -2898,7 +2898,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *

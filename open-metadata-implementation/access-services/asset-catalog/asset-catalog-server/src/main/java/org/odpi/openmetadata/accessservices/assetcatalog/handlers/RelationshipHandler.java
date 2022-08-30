@@ -15,6 +15,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Date;
+
 /**
  * Relationship Handler supports the lookup of the asset's relationship from the repositories.
  * It runs on the server-side of the Asset Catalog OMAS, fetches the relationships using the RepositoryHandler.
@@ -81,8 +83,8 @@ public class RelationshipHandler {
         }
 
         Relationship relationshipBetweenEntities = assetHandler.getUniqueAttachmentLink(userId, entity1GUID,
-                Constants.GUID_PARAMETER, "", relationshipTypeGUID, relationshipType, entity2GUID,
-                "", null, methodName);
+            Constants.GUID_PARAMETER, "", relationshipTypeGUID, relationshipType, entity2GUID,
+            "", 0, false, false, null, methodName);
 
         if (relationshipBetweenEntities != null) {
             AssetCatalogConverter<AssetCatalogBean> converter = new AssetCatalogConverter<>(repositoryHelper, serverName,

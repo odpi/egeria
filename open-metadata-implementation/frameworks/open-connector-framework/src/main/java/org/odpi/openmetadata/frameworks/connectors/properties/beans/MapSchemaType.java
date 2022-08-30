@@ -148,15 +148,25 @@ public class MapSchemaType extends SchemaType
     public String toString()
     {
         return "MapSchemaType{" +
-                "mapFromElement=" + mapFromElement +
-                ", mapToElement=" + mapToElement +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "mapFromElement=" + mapFromElement +
+                       ", mapToElement=" + mapToElement +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", isDeprecated=" + getIsDeprecated() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", anchorGUID='" + getAnchorGUID() + '\'' +
+                       ", calculatedValue=" + isCalculatedValue() +
+                       ", expression='" + getExpression() + '\'' +
+                       ", formula='" + getFormula() + '\'' +
+                       ", queries=" + getQueries() +
+                       ", versionNumber='" + getVersionNumber() + '\'' +
+                       ", author='" + getAuthor() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
+                       ", encodingStandard='" + getEncodingStandard() + '\'' +
+                       ", namespace='" + getNamespace() + '\'' +
+                       '}';
     }
 
 

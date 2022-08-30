@@ -120,7 +120,7 @@ public class CommentRequestBodyTest
         {
             jsonString = objectMapper.writeValueAsString(getTestObject());
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -129,7 +129,7 @@ public class CommentRequestBodyTest
         {
             validateResultObject(objectMapper.readValue(jsonString, CommentRequestBody.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -143,7 +143,7 @@ public class CommentRequestBodyTest
         {
             jsonString = objectMapper.writeValueAsString(superObject);
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
@@ -152,7 +152,7 @@ public class CommentRequestBodyTest
         {
             validateResultObject((CommentRequestBody) objectMapper.readValue(jsonString, OCFOMASAPIRequestBody.class));
         }
-        catch (Throwable  exc)
+        catch (Exception  exc)
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }

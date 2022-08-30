@@ -13,14 +13,16 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
  */
 public class CollaborationExchangeService
 {
-    private CollaborationExchangeClient collaborationExchangeClient;
-    private String                      userId;
-    private String                      assetManagerGUID;
-    private String                      assetManagerName;
-    private String                      connectorName;
-    private SynchronizationDirection    synchronizationDirection;
-    private AuditLog                    auditLog;
+    private final CollaborationExchangeClient collaborationExchangeClient;
+    private final String                      userId;
+    private final String                      assetManagerGUID;
+    private final String                      assetManagerName;
+    private final String                      connectorName;
+    private final SynchronizationDirection    synchronizationDirection;
+    private final AuditLog                    auditLog;
 
+    private boolean forLineage             = false;
+    private boolean forDuplicateProcessing = false;
 
     /**
      * Create a new client to exchange data asset content with open metadata.
@@ -49,5 +51,58 @@ public class CollaborationExchangeService
         this.connectorName               = connectorName;
         this.auditLog                    = auditLog;
     }
+
+
+    /* ========================================================
+     * Set up the forLineage flag
+     */
+
+    /**
+     * Return whether retrieval requests from this service are to include elements with the Memento classification attached or not.
+     *
+     * @return boolean flag
+     */
+    public boolean isForLineage()
+    {
+        return forLineage;
+    }
+
+
+    /**
+     * Set up whether retrieval requests from this service are to include elements with the Memento classification attached or not.
+     *
+     * @param forLineage boolean flag
+     */
+    public void setForLineage(boolean forLineage)
+    {
+        this.forLineage = forLineage;
+    }
+
+
+    /* ========================================================
+     * Set up the forDuplicateProcessing flag
+     */
+
+    /**
+     * Return whether retrieval requests from this service are to avoid merging duplicates or not.
+     *
+     * @return boolean flag
+     */
+    public boolean isForDuplicateProcessing()
+    {
+        return forDuplicateProcessing;
+    }
+
+
+    /**
+     * Set up whether retrieval requests from this service are to avoid merging duplicates or not.
+     *
+     * @param forDuplicateProcessing boolean flag
+     */
+    public void setForDuplicateProcessing(boolean forDuplicateProcessing)
+    {
+        this.forDuplicateProcessing = forDuplicateProcessing;
+    }
+
 
 }

@@ -158,8 +158,8 @@ public class OpenMetadataTypesArchive3_9
          * Calls for new and changed types go here
          */
         update0015LinkedMediaTypes();
-
     }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------

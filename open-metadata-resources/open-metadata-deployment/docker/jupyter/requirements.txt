@@ -1,6 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-# Copyright Contributors to the Egeria project.
-
-# Add any additional python modules here. Install uses 'conda'
-pandas
-numpy>=1.22.0 # not directly required, pinned by Snyk to avoid a vulnerability

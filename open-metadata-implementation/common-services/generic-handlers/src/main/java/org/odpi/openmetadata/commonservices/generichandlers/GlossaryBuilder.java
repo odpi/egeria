@@ -77,13 +77,13 @@ public class GlossaryBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     public GlossaryBuilder(String        qualifiedName,
-                    String               displayName,
-                    String               description,
-                    String               language,
-                    String               usage,
-                    OMRSRepositoryHelper repositoryHelper,
-                    String               serviceName,
-                    String               serverName)
+                           String               displayName,
+                           String               description,
+                           String               language,
+                           String               usage,
+                           OMRSRepositoryHelper repositoryHelper,
+                           String               serviceName,
+                           String               serverName)
     {
         super(qualifiedName,
               null,
@@ -211,6 +211,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
 
         }
 
+        setEffectivityDates(properties);
+
         return properties;
     }
 
@@ -236,6 +238,8 @@ public class GlossaryBuilder extends ReferenceableBuilder
                                                                       methodName);
 
         }
+
+        setEffectivityDates(properties);
 
         return properties;
     }

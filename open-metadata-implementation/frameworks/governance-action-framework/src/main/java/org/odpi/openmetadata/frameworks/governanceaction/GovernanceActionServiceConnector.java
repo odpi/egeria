@@ -30,7 +30,7 @@ import java.util.List;
  * When you build a governance action service, you extend the governance action service class that matches the purpose of your governance action
  * to ensure your code receives a context with the appropriate interface.
  *
- * In addition there is a generic governance action service called <b>GovernanceActionService</b> that combines all of the functions of the
+ * In addition there is a generic governance action service called <b>GovernanceActionService</b> that combines all the functions of the
  * five specialist types of governance action service.  It is used when if is more efficient to combine the functions into one execution.
  */
 public abstract class GovernanceActionServiceConnector extends ConnectorBase implements AuditLoggingComponent, VirtualConnectorExtension
@@ -114,7 +114,7 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
 
 
     /**
-     * Set up details of the the governance action request and access to the metadata store.
+     * Set up details of the governance action request and access to the metadata store.
      * This method is called before start and should not be null
      *
      * @param governanceContext specialist context for this type of governance action.

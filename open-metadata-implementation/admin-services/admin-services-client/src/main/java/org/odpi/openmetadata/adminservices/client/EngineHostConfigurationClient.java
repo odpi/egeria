@@ -329,7 +329,7 @@ public class EngineHostConfigurationClient extends GovernanceServerConfiguration
 
 
     /**
-     * Set up the configuration for all of the open metadata engine services (OMESs).  This overrides
+     * Set up the configuration for all the open metadata engine services (OMESs).  This overrides
      * the current values.
      *
      * @param engineServicesConfig  list of configuration properties for each engine service.

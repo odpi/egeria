@@ -30,13 +30,13 @@ import java.util.Date;
  */
 public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 {
-    private OMRSMetadataCollection     realMetadataCollection;
-    private String                     localServerName;
-    private String                     localServerType;
-    private String                     localOrganizationName;
-    private boolean                    produceEventsForRealConnector;
-    private OMRSRepositoryEventManager outboundRepositoryEventProcessor;
-    private OMRSTypeDefManager         localTypeDefManager;
+    private final OMRSMetadataCollection     realMetadataCollection;
+    private final String                     localServerName;
+    private final String                     localServerType;
+    private final String                     localOrganizationName;
+    private final boolean                    produceEventsForRealConnector;
+    private final OMRSRepositoryEventManager outboundRepositoryEventProcessor;
+    private final OMRSTypeDefManager         localTypeDefManager;
 
     /*
      * The security verifier is initialized with a null security verifier.
@@ -58,7 +58,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param localOrganizationName name of the organization that owns the local server.
      * @param realMetadataCollection metadata collection of the real local connector.
      * @param outboundRepositoryEventProcessor outbound event processor
-     *                                         (may be null if a repository event mapper is deployed).
+     *                                         (maybe null if a repository event mapper is deployed).
      * @param produceEventsForRealConnector flag indicating whether the local connector should handle the outbound
      *                                      events for the real connector
      * @param typeDefManager manager of in-memory cache of type definitions (TypeDefs).
@@ -83,7 +83,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         /*
          * Save the metadata collection object for the real repository.  This is the metadata collection that
-         * does all of the work.  LocalOMRSMetadataCollection is just a wrapper for managing repository events
+         * does all the work.  LocalOMRSMetadataCollection is just a wrapper for managing repository events
          * and debug and audit logging.
          */
         if (realMetadataCollection == null)
@@ -317,7 +317,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
      * @param category enum value for the category of TypeDef to return.
@@ -341,7 +341,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         super.typeDefCategoryParameterValidation(userId, category, categoryParameterName, methodName);
 
         /*
-         * Perform operation and filter out all of the types that the user is not allowed to see.
+         * Perform operation and filter out all the types that the user is not allowed to see.
          */
         return this.securityVerifyTypeDefList(userId,
                                               realMetadataCollection.findTypeDefsByCategory(userId, category));
@@ -349,7 +349,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param userId unique identifier for requesting user.
      * @param category enum value for the category of an AttributeTypeDef to return.
@@ -418,7 +418,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param standard name of the standard null means any.
      * @param organization name of the organization null means any.
      * @param identifier identifier of the element in the standard null means any.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException all attributes of the external id are null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -451,7 +451,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param searchCriteria String search criteria.
-     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * @return TypeDefs list each entry in the list contains a typedef.  This is a structure
      * describing the TypeDef's category and properties.
      * @throws InvalidParameterException the searchCriteria is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
@@ -974,7 +974,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in
      *                                 the metadata collection.  These instances need to be purged before the
      *                                 TypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -1054,7 +1054,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws TypeDefNotKnownException the requested AttributeTypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in the
+     * @throws TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in
      *                                 the metadata collection.  These instances need to be purged before the
      *                                 AttributeTypeDef can be deleted.
      * @throws FunctionNotSupportedException the repository does not support this call.
@@ -1934,7 +1934,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
-     * @param relationshipTypeGUID String GUID of the the type of relationship required (null for all).
+     * @param relationshipTypeGUID String GUID of the type of relationship required (null for all).
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -2197,7 +2197,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
-     *                       (but could be slow so not recommended.
+     *                       (but could be slow so not recommended).
      * @param classificationName name of the classification, note a null is not valid.
      * @param matchClassificationProperties list of classification properties used to narrow the search (where any String
      *                                      property's value should be defined as a Java regular expression, even if it
@@ -2801,7 +2801,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param userId unique identifier for requesting user.
      * @param startEntityGUID The entity that is used to anchor the query.
@@ -3131,7 +3131,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Save a new entity that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new entity is assigned a new GUID and put
      * in the requested state.  The new entity is returned.
      *
@@ -3305,7 +3305,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          *   that if the entity originated externally, this repository is the replicator
          *      if the entity is from the outside the cohort but not replicated here this method will throw InvalidParameterException
          *
-         *   if something really ugly happens this method will throw RepositoryErrorException but not in any of the above scenarios
+         *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
          */
 
         EntityDetail entityDetail = this.validateEntityIsNotProxy(userId, entityGUID, methodName);
@@ -3452,7 +3452,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          *   that if the entity originated externally, this repository is NOT already the replicator
          *      if the entity is from the outside the cohort and replicated here this method will throw InvalidParameterException
          *
-         *   if something really ugly happens this method will throw RepositoryErrorException but not in any of the above scenarios
+         *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
          */
 
         EntityDetail entityDetail = this.validateEntityIsNotProxy(userId, entityGUID, methodName);
@@ -3489,7 +3489,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
              * Any other combination suggests that this is NOT a reference copy (of either an instance from the local cohort or
              * an external entity) and consequently cannot be rehomed.
              *
-             * If not rehomable throw an InvalidParameterException.
+             * If not "rehomable" throw an InvalidParameterException.
              */
 
             /*
@@ -3596,7 +3596,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          *   that if the relationship originated externally, this repository is the replicator
          *      if the relationship is from the outside the cohort but not replicated here this method will throw InvalidParameterException
          *
-         *   if something really ugly happens this method will throw RepositoryErrorException but not in any of the above scenarios
+         *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
          */
 
         Relationship relationship;
@@ -3643,7 +3643,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          *   that if the relationship originated externally, this repository is the replicator
          *      if the relationship is from the outside the cohort but not replicated here this method will throw InvalidParameterException
          *
-         *   if something really ugly happens this method will throw RepositoryErrorException but not in any of the above scenarios
+         *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
          */
 
 
@@ -3709,7 +3709,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
 
             /*
-             * There is a logic error as the caller has requested update or delete of an relationship and this
+             * There is a logic error as the caller has requested update or delete of a relationship and this
              * repository does not have the right to perform the requested operation.
              */
             String  parameterName = "relationshipGUID";
@@ -3769,7 +3769,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          *   that if the relationship originated externally, this repository is NOT already the replicator
          *      if the relationship is from the outside the cohort and replicated here this method will throw InvalidParameterException
          *
-         *   if something really ugly happens this method will throw RepositoryErrorException but not in any of the above scenarios
+         *   if something really unexpected happens this method will throw RepositoryErrorException but not in any of the above scenarios
          */
 
         return this.validateRelationshipCanBeRehomedByRepository(relationshipGUID,
@@ -3830,13 +3830,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                         updateAllowed = true;
                     }
                     break;
-
-                default:
-                    /*
-                     * For any other instance provenance value do not allow update
-                     */
-                    updateAllowed = false;
-                    break;
             }
 
             if (updateAllowed)
@@ -3868,7 +3861,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         else
         {
             /*
-             * There is a logic error as the caller has requested update of an relationship but the
+             * There is a logic error as the caller has requested update of a relationship but the
              * relationship cannot be found.
              */
             throw new RelationshipNotKnownException(OMRSErrorCode.NULL_INSTANCE.getMessageDefinition(repositoryName,
@@ -4111,10 +4104,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * Delete an entity.  The entity is soft-deleted.  This means it is still in the graph, but it is no longer returned
      * on queries.  All homed relationships to the entity are also soft-deleted and will no longer be usable, while any
      * reference copy relationships to the entity will be purged (and will no longer be accessible in this repository).
-     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete() call.
      * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use; however,
      * this will not restore any of the relationships that were soft-deleted as part of the original deleteEntity() call.
      *
@@ -5231,7 +5224,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     /**
      * Save a new relationship that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new relationship is assigned a new GUID and put
      * in the requested state.  The new relationship is returned.
      *
@@ -5582,7 +5575,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
     /**
      * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
-     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * DELETED, and it is no longer available for queries.  To remove the relationship permanently from the
      * metadata collection, use purgeRelationship().
      *
      * @param userId unique identifier for requesting user.
@@ -5935,7 +5928,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * Change the type an existing entity.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type and the properties adjusted.
      *
@@ -6258,7 +6251,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * Change the type of the existing relationship.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -6547,7 +6540,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -6591,7 +6584,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository
+     * @return list of all the classifications for this entity that are homed in this repository
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -6630,7 +6623,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove or
      * soft delete relationships attached to the entity.
@@ -6679,7 +6672,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove or
      * soft delete relationships attached to the entity
@@ -6728,7 +6721,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
 
     /**
-     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * Remove a reference copy of the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
@@ -7393,7 +7386,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                               FunctionNotSupportedException
     {
         /*
-         * It is necessary to filter out all of the instances that should not be saved before passing the
+         * It is necessary to filter out all the instances that should not be saved before passing the
          * instances to the real connector.  The validated instances are packed back into an instance graph to
          * pass on the batch so that the real repository connector can benefit from the batch.
          */

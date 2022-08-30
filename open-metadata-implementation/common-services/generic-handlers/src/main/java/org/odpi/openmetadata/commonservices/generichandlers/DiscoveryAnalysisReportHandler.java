@@ -84,6 +84,11 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
      * @param discoveryEngineGUID unique identifier of the discovery engine that is running the discovery service
      * @param discoveryServiceGUID unique identifier of the discovery service creating the report
      * @param additionalProperties additional properties for the report
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return The new discovery report.
@@ -102,6 +107,11 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                                 String                 discoveryEngineGUID,
                                                 String                 discoveryServiceGUID,
                                                 Map<String, String>    additionalProperties,
+                                                Date                   effectiveFrom,
+                                                Date                   effectiveTo,
+                                                boolean                forLineage,
+                                                boolean                forDuplicateProcessing,
+                                                Date                   effectiveTime,
                                                 String                 methodName) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
@@ -116,14 +126,13 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameterName, methodName);
 
-        Date effectiveTime = new Date();
 
         repositoryHandler.getEntityByGUID(userId,
                                           assetGUID,
                                           assetGUIDParameterName,
                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
 
@@ -131,8 +140,8 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                           discoveryEngineGUIDParameterName,
                                           assetGUID,
                                           OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
 
@@ -152,6 +161,8 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
         {
             builder.setAnchors(userId, assetGUID, methodName);
         }
+
+        builder.setEffectivityDates(effectiveFrom,effectiveTo);
 
         String  reportGUID = repositoryHandler.createEntity(userId,
                                                             OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
@@ -209,6 +220,13 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
      * @param analysisParameters analysis parameters passed to the discovery service
      * @param discoveryRequestStatus current status of the discovery processing
      * @param additionalProperties additional properties for the report
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
@@ -223,6 +241,12 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                                Map<String, String>    analysisParameters,
                                                int                    discoveryRequestStatus,
                                                Map<String, String>    additionalProperties,
+                                               Date                   effectiveFrom,
+                                               Date                   effectiveTo,
+                                               boolean                isMergeUpdate,
+                                               boolean                forLineage,
+                                               boolean                forDuplicateProcessing,
+                                               Date                   effectiveTime,
                                                String                 methodName) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
@@ -242,6 +266,8 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                                                                     serviceName,
                                                                                     serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     null,
                                     null,
@@ -249,12 +275,12 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                     discoveryReportGUIDParameterName,
                                     OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_GUID,
                                     OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
-                                    true,
-                                    new Date(),
+                                    isMergeUpdate,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -264,6 +290,9 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
      *
      * @param userId identifier of calling user
      * @param discoveryReportGUID identifier of the discovery request.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return discovery report
@@ -274,6 +303,9 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
      */
     public B getDiscoveryAnalysisReport(String   userId,
                                         String   discoveryReportGUID,
+                                        boolean  forLineage,
+                                        boolean  forDuplicateProcessing,
+                                        Date     effectiveTime,
                                         String   methodName) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
@@ -284,10 +316,10 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                      discoveryReportGUID,
                                      reportGUIDParameterName,
                                      OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
-                                     false,
-                                     false,
+                                     forLineage,
+                                     forDuplicateProcessing,
                                      supportedZones,
-                                     new Date(),
+                                     effectiveTime,
                                      methodName);
     }
 
@@ -298,7 +330,10 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maximumResults maximum number of elements to return an this call
+     * @param maximumResults maximum number of elements to return on this call
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of discovery analysis reports
@@ -311,6 +346,9 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                                  String  assetGUID,
                                                  int     startingFrom,
                                                  int     maximumResults,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
                                                  String  methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -324,9 +362,14 @@ public class DiscoveryAnalysisReportHandler<B> extends OpenMetadataAPIGenericHan
                                         OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_GUID,
                                         OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_NAME,
                                         OpenMetadataAPIMapper.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startingFrom,
                                         maximumResults,
-                                        new Date(),
+                                        effectiveTime,
                                         methodName);
     }
 }

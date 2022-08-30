@@ -21,6 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,7 +99,8 @@ class AssetContextHandlerTest {
         when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any())).thenReturn(schemaType);
 
         mockAnchorGuid(schemaType);
-        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
+        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION,
+                 true, false, null, "isInternalTabularColumn"))
                 .thenReturn(true);
 
         assetContextHandler.buildSchemaElementContext(USER, entityDetail);
@@ -114,7 +116,7 @@ class AssetContextHandlerTest {
         when(handlerHelper.addContextForRelationships(eq(USER), eq(entityDetail), eq(ATTRIBUTE_FOR_SCHEMA), any())).thenReturn(schemaType);
 
         mockAnchorGuid(schemaType);
-        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, "isInternalTabularColumn"))
+        when(genericHandler.isEntityATypeOf(USER, ANCHOR_GUID_VALUE, ANCHOR_GUID, PORT_IMPLEMENTATION, true, false, null, "isInternalTabularColumn"))
                 .thenReturn(false);
 
         assetContextHandler.buildSchemaElementContext(USER, entityDetail);

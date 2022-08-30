@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Base implementation of a Data Engine Connector, implementing all of the required methods any Data Engine Connector
+ * Base implementation of a Data Engine Connector, implementing all the required methods any Data Engine Connector
  * is expected to provide (via the DataEngineInterface). It is an abstract class as on its own it does absolutely
  * nothing, and therefore a Data Engine Connector needs to extend it and override at least one of the methods to
  * actually do something.
@@ -28,10 +28,6 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
      * Default constructor
      */
     public DataEngineConnectorBase() { super(); }
-
-    public void loadCache() throws ConnectorCheckedException, PropertyServerException {
-        log.debug("Loading cache is done automatically.");
-    }
 
     /**
      * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own

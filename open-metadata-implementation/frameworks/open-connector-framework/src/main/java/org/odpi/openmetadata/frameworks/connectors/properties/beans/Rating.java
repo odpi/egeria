@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Rating extends ElementHeader
+public class Rating extends ElementBase
 {
     private static final long     serialVersionUID = 1L;
 
@@ -160,15 +160,20 @@ public class Rating extends ElementHeader
     public String toString()
     {
         return "Rating{" +
-                "starRating=" + starRating +
-                ", review='" + review + '\'' +
-                ", user='" + user + '\'' +
-                ", isPublic='" + isPublic + '\'' +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", starRating=" + starRating +
+                       ", review='" + review + '\'' +
+                       ", user='" + user + '\'' +
+                       ", isPublic=" + isPublic +
+                       '}';
     }
 
 

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -36,7 +37,7 @@ public class UserIdentityConverter<B> extends CommunityProfileOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -72,6 +73,7 @@ public class UserIdentityConverter<B> extends CommunityProfileOMASConverter<B>
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
                     properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    properties.setUserId(this.removeUserId(instanceProperties));
                     properties.setDistinguishedName(this.removeDistinguishedName(instanceProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     properties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
@@ -104,7 +106,7 @@ public class UserIdentityConverter<B> extends CommunityProfileOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -114,12 +116,20 @@ public class UserIdentityConverter<B> extends CommunityProfileOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
-        return getNewBean(beanClass, entity, methodName);
+        B returnBean = this.getNewBean(beanClass, entity, methodName);
+
+        if (returnBean instanceof UserIdentityElement)
+        {
+            UserIdentityElement bean = (UserIdentityElement) returnBean;
+
+            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+        }
+
+        return returnBean;
     }
 }

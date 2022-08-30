@@ -13,9 +13,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceActionTy
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NextGovernanceActionTypeElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.server.GovernanceExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GovernanceExchangeResource
 {
 
-    private GovernanceExchangeRESTServices restAPI = new GovernanceExchangeRESTServices();
+    private final GovernanceExchangeRESTServices restAPI = new GovernanceExchangeRESTServices();
 
     /**
      * Default constructor

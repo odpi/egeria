@@ -28,7 +28,7 @@ public class TypeDefElementHeader extends RepositoryElementHeader
     public static final long  CURRENT_TYPE_DEF_HEADER_VERSION = 1;
 
     /*
-     * Version number for this header.  This is used to ensure that all of the critical header information
+     * Version number for this header.  This is used to ensure that all the critical header information
      * in read in a back-level version of the OMRS.  The default is 0 to indicate that the instance came from
      * a version of the OMRS that does not have a version number encoded.
      */

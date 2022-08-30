@@ -92,7 +92,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a MetadataSourceResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return MetadataSourceResponse
@@ -118,7 +118,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a ActorProfileElement in a response object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -144,7 +144,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a list of ActorProfileElements in a response object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return response object
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -169,7 +169,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a list of ActorProfileElements in a response object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
      * @param requestBody request body for the request
      * @param params  a list of parameters that are slotted into the url template
      * @return response object
@@ -193,10 +193,88 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
 
 
     /**
+     * Issue a GET REST call that returns a CommunityElement in a response object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public CommunityResponse callCommunityGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        CommunityResponse restResult = this.callGetRESTCall(methodName, CommunityResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of CommunityElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public CommunityListResponse callCommunityListGetRESTCall(String    methodName,
+                                                              String    urlTemplate,
+                                                              Object... params)  throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        CommunityListResponse restResult = this.callGetRESTCall(methodName, CommunityListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of CommunityElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public CommunityListResponse callCommunityListPostRESTCall(String    methodName,
+                                                               String    urlTemplate,
+                                                               Object    requestBody,
+                                                               Object... params)  throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        CommunityListResponse restResult = this.callPostRESTCall(methodName, CommunityListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a GET REST call that returns a PersonRoleElement in a response object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -222,7 +300,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a list of PersonRoleElements in a response object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return response object
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -247,7 +325,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a POST REST call that returns a list of PersonRoleElements in a response object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
      * @param requestBody request body for the request
      * @param params  a list of parameters that are slotted into the url template
      * @return response object
@@ -275,7 +353,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a POST REST call that returns a list of PersonRoleAppointees in a response object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
      * @param requestBody request body for the request
      * @param params  a list of parameters that are slotted into the url template
      * @return response object
@@ -302,7 +380,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a UserIdentityElement in a response object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return UserIdentityResponse
@@ -328,7 +406,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a list of UserIdentityElements in a response object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return UserIdentityListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -353,7 +431,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a POST REST call that returns a list of UserIdentityElements in a response object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
      * @param requestBody request body for the request
      * @param params  a list of parameters that are slotted into the url template
      * @return UserIdentityListResponse
@@ -380,7 +458,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a PersonalProfileUniverse in a response  object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return PersonalProfileResponse
@@ -402,11 +480,40 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
     }
 
 
+
+    /**
+     * Issue a POST REST call that returns a  PersonalProfileElement in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return PersonalProfileResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public PersonalProfileResponse callPersonalProfilePostRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object    requestBody,
+                                                                   Object... params)  throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        PersonalProfileResponse restResult = this.callPostRESTCall(methodName, PersonalProfileResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
     /**
      * Issue a GET REST call that returns a list of PersonalProfileElements in a response object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return PersonalProfileListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -427,11 +534,40 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
     }
 
 
+
     /**
-     * Issue a GET REST call that returns a AssetListResponse object.
+     * Issue a POST REST call that returns a list of PersonalProfileElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return PersonalProfileListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public PersonalProfileListResponse callPersonalProfileListPostRESTCall(String    methodName,
+                                                                           String    urlTemplate,
+                                                                           Object    requestBody,
+                                                                           Object... params)  throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        PersonalProfileListResponse restResult = this.callPostRESTCall(methodName, PersonalProfileListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a GET REST call that returns an AssetListResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return AssetListResponse
@@ -458,7 +594,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a SecurityGroupResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -484,7 +620,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a POST REST call that returns a SecurityGroupResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -512,7 +648,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a SecurityGroupsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -538,7 +674,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a POST REST call that returns a SecurityGroupsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param requestBody object that passes additional parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
@@ -566,7 +702,7 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
      * Issue a GET REST call that returns a ElementStubsResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return response object
@@ -588,11 +724,38 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
     }
 
 
+
+    /**
+     * Issue a GET REST call that returns a RelatedElementListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public RelatedElementListResponse callRelatedElementListGetRESTCall(String    methodName,
+                                                                        String    urlTemplate,
+                                                                        Object... params) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        RelatedElementListResponse restResult = this.callGetRESTCall(methodName, RelatedElementListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
     /**
      * Issue a GET REST call that returns a LocationResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return LocationResponse
@@ -615,26 +778,130 @@ public class CommunityProfileRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a POST REST call that returns a LocationsResponse object.
+     * Issue a GET REST call that returns a LocationListResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody properties describing the valid value definition/set
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return LocationsResponse
+     * @return LocationListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public LocationsResponse callLocationsPostRESTCall(String    methodName,
-                                                       String    urlTemplate,
-                                                       Object    requestBody,
-                                                       Object... params) throws InvalidParameterException,
+    public LocationListResponse callLocationsGetRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object... params) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        LocationListResponse restResult = this.callGetRESTCall(methodName, LocationListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a LocationListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
+     * @param requestBody properties describing the valid value definition/set
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return LocationListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public LocationListResponse callLocationsPostRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object    requestBody,
+                                                          Object... params) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        LocationsResponse restResult = this.callPostRESTCall(methodName, LocationsResponse.class, urlTemplate, requestBody, params);
+        LocationListResponse restResult = this.callPostRESTCall(methodName, LocationListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ValidValueElement in a response object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public ValidValueResponse callValidValueGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        ValidValueResponse restResult = this.callGetRESTCall(methodName, ValidValueResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of ValidValueElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public ValidValueListResponse callValidValueListGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params)  throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        ValidValueListResponse restResult = this.callGetRESTCall(methodName, ValidValueListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of ValidValueElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
+     * @param requestBody request body for the request
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public ValidValueListResponse callValidValueListPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params)  throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        ValidValueListResponse restResult = this.callPostRESTCall(methodName, ValidValueListResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

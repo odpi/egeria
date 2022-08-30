@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -237,8 +238,8 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateGUID(assetGUID, GUID_PARAMETER, methodName);
 
         List<Relationship> relationshipsByType = assetHandler.getAttachmentLinks(userId, assetGUID, GUID_PARAMETER,
-                assetTypeName, null, null, null,
-                0, invalidParameterHandler.getMaxPagingSize(), null, methodName);
+                 assetTypeName, null, null, null, null, 0,
+                 false, false, 0, invalidParameterHandler.getMaxPagingSize(),  null, methodName);
 
         if (CollectionUtils.isNotEmpty(relationshipsByType)) {
             return assetCatalogConverter.convertRelationships(relationshipsByType);
@@ -310,8 +311,8 @@ public class AssetCatalogHandler {
         String relationshipTypeGUID = commonHandler.getTypeDefGUID(userId, relationshipTypeName);
 
         List<Relationship> pagedRelationshipsByType = assetHandler.getAttachmentLinks(userId, assetGUID, GUID_PARAMETER,
-                assetTypeName, relationshipTypeGUID, relationshipTypeName, null,
-                from, pageSize, null, methodName);
+                assetTypeName, relationshipTypeGUID, relationshipTypeName, null, null,0,
+                false, false, from, pageSize, null, methodName);
 
         if (CollectionUtils.isNotEmpty(pagedRelationshipsByType)) {
             return assetCatalogConverter.convertRelationships(pagedRelationshipsByType);
@@ -769,7 +770,7 @@ public class AssetCatalogHandler {
                 if (port.getType().getTypeDefName().equals(PORT_IMPLEMENTATION)) {
                     EntityDetail schemaType = assetHandler.getAttachedEntity(userId, port.getGUID(), GUID_PARAMETER,
                             DATABASE, PORT_SCHEMA_GUID, PORT_SCHEMA, null, false,
-                            false, null, method);
+                            false, new Date(), method);
 
                     if (schemaType != null) {
                         assetCatalogConverter.addElement(assetCatalogItemElement, schemaType);
@@ -823,7 +824,7 @@ public class AssetCatalogHandler {
 
         EntityDetail schemaType = assetHandler.getAttachedEntity(userId, dataSet.getGUID(), GUID_PARAMETER,
                 DATA_SET, ASSET_SCHEMA_TYPE_GUID, ASSET_SCHEMA_TYPE, null, false,
-                false, null, method);
+                false, new Date(), method);
 
         if (schemaType == null) {
             return;
@@ -857,8 +858,8 @@ public class AssetCatalogHandler {
 
         List<Relationship> parentFolderRelationships = assetHandler.getAttachmentLinks(userId, entityDetail.getGUID(),
                 GUID_PARAMETER, entityDetail.getType().getTypeDefName(), FOLDER_HIERARCHY_GUID,
-                FOLDER_HIERARCHY, null, 0, invalidParameterHandler.getMaxPagingSize(),
-                null, method);
+                FOLDER_HIERARCHY, null, null,0, false, false,
+                0, invalidParameterHandler.getMaxPagingSize(), new Date(), method);
 
         if (CollectionUtils.isEmpty(parentFolderRelationships)) {
             return;
@@ -918,7 +919,7 @@ public class AssetCatalogHandler {
         EntityDetail host = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(), GUID_PARAMETER,
                 entityDetail.getType().getTypeDefName(), SOFTWARE_SERVER_PLATFORM_DEPLOYMENT_GUID,
                 SOFTWARE_SERVER_PLATFORM_DEPLOYMENT, null, false, false,
-                null, method);
+                new Date(), method);
         if (host != null) {
             assetCatalogConverter.addElement(assetCatalogItemElement, host);
             getContextForHost(userId, host, assetCatalogItemElement);
@@ -976,7 +977,7 @@ public class AssetCatalogHandler {
 
         EntityDetail operatingPlatform = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(), GUID_PARAMETER,
                 entityDetail.getType().getTypeDefName(), HOST_OPERATING_PLATFORM_GUID, HOST_OPERATING_PLATFORM,
-                null, false, false, null, method);
+                null, false, false, new Date(), method);
         assetCatalogConverter.addElement(assetCatalogItemElement, operatingPlatform);
 
         processLocations(userId, entityDetail, assetCatalogItemElement, method);
@@ -1026,7 +1027,7 @@ public class AssetCatalogHandler {
 
         EntityDetail softwareServerPlatform = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(),
                 GUID_PARAMETER, SOFTWARE_SERVER, SOFTWARE_SERVER_DEPLOYMENT_GUID, SOFTWARE_SERVER_DEPLOYMENT,
-                null, false, false, null, method);
+                null, false, false, new Date(), method);
         if (softwareServerPlatform != null) {
             parentElement = assetCatalogConverter.getLastNode(assetCatalogItemElement);
             assetCatalogConverter.addElement(assetCatalogItemElement, softwareServerPlatform);
@@ -1035,7 +1036,7 @@ public class AssetCatalogHandler {
 
         EntityDetail endpoint = assetHandler.getAttachedEntity(userId, entityDetail.getGUID(),
                 GUID_PARAMETER, SOFTWARE_SERVER, SERVER_ENDPOINT_GUID, SERVER_ENDPOINT,
-                null, false, false, null, method);
+                null, false, false, new Date(), method);
         if (endpoint != null) {
             if (parentElement != null) {
                 assetCatalogConverter.addChildElement(parentElement, assetCatalogConverter.buildAssetElements(endpoint));
@@ -1067,14 +1068,14 @@ public class AssetCatalogHandler {
             List<EntityDetail> elements = new ArrayList<>();
             EntityDetail connectorType = assetHandler.getAttachedEntity(userId, connection.getGUID(),
                     GUID_PARAMETER, CONNECTION, CONNECTION_CONNECTOR_TYPE_GUID, CONNECTION_CONNECTOR_TYPE,
-                    null, false, false, null, methodName);
+                    null, false, false, new Date(), methodName);
             if (connectorType != null) {
                 elements.add(connectorType);
             }
 
             EntityDetail asset = assetHandler.getAttachedEntity(userId, connection.getGUID(),
                     GUID_PARAMETER, CONNECTION, CONNECTION_TO_ASSET_GUID, CONNECTION_TO_ASSET,
-                    null, false, false, null, methodName);
+                    null, false, false, new Date(), methodName);
             invalidParameterHandler.validateAssetInSupportedZone(asset.getGUID(),
                     GUID_PARAMETER,
                     commonHandler.getAssetZoneMembership(asset.getClassifications()),
@@ -1200,7 +1201,7 @@ public class AssetCatalogHandler {
 
         EntityDetail dataSet = assetHandler.getAttachedEntity(userId, entity.getGUID(),
                 GUID_PARAMETER, entity.getType().getTypeDefName(), ASSET_SCHEMA_TYPE_GUID, ASSET_SCHEMA_TYPE,
-                null, false, false, null, methodName);
+                null, false, false, new Date(), methodName);
         if (dataSet == null) {
             return;
         }
@@ -1237,8 +1238,8 @@ public class AssetCatalogHandler {
         String methodName = "getAsset";
         List<Relationship> assetToDataSetRelationships = assetHandler.getAttachmentLinks(userId, dataSet.getGUID(),
                 GUID_PARAMETER, dataSet.getType().getTypeDefName(), DATA_CONTENT_FOR_DATA_SET_GUID,
-                DATA_CONTENT_FOR_DATA_SET, null, 0, invalidParameterHandler.getMaxPagingSize(),
-                null, methodName);
+                DATA_CONTENT_FOR_DATA_SET, null, null, 1, false, false,0,
+                invalidParameterHandler.getMaxPagingSize(), new Date(), methodName);
 
         if (CollectionUtils.isEmpty(assetToDataSetRelationships)) {
             return;
@@ -1360,7 +1361,7 @@ public class AssetCatalogHandler {
 
         List<EntityDetail> entitiesByPropertyValue = assetHandler.getEntitiesByType(userId, entityTypeGUID,
                 entityTypeName, null,false,false, 0,
-                20, null, methodName);
+                20, new Date(), methodName);
 
         if (CollectionUtils.isNotEmpty(entitiesByPropertyValue)) {
             return entitiesByPropertyValue;

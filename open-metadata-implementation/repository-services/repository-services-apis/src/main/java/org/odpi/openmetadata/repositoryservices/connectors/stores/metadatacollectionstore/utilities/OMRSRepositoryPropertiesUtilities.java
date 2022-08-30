@@ -248,7 +248,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      *
      * @param sourceName source of call
      * @param propertyName name of requested map property
-     * @param properties all of the properties of the instance
+     * @param properties all the properties of the instance
      * @param callingMethodName method of caller
      * @return array property value or null
      */
@@ -309,7 +309,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      *
      * @param sourceName source of call
      * @param propertyName name of requested map property
-     * @param properties all of the properties of the instance
+     * @param properties all the properties of the instance
      * @param methodName method of caller
      * @return array property value or null
      */
@@ -338,7 +338,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
-     * Convert the values in the instance properties into a String Array.  It assumes all of the elements are primitives.
+     * Convert the values in the instance properties into a String Array.  It assumes all the elements are primitives.
      *
      * @param instanceProperties instance properties containing the values.  They should all be primitive Strings.
      * @param callingMethodName method of caller
@@ -705,7 +705,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      *
      * @param sourceName source of call
      * @param propertyName name of requested map property
-     * @param properties all of the properties of the instance
+     * @param properties all the properties of the instance
      * @param methodName method of caller
      * @return map property value or null
      */
@@ -772,7 +772,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             if (retrievedProperty != null)
             {
                 this.removeProperty(propertyName, properties);
-                log.debug("Properties left: " + properties.toString());
+                log.debug("Properties left: " + properties);
             }
         }
 
@@ -807,12 +807,31 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                         if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
                         {
                             PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
+
                             resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
                         }
                         else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ENUM)
                         {
                             EnumPropertyValue  enumPropertyValue = (EnumPropertyValue) actualPropertyValue;
                             resultingMap.put(mapPropertyName, enumPropertyValue.getSymbolicName());
+                        }
+                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.MAP)
+                        {
+                            MapPropertyValue  mapPropertyValue = (MapPropertyValue) actualPropertyValue;
+
+                            resultingMap.put(mapPropertyName, mapPropertyValue.valueAsObject());
+                        }
+                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ARRAY)
+                        {
+                            ArrayPropertyValue  arrayPropertyValue = (ArrayPropertyValue) actualPropertyValue;
+
+                            resultingMap.put(mapPropertyName, arrayPropertyValue.valueAsObject());
+                        }
+                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.STRUCT)
+                        {
+                            StructPropertyValue structPropertyValue = (StructPropertyValue) actualPropertyValue;
+
+                            resultingMap.put(mapPropertyName, structPropertyValue);
                         }
                         else
                         {

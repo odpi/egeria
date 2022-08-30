@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GlossaryTermRelationship implements Serializable
+public class GlossaryTermRelationship extends RelationshipProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -46,6 +46,8 @@ public class GlossaryTermRelationship implements Serializable
      */
     public GlossaryTermRelationship(GlossaryTermRelationship template)
     {
+        super(template);
+
         if (template != null)
         {
             expression = template.getExpression();
@@ -176,12 +178,15 @@ public class GlossaryTermRelationship implements Serializable
     public String toString()
     {
         return "GlossaryTermRelationship{" +
-                "expression='" + expression + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                ", steward='" + steward + '\'' +
-                ", source='" + source + '\'' +
-                '}';
+                       "expression='" + expression + '\'' +
+                       ", description='" + description + '\'' +
+                       ", status=" + status +
+                       ", steward='" + steward + '\'' +
+                       ", source='" + source + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -202,12 +207,14 @@ public class GlossaryTermRelationship implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         GlossaryTermRelationship that = (GlossaryTermRelationship) objectToCompare;
-        return status == that.status &&
-                Objects.equals(expression, that.expression) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(steward, that.steward) &&
-                Objects.equals(source, that.source);
+        return Objects.equals(expression, that.expression) &&
+                       Objects.equals(description, that.description) && status == that.status &&
+                       Objects.equals(steward, that.steward) && Objects.equals(source, that.source);
     }
 
 
@@ -219,6 +226,6 @@ public class GlossaryTermRelationship implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(expression, description, status, steward, source);
+        return Objects.hash(super.hashCode(), expression, description, status, steward, source);
     }
 }

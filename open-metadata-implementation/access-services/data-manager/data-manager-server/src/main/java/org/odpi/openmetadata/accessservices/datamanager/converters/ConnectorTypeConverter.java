@@ -36,7 +36,7 @@ public class ConnectorTypeConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -73,7 +73,7 @@ public class ConnectorTypeConverter<B> extends DataManagerOMASConverter<B>
 
                     connectorTypeProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     connectorTypeProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    connectorTypeProperties.setDisplayName(this.removeName(instanceProperties));
+                    connectorTypeProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     connectorTypeProperties.setDescription(this.removeDescription(instanceProperties));
                     connectorTypeProperties.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
                     connectorTypeProperties.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));
@@ -116,7 +116,7 @@ public class ConnectorTypeConverter<B> extends DataManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

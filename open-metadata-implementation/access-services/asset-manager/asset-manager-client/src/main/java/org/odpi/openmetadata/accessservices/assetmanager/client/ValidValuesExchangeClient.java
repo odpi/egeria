@@ -6,21 +6,21 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 import org.odpi.openmetadata.accessservices.assetmanager.api.ValidValuesExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**
  * ValidValuesExchangeClient provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
- * the same attributes and so inherit from ValidValue where all of the attributes are defined.
+ * the same attributes and so inherit from ValidValue where all the attributes are defined.
  *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
@@ -134,12 +134,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param validValueExternalIdentifier unique identifier of the valid value in the external asset manager
-     * @param validValueExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param validValueExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param validValueExternalIdentifierSource component that issuing this request.
-     * @param validValueExternalIdentifierKeyPattern  pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param validValueProperties properties to store
      *
      * @return unique identifier for the new set
@@ -149,18 +144,13 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public String  createValidValueSet(String               userId,
-                                       String               assetManagerGUID,
-                                       String               assetManagerName,
-                                       String               validValueExternalIdentifier,
-                                       String               validValueExternalIdentifierName,
-                                       String               validValueExternalIdentifierUsage,
-                                       String               validValueExternalIdentifierSource,
-                                       KeyPattern           validValueExternalIdentifierKeyPattern,
-                                       Map<String, String>  mappingProperties,
-                                       ValidValueProperties validValueProperties) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public String  createValidValueSet(String                       userId,
+                                       String                       assetManagerGUID,
+                                       String                       assetManagerName,
+                                       ExternalIdentifierProperties externalIdentifierProperties,
+                                       ValidValueProperties         validValueProperties) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         // todo
         return null;
@@ -174,12 +164,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param setGUID unique identifier of the set to attach this to.
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param validValueExternalIdentifier unique identifier of the valid value in the external asset manager
-     * @param validValueExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param validValueExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param validValueExternalIdentifierSource component that issuing this request.
-     * @param validValueExternalIdentifierKeyPattern  pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param validValueProperties properties to store
      *
      * @return unique identifier for the new definition
@@ -189,19 +174,14 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public String  createValidValueDefinition(String               userId,
-                                              String               setGUID,
-                                              String               assetManagerGUID,
-                                              String               assetManagerName,
-                                              String               validValueExternalIdentifier,
-                                              String               validValueExternalIdentifierName,
-                                              String               validValueExternalIdentifierUsage,
-                                              String               validValueExternalIdentifierSource,
-                                              KeyPattern           validValueExternalIdentifierKeyPattern,
-                                              Map<String, String>  mappingProperties,
-                                              ValidValueProperties validValueProperties) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+    public String  createValidValueDefinition(String                       userId,
+                                              String                       setGUID,
+                                              String                       assetManagerGUID,
+                                              String                       assetManagerName,
+                                              ExternalIdentifierProperties externalIdentifierProperties,
+                                              ValidValueProperties         validValueProperties) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
     {
         // todo
         return null;
@@ -221,6 +201,9 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param validValueExternalIdentifier unique identifier of the valid value in the external asset manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param validValueProperties properties to store
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
@@ -233,9 +216,12 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                     String               validValueGUID,
                                     String               validValueExternalIdentifier,
                                     boolean              isMergeUpdate,
-                                    ValidValueProperties validValueProperties) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                    ValidValueProperties validValueProperties,
+                                    Date                 effectiveTime,
+                                    boolean              forLineage,
+                                    boolean              forDuplicateProcessing) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         // todo
     }
@@ -250,19 +236,25 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param assetManagerName unique name of software server capability representing the caller
      * @param validValueGUID unique identifier of the valid value.
      * @param validValueExternalIdentifier unique identifier of the valid value in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public void    removeValidValue(String userId,
-                                    String assetManagerGUID,
-                                    String assetManagerName,
-                                    String validValueGUID,
-                                    String validValueExternalIdentifier) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public void    removeValidValue(String  userId,
+                                    String  assetManagerGUID,
+                                    String  assetManagerName,
+                                    String  validValueGUID,
+                                    String  validValueExternalIdentifier,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         // todo
     }
@@ -278,19 +270,25 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param assetManagerName unique name of software server capability representing the caller
      * @param setGUID unique identifier of the set.
      * @param validValueGUID unique identifier of the valid value to add to the set.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public void    attachValidValueToSet(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         String setGUID,
-                                         String validValueGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void    attachValidValueToSet(String  userId,
+                                         String  assetManagerGUID,
+                                         String  assetManagerName,
+                                         String  setGUID,
+                                         String  validValueGUID,
+                                         Date    effectiveTime,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         // todo
     }
@@ -305,19 +303,25 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param assetManagerName unique name of software server capability representing the caller
      * @param setGUID owning set
      * @param validValueGUID unique identifier of the member to be removed.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public void    detachValidValueFromSet(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String setGUID,
-                                           String validValueGUID) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void    detachValidValueFromSet(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           String  setGUID,
+                                           String  validValueGUID,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         // todo
     }
@@ -331,6 +335,9 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param validValueGUID unique identifier of the valid value.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return Valid value bean
      *
@@ -339,12 +346,15 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public ValidValueElement getValidValueByGUID(String userId,
-                                                 String assetManagerGUID,
-                                                 String assetManagerName,
-                                                 String validValueGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public ValidValueElement getValidValueByGUID(String  userId,
+                                                 String  assetManagerGUID,
+                                                 String  assetManagerName,
+                                                 String  validValueGUID,
+                                                 Date    effectiveTime,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         // todo
         return null;
@@ -362,6 +372,9 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param validValueName qualified name of the valid value.
      * @param startFrom         starting element (used in paging through large result sets)
      * @param pageSize          maximum number of results to return
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return Valid value beans
      *
@@ -370,14 +383,17 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public List<ValidValueElement> getValidValueByName(String userId,
-                                                       String assetManagerGUID,
-                                                       String assetManagerName,
-                                                       String validValueName,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<ValidValueElement> getValidValueByName(String  userId,
+                                                       String  assetManagerGUID,
+                                                       String  assetManagerName,
+                                                       String  validValueName,
+                                                       int     startFrom,
+                                                       int     pageSize,
+                                                       Date    effectiveTime,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         // todo
         return null;
@@ -395,6 +411,9 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param searchString string value to look for - may contain RegEx characters.
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of valid value beans
      *
@@ -403,14 +422,17 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public List<ValidValueElement> findValidValues(String userId,
-                                                   String assetManagerGUID,
-                                                   String assetManagerName,
-                                                   String searchString,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<ValidValueElement> findValidValues(String  userId,
+                                                   String  assetManagerGUID,
+                                                   String  assetManagerName,
+                                                   String  searchString,
+                                                   int     startFrom,
+                                                   int     pageSize,
+                                                   Date    effectiveTime,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         // todo
         return null;
@@ -426,6 +448,9 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param validValueSetGUID unique identifier of the valid value set.
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of valid value beans
      *
@@ -434,14 +459,17 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public List<ValidValueElement> getValidValueSetMembers(String userId,
-                                                           String assetManagerGUID,
-                                                           String assetManagerName,
-                                                           String validValueSetGUID,
-                                                           int    startFrom,
-                                                           int    pageSize) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<ValidValueElement> getValidValueSetMembers(String  userId,
+                                                           String  assetManagerGUID,
+                                                           String  assetManagerName,
+                                                           String  validValueSetGUID,
+                                                           int     startFrom,
+                                                           int     pageSize,
+                                                           Date    effectiveTime,
+                                                           boolean forLineage,
+                                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         // todo
         return null;
@@ -458,6 +486,9 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param validValueGUID unique identifier of valid value to query
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of valid value beans
      *
@@ -466,14 +497,17 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     @Override
-    public List<ValidValueElement> getSetsForValidValue(String userId,
-                                                        String assetManagerGUID,
-                                                        String assetManagerName,
-                                                        String validValueGUID,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<ValidValueElement> getSetsForValidValue(String  userId,
+                                                        String  assetManagerGUID,
+                                                        String  assetManagerName,
+                                                        String  validValueGUID,
+                                                        int     startFrom,
+                                                        int     pageSize,
+                                                        Date    effectiveTime,
+                                                        boolean forLineage,
+                                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         // todo
         return null;

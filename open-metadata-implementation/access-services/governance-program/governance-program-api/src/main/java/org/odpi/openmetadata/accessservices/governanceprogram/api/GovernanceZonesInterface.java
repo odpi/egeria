@@ -22,7 +22,7 @@ public interface GovernanceZonesInterface
     /**
      * Create a definition of a governance zone.  The qualified name of these governance zones can be added
      * to the supportedZones, publishedZones and defaultZones properties of an OMAS to control which assets are processed
-     * and how they are set up.  In addition the qualified names of zones can be added to Asset definitions
+     * and how they are set up.  In addition, the qualified names of zones can be added to Asset definitions
      * to indicate which zone(s) they belong to.
      *
      * @param userId calling user

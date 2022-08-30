@@ -34,7 +34,7 @@ public class OMRSArchiveWriter
 
 
     /**
-     * Return the connection for a open metadata archive file.
+     * Return the connection for an open metadata archive file.
      *
      * @param fileName name of the archive file
      * @return OCF Connection used to create the file-based open metadata archive
@@ -56,7 +56,7 @@ public class OMRSArchiveWriter
 
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
-     * can return their own connector type.  Otherwise it makes one up.
+     * can return their own connector type.  Otherwise, it makes one up.
      *
      * @param connectorProviderClassName name of the connector provider class
      * @return ConnectorType bean
@@ -80,7 +80,11 @@ public class OMRSArchiveWriter
                 {
                     connectorType = new ConnectorType();
 
-                    connectorType.setType(this.getConnectorTypeType());
+                    ElementOrigin elementOrigin = new ElementOrigin();
+                    elementOrigin.setOriginCategory(ElementOriginCategory.CONFIGURATION);
+                    connectorType.setOrigin(elementOrigin);
+
+                    connectorType.setType(ConnectorType.getConnectorTypeType());
                     connectorType.setGUID(UUID.randomUUID().toString());
                     connectorType.setQualifiedName(connectorProviderClassName);
                     connectorType.setDisplayName(connectorProviderClass.getSimpleName());
@@ -95,51 +99,6 @@ public class OMRSArchiveWriter
         }
 
         return connectorType;
-    }
-
-
-    /**
-     * Return the standard type for an endpoint.
-     *
-     * @return ElementType object
-     */
-    private ElementType getEndpointType()
-    {
-        ElementType elementType = Endpoint.getEndpointType();
-
-        elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
-
-        return elementType;
-    }
-
-
-    /**
-     * Return the standard type for a connector type.
-     *
-     * @return ElementType object
-     */
-    private ElementType getConnectorTypeType()
-    {
-        ElementType elementType = ConnectorType.getConnectorTypeType();
-
-        elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
-
-        return elementType;
-    }
-
-
-    /**
-     * Return the standard type for a connection type.
-     *
-     * @return ElementType object
-     */
-    private ElementType getConnectionType()
-    {
-        ElementType elementType = Connection.getConnectionType();
-
-        elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
-
-        return elementType;
     }
 
 
@@ -168,7 +127,7 @@ public class OMRSArchiveWriter
         catch (Exception   error)
         {
             log.error("Unexpected exception occurred: " + error.getMessage());
-            log.error("Exception: " + error.toString());
+            log.error("Exception: " + error);
         }
 
         return openMetadataArchiveStore;
@@ -176,7 +135,7 @@ public class OMRSArchiveWriter
 
 
     /**
-     * Generates and writes out an open metadata archive containing all of the open metadata types.
+     * Generates and writes out an open metadata archive containing all the open metadata types.
      *
      * @param outputFileName name of file to write archive to
      * @param openMetadataArchive archive content
@@ -193,7 +152,7 @@ public class OMRSArchiveWriter
 
 
     /**
-     * Generates and writes out an open metadata archive containing all of the open metadata types.
+     * Generates and writes out an open metadata archive containing all the open metadata types.
      *
      * @param outputFileName name of file to write archive to
      * @param openMetadataArchive archive content

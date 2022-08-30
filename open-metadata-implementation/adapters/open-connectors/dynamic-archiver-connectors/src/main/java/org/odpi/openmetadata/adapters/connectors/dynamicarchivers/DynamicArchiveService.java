@@ -154,7 +154,7 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceService
     /**
      * Once the content of the archive has been added to the archive builder, an archive object can be retrieved.
      *
-     * @return open metadata archive object with all of the supplied content in it.
+     * @return open metadata archive object with all the supplied content in it.
      */
     public OpenMetadataArchive getOpenMetadataArchive()
     {
@@ -720,7 +720,7 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceService
         /**
          * Once the content of the archive has been added to the archive builder, an archive object can be retrieved.
          *
-         * @return open metadata archive object with all of the supplied content in it.
+         * @return open metadata archive object with all the supplied content in it.
          */
         @Override
         public OpenMetadataArchive getOpenMetadataArchive()
@@ -1012,6 +1012,19 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceService
 
 
         /**
+         * Retrieve an entity from the archive.
+         *
+         * @param guid unique identifier
+         * @return requested entity
+         */
+        @Override
+        public EntityDetail queryEntity(String   guid)
+        {
+            return this.builder.queryEntity(guid);
+        }
+
+
+        /**
          * Add a new relationship to the archive.
          *
          * @param relationship instance to add
@@ -1033,6 +1046,19 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceService
         public Relationship getRelationship(String   guid)
         {
             return this.builder.getRelationship(guid);
+        }
+
+
+        /**
+         * Retrieve a relationship from the archive.
+         *
+         * @param guid unique identifier
+         * @return requested relationship
+         */
+        @Override
+        public Relationship queryRelationship(String   guid)
+        {
+            return this.builder.queryRelationship(guid);
         }
 
 
@@ -1060,6 +1086,21 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceService
                                                                String classificationName)
         {
             return this.builder.getClassification(entityGUID, classificationName);
+        }
+
+
+        /**
+         * Retrieve a classification extension from the archive.
+         *
+         * @param entityGUID unique identifier of entity
+         * @param classificationName name of the classification
+         * @return requested classification extension
+         */
+        @Override
+        public ClassificationEntityExtension queryClassification(String entityGUID,
+                                                                 String classificationName)
+        {
+            return this.builder.queryClassification(entityGUID, classificationName);
         }
     }
 }

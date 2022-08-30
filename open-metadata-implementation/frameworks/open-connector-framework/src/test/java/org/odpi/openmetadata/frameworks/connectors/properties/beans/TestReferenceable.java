@@ -49,7 +49,6 @@ public class TestReferenceable
 
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
-        testObject.setMeanings(meanings);
 
         return testObject;
     }
@@ -69,7 +68,6 @@ public class TestReferenceable
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
-        assertTrue(resultObject.getMeanings() != null);
     }
 
 
@@ -87,7 +85,6 @@ public class TestReferenceable
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
-        assertTrue(nullObject.getMeanings() == null);
 
         nullObject = new Referenceable(null);
 
@@ -98,11 +95,6 @@ public class TestReferenceable
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
-        assertTrue(nullObject.getMeanings() == null);
-
-        nullObject.setMeanings(new ArrayList<>());
-
-        assertTrue(nullObject.getMeanings() == null);
     }
 
 
@@ -209,11 +201,11 @@ public class TestReferenceable
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -222,7 +214,7 @@ public class TestReferenceable
 
         try
         {
-            validateResultObject((Referenceable) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((Referenceable) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

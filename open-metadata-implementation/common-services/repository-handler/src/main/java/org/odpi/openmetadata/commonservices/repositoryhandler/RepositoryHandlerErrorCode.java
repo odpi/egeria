@@ -72,7 +72,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "The system does no process the request because there is a possibility that the caller is requesting changes to the wrong object.",
                            "Correct the value of the property passed on the request and retry."),
     UNAVAILABLE_ENTITY( 400, "OMAG-REPOSITORY-HANDLER-400-010",
-                        "A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8}",
+                        "A {0} entity with unique identifier {1} has been retrieved by method {2} from service {3} but it is not visible to the caller {4}: effective time is {5}; entity is effective from {6} to {7} with classifications {8} and call parameters of forLineage={9} and forDuplicateProcessing={10}",
                         "The system is unable to format all or part of the response because the entity either has effectivity dates that are not effective for the time that the entity is retrieved or it is classified as a memento.",
                         "Use knowledge of the request and the contents of the repositories to determine if the entity is set up correctly or needs to be updated."),
     NO_ENTITY( 400, "OMAG-REPOSITORY-HANDLER-400-011",
@@ -123,7 +123,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "The unique identifier of the entity is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
     NO_RELATIONSHIPS_FOUND(404, "OMAG-REPOSITORY-HANDLER-404-008",
             "No {0} relationships are connected to the {1} entity with unique identifier {2}: the calling method is {3} and the server is {4}",
-            "The system is unable to process a request because no relationships have been discovered and it is unable to retrieve all of the information it needs.",
+            "The system is unable to process a request because no relationships have been discovered and it is unable to retrieve all the information it needs.",
             "Check that the unique identifier of the entity is correct and the metadata server supporting the request is running.  If these are " +
                                    "both correct, investigate why the relationships are missing.  It is likely that the process responsible for " +
                                    "the creation of the relationships has not yet run, or failed part way through its operation."),
@@ -184,7 +184,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
                                   "This will provide the support for the Anchors classification."),
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -196,7 +196,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.converters;
 
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProfileIdentityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
@@ -14,6 +13,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProfileI
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.UserIdentityProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -60,6 +60,7 @@ public class ITProfileConverter<B> extends ITInfrastructureOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<EntityDetail> supplementaryEntities,
@@ -123,6 +124,7 @@ public class ITProfileConverter<B> extends ITInfrastructureOMASConverter<B>
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
                                     userProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
+                                    userProperties.setUserId(this.removeUserId(entityProperties));
                                     userProperties.setDistinguishedName(this.removeDistinguishedName(instanceProperties));
                                     userProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
 
@@ -142,9 +144,11 @@ public class ITProfileConverter<B> extends ITInfrastructureOMASConverter<B>
 
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
-                                    contactMethodProperties.setType(this.getContactMethodTypeFromProperties(entityProperties));
-                                    contactMethodProperties.setService(this.removeContactMethodService(entityProperties));
-                                    contactMethodProperties.setValue(this.removeContactMethodValue(entityProperties));
+                                    contactMethodProperties.setName(this.removeName(entityProperties));
+                                    contactMethodProperties.setContactType(this.removeContactType(entityProperties));
+                                    contactMethodProperties.setContactMethodType(this.getContactMethodTypeFromProperties(entityProperties));
+                                    contactMethodProperties.setContactMethodService(this.removeContactMethodService(entityProperties));
+                                    contactMethodProperties.setContactMethodValue(this.removeContactMethodValue(entityProperties));
 
                                     contactMethodProperties.setEffectiveFrom(entityProperties.getEffectiveFromTime());
                                     contactMethodProperties.setEffectiveTo(entityProperties.getEffectiveToTime());

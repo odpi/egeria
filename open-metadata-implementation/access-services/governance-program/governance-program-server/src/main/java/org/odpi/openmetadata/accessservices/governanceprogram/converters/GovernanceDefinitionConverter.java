@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * GovernanceDefinitionConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from GovernanceDefinition.
+ * EntityDetail object into a bean that inherits from GovernanceDefinitionElement.
  */
 public class GovernanceDefinitionConverter<B> extends GovernanceProgramOMASConverter<B>
 {
@@ -51,6 +51,7 @@ public class GovernanceDefinitionConverter<B> extends GovernanceProgramOMASConve
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
+    @Override
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<Relationship> relationships,

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersCl
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.util.List;
 import java.util.Map;
@@ -21,12 +22,12 @@ import java.util.Map;
  */
 public class FilesIntegratorContext
 {
-    private ConnectionManagerClient connectionManagerClient;
-    private FilesAndFoldersClient   filesAndFoldersClient;
-    private DataManagerEventClient  eventClient;
-    private String                  userId;
-    private String                  fileServerCapabilityGUID;
-    private String                  fileServerCapabilityName;
+    private final ConnectionManagerClient connectionManagerClient;
+    private final FilesAndFoldersClient   filesAndFoldersClient;
+    private final DataManagerEventClient  eventClient;
+    private final String                  userId;
+    private final String                  fileServerCapabilityGUID;
+    private final String                  fileServerCapabilityName;
 
 
     /**
@@ -52,6 +53,23 @@ public class FilesIntegratorContext
         this.userId                   = userId;
         this.fileServerCapabilityGUID = fileServerCapabilityGUID;
         this.fileServerCapabilityName = fileServerCapabilityName;
+    }
+
+
+    /* ========================================================
+     * Returning the file server name from the configuration
+     */
+
+
+    /**
+     * Return the qualified name of the file server that is supplied in the configuration
+     * document.
+     *
+     * @return string name
+     */
+    public String getFileServerName()
+    {
+        return fileServerCapabilityName;
     }
 
 
@@ -713,8 +731,8 @@ public class FilesIntegratorContext
      * Create a new metadata element to represent a schema type.
      *
      * @param schemaTypeProperties properties about the schema type to store
-     * @param mapFromSchemaTypeGUID unique identifier of the the domain of the map
-     * @param mapToSchemaTypeGUID unique identifier of the the range of the map
+     * @param mapFromSchemaTypeGUID unique identifier of the domain of the map
+     * @param mapToSchemaTypeGUID unique identifier of the range of the map
      *
      * @return unique identifier of the new schema type
      *

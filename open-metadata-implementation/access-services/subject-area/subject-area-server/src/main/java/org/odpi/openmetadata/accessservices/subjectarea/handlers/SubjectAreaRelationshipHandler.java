@@ -99,6 +99,9 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                  omrsRelationship.getType().getTypeDefGUID(),
                                  omrsRelationship.getType().getTypeDefName(),
                                  instanceProperties,
+                                 null,
+                                 null,
+                                 null,
                                  restAPIName);
            response = getRelationship(restAPIName, userId, clazz, guid);
 
@@ -197,6 +200,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                             mapper.getTypeName(),
                                                             !isReplace,
                                                             relationshipToUpdate.getProperties(),
+                                                            false, false, null,
                                                             methodName);
 
             Date requestedEffectiveFrom = relationship.getEffectiveFromTime() == null ? null : new Date(relationship.getEffectiveFromTime());
@@ -222,6 +226,9 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                               mapper.getTypeName(),
                                                               requestedEffectiveFrom,
                                                               requestedEffectiveTo,
+                                                              false,
+                                                              false,
+                                                              null,
                                                               methodName);
 
             response = getRelationship(restAPIName, userId, clazz, relationshipGuid);
@@ -282,6 +289,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
                                                     false,
                                                     oMRSRelationship.getType().getTypeDefName(),
                                                     oMRSRelationship,
+                                                    null,
                                                     methodName);
         } catch (UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);

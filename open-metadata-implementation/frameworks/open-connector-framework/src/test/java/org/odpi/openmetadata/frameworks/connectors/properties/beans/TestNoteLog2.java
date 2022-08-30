@@ -14,7 +14,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the NoteLog bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the NoteLogHeader bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
 public class TestNoteLog2
 {
@@ -37,9 +37,9 @@ public class TestNoteLog2
      *
      * @return filled in object
      */
-    private NoteLog getTestObject()
+    private NoteLogHeader getTestObject()
     {
-        NoteLog testObject = new NoteLog();
+        NoteLogHeader testObject = new NoteLogHeader();
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
@@ -61,7 +61,7 @@ public class TestNoteLog2
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(NoteLog  resultObject)
+    private void validateResultObject(NoteLogHeader resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -81,7 +81,7 @@ public class TestNoteLog2
      */
     @Test public void testNullObject()
     {
-        NoteLog    nullObject = new NoteLog();
+        NoteLogHeader nullObject = new NoteLogHeader();
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -94,7 +94,7 @@ public class TestNoteLog2
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
 
-        nullObject = new NoteLog(null);
+        nullObject = new NoteLogHeader(null);
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -119,10 +119,10 @@ public class TestNoteLog2
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        NoteLog  sameObject = getTestObject();
+        NoteLogHeader sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        NoteLog  differentObject = getTestObject();
+        NoteLogHeader differentObject = getTestObject();
         differentObject.setGUID("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -142,7 +142,7 @@ public class TestNoteLog2
      */
     @Test public void testClone()
     {
-        validateResultObject(new NoteLog(getTestObject()));
+        validateResultObject(new NoteLogHeader(getTestObject()));
     }
 
 
@@ -169,7 +169,7 @@ public class TestNoteLog2
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, NoteLog.class));
+            validateResultObject(objectMapper.readValue(jsonString, NoteLogHeader.class));
         }
         catch (Throwable  exc)
         {
@@ -192,7 +192,7 @@ public class TestNoteLog2
 
         try
         {
-            validateResultObject((NoteLog) objectMapper.readValue(jsonString, Referenceable.class));
+            validateResultObject((NoteLogHeader) objectMapper.readValue(jsonString, Referenceable.class));
         }
         catch (Throwable  exc)
         {
@@ -202,11 +202,11 @@ public class TestNoteLog2
         /*
          * Through superclass
          */
-        ElementHeader  elementHeader = getTestObject();
+        ElementBase elementBase = getTestObject();
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
+            jsonString = objectMapper.writeValueAsString(elementBase);
         }
         catch (Throwable  exc)
         {
@@ -215,7 +215,7 @@ public class TestNoteLog2
 
         try
         {
-            validateResultObject((NoteLog) objectMapper.readValue(jsonString, ElementHeader.class));
+            validateResultObject((NoteLogHeader) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {
@@ -238,7 +238,7 @@ public class TestNoteLog2
 
         try
         {
-            validateResultObject((NoteLog) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateResultObject((NoteLogHeader) objectMapper.readValue(jsonString, PropertyBase.class));
         }
         catch (Throwable  exc)
         {
@@ -252,6 +252,6 @@ public class TestNoteLog2
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("NoteLog"));
+        assertTrue(getTestObject().toString().contains("NoteLogHeader"));
     }
 }

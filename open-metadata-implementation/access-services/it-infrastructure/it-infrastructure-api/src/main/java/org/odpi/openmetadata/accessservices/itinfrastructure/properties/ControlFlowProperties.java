@@ -87,7 +87,7 @@ public class ControlFlowProperties extends ConfigurationItemRelationshipProperti
 
 
     /**
-     * Set up the the description of the relationship.
+     * Set up the description of the relationship.
      *
      * @param description string text
      */

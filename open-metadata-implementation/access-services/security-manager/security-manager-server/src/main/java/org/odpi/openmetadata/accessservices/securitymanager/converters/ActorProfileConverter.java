@@ -2,18 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.securitymanager.converters;
 
-
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ProfileIdentityElement;
+import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ProfileLocationElement;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.ActorProfileProperties;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.ContactMethodProperties;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.ProfileIdentityProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.ProfileLocationProperties;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.UserIdentityProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -60,6 +61,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<EntityDetail> supplementaryEntities,
@@ -125,6 +127,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
                                     userProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
+                                    userProperties.setUserId(this.removeUserId(instanceProperties));
                                     userProperties.setDistinguishedName(this.removeDistinguishedName(instanceProperties));
                                     userProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
 
@@ -147,9 +150,11 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
 
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
-                                    contactMethodProperties.setType(this.getContactMethodTypeFromProperties(entityProperties));
-                                    contactMethodProperties.setService(this.removeContactMethodService(entityProperties));
-                                    contactMethodProperties.setValue(this.removeContactMethodValue(entityProperties));
+                                    contactMethodProperties.setName(this.removeName(entityProperties));
+                                    contactMethodProperties.setContactType(this.removeContactType(entityProperties));
+                                    contactMethodProperties.setContactMethodType(this.getContactMethodTypeFromProperties(entityProperties));
+                                    contactMethodProperties.setContactMethodService(this.removeContactMethodService(entityProperties));
+                                    contactMethodProperties.setContactMethodValue(this.removeContactMethodValue(entityProperties));
 
                                     contactMethodProperties.setEffectiveFrom(entityProperties.getEffectiveFromTime());
                                     contactMethodProperties.setEffectiveTo(entityProperties.getEffectiveToTime());
@@ -176,11 +181,12 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
 
                     if (relationships != null)
                     {
-                        ElementStub                  superTeam            = null;
-                        List<ElementStub>            subTeams             = new ArrayList<>();
-                        List<ElementStub>            teamLeaders          = new ArrayList<>();
+                        ElementStub       superTeam   = null;
+                        List<ElementStub> subTeams    = new ArrayList<>();
+                        List<ElementStub> teamLeaders = new ArrayList<>();
                         List<ElementStub>            teamMembers          = new ArrayList<>();
                         List<ProfileIdentityElement> profileIdentities    = new ArrayList<>();
+                        List<ProfileLocationElement> locations            = new ArrayList<>();
                         List<ElementStub>            roles                = new ArrayList<>();
                         List<ElementStub>            linkedInfrastructure = new ArrayList<>();
 
@@ -222,6 +228,21 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
 
                                     linkedInfrastructure.add(elementStub);
                                 }
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME))
+                                {
+                                    EntityProxy entityProxy = relationship.getEntityTwoProxy();
+
+                                    ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
+
+                                    ProfileLocationElement    locationElement    = new ProfileLocationElement();
+                                    ProfileLocationProperties locationProperties = new ProfileLocationProperties();
+
+                                    locationProperties.setAssociationType(this.removeAssociationType(relationship.getProperties()));
+
+                                    locationElement.setLocation(elementStub);
+                                    locationElement.setProperties(locationProperties);
+                                    locations.add(locationElement);
+                                }
                                 else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
@@ -247,7 +268,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
                                     if (primaryEntity.getGUID().equals(entityProxy.getGUID()))
                                     {
                                         /*
-                                         * The primary entity is the super team - save sub-team
+                                         * The primary entity is the super team - save subteam
                                          */
                                         ElementStub elementStub = super.getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName);
                                         subTeams.add(elementStub);
@@ -288,6 +309,11 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
                         if (! roles.isEmpty())
                         {
                             bean.setPersonRoles(roles);
+                        }
+
+                        if (! locations.isEmpty())
+                        {
+                            bean.setLocations(locations);
                         }
 
                         if (! linkedInfrastructure.isEmpty())

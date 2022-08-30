@@ -86,147 +86,6 @@ public class ProcessBuilder extends AssetBuilder
 
 
     /**
-     * Return the bean properties describing the data flow relationship.
-     *
-     * @param qualifiedName unique name of this relationship
-     * @param description description of this relationship
-     * @param formula logic describing any filtering of data
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    InstanceProperties getDataFlowProperties(String qualifiedName,
-                                             String description,
-                                             String formula,
-                                             String methodName)
-    {
-        InstanceProperties properties = null;
-
-        if (qualifiedName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                      qualifiedName,
-                                                                      methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        if (formula != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
-                                                                      formula,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the bean properties describing the control flow relationship.
-     *
-     * @param qualifiedName unique name of this relationship
-     * @param description description of this relationship
-     * @param guard logic describing what must be true for control to pass down this control flow
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    InstanceProperties getControlFlowProperties(String qualifiedName,
-                                                String description,
-                                                String guard,
-                                                String methodName)
-    {
-        InstanceProperties properties = null;
-
-        if (qualifiedName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                      qualifiedName,
-                                                                      methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        if (guard != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
-                                                                      guard,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the bean properties describing the process call relationship.
-     *
-     * @param qualifiedName unique name of this relationship
-     * @param description description of this relationship
-     * @param formula logic describing any filtering of data on the call
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    InstanceProperties getProcessCallProperties(String qualifiedName,
-                                                String description,
-                                                String formula,
-                                                String methodName)
-    {
-        InstanceProperties properties = null;
-
-        if (qualifiedName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                      qualifiedName,
-                                                                      methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        if (formula != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
-                                                                      formula,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
      * Return the supplied bean properties in an InstanceProperties object.
      *
      * @param methodName name of the calling method
@@ -238,23 +97,17 @@ public class ProcessBuilder extends AssetBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (formula != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
-                                                                      formula,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  formula,
+                                                                  methodName);
 
-        if (implementationLanguage != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME,
-                                                                      implementationLanguage,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME,
+                                                                  implementationLanguage,
+                                                                  methodName);
 
         return properties;
     }

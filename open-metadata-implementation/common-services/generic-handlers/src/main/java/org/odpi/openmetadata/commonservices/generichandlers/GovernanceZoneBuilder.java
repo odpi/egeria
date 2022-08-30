@@ -13,17 +13,19 @@ import java.util.Map;
  */
 public class GovernanceZoneBuilder extends ReferenceableBuilder
 {
-    private String       displayName;
-    private String       description;
-    private String       criteria;
-    private String       scope;
-    private int          domainIdentifier;
+    private final String       zoneName;
+    private final String       displayName;
+    private final String       description;
+    private final String       criteria;
+    private final String       scope;
+    private final int          domainIdentifier;
 
 
     /**
      * Create constructor
      *
-     * @param qualifiedName unique name for the zone - used in other configuration
+     * @param qualifiedName unique name for the zone entity
+     * @param zoneName unique name for the zone - used in other configuration
      * @param displayName short display name for the zone
      * @param description description of the governance zone
      * @param criteria the criteria for inclusion in a governance zone
@@ -38,6 +40,7 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     GovernanceZoneBuilder(String               qualifiedName,
+                          String               zoneName,
                           String               displayName,
                           String               description,
                           String               criteria,
@@ -60,6 +63,7 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
+        this.zoneName = zoneName;
         this.displayName = displayName;
         this.description = description;
         this.criteria = criteria;
@@ -86,17 +90,24 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
                                                                   displayName,
                                                                   methodName);
 
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.ZONE_NAME_PROPERTY_NAME,
+                                                                  zoneName,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                   description,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.CRITERIA_PROPERTY_NAME,
                                                                   criteria,
                                                                   methodName);
+
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataAPIMapper.SCOPE_PROPERTY_NAME,

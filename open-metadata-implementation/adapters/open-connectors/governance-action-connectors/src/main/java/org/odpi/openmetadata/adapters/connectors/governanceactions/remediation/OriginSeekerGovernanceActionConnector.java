@@ -68,7 +68,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                 /*
                  * Check that the AssetOrigin classification is not already set - this is an error if it is.
                  */
-                ElementClassification existingAssetOriginClassification = this.getAssetOriginClassification(targetElement);
+                AttachedClassification existingAssetOriginClassification = this.getAssetOriginClassification(targetElement);
 
                 if (existingAssetOriginClassification != null)
                 {
@@ -166,13 +166,13 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
      * @param asset asset element to check
      * @return null or located AssetOrigin classification
      */
-    private ElementClassification getAssetOriginClassification(OpenMetadataElement asset)
+    private AttachedClassification getAssetOriginClassification(OpenMetadataElement asset)
     {
-        List<ElementClassification> existingClassifications = asset.getClassifications();
+        List<AttachedClassification> existingClassifications = asset.getClassifications();
 
         if (existingClassifications != null)
         {
-            for (ElementClassification existingClassification : existingClassifications)
+            for (AttachedClassification existingClassification : existingClassifications)
             {
                 if (existingClassification != null)
                 {
@@ -189,7 +189,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
 
 
     /**
-     * Extract the path name located in the properties of the the supplied asset metadata element (either a FileFolder or DataFile).
+     * Extract the path name located in the properties of the supplied asset metadata element (either a FileFolder or DataFile).
      * It looks first in the linked connection endpoint.  If this is not available then the qualified name of the asset is used.
      *
      * @param asset metadata element
@@ -242,7 +242,7 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                         /*
                          * If we find an origin classification on this asset we stop traversing the lineage graph.
                          */
-                        ElementClassification existingAssetOriginClassification = this.getAssetOriginClassification(nextAsset);
+                        AttachedClassification existingAssetOriginClassification = this.getAssetOriginClassification(nextAsset);
 
                         if (existingAssetOriginClassification == null)
                         {

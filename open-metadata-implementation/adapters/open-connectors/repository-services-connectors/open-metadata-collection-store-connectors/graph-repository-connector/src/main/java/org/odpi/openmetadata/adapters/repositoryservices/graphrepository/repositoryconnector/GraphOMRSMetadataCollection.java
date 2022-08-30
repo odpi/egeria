@@ -1042,7 +1042,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 }
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
             // nothing to do - keep going
         }
@@ -2324,7 +2324,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(),
                     this.getClass().getName(),
@@ -2577,7 +2577,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(),
                          this.getClass().getName(),
@@ -2716,7 +2716,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
             throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(),
                     this.getClass().getName(),
@@ -3140,8 +3140,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                     }
                 }
             }
-        } catch (Throwable error) {
-            log.error("{} entity wth GUID {} caused throwable", methodName, obsoleteEntityGUID, error);
+        } catch (Exception error) {
+            log.error("{} entity wth GUID {} caused Exception", methodName, obsoleteEntityGUID, error);
         }
 
 
@@ -3407,9 +3407,9 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 }
             }
         }
-        catch (Throwable  error)
+        catch (Exception  error)
         {
-            log.error("{} entity wth GUID {} caused throwable", methodName, entityGUID, error);
+            log.error("{} entity wth GUID {} caused Exception", methodName, entityGUID, error);
         }
 
         graphStore.updateEntityInStore(deletedEntity);
@@ -4488,7 +4488,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
-    // Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+    // Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
     @Override
     public  InstanceGraph getLinkingEntities(String                    userId,
                                              String                    startEntityGUID,

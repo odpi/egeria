@@ -4,27 +4,8 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.ActionTargetStatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.CompletionStatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.DuplicatesRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionProcessRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.IncidentReportRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.NewClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.NewMetadataElementRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.NewRelatedElementsRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.OpenMetadataElementsResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementListResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.RelatedMetadataElementsListResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateEffectivityDatesRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdatePropertiesRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateRequestBody;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.UpdateStatusRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
+import org.odpi.openmetadata.accessservices.governanceengine.rest.PeerDuplicatesRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -362,7 +343,7 @@ public class GovernanceEngineOMASResource
 
     /**
      * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
-     * metadata element when it was created.  However, it is possible to update a few properties, or replace all of them by
+     * metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
      * the value used in the replaceProperties flag.
      *
      * @param serverName     name of server instance to route request to
@@ -389,8 +370,7 @@ public class GovernanceEngineOMASResource
 
     /**
      * Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
-     * assigned when it was created.  The effectivity dates control the visibility of the element
-     * through specific APIs.
+     * assigned when it was created.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
@@ -411,6 +391,32 @@ public class GovernanceEngineOMASResource
                                                            @RequestBody  UpdateStatusRequestBody requestBody)
     {
         return restAPI.updateMetadataElementStatusInStore(serverName, userId, metadataElementGUID, requestBody);
+    }
+
+
+
+    /**
+     * Update the effectivity dates control the visibility of the element through specific APIs.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody new status values - use null to leave as is
+     *
+     * @return void or
+     *
+     *  InvalidParameterException either the unique identifier or the status are invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to update this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/update-effectivity")
+
+    public VoidResponse updateMetadataElementEffectivityInStore(@PathVariable String                            serverName,
+                                                                @PathVariable String                            userId,
+                                                                @PathVariable String                            metadataElementGUID,
+                                                                @RequestBody  UpdateEffectivityDatesRequestBody requestBody)
+    {
+        return restAPI.updateMetadataElementEffectivityInStore(serverName, userId, metadataElementGUID, requestBody);
     }
 
 
@@ -513,15 +519,15 @@ public class GovernanceEngineOMASResource
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-status")
+    @PostMapping(path = "/open-metadata-store/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-effectivity")
 
-    public VoidResponse updateClassificationStatusInStore(@PathVariable String                            serverName,
-                                                          @PathVariable String                            userId,
-                                                          @PathVariable String                            metadataElementGUID,
-                                                          @PathVariable String                            classificationName,
-                                                          @RequestBody  UpdateEffectivityDatesRequestBody requestBody)
+    public VoidResponse updateClassificationEffectivityInStore(@PathVariable String                            serverName,
+                                                               @PathVariable String                            userId,
+                                                               @PathVariable String                            metadataElementGUID,
+                                                               @PathVariable String                            classificationName,
+                                                               @RequestBody  UpdateEffectivityDatesRequestBody requestBody)
     {
-        return restAPI.updateClassificationStatusInStore(serverName, userId, metadataElementGUID, classificationName, requestBody);
+        return restAPI.updateClassificationEffectivityInStore(serverName, userId, metadataElementGUID, classificationName, requestBody);
     }
 
 
@@ -576,27 +582,6 @@ public class GovernanceEngineOMASResource
         return restAPI.createRelatedElementsInStore(serverName, userId, requestBody);
     }
 
-    /**
-     * Create a simple relationship between two elements. If the relationship already exists,
-     * the properties are updated.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param requestBody parameters for the relationship
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
-     * PropertyServerException problem accessing property server
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/open-metadata-store/related-elements/link-as-peer-duplicate")
-    public VoidResponse linkElementsAsPeerDuplicates(@PathVariable String                        serverName,
-                                                     @PathVariable String                        userId,
-                                                     @RequestBody  DuplicatesRequestBody         requestBody)
-    {
-        return restAPI.linkElementsAsDuplicates(serverName, userId, requestBody);
-    }
-
 
     /**
      * Update the properties associated with a relationship.
@@ -639,14 +624,14 @@ public class GovernanceEngineOMASResource
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/open-metadata-store/related-elements/{relationshipGUID}/update-status")
+    @PostMapping(path = "/open-metadata-store/related-elements/{relationshipGUID}/update-effectivity")
 
-    public VoidResponse updateRelatedElementsStatusInStore(@PathVariable String                            serverName,
-                                                           @PathVariable String                            userId,
-                                                           @PathVariable String                            relationshipGUID,
-                                                           @RequestBody  UpdateEffectivityDatesRequestBody requestBody)
+    public VoidResponse updateRelatedElementsEffectivityInStore(@PathVariable String                            serverName,
+                                                                @PathVariable String                            userId,
+                                                                @PathVariable String                            relationshipGUID,
+                                                                @RequestBody  UpdateEffectivityDatesRequestBody requestBody)
     {
-        return restAPI.updateRelatedElementsStatusInStore(serverName, userId, relationshipGUID, requestBody);
+        return restAPI.updateRelatedElementsEffectivityInStore(serverName, userId, relationshipGUID, requestBody);
     }
 
 
@@ -666,10 +651,10 @@ public class GovernanceEngineOMASResource
      */
     @PostMapping(path = "/open-metadata-store/related-elements/{relationshipGUID}/delete")
 
-    public VoidResponse deleteRelatedElementsInStore(@PathVariable                  String          serverName,
-                                                     @PathVariable                  String          userId,
-                                                     @PathVariable                  String          relationshipGUID,
-                                                     @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse deleteRelatedElementsInStore(@PathVariable String            serverName,
+                                                     @PathVariable String            userId,
+                                                     @PathVariable String            relationshipGUID,
+                                                     @RequestBody  UpdateRequestBody requestBody)
     {
         return restAPI.deleteRelatedElementsInStore(serverName, userId, relationshipGUID, requestBody);
     }
@@ -726,7 +711,7 @@ public class GovernanceEngineOMASResource
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
@@ -824,6 +809,52 @@ public class GovernanceEngineOMASResource
         return restAPI.createIncidentReport(serverName, userId, requestBody);
     }
 
+
+
+    /**
+     * Create a simple relationship between two elements. If the relationship already exists,
+     * the properties are updated.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/open-metadata-store/related-elements/link-as-peer-duplicate")
+
+    public VoidResponse linkElementsAsPeerDuplicates(@PathVariable String                    serverName,
+                                                     @PathVariable String                    userId,
+                                                     @RequestBody  PeerDuplicatesRequestBody requestBody)
+    {
+        return restAPI.linkElementsAsDuplicates(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Create a simple relationship between two elements. If the relationship already exists,
+     * the properties are updated.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param requestBody parameters for the relationship
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid, or the elements are of different types
+     * PropertyServerException problem accessing property server
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/open-metadata-store/related-elements/link-as-consolidated-duplicate")
+
+    public VoidResponse linkConsolidatedDuplicate(@PathVariable String                            serverName,
+                                                  @PathVariable String                            userId,
+                                                  @RequestBody  ConsolidatedDuplicatesRequestBody requestBody)
+    {
+        return restAPI.linkConsolidatedDuplicate(serverName, userId, requestBody);
+    }
 
 
     /**

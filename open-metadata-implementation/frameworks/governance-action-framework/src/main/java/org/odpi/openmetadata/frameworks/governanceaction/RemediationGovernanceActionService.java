@@ -22,7 +22,7 @@ public abstract class RemediationGovernanceActionService extends GovernanceActio
 
 
     /**
-     * Set up details of the the governance action request and access to the metadata store.
+     * Set up details of the governance action request and access to the metadata store.
      * This method is called before start and should not be null
      *
      * @param governanceContext specialist context for this type of governance action.

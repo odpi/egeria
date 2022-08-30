@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ExternalReferenceExchangeHandler;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -21,11 +20,11 @@ import org.slf4j.LoggerFactory;
  */
 public class ExternalReferenceExchangeRESTServices
 {
-    private static AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
-    private static RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(ExternalReferenceExchangeRESTServices.class),
+    private static final AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
+    private static final RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(ExternalReferenceExchangeRESTServices.class),
                                                                                     instanceHandler.getServiceName());
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -36,7 +35,7 @@ public class ExternalReferenceExchangeRESTServices
 
 
     /**
-     * Create a definition of a external reference.
+     * Create a definition of an external reference.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -92,12 +91,14 @@ public class ExternalReferenceExchangeRESTServices
 
 
     /**
-     * Update the definition of a external reference.
+     * Update the definition of an external reference.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalReferenceGUID unique identifier of external reference
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to change
      *
      * @return void or
@@ -109,6 +110,8 @@ public class ExternalReferenceExchangeRESTServices
                                                 String                       userId,
                                                 String                       externalReferenceGUID,
                                                 boolean                      isMergeUpdate,
+                                                boolean                      forLineage,
+                                                boolean                      forDuplicateProcessing,
                                                 ExternalReferenceRequestBody requestBody)
     {
         final String methodName = "updateExternalReference";
@@ -131,6 +134,9 @@ public class ExternalReferenceExchangeRESTServices
                                                 externalReferenceGUID,
                                                 isMergeUpdate,
                                                 requestBody.getElementProperties(),
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
                                                 methodName);
             }
             else
@@ -150,11 +156,13 @@ public class ExternalReferenceExchangeRESTServices
 
 
     /**
-     * Remove the definition of a external reference.
+     * Remove the definition of an external reference.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalReferenceGUID unique identifier of external reference
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of the external reference in the external asset manager
      *
      * @return void or
@@ -162,10 +170,12 @@ public class ExternalReferenceExchangeRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse deleteExternalReference(String                        serverName,
-                                                String                        userId,
-                                                String                        externalReferenceGUID,
-                                                MetadataCorrelationProperties requestBody)
+    public VoidResponse deleteExternalReference(String            serverName,
+                                                String            userId,
+                                                String            externalReferenceGUID,
+                                                boolean           forLineage,
+                                                boolean           forDuplicateProcessing,
+                                                UpdateRequestBody requestBody)
     {
         final String methodName                  = "deleteExternalReference";
 
@@ -180,7 +190,20 @@ public class ExternalReferenceExchangeRESTServices
 
             ExternalReferenceExchangeHandler handler = instanceHandler.getExternalReferenceExchangeHandler(userId, serverName, methodName);
 
-            handler.removeExternalReference(userId, requestBody, externalReferenceGUID, methodName);
+            if (requestBody != null)
+            {
+                handler.removeExternalReference(userId,
+                                                requestBody.getMetadataCorrelationProperties(),
+                                                externalReferenceGUID,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                requestBody.getEffectiveTime(),
+                                                methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -200,6 +223,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param userId the name of the calling user.
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param attachedToGUID object linked to external references.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody description for the reference from the perspective of the object that the reference is being attached to.
      * @param externalReferenceGUID unique identifier (guid) of the external reference details.
      *
@@ -213,6 +238,8 @@ public class ExternalReferenceExchangeRESTServices
                                                        boolean                          assetManagerIsHome,
                                                        String                           attachedToGUID,
                                                        String                           externalReferenceGUID,
+                                                       boolean                          forLineage,
+                                                       boolean                          forDuplicateProcessing,
                                                        ExternalReferenceLinkRequestBody requestBody)
     {
         final String methodName                          = "linkExternalReferenceToElement";
@@ -242,6 +269,9 @@ public class ExternalReferenceExchangeRESTServices
                                                                             externalReferenceGUID,
                                                                             externalReferenceGUIDParameterName,
                                                                             requestBody.getElementProperties(),
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime(),
                                                                             methodName));
                 }
                 else
@@ -254,6 +284,9 @@ public class ExternalReferenceExchangeRESTServices
                                                                             externalReferenceGUID,
                                                                             externalReferenceGUIDParameterName,
                                                                             requestBody.getElementProperties(),
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime(),
                                                                             methodName));
                 }
             }
@@ -280,6 +313,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId the name of the calling user.
      * @param externalReferenceLinkGUID unique identifier (guid) of the external reference details.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody description for the reference from the perspective of the object that the reference is being attached to.
      *
      * @return void or
@@ -290,6 +325,8 @@ public class ExternalReferenceExchangeRESTServices
     public VoidResponse updateExternalReferenceToElementLink(String                           serverName,
                                                              String                           userId,
                                                              String                           externalReferenceLinkGUID,
+                                                             boolean                          forLineage,
+                                                             boolean                          forDuplicateProcessing,
                                                              ExternalReferenceLinkRequestBody requestBody)
     {
         final String methodName                          = "linkExternalReferenceToElement";
@@ -314,6 +351,9 @@ public class ExternalReferenceExchangeRESTServices
                                                              externalReferenceLinkGUID,
                                                              externalReferenceGUIDParameterName,
                                                              requestBody.getElementProperties(),
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             requestBody.getEffectiveTime(),
                                                              methodName);
             }
             else
@@ -333,11 +373,13 @@ public class ExternalReferenceExchangeRESTServices
 
 
     /**
-     * Remove the link between a external reference and an element.  If the element is its anchor, the external reference is removed.
+     * Remove the link between an external reference and an element.  If the element is its anchor, the external reference is removed.
      *
      * @param serverName name of the server to route the request to
      * @param userId the name of the calling user.
      * @param externalReferenceLinkGUID identifier of the external reference relationship.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier of software server capability representing the caller
      *
      * @return void or
@@ -345,10 +387,12 @@ public class ExternalReferenceExchangeRESTServices
      *  PropertyServerException the server is not available.
      *  UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public VoidResponse unlinkExternalReferenceFromElement(String                             serverName,
-                                                           String                             userId,
-                                                           String                             externalReferenceLinkGUID,
-                                                           AssetManagerIdentifiersRequestBody requestBody)
+    public VoidResponse unlinkExternalReferenceFromElement(String                        serverName,
+                                                           String                        userId,
+                                                           String                        externalReferenceLinkGUID,
+                                                           boolean                       forLineage,
+                                                           boolean                       forDuplicateProcessing,
+                                                           EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName                          = "linkExternalReferenceToElement";
         final String externalReferenceGUIDParameterName  = "externalReferenceLinkGUID";
@@ -371,6 +415,9 @@ public class ExternalReferenceExchangeRESTServices
                                                            requestBody.getAssetManagerName(),
                                                            externalReferenceLinkGUID,
                                                            externalReferenceGUIDParameterName,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           requestBody.getEffectiveTime(),
                                                            methodName);
             }
             else
@@ -396,6 +443,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param userId the name of the calling user.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody the time that the retrieved elements must be effective for
      *
      * @return links to addition information or
@@ -407,6 +456,8 @@ public class ExternalReferenceExchangeRESTServices
                                                                    String                        userId,
                                                                    int                           startFrom,
                                                                    int                           pageSize,
+                                                                   boolean                       forLineage,
+                                                                   boolean                       forDuplicateProcessing,
                                                                    EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getExternalReferences";
@@ -427,9 +478,11 @@ public class ExternalReferenceExchangeRESTServices
                 response.setElementList(handler.getExternalReferences(userId,
                                                                       requestBody.getAssetManagerGUID(),
                                                                       requestBody.getAssetManagerName(),
-                                                                      requestBody.getEffectiveTime(),
                                                                       startFrom,
                                                                       pageSize,
+                                                                      forLineage,
+                                                                      forDuplicateProcessing,
+                                                                      requestBody.getEffectiveTime(),
                                                                       methodName));
             }
             else
@@ -455,6 +508,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param userId the name of the calling user.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique reference id assigned by the resource owner (supports wildcards). This is the qualified name of the entity
      *
      * @return links to addition information or
@@ -466,6 +521,8 @@ public class ExternalReferenceExchangeRESTServices
                                                                        String          userId,
                                                                        int             startFrom,
                                                                        int             pageSize,
+                                                                       boolean         forLineage,
+                                                                       boolean         forDuplicateProcessing,
                                                                        NameRequestBody requestBody)
     {
         final String methodName        = "getExternalReferencesById";
@@ -489,9 +546,11 @@ public class ExternalReferenceExchangeRESTServices
                                                                           requestBody.getAssetManagerName(),
                                                                           requestBody.getName(),
                                                                           nameParameterName,
-                                                                          requestBody.getEffectiveTime(),
                                                                           startFrom,
                                                                           pageSize,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          requestBody.getEffectiveTime(),
                                                                           methodName));
             }
             else
@@ -517,6 +576,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param userId the name of the calling user.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody URL of the external resource.
      *
      * @return links to addition information or
@@ -528,6 +589,8 @@ public class ExternalReferenceExchangeRESTServices
                                                                         String          userId,
                                                                         int             startFrom,
                                                                         int             pageSize,
+                                                                        boolean         forLineage,
+                                                                        boolean         forDuplicateProcessing,
                                                                         NameRequestBody requestBody)
     {
         final String methodName        = "getExternalReferencesByURL";
@@ -547,14 +610,16 @@ public class ExternalReferenceExchangeRESTServices
                 ExternalReferenceExchangeHandler handler = instanceHandler.getExternalReferenceExchangeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getExternalReferencesByURL(userId,
-                                                                          requestBody.getAssetManagerGUID(),
-                                                                          requestBody.getAssetManagerName(),
-                                                                          requestBody.getName(),
-                                                                          nameParameterName,
-                                                                          requestBody.getEffectiveTime(),
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          methodName));
+                                                                           requestBody.getAssetManagerGUID(),
+                                                                           requestBody.getAssetManagerName(),
+                                                                           requestBody.getName(),
+                                                                           nameParameterName,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           requestBody.getEffectiveTime(),
+                                                                           methodName));
             }
             else
             {
@@ -572,7 +637,6 @@ public class ExternalReferenceExchangeRESTServices
     }
 
 
-
     /**
      * Retrieve the list of external references for this name.
      *
@@ -580,6 +644,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param userId the name of the calling user.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name of the external resource.
      *
      * @return links to addition information or
@@ -591,6 +657,8 @@ public class ExternalReferenceExchangeRESTServices
                                                                          String          userId,
                                                                          int             startFrom,
                                                                          int             pageSize,
+                                                                         boolean         forLineage,
+                                                                         boolean         forDuplicateProcessing,
                                                                          NameRequestBody requestBody)
     {
         final String methodName        = "getExternalReferencesByName";
@@ -614,9 +682,11 @@ public class ExternalReferenceExchangeRESTServices
                                                                             requestBody.getAssetManagerName(),
                                                                             requestBody.getName(),
                                                                             nameParameterName,
-                                                                            requestBody.getEffectiveTime(),
                                                                             startFrom,
                                                                             pageSize,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime(),
                                                                             methodName));
             }
             else
@@ -642,6 +712,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody the time that the retrieved elements must be effective for
      *
      * @return list of matching metadata elements or
@@ -653,6 +725,8 @@ public class ExternalReferenceExchangeRESTServices
                                                                                   String                        userId,
                                                                                   int                           startFrom,
                                                                                   int                           pageSize,
+                                                                                  boolean                       forLineage,
+                                                                                  boolean                       forDuplicateProcessing,
                                                                                   EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getExternalReferencesForAssetManager";
@@ -673,9 +747,11 @@ public class ExternalReferenceExchangeRESTServices
                 response.setElementList(handler.getExternalReferencesForAssetManager(userId,
                                                                                      requestBody.getAssetManagerGUID(),
                                                                                      requestBody.getAssetManagerName(),
-                                                                                     requestBody.getEffectiveTime(),
                                                                                      startFrom,
                                                                                      pageSize,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing,
+                                                                                     requestBody.getEffectiveTime(),
                                                                                      methodName));
             }
             else
@@ -701,6 +777,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param userId the name of the calling user.
      * @param requestBody regular expression (RegEx) to search for
      * @param startFrom  index of the list to start from (0 for start)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param pageSize   maximum number of elements to return.
      *
      * @return links to addition information or
@@ -712,6 +790,8 @@ public class ExternalReferenceExchangeRESTServices
                                                                     String                  userId,
                                                                     int                     startFrom,
                                                                     int                     pageSize,
+                                                                    boolean                 forLineage,
+                                                                    boolean                 forDuplicateProcessing,
                                                                     SearchStringRequestBody requestBody)
     {
         final String methodName                = "findExternalReferences";
@@ -735,9 +815,11 @@ public class ExternalReferenceExchangeRESTServices
                                                                        requestBody.getAssetManagerName(),
                                                                        requestBody.getSearchString(),
                                                                        searchStringParameterName,
-                                                                       requestBody.getEffectiveTime(),
                                                                        startFrom,
                                                                        pageSize,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       requestBody.getEffectiveTime(),
                                                                        methodName));
             }
             else
@@ -764,6 +846,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param attachedToGUID object linked to external reference.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody the time that the retrieved elements must be effective for
      *
      * @return links to addition information or
@@ -776,6 +860,8 @@ public class ExternalReferenceExchangeRESTServices
                                                                                     String                        attachedToGUID,
                                                                                     int                           startFrom,
                                                                                     int                           pageSize,
+                                                                                    boolean                       forLineage,
+                                                                                    boolean                       forDuplicateProcessing,
                                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName        = "retrieveAttachedExternalReferences";
@@ -799,9 +885,11 @@ public class ExternalReferenceExchangeRESTServices
                                                                                    requestBody.getAssetManagerName(),
                                                                                    attachedToGUID,
                                                                                    guidParameterName,
-                                                                                   requestBody.getEffectiveTime(),
                                                                                    startFrom,
                                                                                    pageSize,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   requestBody.getEffectiveTime(),
                                                                                    methodName));
             }
             else
@@ -826,6 +914,8 @@ public class ExternalReferenceExchangeRESTServices
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalReferenceGUID unique identifier for the external reference
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody the time that the retrieved elements must be effective for
      *
      * @return properties of the external reference or
@@ -836,6 +926,8 @@ public class ExternalReferenceExchangeRESTServices
     public ExternalReferenceElementResponse getExternalReferenceByGUID(String                        serverName,
                                                                        String                        userId,
                                                                        String                        externalReferenceGUID,
+                                                                       boolean                       forLineage,
+                                                                       boolean                       forDuplicateProcessing,
                                                                        EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getExternalReferenceByGUID";
@@ -859,6 +951,8 @@ public class ExternalReferenceExchangeRESTServices
                                                                        requestBody.getAssetManagerName(),
                                                                        externalReferenceGUID,
                                                                        guidParameterName,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
                                                                        requestBody.getEffectiveTime(),
                                                                        methodName));
             }

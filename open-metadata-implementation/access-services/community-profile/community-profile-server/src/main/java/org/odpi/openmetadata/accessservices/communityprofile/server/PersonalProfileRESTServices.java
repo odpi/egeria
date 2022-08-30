@@ -18,6 +18,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMappe
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -32,13 +33,13 @@ import java.util.Map;
  */
 public class PersonalProfileRESTServices
 {
-    static private CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
+    static private final CommunityProfileInstanceHandler instanceHandler = new CommunityProfileInstanceHandler();
 
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(PersonalProfileRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(PersonalProfileRESTServices.class),
+                                                                            instanceHandler.getServiceName());
 
 
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -95,10 +96,6 @@ public class PersonalProfileRESTServices
                                                                                                new Date(),
                                                                                                methodName);
 
-
-
-
-
                 Map<String, Object> extendedProperties = new HashMap<>();
 
                 extendedProperties.put(OpenMetadataAPIMapper.FULL_NAME_PROPERTY_NAME, requestBody.getFullName());
@@ -114,6 +111,7 @@ public class PersonalProfileRESTServices
                                                                    extendedProperties,
                                                                    null,
                                                                    null,
+                                                                   new Date(),
                                                                    methodName);
 
                 if (userIdentity == null)
@@ -123,10 +121,15 @@ public class PersonalProfileRESTServices
                                                            requestBody.getOriginatingSystemName(),
                                                            profileGUID,
                                                            profileGUIDParameterName,
+                                                           requestBody.getQualifiedName(),
                                                            requestBody.getProfileUserId(),
                                                            null,
                                                            null,
                                                            null,
+                                                           null,
+                                                           false,
+                                                           false,
+                                                           new Date(),
                                                            methodName);
                 }
                 else
@@ -144,7 +147,10 @@ public class PersonalProfileRESTServices
                                                              false,
                                                              OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                                              OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                                             (InstanceProperties) null,
                                                              null,
+                                                             null,
+                                                             new Date(),
                                                              methodName);
                 }
 
@@ -217,6 +223,9 @@ public class PersonalProfileRESTServices
                                            false,
                                            null,
                                            null,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -272,6 +281,9 @@ public class PersonalProfileRESTServices
                                            requestBody.getOriginatingSystemName(),
                                            profileGUID,
                                            profileGUIDParameterName,
+                                           false,
+                                           false,
+                                           new Date(),
                                            methodName);
             }
             else
@@ -322,7 +334,9 @@ public class PersonalProfileRESTServices
                                                                        profileUserId,
                                                                        userParameterName,
                                                                        OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
                                                                        methodName));
         }
         catch (Exception error)
@@ -367,7 +381,9 @@ public class PersonalProfileRESTServices
                                                                       profileGUID,
                                                                       profileGUIDParameterName,
                                                                       OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                                      null,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
                                                                       methodName));
         }
         catch (Exception error)
@@ -416,7 +432,9 @@ public class PersonalProfileRESTServices
                                                                             nameParameterName,
                                                                             OpenMetadataAPIMapper.PERSON_TYPE_GUID,
                                                                             OpenMetadataAPIMapper.PERSON_TYPE_NAME,
-                                                                            null,
+                                                                            false,
+                                                                            false,
+                                                                            new Date(),
                                                                             methodName));
         }
         catch (Exception error)
@@ -470,7 +488,9 @@ public class PersonalProfileRESTServices
                                                                         OpenMetadataAPIMapper.PERSON_TYPE_NAME,
                                                                         startFrom,
                                                                         pageSize,
-                                                                        null,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
                                                                         methodName));
         }
         catch (Exception error)

@@ -10,6 +10,12 @@ import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionHand
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementVersions;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassificationEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
@@ -37,17 +43,17 @@ import java.util.Map;
  */
 public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 {
-    private GovernanceEngineOutTopicPublisher                eventPublisher;
-    private OMRSRepositoryHelper                             repositoryHelper;
-    private MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
-    private GovernanceActionHandler<GovernanceActionElement> governanceActionHandler;
+    private final GovernanceEngineOutTopicPublisher                eventPublisher;
+    private final OMRSRepositoryHelper                             repositoryHelper;
+    private final MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
+    private final GovernanceActionHandler<GovernanceActionElement> governanceActionHandler;
 
-    private String                                           userId;
+    private final String                                           userId;
 
-    private EntityDetail                                     nullEntity = null;
-    private Relationship                                     nullRelationship = null;
+    private final EntityDetail                                     nullEntity = null;
+    private final Relationship                                     nullRelationship = null;
 
-    private PropertyHelper propertyHelper = new PropertyHelper();
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
 
     /**
@@ -504,10 +510,10 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
         if (instanceType != null)
         {
-            elementType.setElementTypeId(instanceType.getTypeDefGUID());
-            elementType.setElementTypeName(instanceType.getTypeDefName());
-            elementType.setElementTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setElementTypeDescription(instanceType.getTypeDefDescription());
+            elementType.setTypeId(instanceType.getTypeDefGUID());
+            elementType.setTypeName(instanceType.getTypeDefName());
+            elementType.setTypeVersion(instanceType.getTypeDefVersion());
+            elementType.setTypeDescription(instanceType.getTypeDefDescription());
 
             List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
 
@@ -525,7 +531,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 
                 if (! superTypes.isEmpty())
                 {
-                    elementType.setElementSuperTypeNames(superTypes);
+                    elementType.setSuperTypeNames(superTypes);
                 }
             }
         }
@@ -547,19 +553,50 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         if (header != null)
         {
-            elementControlHeader.setElementSourceServer(sourceName);
-            elementControlHeader.setElementOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
-            elementControlHeader.setElementMetadataCollectionId(header.getMetadataCollectionId());
-            elementControlHeader.setElementMetadataCollectionName(header.getMetadataCollectionName());
-            elementControlHeader.setElementLicense(header.getInstanceLicense());
-            elementControlHeader.setElementCreatedBy(header.getCreatedBy());
-            elementControlHeader.setElementUpdatedBy(header.getUpdatedBy());
-            elementControlHeader.setElementMaintainedBy(header.getMaintainedBy());
-            elementControlHeader.setElementCreateTime(header.getCreateTime());
-            elementControlHeader.setElementUpdateTime(header.getUpdateTime());
-            elementControlHeader.setElementVersion(header.getVersion());
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(sourceName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementControlHeader.setOrigin(elementOrigin);
+
+            ElementVersions elementVersions = new ElementVersions();
+
+            elementVersions.setCreatedBy(header.getCreatedBy());
+            elementVersions.setUpdatedBy(header.getUpdatedBy());
+            elementVersions.setMaintainedBy(header.getMaintainedBy());
+            elementVersions.setCreateTime(header.getCreateTime());
+            elementVersions.setUpdateTime(header.getUpdateTime());
+            elementVersions.setVersion(header.getVersion());
+
+            elementControlHeader.setVersions(elementVersions);
+
             elementControlHeader.setStatus(this.getElementStatus(header.getStatus()));
-            elementControlHeader.setMappingProperties(header.getMappingProperties());
+
+            ElementType elementType = new ElementType();
+
+            elementType.setTypeId(header.getType().getTypeDefGUID());
+            elementType.setTypeName(header.getType().getTypeDefName());
+
+            if (header.getType().getTypeDefSuperTypes() != null)
+            {
+                List<String> superTypeNames = new ArrayList<>();
+
+                for (TypeDefLink typeDefLink : header.getType().getTypeDefSuperTypes())
+                {
+                    superTypeNames.add(typeDefLink.getName());
+                }
+
+                elementType.setSuperTypeNames(superTypeNames);
+            }
+
+            elementType.setTypeDescription(header.getType().getTypeDefDescription());
+            elementType.setTypeVersion(header.getType().getTypeDefVersion());
+
+            elementControlHeader.setType(elementType);
         }
     }
 
@@ -571,25 +608,30 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param classification from the repository services
      * @return open metadata element object
      */
-    private ElementClassification getClassification(String         sourceName,
-                                                    Classification classification)
+    private AttachedClassification getClassification(String         sourceName,
+                                                     Classification classification)
     {
-        ElementClassification beanClassification = new ElementClassification();
-
-        fillElementControlHeader(sourceName, beanClassification, classification);
-
-        beanClassification.setClassificationName(classification.getName());
-
-        if (classification.getProperties() != null)
+        if (classification != null)
         {
-            Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(classification.getProperties());
+            AttachedClassification beanClassification = new AttachedClassification();
 
-            beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
-            beanClassification.setEffectiveFromTime(classification.getProperties().getEffectiveFromTime());
-            beanClassification.setEffectiveToTime(classification.getProperties().getEffectiveToTime());
+            fillElementControlHeader(sourceName, beanClassification, classification);
+
+            beanClassification.setClassificationName(classification.getName());
+
+            if (classification.getProperties() != null)
+            {
+                Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(classification.getProperties());
+
+                beanClassification.setClassificationProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                beanClassification.setEffectiveFromTime(classification.getProperties().getEffectiveFromTime());
+                beanClassification.setEffectiveToTime(classification.getProperties().getEffectiveToTime());
+            }
+
+            return beanClassification;
         }
 
-        return beanClassification;
+        return null;
     }
 
 
@@ -603,33 +645,38 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     private RelatedMetadataElements getRelatedElements(String       sourceName,
                                                        Relationship relationship)
     {
-        RelatedMetadataElements relatedMetadataElements = new RelatedMetadataElements();
-
-        fillElementControlHeader(sourceName, relatedMetadataElements, relationship);
-
-        relatedMetadataElements.setRelationshipGUID(relationship.getGUID());
-        relatedMetadataElements.setRelationshipType(this.getElementType(relationship));
-
-        if (relationship.getProperties() != null)
+        if (relationship != null)
         {
-            Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(relationship.getProperties());
+            RelatedMetadataElements relatedMetadataElements = new RelatedMetadataElements();
 
-            relatedMetadataElements.setRelationshipProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
-            relatedMetadataElements.setEffectiveFromTime(relationship.getProperties().getEffectiveFromTime());
-            relatedMetadataElements.setEffectiveToTime(relationship.getProperties().getEffectiveToTime());
+            fillElementControlHeader(sourceName, relatedMetadataElements, relationship);
+
+            relatedMetadataElements.setRelationshipGUID(relationship.getGUID());
+            relatedMetadataElements.setRelationshipType(this.getElementType(relationship));
+
+            if (relationship.getProperties() != null)
+            {
+                Map<String, Object> classificationPropertyMap = repositoryHelper.getInstancePropertiesAsMap(relationship.getProperties());
+
+                relatedMetadataElements.setRelationshipProperties(propertyHelper.addPropertyMap(null, classificationPropertyMap));
+                relatedMetadataElements.setEffectiveFromTime(relationship.getProperties().getEffectiveFromTime());
+                relatedMetadataElements.setEffectiveToTime(relationship.getProperties().getEffectiveToTime());
+            }
+
+            if (relationship.getEntityOneProxy() != null)
+            {
+                relatedMetadataElements.setElementGUIDAtEnd1(relationship.getEntityOneProxy().getGUID());
+            }
+
+            if (relationship.getEntityTwoProxy() != null)
+            {
+                relatedMetadataElements.setElementGUIDAtEnd2(relationship.getEntityTwoProxy().getGUID());
+            }
+
+            return relatedMetadataElements;
         }
 
-        if (relationship.getEntityOneProxy() != null)
-        {
-            relatedMetadataElements.setElementGUIDAtEnd1(relationship.getEntityOneProxy().getGUID());
-        }
-
-        if (relationship.getEntityTwoProxy() != null)
-        {
-            relatedMetadataElements.setElementGUIDAtEnd2(relationship.getEntityTwoProxy().getGUID());
-        }
-
-        return relatedMetadataElements;
+        return null;
     }
 
 
@@ -919,7 +966,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -952,7 +999,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @Override
@@ -985,7 +1032,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -1018,7 +1065,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @Override
@@ -1051,7 +1098,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -1087,7 +1134,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */

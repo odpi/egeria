@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.itinfrastructure.converters;
 
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -37,7 +37,7 @@ public class ElementStubConverter<B> extends ITInfrastructureOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entityProxy and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -77,7 +77,7 @@ public class ElementStubConverter<B> extends ITInfrastructureOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an relationship and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -162,6 +162,7 @@ public class ElementStubConverter<B> extends ITInfrastructureOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unchecked")
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -209,7 +210,7 @@ public class ElementStubConverter<B> extends ITInfrastructureOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
-
+    @Override
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,

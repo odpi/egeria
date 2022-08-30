@@ -196,7 +196,7 @@ public abstract class RepositoryGovernanceContext
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param category enum value for the category of TypeDef to return.
      * @return TypeDefs list.
@@ -212,7 +212,7 @@ public abstract class RepositoryGovernanceContext
 
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param category enum value for the category of an AttributeTypeDef to return.
      * @return TypeDefs list.
@@ -464,7 +464,7 @@ public abstract class RepositoryGovernanceContext
      * Return the relationships for a specific entity.
      *
      * @param entityGUID              String unique identifier for the entity.
-     * @param relationshipTypeGUID    String GUID of the the type of relationship required (null for all).
+     * @param relationshipTypeGUID    String GUID of the type of relationship required (null for all).
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -955,7 +955,7 @@ public abstract class RepositoryGovernanceContext
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)

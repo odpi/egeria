@@ -16,10 +16,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * that links a member into a collection has an start and end date (called the effective dates).  The
  * Community Profile OMAS uses the CollectionStatus and the effective dates to determine which members to return.
  * <ul>
- *     <li>ACTIVE - All of the collection members with a current effective dates.  This is the default.</li>
- *     <li>PAST - All of the collection members that have effective dates in the past.</li>
- *     <li>FUTURE - All of the collection members that become effective in the future.</li>
- *     <li>ALL - All of the collection members linked to the collection irrespective of their effective dates.</li>
+ *     <li>ACTIVE - all the collection members with a current effective dates.  This is the default.</li>
+ *     <li>PAST - all the collection members that have effective dates in the past.</li>
+ *     <li>FUTURE - all the collection members that become effective in the future.</li>
+ *     <li>ALL - all the collection members linked to the collection irrespective of their effective dates.</li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -27,10 +27,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CollectionStatus implements Serializable
 {
-    ACTIVE   (0,  "Active",   "All of the collection members with a current effective dates (default)."),
-    PAST     (1,  "Past",     "All of the collection members that have effective dates in the past."),
-    FUTURE   (2,  "Future",   "All of the collection members that become effective in the future."),
-    ALL      (99, "All",      "All of the collection members linked to the collection irrespective of their effective dates.");
+    ACTIVE   (0,  "Active",   "all the collection members with a current effective dates (default)."),
+    PAST     (1,  "Past",     "all the collection members that have effective dates in the past."),
+    FUTURE   (2,  "Future",   "all the collection members that become effective in the future."),
+    ALL      (99, "All",      "all the collection members linked to the collection irrespective of their effective dates.");
 
     private static final long serialVersionUID = 1L;
 

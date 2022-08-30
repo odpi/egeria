@@ -6,8 +6,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerIdentifiersRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementsResponse;
@@ -16,6 +14,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceL
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.ExternalReferenceExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -41,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ExternalReferenceExchangeResource
 {
-    private ExternalReferenceExchangeRESTServices restAPI = new ExternalReferenceExchangeRESTServices();
+    private final ExternalReferenceExchangeRESTServices restAPI = new ExternalReferenceExchangeRESTServices();
 
     /**
      * Default constructor
@@ -52,7 +51,7 @@ public class ExternalReferenceExchangeResource
 
     
     /**
-     * Create a definition of a external reference.
+     * Create a definition of an external reference.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
@@ -76,12 +75,14 @@ public class ExternalReferenceExchangeResource
 
 
     /**
-     * Update the definition of a external reference.
+     * Update the definition of an external reference.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalReferenceGUID unique identifier of external reference
      * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to change
      *
      * @return void or
@@ -95,18 +96,24 @@ public class ExternalReferenceExchangeResource
                                                 @PathVariable String                       userId,
                                                 @PathVariable String                       externalReferenceGUID,
                                                 @RequestParam boolean                      isMergeUpdate,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forDuplicateProcessing,
                                                 @RequestBody  ExternalReferenceRequestBody requestBody)
     {
-        return restAPI.updateExternalReference(serverName, userId, externalReferenceGUID, isMergeUpdate, requestBody);
+        return restAPI.updateExternalReference(serverName, userId, externalReferenceGUID, isMergeUpdate, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Remove the definition of a external reference.
+     * Remove the definition of an external reference.
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalReferenceGUID unique identifier of external reference
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifiers of the external reference in the external asset manager
      *
      * @return void or
@@ -116,12 +123,16 @@ public class ExternalReferenceExchangeResource
      */
     @PostMapping(path = "/external-references/{externalReferenceGUID}/remove")
 
-    public VoidResponse deleteExternalReference(@PathVariable String                        serverName,
-                                                @PathVariable String                        userId,
-                                                @PathVariable String                        externalReferenceGUID,
-                                                @RequestBody  MetadataCorrelationProperties requestBody)
+    public VoidResponse deleteExternalReference(@PathVariable String            serverName,
+                                                @PathVariable String            userId,
+                                                @PathVariable String            externalReferenceGUID,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forLineage,
+                                                @RequestParam (required = false, defaultValue = "false")
+                                                        boolean                      forDuplicateProcessing,
+                                                @RequestBody  UpdateRequestBody requestBody)
     {
-        return restAPI.deleteExternalReference(serverName, userId, externalReferenceGUID, requestBody);
+        return restAPI.deleteExternalReference(serverName, userId, externalReferenceGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -133,6 +144,8 @@ public class ExternalReferenceExchangeResource
      * @param assetManagerIsHome ensure that only the asset manager can update this asset
      * @param attachedToGUID object linked to external references.
      * @param requestBody description for the reference from the perspective of the object that the reference is being attached to.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param externalReferenceGUID unique identifier (guid) of the external reference details.
      *
      * @return Unique identifier for new relationship or
@@ -147,9 +160,13 @@ public class ExternalReferenceExchangeResource
                                                        @PathVariable String                           attachedToGUID,
                                                        @PathVariable String                           externalReferenceGUID,
                                                        @RequestParam boolean                          assetManagerIsHome,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                               boolean                      forLineage,
+                                                       @RequestParam (required = false, defaultValue = "false")
+                                                               boolean                      forDuplicateProcessing,
                                                        @RequestBody  ExternalReferenceLinkRequestBody requestBody)
     {
-        return restAPI.linkExternalReferenceToElement(serverName, userId, assetManagerIsHome, attachedToGUID, externalReferenceGUID, requestBody);
+        return restAPI.linkExternalReferenceToElement(serverName, userId, assetManagerIsHome, attachedToGUID, externalReferenceGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -160,6 +177,8 @@ public class ExternalReferenceExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId the name of the calling user.
      * @param externalReferenceLinkGUID unique identifier (guid) of the external reference details.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody description for the reference from the perspective of the object that the reference is being attached to.
      *
      * @return void or
@@ -172,18 +191,24 @@ public class ExternalReferenceExchangeResource
     public VoidResponse updateExternalReferenceToElementLink(@PathVariable String                           serverName,
                                                              @PathVariable String                           userId,
                                                              @PathVariable String                           externalReferenceLinkGUID,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                      forLineage,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                                     boolean                      forDuplicateProcessing,
                                                              @RequestBody  ExternalReferenceLinkRequestBody requestBody)
     {
-        return restAPI.updateExternalReferenceToElementLink(serverName, userId, externalReferenceLinkGUID, requestBody);
+        return restAPI.updateExternalReferenceToElementLink(serverName, userId, externalReferenceLinkGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
     /**
-     * Remove the link between a external reference and an element.  If the element is its anchor, the external reference is removed.
+     * Remove the link between an external reference and an element.  If the element is its anchor, the external reference is removed.
      *
      * @param serverName name of the server to route the request to
      * @param userId the name of the calling user.
      * @param externalReferenceLinkGUID identifier of the external reference relationship.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier of software server capability representing the caller
      *
      * @return void or
@@ -196,9 +221,13 @@ public class ExternalReferenceExchangeResource
     public VoidResponse unlinkExternalReferenceFromElement(@PathVariable String                             serverName,
                                                            @PathVariable String                             userId,
                                                            @PathVariable String                             externalReferenceLinkGUID,
-                                                           @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+                                                           @RequestBody  EffectiveTimeQueryRequestBody requestBody,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                      forLineage,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean                      forDuplicateProcessing)
     {
-        return restAPI.unlinkExternalReferenceFromElement(serverName, userId, externalReferenceLinkGUID, requestBody);
+        return restAPI.unlinkExternalReferenceFromElement(serverName, userId, externalReferenceLinkGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -209,6 +238,8 @@ public class ExternalReferenceExchangeResource
      * @param userId the name of the calling user.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody the time that the retrieved elements must be effective for
      *
      * @return links to addition information or
@@ -222,9 +253,13 @@ public class ExternalReferenceExchangeResource
                                                                    @PathVariable String                        userId,
                                                                    @RequestParam int                           startFrom,
                                                                    @RequestParam int                           pageSize,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean                      forDuplicateProcessing,
                                                                    @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getExternalReferences(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getExternalReferences(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -235,6 +270,8 @@ public class ExternalReferenceExchangeResource
      * @param userId the name of the calling user.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique reference id assigned by the resource owner (supports wildcards). This is the qualified name of the entity
      *
      * @return links to addition information or
@@ -248,9 +285,13 @@ public class ExternalReferenceExchangeResource
                                                                        @PathVariable String          userId,
                                                                        @RequestParam int             startFrom,
                                                                        @RequestParam int             pageSize,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                               boolean                      forLineage,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                               boolean                      forDuplicateProcessing,
                                                                        @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getExternalReferencesById(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getExternalReferencesById(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -261,6 +302,8 @@ public class ExternalReferenceExchangeResource
      * @param userId the name of the calling user.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody URL of the external resource.
      *
      * @return links to addition information or
@@ -274,9 +317,13 @@ public class ExternalReferenceExchangeResource
                                                                         @PathVariable String          userId,
                                                                         @RequestParam int             startFrom,
                                                                         @RequestParam int             pageSize,
+                                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                                boolean                      forLineage,
+                                                                        @RequestParam (required = false, defaultValue = "false")
+                                                                                boolean                      forDuplicateProcessing,
                                                                         @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getExternalReferencesByURL(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getExternalReferencesByURL(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -288,6 +335,8 @@ public class ExternalReferenceExchangeResource
      * @param userId the name of the calling user.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name of the external resource.
      *
      * @return links to addition information or
@@ -301,9 +350,13 @@ public class ExternalReferenceExchangeResource
                                                                          @PathVariable String          userId,
                                                                          @RequestParam int             startFrom,
                                                                          @RequestParam int             pageSize,
+                                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                                 boolean                      forLineage,
+                                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                                 boolean                      forDuplicateProcessing,
                                                                          @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getExternalReferencesByName(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getExternalReferencesByName(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -314,6 +367,8 @@ public class ExternalReferenceExchangeResource
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody the time that the retrieved elements must be effective for
      *
      * @return list of matching metadata elements or
@@ -327,9 +382,13 @@ public class ExternalReferenceExchangeResource
                                                                                   @PathVariable String                        userId,
                                                                                   @RequestParam int                           startFrom,
                                                                                   @RequestParam int                           pageSize,
+                                                                                  @RequestParam (required = false, defaultValue = "false")
+                                                                                          boolean                      forLineage,
+                                                                                  @RequestParam (required = false, defaultValue = "false")
+                                                                                          boolean                      forDuplicateProcessing,
                                                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getExternalReferencesForAssetManager(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.getExternalReferencesForAssetManager(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -341,6 +400,9 @@ public class ExternalReferenceExchangeResource
      * @param requestBody regular expression (RegEx) to search for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
      *
      * @return links to addition information or
      *  InvalidParameterException guid invalid or the external references are not correctly specified, or are null.
@@ -353,9 +415,13 @@ public class ExternalReferenceExchangeResource
                                                                     @PathVariable String                  userId,
                                                                     @RequestParam int                     startFrom,
                                                                     @RequestParam int                     pageSize,
+                                                                    @RequestParam (required = false, defaultValue = "false")
+                                                                            boolean                      forLineage,
+                                                                    @RequestParam (required = false, defaultValue = "false")
+                                                                            boolean                      forDuplicateProcessing,
                                                                     @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findExternalReferences(serverName, userId, startFrom, pageSize, requestBody);
+        return restAPI.findExternalReferences(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -367,6 +433,8 @@ public class ExternalReferenceExchangeResource
      * @param attachedToGUID object linked to external reference.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody the time that the retrieved elements must be effective for
      *
      * @return links to addition information or
@@ -381,9 +449,13 @@ public class ExternalReferenceExchangeResource
                                                                                     @PathVariable String                        attachedToGUID,
                                                                                     @RequestParam int                           startFrom,
                                                                                     @RequestParam int                           pageSize,
+                                                                                    @RequestParam (required = false, defaultValue = "false")
+                                                                                            boolean                      forLineage,
+                                                                                    @RequestParam (required = false, defaultValue = "false")
+                                                                                            boolean                      forDuplicateProcessing,
                                                                                     @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.retrieveAttachedExternalReferences(serverName, userId, attachedToGUID, startFrom, pageSize, requestBody);
+        return restAPI.retrieveAttachedExternalReferences(serverName, userId, attachedToGUID, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -393,6 +465,8 @@ public class ExternalReferenceExchangeResource
      * @param serverName name of the server to route the request to
      * @param userId calling user
      * @param externalReferenceGUID unique identifier for the external reference
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody the time that the retrieved elements must be effective for
      *
      * @return properties of the external reference or
@@ -405,8 +479,12 @@ public class ExternalReferenceExchangeResource
     public ExternalReferenceElementResponse getExternalReferenceByGUID(@PathVariable String                        serverName,
                                                                        @PathVariable String                        userId,
                                                                        @PathVariable String                        externalReferenceGUID,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                               boolean                      forLineage,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                               boolean                      forDuplicateProcessing,
                                                                        @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getExternalReferenceByGUID(serverName, userId, externalReferenceGUID, requestBody);
+        return restAPI.getExternalReferenceByGUID(serverName, userId, externalReferenceGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 }

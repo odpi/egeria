@@ -35,7 +35,7 @@ public class EndpointConverter<B> extends AssetOwnerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -72,8 +72,8 @@ public class EndpointConverter<B> extends AssetOwnerOMASConverter<B>
 
                     endpointProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     endpointProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    endpointProperties.setDisplayName(this.removeName(instanceProperties));
-                    endpointProperties.setDescription(this.removeDescription(instanceProperties));
+                    endpointProperties.setTechnicalName(this.removeName(instanceProperties));
+                    endpointProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
                     endpointProperties.setAddress(this.removeNetworkAddress(instanceProperties));
                     endpointProperties.setProtocol(this.removeProtocol(instanceProperties));
                     endpointProperties.setEncryptionMethod(this.removeEncryptionMethod(instanceProperties));
@@ -106,7 +106,7 @@ public class EndpointConverter<B> extends AssetOwnerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

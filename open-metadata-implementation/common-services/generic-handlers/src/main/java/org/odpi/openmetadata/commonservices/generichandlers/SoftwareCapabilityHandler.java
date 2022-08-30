@@ -87,6 +87,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param vendorProperties  properties about the vendor and/or their product
      * @param effectiveFrom starting time for this element (null for all time)
      * @param effectiveTo ending time for this element (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier for the file system
@@ -111,6 +114,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                      Map<String, String>  vendorProperties,
                                      Date                 effectiveFrom,
                                      Date                 effectiveTo,
+                                     boolean              forLineage,
+                                     boolean              forDuplicateProcessing,
+                                     Date                 effectiveTime,
                                      String               methodName) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
@@ -142,11 +148,12 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             uniqueName,
                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             builder,
+                                                            effectiveTime,
                                                             methodName);
 
         if (fileSystemGUID != null)
         {
-            this.setVendorProperties(userId, fileSystemGUID, vendorProperties, methodName);
+            this.setVendorProperties(userId, fileSystemGUID, vendorProperties, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
 
         return fileSystemGUID;
@@ -156,7 +163,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
 
     /**
      * Create specialized Software Server Capabilities entities.  Most software service capabilities
-     * either specialize Software Server Capability or have a special classification.
+     * either specialize software capability or have a special classification.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -175,6 +182,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param vendorProperties  properties about the vendor and/or their product
      * @param effectiveFrom when is this element effective from
      * @param effectiveTo when is this element effect to
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier for the file system
@@ -200,6 +210,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                              Map<String, String>  vendorProperties,
                                              Date                 effectiveFrom,
                                              Date                 effectiveTo,
+                                             boolean              forLineage,
+                                             boolean              forDuplicateProcessing,
+                                             Date                 effectiveTime,
                                              String               methodName) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
@@ -247,11 +260,12 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             uniqueName,
                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             builder,
+                                                            effectiveTime,
                                                             methodName);
 
         if (capabilityGUID != null)
         {
-            this.setVendorProperties(userId, capabilityGUID, vendorProperties, methodName);
+            this.setVendorProperties(userId, capabilityGUID, vendorProperties, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
 
         return capabilityGUID;
@@ -314,13 +328,14 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
     }
 
 
     /**
      * Create specialized Software Server Capabilities entities.  Most software service capabilities
-     * either specialize Software Server Capability or have a special classification.  Metadata server
+     * either specialize software capability or have a special classification.  Metadata server
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -330,23 +345,32 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param classificationName name of classification if any
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void addSoftwareCapabilityClassification(String userId,
-                                                    String externalSourceGUID,
-                                                    String externalSourceName,
-                                                    String softwareCapabilityGUID,
-                                                    String softwareCapabilityGUIDParameterName,
-                                                    String classificationName,
-                                                    Date   effectiveFrom,
-                                                    Date   effectiveTo,
-                                                    String methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public void addSoftwareCapabilityClassification(String  userId,
+                                                    String  externalSourceGUID,
+                                                    String  externalSourceName,
+                                                    String  softwareCapabilityGUID,
+                                                    String  softwareCapabilityGUIDParameterName,
+                                                    String  classificationName,
+                                                    Date    effectiveFrom,
+                                                    Date    effectiveTo,
+                                                    boolean isMergeUpdate,
+                                                    boolean forLineage,
+                                                    boolean forDuplicateProcessing,
+                                                    Date    effectiveTime,
+                                                    String  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String classificationParameterName  = "classificationName";
 
@@ -363,10 +387,10 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                            classificationTypeGUID,
                                            classificationName,
                                            this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
-                                           false,
-                                           false,
-                                           false,
-                                           new Date(),
+                                           isMergeUpdate,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
                                            methodName);
 
     }
@@ -393,6 +417,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param isMergeUpdate should the properties be merged with existing properties or replace the existing properties?
      * @param effectiveFrom when is this element effective from
      * @param effectiveTo when is this element effect to
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      *
@@ -418,6 +445,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                           boolean              isMergeUpdate,
                                           Date                 effectiveFrom,
                                           Date                 effectiveTo,
+                                          boolean              forLineage,
+                                          boolean              forDuplicateProcessing,
+                                          Date                 effectiveTime,
                                           String               methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -449,15 +479,15 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                     capabilityGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
-                                    this.getEffectiveTime(effectiveFrom, effectiveTo),
+                                    effectiveTime,
                                     methodName);
 
-        this.setVendorProperties(userId, capabilityGUID, vendorProperties, methodName);
+        this.setVendorProperties(userId, capabilityGUID, vendorProperties, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
@@ -470,7 +500,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param typeName unique name of type
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return List of unique identifiers
@@ -479,22 +511,24 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<String> getSoftwareCapabilityGUIDsByType(String userId,
-                                                         String typeGUID,
-                                                         String typeName,
-                                                         int    startingFrom,
-                                                         int    maxPageSize,
-                                                         Date   effectiveTime,
-                                                         String methodName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<String> getSoftwareCapabilityGUIDsByType(String  userId,
+                                                         String  typeGUID,
+                                                         String  typeName,
+                                                         int     startingFrom,
+                                                         int     maxPageSize,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime,
+                                                         String  methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         return this.getBeanGUIDsByType(userId,
                                        typeGUID,
                                        typeName,
                                        null,
-                                       false,
-                                       false,
+                                       forLineage,
+                                       forDuplicateProcessing,
                                        supportedZones,
                                        startingFrom,
                                        maxPageSize,
@@ -511,7 +545,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param typeName unique name of type
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return List of beans
@@ -520,22 +556,24 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<B> getSoftwareServerCapabilitiesByType(String userId,
-                                                       String typeGUID,
-                                                       String typeName,
-                                                       int    startingFrom,
-                                                       int    maxPageSize,
-                                                       Date   effectiveTime,
-                                                       String methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public List<B> getSoftwareServerCapabilitiesByType(String  userId,
+                                                       String  typeGUID,
+                                                       String  typeName,
+                                                       int     startingFrom,
+                                                       int     maxPageSize,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime,
+                                                       String  methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         return this.getBeansByType(userId,
                                    typeGUID,
                                    typeName,
                                    null,
-                                   false,
-                                   false,
+                                   forLineage,
+                                   forDuplicateProcessing,
                                    supportedZones,
                                    startingFrom,
                                    maxPageSize,
@@ -551,7 +589,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param classificationName name of classification
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
-     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return List of beans
@@ -564,6 +604,8 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                  String  classificationName,
                                                                  int     startingFrom,
                                                                  int     maxPageSize,
+                                                                 boolean forLineage,
+                                                                 boolean forDuplicateProcessing,
                                                                  Date    effectiveTime,
                                                                  String  methodName) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
@@ -572,8 +614,8 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByClassification(userId,
                                              OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
                                              classificationName,
-                                             false,
-                                             false,
+                                             forLineage,
+                                             forDuplicateProcessing,
                                              startingFrom,
                                              maxPageSize,
                                              effectiveTime,
@@ -588,6 +630,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param classificationName name of the classification that identifies the type of software capability required
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return List of unique identifiers for the retrieved entities
@@ -600,6 +645,9 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                    String  classificationName,
                                                                    int     startingFrom,
                                                                    int     maxPageSize,
+                                                                   boolean forLineage,
+                                                                   boolean forDuplicateProcessing,
+                                                                   Date    effectiveTime,
                                                                    String  methodName) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
                                                                                               PropertyServerException
@@ -607,11 +655,11 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
         return this.getBeanGUIDsByClassification(userId,
                                                  OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
                                                  classificationName,
-                                                 false,
-                                                 false,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
                                                  startingFrom,
                                                  maxPageSize,
-                                                 new Date(),
+                                                 effectiveTime,
                                                  methodName);
     }
 }

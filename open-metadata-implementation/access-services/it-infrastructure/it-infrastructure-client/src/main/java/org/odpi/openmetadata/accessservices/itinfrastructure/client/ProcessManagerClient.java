@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfra
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.Re
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessContainmentType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessProperties;
@@ -26,9 +26,10 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ControlFlowReq
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowElementResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowElementsResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveDatesRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeMetadataSourceRequestBody;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.LineageMappingElementResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.LineageMappingElementsResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.LineageMappingRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProcessCallElementResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProcessCallElementsResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProcessCallRequestBody;
@@ -39,6 +40,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -720,11 +722,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the relationship
      *
@@ -733,19 +732,16 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String setupDataFlow(String  userId,
-                                String  infrastructureManagerGUID,
-                                String  infrastructureManagerName,
-                                boolean infrastructureManagerIsHome,
-                                String  dataSupplierGUID,
-                                String  dataConsumerGUID,
-                                String  qualifiedName,
-                                String  description,
-                                String  formula,
-                                Date    effectiveFrom,
-                                Date    effectiveTo) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
+    public String setupDataFlow(String             userId,
+                                String             infrastructureManagerGUID,
+                                String             infrastructureManagerName,
+                                boolean            infrastructureManagerIsHome,
+                                String             dataSupplierGUID,
+                                String             dataConsumerGUID,
+                                DataFlowProperties properties,
+                                Date               effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
 
     {
         final String methodName                    = "setupDataFlow";
@@ -757,17 +753,11 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
 
         DataFlowRequestBody requestBody = new DataFlowRequestBody();
+
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
-
-        DataFlowProperties properties = new DataFlowProperties();
-        properties.setEffectiveFrom(effectiveFrom);
-        properties.setEffectiveTo(effectiveTo);
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setFormula(formula);
-
         requestBody.setProperties(properties);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/suppliers/{2}/consumers/{3}?assetManagerIsHome={4}";
 
@@ -846,11 +836,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -858,17 +845,14 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateDataFlow(String userId,
-                               String infrastructureManagerGUID,
-                               String infrastructureManagerName,
-                               String dataFlowGUID,
-                               String qualifiedName,
-                               String description,
-                               String formula,
-                               Date   effectiveFrom,
-                               Date   effectiveTo) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public void updateDataFlow(String             userId,
+                               String             infrastructureManagerGUID,
+                               String             infrastructureManagerName,
+                               String             dataFlowGUID,
+                               DataFlowProperties properties,
+                               Date               effectiveTime) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
 
     {
         final String methodName                    = "updateDataFlow";
@@ -880,15 +864,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         DataFlowRequestBody requestBody = new DataFlowRequestBody();
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
-
-        DataFlowProperties properties = new DataFlowProperties();
-        properties.setEffectiveFrom(effectiveFrom);
-        properties.setEffectiveTo(effectiveTo);
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setFormula(formula);
-
         requestBody.setProperties(properties);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/{2}/update";
 
@@ -947,10 +924,12 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param userId calling user
      * @param dataSupplierGUID unique identifier of the data supplier
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime time when the hosting is effective
      *
      * @return unique identifier and properties of the relationship
@@ -962,6 +941,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     @Override
     public List<DataFlowElement> getDataFlowConsumers(String userId,
                                                       String dataSupplierGUID,
+                                                      int    startFrom,
+                                                      int    pageSize,
                                                       Date   effectiveTime) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -973,7 +954,7 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/suppliers/{2}/consumers/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/suppliers/{2}/consumers/retrieve?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
@@ -983,17 +964,21 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                    requestBody,
                                                                                    serverName,
                                                                                    userId,
-                                                                                   dataSupplierGUID);
+                                                                                   dataSupplierGUID,
+                                                                                   startFrom,
+                                                                                   pageSize);
 
         return restResult.getElementList();
     }
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param userId calling user
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime time when the hosting is effective
      *
      * @return unique identifier and properties of the relationship
@@ -1005,6 +990,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     @Override
     public List<DataFlowElement> getDataFlowSuppliers(String userId,
                                                       String dataConsumerGUID,
+                                                      int    startFrom,
+                                                      int    pageSize,
                                                       Date   effectiveTime) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -1016,7 +1003,7 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/consumers/{2}/suppliers/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/consumers/{2}/suppliers/retrieve?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
@@ -1026,7 +1013,9 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                    requestBody,
                                                                                    serverName,
                                                                                    userId,
-                                                                                   dataConsumerGUID);
+                                                                                   dataConsumerGUID,
+                                                                                   startFrom,
+                                                                                   pageSize);
 
         return restResult.getElementList();
     }
@@ -1041,11 +1030,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier for the control flow relationship
      *
@@ -1054,19 +1040,16 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String setupControlFlow(String  userId,
-                                   String  infrastructureManagerGUID,
-                                   String  infrastructureManagerName,
-                                   boolean infrastructureManagerIsHome,
-                                   String  currentStepGUID,
-                                   String  nextStepGUID,
-                                   String  qualifiedName,
-                                   String  description,
-                                   String  guard,
-                                   Date    effectiveFrom,
-                                   Date    effectiveTo) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public String setupControlFlow(String                userId,
+                                   String                infrastructureManagerGUID,
+                                   String                infrastructureManagerName,
+                                   boolean               infrastructureManagerIsHome,
+                                   String                currentStepGUID,
+                                   String                nextStepGUID,
+                                   ControlFlowProperties properties,
+                                   Date                  effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
 
     {
         final String methodName                   = "setupControlFlow";
@@ -1080,15 +1063,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         ControlFlowRequestBody requestBody = new ControlFlowRequestBody();
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
-
-        ControlFlowProperties properties = new ControlFlowProperties();
-        properties.setEffectiveFrom(effectiveFrom);
-        properties.setEffectiveTo(effectiveTo);
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setGuard(guard);
-
         requestBody.setProperties(properties);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/{3}?assetManagerIsHome={4}";
 
@@ -1167,28 +1143,22 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateControlFlow(String userId,
-                                  String infrastructureManagerGUID,
-                                  String infrastructureManagerName,
-                                  String controlFlowGUID,
-                                  String qualifiedName,
-                                  String description,
-                                  String guard,
-                                  Date   effectiveFrom,
-                                  Date   effectiveTo) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void updateControlFlow(String                userId,
+                                  String                infrastructureManagerGUID,
+                                  String                infrastructureManagerName,
+                                  String                controlFlowGUID,
+                                  ControlFlowProperties properties,
+                                  Date                  effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
 
     {
         final String methodName                   = "updateControlFlow";
@@ -1200,15 +1170,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         ControlFlowRequestBody requestBody = new ControlFlowRequestBody();
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
-
-        ControlFlowProperties properties = new ControlFlowProperties();
-        properties.setEffectiveFrom(effectiveFrom);
-        properties.setEffectiveTo(effectiveTo);
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setGuard(guard);
-
         requestBody.setProperties(properties);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/{2}/update";
 
@@ -1267,10 +1230,12 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime time when the hosting is effective
      *
      * @return unique identifier and properties of the relationship
@@ -1282,6 +1247,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     @Override
     public List<ControlFlowElement> getControlFlowNextSteps(String userId,
                                                             String currentStepGUID,
+                                                            int    startFrom,
+                                                            int    pageSize,
                                                             Date   effectiveTime) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
@@ -1293,7 +1260,7 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/retrieve?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
@@ -1303,17 +1270,21 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                          requestBody,
                                                                                          serverName,
                                                                                          userId,
-                                                                                         currentStepGUID);
+                                                                                         currentStepGUID,
+                                                                                         startFrom,
+                                                                                         pageSize);
 
         return restResult.getElementList();
     }
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param userId calling user
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime time when the hosting is effective
      *
      * @return unique identifier and properties of the relationship
@@ -1325,6 +1296,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     @Override
     public List<ControlFlowElement> getControlFlowPreviousSteps(String userId,
                                                                 String currentStepGUID,
+                                                                int    startFrom,
+                                                                int    pageSize,
                                                                 Date   effectiveTime) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
@@ -1336,7 +1309,7 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/previous-steps/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/current-steps/{2}/previous-steps/retrieve?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
@@ -1346,7 +1319,9 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                          requestBody,
                                                                                          serverName,
                                                                                          userId,
-                                                                                         currentStepGUID);
+                                                                                         currentStepGUID,
+                                                                                         startFrom,
+                                                                                         pageSize);
 
         return restResult.getElementList();
     }
@@ -1361,11 +1336,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param infrastructureManagerIsHome ensure that only the infrastructure manager can update this asset
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new relationship
      *
@@ -1374,19 +1346,16 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String setupProcessCall(String  userId,
-                                   String  infrastructureManagerGUID,
-                                   String  infrastructureManagerName,
-                                   boolean infrastructureManagerIsHome,
-                                   String  callerGUID,
-                                   String  calledGUID,
-                                   String  qualifiedName,
-                                   String  description,
-                                   String  formula,
-                                   Date    effectiveFrom,
-                                   Date    effectiveTo) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public String setupProcessCall(String                userId,
+                                   String                infrastructureManagerGUID,
+                                   String                infrastructureManagerName,
+                                   boolean               infrastructureManagerIsHome,
+                                   String                callerGUID,
+                                   String                calledGUID,
+                                   ProcessCallProperties properties,
+                                   Date                  effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
 
     {
         final String methodName              = "setupProcessCall";
@@ -1400,15 +1369,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         ProcessCallRequestBody requestBody = new ProcessCallRequestBody();
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
-
-        ProcessCallProperties properties = new ProcessCallProperties();
-        properties.setEffectiveFrom(effectiveFrom);
-        properties.setEffectiveTo(effectiveTo);
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setFormula(formula);
-
         requestBody.setProperties(properties);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/callers/{2}/called/{3}?assetManagerIsHome={4}";
 
@@ -1486,28 +1448,22 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateProcessCall(String userId,
-                                  String infrastructureManagerGUID,
-                                  String infrastructureManagerName,
-                                  String processCallGUID,
-                                  String qualifiedName,
-                                  String description,
-                                  String formula,
-                                  Date   effectiveFrom,
-                                  Date   effectiveTo) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void updateProcessCall(String                userId,
+                                  String                infrastructureManagerGUID,
+                                  String                infrastructureManagerName,
+                                  String                processCallGUID,
+                                  ProcessCallProperties properties,
+                                  Date                  effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName                   = "updateProcessCall";
         final String processCallGUIDParameterName = "processCallGUID";
@@ -1518,15 +1474,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         ProcessCallRequestBody requestBody = new ProcessCallRequestBody();
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
-
-        ProcessCallProperties properties = new ProcessCallProperties();
-        properties.setEffectiveFrom(effectiveFrom);
-        properties.setEffectiveTo(effectiveTo);
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setFormula(formula);
-
         requestBody.setProperties(properties);
+        requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/{2}/update";
 
@@ -1546,7 +1495,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
      * @param infrastructureManagerName unique name of software server capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1563,7 +1513,6 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     {
         final String methodName                   = "clearProcessCall";
         final String processCallGUIDParameterName = "processCallGUID";
-
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
@@ -1585,10 +1534,12 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param userId calling user
      * @param callerGUID unique identifier of the element that is making the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime time when the hosting is effective
      *
      * @return unique identifier and properties of the relationship
@@ -1600,6 +1551,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     @Override
     public List<ProcessCallElement> getProcessCalled(String userId,
                                                      String callerGUID,
+                                                     int    startFrom,
+                                                     int    pageSize,
                                                      Date   effectiveTime) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
@@ -1610,7 +1563,7 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/callers/{2}/called/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/callers/{2}/called/retrieve?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
@@ -1620,17 +1573,21 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                          requestBody,
                                                                                          serverName,
                                                                                          userId,
-                                                                                         callerGUID);
+                                                                                         callerGUID,
+                                                                                         startFrom,
+                                                                                         pageSize);
 
         return restResult.getElementList();
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param userId calling user
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime time when the hosting is effective
      *
      * @return unique identifier and properties of the relationship
@@ -1642,6 +1599,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     @Override
     public List<ProcessCallElement> getProcessCallers(String userId,
                                                       String calledGUID,
+                                                      int    startFrom,
+                                                      int    pageSize,
                                                       Date   effectiveTime) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException
@@ -1652,7 +1611,7 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/called/{2}/callers/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/called/{2}/callers/retrieve?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
@@ -1662,7 +1621,9 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                          requestBody,
                                                                                          serverName,
                                                                                          userId,
-                                                                                         calledGUID);
+                                                                                         calledGUID,
+                                                                                         startFrom,
+                                                                                         pageSize);
 
         return restResult.getElementList();
     }
@@ -1670,14 +1631,14 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
 
     /**
      * Link two elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
-     * @param effectiveFrom time when this hosting is effective - null means immediately
-     * @param effectiveTo time when this hosting is no longer effective - null means forever
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new relationship
      *
@@ -1686,13 +1647,13 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String setupLineageMapping(String userId,
-                                      String sourceElementGUID,
-                                      String destinationElementGUID,
-                                      Date   effectiveFrom,
-                                      Date   effectiveTo) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public String setupLineageMapping(String                   userId,
+                                      String                   sourceElementGUID,
+                                      String                   destinationElementGUID,
+                                      LineageMappingProperties properties,
+                                      Date                     effectiveTime) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String methodName                          = "setupLineageMapping";
         final String sourceElementGUIDParameterName      = "sourceElementGUID";
@@ -1704,9 +1665,9 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}";
 
-        EffectiveDatesRequestBody requestBody = new EffectiveDatesRequestBody();
-        requestBody.setEffectiveFrom(effectiveFrom);
-        requestBody.setEffectiveTo(effectiveTo);
+        LineageMappingRequestBody requestBody = new LineageMappingRequestBody();
+        requestBody.setProperties(properties);
+        requestBody.setEffectiveTime(effectiveTime);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1720,13 +1681,114 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     }
 
 
+
+
     /**
-     * Remove the lineage mapping between two elements.
+     * Retrieve the lineage mapping relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one lineage mapping relationship between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
      *
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
+     * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime effective time for the query
      *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public LineageMappingElement getLineageMapping(String userId,
+                                                   String sourceElementGUID,
+                                                   String destinationElementGUID,
+                                                   String qualifiedName,
+                                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String methodName                          = "getLineageMapping";
+        final String qualifiedNameParameterName          = "qualifiedName";
+        final String sourceElementGUIDParameterName      = "sourceElementGUID";
+        final String destinationElementGUIDParameterName = "destinationElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+        requestBody.setName(qualifiedName);
+        requestBody.setNameParameterName(qualifiedNameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}/retrieve";
+
+        LineageMappingElementResponse restResult = restClient.callLineageMappingPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             requestBody,
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             sourceElementGUID,
+                                                                                             destinationElementGUID);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Update the lineage mapping relationship between two elements.
+     *
+     * @param userId calling user
+     * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
+     * @param infrastructureManagerName unique name of software server capability representing the caller
+     * @param lineageMappingGUID unique identifier of the relationship
+     * @param properties qualified name for this relationship and other related properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateLineageMapping(String                   userId,
+                                     String                   infrastructureManagerGUID,
+                                     String                   infrastructureManagerName,
+                                     String                   lineageMappingGUID,
+                                     LineageMappingProperties properties,
+                                     Date                     effectiveTime) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String methodName                      = "updateLineageMapping";
+        final String lineageMappingGUIDParameterName = "lineageMappingGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(lineageMappingGUID, lineageMappingGUIDParameterName, methodName);
+
+        LineageMappingRequestBody requestBody = new LineageMappingRequestBody();
+        requestBody.setExternalSourceGUID(infrastructureManagerGUID);
+        requestBody.setExternalSourceName(infrastructureManagerName);
+        requestBody.setProperties(properties);
+        requestBody.setEffectiveTime(effectiveTime);
+
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/{2}/update";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        lineageMappingGUID);
+    }
+
+
+    /**
+     * Remove the lineage mapping between two elements.
+     *
+     * @param userId calling user
+     * @param lineageMappingGUID unique identifier of the relationship
      * @param effectiveTime time when the relationship is effective
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1735,21 +1797,18 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
      */
     @Override
     public void clearLineageMapping(String userId,
-                                    String sourceElementGUID,
-                                    String destinationElementGUID,
+                                    String lineageMappingGUID,
                                     Date   effectiveTime) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        final String methodName                          = "clearLineageMapping";
-        final String sourceElementGUIDParameterName      = "sourceElementGUID";
-        final String destinationElementGUIDParameterName = "destinationElementGUID";
+        final String methodName                      = "clearLineageMapping";
+        final String lineageMappingGUIDParameterName = "lineageMapping";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(lineageMappingGUID, lineageMappingGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/{2}/remove";
 
         EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
@@ -1759,16 +1818,17 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                         requestBody,
                                         serverName,
                                         userId,
-                                        sourceElementGUID,
-                                        destinationElementGUID);
+                                        lineageMappingGUID);
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
      *
      * @param userId calling user
      * @param sourceElementGUID unique identifier of the source
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime time when the hosting is effective
      *
      * @return list of lineage mapping relationships
@@ -1780,6 +1840,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     @Override
     public List<LineageMappingElement> getDestinationLineageMappings(String userId,
                                                                      String sourceElementGUID,
+                                                                     int    startFrom,
+                                                                     int    pageSize,
                                                                      Date   effectiveTime) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
@@ -1790,7 +1852,7 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/retrieve?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
@@ -1800,17 +1862,21 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                             requestBody,
                                                                                             serverName,
                                                                                             userId,
-                                                                                            sourceElementGUID);
+                                                                                            sourceElementGUID,
+                                                                                            startFrom,
+                                                                                            pageSize);
 
         return results.getElementList();
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
      *
      * @param userId calling user
      * @param destinationElementGUID unique identifier of the destination
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      * @param effectiveTime time when the hosting is effective
      *
      * @return list of lineage mapping relationships
@@ -1822,6 +1888,8 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
     @Override
     public List<LineageMappingElement> getSourceLineageMappings(String userId,
                                                                 String destinationElementGUID,
+                                                                int    startFrom,
+                                                                int    pageSize,
                                                                 Date   effectiveTime) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
@@ -1832,7 +1900,7 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/destinations/{2}/sources/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/destinations/{2}/sources/retrieve?startFrom={3}&pageSize={4}";
 
         EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
@@ -1842,7 +1910,9 @@ public class ProcessManagerClient extends AssetManagerClientBase implements Proc
                                                                                             requestBody,
                                                                                             serverName,
                                                                                             userId,
-                                                                                            destinationElementGUID);
+                                                                                            destinationElementGUID,
+                                                                                            startFrom,
+                                                                                            pageSize);
 
         return results.getElementList();
     }

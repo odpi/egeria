@@ -6,14 +6,15 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt.common;
 import org.odpi.openmetadata.accessservices.assetmanager.client.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class AssetManagerTestBase
 
 
     /**
-     * Create and return a asset manager client.
+     * Create and return an asset manager client.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
@@ -99,7 +100,7 @@ public class AssetManagerTestBase
 
 
     /**
-     * Create a asset manager entity and return its GUID.
+     * Create an asset manager entity and return its GUID.
      *
      * @param assetManagerName name of asset manager to use
      * @param serverName name of the server to connect to
@@ -211,7 +212,7 @@ public class AssetManagerTestBase
     {
         if (elementHeader == null)
         {
-            throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ElementHeader from Retrieve)");
+            throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ElementBase from Retrieve)");
         }
         if (! guid.equals(elementHeader.getGUID()))
         {
@@ -318,15 +319,18 @@ public class AssetManagerTestBase
             properties.setUsage(glossaryUsage);
             properties.setLanguage(glossaryLanguage);
 
+            ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
+
+            externalIdentifierProperties.setExternalIdentifier(glossaryExternalIdentifier);
+            externalIdentifierProperties.setExternalIdentifierName(glossaryExternalIdentifierName);
+            externalIdentifierProperties.setExternalIdentifierUsage(glossaryExternalIdentifierUsage);
+            externalIdentifierProperties.setExternalIdentifierSource(glossaryExternalIdentifierSource);
+            externalIdentifierProperties.setKeyPattern(glossaryExternalIdentifierKeyPattern);
+
             String glossaryGUID = client.createGlossary(userId,
                                                         assetManagerGUID,
                                                         assetManagerName,
-                                                        glossaryExternalIdentifier,
-                                                        glossaryExternalIdentifierName,
-                                                        glossaryExternalIdentifierUsage,
-                                                        glossaryExternalIdentifierSource,
-                                                        glossaryExternalIdentifierKeyPattern,
-                                                        mappingProperties,
+                                                        externalIdentifierProperties,
                                                         properties);
 
             if (glossaryGUID == null)

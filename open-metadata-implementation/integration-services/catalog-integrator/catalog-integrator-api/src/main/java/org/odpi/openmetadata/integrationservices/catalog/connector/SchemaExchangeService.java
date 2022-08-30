@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.SchemaExchangeInterface;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
@@ -12,10 +11,11 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class SchemaExchangeService
 {
-    private SchemaExchangeInterface  schemaExchangeClient;
+    private final SchemaExchangeInterface  schemaExchangeClient;
 
     String                   userId;
     String                   assetManagerGUID;
@@ -31,6 +31,9 @@ public class SchemaExchangeService
     String                   connectorName;
     SynchronizationDirection synchronizationDirection;
     AuditLog                 auditLog;
+
+    boolean forLineage = false;
+    boolean forDuplicateProcessing = false;
 
 
     /**
@@ -63,6 +66,57 @@ public class SchemaExchangeService
 
 
 
+    /* ========================================================
+     * Set up the forLineage flag
+     */
+
+    /**
+     * Return whether retrieval requests from this service are to include elements with the Memento classification attached or not.
+     *
+     * @return boolean flag
+     */
+    public boolean isForLineage()
+    {
+        return forLineage;
+    }
+
+
+    /**
+     * Set up whether retrieval requests from this service are to include elements with the Memento classification attached or not.
+     *
+     * @param forLineage boolean flag
+     */
+    public void setForLineage(boolean forLineage)
+    {
+        this.forLineage = forLineage;
+    }
+
+
+    /* ========================================================
+     * Set up the forDuplicateProcessing flag
+     */
+
+    /**
+     * Return whether retrieval requests from this service are to avoid merging duplicates or not.
+     *
+     * @return boolean flag
+     */
+    public boolean isForDuplicateProcessing()
+    {
+        return forDuplicateProcessing;
+    }
+
+
+    /**
+     * Set up whether retrieval requests from this service are to avoid merging duplicates or not.
+     *
+     * @param forDuplicateProcessing boolean flag
+     */
+    public void setForDuplicateProcessing(boolean forDuplicateProcessing)
+    {
+        this.forDuplicateProcessing = forDuplicateProcessing;
+    }
+    
 
     /* =====================================================================================================================
      * A schemaType describes the structure of a data asset, process or port
@@ -72,11 +126,7 @@ public class SchemaExchangeService
      * Create a new metadata element to represent a schema type.
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
-     * @param schemaTypeExternalIdentifier unique identifier of the schema type in the external asset manager
-     * @param schemaTypeExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param schemaTypeExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param schemaTypeExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param schemaTypeProperties properties about the schema type to store
      *
      * @return unique identifier of the new schema type
@@ -85,15 +135,11 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaType(boolean              assetManagerIsHome,
-                                   String               schemaTypeExternalIdentifier,
-                                   String               schemaTypeExternalIdentifierName,
-                                   String               schemaTypeExternalIdentifierUsage,
-                                   KeyPattern           schemaTypeExternalIdentifierKeyPattern,
-                                   Map<String, String>  mappingProperties,
-                                   SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public String createSchemaType(boolean                      assetManagerIsHome,
+                                   ExternalIdentifierProperties externalIdentifierProperties,
+                                   SchemaTypeProperties         schemaTypeProperties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName = "createSchemaType";
 
@@ -103,12 +149,9 @@ public class SchemaExchangeService
                                                          assetManagerGUID,
                                                          assetManagerName,
                                                          assetManagerIsHome,
-                                                         schemaTypeExternalIdentifier,
-                                                         schemaTypeExternalIdentifierName,
-                                                         schemaTypeExternalIdentifierUsage,
-                                                         connectorName,
-                                                         schemaTypeExternalIdentifierKeyPattern,
-                                                         mappingProperties,
+                                                         externalIdentifierProperties,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
                                                          schemaTypeProperties);
         }
         else
@@ -129,12 +172,7 @@ public class SchemaExchangeService
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param schemaTypeExternalIdentifier unique identifier of the schema type in the external asset manager
-     * @param schemaTypeExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param schemaTypeExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param schemaTypeExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new schema type
@@ -143,16 +181,12 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaTypeFromTemplate(boolean             assetManagerIsHome,
-                                               String              templateGUID,
-                                               String              schemaTypeExternalIdentifier,
-                                               String              schemaTypeExternalIdentifierName,
-                                               String              schemaTypeExternalIdentifierUsage,
-                                               KeyPattern          schemaTypeExternalIdentifierKeyPattern,
-                                               Map<String, String> mappingProperties,
-                                               TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public String createSchemaTypeFromTemplate(boolean                      assetManagerIsHome,
+                                               String                       templateGUID,
+                                               ExternalIdentifierProperties externalIdentifierProperties,
+                                               TemplateProperties           templateProperties) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String methodName = "createSchemaTypeFromTemplate";
 
@@ -163,12 +197,7 @@ public class SchemaExchangeService
                                                                      assetManagerName,
                                                                      assetManagerIsHome,
                                                                      templateGUID,
-                                                                     schemaTypeExternalIdentifier,
-                                                                     schemaTypeExternalIdentifierName,
-                                                                     schemaTypeExternalIdentifierUsage,
-                                                                     connectorName,
-                                                                     schemaTypeExternalIdentifierKeyPattern,
-                                                                     mappingProperties,
+                                                                     externalIdentifierProperties,
                                                                      templateProperties);
         }
         else
@@ -191,6 +220,7 @@ public class SchemaExchangeService
      * @param schemaTypeExternalIdentifier unique identifier of the schema type in the external asset manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param schemaTypeProperties new properties for the metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -199,9 +229,10 @@ public class SchemaExchangeService
     public void updateSchemaType(String               schemaTypeGUID,
                                  String               schemaTypeExternalIdentifier,
                                  boolean              isMergeUpdate,
-                                 SchemaTypeProperties schemaTypeProperties) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+                                 SchemaTypeProperties schemaTypeProperties,
+                                 Date                 effectiveTime) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName = "updateSchemaType";
 
@@ -213,7 +244,10 @@ public class SchemaExchangeService
                                                   schemaTypeGUID,
                                                   schemaTypeExternalIdentifier,
                                                   isMergeUpdate,
-                                                  schemaTypeProperties);
+                                                  schemaTypeProperties,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
         }
         else
         {
@@ -235,17 +269,21 @@ public class SchemaExchangeService
      * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param properties properties for the relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupSchemaTypeParent(boolean assetManagerIsHome,
-                                      String  schemaTypeGUID,
-                                      String  parentElementGUID,
-                                      String  parentElementTypeName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public void setupSchemaTypeParent(boolean                assetManagerIsHome,
+                                      String                 schemaTypeGUID,
+                                      String                 parentElementGUID,
+                                      String                 parentElementTypeName,
+                                      RelationshipProperties properties,
+                                      Date                   effectiveTime) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName = "setupSchemaTypeParent";
 
@@ -257,7 +295,11 @@ public class SchemaExchangeService
                                                        assetManagerIsHome,
                                                        schemaTypeGUID,
                                                        parentElementGUID,
-                                                       parentElementTypeName);
+                                                       parentElementTypeName,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
+                                                       properties);
         }
         else
         {
@@ -278,6 +320,7 @@ public class SchemaExchangeService
      * @param schemaTypeGUID unique identifier of the schema type to connect
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -285,9 +328,10 @@ public class SchemaExchangeService
      */
     public void clearSchemaTypeParent(String schemaTypeGUID,
                                       String parentElementGUID,
-                                      String parentElementTypeName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                      String parentElementTypeName,
+                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         final String methodName = "clearSchemaTypeParent";
 
@@ -298,7 +342,10 @@ public class SchemaExchangeService
                                                        assetManagerName,
                                                        schemaTypeGUID,
                                                        parentElementGUID,
-                                                       parentElementTypeName);
+                                                       parentElementTypeName,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
         }
         else
         {
@@ -318,21 +365,30 @@ public class SchemaExchangeService
      *
      * @param schemaTypeGUID unique identifier of the metadata element to remove
      * @param schemaTypeExternalIdentifier unique identifier of the schema type in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeSchemaType(String schemaTypeGUID,
-                                 String schemaTypeExternalIdentifier) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                 String schemaTypeExternalIdentifier,
+                                 Date   effectiveTime) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
         final String methodName = "removeSchemaType";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            schemaExchangeClient.removeSchemaType(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, schemaTypeExternalIdentifier);
+            schemaExchangeClient.removeSchemaType(userId,
+                                                  assetManagerGUID,
+                                                  assetManagerName,
+                                                  schemaTypeGUID,
+                                                  schemaTypeExternalIdentifier,
+                                                  effectiveTime,
+                                                  forLineage,
+                                                  forDuplicateProcessing);
         }
         else
         {
@@ -354,6 +410,7 @@ public class SchemaExchangeService
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -363,11 +420,13 @@ public class SchemaExchangeService
      */
     public List<SchemaTypeElement> findSchemaType(String searchString,
                                                   int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                                  int    pageSize,
+                                                  Date   effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
-        return schemaExchangeClient.findSchemaType(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return schemaExchangeClient.findSchemaType(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+                                                   forDuplicateProcessing);
     }
 
 
@@ -376,6 +435,7 @@ public class SchemaExchangeService
      *
      * @param parentElementGUID unique identifier of the open metadata element that this schema type is to be connected to
      * @param parentElementTypeName unique type name of the open metadata element that this schema type is to be connected to
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return metadata element describing the schema type associated with the requested parent element
      *
@@ -384,11 +444,13 @@ public class SchemaExchangeService
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public SchemaTypeElement getSchemaTypeForElement(String parentElementGUID,
-                                                     String parentElementTypeName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+                                                     String parentElementTypeName,
+                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        return schemaExchangeClient.getSchemaTypeForElement(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName);
+        return schemaExchangeClient.getSchemaTypeForElement(userId, assetManagerGUID, assetManagerName, parentElementGUID, parentElementTypeName, effectiveTime, forLineage,
+                                                            forDuplicateProcessing);
     }
 
 
@@ -399,6 +461,7 @@ public class SchemaExchangeService
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -408,11 +471,13 @@ public class SchemaExchangeService
      */
     public List<SchemaTypeElement>   getSchemaTypeByName(String name,
                                                          int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                                         int    pageSize,
+                                                         Date   effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        return schemaExchangeClient.getSchemaTypeByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return schemaExchangeClient.getSchemaTypeByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+                                                        forDuplicateProcessing);
     }
 
 
@@ -420,6 +485,7 @@ public class SchemaExchangeService
      * Retrieve the schema type metadata element with the supplied unique identifier.
      *
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return requested metadata element
      *
@@ -427,11 +493,13 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaTypeElement getSchemaTypeByGUID(String schemaTypeGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public SchemaTypeElement getSchemaTypeByGUID(String schemaTypeGUID,
+                                                 Date   effectiveTime) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        return schemaExchangeClient.getSchemaTypeByGUID(userId, assetManagerGUID, assetManagerName, schemaTypeGUID);
+        return schemaExchangeClient.getSchemaTypeByGUID(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, effectiveTime, forLineage,
+                                                        forDuplicateProcessing);
     }
 
 
@@ -439,6 +507,7 @@ public class SchemaExchangeService
      * Retrieve the header of the metadata element connected to a schema type.
      *
      * @param schemaTypeGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return header for parent element (data asset, process, port)
      *
@@ -446,11 +515,13 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ElementHeader getSchemaTypeParent(String schemaTypeGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public ElementHeader getSchemaTypeParent(String schemaTypeGUID,
+                                             Date   effectiveTime) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        return schemaExchangeClient.getSchemaTypeParent(userId, assetManagerGUID, assetManagerName, schemaTypeGUID);
+        return schemaExchangeClient.getSchemaTypeParent(userId, assetManagerGUID, assetManagerName, schemaTypeGUID, effectiveTime, forLineage,
+                                                        forDuplicateProcessing);
     }
 
 
@@ -463,13 +534,9 @@ public class SchemaExchangeService
      *
      * @param assetManagerIsHome ensure that only the asset manager can update this schema attribute
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
-     * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
-     * @param schemaAttributeExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param schemaAttributeExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param schemaAttributeExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param schemaAttributeProperties properties for the schema attribute
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new metadata element for the schema attribute
      *
@@ -477,16 +544,13 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaAttribute(boolean                   assetManagerIsHome,
-                                        String                    schemaElementGUID,
-                                        String                    schemaAttributeExternalIdentifier,
-                                        String                    schemaAttributeExternalIdentifierName,
-                                        String                    schemaAttributeExternalIdentifierUsage,
-                                        KeyPattern                schemaAttributeExternalIdentifierKeyPattern,
-                                        Map<String, String>       mappingProperties,
-                                        SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public String createSchemaAttribute(boolean                      assetManagerIsHome,
+                                        String                       schemaElementGUID,
+                                        ExternalIdentifierProperties externalIdentifierProperties,
+                                        SchemaAttributeProperties    schemaAttributeProperties,
+                                        Date                         effectiveTime) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         final String methodName = "createSchemaAttribute";
 
@@ -497,13 +561,11 @@ public class SchemaExchangeService
                                                               assetManagerName,
                                                               assetManagerIsHome,
                                                               schemaElementGUID,
-                                                              schemaAttributeExternalIdentifier,
-                                                              schemaAttributeExternalIdentifierName,
-                                                              schemaAttributeExternalIdentifierUsage,
-                                                              connectorName,
-                                                              schemaAttributeExternalIdentifierKeyPattern,
-                                                              mappingProperties,
-                                                              schemaAttributeProperties);
+                                                              externalIdentifierProperties,
+                                                              schemaAttributeProperties,
+                                                              effectiveTime,
+                                                              forLineage,
+                                                              forDuplicateProcessing);
         }
         else
         {
@@ -523,13 +585,9 @@ public class SchemaExchangeService
      * @param assetManagerIsHome ensure that only the asset manager can update this schema element
      * @param schemaElementGUID unique identifier of the schemaType or Schema Attribute where the schema attribute is connected to
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
-     * @param schemaAttributeExternalIdentifierName name of property for the external identifier in the external asset manager
-     * @param schemaAttributeExternalIdentifierUsage optional usage description for the external identifier when calling the external asset manager
-     * @param schemaAttributeExternalIdentifierKeyPattern pattern for the external identifier within the external asset manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return unique identifier of the new metadata element for the schema attribute
      *
@@ -537,17 +595,14 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createSchemaAttributeFromTemplate(boolean             assetManagerIsHome,
-                                                    String              schemaElementGUID,
-                                                    String              templateGUID,
-                                                    String              schemaAttributeExternalIdentifier,
-                                                    String              schemaAttributeExternalIdentifierName,
-                                                    String              schemaAttributeExternalIdentifierUsage,
-                                                    KeyPattern          schemaAttributeExternalIdentifierKeyPattern,
-                                                    Map<String, String> mappingProperties,
-                                                    TemplateProperties  templateProperties) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public String createSchemaAttributeFromTemplate(boolean                      assetManagerIsHome,
+                                                    String                       schemaElementGUID,
+                                                    String                       templateGUID,
+                                                    ExternalIdentifierProperties externalIdentifierProperties,
+                                                    TemplateProperties           templateProperties,
+                                                    Date                         effectiveTime) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String methodName = "createSchemaAttributeFromTemplate";
 
@@ -559,13 +614,11 @@ public class SchemaExchangeService
                                                                           assetManagerIsHome,
                                                                           schemaElementGUID,
                                                                           templateGUID,
-                                                                          schemaAttributeExternalIdentifier,
-                                                                          schemaAttributeExternalIdentifierName,
-                                                                          schemaAttributeExternalIdentifierUsage,
-                                                                          connectorName,
-                                                                          schemaAttributeExternalIdentifierKeyPattern,
-                                                                          mappingProperties,
-                                                                          templateProperties);
+                                                                          externalIdentifierProperties,
+                                                                          templateProperties,
+                                                                          effectiveTime,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing);
         }
         else
         {
@@ -587,6 +640,7 @@ public class SchemaExchangeService
      * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param schemaAttributeProperties new properties for the schema attribute
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -595,9 +649,10 @@ public class SchemaExchangeService
     public void updateSchemaAttribute(String                    schemaAttributeGUID,
                                       String                    schemaAttributeExternalIdentifier,
                                       boolean                   isMergeUpdate,
-                                      SchemaAttributeProperties schemaAttributeProperties) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+                                      SchemaAttributeProperties schemaAttributeProperties,
+                                      Date                      effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         final String methodName = "updateSchemaAttribute";
 
@@ -609,7 +664,10 @@ public class SchemaExchangeService
                                                        schemaAttributeGUID,
                                                        schemaAttributeExternalIdentifier,
                                                        isMergeUpdate,
-                                                       schemaAttributeProperties);
+                                                       schemaAttributeProperties,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
         }
         else
         {
@@ -631,6 +689,7 @@ public class SchemaExchangeService
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param schemaElementExternalIdentifier unique identifier of the schema element in the external asset manager
      * @param formula description of how the value is calculated
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -639,15 +698,25 @@ public class SchemaExchangeService
     public void setSchemaElementAsCalculatedValue(boolean assetManagerIsHome,
                                                   String  schemaElementGUID,
                                                   String  schemaElementExternalIdentifier,
-                                                  String  formula) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                                  String  formula,
+                                                  Date    effectiveTime) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName = "setGlossaryAsCanonical";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            schemaExchangeClient.setSchemaElementAsCalculatedValue(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, schemaElementGUID, schemaElementExternalIdentifier, formula);
+            schemaExchangeClient.setSchemaElementAsCalculatedValue(userId,
+                                                                   assetManagerGUID,
+                                                                   assetManagerName,
+                                                                   assetManagerIsHome,
+                                                                   schemaElementGUID,
+                                                                   schemaElementExternalIdentifier,
+                                                                   formula,
+                                                                   effectiveTime,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing);
         }
         else
         {
@@ -667,21 +736,30 @@ public class SchemaExchangeService
      *
      * @param schemaElementGUID unique identifier of the metadata element to update
      * @param schemaElementExternalIdentifier unique identifier of the schema element in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearSchemaElementAsCalculatedValue(String schemaElementGUID,
-                                                    String schemaElementExternalIdentifier) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+                                                    String schemaElementExternalIdentifier,
+                                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName = "clearSchemaElementAsCalculatedValue";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            schemaExchangeClient.clearSchemaElementAsCalculatedValue(userId, assetManagerGUID, assetManagerName, schemaElementGUID, schemaElementExternalIdentifier);
+            schemaExchangeClient.clearSchemaElementAsCalculatedValue(userId,
+                                                                     assetManagerGUID,
+                                                                     assetManagerName,
+                                                                     schemaElementGUID,
+                                                                     schemaElementExternalIdentifier,
+                                                                     effectiveTime,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing);
         }
         else
         {
@@ -707,6 +785,7 @@ public class SchemaExchangeService
      * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
      * @param primaryKeyName name of the primary key (if different from the column name)
      * @param primaryKeyPattern key pattern used to maintain the primary key
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -719,9 +798,10 @@ public class SchemaExchangeService
                                         String     schemaAttributeGUID,
                                         String     schemaAttributeExternalIdentifier,
                                         String     primaryKeyName,
-                                        KeyPattern primaryKeyPattern) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                        KeyPattern primaryKeyPattern,
+                                        Date       effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String methodName = "setupColumnAsPrimaryKey";
 
@@ -734,7 +814,10 @@ public class SchemaExchangeService
                                                          schemaAttributeGUID,
                                                          schemaAttributeExternalIdentifier,
                                                          primaryKeyName,
-                                                         primaryKeyPattern);
+                                                         primaryKeyPattern,
+                                                         effectiveTime,
+                                                         forLineage,
+                                                         forDuplicateProcessing);
         }
         else
         {
@@ -754,15 +837,17 @@ public class SchemaExchangeService
      *
      * @param schemaAttributeGUID unique identifier of the metadata element to update
      * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearColumnAsPrimaryKey(String schemaAttributeGUID,
-                                        String schemaAttributeExternalIdentifier) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+                                        String schemaAttributeExternalIdentifier,
+                                        Date   effectiveTime) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         final String methodName = "clearColumnAsPrimaryKey";
 
@@ -772,7 +857,10 @@ public class SchemaExchangeService
                                                          assetManagerGUID,
                                                          assetManagerName,
                                                          schemaAttributeGUID,
-                                                         schemaAttributeExternalIdentifier);
+                                                         schemaAttributeExternalIdentifier,
+                                                         effectiveTime,
+                                                         forLineage,
+                                                         forDuplicateProcessing);
         }
         else
         {
@@ -794,6 +882,7 @@ public class SchemaExchangeService
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
      * @param foreignKeyProperties properties for the foreign key relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -802,9 +891,10 @@ public class SchemaExchangeService
     public void setupForeignKeyRelationship(boolean              assetManagerIsHome,
                                             String               primaryKeyGUID,
                                             String               foreignKeyGUID,
-                                            ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+                                            ForeignKeyProperties foreignKeyProperties,
+                                            Date                 effectiveTime) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName = "setupForeignKeyRelationship";
 
@@ -816,7 +906,10 @@ public class SchemaExchangeService
                                                              assetManagerIsHome,
                                                              primaryKeyGUID,
                                                              foreignKeyGUID,
-                                                             foreignKeyProperties);
+                                                             foreignKeyProperties,
+                                                             effectiveTime,
+                                                             forLineage,
+                                                             forDuplicateProcessing);
         }
         else
         {
@@ -840,6 +933,7 @@ public class SchemaExchangeService
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
      * @param foreignKeyProperties properties for the foreign key relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -850,9 +944,10 @@ public class SchemaExchangeService
                                              String               assetManagerName,
                                              String               primaryKeyGUID,
                                              String               foreignKeyGUID,
-                                             ForeignKeyProperties foreignKeyProperties) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                             ForeignKeyProperties foreignKeyProperties,
+                                             Date                 effectiveTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         final String methodName = "updateForeignKeyRelationship";
 
@@ -863,7 +958,10 @@ public class SchemaExchangeService
                                                               assetManagerName,
                                                               primaryKeyGUID,
                                                               foreignKeyGUID,
-                                                              foreignKeyProperties);
+                                                              foreignKeyProperties,
+                                                              effectiveTime,
+                                                              forLineage,
+                                                              forDuplicateProcessing);
         }
         else
         {
@@ -883,15 +981,17 @@ public class SchemaExchangeService
      *
      * @param primaryKeyGUID unique identifier of the derived schema element
      * @param foreignKeyGUID unique identifier of the query target schema element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void clearForeignKeyRelationship(String primaryKeyGUID,
-                                            String foreignKeyGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                                            String foreignKeyGUID,
+                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String methodName = "clearForeignKeyRelationship";
 
@@ -901,7 +1001,10 @@ public class SchemaExchangeService
                                                              assetManagerGUID,
                                                              assetManagerName,
                                                              primaryKeyGUID,
-                                                             foreignKeyGUID);
+                                                             foreignKeyGUID,
+                                                             effectiveTime,
+                                                             forLineage,
+                                                             forDuplicateProcessing);
         }
         else
         {
@@ -921,21 +1024,30 @@ public class SchemaExchangeService
      *
      * @param schemaAttributeGUID unique identifier of the metadata element to remove
      * @param schemaAttributeExternalIdentifier unique identifier of the schema attribute in the external asset manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeSchemaAttribute(String schemaAttributeGUID,
-                                      String schemaAttributeExternalIdentifier) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                      String schemaAttributeExternalIdentifier,
+                                      Date   effectiveTime) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         final String methodName = "removeSchemaAttribute";
 
         if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
         {
-            schemaExchangeClient.removeSchemaAttribute(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID, schemaAttributeExternalIdentifier);
+            schemaExchangeClient.removeSchemaAttribute(userId,
+                                                       assetManagerGUID,
+                                                       assetManagerName,
+                                                       schemaAttributeGUID,
+                                                       schemaAttributeExternalIdentifier,
+                                                       effectiveTime,
+                                                       forLineage,
+                                                       forDuplicateProcessing);
         }
         else
         {
@@ -957,6 +1069,7 @@ public class SchemaExchangeService
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -966,11 +1079,13 @@ public class SchemaExchangeService
      */
     public List<SchemaAttributeElement>   findSchemaAttributes(String searchString,
                                                                int    startFrom,
-                                                               int    pageSize) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                                               int    pageSize,
+                                                               Date   effectiveTime) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        return schemaExchangeClient.findSchemaAttributes(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize);
+        return schemaExchangeClient.findSchemaAttributes(userId, assetManagerGUID, assetManagerName, searchString, startFrom, pageSize, effectiveTime, forLineage,
+                                                         forDuplicateProcessing);
     }
 
 
@@ -980,6 +1095,7 @@ public class SchemaExchangeService
      * @param parentSchemaElementGUID unique identifier of the schemaType of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of associated metadata elements
      *
@@ -989,11 +1105,13 @@ public class SchemaExchangeService
      */
     public List<SchemaAttributeElement>    getNestedAttributes(String parentSchemaElementGUID,
                                                                int    startFrom,
-                                                               int    pageSize) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+                                                               int    pageSize,
+                                                               Date   effectiveTime) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        return schemaExchangeClient.getNestedSchemaAttributes(userId, assetManagerGUID, assetManagerName, parentSchemaElementGUID, startFrom, pageSize);
+        return schemaExchangeClient.getNestedSchemaAttributes(userId, assetManagerGUID, assetManagerName, parentSchemaElementGUID, startFrom, pageSize, effectiveTime, forLineage,
+                                                              forDuplicateProcessing);
     }
 
 
@@ -1004,6 +1122,7 @@ public class SchemaExchangeService
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return list of matching metadata elements
      *
@@ -1013,11 +1132,13 @@ public class SchemaExchangeService
      */
     public List<SchemaAttributeElement>   getSchemaAttributesByName(String name,
                                                                     int    startFrom,
-                                                                    int    pageSize) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+                                                                    int    pageSize,
+                                                                    Date   effectiveTime) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
-        return schemaExchangeClient.getSchemaAttributesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize);
+        return schemaExchangeClient.getSchemaAttributesByName(userId, assetManagerGUID, assetManagerName, name, startFrom, pageSize, effectiveTime, forLineage,
+                                                              forDuplicateProcessing);
     }
 
 
@@ -1025,6 +1146,7 @@ public class SchemaExchangeService
      * Retrieve the schema attribute metadata element with the supplied unique identifier.
      *
      * @param schemaAttributeGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
      *
      * @return matching metadata element
      *
@@ -1032,11 +1154,13 @@ public class SchemaExchangeService
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElement getSchemaAttributeByGUID(String schemaAttributeGUID) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+    public SchemaAttributeElement getSchemaAttributeByGUID(String schemaAttributeGUID,
+                                                           Date   effectiveTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
-        return schemaExchangeClient.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID);
+        return schemaExchangeClient.getSchemaAttributeByGUID(userId, assetManagerGUID, assetManagerName, schemaAttributeGUID, effectiveTime, forLineage,
+                                                             forDuplicateProcessing);
     }
 
 }

@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * MetadataSourceProperties describe the properties for a capability that is supplying profile
- * information to the Community Profile OMAS.  This entity is stored as a SoftwareServerCapability and
+ * information to the Community Profile OMAS.  This entity is stored as a SoftwareCapability and
  * its GUID and qualifiedName is passed as the externalSourceGUID and externalSourceName on the profile
  * management requests.
  */

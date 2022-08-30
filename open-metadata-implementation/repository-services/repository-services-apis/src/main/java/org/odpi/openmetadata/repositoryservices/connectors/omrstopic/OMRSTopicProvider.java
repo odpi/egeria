@@ -21,6 +21,5 @@ public class OMRSTopicProvider extends ConnectorProviderBase
 
         super.setConnectorClassName(connectorClass.getName());
         super.setConnectorComponentDescription(OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR);
-
     }
 }

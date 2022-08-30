@@ -19,7 +19,7 @@ import java.util.List;
 public interface ExternalReferencesInterface
 {
     /**
-     * Create a definition of a external reference.
+     * Create a definition of an external reference.
      *
      * @param userId calling user
      * @param anchorGUID optional element to link the external reference to that will act as an anchor - that is, this external reference
@@ -40,7 +40,7 @@ public interface ExternalReferencesInterface
 
 
     /**
-     * Update the definition of a external reference.
+     * Update the definition of an external reference.
      *
      * @param userId calling user
      * @param externalReferenceGUID unique identifier of external reference
@@ -60,7 +60,7 @@ public interface ExternalReferencesInterface
 
 
     /**
-     * Remove the definition of a external reference.
+     * Remove the definition of an external reference.
      *
      * @param userId calling user
      * @param externalReferenceGUID unique identifier of external reference
@@ -96,7 +96,7 @@ public interface ExternalReferencesInterface
 
 
     /**
-     * Remove the link between a external reference and an element.  If the element is its anchor, the external reference is removed.
+     * Remove the link between an external reference and an element.  If the element is its anchor, the external reference is removed.
      *
      * @param userId the name of the calling user.
      * @param attachedToGUID object linked to external references.

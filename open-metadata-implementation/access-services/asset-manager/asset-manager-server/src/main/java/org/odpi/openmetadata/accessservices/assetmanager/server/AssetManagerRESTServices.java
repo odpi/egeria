@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
@@ -10,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -35,11 +36,10 @@ import java.util.Date;
  */
 public class AssetManagerRESTServices
 {
-    private static AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
-
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(AssetManagerRESTServices.class),
-                                                                                  instanceHandler.getServiceName());
-    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private static final AssetManagerInstanceHandler instanceHandler = new AssetManagerInstanceHandler();
+    private static final RESTCallLogger              restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(AssetManagerRESTServices.class),
+                                                                                          instanceHandler.getServiceName());
+    private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -131,28 +131,53 @@ public class AssetManagerRESTServices
 
             if (assetManagerProperties != null)
             {
+                Date effectiveTime = new Date();
+
                 SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId,
                                                                                                                       serverName,
                                                                                                                       methodName);
 
-                response.setGUID(handler.createSoftwareCapability(userId,
-                                                                  null,
-                                                                  null,
-                                                                  OpenMetadataAPIMapper.CATALOG_TYPE_NAME,
-                                                                  OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
-                                                                  assetManagerProperties.getQualifiedName(),
-                                                                  assetManagerProperties.getDisplayName(),
-                                                                  assetManagerProperties.getDescription(),
-                                                                  assetManagerProperties.getTypeDescription(),
-                                                                  assetManagerProperties.getVersion(),
-                                                                  assetManagerProperties.getPatchLevel(),
-                                                                  assetManagerProperties.getSource(),
-                                                                  assetManagerProperties.getAdditionalProperties(),
-                                                                  null,
-                                                                  assetManagerProperties.getVendorProperties(),
-                                                                  null,
-                                                                  null,
-                                                                  methodName));
+                String softwareCapabilityGUID = handler.createSoftwareCapability(userId,
+                                                                                 null,
+                                                                                 null,
+                                                                                 OpenMetadataAPIMapper.CATALOG_TYPE_NAME,
+                                                                                 OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
+                                                                                 assetManagerProperties.getQualifiedName(),
+                                                                                 assetManagerProperties.getTechnicalName(),
+                                                                                 assetManagerProperties.getTechnicalDescription(),
+                                                                                 assetManagerProperties.getTypeDescription(),
+                                                                                 assetManagerProperties.getVersion(),
+                                                                                 assetManagerProperties.getPatchLevel(),
+                                                                                 assetManagerProperties.getSource(),
+                                                                                 assetManagerProperties.getAdditionalProperties(),
+                                                                                 null,
+                                                                                 assetManagerProperties.getVendorProperties(),
+                                                                                 assetManagerProperties.getEffectiveFrom(),
+                                                                                 assetManagerProperties.getEffectiveTo(),
+                                                                                 false,
+                                                                                 false,
+                                                                                 effectiveTime,
+                                                                                 methodName);
+
+                final String softwareCapabilityGUIDParameterName = "softwareCapabilityGUID";
+
+                handler.maintainSupplementaryProperties(userId,
+                                                        softwareCapabilityGUID,
+                                                        softwareCapabilityGUIDParameterName,
+                                                        OpenMetadataAPIMapper.CATALOG_TYPE_NAME,
+                                                        assetManagerProperties.getQualifiedName(),
+                                                        assetManagerProperties.getDisplayName(),
+                                                        assetManagerProperties.getSummary(),
+                                                        assetManagerProperties.getDescription(),
+                                                        assetManagerProperties.getAbbreviation(),
+                                                        assetManagerProperties.getUsage(),
+                                                        false,
+                                                        false,
+                                                        false,
+                                                        effectiveTime,
+                                                        methodName);
+
+                response.setGUID(softwareCapabilityGUID);
             }
             else
             {
@@ -184,7 +209,7 @@ public class AssetManagerRESTServices
 
     /**
      * Retrieve the unique identifier of the external asset manager from its qualified name.
-     * Typically the qualified name comes from the integration connector configuration.
+     * Typically, the qualified name comes from the integration connector configuration.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -318,6 +343,10 @@ public class AssetManagerRESTServices
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
                                                 null,
+                                                null,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
             }
             else
@@ -417,6 +446,10 @@ public class AssetManagerRESTServices
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
                                                 null,
+                                                null,
+                                                false,
+                                                false,
+                                                new Date(),
                                                 methodName);
             }
             else
@@ -455,6 +488,8 @@ public class AssetManagerRESTServices
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
      *
      * @return void or
@@ -466,7 +501,9 @@ public class AssetManagerRESTServices
                                                  String                        userId,
                                                  String                        openMetadataElementGUID,
                                                  String                        openMetadataElementTypeName,
-                                                 MetadataCorrelationProperties requestBody)
+                                                 boolean           forLineage,
+                                                 boolean           forDuplicateProcessing,
+                                                 UpdateRequestBody requestBody)
     {
         final String methodName                      = "removeExternalIdentifier";
         final String openMetadataGUIDParameterName   = "openMetadataElementGUID";
@@ -482,40 +519,43 @@ public class AssetManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
                 int permittedSynchronizationOrdinal = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
-                if (requestBody.getSynchronizationDirection() != null)
+                if (requestBody.getMetadataCorrelationProperties().getSynchronizationDirection() != null)
                 {
-                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOpenTypeOrdinal();
+                    permittedSynchronizationOrdinal = requestBody.getMetadataCorrelationProperties().getSynchronizationDirection().getOpenTypeOrdinal();
                 }
 
                 int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
-                if (requestBody.getKeyPattern() != null)
+                if (requestBody.getMetadataCorrelationProperties().getKeyPattern() != null)
                 {
-                    keyPatternOrdinal = requestBody.getKeyPattern().getOpenTypeOrdinal();
+                    keyPatternOrdinal = requestBody.getMetadataCorrelationProperties().getKeyPattern().getOpenTypeOrdinal();
                 }
 
                 handler.removeExternalIdentifier(userId,
                                                  openMetadataElementGUID,
                                                  openMetadataGUIDParameterName,
                                                  openMetadataElementTypeName,
-                                                 requestBody.getExternalIdentifier(),
+                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
                                                  identifierParameterName,
                                                  keyPatternOrdinal,
-                                                 requestBody.getExternalIdentifierName(),
-                                                 requestBody.getExternalIdentifierUsage(),
-                                                 requestBody.getExternalIdentifierSource(),
-                                                 requestBody.getMappingProperties(),
-                                                 requestBody.getAssetManagerGUID(),
+                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifierName(),
+                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifierUsage(),
+                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifierSource(),
+                                                 requestBody.getMetadataCorrelationProperties().getMappingProperties(),
+                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
                                                  assetManagerGUIDParameterName,
-                                                 requestBody.getAssetManagerName(),
+                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
                                                  OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
                                                  permittedSynchronizationOrdinal,
-                                                 requestBody.getSynchronizationDescription(),
+                                                 requestBody.getMetadataCorrelationProperties().getSynchronizationDescription(),
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 requestBody.getEffectiveTime(),
                                                  methodName);
             }
             else
@@ -554,6 +594,8 @@ public class AssetManagerRESTServices
      * @param userId calling user
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody details of the external identifier and its scope
      *
      * @return void or
@@ -561,11 +603,13 @@ public class AssetManagerRESTServices
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public VoidResponse confirmSynchronization(String                        serverName,
-                                               String                        userId,
-                                               String                        openMetadataElementGUID,
-                                               String                        openMetadataElementTypeName,
-                                               MetadataCorrelationProperties requestBody)
+    public VoidResponse confirmSynchronization(String            serverName,
+                                               String            userId,
+                                               String            openMetadataElementGUID,
+                                               String            openMetadataElementTypeName,
+                                               boolean           forLineage,
+                                               boolean           forDuplicateProcessing,
+                                               UpdateRequestBody requestBody)
     {
         final String methodName                           = "confirmSynchronization";
         final String openMetadataElementGUIDParameterName = "openMetadataElementGUID";
@@ -581,7 +625,7 @@ public class AssetManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
+            if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
@@ -591,13 +635,15 @@ public class AssetManagerRESTServices
                                                openMetadataElementGUID,
                                                openMetadataElementGUIDParameterName,
                                                openMetadataElementTypeName,
-                                               requestBody.getExternalIdentifier(),
+                                               requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
                                                externalIdentifierParameterName,
-                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
                                                assetManagerGUIDParameterName,
-                                               requestBody.getAssetManagerName(),
+                                               requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
                                                OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                               null,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               requestBody.getEffectiveTime(),
                                                methodName);
             }
             else
@@ -630,12 +676,14 @@ public class AssetManagerRESTServices
 
     /**
      * Retrieve the unique identifier of the external asset manager from its qualified name.
-     * Typically the qualified name comes from the integration connector configuration.
+     * Typically, the qualified name comes from the integration connector configuration.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody details of the external identifier
      *
      * @return list of linked elements, null if null or
@@ -643,11 +691,13 @@ public class AssetManagerRESTServices
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    public ElementHeadersResponse getElementsForExternalIdentifier(String                        serverName,
-                                                                   String                        userId,
-                                                                   int                           startFrom,
-                                                                   int                           pageSize,
-                                                                   MetadataCorrelationProperties requestBody)
+    public ElementHeadersResponse getElementsForExternalIdentifier(String            serverName,
+                                                                   String            userId,
+                                                                   int               startFrom,
+                                                                   int               pageSize,
+                                                                   boolean           forLineage,
+                                                                   boolean           forDuplicateProcessing,
+                                                                   UpdateRequestBody requestBody)
     {
         final String methodName = "getElementsForExternalIdentifier";
         final String assetManagerGUIDParameterName = "assetManagerGUID";
@@ -668,14 +718,16 @@ public class AssetManagerRESTServices
                                                                                                                                            methodName);
 
                 response.setElementList(handler.getElementsForExternalIdentifier(userId,
-                                                                                 requestBody.getAssetManagerGUID(),
+                                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
                                                                                  assetManagerGUIDParameterName,
                                                                                  OpenMetadataAPIMapper.ASSET_MANAGER_TYPE_NAME,
-                                                                                 requestBody.getAssetManagerName(),
-                                                                                 requestBody.getExternalIdentifier(),
+                                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
                                                                                  startFrom,
                                                                                  pageSize,
-                                                                                 null,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing,
+                                                                                 requestBody.getEffectiveTime(),
                                                                                  methodName));
             }
             else

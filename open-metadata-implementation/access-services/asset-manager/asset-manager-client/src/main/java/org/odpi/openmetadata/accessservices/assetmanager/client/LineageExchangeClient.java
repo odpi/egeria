@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.Map;
+import java.util.Date;
 import java.util.List;
 
 
@@ -131,12 +131,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param assetManagerIsHome ensure that only the process manager can update this process
-     * @param processExternalIdentifier unique identifier of the process in the external process manager
-     * @param processExternalIdentifierName name of property for the external identifier in the external process manager
-     * @param processExternalIdentifierUsage optional usage description for the external identifier when calling the external process manager
-     * @param processExternalIdentifierSource component that issuing this request.
-     * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external process manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the external process manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param processStatus initial status of the process
      * @param processProperties properties about the process to store
      *
@@ -147,20 +142,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createProcess(String              userId,
-                                String              assetManagerGUID,
-                                String              assetManagerName,
-                                boolean             assetManagerIsHome,
-                                String              processExternalIdentifier,
-                                String              processExternalIdentifierName,
-                                String              processExternalIdentifierUsage,
-                                String              processExternalIdentifierSource,
-                                KeyPattern          processExternalIdentifierKeyPattern,
-                                Map<String, String> mappingProperties,
-                                ProcessStatus       processStatus,
-                                ProcessProperties   processProperties) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public String createProcess(String                       userId,
+                                String                       assetManagerGUID,
+                                String                       assetManagerName,
+                                boolean                      assetManagerIsHome,
+                                ExternalIdentifierProperties externalIdentifierProperties,
+                                ProcessStatus                processStatus,
+                                ProcessProperties            processProperties) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName                  = "createProcess";
         final String propertiesParameterName     = "processProperties";
@@ -175,12 +165,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         requestBody.setProcessStatus(processStatus);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   processExternalIdentifier,
-                                                                                   processExternalIdentifierName,
-                                                                                   processExternalIdentifierUsage,
-                                                                                   processExternalIdentifierSource,
-                                                                                   processExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes?assetManagerIsHome={2}";
@@ -204,13 +189,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param processExternalIdentifier unique identifier of the process in the external process manager
-     * @param processExternalIdentifierName name of property for the external identifier in the external process manager
-     * @param processExternalIdentifierUsage optional usage description for the external identifier when calling the external process manager
-     * @param processExternalIdentifierSource component that issuing this request.
-     * @param processExternalIdentifierKeyPattern pattern for the external identifier within the external process manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external process manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param templateProperties properties that override the template
      *
      * @return unique identifier of the new process
@@ -220,20 +199,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createProcessFromTemplate(String              userId,
-                                            String              assetManagerGUID,
-                                            String              assetManagerName,
-                                            boolean             assetManagerIsHome,
-                                            String              templateGUID,
-                                            String              processExternalIdentifier,
-                                            String              processExternalIdentifierName,
-                                            String              processExternalIdentifierUsage,
-                                            String              processExternalIdentifierSource,
-                                            KeyPattern          processExternalIdentifierKeyPattern,
-                                            Map<String, String> mappingProperties,
-                                            TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public String createProcessFromTemplate(String                       userId,
+                                            String                       assetManagerGUID,
+                                            String                       assetManagerName,
+                                            boolean                      assetManagerIsHome,
+                                            String                       templateGUID,
+                                            ExternalIdentifierProperties externalIdentifierProperties,
+                                            TemplateProperties           templateProperties) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName                  = "createProcessFromTemplate";
         final String templateGUIDParameterName   = "templateGUID";
@@ -249,12 +223,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         requestBody.setElementProperties(templateProperties);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   processExternalIdentifier,
-                                                                                   processExternalIdentifierName,
-                                                                                   processExternalIdentifierUsage,
-                                                                                   processExternalIdentifierSource,
-                                                                                   processExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/from-template/{2}assetManagerIsHome={3}";
@@ -281,6 +250,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param processExternalIdentifier unique identifier of the process in the external process manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param processProperties new properties for the metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -293,9 +265,12 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                               String            processGUID,
                               String            processExternalIdentifier,
                               boolean           isMergeUpdate,
-                              ProcessProperties processProperties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                              ProcessProperties processProperties,
+                              Date              effectiveTime,
+                              boolean           forLineage,
+                              boolean           forDuplicateProcessing) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName                 = "updateProcess";
         final String processGUIDParameterName   = "processGUID";
@@ -313,8 +288,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                    assetManagerName,
                                                                                    processExternalIdentifier,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}?isMergeUpdate={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -322,7 +298,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                         serverName,
                                         userId,
                                         processGUID,
-                                        isMergeUpdate);
+                                        isMergeUpdate,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -335,6 +313,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param processGUID unique identifier of the process to update
      * @param processExternalIdentifier unique identifier of the process in the external process manager
      * @param processStatus new status for the process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -346,9 +327,12 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                     String        assetManagerName,
                                     String        processGUID,
                                     String        processExternalIdentifier,
-                                    ProcessStatus processStatus) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                    ProcessStatus processStatus,
+                                    Date          effectiveTime,
+                                    boolean       forLineage,
+                                    boolean       forDuplicateProcessing) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName              = "updateProcessStatus";
         final String portGUIDParameterName   = "processGUID";
@@ -364,15 +348,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                    assetManagerName,
                                                                                    processExternalIdentifier,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/status";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/status?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        processGUID);
+                                        processGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -385,53 +372,53 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
-     * @param containmentType describes the ownership of the sub-process
+     * @param containmentProperties describes the ownership of the sub-process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupProcessParent(String                 userId,
-                                   String                 assetManagerGUID,
-                                   String                 assetManagerName,
-                                   boolean                assetManagerIsHome,
-                                   String                 parentProcessGUID,
-                                   String                 childProcessGUID,
-                                   ProcessContainmentType containmentType) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public void setupProcessParent(String                       userId,
+                                   String                       assetManagerGUID,
+                                   String                       assetManagerName,
+                                   boolean                      assetManagerIsHome,
+                                   String                       parentProcessGUID,
+                                   String                       childProcessGUID,
+                                   ProcessContainmentProperties containmentProperties,
+                                   Date                         effectiveTime,
+                                   boolean                      forLineage,
+                                   boolean                      forDuplicateProcessing) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName                     = "setupProcessParent";
         final String parentProcessGUIDParameterName = "parentProcessGUID";
         final String childProcessGUIDParameterName  = "childProcessGUID";
-        final String containmentTypeParameterName   = "containmentType";
+        final String propertiesParameterName        = "containmentProperties";
+        final String containmentTypeParameterName   = "containmentProperties.containmentType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(parentProcessGUID, parentProcessGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(childProcessGUID, childProcessGUIDParameterName, methodName);
-        invalidParameterHandler.validateEnum(containmentType, containmentTypeParameterName, methodName);
+        invalidParameterHandler.validateObject(containmentProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateEnum(containmentProperties.getProcessContainmentType(), containmentTypeParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/parent/{2}/child/{3}?assetManagerIsHome={4}";
-
-        ProcessContainmentTypeRequestBody requestBody = new ProcessContainmentTypeRequestBody();
-
-        if (assetManagerGUID != null)
-        {
-            requestBody.setAssetManagerGUID(assetManagerGUID);
-            requestBody.setAssetManagerName(assetManagerName);
-        }
-
-        requestBody.setProcessContainmentType(containmentType);
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/parent/{2}/child/{3}?assetManagerIsHome={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, containmentProperties),
                                         serverName,
                                         userId,
                                         parentProcessGUID,
                                         childProcessGUID,
-                                        assetManagerIsHome);
+                                        assetManagerIsHome,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -443,19 +430,25 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param parentProcessGUID unique identifier of the process in the external process manager that is to be the parent process
      * @param childProcessGUID unique identifier of the process in the external process manager that is to be the nested sub-process
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearProcessParent(String userId,
-                                   String assetManagerGUID,
-                                   String assetManagerName,
-                                   String parentProcessGUID,
-                                   String childProcessGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void clearProcessParent(String  userId,
+                                   String  assetManagerGUID,
+                                   String  assetManagerName,
+                                   String  parentProcessGUID,
+                                   String  childProcessGUID,
+                                   Date    effectiveTime,
+                                   boolean forLineage,
+                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String methodName                     = "clearProcessParent";
         final String parentProcessGUIDParameterName = "parentProcessGUID";
@@ -466,15 +459,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(childProcessGUID, childProcessGUIDParameterName, methodName);
 
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/parent/{2}/children/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/parent/{2}/children/{3}/remove?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         parentProcessGUID,
-                                        childProcessGUID);
+                                        childProcessGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -487,18 +482,24 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to publish
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void publishProcess(String userId,
-                               String assetManagerGUID,
-                               String assetManagerName,
-                               String processGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public void publishProcess(String  userId,
+                               String  assetManagerGUID,
+                               String  assetManagerName,
+                               String  processGUID,
+                               Date    effectiveTime,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String methodName               = "publishProcess";
         final String processGUIDParameterName = "processGUID";
@@ -506,14 +507,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/publish";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/publish?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
-                                        processGUID);
+                                        processGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -526,18 +529,24 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to withdraw
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void withdrawProcess(String userId,
-                                String assetManagerGUID,
-                                String assetManagerName,
-                                String processGUID) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public void withdrawProcess(String  userId,
+                                String  assetManagerGUID,
+                                String  assetManagerName,
+                                String  processGUID,
+                                Date    effectiveTime,
+                                boolean forLineage,
+                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         final String methodName               = "withdrawProcess";
         final String processGUIDParameterName = "processGUID";
@@ -545,14 +554,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/withdraw";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/withdraw?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
-                                        processGUID);
+                                        processGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -564,19 +575,25 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the metadata element to remove
      * @param processExternalIdentifier unique identifier of the process in the external process manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removeProcess(String userId,
-                              String assetManagerGUID,
-                              String assetManagerName,
-                              String processGUID,
-                              String processExternalIdentifier) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public void removeProcess(String  userId,
+                              String  assetManagerGUID,
+                              String  assetManagerName,
+                              String  processGUID,
+                              String  processExternalIdentifier,
+                              Date    effectiveTime,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         final String methodName               = "removeProcess";
         final String processGUIDParameterName = "processGUID";
@@ -584,17 +601,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      processExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, processExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        processGUID);
+                                        processGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -608,6 +624,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements
      *
@@ -616,37 +635,34 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ProcessElement> findProcesses(String userId,
-                                              String assetManagerGUID,
-                                              String assetManagerName,
-                                              String searchString,
-                                              int    startFrom,
-                                              int    pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public List<ProcessElement> findProcesses(String  userId,
+                                              String  assetManagerGUID,
+                                              String  assetManagerName,
+                                              String  searchString,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              Date    effectiveTime,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        final String methodName                = "findProcesses";
-        final String searchStringParameterName = "searchString";
+        final String methodName = "findProcesses";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        SearchStringRequestBody requestBody = new SearchStringRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-        requestBody.setSearchString(searchString);
-        requestBody.setSearchStringParameterName(searchStringParameterName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
                                                                                   urlTemplate,
-                                                                                  requestBody,
+                                                                                  getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
                                                                                   serverName,
                                                                                   userId,
                                                                                   startFrom,
-                                                                                  validatedPageSize);
+                                                                                  validatedPageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -660,6 +676,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of metadata elements describing the processes associated with the requested process manager
      *
@@ -668,29 +687,33 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ProcessElement>   getProcessesForAssetManager(String userId,
-                                                              String assetManagerGUID,
-                                                              String assetManagerName,
-                                                              int    startFrom,
-                                                              int    pageSize) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<ProcessElement>   getProcessesForAssetManager(String  userId,
+                                                              String  assetManagerGUID,
+                                                              String  assetManagerName,
+                                                              int     startFrom,
+                                                              int     pageSize,
+                                                              Date    effectiveTime,
+                                                              boolean forLineage,
+                                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         final String methodName = "getProcessesForAssetManager";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-asset-manager?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-asset-manager?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
                                                                                   urlTemplate,
-                                                                                  getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                        assetManagerName),
+                                                                                  getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                   serverName,
                                                                                   userId,
                                                                                   startFrom,
-                                                                                  validatedPageSize);
+                                                                                  validatedPageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -706,6 +729,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements
      *
@@ -714,38 +740,35 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ProcessElement>   getProcessesByName(String userId,
-                                                     String assetManagerGUID,
-                                                     String assetManagerName,
-                                                     String name,
-                                                     int    startFrom,
-                                                     int    pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public List<ProcessElement>   getProcessesByName(String  userId,
+                                                     String  assetManagerGUID,
+                                                     String  assetManagerName,
+                                                     String  name,
+                                                     int     startFrom,
+                                                     int     pageSize,
+                                                     Date    effectiveTime,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        final String methodName        = "getProcessesByName";
-        final String nameParameterName = "name";
+        final String methodName = "getProcessesByName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        NameRequestBody requestBody = new NameRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-        requestBody.setName(name);
-        requestBody.setNameParameterName(nameParameterName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
                                                                                   urlTemplate,
-                                                                                  requestBody,
+                                                                                  getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
                                                                                   serverName,
                                                                                   userId,
                                                                                   startFrom,
-                                                                                  validatedPageSize);
+                                                                                  validatedPageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -758,6 +781,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return requested metadata element
      *
@@ -766,12 +792,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public ProcessElement getProcessByGUID(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String processGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public ProcessElement getProcessByGUID(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           String  processGUID,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String methodName = "getProcessByGUID";
         final String guidParameterName = "processGUID";
@@ -779,15 +808,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
         ProcessElementResponse restResult = restClient.callProcessPostRESTCall(methodName,
                                                                                urlTemplate,
-                                                                               getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                     assetManagerName),
+                                                                               getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                serverName,
                                                                                userId,
-                                                                               processGUID);
+                                                                               processGUID,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -800,6 +830,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return parent process element
      *
@@ -808,12 +841,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public ProcessElement getProcessParent(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String processGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public ProcessElement getProcessParent(String  userId,
+                                           String  assetManagerGUID,
+                                           String  assetManagerName,
+                                           String  processGUID,
+                                           Date    effectiveTime,
+                                           boolean forLineage,
+                                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String methodName = "getProcessParent";
         final String guidParameterName = "processGUID";
@@ -821,15 +857,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/parent/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/parent/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
         ProcessElementResponse restResult = restClient.callProcessPostRESTCall(methodName,
                                                                                urlTemplate,
-                                                                               getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                     assetManagerName),
+                                                                               getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                serverName,
                                                                                userId,
-                                                                               processGUID);
+                                                                               processGUID,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -844,6 +881,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param processGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of process element
      *
@@ -852,14 +892,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ProcessElement> getSubProcesses(String userId,
-                                                String assetManagerGUID,
-                                                String assetManagerName,
-                                                String processGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<ProcessElement> getSubProcesses(String  userId,
+                                                String  assetManagerGUID,
+                                                String  assetManagerName,
+                                                String  processGUID,
+                                                int     startFrom,
+                                                int     pageSize,
+                                                Date    effectiveTime,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName        = "getSubProcesses";
         final String guidParameterName = "processGUID";
@@ -869,17 +912,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/children?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/children?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
                                                                                   urlTemplate,
-                                                                                  getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                        assetManagerName),
+                                                                                  getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                   serverName,
                                                                                   userId,
                                                                                   startFrom,
-                                                                                  validatedPageSize);
+                                                                                  validatedPageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -897,14 +940,11 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param assetManagerIsHome ensure that only the process manager can update this port
      * @param processGUID unique identifier of the process where the port is located
-     * @param portExternalIdentifier unique identifier of the port in the external process manager
-     * @param portExternalIdentifierName name of property for the external identifier in the external process manager
-     * @param portExternalIdentifierUsage optional usage description for the external identifier when calling the external process manager
-     * @param portExternalIdentifierSource component that issuing this request.
-     * @param portExternalIdentifierKeyPattern pattern for the external identifier within the external process manager (default is LOCAL_KEY)
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external process manager and open metadata
+     * @param externalIdentifierProperties optional properties used to define an external identifier
      * @param portProperties properties for the port
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier of the new metadata element for the port
      *
@@ -913,20 +953,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createPort(String              userId,
-                             String              assetManagerGUID,
-                             String              assetManagerName,
-                             boolean             assetManagerIsHome,
-                             String              processGUID,
-                             String              portExternalIdentifier,
-                             String              portExternalIdentifierName,
-                             String              portExternalIdentifierUsage,
-                             String              portExternalIdentifierSource,
-                             KeyPattern          portExternalIdentifierKeyPattern,
-                             Map<String, String> mappingProperties,
-                             PortProperties      portProperties) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public String createPort(String                       userId,
+                             String                       assetManagerGUID,
+                             String                       assetManagerName,
+                             boolean                      assetManagerIsHome,
+                             String                       processGUID,
+                             ExternalIdentifierProperties externalIdentifierProperties,
+                             PortProperties               portProperties,
+                             Date                         effectiveTime,
+                             boolean                      forLineage,
+                             boolean                      forDuplicateProcessing) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String methodName                  = "createPort";
         final String processGUIDParameterName    = "processGUID";
@@ -940,17 +978,13 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         PortRequestBody requestBody = new PortRequestBody();
         requestBody.setElementProperties(portProperties);
+        requestBody.setEffectiveTime(effectiveTime);
         requestBody.setMetadataCorrelationProperties(this.getCorrelationProperties(assetManagerGUID,
                                                                                    assetManagerName,
-                                                                                   portExternalIdentifier,
-                                                                                   portExternalIdentifierName,
-                                                                                   portExternalIdentifierUsage,
-                                                                                   portExternalIdentifierSource,
-                                                                                   portExternalIdentifierKeyPattern,
-                                                                                   mappingProperties,
+                                                                                   externalIdentifierProperties,
                                                                                    methodName));
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "processes/{2}/ports?assetManagerIsHome={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "processes/{2}/ports?assetManagerIsHome={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -958,7 +992,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                   serverName,
                                                                   userId,
                                                                   processGUID,
-                                                                  assetManagerIsHome);
+                                                                  assetManagerIsHome,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing);
 
         return restResult.getGUID();
     }
@@ -974,6 +1010,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param portGUID unique identifier of the port to update
      * @param portProperties new properties for the port
      * @param portExternalIdentifier unique identifier of the port in the external process manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -985,9 +1024,12 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                            String         assetManagerName,
                            String         portGUID,
                            String         portExternalIdentifier,
-                           PortProperties portProperties) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                           PortProperties portProperties,
+                           Date           effectiveTime,
+                           boolean        forLineage,
+                           boolean        forDuplicateProcessing) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String methodName                  = "updatePort";
         final String portGUIDParameterName       = "portGUID";
@@ -1005,15 +1047,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                    assetManagerName,
                                                                                    portExternalIdentifier,
                                                                                    methodName));
+        requestBody.setEffectiveTime(effectiveTime);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/update?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
-                                        portGUID);
+                                        portGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1026,6 +1071,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1037,9 +1085,12 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                  String  assetManagerName,
                                  boolean assetManagerIsHome,
                                  String  processGUID,
-                                 String  portGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+                                 String  portGUID,
+                                 Date    effectiveTime,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String methodName               = "setupProcessPort";
         final String processGUIDParameterName = "processGUID";
@@ -1049,16 +1100,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/{3}?assetManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/{3}?assetManagerIsHome={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, null),
                                         serverName,
                                         userId,
                                         processGUID,
                                         portGUID,
-                                        assetManagerIsHome);
+                                        assetManagerIsHome,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1070,19 +1123,25 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processGUID unique identifier of the process
      * @param portGUID unique identifier of the port
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearProcessPort(String userId,
-                                 String assetManagerGUID,
-                                 String assetManagerName,
-                                 String processGUID,
-                                 String portGUID) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void clearProcessPort(String  userId,
+                                 String  assetManagerGUID,
+                                 String  assetManagerName,
+                                 String  processGUID,
+                                 String  portGUID,
+                                 Date    effectiveTime,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String methodName               = "clearProcessPort";
         final String processGUIDParameterName = "processGUID";
@@ -1092,15 +1151,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/{3}/remove?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         processGUID,
-                                        portGUID);
+                                        portGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1114,6 +1175,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1125,9 +1189,12 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                     String  assetManagerName,
                                     boolean assetManagerIsHome,
                                     String  portOneGUID,
-                                    String  portTwoGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                    String  portTwoGUID,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName               = "setupPortDelegation";
         final String portOneGUIDParameterName = "portOneGUID";
@@ -1137,16 +1204,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(portOneGUID, portOneGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(portTwoGUID, portTwoGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/{3}?assetManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/{3}?assetManagerIsHome={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, null),
                                         serverName,
                                         userId,
                                         portOneGUID,
                                         portTwoGUID,
-                                        assetManagerIsHome);
+                                        assetManagerIsHome,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1158,19 +1227,25 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param portOneGUID unique identifier of the port at end 1
      * @param portTwoGUID unique identifier of the port at end 2
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearPortDelegation(String userId,
-                                    String assetManagerGUID,
-                                    String assetManagerName,
-                                    String portOneGUID,
-                                    String portTwoGUID) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void clearPortDelegation(String  userId,
+                                    String  assetManagerGUID,
+                                    String  assetManagerName,
+                                    String  portOneGUID,
+                                    String  portTwoGUID,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName               = "clearPortDelegation";
         final String portOneGUIDParameterName = "portOneGUID";
@@ -1180,15 +1255,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(portOneGUID, portOneGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(portTwoGUID, portTwoGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/{3}/remove?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         portOneGUID,
-                                        portTwoGUID);
+                                        portTwoGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1201,6 +1278,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1212,9 +1292,12 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                     String  assetManagerName,
                                     boolean assetManagerIsHome,
                                     String  portGUID,
-                                    String  schemaTypeGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                    String  schemaTypeGUID,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName                  = "setupPortSchemaType";
         final String portGUIDParameterName       = "portGUID";
@@ -1224,16 +1307,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/schemaType/{3}?assetManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/schemaType/{3}?assetManagerIsHome={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, null),
                                         serverName,
                                         userId,
                                         portGUID,
                                         schemaTypeGUID,
-                                        assetManagerIsHome);
+                                        assetManagerIsHome,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1245,19 +1330,25 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param portGUID unique identifier of the port
      * @param schemaTypeGUID unique identifier of the schemaType
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearPortSchemaType(String userId,
-                                    String assetManagerGUID,
-                                    String assetManagerName,
-                                    String portGUID,
-                                    String schemaTypeGUID) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void clearPortSchemaType(String  userId,
+                                    String  assetManagerGUID,
+                                    String  assetManagerName,
+                                    String  portGUID,
+                                    String  schemaTypeGUID,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName                  = "clearPortSchemaType";
         final String portGUIDParameterName       = "portGUID";
@@ -1267,15 +1358,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/schemaType/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/schemaType/{3}/remove?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
                                         portGUID,
-                                        schemaTypeGUID);
+                                        schemaTypeGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1287,19 +1380,25 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param portGUID unique identifier of the metadata element to remove
      * @param portExternalIdentifier unique identifier of the port in the external process manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void removePort(String userId,
-                           String assetManagerGUID,
-                           String assetManagerName,
-                           String portGUID,
-                           String portExternalIdentifier) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public void removePort(String  userId,
+                           String  assetManagerGUID,
+                           String  assetManagerName,
+                           String  portGUID,
+                           String  portExternalIdentifier,
+                           Date    effectiveTime,
+                           boolean forLineage,
+                           boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         final String methodName            = "removePort";
         final String portGUIDParameterName = "portGUID";
@@ -1307,17 +1406,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(portGUID, portGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      portExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, portExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        portGUID);
+                                        portGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1331,6 +1429,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements
      *
@@ -1339,37 +1440,34 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<PortElement>   findPorts(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         String searchString,
-                                         int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public List<PortElement>   findPorts(String  userId,
+                                         String  assetManagerGUID,
+                                         String  assetManagerName,
+                                         String  searchString,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         Date    effectiveTime,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        final String methodName                = "findPorts";
-        final String searchStringParameterName = "searchString";
+        final String methodName = "findPorts";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        SearchStringRequestBody requestBody = new SearchStringRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-        requestBody.setSearchString(searchString);
-        requestBody.setSearchStringParameterName(searchStringParameterName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
                                                                            urlTemplate,
-                                                                           requestBody,
+                                                                           getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
                                                                            serverName,
                                                                            userId,
                                                                            startFrom,
-                                                                           validatedPageSize);
+                                                                           validatedPageSize,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1384,6 +1482,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param processGUID unique identifier of the process of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of associated metadata elements
      *
@@ -1392,14 +1493,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<PortElement> getPortsForProcess(String userId,
-                                                String assetManagerGUID,
-                                                String assetManagerName,
-                                                String processGUID,
-                                                int    startFrom,
-                                                int    pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<PortElement> getPortsForProcess(String  userId,
+                                                String  assetManagerGUID,
+                                                String  assetManagerName,
+                                                String  processGUID,
+                                                int     startFrom,
+                                                int     pageSize,
+                                                Date    effectiveTime,
+                                                boolean forLineage,
+                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName        = "getPortsForProcess";
         final String guidParameterName = "processGUID";
@@ -1408,16 +1512,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
                                                                            urlTemplate,
-                                                                           getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                            serverName,
                                                                            userId,
                                                                            processGUID,
                                                                            startFrom,
-                                                                           validatedPageSize);
+                                                                           validatedPageSize,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1432,6 +1538,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param portGUID unique identifier of the starting port
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of associated metadata elements
      *
@@ -1440,14 +1549,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<PortElement>  getPortUse(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         String portGUID,
-                                         int    startFrom,
-                                         int    pageSize) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public List<PortElement>  getPortUse(String  userId,
+                                         String  assetManagerGUID,
+                                         String  assetManagerName,
+                                         String  portGUID,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         Date    effectiveTime,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName        = "getPortUse";
         final String guidParameterName = "portGUID";
@@ -1456,17 +1568,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(portGUID, guidParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/used-by/retrieve?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/used-by/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
                                                                            urlTemplate,
-                                                                           getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                 assetManagerName),
+                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                            serverName,
                                                                            userId,
                                                                            portGUID,
                                                                            startFrom,
-                                                                           validatedPageSize);
+                                                                           validatedPageSize,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1479,6 +1592,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param portGUID unique identifier of the starting port alias
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return matching metadata element
      *
@@ -1487,12 +1603,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public PortElement getPortDelegation(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         String portGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public PortElement getPortDelegation(String  userId,
+                                         String  assetManagerGUID,
+                                         String  assetManagerName,
+                                         String  portGUID,
+                                         Date    effectiveTime,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName        = "getPortDelegation";
         final String guidParameterName = "portGUID";
@@ -1500,14 +1619,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(portGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
         PortElementResponse restResult = restClient.callPortPostRESTCall(methodName,
                                                                          urlTemplate,
-                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                          serverName,
                                                                          userId,
-                                                                         portGUID);
+                                                                         portGUID,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1523,6 +1644,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of matching metadata elements
      *
@@ -1531,38 +1655,34 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<PortElement>   getPortsByName(String userId,
-                                              String assetManagerGUID,
-                                              String assetManagerName,
-                                              String name,
-                                              int    startFrom,
-                                              int    pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public List<PortElement>   getPortsByName(String  userId,
+                                              String  assetManagerGUID,
+                                              String  assetManagerName,
+                                              String  name,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              Date    effectiveTime,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        final String methodName        = "getPortsByName";
-        final String nameParameterName = "name";
+        final String methodName = "getPortsByName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameterName, methodName);
-
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        NameRequestBody requestBody = new NameRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-        requestBody.setName(name);
-        requestBody.setNameParameterName(nameParameterName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
         PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
                                                                            urlTemplate,
-                                                                           requestBody,
+                                                                           getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
                                                                            serverName,
                                                                            userId,
                                                                            startFrom,
-                                                                           validatedPageSize);
+                                                                           validatedPageSize,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1575,6 +1695,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param portGUID unique identifier of the requested metadata element
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return matching metadata element
      *
@@ -1583,12 +1706,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public PortElement getPortByGUID(String userId,
-                                     String assetManagerGUID,
-                                     String assetManagerName,
-                                     String portGUID) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public PortElement getPortByGUID(String  userId,
+                                     String  assetManagerGUID,
+                                     String  assetManagerName,
+                                     String  portGUID,
+                                     Date    effectiveTime,
+                                     boolean forLineage,
+                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName = "getPortByGUID";
         final String guidParameterName = "portGUID";
@@ -1596,14 +1722,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(portGUID, guidParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/retrieve?forLineage={3}&forDuplicateProcessing={3}";
 
         PortElementResponse restResult = restClient.callPortPostRESTCall(methodName,
                                                                          urlTemplate,
-                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                          serverName,
                                                                          userId,
-                                                                         portGUID);
+                                                                         portGUID,
+                                                                         forLineage,
+                                                                         forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1615,26 +1743,32 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
 
     /**
-     * Classify a port, process or process as "BusinessSignificant" (this may effect the way that lineage is displayed).
+     * Classify a port, process or process as "BusinessSignificant" (this may affect the way that lineage is displayed).
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param elementGUID unique identifier of the metadata element to update
      * @param elementExternalIdentifier unique identifier of the port in the external process manager
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setBusinessSignificant(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String elementGUID,
-                                       String elementExternalIdentifier) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public void setBusinessSignificant(String  userId,
+                                       String  assetManagerGUID,
+                                       String  assetManagerName,
+                                       String  elementGUID,
+                                       String  elementExternalIdentifier,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName = "setBusinessSignificant";
         final String elementGUIDParameterName = "elementGUID";
@@ -1642,17 +1776,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/is-business-significant";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/is-business-significant?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      elementExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, elementExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        elementGUID);
+                                        elementGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1664,19 +1797,25 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param elementGUID unique identifier of the metadata element to update
      * @param elementExternalIdentifier unique identifier of the element in the external process manager (can be null)
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearBusinessSignificant(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         String elementGUID,
-                                         String elementExternalIdentifier) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public void clearBusinessSignificant(String  userId,
+                                         String  assetManagerGUID,
+                                         String  assetManagerName,
+                                         String  elementGUID,
+                                         String  elementExternalIdentifier,
+                                         Date    effectiveTime,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String methodName = "clearBusinessSignificant";
         final String elementGUIDParameterName = "elementGUID";
@@ -1684,17 +1823,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/is-business-significant/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/is-business-significant/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        this.getCorrelationProperties(assetManagerGUID,
-                                                                      assetManagerName,
-                                                                      elementExternalIdentifier,
-                                                                      methodName),
+                                        getUpdateRequestBody(assetManagerGUID, assetManagerName, elementExternalIdentifier, effectiveTime, methodName),
                                         serverName,
                                         userId,
-                                        elementGUID);
+                                        elementGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1707,9 +1845,10 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier of the relationship
      *
@@ -1718,17 +1857,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String setupDataFlow(String  userId,
-                                String  assetManagerGUID,
-                                String  assetManagerName,
-                                boolean assetManagerIsHome,
-                                String  dataSupplierGUID,
-                                String  dataConsumerGUID,
-                                String  qualifiedName,
-                                String  description,
-                                String  formula) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public String setupDataFlow(String             userId,
+                                String             assetManagerGUID,
+                                String             assetManagerName,
+                                boolean            assetManagerIsHome,
+                                String             dataSupplierGUID,
+                                String             dataConsumerGUID,
+                                DataFlowProperties properties,
+                                Date               effectiveTime,
+                                boolean            forLineage,
+                                boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String methodName                    = "setupDataFlow";
         final String dataSupplierGUIDParameterName = "dataSupplierGUID";
@@ -1738,27 +1878,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
 
-        DataFlowRequestBody requestBody = new DataFlowRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        DataFlowProperties properties = new DataFlowProperties();
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setFormula(formula);
-
-        requestBody.setProperties(properties);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/suppliers/{2}/consumers/{3}?assetManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/suppliers/{2}/consumers/{3}?assetManagerIsHome={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
                                                                urlTemplate,
-                                                               requestBody,
+                                                               getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
                                                                serverName,
                                                                userId,
                                                                dataSupplierGUID,
                                                                dataConsumerGUID,
-                                                               assetManagerIsHome);
+                                                               assetManagerIsHome,
+                                                               forLineage,
+                                                               forDuplicateProcessing);
 
         return results.getGUID();
     }
@@ -1775,6 +1906,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param dataConsumerGUID unique identifier of the data consumer
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1783,37 +1917,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public DataFlowElement getDataFlow(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String dataSupplierGUID,
-                                       String dataConsumerGUID,
-                                       String qualifiedName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public DataFlowElement getDataFlow(String  userId,
+                                       String  assetManagerGUID,
+                                       String  assetManagerName,
+                                       String  dataSupplierGUID,
+                                       String  dataConsumerGUID,
+                                       String  qualifiedName,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName                    = "getDataFlow";
         final String dataSupplierGUIDParameterName = "dataSupplierGUID";
         final String dataConsumerGUIDParameterName = "dataConsumerGUID";
-        final String qualifiedNameParameterName    = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
 
-        NameRequestBody requestBody = new NameRequestBody();
-        requestBody.setName(qualifiedName);
-        requestBody.setNameParameterName(qualifiedNameParameterName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/suppliers/{2}/consumers/{3}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/suppliers/{2}/consumers/{3}/retrieve?forLineage={4}&forDuplicateProcessing={5}";
 
         DataFlowElementResponse restResult = restClient.callDataFlowPostRESTCall(methodName,
                                                                                  urlTemplate,
-                                                                                 requestBody,
+                                                                                 getQualifiedNameRequestBody(assetManagerGUID, assetManagerName, qualifiedName, effectiveTime),
                                                                                  serverName,
                                                                                  userId,
                                                                                  dataSupplierGUID,
-                                                                                 dataConsumerGUID);
+                                                                                 dataConsumerGUID,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1826,25 +1960,26 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
-     *
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void   updateDataFlow(String userId,
-                                 String assetManagerGUID,
-                                 String assetManagerName,
-                                 String dataFlowGUID,
-                                 String qualifiedName,
-                                 String description,
-                                 String formula) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException
+    public void   updateDataFlow(String             userId,
+                                 String             assetManagerGUID,
+                                 String             assetManagerName,
+                                 String             dataFlowGUID,
+                                 DataFlowProperties properties,
+                                 Date               effectiveTime,
+                                 boolean            forLineage,
+                                 boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String methodName                    = "updateDataFlow";
         final String dataFlowGUIDParameterName     = "dataFlowGUID";
@@ -1852,25 +1987,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
 
-        DataFlowRequestBody requestBody = new DataFlowRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        DataFlowProperties properties = new DataFlowProperties();
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setFormula(formula);
-
-        requestBody.setProperties(properties);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/{2}/update?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
                                         serverName,
                                         userId,
-                                        dataFlowGUID);
+                                        dataFlowGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -1881,44 +2007,56 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param dataFlowGUID unique identifier of the data flow relationship
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearDataFlow(String userId,
-                              String assetManagerGUID,
-                              String assetManagerName,
-                              String dataFlowGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+    public void clearDataFlow(String  userId,
+                              String  assetManagerGUID,
+                              String  assetManagerName,
+                              String  dataFlowGUID,
+                              Date    effectiveTime,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         final String methodName                = "clearDataFlow";
         final String dataFlowGUIDParameterName = "dataFlowGUID";
 
-
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFlowGUID, dataFlowGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/{2}/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
-                                        dataFlowGUID);
+                                        dataFlowGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the downstream consumers.
+     * Retrieve the data flow relationships linked from a specific element to the downstream consumers.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param dataSupplierGUID unique identifier of the data supplier
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1927,12 +2065,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<DataFlowElement> getDataFlowConsumers(String userId,
-                                                      String assetManagerGUID,
-                                                      String assetManagerName,
-                                                      String dataSupplierGUID) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<DataFlowElement> getDataFlowConsumers(String  userId,
+                                                      String  assetManagerGUID,
+                                                      String  assetManagerName,
+                                                      String  dataSupplierGUID,
+                                                      int     startFrom,
+                                                      int     pageSize,
+                                                      Date    effectiveTime,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName                    = "getDataFlowConsumers";
         final String dataSupplierGUIDParameterName = "dataSupplierGUID";
@@ -1940,27 +2083,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataSupplierGUID, dataSupplierGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/suppliers/{2}/consumers/retrieve";
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/suppliers/{2}/consumers/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         DataFlowElementsResponse restResult = restClient.callDataFlowsPostRESTCall(methodName,
                                                                                    urlTemplate,
-                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                         assetManagerName),
+                                                                                   getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                    serverName,
                                                                                    userId,
-                                                                                   dataSupplierGUID);
+                                                                                   dataSupplierGUID,
+                                                                                   startFrom,
+                                                                                   validatedPageSize,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing);
 
         return restResult.getElementList();
     }
 
 
     /**
-     * Retrieve the data flow relationships linked from an specific element to the upstream suppliers.
+     * Retrieve the data flow relationships linked from a specific element to the upstream suppliers.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param dataConsumerGUID unique identifier of the data consumer
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier and properties of the relationship
      *
@@ -1969,12 +2122,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<DataFlowElement> getDataFlowSuppliers(String userId,
-                                                      String assetManagerGUID,
-                                                      String assetManagerName,
-                                                      String dataConsumerGUID) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<DataFlowElement> getDataFlowSuppliers(String  userId,
+                                                      String  assetManagerGUID,
+                                                      String  assetManagerName,
+                                                      String  dataConsumerGUID,
+                                                      int     startFrom,
+                                                      int     pageSize,
+                                                      Date    effectiveTime,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName                    = "getDataFlowSuppliers";
         final String dataConsumerGUIDParameterName = "dataConsumerGUID";
@@ -1982,15 +2140,20 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataConsumerGUID, dataConsumerGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/consumers/{2}/suppliers/retrieve";
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-flows/consumers/{2}/suppliers/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         DataFlowElementsResponse restResult = restClient.callDataFlowsPostRESTCall(methodName,
                                                                                    urlTemplate,
-                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                         assetManagerName),
+                                                                                   getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                    serverName,
                                                                                    userId,
-                                                                                   dataConsumerGUID);
+                                                                                   dataConsumerGUID,
+                                                                                   startFrom,
+                                                                                   validatedPageSize,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -2005,9 +2168,10 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier for the control flow relationship
      *
@@ -2016,17 +2180,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String setupControlFlow(String  userId,
-                                   String  assetManagerGUID,
-                                   String  assetManagerName,
-                                   boolean assetManagerIsHome,
-                                   String  currentStepGUID,
-                                   String  nextStepGUID,
-                                   String  qualifiedName,
-                                   String  description,
-                                   String  guard) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public String setupControlFlow(String                userId,
+                                   String                assetManagerGUID,
+                                   String                assetManagerName,
+                                   boolean               assetManagerIsHome,
+                                   String                currentStepGUID,
+                                   String                nextStepGUID,
+                                   ControlFlowProperties properties,
+                                   Date                  effectiveTime,
+                                   boolean               forLineage,
+                                   boolean               forDuplicateProcessing) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         final String methodName                   = "setupControlFlow";
         final String currentStepGUIDParameterName = "currentStepGUID";
@@ -2036,27 +2201,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
 
-        ControlFlowRequestBody requestBody = new ControlFlowRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        ControlFlowProperties properties = new ControlFlowProperties();
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setGuard(guard);
-
-        requestBody.setProperties(properties);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/{3}?assetManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/{3}?assetManagerIsHome={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
                                                                urlTemplate,
-                                                               requestBody,
+                                                               getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
                                                                serverName,
                                                                userId,
                                                                currentStepGUID,
                                                                nextStepGUID,
-                                                               assetManagerIsHome);
+                                                               assetManagerIsHome,
+                                                               forLineage,
+                                                               forDuplicateProcessing);
 
         return results.getGUID();
     }
@@ -2073,6 +2229,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param currentStepGUID unique identifier of the previous step
      * @param nextStepGUID unique identifier of the next step
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2081,37 +2240,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public ControlFlowElement getControlFlow(String userId,
-                                             String assetManagerGUID,
-                                             String assetManagerName,
-                                             String currentStepGUID,
-                                             String nextStepGUID,
-                                             String qualifiedName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public ControlFlowElement getControlFlow(String  userId,
+                                             String  assetManagerGUID,
+                                             String  assetManagerName,
+                                             String  currentStepGUID,
+                                             String  nextStepGUID,
+                                             String  qualifiedName,
+                                             Date    effectiveTime,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String methodName                   = "getControlFlow";
         final String currentStepGUIDParameterName = "currentStepGUID";
         final String nextStepGUIDParameterName    = "nextStepGUID";
-        final String qualifiedNameParameterName   = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(nextStepGUID, nextStepGUIDParameterName, methodName);
 
-        NameRequestBody requestBody = new NameRequestBody();
-        requestBody.setName(qualifiedName);
-        requestBody.setNameParameterName(qualifiedNameParameterName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/{3}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/{3}/retrieve?forLineage={4}&forDuplicateProcessing={5}";
 
         ControlFlowElementResponse restResult = restClient.callControlFlowPostRESTCall(methodName,
                                                                                        urlTemplate,
-                                                                                       requestBody,
+                                                                                       getQualifiedNameRequestBody(assetManagerGUID, assetManagerName, qualifiedName, effectiveTime),
                                                                                        serverName,
                                                                                        userId,
                                                                                        currentStepGUID,
-                                                                                       nextStepGUID);
+                                                                                       nextStepGUID,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -2124,24 +2283,26 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param guard function that must be true to travel down this control flow
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateControlFlow(String userId,
-                                  String assetManagerGUID,
-                                  String assetManagerName,
-                                  String controlFlowGUID,
-                                  String qualifiedName,
-                                  String description,
-                                  String guard) throws InvalidParameterException,
-                                                       UserNotAuthorizedException,
-                                                       PropertyServerException
+    public void updateControlFlow(String                 userId,
+                                  String                 assetManagerGUID,
+                                  String                 assetManagerName,
+                                  String                 controlFlowGUID,
+                                  ControlFlowProperties  properties,
+                                  Date                   effectiveTime,
+                                  boolean                forLineage,
+                                  boolean                forDuplicateProcessing) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         final String methodName                   = "updateControlFlow";
         final String controlFlowGUIDParameterName = "controlFlowGUID";
@@ -2149,25 +2310,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
 
-        ControlFlowRequestBody requestBody = new ControlFlowRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        ControlFlowProperties properties = new ControlFlowProperties();
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setGuard(guard);
-
-        requestBody.setProperties(properties);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/{2}/update?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
                                         serverName,
                                         userId,
-                                        controlFlowGUID);
+                                        controlFlowGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2178,18 +2330,24 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param controlFlowGUID unique identifier of the  control flow relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearControlFlow(String userId,
-                                 String assetManagerGUID,
-                                 String assetManagerName,
-                                 String controlFlowGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void clearControlFlow(String  userId,
+                                 String  assetManagerGUID,
+                                 String  assetManagerName,
+                                 String  controlFlowGUID,
+                                 Date    effectiveTime,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String methodName                   = "clearControlFlow";
         final String controlFlowGUIDParameterName = "controlFlowGUID";
@@ -2197,24 +2355,31 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(controlFlowGUID, controlFlowGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/{2}/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
-                                        controlFlowGUID);
+                                        controlFlowGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible next elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible next elements in the process.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param currentStepGUID unique identifier of the current step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2223,12 +2388,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ControlFlowElement> getControlFlowNextSteps(String userId,
-                                                            String assetManagerGUID,
-                                                            String assetManagerName,
-                                                            String currentStepGUID) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public List<ControlFlowElement> getControlFlowNextSteps(String  userId,
+                                                            String  assetManagerGUID,
+                                                            String  assetManagerName,
+                                                            String  currentStepGUID,
+                                                            int     startFrom,
+                                                            int     pageSize,
+                                                            Date    effectiveTime,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         final String methodName                   = "getControlFlowNextSteps";
         final String currentStepGUIDParameterName = "currentStepGUID";
@@ -2236,27 +2406,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/retrieve";
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/next-steps/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         ControlFlowElementsResponse restResult = restClient.callControlFlowsPostRESTCall(methodName,
                                                                                          urlTemplate,
-                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                               assetManagerName),
+                                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                          serverName,
                                                                                          userId,
-                                                                                         currentStepGUID);
+                                                                                         currentStepGUID,
+                                                                                         startFrom,
+                                                                                         validatedPageSize,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing);
 
         return restResult.getElementList();
     }
 
 
     /**
-     * Retrieve the control relationships linked from an specific element to the possible previous elements in the process.
+     * Retrieve the control relationships linked from a specific element to the possible previous elements in the process.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param currentStepGUID unique identifier of the previous step
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2265,12 +2445,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ControlFlowElement> getControlFlowPreviousSteps(String userId,
-                                                                String assetManagerGUID,
-                                                                String assetManagerName,
-                                                                String currentStepGUID) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public List<ControlFlowElement> getControlFlowPreviousSteps(String  userId,
+                                                                String  assetManagerGUID,
+                                                                String  assetManagerName,
+                                                                String  currentStepGUID,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                Date    effectiveTime,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String methodName                   = "getControlFlowPreviousSteps";
         final String currentStepGUIDParameterName = "currentStepGUID";
@@ -2278,15 +2463,20 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentStepGUID, currentStepGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/previous-steps/retrieve";
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/control-flows/current-steps/{2}/previous-steps/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         ControlFlowElementsResponse restResult = restClient.callControlFlowsPostRESTCall(methodName,
                                                                                          urlTemplate,
-                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                               assetManagerName),
+                                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                          serverName,
                                                                                          userId,
-                                                                                         currentStepGUID);
+                                                                                         currentStepGUID,
+                                                                                         startFrom,
+                                                                                         validatedPageSize,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -2301,9 +2491,10 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerIsHome ensure that only the process manager can update this process
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier of the new relationship
      *
@@ -2312,17 +2503,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String setupProcessCall(String  userId,
-                                   String  assetManagerGUID,
-                                   String  assetManagerName,
-                                   boolean assetManagerIsHome,
-                                   String  callerGUID,
-                                   String  calledGUID,
-                                   String  qualifiedName,
-                                   String  description,
-                                   String  formula) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+    public String setupProcessCall(String                userId,
+                                   String                assetManagerGUID,
+                                   String                assetManagerName,
+                                   boolean               assetManagerIsHome,
+                                   String                callerGUID,
+                                   String                calledGUID,
+                                   ProcessCallProperties properties,
+                                   Date                  effectiveTime,
+                                   boolean               forLineage,
+                                   boolean               forDuplicateProcessing) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         final String methodName              = "setupProcessCall";
         final String callerGUIDParameterName = "callerGUID";
@@ -2332,27 +2524,18 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
 
-        ProcessCallRequestBody requestBody = new ProcessCallRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        ProcessCallProperties properties = new ProcessCallProperties();
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setFormula(formula);
-
-        requestBody.setProperties(properties);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/callers/{2}/called/{3}?assetManagerIsHome={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/callers/{2}/called/{3}?assetManagerIsHome={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         GUIDResponse results = restClient.callGUIDPostRESTCall(methodName,
                                                                urlTemplate,
-                                                               requestBody,
+                                                               getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
                                                                serverName,
                                                                userId,
                                                                callerGUID,
                                                                calledGUID,
-                                                               assetManagerIsHome);
+                                                               assetManagerIsHome,
+                                                               forLineage,
+                                                               forDuplicateProcessing);
 
         return results.getGUID();
     }
@@ -2369,6 +2552,9 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param callerGUID unique identifier of the element that is making the call
      * @param calledGUID unique identifier of the element that is processing the call
      * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2377,37 +2563,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public ProcessCallElement getProcessCall(String userId,
-                                             String assetManagerGUID,
-                                             String assetManagerName,
-                                             String callerGUID,
-                                             String calledGUID,
-                                             String qualifiedName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public ProcessCallElement getProcessCall(String  userId,
+                                             String  assetManagerGUID,
+                                             String  assetManagerName,
+                                             String  callerGUID,
+                                             String  calledGUID,
+                                             String  qualifiedName,
+                                             Date    effectiveTime,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String methodName                 = "getProcessCall";
         final String callerGUIDParameterName    = "callerGUID";
         final String calledGUIDParameterName    = "calledGUID";
-        final String qualifiedNameParameterName = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
 
-        NameRequestBody requestBody = new NameRequestBody();
-        requestBody.setName(qualifiedName);
-        requestBody.setNameParameterName(qualifiedNameParameterName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/callers/{2}/called/{3}/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/callers/{2}/called/{3}/retrieve?forLineage={4}&forDuplicateProcessing={5}";
 
         ProcessCallElementResponse restResult = restClient.callProcessCallPostRESTCall(methodName,
                                                                                        urlTemplate,
-                                                                                       requestBody,
+                                                                                       getQualifiedNameRequestBody(assetManagerGUID, assetManagerName, qualifiedName, effectiveTime),
                                                                                        serverName,
                                                                                        userId,
                                                                                        callerGUID,
-                                                                                       calledGUID);
+                                                                                       calledGUID,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -2420,24 +2606,26 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
-     * @param qualifiedName unique identifier for this relationship
-     * @param description description and/or purpose of the data flow
-     * @param formula function that determines the subset of the data that flows
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateProcessCall(String userId,
-                                  String assetManagerGUID,
-                                  String assetManagerName,
-                                  String processCallGUID,
-                                  String qualifiedName,
-                                  String description,
-                                  String formula) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void updateProcessCall(String                userId,
+                                  String                assetManagerGUID,
+                                  String                assetManagerName,
+                                  String                processCallGUID,
+                                  ProcessCallProperties properties,
+                                  Date                  effectiveTime,
+                                  boolean               forLineage,
+                                  boolean               forDuplicateProcessing) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         final String methodName                   = "updateProcessCall";
         final String processCallGUIDParameterName = "processCallGUID";
@@ -2445,25 +2633,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
 
-        ProcessCallRequestBody requestBody = new ProcessCallRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
-
-        ProcessCallProperties properties = new ProcessCallProperties();
-        properties.setQualifiedName(qualifiedName);
-        properties.setDescription(description);
-        properties.setFormula(formula);
-
-        requestBody.setProperties(properties);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/{2}/update?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        requestBody,
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
                                         serverName,
                                         userId,
-                                        processCallGUID);
+                                        processCallGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2474,18 +2653,24 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param processCallGUID unique identifier of the process call relationship
-
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearProcessCall(String userId,
-                                 String assetManagerGUID,
-                                 String assetManagerName,
-                                 String processCallGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public void clearProcessCall(String  userId,
+                                 String  assetManagerGUID,
+                                 String  assetManagerName,
+                                 String  processCallGUID,
+                                 Date    effectiveTime,
+                                 boolean forLineage,
+                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String methodName                   = "clearProcessCall";
         final String processCallGUIDParameterName = "processCallGUID";
@@ -2494,24 +2679,31 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processCallGUID, processCallGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/{2}/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
-                                        processCallGUID);
+                                        processCallGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to the elements it calls.
+     * Retrieve the process call relationships linked from a specific element to the elements it calls.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param callerGUID unique identifier of the element that is making the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2520,12 +2712,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ProcessCallElement> getProcessCalled(String userId,
-                                                     String assetManagerGUID,
-                                                     String assetManagerName,
-                                                     String callerGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<ProcessCallElement> getProcessCalled(String  userId,
+                                                     String  assetManagerGUID,
+                                                     String  assetManagerName,
+                                                     String  callerGUID,
+                                                     int     startFrom,
+                                                     int     pageSize,
+                                                     Date    effectiveTime,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName                 = "getProcessCalled";
         final String callerGUIDParameterName    = "callerGUID";
@@ -2533,27 +2730,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(callerGUID, callerGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/callers/{2}/called/retrieve";
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/callers/{2}/called/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         ProcessCallElementsResponse restResult = restClient.callProcessCallsPostRESTCall(methodName,
                                                                                          urlTemplate,
-                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                               assetManagerName),
+                                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                          serverName,
                                                                                          userId,
-                                                                                         callerGUID);
+                                                                                         callerGUID,
+                                                                                         startFrom,
+                                                                                         validatedPageSize,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing);
 
         return restResult.getElementList();
     }
 
 
     /**
-     * Retrieve the process call relationships linked from an specific element to its callers.
+     * Retrieve the process call relationships linked from a specific element to its callers.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param calledGUID unique identifier of the element that is processing the call
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return unique identifier and properties of the relationship
      *
@@ -2562,12 +2769,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<ProcessCallElement> getProcessCallers(String userId,
-                                                      String assetManagerGUID,
-                                                      String assetManagerName,
-                                                      String calledGUID) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<ProcessCallElement> getProcessCallers(String  userId,
+                                                      String  assetManagerGUID,
+                                                      String  assetManagerName,
+                                                      String  calledGUID,
+                                                      int     startFrom,
+                                                      int     pageSize,
+                                                      Date    effectiveTime,
+                                                      boolean forLineage,
+                                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName                 = "getProcessCallers";
         final String calledGUIDParameterName    = "calledGUID";
@@ -2575,15 +2787,20 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(calledGUID, calledGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/called/{2}/callers/retrieve";
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/process-calls/called/{2}/callers/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         ProcessCallElementsResponse restResult = restClient.callProcessCallsPostRESTCall(methodName,
                                                                                          urlTemplate,
-                                                                                         getAssetManagerIdentifiersRequestBody(assetManagerGUID,
-                                                                                                                               assetManagerName),
+                                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                          serverName,
                                                                                          userId,
-                                                                                         calledGUID);
+                                                                                         calledGUID,
+                                                                                         startFrom,
+                                                                                         validatedPageSize,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -2591,7 +2808,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
     /**
      * Link to elements together to show that they are part of the lineage of the data that is moving
-     * between the processes.  Typically the lineage relationships stitch together processes and data assets
+     * between the processes.  Typically, the lineage relationships stitch together processes and data assets
      * supported by different technologies.
      *
      * @param userId calling user
@@ -2599,19 +2816,27 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param assetManagerName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
      * @param destinationElementGUID unique identifier of the destination
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupLineageMapping(String  userId,
-                                    String  assetManagerGUID,
-                                    String  assetManagerName,
-                                    String  sourceElementGUID,
-                                    String  destinationElementGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void setupLineageMapping(String                   userId,
+                                    String                   assetManagerGUID,
+                                    String                   assetManagerName,
+                                    String                   sourceElementGUID,
+                                    String                   destinationElementGUID,
+                                    LineageMappingProperties properties,
+                                    Date                     effectiveTime,
+                                    boolean                  forLineage,
+                                    boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName                          = "setupLineageMapping";
         final String sourceElementGUIDParameterName      = "sourceElementGUID";
@@ -2621,15 +2846,122 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}?forLineage={4}&forDuplicateProcessing={5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
                                         serverName,
                                         userId,
                                         sourceElementGUID,
-                                        destinationElementGUID);
+                                        destinationElementGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
+    }
+
+
+    /**
+     * Retrieve the relationship between two elements.  The qualifiedName is optional unless there
+     * is more than one relationship between these two elements since it is used to disambiguate
+     * the request.  This is often used in conjunction with update.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param sourceElementGUID unique identifier of the element that is making the call
+     * @param destinationElementGUID unique identifier of the element that is processing the call
+     * @param qualifiedName unique identifier for this relationship
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return unique identifier and properties of the relationship
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public LineageMappingElement getLineageMapping(String  userId,
+                                                   String  assetManagerGUID,
+                                                   String  assetManagerName,
+                                                   String  sourceElementGUID,
+                                                   String  destinationElementGUID,
+                                                   String  qualifiedName,
+                                                   Date    effectiveTime,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        final String methodName                          = "getLineageMapping";
+        final String sourceElementGUIDParameterName      = "sourceElementGUID";
+        final String destinationElementGUIDParameterName = "destinationElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}/retrieve?forLineage={4}&forDuplicateProcessing={5}";
+
+        LineageMappingElementResponse restResult = restClient.callLineageMappingPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             getQualifiedNameRequestBody(assetManagerGUID, assetManagerName, qualifiedName, effectiveTime),
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             sourceElementGUID,
+                                                                                             destinationElementGUID,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing);
+
+        return restResult.getElement();
+    }
+
+
+    /**
+     * Update the lineage mapping relationship between two elements.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param lineageMappingGUID unique identifier of the lineage mapping relationship
+     * @param properties unique identifier for this relationship along with description and/or additional relevant properties
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public void updateLineageMapping(String                   userId,
+                                     String                   assetManagerGUID,
+                                     String                   assetManagerName,
+                                     String                   lineageMappingGUID,
+                                     LineageMappingProperties properties,
+                                     Date                     effectiveTime,
+                                     boolean                  forLineage,
+                                     boolean                  forDuplicateProcessing) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        final String methodName                   = "updateProcessCall";
+        final String processCallGUIDParameterName = "lineageMappingGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(lineageMappingGUID, processCallGUIDParameterName, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/{2}/update?forLineage={3}&forDuplicateProcessing={4}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        getRelationshipRequestBody(assetManagerGUID, assetManagerName, effectiveTime, properties),
+                                        serverName,
+                                        userId,
+                                        lineageMappingGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
@@ -2639,49 +2971,57 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param sourceElementGUID unique identifier of the source
-     * @param destinationElementGUID unique identifier of the destination
+     * @param lineageMappingGUID unique identifier of the source
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void clearLineageMapping(String userId,
-                                    String assetManagerGUID,
-                                    String assetManagerName,
-                                    String sourceElementGUID,
-                                    String destinationElementGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public void clearLineageMapping(String  userId,
+                                    String  assetManagerGUID,
+                                    String  assetManagerName,
+                                    String  lineageMappingGUID,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName                          = "clearLineageMapping";
-        final String sourceElementGUIDParameterName      = "sourceElementGUID";
-        final String destinationElementGUIDParameterName = "destinationElementGUID";
+        final String lineageMappingGUIDParameterName     = "lineageMappingGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(lineageMappingGUID, lineageMappingGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/{2}/remove?forLineage={3}&forDuplicateProcessing={4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
-                                        getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                         serverName,
                                         userId,
-                                        sourceElementGUID,
-                                        destinationElementGUID);
+                                        lineageMappingGUID,
+                                        forLineage,
+                                        forDuplicateProcessing);
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific source element to its destinations.
+     * Retrieve the lineage mapping relationships linked from a specific source element to its destinations.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param sourceElementGUID unique identifier of the source
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of lineage mapping relationships
      *
@@ -2690,12 +3030,17 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<LineageMappingElement> getDestinationLineageMappings(String userId,
-                                                                     String assetManagerGUID,
-                                                                     String assetManagerName,
-                                                                     String sourceElementGUID) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<LineageMappingElement> getDestinationLineageMappings(String  userId,
+                                                                     String  assetManagerGUID,
+                                                                     String  assetManagerName,
+                                                                     String  sourceElementGUID,
+                                                                     int     startFrom,
+                                                                     int     pageSize,
+                                                                     Date    effectiveTime,
+                                                                     boolean forLineage,
+                                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         final String methodName                          = "getDestinationLineageMappings";
         final String sourceElementGUIDParameterName      = "sourceElementGUID";
@@ -2703,26 +3048,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(sourceElementGUID, sourceElementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/retrieve";
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/sources/{2}/destinations/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         LineageMappingElementsResponse results = restClient.callLineageMappingsPostRESTCall(methodName,
                                                                                             urlTemplate,
-                                                                                            getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                                            getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                             serverName,
                                                                                             userId,
-                                                                                            sourceElementGUID);
+                                                                                            sourceElementGUID,
+                                                                                            startFrom,
+                                                                                            validatedPageSize,
+                                                                                            forLineage,
+                                                                                            forDuplicateProcessing);
 
         return results.getElementList();
     }
 
 
     /**
-     * Retrieve the lineage mapping relationships linked from an specific destination element to its sources.
+     * Retrieve the lineage mapping relationships linked from a specific destination element to its sources.
      *
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param destinationElementGUID unique identifier of the destination
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param effectiveTime optional date for effective time of the query.  Null means any effective time
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      *
      * @return list of lineage mapping relationships
      *
@@ -2731,27 +3087,37 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<LineageMappingElement> getSourceLineageMappings(String userId,
-                                                                String assetManagerGUID,
-                                                                String assetManagerName,
-                                                                String destinationElementGUID) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<LineageMappingElement> getSourceLineageMappings(String  userId,
+                                                                String  assetManagerGUID,
+                                                                String  assetManagerName,
+                                                                String  destinationElementGUID,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                Date    effectiveTime,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String methodName                          = "getSourceLineageMappings";
         final String destinationElementGUIDParameterName = "destinationElementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(destinationElementGUID, destinationElementGUIDParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/destinations/{2}/sources/retrieve";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/lineage-mappings/destinations/{2}/sources/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         LineageMappingElementsResponse results = restClient.callLineageMappingsPostRESTCall(methodName,
                                                                                             urlTemplate,
-                                                                                            getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                                            getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                             serverName,
                                                                                             userId,
-                                                                                            destinationElementGUID);
+                                                                                            destinationElementGUID,
+                                                                                            startFrom,
+                                                                                            validatedPageSize,
+                                                                                            forLineage,
+                                                                                            forDuplicateProcessing);
 
         return results.getElementList();
     }

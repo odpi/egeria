@@ -205,6 +205,7 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
         return properties;
     }
 
+
     /**
      * Return the properties for a relationship between a referenceable and an external reference.
      *
@@ -225,6 +226,7 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
                                                                       OpenMetadataAPIMapper.REFERENCE_ID_PROPERTY_NAME,
                                                                       referenceId,
                                                                       methodName);
+
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
@@ -232,6 +234,8 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
                                                                       methodName);
 
         }
+
+        setEffectivityDates(properties);
 
         return properties;
     }

@@ -23,6 +23,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -101,7 +102,8 @@ public class DataEngineProcessHandler {
                 process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 dataEngineCommonHandler.getOwnerTypeOrdinal(process.getOwnerType()), process.getOriginBusinessCapabilityGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
-                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, buildProcessExtendedProperties(process), InstanceStatus.DRAFT, methodName);
+                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, buildProcessExtendedProperties(process), null, null,
+                InstanceStatus.DRAFT, null, methodName);
     }
 
     /**
@@ -139,9 +141,10 @@ public class DataEngineProcessHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         assetHandler.updateAsset(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
-                updatedProcess.getQualifiedName(), updatedProcess.getName(), updatedProcess.getDescription(),
-                updatedProcess.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME,
-                buildProcessExtendedProperties(updatedProcess), methodName);
+               updatedProcess.getQualifiedName(), updatedProcess.getName(), updatedProcess.getDescription(),
+               updatedProcess.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME,
+               buildProcessExtendedProperties(updatedProcess), null, null,
+               true, false, false, null, methodName);
     }
 
     /**
@@ -189,7 +192,8 @@ public class DataEngineProcessHandler {
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         assetHandler.updateBeanStatusInRepository(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
-                entityTypeDef.getGUID(), entityTypeDef.getName(), instanceStatus, processStatusParameterName, methodName);
+                entityTypeDef.getGUID(), entityTypeDef.getName(), false, false, instanceStatus, processStatusParameterName,
+                null, methodName);
     }
 
     /**
@@ -293,6 +297,6 @@ public class DataEngineProcessHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         assetHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, processGUID, PROCESS_GUID_PARAMETER_NAME,
-                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, methodName);
+                PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, null, null, false, false, null, methodName);
     }
 }

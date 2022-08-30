@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 /**
- * DigitalArchitectureOMASConverter provides the generic methods for the Data Manager beans converters.  Generic classes
+ * OCFConverter provides the generic methods for the OCF beans converters.  Generic classes
  * have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Data Manager bean.
@@ -46,13 +46,13 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     /**
      * Extract the properties from the entity.
      *
-     * @param elementHeader the header for the bean
+     * @param elementBase the header for the bean
      * @param entity entity containing the properties
      * @param expectedTypeName type that the entity must match (or it may be a subtype)
      * @param methodName calling method
      * @throws PropertyServerException the supplied entity is not of the expected type
      */
-    protected void setUpElementHeader(ElementHeader elementHeader,
+    protected void setUpElementHeader(ElementBase  elementBase,
                                       EntityDetail  entity,
                                       String        expectedTypeName,
                                       String        methodName) throws PropertyServerException
@@ -60,18 +60,18 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         if (entity != null)
         {
             super.validateInstanceType(expectedTypeName,
-                                       elementHeader.getClass().getName(),
+                                       elementBase.getClass().getName(),
                                        entity,
                                        methodName);
 
-            elementHeader.setGUID(entity.getGUID());
-            elementHeader.setType(this.getElementType(entity));
-            elementHeader.setURL(entity.getInstanceURL());
-            elementHeader.setClassifications(this.getEntityClassifications(entity));
+            elementBase.setGUID(entity.getGUID());
+            elementBase.setType(this.getElementType(entity));
+            elementBase.setURL(entity.getInstanceURL());
+            elementBase.setClassifications(this.getEntityClassifications(entity));
         }
         else
         {
-            super.handleMissingMetadataInstance(elementHeader.getClass().getName(),
+            super.handleMissingMetadataInstance(elementBase.getClass().getName(),
                                                 TypeDefCategory.ENTITY_DEF,
                                                 methodName);
         }
@@ -81,92 +81,30 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     /**
      * Extract the properties from the entity.
      *
-     * @param elementHeader the header for the bean
+     * @param elementBase the header for the bean
      * @param instanceHeader header of entity
      * @param classifications classifications from the entity
      * @param methodName calling method
      * @throws PropertyServerException the supplied entity is not of the expected type
      */
-    protected void setUpElementHeader(ElementHeader        elementHeader,
+    protected void setUpElementHeader(ElementBase          elementBase,
                                       InstanceHeader       instanceHeader,
                                       List<Classification> classifications,
                                       String               methodName) throws PropertyServerException
     {
         if (instanceHeader != null)
         {
-            elementHeader.setGUID(instanceHeader.getGUID());
-            elementHeader.setType(this.getElementType(instanceHeader));
-            elementHeader.setURL(instanceHeader.getInstanceURL());
-            elementHeader.setClassifications(this.getEntityClassifications(classifications));
+            elementBase.setGUID(instanceHeader.getGUID());
+            elementBase.setType(this.getElementType(instanceHeader));
+            elementBase.setURL(instanceHeader.getInstanceURL());
+            elementBase.setClassifications(this.getElementClassifications(classifications));
         }
         else
         {
-            super.handleMissingMetadataInstance(elementHeader.getClass().getName(),
+            super.handleMissingMetadataInstance(elementBase.getClass().getName(),
                                                 TypeDefCategory.ENTITY_DEF,
                                                 methodName);
         }
-    }
-
-
-    /**
-     * Extract the classifications from the entity.
-     *
-     * @param entity entity containing the classifications
-     * @return list of bean classifications
-     */
-    private List<ElementClassification> getEntityClassifications(EntityDetail entity)
-    {
-        if (entity != null)
-        {
-            return getEntityClassifications(entity.getClassifications());
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the classifications from the entity.
-     *
-     * @param entityClassifications list of classifications from entity
-     * @return list of bean classifications
-     */
-    protected List<ElementClassification> getEntityClassifications(List<Classification> entityClassifications)
-    {
-        List<ElementClassification> beanClassifications = null;
-
-        if (entityClassifications != null)
-        {
-            beanClassifications = new ArrayList<>();
-
-            for (Classification entityClassification : entityClassifications)
-            {
-                if (entityClassification != null)
-                {
-                    ElementClassification beanClassification = new ElementClassification();
-
-                    beanClassification.setElementSourceServer(serverName);
-                    beanClassification.setElementOrigin(this.getElementOrigin(entityClassification.getInstanceProvenanceType()));
-                    beanClassification.setElementMetadataCollectionId(entityClassification.getMetadataCollectionId());
-                    beanClassification.setElementMetadataCollectionName(entityClassification.getMetadataCollectionName());
-                    beanClassification.setElementLicense(entityClassification.getInstanceLicense());
-                    beanClassification.setElementCreatedBy(entityClassification.getCreatedBy());
-                    beanClassification.setElementUpdatedBy( entityClassification.getUpdatedBy());
-                    beanClassification.setElementMaintainedBy(entityClassification.getMaintainedBy());
-                    beanClassification.setElementCreateTime(entityClassification.getCreateTime());
-                    beanClassification.setElementUpdateTime(entityClassification.getUpdateTime());
-                    beanClassification.setElementVersion(entityClassification.getVersion());
-                    beanClassification.setStatus(this.getElementStatus(entityClassification.getStatus()));
-
-                    beanClassification.setClassificationName(entityClassification.getName());
-                    beanClassification.setClassificationProperties(repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));
-
-                    beanClassifications.add(beanClassification);
-                }
-            }
-        }
-
-        return beanClassifications;
     }
 
 
@@ -230,170 +168,6 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         }
 
         return null;
-    }
-
-
-    /**
-     * Convert information from a repository instance into an Open Connector Framework ElementType.
-     *
-     * @param instanceHeader values from the server
-     * @return OCF ElementType object
-     */
-    private ElementType getElementType(InstanceHeader instanceHeader)
-    {
-        ElementType  elementType = new ElementType();
-
-        InstanceType instanceType = instanceHeader.getType();
-
-        if (instanceType != null)
-        {
-            elementType.setElementSourceServer(serverName);
-            elementType.setElementOrigin(this.getElementOrigin(instanceHeader.getInstanceProvenanceType()));
-            elementType.setElementMetadataCollectionId(instanceHeader.getMetadataCollectionId());
-            elementType.setElementMetadataCollectionName(instanceHeader.getMetadataCollectionName());
-            elementType.setElementLicense(instanceHeader.getInstanceLicense());
-            elementType.setElementCreatedBy(instanceHeader.getCreatedBy());
-            elementType.setElementUpdatedBy(instanceHeader.getUpdatedBy());
-            elementType.setElementMaintainedBy(instanceHeader.getMaintainedBy());
-            elementType.setElementCreateTime(instanceHeader.getCreateTime());
-            elementType.setElementUpdateTime(instanceHeader.getUpdateTime());
-            elementType.setElementVersion(instanceHeader.getVersion());
-            elementType.setStatus(this.getElementStatus(instanceHeader.getStatus()));
-            elementType.setElementTypeId(instanceType.getTypeDefGUID());
-            elementType.setElementTypeName(instanceType.getTypeDefName());
-            elementType.setElementTypeVersion(instanceType.getTypeDefVersion());
-            elementType.setElementTypeDescription(instanceType.getTypeDefDescription());
-
-            List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
-
-            if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
-            {
-                List<String>   superTypes = new ArrayList<>();
-
-                for (TypeDefLink typeDefLink : typeDefSuperTypes)
-                {
-                    if (typeDefLink != null)
-                    {
-                        superTypes.add(typeDefLink.getName());
-                    }
-                }
-
-                if (! superTypes.isEmpty())
-                {
-                    elementType.setElementSuperTypeNames(superTypes);
-                }
-            }
-        }
-
-        return elementType;
-    }
-
-
-    /**
-     * Translate the repository services' InstanceProvenanceType to an ElementOrigin.
-     *
-     * @param instanceProvenanceType value from the repository services
-     * @return ElementOrigin enum
-     */
-    private ElementOrigin getElementOrigin(InstanceProvenanceType instanceProvenanceType)
-    {
-        if (instanceProvenanceType != null)
-        {
-            switch (instanceProvenanceType)
-            {
-                case DEREGISTERED_REPOSITORY:
-                    return ElementOrigin.DEREGISTERED_REPOSITORY;
-
-                case EXTERNAL_SOURCE:
-                    return ElementOrigin.EXTERNAL_SOURCE;
-
-                case EXPORT_ARCHIVE:
-                    return ElementOrigin.EXPORT_ARCHIVE;
-
-                case LOCAL_COHORT:
-                    return ElementOrigin.LOCAL_COHORT;
-
-                case CONTENT_PACK:
-                    return ElementOrigin.CONTENT_PACK;
-
-                case CONFIGURATION:
-                    return ElementOrigin.CONFIGURATION;
-
-                case UNKNOWN:
-                    return ElementOrigin.UNKNOWN;
-            }
-        }
-
-        return ElementOrigin.UNKNOWN;
-    }
-
-
-    /**
-     * Translate the repository services' InstanceProvenanceType to an ElementOrigin.
-     *
-     * @param instanceStatus value from the repository services
-     * @return ElementOrigin enum
-     */
-    private ElementStatus getElementStatus(InstanceStatus instanceStatus)
-    {
-        if (instanceStatus != null)
-        {
-            switch (instanceStatus)
-            {
-                case UNKNOWN:
-                    return ElementStatus.UNKNOWN;
-
-                case DRAFT:
-                    return ElementStatus.DRAFT;
-
-                case PREPARED:
-                    return ElementStatus.PREPARED;
-
-                case PROPOSED:
-                    return ElementStatus.PROPOSED;
-
-                case APPROVED:
-                    return ElementStatus.APPROVED;
-
-                case REJECTED:
-                    return ElementStatus.REJECTED;
-
-                case APPROVED_CONCEPT:
-                    return ElementStatus.APPROVED_CONCEPT;
-
-                case UNDER_DEVELOPMENT:
-                    return ElementStatus.UNDER_DEVELOPMENT;
-
-                case DEVELOPMENT_COMPLETE:
-                    return ElementStatus.DEVELOPMENT_COMPLETE;
-
-                case APPROVED_FOR_DEPLOYMENT:
-                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
-
-                case STANDBY:
-                    return ElementStatus.STANDBY;
-
-                case ACTIVE:
-                    return ElementStatus.ACTIVE;
-
-                case FAILED:
-                    return ElementStatus.FAILED;
-
-                case DISABLED:
-                    return ElementStatus.DISABLED;
-
-                case COMPLETE:
-                    return ElementStatus.COMPLETE;
-
-                case DEPRECATED:
-                    return ElementStatus.DEPRECATED;
-
-                case OTHER:
-                    return ElementStatus.OTHER;
-            }
-        }
-
-        return ElementStatus.UNKNOWN;
     }
 
 
@@ -584,7 +358,6 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
              */
             if ((relationships == null) || (relationships.isEmpty()))
             {
-                handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.RELATIONSHIP_DEF, methodName);
                 return null;
             }
 
@@ -857,7 +630,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
         connectorType.setQualifiedName(this.removeQualifiedName(instanceProperties));
         connectorType.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-        connectorType.setDisplayName(this.removeName(instanceProperties));
+        connectorType.setDisplayName(this.removeDisplayName(instanceProperties));
         connectorType.setDescription(this.removeDescription(instanceProperties));
         connectorType.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
         connectorType.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));

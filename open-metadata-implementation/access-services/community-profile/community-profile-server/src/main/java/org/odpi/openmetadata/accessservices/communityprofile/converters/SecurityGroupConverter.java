@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.SecurityGroupElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -50,6 +51,7 @@ public class SecurityGroupConverter<B> extends CommunityProfileOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @SuppressWarnings(value = "unused")
+    @Override
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<Relationship> relationships,
@@ -111,5 +113,35 @@ public class SecurityGroupConverter<B> extends CommunityProfileOMASConverter<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        B returnBean = this.getNewBean(beanClass, entity, methodName);
+
+        if (returnBean instanceof SecurityGroupElement)
+        {
+            SecurityGroupElement bean = (SecurityGroupElement) returnBean;
+
+            bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
+        }
+
+        return returnBean;
     }
 }

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PersonalProfileConverter generates a PersonalProfileProperties bean from a PersonalProfileProperties entity.
+ * ProfileConverter generates a ProfileElement bean from a ActorProfileProperties entity.
  */
 public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
 {
@@ -55,6 +55,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
+    @Override
     public B getNewComplexBean(Class<B>           beanClass,
                                EntityDetail       primaryEntity,
                                List<EntityDetail> supplementaryEntities,
@@ -70,7 +71,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
 
             if (returnBean instanceof ProfileElement)
             {
-                ProfileElement   bean                    = (ProfileElement) returnBean;
+                ProfileElement         bean                    = (ProfileElement) returnBean;
                 ActorProfileProperties profileProperties = new ActorProfileProperties();
 
                 if (primaryEntity != null)
@@ -117,6 +118,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
                                     userProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
+                                    userProperties.setUserId(this.removeUserId(entityProperties));
                                     userProperties.setDistinguishedName(this.removeDistinguishedName(entityProperties));
                                     userProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
 
@@ -136,11 +138,14 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
 
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
-                                    contactMethodProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
-                                    contactMethodProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
-                                    contactMethodProperties.setType(this.getContactMethodTypeFromProperties(entityProperties));
-                                    contactMethodProperties.setService(this.removeContactMethodService(entityProperties));
-                                    contactMethodProperties.setValue(this.removeContactMethodValue(entityProperties));
+                                    contactMethodProperties.setName(this.removeName(entityProperties));
+                                    contactMethodProperties.setContactType(this.removeContactType(entityProperties));
+                                    contactMethodProperties.setContactMethodType(this.getContactMethodTypeFromProperties(entityProperties));
+                                    contactMethodProperties.setContactMethodService(this.removeContactMethodService(entityProperties));
+                                    contactMethodProperties.setContactMethodValue(this.removeContactMethodValue(entityProperties));
+
+                                    contactMethodProperties.setEffectiveFrom(entityProperties.getEffectiveFromTime());
+                                    contactMethodProperties.setEffectiveTo(entityProperties.getEffectiveToTime());
 
                                     contactMethodProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                                     contactMethodProperties.setExtendedProperties(this.getRemainingExtendedProperties(entityProperties));

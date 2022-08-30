@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * SequencingOrder is used for search requests against a metadata collection.  It defines how the results should
  * to be ordered before they are returned.  This is particularly important when the results are to returned
- * over multiple pages since the caller does not have all of the results at once to perform the sort themselves.
+ * over multiple pages since the caller does not have all the results at once to perform the sort themselves.
  *
  * The sequencing order values are:
  * <ul>
@@ -63,9 +63,9 @@ public enum SequencingOrder implements Serializable
 
     private static final long serialVersionUID = 1L;
 
-    private int     ordinal;
-    private String  name;
-    private String  description;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
 
     /**
      * Constructor to set up a single instances of the enum.
@@ -113,10 +113,6 @@ public enum SequencingOrder implements Serializable
     @Override
     public String toString()
     {
-        return "SequencingOrder{" +
-                "ordinal=" + ordinal +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "SequencingOrder{" + name + "}";
     }
 }

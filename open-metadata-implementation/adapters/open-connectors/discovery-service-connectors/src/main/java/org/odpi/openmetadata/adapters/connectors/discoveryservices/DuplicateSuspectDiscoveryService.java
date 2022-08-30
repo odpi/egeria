@@ -27,7 +27,7 @@ public class DuplicateSuspectDiscoveryService extends AuditableDiscoveryService
     private static final String   DISPLAY_NAME_PROPERTY = "displayName";
     private static final String   NETWORK_ADDRESS_PROPERTY = "Connection::Endpoint::address";
 
-    private Map<String, List<String>> suspectDuplicateReport = new HashMap<>();
+    private final Map<String, List<String>> suspectDuplicateReport = new HashMap<>();
 
     /**
      * Indicates that the discovery service is completely configured and can begin processing.
@@ -92,7 +92,7 @@ public class DuplicateSuspectDiscoveryService extends AuditableDiscoveryService
         {
             throw error;
         }
-        catch (Throwable error)
+        catch (Exception error)
         {
             super.handleUnexpectedException(methodName, error);
         }

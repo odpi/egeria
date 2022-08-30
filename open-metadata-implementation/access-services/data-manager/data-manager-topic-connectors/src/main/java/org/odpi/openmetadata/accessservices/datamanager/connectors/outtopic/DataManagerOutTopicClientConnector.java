@@ -23,7 +23,7 @@ public class DataManagerOutTopicClientConnector extends OpenMetadataTopicListene
 {
     private static final Logger log = LoggerFactory.getLogger(DataManagerOutTopicClientConnector.class);
 
-    private List<DataManagerEventListener> internalEventListeners = new ArrayList<>();
+    private final List<DataManagerEventListener> internalEventListeners = new ArrayList<>();
 
 
     /**

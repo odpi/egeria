@@ -28,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InformalTag extends ElementHeader
+public class InformalTag extends ElementBase
 {
     private static final long     serialVersionUID = 1L;
 
@@ -190,16 +190,21 @@ public class InformalTag extends ElementHeader
     public String toString()
     {
         return "InformalTag{" +
-                "public=" + isPublic +
-                ", isPrivateTag=" + isPrivateTag +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", user='" + user + '\'' +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", isPublic=" + isPublic +
+                       ", isPrivateTag=" + isPrivateTag +
+                       ", name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", user='" + user + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 

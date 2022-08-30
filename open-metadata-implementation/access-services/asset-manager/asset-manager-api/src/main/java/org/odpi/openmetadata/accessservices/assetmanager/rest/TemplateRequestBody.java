@@ -22,11 +22,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TemplateRequestBody implements Serializable
+public class TemplateRequestBody extends UpdateRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private MetadataCorrelationProperties metadataCorrelationProperties = null;
     private TemplateProperties            elementProperties             = null;
 
 
@@ -46,33 +45,12 @@ public class TemplateRequestBody implements Serializable
      */
     public TemplateRequestBody(TemplateRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             elementProperties = template.getElementProperties();
         }
-    }
-
-
-    /**
-     * Return the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @return properties object
-     */
-    public MetadataCorrelationProperties getMetadataCorrelationProperties()
-    {
-        return metadataCorrelationProperties;
-    }
-
-
-    /**
-     * Set up the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @param metadataCorrelationProperties properties object
-     */
-    public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
-    {
-        this.metadataCorrelationProperties = metadataCorrelationProperties;
     }
 
 
@@ -107,8 +85,9 @@ public class TemplateRequestBody implements Serializable
     public String toString()
     {
         return "TemplateRequestBody{" +
-                       "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       ", elementProperties=" + elementProperties +
+                       "elementProperties=" + elementProperties +
+                       ", metadataCorrelationProperties=" + getMetadataCorrelationProperties() +
+                       ", effectiveTime=" + getEffectiveTime() +
                        '}';
     }
 
@@ -130,9 +109,12 @@ public class TemplateRequestBody implements Serializable
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         TemplateRequestBody that = (TemplateRequestBody) objectToCompare;
-        return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getElementProperties(), that.getElementProperties());
+        return Objects.equals(elementProperties, that.elementProperties);
     }
 
 
@@ -144,6 +126,6 @@ public class TemplateRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, elementProperties);
+        return Objects.hash(super.hashCode(), elementProperties);
     }
 }

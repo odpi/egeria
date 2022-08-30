@@ -25,13 +25,15 @@ import java.util.Map;
 public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends SchemaElementHandler<SCHEMA_ATTRIBUTE>
 
 {
-    private String                                                 serviceName;
-    private String                                                 serverName;
-    private OMRSRepositoryHelper                                   repositoryHelper;
-    private InvalidParameterHandler                                invalidParameterHandler;
-    private SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE>  dataContainerHandler;
+    private static final String qualifiedNameParameterName  = "qualifiedName";
 
-    protected RepositoryErrorHandler errorHandler; /* initialized in constructor */
+    private final String                                                 serviceName;
+    private final String                                                 serverName;
+    private final OMRSRepositoryHelper                                   repositoryHelper;
+    private final InvalidParameterHandler                                invalidParameterHandler;
+    private final SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE>  dataContainerHandler;
+
+    protected final RepositoryErrorHandler errorHandler;
 
 
     /**
@@ -109,13 +111,12 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
     }
 
 
-
     /**
      * Create a new metadata element to represent a data container.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the DBMS
-     * @param externalSourceName unique name of software server capability representing the DBMS
+     * @param externalSourceGUID unique identifier of software capability representing the DBMS
+     * @param externalSourceName unique name of software capability representing the DBMS
      * @param parentGUID unique identifier of the data container's parent where the data container is located
      * @param qualifiedName unique name for the data container
      * @param displayName the stored display name property for the data container
@@ -128,7 +129,11 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param typeName name of the type that is a subtype of DisplayDataContainer - or null to create standard type
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the data container technology
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new metadata element for the data container
@@ -152,6 +157,10 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                       String               typeName,
                                       Map<String, Object>  extendedProperties,
                                       Map<String, String>  vendorProperties,
+                                      Date                 effectiveFrom,
+                                      Date                 effectiveTo,
+                                      boolean              forLineage,
+                                      boolean              forDuplicateProcessing,
                                       Date                 effectiveTime,
                                       String               methodName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
@@ -169,6 +178,10 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
                                                                                     effectiveTime,
                                                                                     methodName);
 
@@ -242,11 +255,21 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                         qualifiedName,
                                                                                         qualifiedNameParameterName,
                                                                                         schemaAttributeBuilder,
+                                                                                        effectiveFrom,
+                                                                                        effectiveTo,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing,
+                                                                                        effectiveTime,
                                                                                         methodName);
 
             if (dataContainerGUID != null)
             {
-                dataContainerHandler.setVendorProperties(userId, dataContainerGUID, vendorProperties, methodName);
+                dataContainerHandler.setVendorProperties(userId,
+                                                         dataContainerGUID,
+                                                         vendorProperties,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         effectiveTime, methodName);
             }
 
             return dataContainerGUID;
@@ -263,13 +286,18 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * Create a new metadata element to represent a data container using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the DBMS - if null a local element is created
-     * @param externalSourceName unique name of software server capability representing the DBMS
+     * @param externalSourceGUID unique identifier of software capability representing the DBMS - if null a local element is created
+     * @param externalSourceName unique name of software capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param parentGUID unique identifier of the data container's parent where the data container is located.
      * @param qualifiedName unique name for the data container's parent
      * @param displayName the stored display name property for the data container
      * @param description the stored description property associated with the data container
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new data container's parent
@@ -278,18 +306,22 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createDataContainerFromTemplate(String userId,
-                                                  String externalSourceGUID,
-                                                  String externalSourceName,
-                                                  String templateGUID,
-                                                  String parentGUID,
-                                                  String qualifiedName,
-                                                  String displayName,
-                                                  String description,
-                                                  Date   effectiveTime,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public String createDataContainerFromTemplate(String  userId,
+                                                  String  externalSourceGUID,
+                                                  String  externalSourceName,
+                                                  String  templateGUID,
+                                                  String  parentGUID,
+                                                  String  qualifiedName,
+                                                  String  displayName,
+                                                  String  description,
+                                                  Date    effectiveFrom,
+                                                  Date    effectiveTo,
+                                                  boolean forLineage,
+                                                  boolean forDuplicateProcessing,
+                                                  Date    effectiveTime,
+                                                  String  methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String guidParameterName = "parentGUID";
         final String parentElementGUIDParameterName = "parentGUID";
@@ -312,6 +344,10 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
                                                                                     effectiveTime,
                                                                                     methodName);
 
@@ -336,6 +372,7 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                    qualifiedName,
                                                                                    qualifiedNameParameterName,
                                                                                    builder,
+                                                                                   supportedZones,
                                                                                    methodName);
 
             if (dataContainerGUID != null)
@@ -343,22 +380,23 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                 final String displaySchemaTypeGUIDParameterName = "displaySchemaTypeGUID";
                 final String dataContainerGUIDParameterName = "dataContainerGUID";
 
-                dataContainerHandler.linkElementToElement(userId,
-                                                          externalSourceGUID,
-                                                          externalSourceName,
-                                                          databaseSchemaTypeGUID,
-                                                          displaySchemaTypeGUIDParameterName,
-                                                          OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
-                                                          dataContainerGUID,
-                                                          dataContainerGUIDParameterName,
-                                                          OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
-                                                          false,
-                                                          false,
-                                                          supportedZones,
-                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                          null,
-                                                          methodName);
+                dataContainerHandler.uncheckedLinkElementToElement(userId,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   databaseSchemaTypeGUID,
+                                                                   displaySchemaTypeGUIDParameterName,
+                                                                   OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                   dataContainerGUID,
+                                                                   dataContainerGUIDParameterName,
+                                                                   OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   supportedZones,
+                                                                   OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                   OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                   null,
+                                                                   effectiveTime,
+                                                                   methodName);
                 return dataContainerGUID;
             }
         }
@@ -371,8 +409,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * Update the metadata element representing a data container.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the DBMS
-     * @param externalSourceName unique name of software server capability representing the DBMS
+     * @param externalSourceGUID unique identifier of software capability representing the DBMS
+     * @param externalSourceName unique name of software capability representing the DBMS
      * @param dataContainerGUID unique identifier of the data container to update
      * @param qualifiedName unique name for the data container's parent
      * @param displayName the stored display name property for the data container
@@ -383,6 +421,11 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the data container technology
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -401,7 +444,12 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                     String               typeName,
                                     Map<String, Object>  extendedProperties,
                                     Map<String, String>  vendorProperties,
+                                    Date                 effectiveFrom,
+                                    Date                 effectiveTo,
                                     boolean              isMergeUpdate,
+                                    boolean              forLineage,
+                                    boolean              forDuplicateProcessing,
+                                    Date                 effectiveTime,
                                     String               methodName) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -436,23 +484,16 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                      qualifiedName,
                                                                                      methodName);
 
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
-        }
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
@@ -460,14 +501,11 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                    isDeprecated,
                                                                    methodName);
 
-        if (additionalProperties != null)
-        {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                          properties,
                                                                          OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
                                                                          additionalProperties,
                                                                          methodName);
-        }
 
         if (extendedProperties != null)
         {
@@ -486,6 +524,17 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
             }
         }
 
+        if ((effectiveFrom != null) || (effectiveTo != null))
+        {
+            if (properties == null)
+            {
+                properties = new InstanceProperties();
+            }
+
+            properties.setEffectiveFromTime(effectiveFrom);
+            properties.setEffectiveToTime(effectiveTo);
+        }
+
         dataContainerHandler.updateBeanInRepository(userId,
                                                     externalSourceGUID,
                                                     externalSourceName,
@@ -493,15 +542,21 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                     elementGUIDParameterName,
                                                     attributeTypeId,
                                                     attributeTypeName,
-                                                    false,
-                                                    false,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
                                                     supportedZones,
                                                     properties,
                                                     isMergeUpdate,
-                                                    new Date(),
+                                                    effectiveTime,
                                                     methodName);
 
-        dataContainerHandler.setVendorProperties(userId, dataContainerGUID, vendorProperties, methodName);
+        dataContainerHandler.setVendorProperties(userId,
+                                                 dataContainerGUID,
+                                                 vendorProperties,
+                                                 forLineage,
+                                                 forDuplicateProcessing,
+                                                 effectiveTime,
+                                                 methodName);
     }
 
 
@@ -509,28 +564,33 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * Remove the metadata element representing a data container.
      *
      * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the DBMS
-     * @param externalSourceName unique name of software server capability representing the DBMS
+     * @param externalSourceGUID unique identifier of software capability representing the DBMS
+     * @param externalSourceName unique name of software capability representing the DBMS
      * @param dataContainerGUID unique identifier of the metadata element to remove
      * @param dataContainerGUIDParameterName name of parameter supplying dataContainerGUID
      * @param qualifiedName unique name of the metadata element to remove
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeDataContainer(String userId,
-                                    String externalSourceGUID,
-                                    String externalSourceName,
-                                    String dataContainerGUID,
-                                    String dataContainerGUIDParameterName,
-                                    String qualifiedName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void removeDataContainer(String  userId,
+                                    String  externalSourceGUID,
+                                    String  externalSourceName,
+                                    String  dataContainerGUID,
+                                    String  dataContainerGUIDParameterName,
+                                    String  qualifiedName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
-        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
@@ -543,9 +603,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                     OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                     qualifiedName,
-                                                    false,
-                                                    false,
-                                                    new Date(),
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
                                                     methodName);
     }
 
@@ -558,7 +618,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -567,14 +629,16 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SCHEMA_ATTRIBUTE> findDataContainers(String userId,
-                                                     String searchString,
-                                                     int    startFrom,
-                                                     int    pageSize,
-                                                     Date   effectiveTime,
-                                                     String methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public List<SCHEMA_ATTRIBUTE> findDataContainers(String  userId,
+                                                     String  searchString,
+                                                     int     startFrom,
+                                                     int     pageSize,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String searchStringParameterName = "searchString";
 
@@ -590,6 +654,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                          null,
                                                          startFrom,
                                                          pageSize,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
                                                          effectiveTime,
                                                          methodName);
     }
@@ -599,10 +665,16 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * Retrieve the list of data containers associated with a data container's parent.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the DBMS - if null a local element is created
+     * @param externalSourceName unique name of software capability representing the DBMS
      * @param parentGUID unique identifier of the data container's parent of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of associated metadata elements
@@ -611,14 +683,20 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SCHEMA_ATTRIBUTE> getContainersForParent(String userId,
-                                                         String parentGUID,
-                                                         int    startFrom,
-                                                         int    pageSize,
-                                                         Date   effectiveTime,
-                                                         String methodName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<SCHEMA_ATTRIBUTE> getContainersForParent(String  userId,
+                                                         String  externalSourceGUID,
+                                                         String  externalSourceName,
+                                                         String  parentGUID,
+                                                         int     startFrom,
+                                                         int     pageSize,
+                                                         Date    effectiveFrom,
+                                                         Date    effectiveTo,
+                                                         boolean forLineage,
+                                                         boolean forDuplicateProcessing,
+                                                         Date    effectiveTime,
+                                                         String  methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String parentElementGUIDParameterName = "parentGUID";
 
@@ -627,13 +705,17 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
          * However, if there are other tables already attached, the schema type will be there too.
          */
         String databaseSchemaTypeGUID = dataContainerHandler.getAssetSchemaTypeGUID(userId,
-                                                                                    null,
-                                                                                    null,
+                                                                                    externalSourceGUID,
+                                                                                    externalSourceName,
                                                                                     parentGUID,
                                                                                     parentElementGUIDParameterName,
                                                                                     OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                                     OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID,
                                                                                     OpenMetadataAPIMapper.DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    effectiveFrom,
+                                                                                    effectiveTo,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
                                                                                     effectiveTime,
                                                                                     methodName);
 
@@ -648,6 +730,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                 OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                                 startFrom,
                                                                                 pageSize,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
                                                                                 effectiveTime,
                                                                                 methodName);
         }
@@ -664,7 +748,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -673,14 +759,16 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SCHEMA_ATTRIBUTE> getDataContainersByName(String userId,
-                                                          String name,
-                                                          int    startFrom,
-                                                          int    pageSize,
-                                                          Date   effectiveTime,
-                                                          String methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public List<SCHEMA_ATTRIBUTE> getDataContainersByName(String  userId,
+                                                          String  name,
+                                                          int     startFrom,
+                                                          int     pageSize,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing,
+                                                          Date    effectiveTime,
+                                                          String  methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         return dataContainerHandler.getSchemaAttributesByName(userId,
                                                               OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_GUID,
@@ -690,6 +778,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                               null,
                                                               startFrom,
                                                               pageSize,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
                                                               effectiveTime,
                                                               methodName);
     }
@@ -700,7 +790,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      *
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -709,12 +801,14 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SCHEMA_ATTRIBUTE getDataContainerByGUID(String userId,
-                                                   String guid,
-                                                   Date   effectiveTime,
-                                                   String methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public SCHEMA_ATTRIBUTE getDataContainerByGUID(String  userId,
+                                                   String  guid,
+                                                   boolean forLineage,
+                                                   boolean forDuplicateProcessing,
+                                                   Date    effectiveTime,
+                                                   String  methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String guidParameterName = "guid";
 
@@ -724,6 +818,8 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                        OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME,
                                                        null,
                                                        null,
+                                                       forLineage,
+                                                       forDuplicateProcessing,
                                                        effectiveTime,
                                                        methodName);
     }

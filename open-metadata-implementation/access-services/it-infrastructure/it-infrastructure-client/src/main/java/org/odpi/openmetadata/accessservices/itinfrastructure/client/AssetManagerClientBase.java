@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfra
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetRelationshipElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ElementStatus;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties;
@@ -33,6 +32,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -200,7 +200,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
 
 
     /**
-     * Create a new metadata element to represent a asset.
+     * Create a new metadata element to represent an asset.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
@@ -221,7 +221,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
                        String          infrastructureManagerName,
                        boolean         infrastructureManagerIsHome,
                        AssetProperties assetProperties,
-                       ElementStatus   initialStatus,
+                       ElementStatus initialStatus,
                        String          methodName) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException
@@ -253,7 +253,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
 
 
     /**
-     * Create a new metadata element to represent a asset using an existing metadata element as a template.
+     * Create a new metadata element to represent an asset using an existing metadata element as a template.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
@@ -308,7 +308,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
 
 
     /**
-     * Update the metadata element representing a asset.
+     * Update the metadata element representing an asset.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
@@ -362,7 +362,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
 
 
     /**
-     * Update the status of the metadata element representing a asset.
+     * Update the status of the metadata element representing an asset.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the caller
@@ -411,7 +411,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
 
 
     /**
-     * Create a relationship between a asset and a related asset.
+     * Create a relationship between an asset and a related asset.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
@@ -476,7 +476,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
 
 
     /**
-     * Update the properties of a relationship between a asset and a related asset.
+     * Update the properties of a relationship between an asset and a related asset.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
@@ -485,7 +485,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
      * @param relationshipTypeName name of the relationship type
      * @param effectiveFrom when should relationship be effective - null means immediately
      * @param effectiveTo when should relationship no longer be effective - null means never
-     * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param relationshipProperties properties
      * @param methodName calling method
@@ -649,7 +649,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
 
 
     /**
-     * Update the properties of a classification for a asset.
+     * Update the properties of a classification for an asset.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
@@ -659,7 +659,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
      * @param classificationName name of the classification type
      * @param effectiveFrom when should relationship be effective - null means immediately
      * @param effectiveTo when should relationship no longer be effective - null means never
-     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param classificationProperties properties
      * @param methodName calling method
@@ -831,7 +831,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
 
 
     /**
-     * Remove the metadata element representing a asset.
+     * Remove the metadata element representing an asset.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
@@ -1237,7 +1237,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
 
 
     /**
-     * Update the properties of a classification for a asset.
+     * Update the properties of a classification for an asset.
      *
      * @param userId calling user
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
@@ -1247,7 +1247,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
      * @param classificationName name of the classification type
      * @param effectiveFrom when should relationship be effective - null means immediately
      * @param effectiveTo when should relationship no longer be effective - null means never
-     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate   should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param classificationProperties properties
      *
@@ -1357,7 +1357,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
      * @param infrastructureManagerGUID unique identifier of software server capability representing the infrastructure manager
      * @param infrastructureManagerName unique name of software server capability representing the infrastructure manager
      * @param deploymentGUID unique identifier of the relationship
-     * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing the just the properties with
+     * @param isMergeUpdate             should the supplied properties be merged with existing properties (true) by replacing just the properties with
      *                                  matching names, or should the entire properties of the instance be replaced?
      * @param deploymentProperties properties for the relationship
      *

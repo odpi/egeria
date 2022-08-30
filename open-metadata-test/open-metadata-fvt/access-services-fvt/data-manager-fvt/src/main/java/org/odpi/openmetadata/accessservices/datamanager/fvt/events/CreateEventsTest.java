@@ -788,15 +788,15 @@ public class CreateEventsTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private void checkSchemaAttributeOK(EventBrokerClient client,
-                                      String                schemaAttributeGUID,
-                                      String                eventTypeGUID,
-                                      String                activityName,
-                                      String                userId) throws FVTUnexpectedCondition
+                                        String            schemaAttributeGUID,
+                                        String            eventTypeGUID,
+                                        String            activityName,
+                                        String            userId) throws FVTUnexpectedCondition
     {
 
         try
         {
-            SchemaAttributeElement    retrievedElement = client.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
+            SchemaAttributeElement retrievedElement = client.getSchemaAttributeByGUID(userId, schemaAttributeGUID);
 
             if (retrievedElement == null)
             {

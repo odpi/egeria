@@ -4,9 +4,9 @@ package org.odpi.openmetadata.commonservices.ffdc;
 
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -542,7 +542,7 @@ public class InvalidParameterHandler
      * @param instanceGUID unique identifier of the instance
      * @param parameterName name of the parameter tha supplied the instance
      * @param instanceHeader header of the instance
-     * @param expectedOrigin expected origin (defined by the type of API) - null means any
+     * @param expectedOriginCategory expected origin (defined by the type of API) - null means any
      * @param expectedMetadataCollectionGUID unique identifier of expected metadata collection id - null means any
      * @param expectedMetadataCollectionName unique name of expected metadata collection id - used for error logging
      * @param serviceName name of calling service
@@ -550,57 +550,51 @@ public class InvalidParameterHandler
      *
      * @throws InvalidParameterException the metadata collection id or origin is not correct
      */
-    public void  validateInstanceProvenanceForUpdate(String        instanceGUID,
-                                                     String        parameterName,
-                                                     ElementHeader instanceHeader,
-                                                     ElementOrigin expectedOrigin,
-                                                     String        expectedMetadataCollectionGUID,
-                                                     String        expectedMetadataCollectionName,
-                                                     String        serviceName,
-                                                     String        methodName) throws InvalidParameterException
+    public void  validateInstanceProvenanceForUpdate(String                instanceGUID,
+                                                     String                parameterName,
+                                                     ElementBase           instanceHeader,
+                                                     ElementOriginCategory expectedOriginCategory,
+                                                     String                expectedMetadataCollectionGUID,
+                                                     String                expectedMetadataCollectionName,
+                                                     String                serviceName,
+                                                     String                methodName) throws InvalidParameterException
     {
         if (instanceHeader != null)
         {
-            if (instanceHeader.getType() != null)
+            if (instanceHeader.getOrigin() != null)
             {
-                ElementType instanceType = instanceHeader.getType();
+                ElementOrigin elementOrigin = instanceHeader.getOrigin();
 
-                if ((expectedOrigin == null) || (instanceType.getElementOrigin() == expectedOrigin))
+                if ((expectedOriginCategory == null) || (elementOrigin.getOriginCategory() == expectedOriginCategory))
                 {
                     if (expectedMetadataCollectionGUID == null)
                     {
                         return;
                     }
 
-                    if (expectedMetadataCollectionGUID.equals(instanceType.getElementMetadataCollectionId()))
+                    if (expectedMetadataCollectionGUID.equals(elementOrigin.getHomeMetadataCollectionId()))
                     {
                         return;
                     }
                 }
 
                 String expectedOriginName = "null";
-                String instanceOriginName = "null";
 
-                if (expectedOrigin != null)
+                if (expectedOriginCategory != null)
                 {
-                    expectedOriginName = expectedOrigin.getName();
-                }
-
-                if (instanceType.getElementOrigin() != null)
-                {
-                    instanceOriginName = instanceType.getElementOrigin().getName();
+                    expectedOriginName = expectedOriginCategory.getName();
                 }
 
                 throw new InvalidParameterException(OMAGCommonErrorCode.WRONG_METADATA_COLLECTION_FOR_UPDATE.getMessageDefinition(methodName,
                                                                                                                                   serviceName,
                                                                                                                                   instanceGUID,
-                                                                                                                                  instanceType.getElementTypeName(),
+                                                                                                                                  instanceHeader.getType().getTypeName(),
                                                                                                                                   expectedOriginName,
                                                                                                                                   expectedMetadataCollectionName,
                                                                                                                                   expectedMetadataCollectionGUID,
-                                                                                                                                  instanceOriginName,
-                                                                                                                                  instanceType.getElementMetadataCollectionName(),
-                                                                                                                                  instanceType.getElementMetadataCollectionId()),
+                                                                                                                                  elementOrigin.getOriginCategory().getName(),
+                                                                                                                                  elementOrigin.getHomeMetadataCollectionName(),
+                                                                                                                                  elementOrigin.getHomeMetadataCollectionId()),
                                                     this.getClass().getName(),
                                                     methodName,
                                                     parameterName);
@@ -627,7 +621,7 @@ public class InvalidParameterHandler
 
     /**
      * Compare the supported zones with the zones stored in the asset.  If the asset is not in
-     * one of the supported zones then throw an exception. Otherwise return ok.
+     * one of the supported zones then throw an exception. Otherwise, return ok.
      * Null values in either returns ok.
      *
      * Note the error message implies that the asset does not exist.  This is because the consequence

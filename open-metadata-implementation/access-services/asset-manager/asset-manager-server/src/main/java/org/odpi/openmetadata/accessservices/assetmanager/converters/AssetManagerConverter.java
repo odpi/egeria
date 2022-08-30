@@ -35,7 +35,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create
@@ -69,8 +69,8 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
                     assetManagerProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     assetManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    assetManagerProperties.setDisplayName(this.removeName(instanceProperties));
-                    assetManagerProperties.setDescription(this.removeDescription(instanceProperties));
+                    assetManagerProperties.setTechnicalName(this.removeName(instanceProperties));
+                    assetManagerProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
                     assetManagerProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
                     assetManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     assetManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
@@ -105,7 +105,7 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
 
     /**
-     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity and that of a connected relationship.
      *
      * @param beanClass name of the class to create

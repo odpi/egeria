@@ -59,12 +59,12 @@ public class Database extends DataStore {
     private String databaseInstance;
 
     /**
-     * The the source (typically connection name) of the database information
+     * The  source (typically connection name) of the database information
      * -- GETTER --
      * Return the source (typically connection name) of the database information.
      * @return source name
      * -- SETTER --
-     * Set up the the source (typically connection name) of the database information.
+     * Set up the source (typically connection name) of the database information.
      * @param databaseImportedFrom source name
      */
     private String databaseImportedFrom;

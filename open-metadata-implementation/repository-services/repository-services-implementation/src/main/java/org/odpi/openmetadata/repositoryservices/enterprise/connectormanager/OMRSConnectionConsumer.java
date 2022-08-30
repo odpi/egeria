@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 /**
  * OMRSConnectionConsumer provides the interfaces for a connection consumer.  This is a component that needs to
- * maintain a current list of connections to all of the repositories in the open metadata repository cohort.
+ * maintain a current list of connections to all the repositories in the open metadata repository cohort.
  */
 public interface OMRSConnectionConsumer
 {
@@ -47,7 +47,7 @@ public interface OMRSConnectionConsumer
 
 
     /**
-     * Remove all of the remote connections for the requested open metadata repository cohort.
+     * Remove all the remote connections for the requested open metadata repository cohort.
      *
      * @param cohortName name of the cohort
      */

@@ -85,6 +85,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a category
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a category subtype
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
      * @return unique identifier of the new glossary object
@@ -101,6 +104,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                          Map<String, String> additionalProperties,
                                          String              suppliedTypeName,
                                          Map<String, Object> extendedProperties,
+                                         Date                effectiveFrom,
+                                         Date                effectiveTo,
+                                         Date                effectiveTime,
                                          String              methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -131,6 +137,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                       serverName);
         
         builder.setAnchors(userId, glossaryGUID, methodName);
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String glossaryCategoryGUID = this.createBeanInRepository(userId,
                                                                   null,
@@ -140,31 +147,33 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                   qualifiedName,
                                                                   OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                   builder,
+                                                                  effectiveTime,
                                                                   methodName);
         
         if (glossaryCategoryGUID != null)
         {
             /*
-             * Link the category to its glossary.
+             * Link the category to its glossary.  This relationship is always effective.
              */
             final String glossaryCategoryGUIDParameterName = "glossaryCategoryGUID";
 
-            this.linkElementToElement(userId,
-                                      null,
-                                      null,
-                                      glossaryGUID,
-                                      glossaryGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
-                                      glossaryCategoryGUID,
-                                      glossaryCategoryGUIDParameterName,
-                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
-                                      OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
-                                      null,
-                                      methodName);
+            this.uncheckedLinkElementToElement(userId,
+                                               null,
+                                               null,
+                                               glossaryGUID,
+                                               glossaryGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME,
+                                               glossaryCategoryGUID,
+                                               glossaryCategoryGUIDParameterName,
+                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                               true,
+                                               true,
+                                               supportedZones,
+                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
+                                               OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
+                                               null,
+                                               effectiveTime,
+                                               methodName);
         }
         
         return glossaryCategoryGUID;
@@ -220,6 +229,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
     }
 
@@ -236,6 +246,11 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param additionalProperties additional properties for a governance category
      * @param suppliedTypeName type of term
      * @param extendedProperties  properties for a governance category subtype
+     * @param effectiveFrom  the time that the element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -251,6 +266,11 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                          Map<String, String> additionalProperties,
                                          String              suppliedTypeName,
                                          Map<String, Object> extendedProperties,
+                                         Date                effectiveFrom,
+                                         Date                effectiveTo,
+                                         Date                effectiveTime,
+                                         boolean             forLineage,
+                                         boolean             forDuplicateProcessing,
                                          String              methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
@@ -283,6 +303,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                       serviceName,
                                                                       serverName);
 
+        builder.setEffectivityDates(effectiveFrom, effectiveTo);
+
         this.updateBeanInRepository(userId,
                                     null,
                                     null,
@@ -290,12 +312,12 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     glossaryCategoryGUIDParameterName,
                                     typeGUID,
                                     typeName,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     false,
-                                    new Date(),
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -308,20 +330,30 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param glossaryParentCategoryGUIDParameterName parameter supplying the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary subcategory
      * @param glossaryChildCategoryGUIDParameterName parameter supplying the subcategory
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupCategoryParent(String userId,
-                                    String glossaryParentCategoryGUID,
-                                    String glossaryParentCategoryGUIDParameterName,
-                                    String glossaryChildCategoryGUID,
-                                    String glossaryChildCategoryGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void setupCategoryParent(String  userId,
+                                    String  glossaryParentCategoryGUID,
+                                    String  glossaryParentCategoryGUIDParameterName,
+                                    String  glossaryChildCategoryGUID,
+                                    String  glossaryChildCategoryGUIDParameterName,
+                                    Date    effectiveFrom,
+                                    Date    effectiveTo,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         this.linkElementToElement(userId,
                                   null,
@@ -332,12 +364,15 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                   glossaryChildCategoryGUID,
                                   glossaryChildCategoryGUIDParameterName,
                                   OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                  false,
-                                  false,
+                                  forLineage,
+                                  forDuplicateProcessing,
                                   supportedZones,
                                   OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
                                   OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
                                   null,
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
                                   methodName);
     }
 
@@ -350,20 +385,26 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param glossaryParentCategoryGUIDParameterName parameter supplying the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary subcategory
      * @param glossaryChildCategoryGUIDParameterName parameter supplying the subcategory
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearCategoryParent(String userId,
-                                    String glossaryParentCategoryGUID,
-                                    String glossaryParentCategoryGUIDParameterName,
-                                    String glossaryChildCategoryGUID,
-                                    String glossaryChildCategoryGUIDParameterName,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void clearCategoryParent(String  userId,
+                                    String  glossaryParentCategoryGUID,
+                                    String  glossaryParentCategoryGUIDParameterName,
+                                    String  glossaryChildCategoryGUID,
+                                    String  glossaryChildCategoryGUIDParameterName,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         this.unlinkElementFromElement(userId,
                                       false,
@@ -376,11 +417,11 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                       glossaryChildCategoryGUIDParameterName,
                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
                                       OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                      false,
-                                      false,
+                                      forLineage,
+                                      forDuplicateProcessing,
                                       OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
                                       OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
-                                      null,
+                                      effectiveTime,
                                       methodName);
     }
 
@@ -391,18 +432,24 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the metadata element to remove
      * @param glossaryCategoryGUIDParameterName parameter for glossaryCategoryGUID
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeGlossaryCategory(String userId,
-                                       String glossaryCategoryGUID,
-                                       String glossaryCategoryGUIDParameterName,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public void removeGlossaryCategory(String  userId,
+                                       String  glossaryCategoryGUID,
+                                       String  glossaryCategoryGUIDParameterName,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         this.deleteBeanInRepository(userId,
                                     null,
@@ -413,9 +460,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
                                     null,
                                     null,
-                                    false,
-                                    false,
-                                    new Date(),
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -430,6 +477,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -438,21 +487,26 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> findGlossaryCategories(String userId,
-                                          String searchString,
-                                          String searchStringParameterName,
-                                          int    startFrom,
-                                          int    pageSize,
-                                          Date   effectiveTime,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public List<B> findGlossaryCategories(String  userId,
+                                          String  searchString,
+                                          String  searchStringParameterName,
+                                          int     startFrom,
+                                          int     pageSize,
+                                          Date    effectiveTime,
+                                          boolean forLineage,
+                                          boolean forDuplicateProcessing,
+                                          String  methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                              forLineage,
+                              forDuplicateProcessing,
+                              supportedZones,
                               null,
                               startFrom,
                               pageSize,
@@ -470,6 +524,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param glossaryGUIDParameterName name of the parameter supplying glossaryGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @return list of metadata elements describing the categories associated with the requested glossary
@@ -478,14 +535,17 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getCategoriesForGlossary(String userId,
-                                              String glossaryGUID,
-                                              String glossaryGUIDParameterName,
-                                              int    startFrom,
-                                              int    pageSize,
-                                              String methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<B>   getCategoriesForGlossary(String  userId,
+                                              String  glossaryGUID,
+                                              String  glossaryGUIDParameterName,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              Date    effectiveTime,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         glossaryGUID,
@@ -494,9 +554,14 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                         OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID,
                                         OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                        null,
+                                        null,
+                                        0,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startFrom,
                                         pageSize,
-                                        null,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -510,6 +575,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @return list of matching metadata elements
@@ -518,14 +586,17 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B>   getGlossaryCategoriesByName(String userId,
-                                                 String name,
-                                                 String nameParameterName,
-                                                 int    startFrom,
-                                                 int    pageSize,
-                                                 String methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<B>   getGlossaryCategoriesByName(String  userId,
+                                                 String  name,
+                                                 String  nameParameterName,
+                                                 int     startFrom,
+                                                 int     pageSize,
+                                                 Date    effectiveTime,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -543,13 +614,13 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                     true,
                                     null,
                                     null,
-                                    false,
-                                    false,
+                                    forLineage,
+                                    forDuplicateProcessing,
                                     supportedZones,
                                     null,
                                     startFrom,
                                     pageSize,
-                                    null,
+                                    effectiveTime,
                                     methodName);
     }
 
@@ -560,6 +631,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param glossaryCategoryGUIDParameterName parameter name of the glossaryCategoryGUID
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @return parent glossary category element
@@ -568,12 +642,15 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getGlossaryCategoryParent(String userId,
-                                       String glossaryCategoryGUID,
-                                       String glossaryCategoryGUIDParameterName,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public B getGlossaryCategoryParent(String  userId,
+                                       String  glossaryCategoryGUID,
+                                       String  glossaryCategoryGUIDParameterName,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         List<B> results = this.getAttachedElements(userId,
                                                    glossaryCategoryGUID,
@@ -585,11 +662,11 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                    null,
                                                    null,
                                                    1,
-                                                   false,
-                                                   false,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
                                                    0,
                                                    invalidParameterHandler.getMaxPagingSize(),
-                                                   null,
+                                                   effectiveTime,
                                                    methodName);
 
         if ((results == null) || (results.isEmpty()))
@@ -622,6 +699,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param glossaryCategoryGUIDParameterName parameter name of the glossaryCategoryGUID
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @return list of glossary category element
@@ -630,14 +710,17 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<B> getGlossarySubCategories(String userId,
-                                            String glossaryCategoryGUID,
-                                            String glossaryCategoryGUIDParameterName,
-                                            int    startFrom,
-                                            int    pageSize,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public List<B> getGlossarySubCategories(String  userId,
+                                            String  glossaryCategoryGUID,
+                                            String  glossaryCategoryGUIDParameterName,
+                                            int     startFrom,
+                                            int     pageSize,
+                                            Date    effectiveTime,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing,
+                                            String  methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         return this.getAttachedElements(userId,
                                         glossaryCategoryGUID,
@@ -649,11 +732,11 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         null,
                                         2,
-                                        false,
-                                        false,
+                                        forLineage,
+                                        forDuplicateProcessing,
                                         startFrom,
                                         pageSize,
-                                        null,
+                                        effectiveTime,
                                         methodName);
     }
 
@@ -664,6 +747,9 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param guid unique identifier of the requested metadata element
      * @param guidParameterName parameter name of guid
+     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param methodName calling method
      *
      * @return matching metadata element
@@ -672,21 +758,24 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getGlossaryCategoryByGUID(String userId,
-                                       String guid,
-                                       String guidParameterName,
-                                       String methodName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public B getGlossaryCategoryByGUID(String  userId,
+                                       String  guid,
+                                       String  guidParameterName,
+                                       Date    effectiveTime,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
                                           OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                          false,
-                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
                                           supportedZones,
-                                          new Date(),
+                                          effectiveTime,
                                           methodName);
 
     }

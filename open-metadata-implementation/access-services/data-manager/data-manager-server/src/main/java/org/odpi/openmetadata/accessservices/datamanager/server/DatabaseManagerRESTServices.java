@@ -28,11 +28,11 @@ import java.util.List;
  */
 public class DatabaseManagerRESTServices
 {
-    private static DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
-    private static RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(DatabaseManagerRESTServices.class),
-                                                                                   instanceHandler.getServiceName());
+    private static final DataManagerInstanceHandler instanceHandler = new DataManagerInstanceHandler();
+    private static final RESTCallLogger             restCallLogger  = new RESTCallLogger(LoggerFactory.getLogger(DatabaseManagerRESTServices.class),
+                                                                                         instanceHandler.getServiceName());
 
-    private RESTExceptionHandler     restExceptionHandler = new RESTExceptionHandler();
+    private final RESTExceptionHandler     restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -106,6 +106,11 @@ public class DatabaseManagerRESTServices
                                                          databaseProperties.getTypeName(),
                                                          databaseProperties.getExtendedProperties(),
                                                          databaseProperties.getVendorProperties(),
+                                                         null,
+                                                         null,
+                                                         false,
+                                                         false,
+                                                         new Date(),
                                                          methodName);
 
             response.setGUID(databaseGUID);
@@ -169,6 +174,9 @@ public class DatabaseManagerRESTServices
                                                                 templateProperties.getDisplayName(),
                                                                 templateProperties.getDescription(),
                                                                 templateProperties.getNetworkAddress(),
+                                                                false,
+                                                                false,
+                                                                new Date(),
                                                                 methodName));
         }
         catch (Exception error)
@@ -243,6 +251,12 @@ public class DatabaseManagerRESTServices
                                    databaseProperties.getTypeName(),
                                    databaseProperties.getExtendedProperties(),
                                    databaseProperties.getVendorProperties(),
+                                   null,
+                                   null,
+                                   true,
+                                   false,
+                                   false,
+                                   new Date(),
                                    methodName);
         }
         catch (Exception error)
@@ -295,7 +309,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.publishDatabase(userId, databaseGUID, methodName);
+            handler.publishDatabase(userId,
+                                    databaseGUID,
+                                    false,
+                                    false,
+                                    new Date(),
+                                    methodName);
         }
         catch (Exception error)
         {
@@ -347,7 +366,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.withdrawDatabase(userId, databaseGUID, methodName);
+            handler.withdrawDatabase(userId,
+                                     databaseGUID,
+                                     false,
+                                     false,
+                                     new Date(),
+                                     methodName);
         }
         catch (Exception error)
         {
@@ -403,7 +427,15 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, qualifiedName, methodName);
+            handler.removeDatabase(userId,
+                                   databaseManagerGUID,
+                                   databaseManagerName,
+                                   databaseGUID,
+                                   qualifiedName,
+                                   false,
+                                   false,
+                                   new Date(),
+                                   methodName);
         }
         catch (Exception error)
         {
@@ -457,7 +489,14 @@ public class DatabaseManagerRESTServices
                                              DatabaseColumnElement,
                                              SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-                List<DatabaseElement> databaseAssets = handler.findDatabases(userId, requestBody.getSearchString(), startFrom, pageSize, methodName);
+                List<DatabaseElement> databaseAssets = handler.findDatabases(userId,
+                                                                             requestBody.getSearchString(),
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             false,
+                                                                             false,
+                                                                             new Date(),
+                                                                             methodName);
 
                 response.setElementList(databaseAssets);
             }
@@ -518,7 +557,14 @@ public class DatabaseManagerRESTServices
                                              DatabaseColumnElement,
                                              SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-                List<DatabaseElement> databaseAssets = handler.getDatabasesByName(userId, requestBody.getName(), startFrom, pageSize, methodName);
+                List<DatabaseElement> databaseAssets = handler.getDatabasesByName(userId,
+                                                                                  requestBody.getName(),
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  false,
+                                                                                  false,
+                                                                                  new Date(),
+                                                                                  methodName);
 
                 response.setElementList(databaseAssets);
             }
@@ -583,6 +629,9 @@ public class DatabaseManagerRESTServices
                                                                                           databaseManagerName,
                                                                                           startFrom,
                                                                                           pageSize,
+                                                                                          false,
+                                                                                          false,
+                                                                                          new Date(),
                                                                                           methodName);
 
             response.setElementList(databaseAssets);
@@ -632,7 +681,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            DatabaseElement databaseAsset = handler.getDatabaseByGUID(userId, guid, methodName);
+            DatabaseElement databaseAsset = handler.getDatabaseByGUID(userId,
+                                                                      guid,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
+                                                                      methodName);
 
             response.setElement(databaseAsset);
         }
@@ -702,6 +756,11 @@ public class DatabaseManagerRESTServices
                                                                      databaseSchemaProperties.getTypeName(),
                                                                      databaseSchemaProperties.getExtendedProperties(),
                                                                      databaseSchemaProperties.getVendorProperties(),
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
                                                                      methodName);
 
             response.setGUID(databaseSchemaGUID);
@@ -767,6 +826,11 @@ public class DatabaseManagerRESTServices
                                                                       templateProperties.getQualifiedName(),
                                                                       templateProperties.getDisplayName(),
                                                                       templateProperties.getDescription(),
+                                                                      null,
+                                                                      null,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
                                                                       methodName));
         }
         catch (Exception error)
@@ -837,6 +901,12 @@ public class DatabaseManagerRESTServices
                                          databaseSchemaProperties.getTypeName(),
                                          databaseSchemaProperties.getExtendedProperties(),
                                          databaseSchemaProperties.getVendorProperties(),
+                                         null,
+                                         null,
+                                         true,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
         }
         catch (Exception error)
@@ -889,7 +959,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.publishDatabaseSchema(userId, databaseSchemaGUID, methodName);
+            handler.publishDatabaseSchema(userId,
+                                          databaseSchemaGUID,
+                                          false,
+                                          false,
+                                          new Date(),
+                                          methodName);
         }
         catch (Exception error)
         {
@@ -941,7 +1016,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.withdrawDatabaseSchema(userId, databaseSchemaGUID, methodName);
+            handler.withdrawDatabaseSchema(userId,
+                                           databaseSchemaGUID,
+                                           false,
+                                           false,
+                                           new Date(),
+                                           methodName);
         }
         catch (Exception error)
         {
@@ -997,7 +1077,15 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, qualifiedName, methodName);
+            handler.removeDatabaseSchema(userId,
+                                         databaseManagerGUID,
+                                         databaseManagerName,
+                                         databaseSchemaGUID,
+                                         qualifiedName,
+                                         false,
+                                         false,
+                                         new Date(),
+                                         methodName);
         }
         catch (Exception error)
         {
@@ -1051,7 +1139,14 @@ public class DatabaseManagerRESTServices
                                              DatabaseColumnElement,
                                              SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-                List<DatabaseSchemaElement> databaseSchemaAssets = handler.findDatabaseSchemas(userId, requestBody.getSearchString(), startFrom, pageSize, methodName);
+                List<DatabaseSchemaElement> databaseSchemaAssets = handler.findDatabaseSchemas(userId,
+                                                                                               requestBody.getSearchString(),
+                                                                                               startFrom,
+                                                                                               pageSize,
+                                                                                               false,
+                                                                                               false,
+                                                                                               new Date(),
+                                                                                               methodName);
 
                 response.setElementList(databaseSchemaAssets);
             }
@@ -1109,7 +1204,14 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseSchemaElement> databaseSchemaAssets = handler.getSchemasForDatabase(userId, databaseGUID, startFrom, pageSize, methodName);
+            List<DatabaseSchemaElement> databaseSchemaAssets = handler.getSchemasForDatabase(userId,
+                                                                                             databaseGUID,
+                                                                                             startFrom,
+                                                                                             pageSize,
+                                                                                             false,
+                                                                                             false,
+                                                                                             new Date(),
+                                                                                             methodName);
 
             response.setElementList(databaseSchemaAssets);
         }
@@ -1165,8 +1267,14 @@ public class DatabaseManagerRESTServices
                                              DatabaseColumnElement,
                                              SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-                List<DatabaseSchemaElement> databaseSchemaAssets = handler.getDatabaseSchemasByName(userId, requestBody.getName(), startFrom,
-                                                                                                    pageSize, methodName);
+                List<DatabaseSchemaElement> databaseSchemaAssets = handler.getDatabaseSchemasByName(userId,
+                                                                                                    requestBody.getName(),
+                                                                                                    startFrom,
+                                                                                                    pageSize,
+                                                                                                    false,
+                                                                                                    false,
+                                                                                                    new Date(),
+                                                                                                    methodName);
 
                 response.setElementList(databaseSchemaAssets);
             }
@@ -1220,7 +1328,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            DatabaseSchemaElement databaseSchemaAsset = handler.getDatabaseSchemaByGUID(userId, guid, methodName);
+            DatabaseSchemaElement databaseSchemaAsset = handler.getDatabaseSchemaByGUID(userId,
+                                                                                        guid,
+                                                                                        false,
+                                                                                        false,
+                                                                                        new Date(),
+                                                                                        methodName);
 
             response.setElement(databaseSchemaAsset);
         }
@@ -1283,6 +1396,9 @@ public class DatabaseManagerRESTServices
                                                                             databaseManagerGUID,
                                                                             databaseManagerName,
                                                                             requestBody.getName(),
+                                                                            null,
+                                                                            null,
+                                                                            new Date(),
                                                                             methodName);
 
                 response.setGUID(databaseTableGUID);
@@ -1304,7 +1420,7 @@ public class DatabaseManagerRESTServices
 
 
     /**
-     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * Link the schema type and asset.  This is called from outside AssetHandler.  The databaseAssetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
      *
      * @param serverName name of the service to route the request to.
@@ -1351,6 +1467,11 @@ public class DatabaseManagerRESTServices
                                                     databaseManagerName,
                                                     databaseAssetGUID,
                                                     schemaTypeGUID,
+                                                    null,
+                                                    null,
+                                                    false,
+                                                    false,
+                                                    new Date(),
                                                     methodName);
         }
         catch (Exception error)
@@ -1417,6 +1538,10 @@ public class DatabaseManagerRESTServices
                                                                    databaseTableProperties.getTypeName(),
                                                                    databaseTableProperties.getExtendedProperties(),
                                                                    databaseTableProperties.getVendorProperties(),
+                                                                   null,
+                                                                   null,
+                                                                   false,
+                                                                   false,
                                                                    new Date(),
                                                                    methodName);
 
@@ -1483,6 +1608,10 @@ public class DatabaseManagerRESTServices
                                                                      templateProperties.getQualifiedName(),
                                                                      templateProperties.getDisplayName(),
                                                                      templateProperties.getDescription(),
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
                                                                      new Date(),
                                                                      methodName));
         }
@@ -1552,6 +1681,10 @@ public class DatabaseManagerRESTServices
                                                                                 databaseTableProperties.getTypeName(),
                                                                                 databaseTableProperties.getExtendedProperties(),
                                                                                 databaseTableProperties.getVendorProperties(),
+                                                                                null,
+                                                                                null,
+                                                                                false,
+                                                                                false,
                                                                                 new Date(),
                                                                                 methodName);
 
@@ -1622,6 +1755,12 @@ public class DatabaseManagerRESTServices
                                         databaseTableProperties.getTypeName(),
                                         databaseTableProperties.getExtendedProperties(),
                                         databaseTableProperties.getVendorProperties(),
+                                        null,
+                                        null,
+                                        true,
+                                        false,
+                                        false,
+                                        new Date(),
                                         methodName);
         }
         catch (Exception error)
@@ -1685,6 +1824,9 @@ public class DatabaseManagerRESTServices
                                         databaseTableGUID,
                                         elementGUIDParameterName,
                                         qualifiedName,
+                                        false,
+                                        false,
+                                        new Date(),
                                         methodName);
         }
         catch (Exception error)
@@ -1743,6 +1885,8 @@ public class DatabaseManagerRESTServices
                                                                                                 requestBody.getSearchString(),
                                                                                                 startFrom,
                                                                                                 pageSize,
+                                                                                                false,
+                                                                                                false,
                                                                                                 new Date(),
                                                                                                 methodName);
 
@@ -1806,6 +1950,10 @@ public class DatabaseManagerRESTServices
                                                                                                    databaseAssetGUID,
                                                                                                    startFrom,
                                                                                                    pageSize,
+                                                                                                   null,
+                                                                                                   null,
+                                                                                                   false,
+                                                                                                   false,
                                                                                                    new Date(),
                                                                                                    methodName);
 
@@ -1867,6 +2015,8 @@ public class DatabaseManagerRESTServices
                                                                                                      requestBody.getName(),
                                                                                                      startFrom,
                                                                                                      pageSize,
+                                                                                                     false,
+                                                                                                     false,
                                                                                                      new Date(),
                                                                                                      methodName);
 
@@ -1922,7 +2072,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            DatabaseTableElement databaseTableAttribute = handler.getDatabaseTableByGUID(userId, guid, new Date(), methodName);
+            DatabaseTableElement databaseTableAttribute = handler.getDatabaseTableByGUID(userId,
+                                                                                         guid,
+                                                                                         false,
+                                                                                         false,
+                                                                                         new Date(),
+                                                                                         methodName);
 
             response.setElement(databaseTableAttribute);
         }
@@ -1991,6 +2146,10 @@ public class DatabaseManagerRESTServices
                                                                  databaseViewProperties.getTypeName(),
                                                                  databaseViewProperties.getExtendedProperties(),
                                                                  databaseViewProperties.getVendorProperties(),
+                                                                 null,
+                                                                 null,
+                                                                 false,
+                                                                 false,
                                                                  new Date(),
                                                                  methodName);
 
@@ -2057,6 +2216,10 @@ public class DatabaseManagerRESTServices
                                                                     templateProperties.getQualifiedName(),
                                                                     templateProperties.getDisplayName(),
                                                                     templateProperties.getDescription(),
+                                                                    null,
+                                                                    null,
+                                                                    false,
+                                                                    false,
                                                                     new Date(),
                                                                     methodName));
         }
@@ -2125,6 +2288,10 @@ public class DatabaseManagerRESTServices
                                                                               databaseViewProperties.getTypeName(),
                                                                               databaseViewProperties.getExtendedProperties(),
                                                                               databaseViewProperties.getVendorProperties(),
+                                                                              null,
+                                                                              null,
+                                                                              false,
+                                                                              false,
                                                                               new Date(),
                                                                               methodName);
 
@@ -2195,6 +2362,12 @@ public class DatabaseManagerRESTServices
                                        databaseViewProperties.getTypeName(),
                                        databaseViewProperties.getExtendedProperties(),
                                        databaseViewProperties.getVendorProperties(),
+                                       null,
+                                       null,
+                                       true,
+                                       false,
+                                       false,
+                                       new Date(),
                                        methodName);
         }
         catch (Exception error)
@@ -2258,6 +2431,9 @@ public class DatabaseManagerRESTServices
                                         databaseViewGUID,
                                         elementGUIDParameterName,
                                         qualifiedName,
+                                        false,
+                                        false,
+                                        new Date(),
                                         methodName);
         }
         catch (Exception error)
@@ -2316,6 +2492,8 @@ public class DatabaseManagerRESTServices
                                                                                              requestBody.getSearchString(),
                                                                                              startFrom,
                                                                                              pageSize,
+                                                                                             false,
+                                                                                             false,
                                                                                              new Date(),
                                                                                              methodName);
 
@@ -2375,7 +2553,16 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<DatabaseViewElement> databaseViewAttributes = handler.getViewsForDatabaseAsset(userId, databaseAssetGUID, startFrom, pageSize, new Date(), methodName);
+            List<DatabaseViewElement> databaseViewAttributes = handler.getViewsForDatabaseAsset(userId,
+                                                                                                databaseAssetGUID,
+                                                                                                startFrom,
+                                                                                                pageSize,
+                                                                                                null,
+                                                                                                null,
+                                                                                                false,
+                                                                                                false,
+                                                                                                new Date(),
+                                                                                                methodName);
 
             response.setElementList(databaseViewAttributes);
         }
@@ -2412,6 +2599,7 @@ public class DatabaseManagerRESTServices
                                                           int             pageSize)
     {
         final String methodName = "getDatabaseViewsByName";
+        final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -2433,8 +2621,11 @@ public class DatabaseManagerRESTServices
 
                 List<DatabaseViewElement> databaseViewAttributes = handler.getDatabaseViewsByName(userId,
                                                                                                   requestBody.getName(),
+                                                                                                  nameParameterName,
                                                                                                   startFrom,
                                                                                                   pageSize,
+                                                                                                  false,
+                                                                                                  false,
                                                                                                   new Date(),
                                                                                                   methodName);
 
@@ -2490,7 +2681,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            DatabaseViewElement databaseViewAttribute = handler.getDatabaseViewByGUID(userId, guid, new Date(), methodName);
+            DatabaseViewElement databaseViewAttribute = handler.getDatabaseViewByGUID(userId,
+                                                                                      guid,
+                                                                                      false,
+                                                                                      false,
+                                                                                      new Date(),
+                                                                                      methodName);
 
             response.setElement(databaseViewAttribute);
         }
@@ -2589,6 +2785,10 @@ public class DatabaseManagerRESTServices
                                                                      databaseColumnProperties.getTypeName(),
                                                                      databaseColumnProperties.getExtendedProperties(),
                                                                      databaseColumnProperties.getVendorProperties(),
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
                                                                      new Date(),
                                                                      methodName);
 
@@ -2605,6 +2805,11 @@ public class DatabaseManagerRESTServices
                                                           queryProperties.getQueryId(),
                                                           queryProperties.getQuery(),
                                                           queryProperties.getQueryTargetGUID(),
+                                                          null,
+                                                          null,
+                                                          false,
+                                                          false,
+                                                          new Date(),
                                                           methodName);
                     }
                 }
@@ -2673,6 +2878,10 @@ public class DatabaseManagerRESTServices
                                                                       templateProperties.getQualifiedName(),
                                                                       templateProperties.getDisplayName(),
                                                                       templateProperties.getDescription(),
+                                                                      null,
+                                                                      null,
+                                                                      false,
+                                                                      false,
                                                                       new Date(),
                                                                       methodName));
         }
@@ -2765,6 +2974,12 @@ public class DatabaseManagerRESTServices
                                          databaseColumnProperties.getTypeName(),
                                          databaseColumnProperties.getExtendedProperties(),
                                          databaseColumnProperties.getVendorProperties(),
+                                         null,
+                                         null,
+                                         true,
+                                         false,
+                                         false,
+                                         new Date(),
                                          methodName);
 
             if (databaseColumnProperties.getQueries() != null)
@@ -2780,6 +2995,11 @@ public class DatabaseManagerRESTServices
                                                           queryProperties.getQueryId(),
                                                           queryProperties.getQuery(),
                                                           queryProperties.getQueryTargetGUID(),
+                                                          null,
+                                                          null,
+                                                          false,
+                                                          false,
+                                                          new Date(),
                                                           methodName);
                     }
                 }
@@ -2839,7 +3059,15 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, qualifiedName, methodName);
+            handler.removeDatabaseColumn(userId,
+                                         databaseManagerGUID,
+                                         databaseManagerName,
+                                         databaseColumnGUID,
+                                         qualifiedName,
+                                         false,
+                                         false,
+                                         new Date(),
+                                         methodName);
         }
         catch (Exception error)
         {
@@ -2897,6 +3125,8 @@ public class DatabaseManagerRESTServices
                                                                                                    requestBody.getSearchString(),
                                                                                                    startFrom,
                                                                                                    pageSize,
+                                                                                                   false,
+                                                                                                   false,
                                                                                                    new Date(),
                                                                                                    methodName);
 
@@ -2960,6 +3190,8 @@ public class DatabaseManagerRESTServices
                                                                                                       databaseTableGUID,
                                                                                                       startFrom,
                                                                                                       pageSize,
+                                                                                                      false,
+                                                                                                      false,
                                                                                                       new Date(),
                                                                                                       methodName);
 
@@ -3021,6 +3253,8 @@ public class DatabaseManagerRESTServices
                                                                                                         requestBody.getName(),
                                                                                                         startFrom,
                                                                                                         pageSize,
+                                                                                                        false,
+                                                                                                        false,
                                                                                                         new Date(),
                                                                                                         methodName);
 
@@ -3076,7 +3310,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            DatabaseColumnElement schemaAttribute = handler.getDatabaseColumnByGUID(userId, guid, new Date(), methodName);
+            DatabaseColumnElement schemaAttribute = handler.getDatabaseColumnByGUID(userId,
+                                                                                    guid,
+                                                                                    false,
+                                                                                    false,
+                                                                                    new Date(),
+                                                                                    methodName);
 
             response.setElement(schemaAttribute);
         }
@@ -3097,7 +3336,7 @@ public class DatabaseManagerRESTServices
 
     /**
      * Classify a column in a database table as the primary key.  This means each row has a different value
-     * in this column and it can be used to uniquely identify the column.
+     * in this column, and it can be used to uniquely identify the column.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
@@ -3149,6 +3388,12 @@ public class DatabaseManagerRESTServices
                                           databaseColumnGUID,
                                           databasePrimaryKeyProperties.getName(),
                                           keyPattern,
+                                          null,
+                                          null,
+                                          true,
+                                          false,
+                                          false,
+                                          new Date(),
                                           methodName);
         }
         catch (Exception error)
@@ -3203,7 +3448,14 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removePrimaryKeyFromColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, methodName);
+            handler.removePrimaryKeyFromColumn(userId,
+                                               databaseManagerGUID,
+                                               databaseManagerName,
+                                               databaseColumnGUID,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
         }
         catch (Exception error)
         {
@@ -3259,17 +3511,29 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.addForeignKeyRelationship(userId,
-                                              databaseManagerGUID,
-                                              databaseManagerName,
-                                              primaryKeyColumnGUID,
-                                              foreignKeyColumnGUID,
-                                              databaseForeignKeyProperties.getName(),
-                                              databaseForeignKeyProperties.getDescription(),
-                                              databaseForeignKeyProperties.getConfidence(),
-                                              databaseForeignKeyProperties.getSteward(),
-                                              databaseForeignKeyProperties.getSource(),
-                                              methodName);
+            if (databaseForeignKeyProperties != null)
+            {
+                handler.addForeignKeyRelationship(userId,
+                                                  databaseManagerGUID,
+                                                  databaseManagerName,
+                                                  primaryKeyColumnGUID,
+                                                  foreignKeyColumnGUID,
+                                                  databaseForeignKeyProperties.getName(),
+                                                  databaseForeignKeyProperties.getDescription(),
+                                                  databaseForeignKeyProperties.getConfidence(),
+                                                  databaseForeignKeyProperties.getSteward(),
+                                                  databaseForeignKeyProperties.getSource(),
+                                                  null,
+                                                  null,
+                                                  false,
+                                                  false,
+                                                  new Date(),
+                                                  methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId ,methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -3325,7 +3589,15 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeForeignKeyRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID, methodName);
+            handler.removeForeignKeyRelationship(userId,
+                                                 databaseManagerGUID,
+                                                 databaseManagerName,
+                                                 primaryKeyColumnGUID,
+                                                 foreignKeyColumnGUID,
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
         }
         catch (Exception error)
         {

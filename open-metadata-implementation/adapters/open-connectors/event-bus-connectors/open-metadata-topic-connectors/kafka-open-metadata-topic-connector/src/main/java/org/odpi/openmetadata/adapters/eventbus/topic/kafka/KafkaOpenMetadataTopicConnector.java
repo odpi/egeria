@@ -242,7 +242,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      *
      * @throws RuntimeException which is handled in the calling code.
      */
-
+    @SuppressWarnings(value = "unchecked")
     private void copyProperties(Object propertiesObject, Properties target)
     {
 		Map<String, Object> propertiesMap;
@@ -255,6 +255,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 }
 		}
 	}
+
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
@@ -321,7 +322,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
     private void initializeProducerAndProducerThread() {
 
-        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, this, auditLog);
+        producer = new KafkaOpenMetadataEventProducer(topicName, serverId, producerProperties, auditLog);
         producerThread = new Thread(producer, threadHeader + "Producer-" + topicName);
     }
 

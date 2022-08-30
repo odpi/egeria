@@ -10,7 +10,7 @@ They are also used inside the OMAG Server when the repository services are readi
 an open metadata archive, either at start up, or when an archive is loaded while the server is running.
 
 ----
-Return the the [repository services](..).
+Return to the [repository services](..).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

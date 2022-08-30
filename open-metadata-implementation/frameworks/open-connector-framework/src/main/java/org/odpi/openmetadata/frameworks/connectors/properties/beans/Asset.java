@@ -34,7 +34,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
  *     <li>ownerPropertyName - name of the property identifying person or organization that owns the asset.
  *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
- *     <li>ownerType - type of the the person or organization that owns the asset.
+ *     <li>ownerType - type of the person or organization that owns the asset.
  *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
  *     <li>zoneMembership - name of the person or organization that owns the asset.
  *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
@@ -52,7 +52,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Asset extends Referenceable
+public class Asset extends GovernedReferenceable
 {
     private static final long     serialVersionUID = 1L;
 
@@ -95,7 +95,7 @@ public class Asset extends Referenceable
             ownerPropertyName      = template.getOwnerPropertyName();
             ownerType              = template.getOwnerType();
             zoneMembership         = template.getZoneMembership();
-            origin                 = template.getOrigin();
+            origin                 = template.getAssetOrigin();
             isReferenceData        = template.isReferenceData();
         }
     }
@@ -294,7 +294,7 @@ public class Asset extends Referenceable
      *
      * @return map of name value pairs, all strings
      */
-    public Map<String, String> getOrigin()
+    public Map<String, String> getAssetOrigin()
     {
         if (origin == null)
         {
@@ -316,7 +316,7 @@ public class Asset extends Referenceable
      *
      * @param origin map of name value pairs, all strings
      */
-    public void setOrigin(Map<String, String> origin)
+    public void setAssetOrigin(Map<String, String> origin)
     {
         this.origin = origin;
     }

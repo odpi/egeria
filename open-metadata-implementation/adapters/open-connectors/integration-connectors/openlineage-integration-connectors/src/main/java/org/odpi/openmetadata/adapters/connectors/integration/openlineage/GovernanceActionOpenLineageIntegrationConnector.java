@@ -6,13 +6,13 @@ import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventLi
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerEventType;
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ActionTargetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementClassification;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ElementHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceActionProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageInputDataSet;

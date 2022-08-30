@@ -192,7 +192,7 @@ If you deliver a connector that is covered by this test suite, you should run th
 merging changes into master.  The conformance test suite is also
 run as part of the release process.
 
-Egeria's [hands on labs](../open-metadata-resources/open-metadata-labs)
+Egeria's hands on labs
 provide a complex multiserver environment and are typically used
 by contributors to verify that their changes have not regressed any of the
 basic function.

@@ -105,7 +105,7 @@ public class PlatformConformanceWorkbench extends OpenMetadataConformanceWorkben
                     }
                 }
             }
-            catch (Throwable error)
+            catch (Exception error)
             {
                 log.error(String.format("Unexpected error: %s", error.getMessage()), error);
 

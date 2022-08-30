@@ -221,7 +221,7 @@ public class AssetContextHandler {
             return false;
         }
 
-        return genericHandler.isEntityATypeOf(userId, anchorGUID.get(), ANCHOR_GUID, PORT_IMPLEMENTATION, methodName);
+        return genericHandler.isEntityATypeOf(userId, anchorGUID.get(), ANCHOR_GUID, PORT_IMPLEMENTATION, true, false, null, methodName);
     }
 
     /**

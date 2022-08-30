@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecutorBase
 {
-    private String                   entityGUID;
-    private RelationshipsAccumulator accumulator;
+    private final String                   entityGUID;
+    private final RelationshipsAccumulator accumulator;
 
 
     /**
@@ -32,7 +32,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
-     * @param relationshipTypeGUID String GUID of the the type of relationship required (null for all).
+     * @param relationshipTypeGUID String GUID of the type of relationship required (null for all).
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -85,7 +85,7 @@ public class GetRelationshipsForEntityExecutor extends PageableRepositoryExecuto
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
-     * @param relationshipTypeGUID String GUID of the the type of relationship required (null for all).
+     * @param relationshipTypeGUID String GUID of the type of relationship required (null for all).
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.

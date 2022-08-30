@@ -45,30 +45,32 @@ import java.util.*;
  */
 public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor implements OMRSTypeDefManager
 {
+    private final String                    localServerUserId;             /* initialized in the constructor */
+
     private LocalOMRSRepositoryConnector    localRepositoryConnector       = null;
     private String                          localServerName                = null;
-    private String                          localServerUserId;             /* initialized in the constructor */
     private OMRSRepositoryEventManager      outboundRepositoryEventManager = null;
     private String                          openTypesOriginGUID            = null;
-    private Map<String, TypeDef>            knownTypeDefGUIDs              = new HashMap<>();
-    private Map<String, TypeDef>            knownTypeDefNames              = new HashMap<>();
-    private Map<String, AttributeTypeDef>   knownAttributeTypeDefGUIDs     = new HashMap<>();
-    private Map<String, AttributeTypeDef>   knownAttributeTypeDefNames     = new HashMap<>();
-    private Map<String, TypeDef>            activeTypeDefGUIDs             = new HashMap<>();
-    private Map<String, TypeDef>            activeTypeDefNames             = new HashMap<>();
-    private Map<String, AttributeTypeDef>   activeAttributeTypeDefGUIDs    = new HashMap<>();
-    private Map<String, AttributeTypeDef>   activeAttributeTypeDefNames    = new HashMap<>();
-    private Map<String, List<TypeDefLink>>  typeDefSuperTypes              = new HashMap<>();
-    private Map<String, InstanceType>       knownInstanceTypes             = new HashMap<>();
-    private Map<String, String>             metadataCollectionNames        = new HashMap<>();
-    private Map<String, Set<String>>        knownPropertyToTypeDefNames    = new HashMap<>();
+
+    private final Map<String, TypeDef>            knownTypeDefGUIDs              = new HashMap<>();
+    private final Map<String, TypeDef>            knownTypeDefNames              = new HashMap<>();
+    private final Map<String, AttributeTypeDef>   knownAttributeTypeDefGUIDs     = new HashMap<>();
+    private final Map<String, AttributeTypeDef>   knownAttributeTypeDefNames     = new HashMap<>();
+    private final Map<String, TypeDef>            activeTypeDefGUIDs             = new HashMap<>();
+    private final Map<String, TypeDef>            activeTypeDefNames             = new HashMap<>();
+    private final Map<String, AttributeTypeDef>   activeAttributeTypeDefGUIDs    = new HashMap<>();
+    private final Map<String, AttributeTypeDef>   activeAttributeTypeDefNames    = new HashMap<>();
+    private final Map<String, List<TypeDefLink>>  typeDefSuperTypes              = new HashMap<>();
+    private final Map<String, InstanceType>       knownInstanceTypes             = new HashMap<>();
+    private final Map<String, String>             metadataCollectionNames        = new HashMap<>();
+    private final Map<String, Set<String>>        knownPropertyToTypeDefNames    = new HashMap<>();
 
 
     /*
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
     private static final Logger       log      = LoggerFactory.getLogger(OMRSRepositoryContentManager.class);
 
@@ -91,7 +93,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Saves all of the information necessary to process incoming TypeDef events.
+     * Saves all the information necessary to process incoming TypeDef events.
      *
      * @param localRepositoryConnector connector to the local repository
      * @param outboundRepositoryEventManager event manager to call for outbound events used to send out reports
@@ -112,7 +114,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
     /**
      * Save the unique identifier of the open metadata archive.  This is stored in the origin property of
-     * all of the open metadata types.  It is needed to support the isOpenType() method.
+     * all the open metadata types.  It is needed to support the isOpenType() method.
      *
      * @param openMetadataTypesGUID unique identifier for the open metadata type's archive
      */
@@ -557,7 +559,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                     }
                     else
                     {
-                        log.error("Corrupted TypeDef cache, no name for " + superTypeLink.toString());
+                        log.error("Corrupted TypeDef cache, no name for " + superTypeLink);
                         throwContentManagerLogicError(sourceName, methodName, thisMethodName);
                     }
                 }
@@ -592,7 +594,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Validate that the type of an entity is of the expected/desired type.  The actual entity may be a subtype
+     * Validate that the entity's type is of the expected/desired value.  The actual entity may be a subtype
      * of the expected type of course.
      *
      * @param sourceName source of the request (used for logging)
@@ -664,7 +666,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Validate that the type of an entity is of the expected/desired type.  The actual entity may be a subtype
+     * Validate that the entity's type is of the expected/desired value.  The actual entity may be a subtype
      * of the expected type of course.
      *
      * @param sourceName source of the request (used for logging)
@@ -793,8 +795,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 List<String>      propertyNames = this.getPropertyNames(sourceName, typeDef, methodName);
 
                 /*
-                 * If propertyNames is null, it means this TypeDef has no attributes.  However the superType
-                 * may have attributes and so we need an array to accumulate the attributes into.
+                 * If propertyNames is null, it means this TypeDef has no attributes.  However, the superType
+                 * may have attributes, and so we need an array to accumulate the attributes into.
                  */
                 if (propertyNames == null)
                 {
@@ -985,7 +987,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                     {
                         /*
                          * The classification can only be attached to the entities listed.  Note an empty list
-                         * means the classification can not be attached to any entity and it is effectively useless.
+                         * means the classification can not be attached to any entity, and it is effectively useless.
                          * The logic checks the entity types parent types, as the parent types may allow the classification.
                          *
                          * The Archive types at this time do not have any ClassificationDefs with supertypes. If we want to support
@@ -1348,7 +1350,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
     /**
      * Return the TypeDef identified by the guid and name supplied by the caller.  This call is used when
-     * retrieving a type that should exist.  For example, retrieving the type of a metadata instance.
+     * retrieving a type that should exist.  For example, retrieving the metadata instance's type.
      *
      * @param sourceName source of the request (used for logging)
      * @param guidParameterName name of parameter that supplied the GUID
@@ -1499,7 +1501,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Return the names of all of the properties in the supplied TypeDef and all of its super-types.
+     * Return the names of all the properties in the supplied TypeDef and all of its super-types.
      *
      * @param sourceName name of caller.
      * @param typeDef TypeDef to query.
@@ -1521,8 +1523,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         List<TypeDefAttribute>    propertiesDefinition = typeDef.getPropertiesDefinition();
 
         /*
-         * If propertiesDefinition is null, it means the TypeDef has no properties defined.  However the superType
-         * may have properties defined and so we need an array to accumulate the property definitions into.
+         * If propertiesDefinition is null, it means the TypeDef has no properties defined.  However, the superType
+         * may have properties defined, and so we need an array to accumulate the property definitions into.
          */
         if (propertiesDefinition == null)
         {
@@ -1552,7 +1554,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Return the names of all of the type definitions that define the supplied property name.
+     * Return the names of all the type definitions that define the supplied property name.
      *
      * @param sourceName name of the caller.
      * @param propertyName property name to query.
@@ -1706,7 +1708,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Return boolean indicating whether the (AttributeTypeDef/TypeDef is known, either as an open type, or one defined
+     * Return boolean indicating whether the AttributeTypeDef/TypeDef is known, either as an open type, or one defined
      * by one or more of the members of the cohort.
      *
      * @param sourceName source of the TypeDef (used for logging)
@@ -2165,7 +2167,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Log that a request to process an instance includes a null metadata collection Id.
+     * Log that a request to process an instance includes a null metadata collectionId.
      *
      * @param sourceName source of the TypeDef
      * @param typeDefGUID unique identifier of the TypeDef
@@ -3691,7 +3693,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Remember the metadata collection name for this metadata collection Id. If the metadata collection id
+     * Remember the metadata collection name for this metadata collection id. If the metadata collection id
      * is null, it is ignored.
      *
      * @param metadataCollectionId unique identifier (guid) for the metadata collection.
