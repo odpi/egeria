@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -225,61 +225,75 @@ extends <a href="GovernanceDefinitionElement.html" title="class in org.odpi.open
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOthers()">getOthers</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return details of other relationships</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getParents()">getParents</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of governance definitions that are requirements for this governance definition.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPeers()">getPeers</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the list of peer governance definitions that are related to this governance definition.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return has code based on properties.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setChildren(java.util.List)">setChildren</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;children)</code></th>
 <td class="colLast">
 <div class="block">Set up the governance definitions that support this governance definition.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setExternalReferences(java.util.List)">setExternalReferences</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;externalReferences)</code></th>
 <td class="colLast">
 <div class="block">Set up the details of the external references that have been linked to this governance definition.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setMetrics(java.util.List)">setMetrics</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;metrics)</code></th>
 <td class="colLast">
 <div class="block">Set up the governance metrics that measure this governance definition.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOthers(java.util.List)">setOthers</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;others)</code></th>
+<td class="colLast">
+<div class="block">Set details of other relationships.</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setParents(java.util.List)">setParents</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;parents)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of governance definition that are requirements for this governance definition.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPeers(java.util.List)">setPeers</a></span>&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;peers)</code></th>
 <td class="colLast">
 <div class="block">Set up the list of governance definitions that are related to this governance definition.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -488,6 +502,34 @@ extends <a href="GovernanceDefinitionElement.html" title="class in org.odpi.open
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>externalReferences</code> - list of links to external references</dd>
+</dl>
+</li>
+</ul>
+<a id="getOthers()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getOthers</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getOthers()</pre>
+<div class="block">Return details of other relationships</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>details of other related elements</dd>
+</dl>
+</li>
+</ul>
+<a id="setOthers(java.util.List)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setOthers</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setOthers&#8203;(java.util.List&lt;<a href="RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;others)</pre>
+<div class="block">Set details of other relationships.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>others</code> - details of other related elements</dd>
 </dl>
 </li>
 </ul>

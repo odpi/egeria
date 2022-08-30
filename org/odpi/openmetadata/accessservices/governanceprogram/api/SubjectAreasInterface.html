@@ -182,7 +182,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMembersOfSubjectArea(java.lang.String,java.lang.String,int,int)">getMembersOfSubjectArea</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;subjectAreaName,
                        int&nbsp;startFrom,
@@ -554,13 +554,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getMembersOfSubjectArea</h4>
-<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.metadataelements">RelatedElement</a>&gt;&nbsp;getMembersOfSubjectArea&#8203;(java.lang.String&nbsp;userId,
-                                                       java.lang.String&nbsp;subjectAreaName,
-                                                       int&nbsp;startFrom,
-                                                       int&nbsp;pageSize)
-                                                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<pre class="methodSignature">java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;getMembersOfSubjectArea&#8203;(java.lang.String&nbsp;userId,
+                                                                                                                 java.lang.String&nbsp;subjectAreaName,
+                                                                                                                 int&nbsp;startFrom,
+                                                                                                                 int&nbsp;pageSize)
+                                                                                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -569,7 +569,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>properties of the subject area</dd>
+<dd>properties of the subject area members</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - qualifiedName or userId is null</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
