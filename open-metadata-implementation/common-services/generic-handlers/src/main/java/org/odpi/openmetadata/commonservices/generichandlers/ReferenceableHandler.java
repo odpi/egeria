@@ -1009,6 +1009,461 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Add or replace the governance expectations classification to a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param counts map of name-value counts
+     * @param values map of name-value pairs
+     * @param flags map of name-value flags
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addGovernanceExpectationsClassification(String                userId,
+                                                         String                externalSourceGUID,
+                                                         String                externalSourceName,
+                                                         String                beanGUID,
+                                                         String                beanGUIDParameterName,
+                                                         String                beanGUIDTypeName,
+                                                         Map<String, Integer>  counts,
+                                                         Map<String, String>   values,
+                                                         Map<String, Boolean>  flags,
+                                                         boolean               forLineage,
+                                                         boolean               forDuplicateProcessing,
+                                                         Date                  effectiveFrom,
+                                                         Date                  effectiveTo,
+                                                         Date                  effectiveTime,
+                                                         String                methodName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addIntMapPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.COUNTS_PROPERTY_NAME, counts, methodName);
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.VALUES_PROPERTY_NAME, values, methodName);
+        properties = repositoryHelper.addBooleanMapPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.FLAGS_PROPERTY_NAME, flags, methodName);
+
+        this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_NAME,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the governance expectations classification from a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of entity to update
+     * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeGovernanceExpectationsClassification(String  userId,
+                                                            String  externalSourceGUID,
+                                                            String  externalSourceName,
+                                                            String  beanGUID,
+                                                            String  beanGUIDParameterName,
+                                                            String  beanGUIDTypeName,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            String  methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                OpenMetadataAPIMapper.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+    }
+
+
+    /**
+     * Add or replace the governance measurements classification to a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param counts map of name-value counts
+     * @param values map of name-value pairs
+     * @param flags map of name-value flags
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addGovernanceMeasurementsClassification(String                userId,
+                                                         String                externalSourceGUID,
+                                                         String                externalSourceName,
+                                                         String                beanGUID,
+                                                         String                beanGUIDParameterName,
+                                                         String                beanGUIDTypeName,
+                                                         Map<String, Integer>  counts,
+                                                         Map<String, String>   values,
+                                                         Map<String, Boolean>  flags,
+                                                         boolean               forLineage,
+                                                         boolean               forDuplicateProcessing,
+                                                         Date                  effectiveFrom,
+                                                         Date                  effectiveTo,
+                                                         Date                  effectiveTime,
+                                                         String                methodName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addIntMapPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.MEASUREMENT_COUNTS_PROPERTY_NAME, counts, methodName);
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.MEASUREMENT_VALUES_PROPERTY_NAME, values, methodName);
+        properties = repositoryHelper.addBooleanMapPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.MEASUREMENT_FLAGS_PROPERTY_NAME, flags, methodName);
+
+        this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_NAME,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+
+    /**
+     * Remove the governance measurements classification from a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of entity to update
+     * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeGovernanceMeasurementsClassification(String  userId,
+                                                            String  externalSourceGUID,
+                                                            String  externalSourceName,
+                                                            String  beanGUID,
+                                                            String  beanGUIDParameterName,
+                                                            String  beanGUIDTypeName,
+                                                            boolean forLineage,
+                                                            boolean forDuplicateProcessing,
+                                                            Date    effectiveTime,
+                                                            String  methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+    }
+
+
+    /**
+     * Add or replace the subject area classification to a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param subjectAreaName name of the subject area
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addSubjectAreaClassification(String                userId,
+                                              String                externalSourceGUID,
+                                              String                externalSourceName,
+                                              String                beanGUID,
+                                              String                beanGUIDParameterName,
+                                              String                beanGUIDTypeName,
+                                              String                subjectAreaName,
+                                              boolean               forLineage,
+                                              boolean               forDuplicateProcessing,
+                                              Date                  effectiveFrom,
+                                              Date                  effectiveTo,
+                                              Date                  effectiveTime,
+                                              String                methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.NAME_PROPERTY_NAME, subjectAreaName, methodName);
+
+        this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the subject area classification from a referenceable.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of entity to update
+     * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeSubjectAreaClassification(String  userId,
+                                                 String  externalSourceGUID,
+                                                 String  externalSourceName,
+                                                 String  beanGUID,
+                                                 String  beanGUIDParameterName,
+                                                 String  beanGUIDTypeName,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
+    }
+
+
+
+
+    /**
+     * Returns the list of elements that are classified with a subject area name.
+     *
+     * @param userId       String   userId of user making request.
+     * @param subjectAreaName    String   unique id for the subject area.
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of elements or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getSubjectAreaMembers(String  userId,
+                                         String  subjectAreaName,
+                                         int     startFrom,
+                                         int     pageSize,
+                                         boolean forLineage,
+                                         boolean forDuplicateProcessing,
+                                         Date    effectiveTime,
+                                         String  methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        return this.getSubjectAreaMembers(userId,
+                                          subjectAreaName,
+                                          supportedZones,
+                                          startFrom,
+                                          pageSize,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          effectiveTime,
+                                          methodName);
+    }
+
+
+    /**
+     * Returns the list of elements that are classified with a subject area name.
+     *
+     * @param userId       String   userId of user making request.
+     * @param subjectAreaName    String   unique id for the subject area.
+     * @param serviceSupportedZones supported zones for calling service
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of elements or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getSubjectAreaMembers(String       userId,
+                                         String       subjectAreaName,
+                                         List<String> serviceSupportedZones,
+                                         int          startFrom,
+                                         int          pageSize,
+                                         boolean      forLineage,
+                                         boolean      forDuplicateProcessing,
+                                         Date         effectiveTime,
+                                         String       methodName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String guidParameterName = "subjectAreaEntity.getGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
+                                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
+                                                                                         OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
+                                                                                         startFrom,
+                                                                                         queryPageSize,
+                                                                                         effectiveTime,
+                                                                                         methodName);
+
+        if (entities != null)
+        {
+            List<B>  beans = new ArrayList<>();
+
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    try
+                    {
+                        this.validateAnchorEntity(userId,
+                                                  entity.getGUID(),
+                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                  entity,
+                                                  guidParameterName,
+                                                  false,
+                                                  false,
+                                                  false,
+                                                  serviceSupportedZones,
+                                                  effectiveTime,
+                                                  methodName);
+
+                        String name = repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                         entity.getProperties(),
+                                                                         methodName);
+
+                        if ((subjectAreaName == null) || (subjectAreaName.equals(name)))
+                        {
+                            beans.add(converter.getNewBean(beanClass, entity, methodName));
+                        }
+                    }
+                    catch (Exception notVisible)
+                    {
+                        // entity not visible
+                    }
+                }
+            }
+
+            if (! beans.isEmpty())
+            {
+                return beans;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Classify a referenceable as "BusinessSignificant" (this may affect the way that lineage is displayed).
      *
      * @param userId calling user
@@ -1355,7 +1810,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
-                                  null,
+                                  this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -1716,7 +2171,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                  null,
+                                  this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -1838,7 +2293,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_GUID,
                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_MEANING_TYPE_NAME,
-                                  properties,
+                                  this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -2092,7 +2547,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.RESOURCE_LIST_RELATIONSHIP_TYPE_NAME,
-                                  properties,
+                                  this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -2351,7 +2806,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.ASSIGNMENT_SCOPE_RELATIONSHIP_TYPE_NAME,
-                                  properties,
+                                  this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -2607,7 +3062,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.STAKEHOLDER_RELATIONSHIP_TYPE_NAME,
-                                  properties,
+                                  this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -2816,7 +3271,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param governanceDefinitionGUIDParameterName parameter supplying the governanceDefinitionGUID
      * @param referenceableGUID unique identifier of the referenceable being governed
      * @param referenceableGUIDParameterName parameter supplying the referenceableGUID
-     * @param stakeholderRole what are the responsibilities of a stakeholder?
      * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
      * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
      * @param forLineage return elements marked with the Memento classification?
@@ -2835,7 +3289,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                               String  governanceDefinitionGUIDParameterName,
                               String  referenceableGUID,
                               String  referenceableGUIDParameterName,
-                              String  stakeholderRole,
                               Date    effectiveFrom,
                               Date    effectiveTo,
                               boolean forLineage,
@@ -2845,12 +3298,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                          UserNotAuthorizedException,
                                                          PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                     null,
-                                                                                     OpenMetadataAPIMapper.STAKEHOLDER_ROLE_PROPERTY_NAME,
-                                                                                     stakeholderRole,
-                                                                                     methodName);
-
         this.linkElementToElement(userId,
                                   externalSourceGUID,
                                   externalSourceName,
@@ -2865,7 +3312,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
                                   OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
-                                  properties,
+                                  this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -2997,7 +3444,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param governanceDefinitionGUIDParameterName parameter supplying the governanceDefinitionGUID
      * @param referenceableGUID unique identifier of the referenceable being governed
      * @param referenceableGUIDParameterName parameter supplying the referenceableGUID
-     * @param stakeholderRole what are the responsibilities of a stakeholder?
      * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
      * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
      * @param forLineage return elements marked with the Memento classification?
@@ -3016,7 +3462,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                              String  governanceDefinitionGUIDParameterName,
                                              String  referenceableGUID,
                                              String  referenceableGUIDParameterName,
-                                             String  stakeholderRole,
                                              Date    effectiveFrom,
                                              Date    effectiveTo,
                                              boolean forLineage,
@@ -3026,12 +3471,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                     null,
-                                                                                     OpenMetadataAPIMapper.STAKEHOLDER_ROLE_PROPERTY_NAME,
-                                                                                     stakeholderRole,
-                                                                                     methodName);
-
         this.linkElementToElement(userId,
                                   externalSourceGUID,
                                   externalSourceName,
@@ -3046,7 +3485,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
                                   OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
-                                  properties,
+                                  this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -3245,7 +3684,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.IMPLEMENTED_BY_RELATIONSHIP_TYPE_NAME,
-                                  properties,
+                                  this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,

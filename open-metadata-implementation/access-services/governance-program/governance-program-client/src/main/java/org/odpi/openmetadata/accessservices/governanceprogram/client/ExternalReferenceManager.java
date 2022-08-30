@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 import org.odpi.openmetadata.accessservices.governanceprogram.api.ExternalReferencesInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
@@ -23,15 +24,8 @@ import java.util.List;
 /**
  * ExternalReferenceManager is the java client for managing external references and their links to all types of governance definitions.
  */
-public class ExternalReferenceManager implements ExternalReferencesInterface
+public class ExternalReferenceManager extends GovernanceProgramBaseClient implements ExternalReferencesInterface
 {
-    private final String                      serverName;               /* Initialized in constructor */
-    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -43,13 +37,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
     public ExternalReferenceManager(String serverName,
                                     String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -69,16 +57,9 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
                                     String     userId,
                                     String     password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
-
-
+    
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -95,14 +76,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
                                     int      maxPageSize,
                                     AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
 
 
@@ -126,14 +100,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
                                     int        maxPageSize,
                                     AuditLog   auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
@@ -152,14 +119,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
                                     GovernanceProgramRESTClient restClient,
                                     int                         maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -186,23 +146,9 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
     {
         final String methodName = "createExternalReference";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references";
-
-        final String qualifiedNameParameterName = "qualifiedName";
-        final String uriParameterName = "uri";
         final String propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getURI(), uriParameterName, methodName);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  properties,
-                                                                  serverName,
-                                                                  userId);
-
-        return restResult.getGUID();
+        return super.createReferenceable(userId, properties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -228,28 +174,10 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
     {
         final String methodName = "updateExternalReference";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}/update?isMergeUpdate={4}";
-
-        final String qualifiedNameParameterName = "qualifiedName";
         final String guidParameterName = "externalReferenceGUID";
-        final String uriParameterName = "uri";
         final String propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(externalReferenceGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        if (! isMergeUpdate)
-        {
-            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-            invalidParameterHandler.validateName(properties.getURI(), uriParameterName, methodName);
-        }
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        externalReferenceGUID,
-                                        isMergeUpdate);
+        super.updateReferenceable(userId, externalReferenceGUID, guidParameterName, isMergeUpdate, properties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -273,15 +201,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}/delete";
         final String guidParameterName = "externalReferenceGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(externalReferenceGUID, guidParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        externalReferenceGUID);
+        super.removeReferenceable(userId, externalReferenceGUID, guidParameterName, urlTemplate, methodName);
     }
 
 
@@ -306,22 +226,12 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
                                                                                                       UserNotAuthorizedException
     {
         final String methodName = "linkExternalReferenceToElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}/elements/{3}/link";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/external-references/{3}/link";
 
         final String elementGUIDParameterName = "attachedToGUID";
         final String externalReferenceGUIDParameterName = "externalReferenceGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(attachedToGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        linkProperties,
-                                        serverName,
-                                        userId,
-                                        externalReferenceGUID,
-                                        attachedToGUID);
+        super.setupRelationship(userId, attachedToGUID, elementGUIDParameterName, null, linkProperties, externalReferenceGUID, externalReferenceGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -345,22 +255,12 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
                                                                                         UserNotAuthorizedException
     {
         final String methodName = "unlinkExternalReferenceToElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}/elements/{3}/unlink";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/external-references/{3}/unlink";
 
         final String elementGUIDParameterName = "attachedToGUID";
         final String externalReferenceGUIDParameterName = "externalReferenceGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(attachedToGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        externalReferenceGUID,
-                                        attachedToGUID);
+        super.clearRelationship(userId, attachedToGUID, elementGUIDParameterName, null, externalReferenceGUID, externalReferenceGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -519,7 +419,7 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
                                                                                                      UserNotAuthorizedException
     {
         final String methodName = "retrieveAttachedExternalReferences";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/for-element/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/external-references?startFrom={3}&pageSize={4}";
         final String guidParameterName = "attachedToGUID";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -537,5 +437,35 @@ public class ExternalReferenceManager implements ExternalReferencesInterface
                                                                                                     queryPageSize);
 
         return restResult.getElements();
+    }
+
+
+    /**
+     * Return information about the elements linked to a externalReference.
+     *
+     * @param userId calling user
+     * @param externalReferenceGUID unique identifier for the externalReference
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the related elements
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<RelatedElement> getElementsForExternalReference(String userId,
+                                                                String externalReferenceGUID,
+                                                                int    startFrom,
+                                                                int    pageSize) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String methodName = "getElementsForExternalReference";
+        final String guidParameter = "externalReferenceGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/external-references/{2}?&startFrom={3}&pageSize={4}";
+
+        return super.getRelatedElements(userId, externalReferenceGUID, guidParameter, urlTemplate, startFrom, pageSize, methodName);
     }
 }

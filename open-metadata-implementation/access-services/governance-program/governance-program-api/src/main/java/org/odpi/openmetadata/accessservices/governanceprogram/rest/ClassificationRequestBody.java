@@ -1,87 +1,91 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
+package org.odpi.openmetadata.accessservices.governanceprogram.rest;
+
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.ClassificationProperties;
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * GovernanceZoneInAction returns information about an operational governance zone.  This includes the number of
- * Assets that are registered with the zone.
+ * ClassificationRequestBody describes the request body used when attaching classification to elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceZoneInAction extends GovernanceZoneDefinition
+public class ClassificationRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private int zoneMembershipCount = 0;
+    private ClassificationProperties properties = null;
 
 
     /**
-     * Default Constructor
+     * Default constructor
      */
-    public GovernanceZoneInAction()
+    public ClassificationRequestBody()
     {
         super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.
      *
      * @param template object to copy
      */
-    public GovernanceZoneInAction(GovernanceZoneInAction template)
+    public ClassificationRequestBody(ClassificationRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            this.zoneMembershipCount = template.getZoneMembershipCount();
+            properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the count of assets that are associated with the zone.
+     * Return the properties for the classification.
      *
-     * @return int count
+     * @return properties object
      */
-    public int getZoneMembershipCount()
+    public ClassificationProperties getProperties()
     {
-        return zoneMembershipCount;
+        return properties;
     }
 
 
-    public void setZoneMembershipCount(int zoneMembershipCount)
+    /**
+     * Set up the properties for the classification.
+     *
+     * @param properties properties object
+     */
+    public void setProperties(ClassificationProperties properties)
     {
-        this.zoneMembershipCount = zoneMembershipCount;
+        this.properties = properties;
     }
 
 
     /**
      * JSON-style toString
      *
-     * @return string containing the properties and their values
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
-        return "GovernanceZoneInAction{" +
-                       "zoneMembershipCount=" + zoneMembershipCount +
-                       ", parentGovernanceZoneGUID='" + getParentGovernanceZone() + '\'' +
-                       ", nestedGovernanceZoneGUID=" + getNestedGovernanceZones() +
-                       ", associatedGovernanceDefinitions=" + getAssociatedGovernanceDefinitions() +
-                       ", elementHeader=" + getElementHeader() +
-                       ", governanceZoneProperties=" + getGovernanceZoneProperties() +
+        return "ClassificationRequestBody{" +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", properties=" + properties +
                        '}';
     }
 
@@ -95,7 +99,6 @@ public class GovernanceZoneInAction extends GovernanceZoneDefinition
     @Override
     public boolean equals(Object objectToCompare)
     {
-
         if (this == objectToCompare)
         {
             return true;
@@ -108,8 +111,8 @@ public class GovernanceZoneInAction extends GovernanceZoneDefinition
         {
             return false;
         }
-        GovernanceZoneInAction that = (GovernanceZoneInAction) objectToCompare;
-        return zoneMembershipCount == that.zoneMembershipCount;
+        ClassificationRequestBody that = (ClassificationRequestBody) objectToCompare;
+        return Objects.equals(getProperties(), that.getProperties());
     }
 
 
@@ -121,6 +124,6 @@ public class GovernanceZoneInAction extends GovernanceZoneDefinition
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), zoneMembershipCount);
+        return Objects.hash(super.hashCode(), properties);
     }
 }

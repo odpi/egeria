@@ -27,15 +27,8 @@ import java.util.List;
  * of the server that is running the Open Metadata Access Services.  This server is responsible for locating and
  * managing the governance program definitions exchanged with this client.
  */
-public class GovernanceRoleManager implements GovernanceRolesInterface
+public class GovernanceRoleManager extends GovernanceProgramBaseClient implements GovernanceRolesInterface
 {
-    private final String                      serverName;               /* Initialized in constructor */
-    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -47,13 +40,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
     public GovernanceRoleManager(String serverName,
                                  String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -73,13 +60,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
                                  String     userId,
                                  String     password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -99,14 +80,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
                                  int      maxPageSize,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
 
 
@@ -130,14 +104,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
                                  int        maxPageSize,
                                  AuditLog   auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
@@ -156,14 +123,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
                                  GovernanceProgramRESTClient restClient,
                                  int                         maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -187,23 +147,9 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
     {
         final String   methodName = "createGovernanceRole";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles";
-
-        final String   qualifiedNameParameterName = "qualifiedName";
-        final String   titleParameterName = "title";
         final String   propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  properties,
-                                                                  serverName,
-                                                                  userId);
-
-        return restResult.getGUID();
+        return super.createGovernanceRole(userId, properties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -232,180 +178,16 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}?isMergeUpdate={3}";
 
         final String   guidParameterName = "governanceRoleGUID";
-        final String   roleIdParameterName = "roleId";
-        final String   titleParameterName = "title";
         final String   propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(governanceRoleGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-
-        if (! isMergeUpdate)
-        {
-            invalidParameterHandler.validateName(properties.getRoleId(), roleIdParameterName, methodName);
-            invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
-        }
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        governanceRoleGUID,
-                                        isMergeUpdate);
-    }
-
-
-
-    /**
-     * Link a governance role to a governance control that defines a governance responsibility that a person fulfils.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param responsibilityGUID unique identifier of the governance responsibility control
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void linkRoleToResponsibility(String userId,
-                                         String governanceRoleGUID,
-                                         String responsibilityGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
-    {
-        final String   methodName = "linkRoleToResponsibility";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/governance-responsibility/{3}/link";
-
-        final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
-        final String   responsibilityGUIDParameterName = "responsibilityGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(governanceRoleGUID, governanceRoleGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(responsibilityGUID, responsibilityGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        governanceRoleGUID,
-                                        responsibilityGUID);
-    }
-
-
-    /**
-     * Remove the link between a governance role and a governance responsibility.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param responsibilityGUID unique identifier of the governance responsibility control
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void unlinkRoleFromResponsibility(String userId,
-                                             String governanceRoleGUID,
-                                             String responsibilityGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String   methodName = "unlinkRoleToResponsibility";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/governance-responsibility/{3}/unlink";
-
-        final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
-        final String   responsibilityGUIDParameterName = "responsibilityGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(governanceRoleGUID, governanceRoleGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(responsibilityGUID, responsibilityGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        governanceRoleGUID,
-                                        responsibilityGUID);
-    }
-
-
-    /**
-     * Link a governance role to the description of a resource that the role is responsible for.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param resourceGUID unique identifier of the resource description
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void linkRoleToResource(String userId,
-                                   String governanceRoleGUID,
-                                   String resourceGUID) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
-    {
-        final String   methodName = "linkRoleToResource";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/resource/{3}/link";
-
-        final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
-        final String   resourceGUIDParameterName = "resourceGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(governanceRoleGUID, governanceRoleGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(resourceGUID, resourceGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        governanceRoleGUID,
-                                        resourceGUID);
-    }
-
-
-    /**
-     * Remove the link between a governance role and a resource.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param resourceGUID unique identifier of the resource description
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void unlinkRoleFromResource(String userId,
-                                       String governanceRoleGUID,
-                                       String resourceGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-        final String   methodName = "unlinkRoleToResource";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/resource/{3}/unlink";
-
-        final String   governanceRoleGUIDParameterName = "governanceRoleGUID";
-        final String   resourceGUIDParameterName = "resourceGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(governanceRoleGUID, governanceRoleGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(resourceGUID, resourceGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        governanceRoleGUID,
-                                        resourceGUID);
+        super.updateGovernanceRole(userId,
+                                   governanceRoleGUID,
+                                   guidParameterName,
+                                   isMergeUpdate,
+                                   properties,
+                                   propertiesParameterName,
+                                   urlTemplate,
+                                   methodName);
     }
 
 
@@ -432,12 +214,7 @@ public class GovernanceRoleManager implements GovernanceRolesInterface
         invalidParameterHandler.validateGUID(governanceRoleGUID, guidParameterName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        governanceRoleGUID);
+        super.removeReferenceable(userId, governanceRoleGUID, guidParameterName, urlTemplate, methodName);
     }
 
 

@@ -43,7 +43,6 @@ public class ReferenceableProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
 
@@ -65,7 +64,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieves the values from the supplied template
      *
      * @param template element to copy
      */

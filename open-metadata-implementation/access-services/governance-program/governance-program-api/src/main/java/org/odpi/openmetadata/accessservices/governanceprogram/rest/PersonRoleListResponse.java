@@ -1,14 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.governanceprogram.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneInAction;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.PersonRoleElement;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,23 +16,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceZoneInActionResponse is the response structure used on the OMAS REST API calls that return the properties
- * for a governance zone along with the governance definitions associated with the zone and the count of assets that are part of the zone.
+ * PersonRoleListResponse is the response structure used on the OMAS REST API calls that return
+ * a list of person role elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceZoneInActionResponse extends GovernanceProgramOMASAPIResponse
+public class PersonRoleListResponse extends GovernanceProgramOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private GovernanceZoneInAction element = null;
+    private List<PersonRoleElement> elements = null;
 
 
     /**
      * Default constructor
      */
-    public GovernanceZoneInActionResponse()
+    public PersonRoleListResponse()
     {
         super();
     }
@@ -43,36 +43,47 @@ public class GovernanceZoneInActionResponse extends GovernanceProgramOMASAPIResp
      *
      * @param template object to copy
      */
-    public GovernanceZoneInActionResponse(GovernanceZoneInActionResponse template)
+    public PersonRoleListResponse(PersonRoleListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.element = template.getElement();
+            this.elements = template.getElements();
         }
     }
 
 
     /**
-     * Return the element result.
+     * Return the person role result.
      *
-     * @return bean
+     * @return unique identifier
      */
-    public GovernanceZoneInAction getElement()
+    public List<PersonRoleElement> getElements()
     {
-        return element;
+        if (elements == null)
+        {
+            return null;
+        }
+        else if (elements.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return elements;
+        }
     }
 
 
     /**
-     * Set up the element result.
+     * Set up the person role result.
      *
-     * @param element - bean
+     * @param elements - unique identifier
      */
-    public void setElement(GovernanceZoneInAction element)
+    public void setElements(List<PersonRoleElement> elements)
     {
-        this.element = element;
+        this.elements = elements;
     }
 
 
@@ -84,8 +95,8 @@ public class GovernanceZoneInActionResponse extends GovernanceProgramOMASAPIResp
     @Override
     public String toString()
     {
-        return "GovernanceZoneInActionResponse{" +
-                "element=" + element +
+        return "PersonRoleListResponse{" +
+                "elements=" + elements +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -113,7 +124,7 @@ public class GovernanceZoneInActionResponse extends GovernanceProgramOMASAPIResp
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceZoneInActionResponse))
+        if (!(objectToCompare instanceof PersonRoleListResponse))
         {
             return false;
         }
@@ -121,8 +132,8 @@ public class GovernanceZoneInActionResponse extends GovernanceProgramOMASAPIResp
         {
             return false;
         }
-        GovernanceZoneInActionResponse that = (GovernanceZoneInActionResponse) objectToCompare;
-        return Objects.equals(element, that.element);
+        PersonRoleListResponse that = (PersonRoleListResponse) objectToCompare;
+        return Objects.equals(getElements(), that.getElements());
     }
 
 
@@ -134,6 +145,6 @@ public class GovernanceZoneInActionResponse extends GovernanceProgramOMASAPIResp
     @Override
     public int hashCode()
     {
-        return Objects.hash(element);
+        return Objects.hash(super.hashCode(), elements);
     }
 }
