@@ -25,6 +25,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     private final static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS;
 
     private final ReferenceableHandler<RelatedElement>                     relatedElementHandler;
+    private final ReferenceableHandler<ElementStub>                        elementStubHandler;
     private final AssetHandler<RelatedElement>                             relatedAssetHandler;
     private final AssetHandler<ElementStub>                                assetHandler;
     private final ElementStubConverter<ElementStub>                        elementStubConverter;
@@ -72,6 +73,20 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
         {
             this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName,serverName),
                                                                     RelatedElement.class,
+                                                                    serviceName,
+                                                                    serverName,
+                                                                    invalidParameterHandler,
+                                                                    repositoryHandler,
+                                                                    repositoryHelper,
+                                                                    localServerUserId,
+                                                                    securityVerifier,
+                                                                    supportedZones,
+                                                                    defaultZones,
+                                                                    publishZones,
+                                                                    auditLog);
+
+            this.elementStubHandler = new ReferenceableHandler<>(new ElementStubConverter<>(repositoryHelper, serviceName,serverName),
+                                                                    ElementStub.class,
                                                                     serviceName,
                                                                     serverName,
                                                                     invalidParameterHandler,
@@ -319,6 +334,15 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      * @return handler object
      */
     public ReferenceableHandler<RelatedElement> getRelatedElementHandler() { return relatedElementHandler; }
+
+
+
+    /**
+     * Return the handler for related referenceables.
+     *
+     * @return handler object
+     */
+    public ReferenceableHandler<ElementStub> getElementStubHandler() { return elementStubHandler; }
 
 
     /**

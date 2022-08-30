@@ -379,7 +379,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -422,7 +422,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         requestBody.setExternalSourceName(externalSourceName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -770,14 +770,14 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupStakeholder(String userId,
-                                 String externalSourceGUID,
-                                 String externalSourceName,
-                                 String elementGUID,
+    public void setupStakeholder(String                userId,
+                                 String                externalSourceGUID,
+                                 String                externalSourceName,
+                                 String                elementGUID,
                                  StakeholderProperties properties,
-                                 String stakeholderGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                 String                stakeholderGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName                   = "setupStakeholder";
         final String elementGUIDParameterName     = "elementGUID";

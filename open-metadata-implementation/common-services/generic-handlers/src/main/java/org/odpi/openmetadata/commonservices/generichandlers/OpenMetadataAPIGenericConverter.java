@@ -626,8 +626,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
-
-
     /**
      * Extract the properties from the entity.
      *
@@ -665,6 +663,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      *
      * @param beanClass name of the class to create
      * @param header header from the entity containing the properties
+     * @param entityClassifications classification if this is an entity
      * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because

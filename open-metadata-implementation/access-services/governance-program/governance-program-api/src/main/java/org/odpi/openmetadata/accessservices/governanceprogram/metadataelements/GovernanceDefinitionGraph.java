@@ -30,6 +30,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
     private List<RelatedElement>           children           = null;
     private List<RelatedElement>           metrics            = null;
     private List<RelatedElement>           externalReferences = null;
+    private List<RelatedElement>           others             = null;
 
 
     /**
@@ -57,6 +58,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
             children = template.getChildren();
             metrics = template.getMetrics();
             externalReferences = template.getExternalReferences();
+            others = template.getOthers();
         }
     }
 
@@ -227,6 +229,28 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
 
 
     /**
+     * Return details of other relationships
+     *
+     * @return details of other related elements
+     */
+    public List<RelatedElement> getOthers()
+    {
+        return others;
+    }
+
+
+    /**
+     * Set details of other relationships.
+     *
+     * @param others details of other related elements
+     */
+    public void setOthers(List<RelatedElement> others)
+    {
+        this.others = others;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return string containing the properties and their values
@@ -243,6 +267,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
                        ", children=" + children +
                        ", metrics=" + metrics +
                        ", externalReferences=" + externalReferences +
+                       ", others=" + others +
                        '}';
     }
 
@@ -272,6 +297,7 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
         return Objects.equals(parents, that.parents) && Objects.equals(peers, that.peers) &&
                        Objects.equals(children, that.children) &&
                        Objects.equals(metrics, that.metrics) &&
+                       Objects.equals(others, that.others) &&
                        Objects.equals(externalReferences, that.externalReferences);
     }
 
@@ -284,6 +310,6 @@ public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), parents, peers, children, metrics, externalReferences);
+        return Objects.hash(super.hashCode(), parents, peers, children, metrics, externalReferences, others);
     }
 }

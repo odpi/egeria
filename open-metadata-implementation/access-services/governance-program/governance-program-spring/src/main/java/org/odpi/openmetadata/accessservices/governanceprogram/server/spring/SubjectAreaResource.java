@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelatedElementListResponse;
@@ -380,11 +381,11 @@ public class SubjectAreaResource
      */
     @GetMapping(path = "/subject-areas/{subjectAreaName}/members")
 
-    public RelatedElementListResponse getMembersOfSubjectArea(@PathVariable String serverName,
-                                                              @PathVariable String userId,
-                                                              @PathVariable String subjectAreaName,
-                                                              @RequestParam int    startFrom,
-                                                              @RequestParam int    pageSize)
+    public ElementStubListResponse getMembersOfSubjectArea(@PathVariable String serverName,
+                                                           @PathVariable String userId,
+                                                           @PathVariable String subjectAreaName,
+                                                           @RequestParam int    startFrom,
+                                                           @RequestParam int    pageSize)
     {
         return restAPI.getMembersOfSubjectArea(serverName, userId, subjectAreaName, startFrom, pageSize);
     }

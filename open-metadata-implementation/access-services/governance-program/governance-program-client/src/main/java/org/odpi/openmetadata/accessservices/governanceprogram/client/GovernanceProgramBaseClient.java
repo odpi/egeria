@@ -18,6 +18,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.properties.Relatio
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.StakeholderProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody;
@@ -34,6 +35,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
     final InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
     final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
 
-    private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/related-elements";
+    private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/related-elements";
 
     protected NullRequestBody nullRequestBody = new NullRequestBody();
 
@@ -935,6 +937,47 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
                                                                                              Integer.toString(pageSize));
 
         return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve an element stub via a name.
+     *
+     * @param userId   calling user
+     * @param name   unique identifier of the primary element
+     * @param nameParameterName   name of parameter passing the name
+     * @param urlTemplate  URL to call (no expected placeholders)
+     * @param startFrom    index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param methodName    calling method
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<ElementStub> getElementStubsByName(String userId,
+                                            String name,
+                                            String nameParameterName,
+                                            String urlTemplate,
+                                            int    startFrom,
+                                            int    pageSize,
+                                            String methodName) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        ElementStubListResponse restResult = restClient.callElementStubListGetRESTCall(methodName,
+                                                                                       serverPlatformURLRoot + urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       name,
+                                                                                       Integer.toString(startFrom),
+                                                                                       Integer.toString(pageSize));
+
+        return restResult.getElements();
     }
 
 
