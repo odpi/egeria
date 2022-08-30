@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.properties.Securit
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -132,36 +133,33 @@ public class GovernanceDefinitionGraphConverter<B> extends GovernanceProgramOMAS
                         List<RelatedElement> children           = new ArrayList<>();
                         List<RelatedElement> metrics            = new ArrayList<>();
                         List<RelatedElement> externalReferences = new ArrayList<>();
+                        List<RelatedElement> others             = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
                         {
                             if (relationship != null)
                             {
+                                EntityProxy otherEnd = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+                                RelatedElement element = super.getRelatedElement(beanClass, relationship, otherEnd, methodName);
+
                                 if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityTwoProxy(), methodName);
-
                                     externalReferences.add(element);
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_METRIC_TYPE_NAME))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityOneProxy(), methodName);
-
                                     metrics.add(element);
                                 }
                                 else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DRIVER_LINK_TYPE_NAME)) &&
                                          (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_POLICY_LINK_TYPE_NAME)) &&
                                          (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_CONTROL_LINK_TYPE_NAME)))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityOneProxy(), methodName);
 
                                     peers.add(element);
                                 }
                                 else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_RESPONSE_TYPE_NAME)) &&
                                          (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_IMPLEMENTATION_TYPE_NAME)))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityOneProxy(), methodName);
-
                                     if (primaryEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
                                     {
                                         parents.add(element);
@@ -170,6 +168,10 @@ public class GovernanceDefinitionGraphConverter<B> extends GovernanceProgramOMAS
                                     {
                                         children.add(element);
                                     }
+                                }
+                                else
+                                {
+                                    others.add(element);
                                 }
                             }
                         }
@@ -197,6 +199,11 @@ public class GovernanceDefinitionGraphConverter<B> extends GovernanceProgramOMAS
                         if (! externalReferences.isEmpty())
                         {
                             bean.setExternalReferences(externalReferences);
+                        }
+
+                        if (! others.isEmpty())
+                        {
+                            bean.setOthers(others);
                         }
                     }
                 }
