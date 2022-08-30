@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -19,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CertificationProperties implements Serializable
+public class CertificationProperties extends RelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -54,6 +53,8 @@ public class CertificationProperties implements Serializable
      */
     public CertificationProperties(CertificationProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             this.certificateId = template.getCertificateId();
@@ -406,6 +407,9 @@ public class CertificationProperties implements Serializable
                        ", recipientTypeName='" + recipientTypeName + '\'' +
                        ", recipientPropertyName='" + recipientPropertyName + '\'' +
                        ", notes='" + notes + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -423,25 +427,26 @@ public class CertificationProperties implements Serializable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof CertificationProperties))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         CertificationProperties that = (CertificationProperties) objectToCompare;
-        return Objects.equals(certificateId, that.certificateId) &&
-                       Objects.equals(startDate, that.startDate) &&
-                       Objects.equals(endDate, that.endDate) &&
-                       Objects.equals(conditions, that.conditions) &&
-                       Objects.equals(certifiedBy, that.certifiedBy) &&
-                       Objects.equals(certifiedByTypeName, that.certifiedByTypeName) &&
-                       Objects.equals(certifiedByPropertyName, that.certifiedByPropertyName) &&
-                       Objects.equals(custodian, that.custodian) &&
-                       Objects.equals(custodianTypeName, that.custodianTypeName) &&
-                       Objects.equals(custodianPropertyName, that.custodianPropertyName) &&
-                       Objects.equals(recipient, that.recipient) &&
-                       Objects.equals(recipientTypeName, that.recipientTypeName) &&
-                       Objects.equals(recipientPropertyName, that.recipientPropertyName) &&
-                       Objects.equals(notes, that.notes);
+        return Objects.equals(certificateId, that.certificateId) && Objects.equals(startDate,
+                                                                                   that.startDate) && Objects.equals(
+                endDate, that.endDate) && Objects.equals(conditions, that.conditions) && Objects.equals(certifiedBy,
+                                                                                                        that.certifiedBy) && Objects.equals(
+                certifiedByTypeName, that.certifiedByTypeName) && Objects.equals(certifiedByPropertyName,
+                                                                                 that.certifiedByPropertyName) && Objects.equals(
+                custodian, that.custodian) && Objects.equals(custodianTypeName, that.custodianTypeName) && Objects.equals(
+                custodianPropertyName, that.custodianPropertyName) && Objects.equals(recipient, that.recipient) && Objects.equals(
+                recipientTypeName, that.recipientTypeName) && Objects.equals(recipientPropertyName,
+                                                                             that.recipientPropertyName) && Objects.equals(notes,
+                                                                                                                           that.notes);
     }
 
 
@@ -453,7 +458,8 @@ public class CertificationProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(certificateId, startDate, endDate, conditions, certifiedBy, certifiedByTypeName, certifiedByPropertyName,
+        return Objects.hash(super.hashCode(), certificateId, startDate, endDate, conditions, certifiedBy, certifiedByTypeName,
+                            certifiedByPropertyName,
                             custodian, custodianTypeName, custodianPropertyName, recipient, recipientTypeName, recipientPropertyName, notes);
     }
 }

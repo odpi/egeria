@@ -172,7 +172,7 @@ public class OpenMetadataTypesArchive
         updateResponsibilityAssignments();
         update04xxExplicitNames();
         update04xxNewGovernanceRoles();
-        update04xxMultiLinkGovernanceActionTypes();
+        update04xxMultiLinkGovernanceImplementationTypes();
         update0545ValidValues();
         update07xxImplementationRelationships();
         add0735SolutionPortSchemaRelationship();
@@ -1000,6 +1000,7 @@ public class OpenMetadataTypesArchive
      */
 
 
+
     private void update04xxExplicitNames()
     {
         this.archiveBuilder.addTypeDefPatch(updateGovernanceZoneDefinition());
@@ -1220,13 +1221,15 @@ public class OpenMetadataTypesArchive
     /**
      * Add multi-link flags and extend properties to be able to record proper attributions.
      */
-    private void update04xxMultiLinkGovernanceActionTypes()
+    private void update04xxMultiLinkGovernanceImplementationTypes()
     {
         this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcess());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceActionFlowRelationship());
         this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionTypeRelationship());
         this.archiveBuilder.addTypeDefPatch(updateNextGovernanceActionRelationship());
         this.archiveBuilder.addTypeDefPatch(updateTargetForActionRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateLicenseRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateCertificationRelationship());
     }
 
 
@@ -1321,6 +1324,40 @@ public class OpenMetadataTypesArchive
          * Create the Patch
          */
         final String typeName = "TargetForAction";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch updateLicenseRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "License";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch updateCertificationRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Certification";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

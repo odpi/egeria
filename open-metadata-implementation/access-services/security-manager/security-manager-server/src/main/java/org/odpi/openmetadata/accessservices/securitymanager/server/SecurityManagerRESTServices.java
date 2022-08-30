@@ -574,7 +574,6 @@ public class SecurityManagerRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 response.setElementList(handler.findGovernanceDefinitions(userId,
-                                                                          OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_GUID,
                                                                           OpenMetadataAPIMapper.SECURITY_GROUP_TYPE_NAME,
                                                                           requestBody.getSearchString(),
                                                                           searchStringParameterName,

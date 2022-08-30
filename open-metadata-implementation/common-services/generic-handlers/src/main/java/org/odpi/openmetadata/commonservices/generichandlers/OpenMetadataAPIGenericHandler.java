@@ -1291,8 +1291,6 @@ public class OpenMetadataAPIGenericHandler<B>
 
         if (this.visibleToUserThroughRelationship(userId, relationship, methodName))
         {
-
-
             final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
             final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
@@ -12469,19 +12467,19 @@ public class OpenMetadataAPIGenericHandler<B>
 
         if (entities != null)
         {
-            List<B>  softwareServerCapabilities = new ArrayList<>();
+            List<B>  beans = new ArrayList<>();
 
             for (EntityDetail entity : entities)
             {
                 if (entity != null)
                 {
-                    softwareServerCapabilities.add(converter.getNewBean(beanClass, entity, methodName));
+                    beans.add(converter.getNewBean(beanClass, entity, methodName));
                 }
             }
 
-            if (! softwareServerCapabilities.isEmpty())
+            if (! beans.isEmpty())
             {
-                return softwareServerCapabilities;
+                return beans;
             }
         }
 

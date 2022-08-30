@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -193,4 +194,26 @@ public interface ExternalReferencesInterface
                                                                       int    pageSize) throws InvalidParameterException,
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException;
+
+
+    /**
+     * Return information about the elements linked to a externalReference.
+     *
+     * @param userId calling user
+     * @param externalReferenceGUID unique identifier for the externalReference
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the related elements
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<RelatedElement> getElementsForExternalReference(String userId,
+                                                         String externalReferenceGUID,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
 }
