@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -19,7 +19,6 @@ import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -542,9 +541,9 @@ public class CreateDuplicatesTest
             throw new FVTUnexpectedCondition(testCaseName, "Different GUID - Metadata element GUID of " + metadataElement.getElementGUID() + " rather than " + retrievedGUID + " returned by " + activityName);
         }
 
-        if (! metadataElement.getElementType().getElementTypeName().equals(typeName))
+        if (! metadataElement.getType().getTypeName().equals(typeName))
         {
-            throw new FVTUnexpectedCondition(testCaseName, "Different TypeName - Metadata element GUID of " + metadataElement.getElementType() + " rather than " + typeName + " returned by " + activityName);
+            throw new FVTUnexpectedCondition(testCaseName, "Different TypeName - Metadata element GUID of " + metadataElement.getType() + " rather than " + typeName + " returned by " + activityName);
         }
 
         if (metadataElement.getElementProperties() == null)

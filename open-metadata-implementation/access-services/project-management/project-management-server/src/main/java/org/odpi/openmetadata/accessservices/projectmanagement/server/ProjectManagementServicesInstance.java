@@ -2,11 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.projectmanagement.server;
 
+import org.odpi.openmetadata.accessservices.projectmanagement.converters.ActorProfileConverter;
+import org.odpi.openmetadata.accessservices.projectmanagement.converters.PersonRoleConverter;
+import org.odpi.openmetadata.accessservices.projectmanagement.converters.ProjectConverter;
+import org.odpi.openmetadata.accessservices.projectmanagement.converters.RelatedElementConverter;
 import org.odpi.openmetadata.accessservices.projectmanagement.ffdc.ProjectManagementErrorCode;
+import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
+import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.RelatedElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ProjectHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -17,8 +30,12 @@ import java.util.List;
  */
 public class ProjectManagementServicesInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.PROJECT_MANAGEMENT_OMAS;
+    private final static AccessServiceDescription myDescription = AccessServiceDescription.PROJECT_MANAGEMENT_OMAS;
 
+    private final ReferenceableHandler<RelatedElement>     relatedElementHandler;
+    private final ActorProfileHandler<ActorProfileElement> actorProfileHandler;
+    private final PersonRoleHandler<PersonRoleElement>     personRoleHandler;
+    private final ProjectHandler<ProjectElement>           projectHandler;
 
     /**
      * Set up the handlers for this server.
@@ -49,7 +66,62 @@ public class ProjectManagementServicesInstance extends OMASServiceInstance
 
         if (repositoryHandler != null)
         {
-            /* Add handlers here */
+            this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName, serverName),
+                                                                    RelatedElement.class,
+                                                                    serviceName,
+                                                                    serverName,
+                                                                    invalidParameterHandler,
+                                                                    repositoryHandler,
+                                                                    repositoryHelper,
+                                                                    localServerUserId,
+                                                                    securityVerifier,
+                                                                    supportedZones,
+                                                                    defaultZones,
+                                                                    publishZones,
+                                                                    auditLog);
+
+
+            this.actorProfileHandler = new ActorProfileHandler<>(new ActorProfileConverter<>(repositoryHelper, serviceName, serverName),
+                                                                 ActorProfileElement.class,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
+
+            this.personRoleHandler = new PersonRoleHandler<>(new PersonRoleConverter<>(repositoryHelper, serviceName, serverName),
+                                                             PersonRoleElement.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
+
+            this.projectHandler = new ProjectHandler<>(new ProjectConverter<>(repositoryHelper, serviceName, serverName),
+                                                       ProjectElement.class,
+                                                       serviceName,
+                                                       serverName,
+                                                       invalidParameterHandler,
+                                                       repositoryHandler,
+                                                       repositoryHelper,
+                                                       localServerUserId,
+                                                       securityVerifier,
+                                                       supportedZones,
+                                                       defaultZones,
+                                                       publishZones,
+                                                       auditLog);
         }
         else
         {
@@ -60,4 +132,67 @@ public class ProjectManagementServicesInstance extends OMASServiceInstance
         }
     }
 
+
+    /**
+     * Return the handler for related referenceables.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ReferenceableHandler<RelatedElement> getRelatedElementHandler() throws PropertyServerException
+    {
+        final String methodName = "getRelatedElementHandler";
+
+        validateActiveRepository(methodName);
+
+        return relatedElementHandler;
+    }
+
+
+    /**
+     * Return the handler for organization requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ActorProfileHandler<ActorProfileElement> getActorProfileHandler() throws PropertyServerException
+    {
+        final String methodName = "getActorProfileHandler";
+
+        validateActiveRepository(methodName);
+
+        return actorProfileHandler;
+    }
+
+
+    /**
+     * Return the handler for role requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public PersonRoleHandler<PersonRoleElement> getPersonRoleHandler() throws PropertyServerException
+    {
+        final String methodName = "getPersonRoleHandler";
+
+        validateActiveRepository(methodName);
+
+        return personRoleHandler;
+    }
+
+
+    /**
+     * Return the handler for community requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ProjectHandler<ProjectElement> getProjectHandler() throws PropertyServerException
+    {
+        final String methodName = "getCommunityHandler";
+
+        validateActiveRepository(methodName);
+
+        return projectHandler;
+    }
 }

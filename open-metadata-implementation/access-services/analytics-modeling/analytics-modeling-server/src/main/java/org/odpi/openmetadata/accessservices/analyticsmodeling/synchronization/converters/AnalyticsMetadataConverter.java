@@ -42,7 +42,7 @@ public class AnalyticsMetadataConverter extends OpenMetadataAPIGenericConverter<
     }
 
     /**
-     * Using the supplied entity, return a new instance of the bean. This is used for beans that have
+     * Using the supplied entity, return a new instance of the bean. This is used for beans that
      * contain a combination of the properties from an entity.
      *
      * @param beanClass name of the class to create

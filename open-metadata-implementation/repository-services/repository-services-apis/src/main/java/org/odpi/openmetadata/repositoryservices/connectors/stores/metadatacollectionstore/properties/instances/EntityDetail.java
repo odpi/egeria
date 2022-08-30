@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EntityDetail stores all of the type-specific properties for the entity.  These properties can be
+ * EntityDetail stores all the type-specific properties for the entity.  These properties can be
  * requested in an InstanceProperties object on request.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -50,7 +50,7 @@ public class EntityDetail extends EntitySummary
 
 
     /**
-     * Return a copy of all of the properties for this entity.  Null means no properties exist.
+     * Return a copy of all the properties for this entity.  Null means no properties exist.
      *
      * @return InstanceProperties
      */

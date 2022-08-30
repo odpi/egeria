@@ -231,7 +231,7 @@ public interface GovernanceProcessingInterface
 
 
     /**
-     * Declare that all of the processing for the governance action service is finished and the status of the work.
+     * Declare that all the processing for the governance action service is finished and the status of the work.
      *
      * @param userId caller's userId
      * @param governanceActionGUID unique identifier of the governance action to update

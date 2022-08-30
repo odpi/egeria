@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,40 +21,33 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = ElementClassificationHeader.class, name = "ElementClassificationHeader"),
-                @JsonSubTypes.Type(value = ElementType.class, name = "ElementType")
+                @JsonSubTypes.Type(value = ElementHeader.class, name = "ElementHeader"),
         })
 public class ElementControlHeader extends PropertyBase
 {
     private static final long     serialVersionUID = 1L;
 
-    private String                    elementSourceServer           = null;
-    private ElementOrigin             elementOrigin                 = ElementOrigin.CONFIGURATION;
-    private String                    elementMetadataCollectionId   = null;
-    private String                    elementMetadataCollectionName = null;
-    private String                    elementLicense                = null;
-    private String                    elementCreatedBy              = null;
-    private String                    elementUpdatedBy              = null;
-    private List<String>              elementMaintainedBy           = null;
-    private Date                      elementCreateTime             = null;
-    private Date                      elementUpdateTime             = null;
-    private long                      elementVersion                = 0L;
-    private ElementStatus             elementStatus                 = null;
-    private Map<String, Serializable> mappingProperties             = null;
+    /*
+     * Common header for first class elements from a metadata repository
+     */
+    private ElementStatus   status = null;
+    private ElementType     type = null;
+    private ElementOrigin   origin   = null;
+    private ElementVersions versions = null;
 
 
     /**
-     * Default constructor
+     * Default constructor used by subclasses
      */
     public ElementControlHeader()
     {
-        super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.
      *
-     * @param template type to clone
+     * @param template element to copy
      */
     public ElementControlHeader(ElementControlHeader template)
     {
@@ -63,316 +55,107 @@ public class ElementControlHeader extends PropertyBase
 
         if (template != null)
         {
-            this.elementSourceServer           = template.getElementSourceServer();
-            this.elementOrigin                 = template.getElementOrigin();
-            this.elementMetadataCollectionId   = template.getElementMetadataCollectionId();
-            this.elementMetadataCollectionName = template.getElementMetadataCollectionName();
-            this.elementLicense                = template.getElementLicense();
-            this.elementCreatedBy              = template.getElementCreatedBy();
-            this.elementUpdatedBy              = template.getElementUpdatedBy();
-            this.elementMaintainedBy           = template.getElementMaintainedBy();
-            this.elementCreateTime             = template.getElementCreateTime();
-            this.elementUpdateTime             = template.getElementUpdateTime();
-            this.elementVersion                = template.getElementVersion();
-            this.elementStatus                 = template.getStatus();
-            this.mappingProperties             = template.getMappingProperties();
+            status           = template.getStatus();
+            type             = template.getType();
+            origin           = template.getOrigin();
+            versions         = template.getVersions();
         }
     }
 
 
     /**
-     * Set up the URL of the server where the element was retrieved from.  Typically this is
-     * a server where the OMAS interfaces are activated.  If no URL is known for the server then null is returned.
+     * Return the current status of the element - typically ACTIVE.
      *
-     * @param elementSourceServer URL of the server
+     * @return status enum
      */
-    public void setElementSourceServer(String elementSourceServer)
+    public ElementStatus getStatus()
     {
-        this.elementSourceServer = elementSourceServer;
-    }
-
-
-
-    /**
-     * Return the URL of the server where the element was retrieved from.  Typically this is
-     * a server where the OMAS interfaces are activated.  If no URL is known for the server then null is returned.
-     *
-     * @return elementSourceServerURL the url of the server where the element came from
-     */
-    public String getElementSourceServer()
-    {
-        return elementSourceServer;
+        return status;
     }
 
 
     /**
-     * Set up the category of this element's origin.
+     * Set up the current status of the element - typically ACTIVE.
      *
-     * @param elementOrigin see ElementOrigin enum
+     * @param status status enum
      */
-    public void setElementOrigin(ElementOrigin elementOrigin)
+    public void setStatus(ElementStatus status)
     {
-        this.elementOrigin = elementOrigin;
+        this.status = status;
     }
 
 
     /**
-     * Return the origin category of the metadata element.
+     * Return the element type properties for this properties object.  These values are set up by the metadata repository
+     * and define details to the metadata entity used to represent this element.
      *
-     * @return ElementOrigin enum
+     * @return ElementType type information.
      */
-    public ElementOrigin getElementOrigin() { return elementOrigin; }
-
-
-    /**
-     * Returns the unique identifier for the metadata collection that is managed by the repository
-     * where the element originates (its home repository).
-     *
-     * @return String metadata collection id
-     */
-    public String getElementMetadataCollectionId()
+    public ElementType getType()
     {
-        return elementMetadataCollectionId;
-    }
-
-
-    /**
-     * Set up the unique identifier for the metadata collection that is managed by the repository
-     * where the element originates (its home repository).
-     *
-     * @param elementMetadataCollectionId String unique identifier for the home metadata repository
-     */
-    public void setElementMetadataCollectionId(String elementMetadataCollectionId)
-    {
-        this.elementMetadataCollectionId = elementMetadataCollectionId;
-    }
-
-
-    /**
-     * Return the name of the metadata collection that this element belongs to.
-     *
-     * @return name string
-     */
-    public String getElementMetadataCollectionName()
-    {
-        return elementMetadataCollectionName;
-    }
-
-
-    /**
-     * Set up the name of the metadata collection that this asset belongs to.
-     *
-     * @param elementMetadataCollectionName name string
-     */
-    public void setElementMetadataCollectionName(String elementMetadataCollectionName)
-    {
-        this.elementMetadataCollectionName = elementMetadataCollectionName;
-    }
-
-
-    /**
-     * Return the license associated with this metadata element (null means none).
-     *
-     * @return string license name
-     */
-    public String getElementLicense()
-    {
-        return elementLicense;
-    }
-
-
-    /**
-     * Set up the license associated with this metadata element (null means none)
-     *
-     * @param elementLicense string license name
-     */
-    public void setElementLicense(String elementLicense)
-    {
-        this.elementLicense = elementLicense;
-    }
-
-
-    /**
-     * Return the status of this instance.
-     *
-     * @return InstanceStatus
-     */
-    public ElementStatus getStatus() { return elementStatus; }
-
-
-    /**
-     * Set up the status of this instance.
-     *
-     * @param newStatus InstanceStatus
-     */
-    public void setStatus(ElementStatus newStatus) { this.elementStatus = newStatus; }
-
-
-    /**
-     * Return the name of the user that created this instance.
-     *
-     * @return String user name
-     */
-    public String getElementCreatedBy() { return elementCreatedBy; }
-
-
-    /**
-     * Set up the name of the user that created this instance.
-     *
-     * @param elementCreatedBy String user name
-     */
-    public void setElementCreatedBy(String elementCreatedBy) { this.elementCreatedBy = elementCreatedBy; }
-
-
-    /**
-     * Return the name of the user that last updated this instance.
-     *
-     * @return String user name
-     */
-    public String getElementUpdatedBy() { return elementUpdatedBy; }
-
-
-    /**
-     * Set up the name of the user that last updated this instance.
-     *
-     * @param elementUpdatedBy String user name
-     */
-    public void setElementUpdatedBy(String elementUpdatedBy) { this.elementUpdatedBy = elementUpdatedBy; }
-
-
-    /**
-     * Return the list of users responsible for maintaining this instance.
-     *
-     * @return list of user identifiers
-     */
-    public List<String> getElementMaintainedBy()
-    {
-        if (elementMaintainedBy == null)
-        {
-            return null;
-        }
-        else if (elementMaintainedBy.isEmpty())
+        if (type == null)
         {
             return null;
         }
         else
         {
-            return new ArrayList<>(elementMaintainedBy);
+            return type;
         }
     }
 
 
     /**
-     * Set up the list of users responsible for maintaining this instance.
+     * Set up the type of this element.
      *
-     * @param elementMaintainedBy list of user identifiers
+     * @param type element type properties
      */
-    public void setElementMaintainedBy(List<String> elementMaintainedBy)
+    public void setType(ElementType type)
     {
-        this.elementMaintainedBy = elementMaintainedBy;
+        this.type = type;
     }
 
 
     /**
-     * Return the date/time that this instance was created.
+     * Return information about the origin of the element. This includes the metadata collection and license.
      *
-     * @return Date/Time of creation
+     * @return element origin object
      */
-    public Date getElementCreateTime()
+    public ElementOrigin getOrigin()
     {
-        if (elementCreateTime == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(elementCreateTime.getTime());
-        }
+        return origin;
     }
 
 
     /**
-     * Set up the time that this instance was created.
+     * Set up information about the origin of the element. This includes the metadata collection and license.
      *
-     * @param elementCreateTime Date/Time of creation
+     * @param origin element origin object
      */
-    public void setElementCreateTime(Date elementCreateTime) { this.elementCreateTime = elementCreateTime; }
-
-
-    /**
-     * Return what was the late time this instance was updated.
-     *
-     * @return Date/Time last updated
-     */
-    public Date getElementUpdateTime()
+    public void setOrigin(ElementOrigin origin)
     {
-        if (elementUpdateTime == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Date(elementUpdateTime.getTime());
-        }
+        this.origin = origin;
     }
 
 
     /**
-     * Set up the last update time for this instance.
+     * Return detail of the element's current version and the users responsible for maintaining it.
      *
-     * @param elementUpdateTime Date/Time last updated
+     * @return ElementVersion object
      */
-    public void setElementUpdateTime(Date elementUpdateTime) { this.elementUpdateTime = elementUpdateTime; }
-
-
-    /**
-     * Return the version number for this instance.
-     *
-     * @return Long version number
-     */
-    public long getElementVersion() { return elementVersion; }
-
-
-    /**
-     * Set up the version number for this instance.
-     *
-     * @param elementVersion Long version number
-     */
-    public void setElementVersion(long elementVersion) { this.elementVersion = elementVersion; }
-
-
-
-
-    /**
-     * Return the additional properties used by the master repository to map to stored instances.
-     *
-     * @return property map
-     */
-    public Map<String, Serializable> getMappingProperties()
+    public ElementVersions getVersions()
     {
-        if (mappingProperties == null)
-        {
-            return null;
-        }
-        else if (mappingProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(mappingProperties);
-        }
+        return versions;
     }
 
 
     /**
-     * Set up the additional properties used by the master repository to map to stored instances.
+     * Set up detail of the element's current version and the users responsible for maintaining it.
      *
-     * @param mappingProperties property map
+     * @param versions ElementVersion object
      */
-    public void setMappingProperties(Map<String, Serializable> mappingProperties)
+    public void setVersions(ElementVersions versions)
     {
-        this.mappingProperties = mappingProperties;
+        this.versions = versions;
     }
 
 
@@ -385,22 +168,12 @@ public class ElementControlHeader extends PropertyBase
     public String toString()
     {
         return "ElementControlHeader{" +
-                "elementSourceServer='" + elementSourceServer + '\'' +
-                ", elementOrigin=" + elementOrigin +
-                ", elementMetadataCollectionId='" + elementMetadataCollectionId + '\'' +
-                ", elementMetadataCollectionName='" + elementMetadataCollectionName + '\'' +
-                ", elementLicense='" + elementLicense + '\'' +
-                ", elementCreatedBy='" + elementCreatedBy + '\'' +
-                ", elementUpdatedBy='" + elementUpdatedBy + '\'' +
-                ", elementMaintainedBy=" + elementMaintainedBy +
-                ", elementCreateTime=" + elementCreateTime +
-                ", elementUpdateTime=" + elementUpdateTime +
-                ", elementVersion=" + elementVersion +
-                ", elementStatus=" + elementStatus +
-                ", mappingProperties=" + mappingProperties +
-                ", status=" + getStatus() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                       "status=" + status +
+                       ", type=" + type +
+                       ", origin=" + origin +
+                       ", versions=" + versions +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 
@@ -421,20 +194,14 @@ public class ElementControlHeader extends PropertyBase
         {
             return false;
         }
+        if (! super.equals(objectToCompare))
+        {
+            return false;
+        }
         ElementControlHeader that = (ElementControlHeader) objectToCompare;
-        return elementVersion == that.elementVersion &&
-                Objects.equals(elementSourceServer, that.elementSourceServer) &&
-                elementOrigin == that.elementOrigin &&
-                Objects.equals(elementMetadataCollectionId, that.elementMetadataCollectionId) &&
-                Objects.equals(elementMetadataCollectionName, that.elementMetadataCollectionName) &&
-                Objects.equals(elementLicense, that.elementLicense) &&
-                Objects.equals(elementCreatedBy, that.elementCreatedBy) &&
-                Objects.equals(elementUpdatedBy, that.elementUpdatedBy) &&
-                Objects.equals(elementMaintainedBy, that.elementMaintainedBy) &&
-                Objects.equals(elementCreateTime, that.elementCreateTime) &&
-                Objects.equals(elementUpdateTime, that.elementUpdateTime) &&
-                elementStatus == that.elementStatus &&
-                Objects.equals(mappingProperties, that.mappingProperties);
+        return status == that.status && Objects.equals(type, that.type)
+                       && Objects.equals(origin, that.origin) &&
+                       Objects.equals(versions, that.versions);
     }
 
 
@@ -446,8 +213,6 @@ public class ElementControlHeader extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementSourceServer, elementOrigin, elementMetadataCollectionId, elementMetadataCollectionName, elementLicense,
-                            elementCreatedBy, elementUpdatedBy, elementMaintainedBy, elementCreateTime, elementUpdateTime, elementVersion,
-                            elementStatus, mappingProperties);
+        return Objects.hash(status, type, origin, versions);
     }
 }

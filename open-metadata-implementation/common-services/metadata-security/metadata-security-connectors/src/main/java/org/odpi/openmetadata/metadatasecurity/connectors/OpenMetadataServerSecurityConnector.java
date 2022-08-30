@@ -1242,7 +1242,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
-     * @return entity to return (may be altered by the connector)
+     * @return entity to return (maybe altered by the connector)
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
     protected EntityDetail  validateUserForEntityRead(String          userId,
@@ -1271,6 +1271,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * Tests for whether a specific user should have read access to a specific instance within a repository.
      *
      * @param userId identifier of user
+     * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
@@ -1617,6 +1618,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param userId identifier of user
      * @param metadataCollectionName configurable name of the metadata collection
      * @param instance instance details
+     * @return relationship
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
     protected Relationship validateUserForRelationshipRead(String       userId,

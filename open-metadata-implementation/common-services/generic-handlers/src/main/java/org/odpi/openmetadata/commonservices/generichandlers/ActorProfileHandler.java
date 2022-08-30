@@ -214,6 +214,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
     }
 
@@ -729,36 +730,159 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                               effectiveTime,
                                                               methodName);
 
-        if (entities != null)
-        {
-            List<B> beans = new ArrayList<>();
+        return getFullBeans(userId, entities, typeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+    }
 
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    B bean = this.getFullProfileBean(userId,
-                                                     entity,
-                                                     typeName,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     effectiveTime,
-                                                     methodName);
 
-                    if (bean != null)
-                    {
-                        beans.add(bean);
-                    }
-                }
-            }
+    /**
+     * Return the actors attached to a supplied project via the project team relationship.
+     *
+     * @param userId     calling user
+     * @param projectGUID identifier for the entity that the actor profiles are attached to
+     * @param projectGUIDParameterName name of parameter supplying the GUID
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of objects or null if none found
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B>  getActorsForProject(String              userId,
+                                        String              projectGUID,
+                                        String              projectGUIDParameterName,
+                                        int                 startingFrom,
+                                        int                 pageSize,
+                                        boolean             forLineage,
+                                        boolean             forDuplicateProcessing,
+                                        Date                effectiveTime,
+                                        String              methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        projectGUID,
+                                        projectGUIDParameterName,
+                                        OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PROJECT_TEAM_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.PROJECT_TEAM_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
 
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
 
-        return null;
+
+    /**
+     * Return the locations attached to an actor profile.
+     *
+     * @param userId     calling user
+     * @param elementGUID identifier for the entity that the feedback is attached to
+     * @param elementGUIDParameterName name of parameter supplying the GUID
+     * @param elementTypeName name of the type of object being attached to
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B> getActorProfilesByLocation(String       userId,
+                                              String       elementGUID,
+                                              String       elementGUIDParameterName,
+                                              String       elementTypeName,
+                                              int          startingFrom,
+                                              int          pageSize,
+                                              boolean      forLineage,
+                                              boolean      forDuplicateProcessing,
+                                              Date         effectiveTime,
+                                              String       methodName) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        List<EntityDetail> entities =  this.getAttachedEntities(userId,
+                                                                elementGUID,
+                                                                elementGUIDParameterName,
+                                                                elementTypeName,
+                                                                OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_GUID,
+                                                                OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME,
+                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                null,
+                                                                null,
+                                                                1,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                startingFrom,
+                                                                pageSize,
+                                                                effectiveTime,
+                                                                methodName);
+
+        return getFullBeans(userId, entities, elementTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Return all the actor profiles.
+     *
+     * @param userId     calling user
+     * @param elementTypeGUID identifier of the type of object to retrieve
+     * @param elementTypeName name of the type of object to retrieve
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects or null if none found
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B> getActorProfiles(String       userId,
+                                    String       elementTypeGUID,
+                                    String       elementTypeName,
+                                    int          startingFrom,
+                                    int          pageSize,
+                                    boolean      forLineage,
+                                    boolean      forDuplicateProcessing,
+                                    Date         effectiveTime,
+                                    String       methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
+    {
+        List<EntityDetail> entities =  this.getEntitiesByType(userId,
+                                                              elementTypeGUID,
+                                                              elementTypeName,
+                                                              null,
+                                                              forLineage,
+                                                              forDuplicateProcessing,
+                                                              startingFrom,
+                                                              pageSize,
+                                                              effectiveTime,
+                                                              methodName);
+
+        return getFullBeans(userId, entities, elementTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
     }
 
 
@@ -941,6 +1065,68 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                       forDuplicateProcessing,
                                       effectiveTime,
                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the full profile metadata element for each entity in the list.
+     * This includes contact details, user identity, contribution record and pointers to related elements such as
+     * roles and peers.
+     *
+     * @param userId calling user
+     * @param entities root entities for the profiles
+     * @param typeName type name of the primary entity
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    private List<B> getFullBeans(String             userId,
+                                 List<EntityDetail> entities,
+                                 String             typeName,
+                                 boolean            forLineage,
+                                 boolean            forDuplicateProcessing,
+                                 Date               effectiveTime,
+                                 String             methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        if (entities != null)
+        {
+            List<B> beans = new ArrayList<>();
+
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    B bean = this.getFullProfileBean(userId,
+                                                     entity,
+                                                     typeName,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
+
+                    if (bean != null)
+                    {
+                        beans.add(bean);
+                    }
+                }
+            }
+
+            if (! beans.isEmpty())
+            {
+                return beans;
+            }
         }
 
         return null;

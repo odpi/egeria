@@ -25,7 +25,7 @@ public class ExceptionMessageDefinition extends MessageDefinition
 
 
     /**
-     * Constructor to save all of the fixed values of a message.  This is typically populated
+     * Constructor to save all the fixed values of a message.  This is typically populated
      * from an Enum message set.  The constructor passes most values to the super class and just retains
      * the additional value for the exception.
      *

@@ -20,13 +20,14 @@ import org.slf4j.LoggerFactory;
  */
 public class AddRelationshipExecutor extends RepositoryExecutorBase
 {
-    private MaintenanceAccumulator accumulator;
+    private final MaintenanceAccumulator accumulator;
 
-    private String             relationshipTypeGUID;
-    private InstanceProperties initialProperties;
-    private EntityProxy        entityOneProxy;
-    private EntityProxy        entityTwoProxy;
-    private InstanceStatus     initialStatus;
+    private final String             relationshipTypeGUID;
+    private final InstanceProperties initialProperties;
+    private final EntityProxy        entityOneProxy;
+    private final EntityProxy        entityTwoProxy;
+    private final InstanceStatus     initialStatus;
+
     private String             externalSourceGUID = null;
     private String             externalSourceName = null;
     private Relationship       newRelationship    = null;

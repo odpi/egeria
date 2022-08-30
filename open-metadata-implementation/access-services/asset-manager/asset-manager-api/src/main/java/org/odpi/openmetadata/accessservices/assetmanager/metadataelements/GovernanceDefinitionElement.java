@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDe
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * GovernanceDefinitionElement is the superclass used to return the common properties of a governance definition stored in the

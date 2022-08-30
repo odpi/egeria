@@ -96,7 +96,7 @@ public class OMRSRepositoryRESTServices
 {
     private static final String                                serviceName     = CommonServicesDescription.REPOSITORY_SERVICES.getServiceName();
     private static final Logger                                log             = LoggerFactory.getLogger(OMRSRepositoryRESTServices.class);
-    private static       OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
+    private static final OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
     private static final String                                anonymousUserId = "anon"; // TODO add to config
 
     private static final MessageFormatter messageFormatter = new MessageFormatter();
@@ -432,7 +432,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Returns all of the TypeDefs for a specific category.
+     * Returns all the TypeDefs for a specific category.
      *
      * @param serverName unique identifier for requested server.
      * @param userId     unique identifier for requesting user.
@@ -481,7 +481,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Returns all of the AttributeTypeDefs for a specific category.
+     * Returns all the AttributeTypeDefs for a specific category.
      *
      * @param serverName unique identifier for requested server.
      * @param userId     unique identifier for requesting user.
@@ -4191,7 +4191,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
@@ -4279,7 +4279,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     * Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
@@ -7101,7 +7101,7 @@ public class OMRSRepositoryRESTServices
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
-     * @return list of all of the classifications for this entity that are homed in this repository or
+     * @return list of all the classifications for this entity that are homed in this repository or
      * InvalidParameterException the entity is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
@@ -7164,7 +7164,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @param requestBody the time used to determine which version of the entity that is desired.
-     * @return list of all of the classifications for this entity that are homed in this repository or
+     * @return list of all the classifications for this entity that are homed in this repository or
      * InvalidParameterException the entity is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or

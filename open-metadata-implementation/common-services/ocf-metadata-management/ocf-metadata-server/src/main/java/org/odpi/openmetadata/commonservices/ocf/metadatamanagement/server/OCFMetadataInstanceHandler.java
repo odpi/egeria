@@ -461,9 +461,9 @@ public class OCFMetadataInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    NoteLogHandler<NoteLog> getNoteLogHandler(String userId,
-                                              String serverName,
-                                              String serviceOperationName) throws InvalidParameterException,
+    NoteLogHandler<NoteLogHeader> getNoteLogHandler(String userId,
+                                                    String serverName,
+                                                    String serviceOperationName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {

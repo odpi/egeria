@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.stewardshipaction.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -24,8 +25,8 @@ public class ConnectorTypeElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ConnectorTypeProperties  connectorTypeProperties = null;
-    private ElementHeader            elementHeader           = null;
+    private ConnectorTypeProperties connectorTypeProperties = null;
+    private ElementHeader           elementHeader           = null;
 
 
     /**

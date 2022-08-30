@@ -35,11 +35,11 @@ public enum RelatedMediaType implements Serializable
     public static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6fdffb257b56";
     public static final String ENUM_TYPE_NAME  = "MediaType";
 
-    private int    openTypeOrdinal;
+    private final int    openTypeOrdinal;
 
-    private int    ordinal;
-    private String name;
-    private String description;
+    private final int    ordinal;
+    private final String name;
+    private final String description;
 
     private static final long     serialVersionUID = 1L;
 

@@ -270,7 +270,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                 if (! changesCommitted) {
                     //Figure out why no changes were committed.  There are 3 possibilities:
                     // 1) Auto commit is enabled
-                    // 2) All of the unprocessed event queues are empty
+                    // 2) all the unprocessed event queues are empty
                     // 3) We are waiting for some event to finish processing
                     
                     if (! isAutoCommitEnabled) {

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.ConnectionProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.ConnectorTypeProperties;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.accessservices.assetowner.properties.EndpointProper
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;

@@ -92,7 +92,7 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The Repository Governance OMES in server {0} has initialized",
                        "The engine service has completed initialization.",
-                       "Verify that all of the configured repository governance engines have successfully started and retrieved their configuration."),
+                       "Verify that all the configured repository governance engines have successfully started and retrieved their configuration."),
 
     SERVER_SHUTTING_DOWN("OMES-REPOSITORY-GOVERNANCE-0014",
                     OMRSAuditLogRecordSeverity.SHUTDOWN,
@@ -191,10 +191,10 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                                       OMRSAuditLogRecordSeverity.INFO,
                                                       "All repository governance service configuration is being refreshed for repository governance engine {0}",
                                                       "The Repository Governance OMES will call the OMRS in the metadata server to " +
-                                                  "retrieve details of all of the repository governance services configured for this engine." +
+                                                  "retrieve details of all the repository governance services configured for this engine." +
                                                   "During this process, some repository governance request may fail if the associated repository governance" +
                                                   "service is only partially configured.",
-                                                      "Monitor the Repository Governance OMES to ensure all of the repository governance services are retrieved." +
+                                                      "Monitor the Repository Governance OMES to ensure all the repository governance services are retrieved." +
                                                   "Then it is ready to process new repository governance requests."),
 
     FINISHED_ALL_REPOSITORY_GOVERNANCE_SERVICE_CONFIG("OMES-REPOSITORY-GOVERNANCE-0026",
@@ -202,7 +202,7 @@ public enum RepositoryGovernanceAuditCode implements AuditLogMessageSet
                                                       "Refreshing all repository governance service configuration has being completed for repository governance engine {0}",
                                                       "The repository governance engine is ready to receive repository governance requests for all successfully loaded " +
                                                   "repository governance services.",
-                                                      "No action is required as long as all of the expected repository governance services are loaded." +
+                                                      "No action is required as long as all the expected repository governance services are loaded." +
                                                   "If there are any repository governance services missing then validate the configuration of" +
                                                   "the repository governance engine in the metadata server."),
 

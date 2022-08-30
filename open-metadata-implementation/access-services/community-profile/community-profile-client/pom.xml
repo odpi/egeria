@@ -16,7 +16,7 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/master</url>
     </scm>
 
     <name>Community Profile OMAS Client</name>
@@ -61,6 +61,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>community-profile-topic-connectors</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-client</artifactId>
         </dependency>
 
     </dependencies>

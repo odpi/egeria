@@ -49,6 +49,7 @@ public class OMRSAuditLogStoreReport implements Serializable
         {
             destinationName = template.getDestinationName();
             supportedSeverities = template.getSupportedSeverities();
+            implementationClass = template.getImplementationClass();
         }
     }
 

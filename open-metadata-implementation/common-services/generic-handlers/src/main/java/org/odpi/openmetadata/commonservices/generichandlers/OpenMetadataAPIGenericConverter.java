@@ -4,10 +4,20 @@ package org.odpi.openmetadata.commonservices.generichandlers;
 
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementVersions;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -617,6 +627,418 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
 
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    protected ElementHeader getMetadataElementHeader(Class<B>     beanClass,
+                                                     EntityDetail entity,
+                                                     String       methodName) throws PropertyServerException
+    {
+        if (entity != null)
+        {
+            return getMetadataElementHeader(beanClass,
+                                            entity,
+                                            entity.getClassifications(),
+                                            methodName);
+        }
+        else
+        {
+            this.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param header header from the entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementHeader getMetadataElementHeader(Class<B> beanClass,
+                                                  InstanceHeader header,
+                                                  List<Classification> entityClassifications,
+                                                  String methodName) throws PropertyServerException
+    {
+        if (header != null)
+        {
+            ElementHeader elementHeader = new ElementHeader();
+
+            elementHeader.setGUID(header.getGUID());
+            elementHeader.setStatus(this.getElementStatus(header.getStatus()));
+            elementHeader.setClassifications(this.getElementClassifications(entityClassifications));
+            elementHeader.setType(this.getElementType(header));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementHeader.setOrigin(elementOrigin);
+
+            elementHeader.setVersions(this.getElementVersions(header));
+
+            return elementHeader;
+        }
+        else
+        {
+            this.handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Translate the repository services' InstanceStatus to an ElementStatus.
+     *
+     * @param instanceStatus value from the repository services
+     * @return ElementStatus enum
+     */
+    protected ElementStatus getElementStatus(InstanceStatus instanceStatus)
+    {
+        if (instanceStatus != null)
+        {
+            switch (instanceStatus)
+            {
+                case UNKNOWN:
+                    return ElementStatus.UNKNOWN;
+
+                case DRAFT:
+                    return ElementStatus.DRAFT;
+
+                case PREPARED:
+                    return ElementStatus.PREPARED;
+
+                case PROPOSED:
+                    return ElementStatus.PROPOSED;
+
+                case APPROVED:
+                    return ElementStatus.APPROVED;
+
+                case REJECTED:
+                    return ElementStatus.REJECTED;
+
+                case APPROVED_CONCEPT:
+                    return ElementStatus.APPROVED_CONCEPT;
+
+                case UNDER_DEVELOPMENT:
+                    return ElementStatus.UNDER_DEVELOPMENT;
+
+                case DEVELOPMENT_COMPLETE:
+                    return ElementStatus.DEVELOPMENT_COMPLETE;
+
+                case APPROVED_FOR_DEPLOYMENT:
+                    return ElementStatus.APPROVED_FOR_DEPLOYMENT;
+
+                case STANDBY:
+                    return ElementStatus.STANDBY;
+
+                case ACTIVE:
+                    return ElementStatus.ACTIVE;
+
+                case FAILED:
+                    return ElementStatus.FAILED;
+
+                case DISABLED:
+                    return ElementStatus.DISABLED;
+
+                case COMPLETE:
+                    return ElementStatus.COMPLETE;
+
+                case DEPRECATED:
+                    return ElementStatus.DEPRECATED;
+
+                case OTHER:
+                    return ElementStatus.OTHER;
+            }
+        }
+
+        return ElementStatus.UNKNOWN;
+    }
+
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entityProxy entityProxy from the relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B> beanClass,
+                                      EntityProxy entityProxy,
+                                      String methodName) throws PropertyServerException
+    {
+        if (entityProxy != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entityProxy, entityProxy.getClassifications(), methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entityProxy.getUniqueProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            this.handleMissingMetadataInstance(beanClass.getName(),
+                                               TypeDefCategory.ENTITY_DEF,
+                                               methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>     beanClass,
+                                      EntityDetail entity,
+                                      String       methodName) throws PropertyServerException
+    {
+        if (entity != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, entity, methodName);
+            ElementStub   elementStub   = new ElementStub(elementHeader);
+
+            elementStub.setUniqueName(repositoryHelper.getStringProperty(serviceName,
+                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                         entity.getProperties(),
+                                                                         methodName));
+
+            return elementStub;
+        }
+        else
+        {
+            this.handleMissingMetadataInstance(beanClass.getName(),
+                                               TypeDefCategory.ENTITY_DEF,
+                                               methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the properties from the relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public ElementStub getElementStub(Class<B>     beanClass,
+                                      Relationship relationship,
+                                      String       methodName) throws PropertyServerException
+    {
+        if (relationship != null)
+        {
+            ElementHeader elementHeader = getMetadataElementHeader(beanClass, relationship, null, methodName);
+
+            return new ElementStub(elementHeader);
+        }
+        else
+        {
+            this.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.RELATIONSHIP_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the classifications from the entity.
+     *
+     * @param entity entity containing the classifications
+     * @return list of bean classifications
+     */
+    List<ElementClassification> getEntityClassifications(EntityDetail entity)
+    {
+        if (entity != null)
+        {
+            return this.getElementClassifications(entity.getClassifications());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the classifications from the entity.
+     *
+     * @param entityClassifications classifications direct from the entity
+     * @return list of bean classifications
+     */
+    protected List<ElementClassification> getElementClassifications(List<Classification> entityClassifications)
+    {
+        List<ElementClassification> beanClassifications = null;
+
+        if (entityClassifications != null)
+        {
+            beanClassifications = new ArrayList<>();
+
+            for (Classification entityClassification : entityClassifications)
+            {
+                if (entityClassification != null)
+                {
+                    ElementClassification beanClassification = new ElementClassification();
+
+                    beanClassification.setClassificationName(entityClassification.getName());
+                    beanClassification.setClassificationProperties(repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));
+
+                    beanClassifications.add(beanClassification);
+                }
+            }
+
+        }
+
+        return beanClassifications;
+    }
+
+
+    /**
+     * Convert information from a repository instance into an Open Connector Framework ElementType.
+     *
+     * @param instanceHeader values from the server
+     * @return OCF ElementType object
+     */
+    protected ElementType getElementType(InstanceAuditHeader instanceHeader)
+    {
+        ElementType elementType = new ElementType();
+
+        InstanceType instanceType = instanceHeader.getType();
+
+        if (instanceType != null)
+        {
+            elementType.setTypeId(instanceType.getTypeDefGUID());
+            elementType.setTypeName(instanceType.getTypeDefName());
+            elementType.setTypeVersion(instanceType.getTypeDefVersion());
+            elementType.setTypeDescription(instanceType.getTypeDefDescription());
+
+            List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
+
+            if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
+            {
+                List<String>   superTypes = new ArrayList<>();
+
+                for (TypeDefLink typeDefLink : typeDefSuperTypes)
+                {
+                    if (typeDefLink != null)
+                    {
+                        superTypes.add(typeDefLink.getName());
+                    }
+                }
+
+                if (! superTypes.isEmpty())
+                {
+                    elementType.setSuperTypeNames(superTypes);
+                }
+            }
+        }
+
+        return elementType;
+    }
+
+
+    /**
+     * Extract detail of the version of the element and the user's maintaining it.
+     *
+     * @param header audit header from the repository
+     * @return ElementVersions object
+     */
+    protected ElementVersions getElementVersions(InstanceAuditHeader header)
+    {
+        ElementVersions elementVersions = new ElementVersions();
+
+        elementVersions.setCreatedBy(header.getCreatedBy());
+        elementVersions.setCreateTime(header.getCreateTime());
+        elementVersions.setUpdatedBy(header.getUpdatedBy());
+        elementVersions.setUpdateTime(header.getUpdateTime());
+        elementVersions.setMaintainedBy(header.getMaintainedBy());
+        elementVersions.setVersion(header.getVersion());
+
+        return elementVersions;
+    }
+
+
+    /**
+     * Translate the repository services' InstanceProvenanceType to an ElementOrigin.
+     *
+     * @param instanceProvenanceType value from the repository services
+     * @return ElementOrigin enum
+     */
+    protected ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType)
+    {
+        if (instanceProvenanceType != null)
+        {
+            switch (instanceProvenanceType)
+            {
+                case DEREGISTERED_REPOSITORY:
+                    return ElementOriginCategory.DEREGISTERED_REPOSITORY;
+
+                case EXTERNAL_SOURCE:
+                    return ElementOriginCategory.EXTERNAL_SOURCE;
+
+                case EXPORT_ARCHIVE:
+                    return ElementOriginCategory.EXPORT_ARCHIVE;
+
+                case LOCAL_COHORT:
+                    return ElementOriginCategory.LOCAL_COHORT;
+
+                case CONTENT_PACK:
+                    return ElementOriginCategory.CONTENT_PACK;
+
+                case CONFIGURATION:
+                    return ElementOriginCategory.CONFIGURATION;
+
+                case UNKNOWN:
+                    return ElementOriginCategory.UNKNOWN;
+            }
+        }
+
+        return ElementOriginCategory.UNKNOWN;
+    }
+
+
+
+
     /**
      * Extract the qualifiedName property from the supplied instance properties.
      *
@@ -1123,6 +1545,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the contactType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string name or null
+     */
+    protected String removeContactType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeContactType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.CONTACT_TYPE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the contactMethodService property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -1181,6 +1625,30 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataAPIMapper.MISSION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+
+    /**
+     * Extract and delete the associationType property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeAssociationType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeAssociationType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.ASSOCIATION_TYPE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2078,6 +2546,49 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         return null;
     }
 
+
+    /**
+     * Retrieve the zoneName from the properties.
+     *
+     * @param instanceProperties properties from the entity
+     * @return zone name
+     */
+    protected String removeZoneName(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeZoneName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                              OpenMetadataAPIMapper.ZONE_NAME_PROPERTY_NAME,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the subjectAreaName from the properties.
+     *
+     * @param instanceProperties properties from the entity
+     * @return subject area name
+     */
+    protected String removeSubjectAreaName(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeSubjectAreaName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.SUBJECT_AREA_NAME_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
 
     /**
      * Retrieve the zone membership from the properties of the zone membership classification.
@@ -3001,6 +3512,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeBooleanProperty(serviceName,
                                                           OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                          instanceProperties,
+                                                          methodName);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Retrieve the isDefaultValue flag from the properties from the supplied instance properties.
+     *
+     * @param instanceProperties properties from the classification
+     * @return boolean - default is false
+     */
+    protected boolean removeIsDefaultValue(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeIsDefaultValue";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeBooleanProperty(serviceName,
+                                                          OpenMetadataAPIMapper.IS_DEFAULT_VALUE_PROPERTY_NAME,
                                                           instanceProperties,
                                                           methodName);
         }
@@ -3995,6 +4528,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+
+    /**
+     * Extract the "pronouns" property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from governance entities
+     * @return string property or null
+     */
+    protected String removePronouns(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removePronouns";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.PRONOUNS_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
     /**
      * Extract the text property from the supplied instance properties.
      *
@@ -4346,6 +4902,52 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
 
         return 0;
+    }
+
+
+    /**
+     * Extract and delete the measurement property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeMeasurement(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeMeasurement";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.MEASUREMENT_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the target property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeTarget(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeTarget";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.TARGET_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
     }
 
 
@@ -5212,7 +5814,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getIntProperty(serviceName,
-                                                   OpenMetadataAPIMapper.VALID_VALUES_CONFIDENCE_PROPERTY_NAME,
+                                                   OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
                                                    instanceProperties,
                                                    methodName);
         }
@@ -5234,7 +5836,52 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataAPIMapper.VALID_VALUES_STEWARD_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the stewardTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from ReferenceValueAssignment or ValidValuesMapping relationship
+     * @return string text or null
+     */
+    protected String getStewardTypeName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getStewardTypeName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                      instanceProperties,
+                                                      methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the stewardTypeName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from ReferenceValueAssignment or ValidValuesMapping relationship
+     * @return string text or null
+     */
+    protected String getStewardPropertyName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "getStewardPropertyName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.getStringProperty(serviceName,
+                                                      OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -5301,7 +5948,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataAPIMapper.VALID_VALUES_ASSOCIATION_DESCRIPTION_PROPERTY_NAME,
+                                                      OpenMetadataAPIMapper.ASSOCIATION_DESCRIPTION_PROPERTY_NAME,
                                                       instanceProperties,
                                                       methodName);
         }

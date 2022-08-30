@@ -24,28 +24,13 @@ public class MockAssetElement extends AssetElementHeader
 
 
     /**
-     * Bean constructor with parent asset
-     *
-     * @param parentAsset       descriptor for parent asset
-     * @param elementBaseBean bean containing properties
-     */
-    protected MockAssetElement(AssetDescriptor parentAsset,
-                               ElementBase elementBaseBean)
-    {
-        super(parentAsset, elementBaseBean);
-    }
-
-
-    /**
      * Copy/clone constructor.
      *
-     * @param parentAsset        descriptor for parent asset
      * @param assetElementHeader element to copy
      */
-    protected MockAssetElement(AssetDescriptor  parentAsset,
-                               MockAssetElement assetElementHeader)
+    protected MockAssetElement(MockAssetElement assetElementHeader)
     {
-        super(parentAsset, assetElementHeader);
+        super(assetElementHeader);
 
     }
 }

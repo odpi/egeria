@@ -24,10 +24,10 @@ import java.util.List;
  */
 public class FindRelationshipsByPropertyExecutor extends PageableRepositoryExecutorBase
 {
-    private InstanceProperties matchProperties;
-    private MatchCriteria      matchCriteria;
+    private final InstanceProperties matchProperties;
+    private final MatchCriteria      matchCriteria;
 
-    private RelationshipsAccumulator accumulator;
+    private final RelationshipsAccumulator accumulator;
 
 
     /**
