@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.http.HttpHelper;
 
 import java.util.ArrayList;
@@ -165,6 +166,7 @@ public class CreateSubjectAreasSample
                     if (subjectAreaGUID.equals(childGUID))
                     {
                         found = true;
+                        break;
                     }
                 }
 
@@ -422,6 +424,7 @@ public class CreateSubjectAreasSample
                     if (subjectAreaGUID.equals(relatedElement.getRelatedElement().getGUID()))
                     {
                         found = true;
+                        break;
                     }
                 }
 
@@ -485,6 +488,8 @@ public class CreateSubjectAreasSample
             {
                 if ("SubjectArea".equals(classification.getClassificationName()))
                 {
+                    found = true;
+
                     Map<String, Object> properties = classification.getClassificationProperties();
 
                     if ((properties == null) || (properties.isEmpty()))
@@ -520,10 +525,12 @@ public class CreateSubjectAreasSample
         /*
          * Retrieve the elements associated with the subject area and check they are
          */
-        //  subjectAreaManager.getSubjectAreaDefinitionByGUID()
+        List<ElementStub> members = subjectAreaManager.getMembersOfSubjectArea(clientUserId, SubjectAreaSampleDefinitions.PRODUCT.getSubjectAreaName(), 0, 0);
 
-
-
+        if ((members == null) || (members.isEmpty()))
+        {
+            errorExit("No classified elements for subject area " + SubjectAreaSampleDefinitions.PRODUCT.getSubjectAreaName());
+        }
     }
 
     private void errorExit(String errorMessage)
@@ -579,7 +586,7 @@ public class CreateSubjectAreasSample
      */
     public static void main(String[] args)
     {
-        String  serverName = "cocoMDS2";
+        String  serverName = "fvtMDS";
         String  serverURLRoot = "https://localhost:9443";
         String  clientUserId = "erinoverview";
 
@@ -606,7 +613,7 @@ public class CreateSubjectAreasSample
         System.out.println("Using userId: " + clientUserId);
         System.out.println();
 
-        HttpHelper.noStrictSSLIfConfigured();
+        HttpHelper.noStrictSSL();
 
 
         try

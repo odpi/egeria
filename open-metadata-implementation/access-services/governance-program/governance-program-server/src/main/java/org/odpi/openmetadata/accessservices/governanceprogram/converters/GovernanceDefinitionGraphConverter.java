@@ -150,14 +150,14 @@ public class GovernanceDefinitionGraphConverter<B> extends GovernanceProgramOMAS
                                 {
                                     metrics.add(element);
                                 }
-                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DRIVER_LINK_TYPE_NAME)) &&
-                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_POLICY_LINK_TYPE_NAME)) &&
+                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DRIVER_LINK_TYPE_NAME)) ||
+                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_POLICY_LINK_TYPE_NAME)) ||
                                          (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_CONTROL_LINK_TYPE_NAME)))
                                 {
 
                                     peers.add(element);
                                 }
-                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_RESPONSE_TYPE_NAME)) &&
+                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_RESPONSE_TYPE_NAME)) ||
                                          (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_IMPLEMENTATION_TYPE_NAME)))
                                 {
                                     if (primaryEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
