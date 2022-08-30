@@ -903,6 +903,8 @@ public class SubjectAreaRESTServices
                                                                                                                                               methodName);
                 List<ElementStub> definitions = elementStubConverter.getNewBeans(ElementStub.class, relationships, true, methodName);
                 subjectAreaDefinition.setAssociatedGovernanceDefinitions(definitions);
+
+                response.setProperties(subjectAreaDefinition);
             }
         }
         catch (Exception error)

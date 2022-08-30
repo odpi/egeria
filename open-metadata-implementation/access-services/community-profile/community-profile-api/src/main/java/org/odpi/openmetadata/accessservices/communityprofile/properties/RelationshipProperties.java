@@ -34,8 +34,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = StakeholderProperties.class, name = "StakeholderProperties"),
                 @JsonSubTypes.Type(value = ProfileLocationProperties.class, name = "ProfileLocationProperties"),
                 @JsonSubTypes.Type(value = AssetLocationProperties.class, name = "AssetLocationProperties"),
+                @JsonSubTypes.Type(value = CommunityMembershipProperties.class, name = "CommunityMembershipProperties"),
                 @JsonSubTypes.Type(value = AdjacentLocationProperties.class, name = "AdjacentLocationProperties"),
                 @JsonSubTypes.Type(value = NestedLocationProperties.class, name = "NestedLocationProperties"),
+                @JsonSubTypes.Type(value = ReferenceValueAssignmentProperties.class, name = "ReferenceValueAssignmentProperties"),
+                @JsonSubTypes.Type(value = ValidValueAssignmentProperties.class, name = "ValidValueAssignmentProperties"),
+                @JsonSubTypes.Type(value = ValidValueMembershipProperties.class, name = "ValidValueMembershipProperties"),
         })
 public class RelationshipProperties implements Serializable
 {
