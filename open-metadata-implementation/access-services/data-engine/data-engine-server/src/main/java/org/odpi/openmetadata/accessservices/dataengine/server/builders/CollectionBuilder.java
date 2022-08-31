@@ -13,10 +13,10 @@ public class CollectionBuilder extends ReferenceableBuilder {
 
     private final String collectionName;
 
-    public CollectionBuilder(String qualifiedName, String collectionName, String typeName,
-                             OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
+    public CollectionBuilder(String qualifiedName, String collectionName, String typeId, String typeName, OMRSRepositoryHelper repositoryHelper,
+                             String serviceName, String serverName) {
 
-        super(qualifiedName, typeName, repositoryHelper, serviceName, serverName);
+        super(qualifiedName, typeId, typeName, repositoryHelper, serviceName, serverName);
         this.collectionName = collectionName;
     }
     /**
