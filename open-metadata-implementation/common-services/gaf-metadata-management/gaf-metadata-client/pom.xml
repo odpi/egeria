@@ -7,9 +7,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>governance-engine</artifactId>
+        <artifactId>gaf-metadata-management</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.11-SNAPSHOT</version>
+        <version>3.12-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -17,15 +17,15 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Governance Engine OMAS Client</name>
+    <name>Metadata Store Service Client</name>
     <description>
-        Client library for the Governance Engine Open Metadata Access Service (OMAS).
+        Client library for the Metadata Store Service.
     </description>
 
-    <artifactId>governance-engine-client</artifactId>
+    <artifactId>gaf-metadata-client</artifactId>
 
     <dependencies>
 
@@ -46,22 +46,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-engine-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-engine-topic-connectors</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-api</artifactId>
+            <artifactId>gaf-metadata-api</artifactId>
         </dependency>
 
         <dependency>

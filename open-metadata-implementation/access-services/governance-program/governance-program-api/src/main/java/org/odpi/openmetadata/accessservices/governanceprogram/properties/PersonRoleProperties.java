@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -26,7 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = GovernanceRoleProperties.class, name = "GovernanceRoleProperties")
         })
-public abstract class PersonRoleProperties implements Serializable
+public class PersonRoleProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -40,6 +41,9 @@ public abstract class PersonRoleProperties implements Serializable
     private int                  headCount = 1;
 
     private Map<String, String>  additionalProperties = null;
+
+    private Date                 effectiveFrom = null;
+    private Date                 effectiveTo   = null;
 
     private String               typeName             = null;
     private Map<String, Object>  extendedProperties   = null;
@@ -70,6 +74,8 @@ public abstract class PersonRoleProperties implements Serializable
             this.headCount            = template.getHeadCount();
             this.headCountLimitSet    = template.getHeadCountLimitSet();
             this.additionalProperties = template.getAdditionalProperties();
+            this.effectiveFrom        = template.getEffectiveFrom();
+            this.effectiveTo          = template.getEffectiveTo();
             this.typeName             = template.getTypeName();
             this.extendedProperties   = template.getExtendedProperties();
         }
@@ -270,6 +276,49 @@ public abstract class PersonRoleProperties implements Serializable
     }
 
 
+    /**
+     * Return the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @return date object
+     */
+    public Date getEffectiveFrom()
+    {
+        return effectiveFrom;
+    }
+
+
+    /**
+     * Set up the date/time that this element is effective from (null means effective from the epoch).
+     *
+     * @param effectiveFrom date object
+     */
+    public void setEffectiveFrom(Date effectiveFrom)
+    {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+
+    /**
+     * Return the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @return date object
+     */
+    public Date getEffectiveTo()
+    {
+        return effectiveTo;
+    }
+
+
+    /**
+     * Set the date/time that element is effective to (null means that it is effective indefinitely into the future).
+     *
+     * @param effectiveTo date object
+     */
+    public void setEffectiveTo(Date effectiveTo)
+    {
+        this.effectiveTo = effectiveTo;
+    }
+
 
     /**
      * Return the open metadata type name of this object - this is used to create a subtype of
@@ -347,6 +396,8 @@ public abstract class PersonRoleProperties implements Serializable
                        ", headCountLimitSet=" + headCountLimitSet +
                        ", headCount=" + headCount +
                        ", additionalProperties=" + additionalProperties +
+                       ", effectiveFrom=" + effectiveFrom +
+                       ", effectiveTo=" + effectiveTo +
                        ", typeName='" + typeName + '\'' +
                        ", extendedProperties=" + extendedProperties +
                        '}';
@@ -379,6 +430,8 @@ public abstract class PersonRoleProperties implements Serializable
                        Objects.equals(title, that.title) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(additionalProperties, that.additionalProperties) &&
+                       Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                       Objects.equals(effectiveTo, that.effectiveTo) &&
                        Objects.equals(typeName, that.typeName) &&
                        Objects.equals(extendedProperties, that.extendedProperties);
     }
@@ -392,6 +445,6 @@ public abstract class PersonRoleProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, roleId, scope, title, description, headCountLimitSet, headCount, additionalProperties, typeName, extendedProperties);
+        return Objects.hash(qualifiedName, roleId, scope, title, description, headCountLimitSet, headCount, additionalProperties, effectiveFrom, effectiveTo, typeName, extendedProperties);
     }
 }

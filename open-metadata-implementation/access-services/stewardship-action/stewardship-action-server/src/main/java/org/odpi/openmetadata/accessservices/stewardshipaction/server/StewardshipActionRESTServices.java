@@ -149,6 +149,7 @@ public class StewardshipActionRESTServices
                                                      requestBody.getStewardPropertyName(),
                                                      requestBody.getSource(),
                                                      requestBody.getNotes(),
+                                                     instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                      methodName);
             }
             else
@@ -210,6 +211,7 @@ public class StewardshipActionRESTServices
                                                    element1GUIDParameter,
                                                    element2GUID,
                                                    element2GUIDParameter,
+                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                    methodName);
         }
         catch (Exception error)
@@ -269,6 +271,7 @@ public class StewardshipActionRESTServices
                                                   false,
                                                   true,
                                                   true,
+                                                  instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                   null,
                                                   methodName);
         }
@@ -328,6 +331,7 @@ public class StewardshipActionRESTServices
                                                        OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                        true,
                                                        true,
+                                                       instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                        null,
                                                        methodName);
         }
@@ -386,6 +390,7 @@ public class StewardshipActionRESTServices
                                                                           0,
                                                                           true,
                                                                           true,
+                                                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                           startFrom,
                                                                           pageSize,
                                                                           null,
@@ -559,6 +564,7 @@ public class StewardshipActionRESTServices
                                                       false,
                                                       true,
                                                       true,
+                                                      instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                       null,
                                                       methodName);
             }
@@ -627,6 +633,7 @@ public class StewardshipActionRESTServices
                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                          true,
                                          true,
+                                         instanceHandler.getSupportedZones(userId, serverName, methodName),
                                          OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
                                          OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
                                          null,
@@ -698,6 +705,7 @@ public class StewardshipActionRESTServices
                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
                                              true,
                                              true,
+                                             instanceHandler.getSupportedZones(userId, serverName, methodName),
                                              OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
                                              OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
                                              null,
@@ -749,6 +757,8 @@ public class StewardshipActionRESTServices
             ReferenceableHandler<ElementStub> handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
 
             List<ElementStub> elementStubs = handler.getAttachedElements(userId,
+                                                                         null,
+                                                                         null,
                                                                          consolidatedDuplicateGUID,
                                                                          guidParameterName,
                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
@@ -760,6 +770,7 @@ public class StewardshipActionRESTServices
                                                                          1,
                                                                          true,
                                                                          true,
+                                                                         instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                          startFrom,
                                                                          pageSize,
                                                                          null,
@@ -819,7 +830,8 @@ public class StewardshipActionRESTServices
                                                                          2,
                                                                          true,
                                                                          true,
-                                                                         null,
+                                                                        instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                        null,
                                                                          methodName);
             if (relationship != null)
             {
@@ -887,6 +899,7 @@ public class StewardshipActionRESTServices
                                            null,
                                            true,
                                            true,
+                                           instanceHandler.getSupportedZones(userId, serverName, methodName),
                                            null,
                                            methodName);
         }

@@ -22,7 +22,7 @@ The governance action metadata entity is used to coordinate
 the desired activity in the governance engine, record its current state and
 act as a record of the activity for future audits.
 
-Governance actions can be created through the [Governance Engine OMAS API](../user).
+Governance actions can be created through the [Metadata Store Service API](../user).
 Some governance services (for example, the 
 [Watchdog Governance Action Service](../../../../frameworks/governance-action-framework/docs/watchdog-governance-service.md))
 can create governance actions when they run.  
@@ -50,8 +50,8 @@ as soon as possible.
 
 ----
 
-* [Return to Governance Engine OMAS Concepts](.)
-* [Return to Governance Engine OMAS Overview](../..)
+* [Return to Metadata Store Service Concepts](.)
+* [Return to Metadata Store Service Overview](../..)
 
 
 

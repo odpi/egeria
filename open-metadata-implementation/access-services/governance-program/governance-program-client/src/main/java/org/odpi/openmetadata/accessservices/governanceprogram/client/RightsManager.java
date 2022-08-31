@@ -4,17 +4,15 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.RightsManagementInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.CertificateIdRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeResponse;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -26,15 +24,8 @@ import java.util.List;
 /**
  * RightsManager is the java client for managing license types and the licensing of elements.
  */
-public class RightsManager implements RightsManagementInterface
+public class RightsManager extends GovernanceProgramBaseClient implements RightsManagementInterface
 {
-    private final String                      serverName;               /* Initialized in constructor */
-    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -46,13 +37,7 @@ public class RightsManager implements RightsManagementInterface
     public RightsManager(String serverName,
                          String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -72,13 +57,7 @@ public class RightsManager implements RightsManagementInterface
                          String     userId,
                          String     password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -98,14 +77,7 @@ public class RightsManager implements RightsManagementInterface
                          int      maxPageSize,
                          AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
 
 
@@ -129,14 +101,7 @@ public class RightsManager implements RightsManagementInterface
                          int        maxPageSize,
                          AuditLog   auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
@@ -155,14 +120,7 @@ public class RightsManager implements RightsManagementInterface
                          GovernanceProgramRESTClient restClient,
                          int                         maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -192,28 +150,9 @@ public class RightsManager implements RightsManagementInterface
     {
         final String   methodName = "createLicenseType";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types";
-
-        final String   docIdParameterName = "documentIdentifier";
-        final String   titleParameterName = "title";
         final String   propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
-
-        LicenseTypeRequestBody requestBody = new LicenseTypeRequestBody();
-
-        requestBody.setProperties(properties);
-        requestBody.setInitialStatus(initialStatus);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        return restResult.getGUID();
+        return super.createGovernanceDefinition(userId, properties, propertiesParameterName, initialStatus, urlTemplate, methodName);
     }
 
 
@@ -230,9 +169,9 @@ public class RightsManager implements RightsManagementInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void updateLicenseType(String                      userId,
-                                  String                      licenseTypeGUID,
-                                  boolean                     isMergeUpdate,
+    public void updateLicenseType(String                userId,
+                                  String                licenseTypeGUID,
+                                  boolean               isMergeUpdate,
                                   LicenseTypeProperties properties) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
@@ -241,27 +180,40 @@ public class RightsManager implements RightsManagementInterface
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/update?isMergeUpdate={3}";
 
         final String guidParameterName = "licenseTypeGUID";
-        final String docIdParameterName = "documentIdentifier";
-        final String titleParameterName = "title";
         final String propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(licenseTypeGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        super.updateGovernanceDefinition(userId, licenseTypeGUID, guidParameterName, isMergeUpdate, properties, propertiesParameterName, urlTemplate, methodName);
+    }
 
-        if (! isMergeUpdate)
-        {
-            invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
-            invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
-        }
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        licenseTypeGUID,
-                                        isMergeUpdate);
+    /**
+     * Update the status of a license type
+     *
+     * @param userId calling user
+     * @param licenseTypeGUID identifier of the governance definition to change
+     * @param newStatus new status
+     *
+     * @throws InvalidParameterException guid, documentIdentifier or userId is null; documentIdentifier is not unique
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void setLicenseTypeStatus(String                     userId,
+                                     String                     licenseTypeGUID,
+                                     GovernanceDefinitionStatus newStatus) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String methodName = "setGovernanceDefinitionStatus";
+        final String guidParameterName = "licenseTypeGUID";
+        final String propertiesParameterName = "newStatus";
+
+        super.updateGovernanceDefinitionStatus(userId,
+                                               licenseTypeGUID,
+                                               guidParameterName,
+                                               newStatus,
+                                               propertiesParameterName,
+                                               methodName);
     }
 
 
@@ -285,15 +237,7 @@ public class RightsManager implements RightsManagementInterface
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/delete";
         final String guidParameterName = "licenseTypeGUID";
 
-        invalidParameterHandler.validateGUID(licenseTypeGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        licenseTypeGUID);
+        super.removeReferenceable(userId, licenseTypeGUID, guidParameterName, urlTemplate, methodName);
     }
 
 
@@ -395,7 +339,6 @@ public class RightsManager implements RightsManagementInterface
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-title?startFrom={2}&pageSize={3}";
         final String titleParameterName = "title";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(title, titleParameterName, methodName);
 
@@ -442,7 +385,6 @@ public class RightsManager implements RightsManagementInterface
         final String methodName = "getLicenseTypeByDomainId";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-domain/{2}?startFrom={3}&pageSize={4}";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
@@ -471,45 +413,43 @@ public class RightsManager implements RightsManagementInterface
      * @param licenseTypeGUID unique identifier for the license type
      * @param properties the properties of the license
      *
+     * @return unique identifier of the new relationship
+     *
      * @throws InvalidParameterException one of the properties is invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void licenseElement(String            userId,
-                               String            elementGUID,
-                               String            licenseTypeGUID,
-                               LicenseProperties properties) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public String licenseElement(String            userId,
+                                 String            elementGUID,
+                                 String            licenseTypeGUID,
+                                 LicenseProperties properties) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        final String methodName = "certifyElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/elements/{3}/license";
+        final String methodName = "licenseElement";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/license-types/{3}";
 
         final String elementGUIDParameterName = "elementGUID";
         final String licenseTypeGUIDParameterName = "licenseTypeGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(licenseTypeGUID, licenseTypeGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        licenseTypeGUID,
-                                        elementGUID);
+        return super.setupMultiLinkRelationship(userId,
+                                                elementGUID,
+                                                elementGUIDParameterName,
+                                                null,
+                                                properties,
+                                                licenseTypeGUID,
+                                                licenseTypeGUIDParameterName,
+                                                urlTemplate,
+                                                methodName);
     }
 
 
     /**
-     * Update the properties of a license.  Remember to include the licenseId in the properties if the element has multiple
-     * licenses for the same license type.
+     * Update the properties of a license.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the element being certified
-     * @param licenseTypeGUID unique identifier for the license type
+     * @param licenseGUID unique identifier for the license relationship
      * @param isMergeUpdate should the supplied properties overlay the existing properties or replace them
      * @param properties the properties of the license
      *
@@ -518,32 +458,26 @@ public class RightsManager implements RightsManagementInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void updateLicense(String                  userId,
-                              String                  elementGUID,
-                              String                  licenseTypeGUID,
-                              boolean                 isMergeUpdate,
+    public void updateLicense(String            userId,
+                              String            licenseGUID,
+                              boolean           isMergeUpdate,
                               LicenseProperties properties)  throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
         final String methodName = "updateLicense";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/elements/{3}/update?isMergeUpdate={4}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/licenses/{2}/update?isMergeUpdate={3}";
 
-        final String elementGUIDParameterName = "elementGUID";
-        final String licenseTypeGUIDParameterName = "licenseTypeGUID";
+        final String licenseGUIDParameterName = "licenseGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(licenseTypeGUID, licenseTypeGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        licenseTypeGUID,
-                                        elementGUID,
-                                        isMergeUpdate);
+        super.updateRelationship(userId,
+                                 licenseGUID,
+                                 licenseGUIDParameterName,
+                                 isMergeUpdate,
+                                 null,
+                                 properties,
+                                 urlTemplate,
+                                 methodName);
     }
 
 
@@ -551,9 +485,7 @@ public class RightsManager implements RightsManagementInterface
      * Remove the license for an element.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the element being certified
-     * @param licenseTypeGUID unique identifier for the license type
-     * @param certificateId optional unique identifier from the license authority - it is used to disambiguate the licenses for the element.
+     * @param licenseGUID unique identifier for the license relationship
      *
      * @throws InvalidParameterException one of the properties is invalid
      * @throws PropertyServerException problem accessing property server
@@ -561,32 +493,93 @@ public class RightsManager implements RightsManagementInterface
      */
     @Override
     public void unlicenseElement(String userId,
-                                 String elementGUID,
-                                 String licenseTypeGUID,
-                                 String certificateId)  throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+                                 String licenseGUID)  throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
-        final String methodName = "decertifyElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/elements/{3}/unlicense";
+        final String methodName = "unlicenseElement";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/licenses/{2}/delete";
 
-        final String elementGUIDParameterName = "elementGUID";
-        final String licenseTypeGUIDParameterName = "licenseTypeGUID";
+        final String licenseGUIDParameterName = "licenseGUID";
+
+        super.clearRelationship(userId,
+                                licenseGUID,
+                                licenseGUIDParameterName,
+                                null,
+                                urlTemplate,
+                                methodName);
+    }
+
+
+    /**
+     * Return information about the elements linked to a license.
+     *
+     * @param userId calling user
+     * @param licenseGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the subject area
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<RelatedElement> getLicensedElements(String userId,
+                                                    String licenseGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String methodName = "getLicencedElements";
+        final String guidParameter = "licenseGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/licenses/{2}?&startFrom={3}&pageSize={4}";
+
+        return super.getRelatedElements(userId, licenseGUID, guidParameter, urlTemplate, startFrom, pageSize, methodName);
+    }
+
+
+    /**
+     * Return information about the licenses linked to an element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier for the license
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the subject area
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<LicenseElement> getLicenses(String userId,
+                                            String elementGUID,
+                                            int    startFrom,
+                                            int    pageSize) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String methodName = "getLicences";
+        final String guidParameterName = "elementGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/licenses?&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(licenseTypeGUID, licenseTypeGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
 
-        CertificateIdRequestBody requestBody = new CertificateIdRequestBody();
+        int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        requestBody.setCertificateId(certificateId);
+        LicenseListResponse restResult = restClient.callLicenseListGetRESTCall(methodName,
+                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               elementGUID,
+                                                                               startFrom,
+                                                                               queryPageSize);
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        licenseTypeGUID,
-                                        elementGUID);
+        return restResult.getElements();
     }
 }
