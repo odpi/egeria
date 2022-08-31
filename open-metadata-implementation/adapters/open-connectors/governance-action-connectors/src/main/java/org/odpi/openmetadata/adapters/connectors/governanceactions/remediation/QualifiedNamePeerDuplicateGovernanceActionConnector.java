@@ -24,10 +24,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * DeduplicationGovernanceActionConnector checks the qualified name to determine the duplicates of the entity that is passed
+ * QualifiedNamePeerDuplicateGovernanceActionConnector checks the qualified name to determine the duplicates of the entity that is passed
  * as an action target.
  */
-public class DeduplicationGovernanceActionConnector extends RemediationGovernanceActionService {
+public class QualifiedNamePeerDuplicateGovernanceActionConnector extends RemediationGovernanceActionService {
     private static final String QUALIFIED_NAME_PROPERTY = "qualifiedName";
 
     /**
@@ -50,7 +50,7 @@ public class DeduplicationGovernanceActionConnector extends RemediationGovernanc
         try {
             if (governanceContext.getActionTargetElements() == null) {
                 completionStatus = CompletionStatus.FAILED;
-                outputGuards.add(DeduplicationGovernanceActionProvider.NO_TARGETS_DETECTED_GUARD);
+                outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.NO_TARGETS_DETECTED_GUARD);
             } else if (governanceContext.getActionTargetElements().size() == 1) {
                 ActionTargetElement actionTarget = governanceContext.getActionTargetElements().get(0);
                 OpenMetadataElement targetElement = actionTarget.getTargetElement();
@@ -66,7 +66,7 @@ public class DeduplicationGovernanceActionConnector extends RemediationGovernanc
                 if (elements != null) {
                     String targetElementGUID = targetElement.getElementGUID();
                     if (elements.size() == 1 && elements.get(0).getElementGUID().equalsIgnoreCase(targetElementGUID)) {
-                        outputGuards.add(DeduplicationGovernanceActionProvider.NO_DUPLICATION_DETECTED_GUARD);
+                        outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.NO_DUPLICATION_DETECTED_GUARD);
                         completionStatus = CompletionStatus.INVALID;
                     }
                     for (OpenMetadataElement duplicateAsset : elements) {
@@ -76,7 +76,7 @@ public class DeduplicationGovernanceActionConnector extends RemediationGovernanc
                         }
                         store.linkElementsAsPeerDuplicates(targetElementGUID, duplicateAssetGUID, 1,
                                 null, null, null, null, null, true);
-                        outputGuards.add(DeduplicationGovernanceActionProvider.DUPLICATE_ASSIGNED_GUARD);
+                        outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.DUPLICATE_ASSIGNED_GUARD);
                         completionStatus = CompletionStatus.ACTIONED;
                     }
                 }

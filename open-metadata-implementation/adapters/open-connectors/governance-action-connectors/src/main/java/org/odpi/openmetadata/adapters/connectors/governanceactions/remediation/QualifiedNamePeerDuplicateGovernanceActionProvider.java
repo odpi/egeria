@@ -9,10 +9,10 @@ import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService
 import java.util.ArrayList;
 
 /**
- * DeduplicationGovernanceActionProvider is the OCF connector provider for the Deduplication Governance Action Service.
+ * QualifiedNamePeerDuplicateGovernanceActionProvider is the OCF connector provider for the Deduplication Governance Action Service.
  * This is a Remediation Governance Action Service.
  */
-public class DeduplicationGovernanceActionProvider extends GovernanceActionServiceProviderBase
+public class QualifiedNamePeerDuplicateGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "346939c4-de2c-44aa-a044-0ec64df0560f";
     private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Remediation:Deduplication";
@@ -25,14 +25,14 @@ public class DeduplicationGovernanceActionProvider extends GovernanceActionServi
     static final String DUPLICATE_DETECTION_FAILED_GUARD = "duplicate-detection-failed";
     static final String NO_TARGETS_DETECTED_GUARD       = "no-targets-detected";
 
-    private static final String connectorClassName = DeduplicationGovernanceActionConnector.class.getName();
+    private static final String connectorClassName = QualifiedNamePeerDuplicateGovernanceActionConnector.class.getName();
 
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * store implementation.
      */
-    public DeduplicationGovernanceActionProvider()
+    public QualifiedNamePeerDuplicateGovernanceActionProvider()
     {
         super();
         super.setConnectorClassName(connectorClassName);
