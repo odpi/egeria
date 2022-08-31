@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Governance Engine Open Metadata Access Service (OMAS) Concepts
+# Metadata Store Service Concepts
 
-The concepts introduced by the Governance Engine OMAS are (in alphabetical order):
+The concepts introduced by the Metadata Store Service are (in alphabetical order):
 
 * [Governance Action](governance-action.md)
 * [Governance Action Process](governance-action-process.md)

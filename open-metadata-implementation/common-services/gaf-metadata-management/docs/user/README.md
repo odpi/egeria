@@ -2,7 +2,7 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
-# Governance Engine Open Metadata Access Service (OMAS) User Guide
+# Metadata Store Service User Guide
 
 ## Defining Governance Engines and Governance Services
 

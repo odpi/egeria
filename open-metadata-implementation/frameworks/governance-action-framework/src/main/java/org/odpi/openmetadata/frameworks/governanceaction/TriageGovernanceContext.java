@@ -20,7 +20,7 @@ import java.util.Date;
 public interface TriageGovernanceContext extends GovernanceContext
 {
     /**
-     * Create a To Do request for someone to work on.
+     * Create a "To Do" request for someone to work on.
      *
      * @param toDoQualifiedName unique name for the to do.  (Could be the engine name and a guid?)
      * @param title short meaningful phrase for the person receiving the request

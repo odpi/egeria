@@ -9,7 +9,7 @@
     <parent>
         <artifactId>common-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.11-SNAPSHOT</version>
+        <version>3.12-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -29,13 +29,11 @@
     <artifactId>gaf-metadata-management</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>governance-engine-api</module>
-        <module>governance-engine-client</module>
-        <module>governance-engine-topic-connectors</module>
-        <module>governance-engine-server</module>
-        <module>governance-engine-spring</module>
+        <module>gaf-metadata-api</module>
+        <module>gaf-metadata-client</module>
+        <module>gaf-metadata-server</module>
+        <module>gaf-metadata-spring</module>
     </modules>
-
 
     <dependencies>
 

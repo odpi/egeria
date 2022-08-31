@@ -17,7 +17,6 @@ jobs:
     if: startsWith(github.repository,'odpi/')
     steps:
       - uses: actions/checkout@v3
-
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.5.1
         with:

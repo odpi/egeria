@@ -35,14 +35,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = NoteLogEntryProperties.class, name = "NoteLogEntryProperties"),
                 @JsonSubTypes.Type(value = NoteLogHeaderProperties.class, name = "NoteLogHeaderProperties"),
                 @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
+                @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
                 @JsonSubTypes.Type(value = ResourceProperties.class, name = "ResourceProperties"),
+                @JsonSubTypes.Type(value = ToDoProperties.class, name = "ToDoProperties"),
                 @JsonSubTypes.Type(value = UserIdentityProperties.class, name = "UserIdentityProperties"),
                 @JsonSubTypes.Type(value = ValidValueProperties.class, name = "ValidValueProperties"),
         })
 public class ReferenceableProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
-
 
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
@@ -65,7 +66,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Copy/clone constructor.  Retrieves values from the supplied template
+     * Copy/clone constructor.  Retrieves the values from the supplied template
      *
      * @param template element to copy
      */

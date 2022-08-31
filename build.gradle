@@ -22,7 +22,7 @@ plugins {
         id "io.freefair.aggregate-javadoc" version "6.5.0.3"
         id "io.freefair.lombok" version "6.5.0.3"
         // Checks for unnecessary dependencies
-        id 'com.autonomousapps.dependency-analysis' version "1.12.0"
+        id 'com.autonomousapps.dependency-analysis' version "1.13.1"
         // helps resolve log implementation clashes
         id 'dev.jacomet.logging-capabilities' version "0.10.0"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
@@ -38,7 +38,7 @@ plugins {
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.11-SNAPSHOT'
+    version = '3.12-SNAPSHOT'
 
     // Mostly java, so default to this for now
     apply plugin: 'java'
@@ -85,7 +85,7 @@ allprojects {
         guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
-        hibernatevalidatorVersion = '6.2.3.Final'
+        hibernatevalidatorVersion = '6.2.4.Final'
         httpclientVersion = '4.5.13'
         httpcoreVersion = '4.4.15'
         jacksonVersion = '2.13.3'
@@ -97,7 +97,7 @@ allprojects {
         javassistVersion = '3.29.0-GA'
         jaxbVersion = '2.3.1'
         jenaVersion = '4.2.0'
-        jodatimeVersion = '2.10.14'
+        jodatimeVersion = '2.11.1'
         jsonldVersion = '0.13.4'
         junitVersion = '4.13.2'
         junitjupiterVersion = '5.9.0'
@@ -113,7 +113,7 @@ allprojects {
         mockitoVersion = '4.6.1'
         openlineageVersion = '0.12.0'
         plexusVersion = '3.4.2'
-        prometheusVersion = '1.9.2'
+        prometheusVersion = '1.9.3'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
@@ -123,12 +123,12 @@ allprojects {
         snakeyamlVersion = '1.30'
         snappyVersion = '1.1.8.4'
         spotbugsVersion = '4.7.1'
-        springbootVersion = '2.7.2'
-        springdocVersion = '1.6.9'
+        springdocVersion = '1.6.11'
+        springbootVersion = '2.7.3'
         springdataVersion = '2.7.2'
         springldapVersion = '2.4.1'
         swaggerVersion = '2.2.2'
-        springsecurityVersion = '5.7.2'
+        springsecurityVersion = '5.7.3'
         testngVersion = '7.6.1'
         springwebVersion = '5.3.22'
         thriftVersion = '0.16.0'
@@ -137,7 +137,7 @@ allprojects {
         validationVersion = '2.0.1.Final'
         antVersion = '1.10.12'
         gsonVersion = '2.9.1'
-        protobufVersion = '3.21.4'
+        protobufVersion = '3.21.5'
         jnrVersion = '3.1.15'
         cassandraVersion = '4.0.5'
         osgiVersion = '8.0.0'
