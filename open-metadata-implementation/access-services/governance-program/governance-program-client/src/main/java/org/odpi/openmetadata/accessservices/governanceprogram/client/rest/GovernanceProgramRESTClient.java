@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client.rest;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -12,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 /**
  * RESTClient is responsible for issuing calls to the Governance Program OMAS REST APIs.
  */
-public class GovernanceProgramRESTClient extends FFDCRESTClient
+public class GovernanceProgramRESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -88,57 +89,6 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a PersonalProfileResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return PersonalProfileResponse
-     * @throws InvalidParameterException the unique identifier of the governance officer is either null or invalid.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    public PersonalProfileResponse callPersonalProfileGetRESTCall(String    methodName,
-                                                                  String    urlTemplate,
-                                                                  Object... params) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
-    {
-        PersonalProfileResponse restResult = this.callGetRESTCall(methodName, PersonalProfileResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a list of PersonalProfileElement objects.
-     *
-     * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
-     * @return PersonalProfileListResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public PersonalProfileListResponse callPersonalProfileListGetRESTCall(String    methodName,
-                                                                          String    urlTemplate,
-                                                                          Object... params) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
-    {
-        PersonalProfileListResponse restResult = this.callGetRESTCall(methodName, PersonalProfileListResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
      * Issue a GET REST call that returns a CertificationTypeResponse object.
      *
      * @param methodName  name of the method being called
@@ -181,6 +131,31 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
                                                                                                        UserNotAuthorizedException
     {
         CertificationTypeListResponse restResult = this.callGetRESTCall(methodName, CertificationTypeListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a list of CertificationElement objects.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return CertificationListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public CertificationListResponse callCertificationListGetRESTCall(String    methodName,
+                                                                      String    urlTemplate,
+                                                                      Object... params) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        CertificationListResponse restResult = this.callGetRESTCall(methodName, CertificationListResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -370,6 +345,31 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
 
 
     /**
+     * Issue a GET REST call that returns a GovernanceDefinitionResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return GovernanceDefinitionResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public GovernanceDefinitionResponse callGovernanceDefinitionGetRESTCall(String    methodName,
+                                                                            String    urlTemplate,
+                                                                            Object... params) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        GovernanceDefinitionResponse restResult = this.callGetRESTCall(methodName, GovernanceDefinitionResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a GET REST call that returns a GovernanceDefinitionGraphResponse object.
      *
      * @param methodName  name of the method being called
@@ -444,6 +444,32 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
 
         return restResult;
     }
+
+
+    /**
+     * Issue a GET REST call that returns a GovernanceDomainSetListResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return GovernanceDomainSetResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public GovernanceDomainSetListResponse callGovernanceDomainSetListGetRESTCall(String    methodName,
+                                                                                  String    urlTemplate,
+                                                                                  Object... params) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        GovernanceDomainSetListResponse restResult = this.callGetRESTCall(methodName, GovernanceDomainSetListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
 
 
     /**
@@ -675,6 +701,32 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
     }
 
 
+
+    /**
+     * Issue a GET REST call that returns a list of LicenseElement objects.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return LicenseListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public LicenseListResponse callLicenseListGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        LicenseListResponse restResult = this.callGetRESTCall(methodName, LicenseListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
     /**
      * Issue a POST REST call that returns a list of LicenseTypeElement objects.
      *
@@ -703,6 +755,32 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
 
 
     /**
+     * Issue a GET REST call that returns a GovernanceStatusIdentifierResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return GovernanceStatusIdentifierResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public GovernanceStatusIdentifierResponse callStatusIdentifierGetRESTCall(String    methodName,
+                                                                              String    urlTemplate,
+                                                                              Object... params) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
+    {
+        GovernanceStatusIdentifierResponse restResult = this.callGetRESTCall(methodName, GovernanceStatusIdentifierResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
      * Issue a GET REST call that returns a GovernanceLevelIdentifierResponse object.
      *
      * @param methodName  name of the method being called
@@ -720,6 +798,59 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
                                                                                                      UserNotAuthorizedException
     {
         GovernanceLevelIdentifierResponse restResult = this.callGetRESTCall(methodName, GovernanceLevelIdentifierResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a GET REST call that returns a GovernanceStatusIdentifierSetResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return GovernanceStatusIdentifierSetResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public GovernanceStatusIdentifierSetResponse callStatusIdentifierSetGetRESTCall(String    methodName,
+                                                                                    String    urlTemplate,
+                                                                                    Object... params) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
+    {
+        GovernanceStatusIdentifierSetResponse restResult = this.callGetRESTCall(methodName, GovernanceStatusIdentifierSetResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+
+    /**
+     * Issue a GET REST call that returns a GovernanceStatusIdentifierSetListResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return GovernanceStatusIdentifierSetListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public GovernanceStatusIdentifierSetListResponse callStatusIdentifierSetListGetRESTCall(String    methodName,
+                                                                                            String    urlTemplate,
+                                                                                            Object... params) throws InvalidParameterException,
+                                                                                                                     PropertyServerException,
+                                                                                                                     UserNotAuthorizedException
+    {
+        GovernanceStatusIdentifierSetListResponse restResult = this.callGetRESTCall(methodName, GovernanceStatusIdentifierSetListResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -1064,30 +1195,7 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
 
 
 
-    /**
-     * Issue a GET REST call that returns a GovernanceZoneInActionResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return GovernanceZoneInActionResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public GovernanceZoneInActionResponse callGovernanceZoneInActionGetRESTCall(String    methodName,
-                                                                                    String    urlTemplate,
-                                                                                    Object... params) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
-    {
-        GovernanceZoneInActionResponse restResult = this.callGetRESTCall(methodName, GovernanceZoneInActionResponse.class, urlTemplate, params);
 
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
 
 
     /**
@@ -1223,4 +1331,85 @@ public class GovernanceProgramRESTClient extends FFDCRESTClient
 
         return restResult;
     }
+
+
+    /**
+     * Issue a GET REST call that returns a PersonRoleElement in a response object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public PersonRoleResponse callPersonRoleGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        PersonRoleResponse restResult = this.callGetRESTCall(methodName, PersonRoleResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a GET REST call that returns a list of PersonRoleElements in a response object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate   REST API call URL template with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public PersonRoleListResponse callPersonRoleListGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params)  throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        PersonRoleListResponse restResult = this.callGetRESTCall(methodName, PersonRoleListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a GET REST call that returns a RelatedElementListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public RelatedElementListResponse callRelatedElementListGetRESTCall(String    methodName,
+                                                                        String    urlTemplate,
+                                                                        Object... params) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        RelatedElementListResponse restResult = this.callGetRESTCall(methodName, RelatedElementListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
 }

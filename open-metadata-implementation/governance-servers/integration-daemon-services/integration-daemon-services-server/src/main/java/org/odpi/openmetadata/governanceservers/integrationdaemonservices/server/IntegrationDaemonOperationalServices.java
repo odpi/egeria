@@ -163,7 +163,7 @@ public class IntegrationDaemonOperationalServices
             }
 
             /*
-             * Create the thread that calls refresh on all of the connectors.
+             * Create the thread that calls refresh on all the connectors.
              */
             IntegrationDaemonThread integrationDaemonThread = new IntegrationDaemonThread(localServerName,
                                                                                           daemonConnectorHandlers,

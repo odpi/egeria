@@ -35,7 +35,7 @@ public class TestConnectionCheckedException
      */
     @Test public void testNewException()
     {
-        ConnectionCheckedException exception = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        ConnectionCheckedException exception = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                               reportingClassName,
                                                                               reportingActionDescription);
 
@@ -51,7 +51,7 @@ public class TestConnectionCheckedException
      */
     @Test public void testWrappingException()
     {
-        ConnectionCheckedException exception = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        ConnectionCheckedException exception = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                               reportingClassName,
                                                                               reportingActionDescription,
                                                                               reportedCaughtException);
@@ -69,12 +69,12 @@ public class TestConnectionCheckedException
      */
     @Test public void testHashCode()
     {
-        ConnectionCheckedException exception = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        ConnectionCheckedException exception = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                               reportingClassName,
                                                                               reportingActionDescription,
                                                                               reportedCaughtException);
 
-        ConnectionCheckedException exception2 = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        ConnectionCheckedException exception2 = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                                reportingClassName,
                                                                                reportingActionDescription,
                                                                                reportedCaughtException);

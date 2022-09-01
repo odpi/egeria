@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
@@ -611,7 +612,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
 
     /**
      * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
-     * metadata element when it was created.  However, it is possible to update a few properties, or replace all of them by
+     * metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
      * the value used in the replaceProperties flag.
      *
      * @param userId                 caller's userId

@@ -364,25 +364,30 @@ public class Certification extends Referenceable
     public String toString()
     {
         return "Certification{" +
-                "certificateGUID='" + certificateGUID + '\'' +
-                ", certificationTypeName='" + certificationTypeName + '\'' +
-                ", examiner='" + examiner + '\'' +
-                ", summary='" + summary + '\'' +
-                ", link=" + link +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", certificationConditions='" + certificationConditions + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", custodian='" + custodian + '\'' +
-                ", recipient='" + recipient + '\'' +
-                ", notes='" + notes + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "certificateGUID='" + certificateGUID + '\'' +
+                       ", certificationTypeName='" + certificationTypeName + '\'' +
+                       ", examiner='" + examiner + '\'' +
+                       ", summary='" + summary + '\'' +
+                       ", link=" + link +
+                       ", startDate=" + startDate +
+                       ", endDate=" + endDate +
+                       ", certificationConditions='" + certificationConditions + '\'' +
+                       ", createdBy='" + createdBy + '\'' +
+                       ", custodian='" + custodian + '\'' +
+                       ", recipient='" + recipient + '\'' +
+                       ", notes='" + notes + '\'' +
+                       ", URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
     }
 
 

@@ -190,16 +190,21 @@ public class InformalTag extends ElementBase
     public String toString()
     {
         return "InformalTag{" +
-                "public=" + isPublic +
-                ", isPrivateTag=" + isPrivateTag +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", user='" + user + '\'' +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", isPublic=" + isPublic +
+                       ", isPrivateTag=" + isPrivateTag +
+                       ", name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", user='" + user + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 

@@ -48,7 +48,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     </li>
  *     <li>
  *         encryptionMethod - Describes the encryption method to use (if any).  This is an open value allowing
- *         information needed by the connector user to retrieve all of the information they need to work with
+ *         information needed by the connector user to retrieve all the information they need to work with
  *         the endpoint.
  *     </li>
  *     <li>
@@ -87,19 +87,13 @@ public class Endpoint extends Referenceable
         final String        elementTypeName                 = "Endpoint";
         final long          elementTypeVersion              = 1;
         final String        elementTypeDescription          = "Description of the network address and related information needed to call a software service.";
-        final String        elementAccessServiceURL         = null;
-        final ElementOrigin elementOrigin                   = ElementOrigin.LOCAL_COHORT;
-        final String        elementHomeMetadataCollectionId = null;
 
         ElementType elementType = new ElementType();
 
-        elementType.setElementTypeId(elementTypeId);
-        elementType.setElementTypeName(elementTypeName);
-        elementType.setElementTypeVersion(elementTypeVersion);
-        elementType.setElementTypeDescription(elementTypeDescription);
-        elementType.setElementSourceServer(elementAccessServiceURL);
-        elementType.setElementOrigin(elementOrigin);
-        elementType.setElementMetadataCollectionId(elementHomeMetadataCollectionId);
+        elementType.setTypeId(elementTypeId);
+        elementType.setTypeName(elementTypeName);
+        elementType.setTypeVersion(elementTypeVersion);
+        elementType.setTypeDescription(elementTypeDescription);
 
         return elementType;
     }
@@ -259,21 +253,24 @@ public class Endpoint extends Referenceable
     public String toString()
     {
         return "Endpoint{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", address='" + address + '\'' +
-                ", protocol='" + protocol + '\'' +
-                ", encryptionMethod='" + encryptionMethod + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", address='" + address + '\'' +
+                       ", protocol='" + protocol + '\'' +
+                       ", encryptionMethod='" + encryptionMethod + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
     }
-
-
 
 
     /**

@@ -17,7 +17,7 @@ This documentation has moved to [https://odpi.github.io/egeria-docs](https://odp
 * [Gradle (to build Egeria)](Gradle.md)
 * [HTTPie and curl](HTTPie-Curl.md) - Command line tools for issuing REST API calls
 * [IntelliJ](IntelliJ.md) - Developer tool for working with the egeria content
-* [Jupyter Notebooks](Jupyter-Notebooks.md) - Interactive python environment used in the hands on labs
+* [Jupyter Notebooks](https://egeria-project.org/education/open-metadata-labs/overview/) - Interactive python environment used in the hands on labs
 * [Kubernetes](Kubernetes.md) - Orchestrating container environment - useful for production operation and hands-on labs
 * [Markdown](Markdown.md) - Website/document tagging language for documentation 
 * [Maven](Maven.md) - Build management

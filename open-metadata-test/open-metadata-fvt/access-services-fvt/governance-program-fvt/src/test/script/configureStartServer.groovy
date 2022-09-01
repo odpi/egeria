@@ -112,6 +112,18 @@ if(postRC2.equals(200)) {
 }
 
 
+// --- Enable OMAS - any errors here and we exit
+System.out.println("=== Enabling Project Management OMAS: " + serverMem + " ===");
+post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/project-management/no-topics" ).openConnection()
+post2.setRequestMethod("POST")
+post2.setRequestProperty("Content-Type", "application/json")
+postRC2 = post2.getResponseCode();
+println(postRC2);
+if(postRC2.equals(200)) {
+    println(post2.getInputStream().getText());
+}
+
+
 // --- Launch the server - any errors here and we exit
 System.out.println("=== Starting server: " + serverMem + " ===");
 post3 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/instance" ).openConnection()

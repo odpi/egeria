@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public abstract class PropertyBase implements Serializable
     /*
      * The Element header is only set when items are retrieved from the metadata repositories.
      */
-    private ElementHeader       elementHeader = null;
+    private ElementHeader elementHeader = null;
 
 
     /*
@@ -48,7 +49,7 @@ public abstract class PropertyBase implements Serializable
 
 
     /*
-     * Version number for this header.  This is used to ensure that all of the critical header information
+     * Version number for this header.  This is used to ensure that all the critical header information
      * in read in a back-level version of the ODF.  The default is 0 to indicate that the instance came from
      * a version of the OCF that does not have a version number encoded.
      */
@@ -83,7 +84,7 @@ public abstract class PropertyBase implements Serializable
     /**
      * Return the version of this header.  This is used by the OMAS to determine if it is back level and
      * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
+     * to receive all the header properties.
      *
      * @return long version number - the value is incremented each time a new non-informational field is added
      * to the audit header.
@@ -97,7 +98,7 @@ public abstract class PropertyBase implements Serializable
     /**
      * Return the version of this header.  This is used by the OMAS to determine if it is back level and
      * should not process events from a source that is more advanced because it does not have the ability
-     * to receive all of the header properties.
+     * to receive all the header properties.
      *
      * @param headerVersion long version number - the value is incremented each time a new non-informational field is added
      * to the audit header.

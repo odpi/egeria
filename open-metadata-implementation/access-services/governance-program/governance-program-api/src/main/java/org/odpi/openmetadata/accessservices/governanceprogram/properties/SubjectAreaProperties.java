@@ -12,6 +12,7 @@ public class SubjectAreaProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
+    private String subjectAreaName  = null;
     private String displayName      = null;
     private String description      = null;
     private String usage            = null;
@@ -39,12 +40,35 @@ public class SubjectAreaProperties extends ReferenceableProperties
 
         if (template != null)
         {
+            this.subjectAreaName = template.getSubjectAreaName();
             this.displayName = template.getDisplayName();
             this.description = template.getDescription();
             this.usage = template.getUsage();
             this.scope = template.getScope();
             this.domainIdentifier = template.getDomainIdentifier();
         }
+    }
+
+
+    /**
+     * Return the name of the subject area - this is added to the SubjectArea classification.
+     *
+     * @return string name
+     */
+    public String getSubjectAreaName()
+    {
+        return subjectAreaName;
+    }
+
+
+    /**
+     * Set up the name of the subject area - this is added to the SubjectArea classification.
+     *
+     * @param subjectAreaName string name
+     */
+    public void setSubjectAreaName(String subjectAreaName)
+    {
+        this.subjectAreaName = subjectAreaName;
     }
 
 
@@ -166,16 +190,17 @@ public class SubjectAreaProperties extends ReferenceableProperties
     @Override
     public String toString()
     {
-        return "GovernanceZoneProperties{" +
-                       "displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", criteria='" + usage + '\'' +
-                       ", scope='" + scope + '\'' +
-                       ", domainIdentifier=" + domainIdentifier +
-                       ", typeName='" + getTypeName() + '\'' +
+        return "SubjectAreaProperties{" +
+                       "typeName='" + getTypeName() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", subjectAreaName='" + subjectAreaName + '\'' +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", usage='" + usage + '\'' +
+                       ", scope='" + scope + '\'' +
+                       ", domainIdentifier=" + domainIdentifier +
                        '}';
     }
 
@@ -203,6 +228,7 @@ public class SubjectAreaProperties extends ReferenceableProperties
         }
         SubjectAreaProperties that = (SubjectAreaProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
+                       Objects.equals(subjectAreaName, that.subjectAreaName) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(usage, that.usage) &&
@@ -218,6 +244,6 @@ public class SubjectAreaProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getUsage(), getScope(), getDomainIdentifier());
+        return Objects.hash(super.hashCode(), getSubjectAreaName(), getDisplayName(), getDescription(), getUsage(), getScope(), getDomainIdentifier());
     }
 }

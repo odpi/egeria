@@ -13,6 +13,7 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * FileElement contains the properties and header for a file retrieved from the metadata repository.

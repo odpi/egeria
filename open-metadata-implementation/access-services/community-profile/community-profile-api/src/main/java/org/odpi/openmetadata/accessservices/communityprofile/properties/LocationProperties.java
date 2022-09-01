@@ -22,6 +22,7 @@ public class LocationProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
+    private String identifier  = null;
     private String displayName = null;
     private String description = null;
 
@@ -46,9 +47,32 @@ public class LocationProperties extends ReferenceableProperties
 
         if (template != null)
         {
+            identifier  = template.getIdentifier();
             displayName = template.getDisplayName();
             description = template.getDescription();
         }
+    }
+
+
+    /**
+     * Return the code value or symbol used to identify the location - typically unique.
+     *
+     * @return string identifier
+     */
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+
+    /**
+     * Set up the code value or symbol used to identify the location - typically unique.
+     *
+     * @param identifier string identifier
+     */
+    public void setIdentifier(String identifier)
+    {
+        this.identifier = identifier;
     }
 
 
@@ -105,7 +129,8 @@ public class LocationProperties extends ReferenceableProperties
     public String toString()
     {
         return "LocationProperties{" +
-                       "displayName='" + displayName + '\'' +
+                       "identifier='" + identifier + '\'' +
+                       ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -140,7 +165,8 @@ public class LocationProperties extends ReferenceableProperties
             return false;
         }
         LocationProperties that = (LocationProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
+        return Objects.equals(identifier, that.identifier) &&
+               Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description);
     }
 
@@ -153,6 +179,6 @@ public class LocationProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description);
+        return Objects.hash(super.hashCode(), identifier, displayName, description);
     }
 }

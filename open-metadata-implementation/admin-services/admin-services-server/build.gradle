@@ -18,6 +18,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
     implementation project(':open-metadata-implementation:repository-services:repository-services-implementation')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-server')
+    implementation project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-server')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-server')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-registration')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-server')

@@ -4488,7 +4488,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
-    // Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+    // Return all the relationships and intermediate entities that connect the startEntity with the endEntity.
     @Override
     public  InstanceGraph getLinkingEntities(String                    userId,
                                              String                    startEntityGUID,

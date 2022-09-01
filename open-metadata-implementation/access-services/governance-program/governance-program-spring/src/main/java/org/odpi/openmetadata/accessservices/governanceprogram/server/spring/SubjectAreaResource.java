@@ -4,15 +4,20 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelatedElementListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaDefinitionResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.SubjectAreaRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
+
 
 /**
  * The SubjectAreasResource provides a Spring based server-side REST API
@@ -28,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class SubjectAreaResource
 {
-    private SubjectAreaRESTServices  restAPI = new SubjectAreaRESTServices();
+    private final SubjectAreaRESTServices  restAPI = new SubjectAreaRESTServices();
 
     /**
      * Default constructor
@@ -43,7 +48,7 @@ public class SubjectAreaResource
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param requestBody other properties for a subject area
+     * @param requestBody properties to store
      *
      * @return unique identifier of the new subject area or
      * InvalidParameterException full path or userId is null or
@@ -52,9 +57,9 @@ public class SubjectAreaResource
      */
     @PostMapping(path = "/subject-areas")
 
-    public GUIDResponse createSubjectArea(@PathVariable String                serverName,
-                                          @PathVariable String                userId,
-                                          @RequestBody  SubjectAreaProperties requestBody)
+    public GUIDResponse createSubjectArea(@PathVariable String                   serverName,
+                                          @PathVariable String                   userId,
+                                          @RequestBody  ReferenceableRequestBody requestBody)
     {
         return restAPI.createSubjectArea(serverName, userId, requestBody);
     }
@@ -76,11 +81,11 @@ public class SubjectAreaResource
      */
     @PostMapping(path = "/subject-areas/{subjectAreaGUID}")
 
-    public VoidResponse updateSubjectArea(@PathVariable String                serverName,
-                                          @PathVariable String                userId,
-                                          @PathVariable String                subjectAreaGUID,
-                                          @RequestParam boolean               isMergeUpdate,
-                                          @RequestBody  SubjectAreaProperties requestBody)
+    public VoidResponse updateSubjectArea(@PathVariable String                   serverName,
+                                          @PathVariable String                   userId,
+                                          @PathVariable String                   subjectAreaGUID,
+                                          @RequestParam boolean                  isMergeUpdate,
+                                          @RequestBody  ReferenceableRequestBody requestBody)
     {
         return restAPI.updateSubjectArea(serverName, userId, subjectAreaGUID, isMergeUpdate, requestBody);
     }
@@ -92,7 +97,7 @@ public class SubjectAreaResource
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param subjectAreaGUID unique identifier of subject area
-     * @param requestBody null requestBody
+     * @param requestBody external source requestBody
      *
      * @return void or
      *  InvalidParameterException guid or userId is null; guid is not known
@@ -105,7 +110,7 @@ public class SubjectAreaResource
                                           @PathVariable String          userId,
                                           @PathVariable String          subjectAreaGUID,
                                           @RequestBody(required = false)
-                                                        NullRequestBody requestBody)
+                                                  ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteSubjectArea(serverName, userId, subjectAreaGUID, requestBody);
     }
@@ -119,21 +124,21 @@ public class SubjectAreaResource
      * @param userId calling user
      * @param parentSubjectAreaGUID unique identifier of the parent subject area
      * @param childSubjectAreaGUID unique identifier of the child subject area
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/nested-subject area/{childSubjectAreaGUID}/link")
+    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/nested-subject-area/{childSubjectAreaGUID}/link")
 
     public VoidResponse linkSubjectAreasInHierarchy(@PathVariable String          serverName,
                                                     @PathVariable String          userId,
                                                     @PathVariable String          parentSubjectAreaGUID,
                                                     @PathVariable String          childSubjectAreaGUID,
                                                     @RequestBody(required = false)
-                                                                  NullRequestBody requestBody)
+                                                            RelationshipRequestBody requestBody)
     {
         return restAPI.linkSubjectAreasInHierarchy(serverName, userId, parentSubjectAreaGUID, childSubjectAreaGUID, requestBody);
     }
@@ -146,21 +151,21 @@ public class SubjectAreaResource
      * @param userId calling user
      * @param parentSubjectAreaGUID unique identifier of the parent subject area
      * @param childSubjectAreaGUID unique identifier of the child subject area
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/nested-subject area/{childSubjectAreaGUID}/unlink")
+    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/nested-subject-area/{childSubjectAreaGUID}/unlink")
 
     public VoidResponse unlinkSubjectAreasInHierarchy(@PathVariable String          serverName,
                                                       @PathVariable String          userId,
                                                       @PathVariable String          parentSubjectAreaGUID,
                                                       @PathVariable String          childSubjectAreaGUID,
                                                       @RequestBody(required = false)
-                                                                    NullRequestBody requestBody)
+                                                                    RelationshipRequestBody requestBody)
     {
         return restAPI.unlinkSubjectAreasInHierarchy(serverName, userId, parentSubjectAreaGUID, childSubjectAreaGUID, requestBody);
     }
@@ -173,7 +178,7 @@ public class SubjectAreaResource
      * @param userId calling user
      * @param subjectAreaGUID unique identifier of the subject area
      * @param definitionGUID unique identifier of the governance definition
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -187,7 +192,7 @@ public class SubjectAreaResource
                                                               @PathVariable String          subjectAreaGUID,
                                                               @PathVariable String          definitionGUID,
                                                               @RequestBody(required = false)
-                                                                            NullRequestBody requestBody)
+                                                                            RelationshipRequestBody requestBody)
     {
         return restAPI.linkSubjectAreaToGovernanceDefinition(serverName, userId, subjectAreaGUID, definitionGUID, requestBody);
     }
@@ -200,7 +205,7 @@ public class SubjectAreaResource
      * @param userId calling user
      * @param subjectAreaGUID unique identifier of the subject area
      * @param definitionGUID unique identifier of the governance definition
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -214,7 +219,7 @@ public class SubjectAreaResource
                                                                   @PathVariable String          subjectAreaGUID,
                                                                   @PathVariable String          definitionGUID,
                                                                   @RequestBody(required = false)
-                                                                                NullRequestBody requestBody)
+                                                                                RelationshipRequestBody requestBody)
     {
         return restAPI.unlinkSubjectAreaFromGovernanceDefinition(serverName, userId, subjectAreaGUID, definitionGUID, requestBody);
     }
@@ -309,5 +314,79 @@ public class SubjectAreaResource
                                                                         @PathVariable String subjectAreaGUID)
     {
         return restAPI.getSubjectAreaDefinitionByGUID(serverName, userId, subjectAreaGUID);
+    }
+
+
+    /**
+     * Add a subject area classification to a referenceable element.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element
+     * @param requestBody identifier for a subject area
+     *
+     * @return void or
+     *  InvalidParameterException qualifiedName or userId is null; qualifiedName is not unique
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/subject-area")
+
+    public VoidResponse addSubjectAreaMemberClassification(@PathVariable String                    serverName,
+                                                           @PathVariable String                    userId,
+                                                           @PathVariable String                    elementGUID,
+                                                           @RequestBody  ClassificationRequestBody requestBody)
+    {
+        return restAPI.addSubjectAreaMemberClassification(serverName, userId, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a subject area classification from a referenceable.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element
+     * @param requestBody external source request body
+     *
+     * @return void or
+     *  InvalidParameterException guid or userId is null; guid is not known
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/subject-area/delete")
+
+    public VoidResponse deleteSubjectAreaMemberClassification(@PathVariable String                    serverName,
+                                                              @PathVariable String                    userId,
+                                                              @PathVariable String                    elementGUID,
+                                                              @RequestBody  ExternalSourceRequestBody requestBody)
+    {
+        return restAPI.deleteSubjectAreaMemberClassification(serverName, userId, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param subjectAreaName unique identifier for the subject area
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of subject area members or
+     *  InvalidParameterException qualifiedName or userId is null
+     *  PropertyServerException problem accessing property server
+     *  UserNotAuthorizedException security access problem
+     */
+    @GetMapping(path = "/subject-areas/{subjectAreaName}/members")
+
+    public ElementStubListResponse getMembersOfSubjectArea(@PathVariable String serverName,
+                                                           @PathVariable String userId,
+                                                           @PathVariable String subjectAreaName,
+                                                           @RequestParam int    startFrom,
+                                                           @RequestParam int    pageSize)
+    {
+        return restAPI.getMembersOfSubjectArea(serverName, userId, subjectAreaName, startFrom, pageSize);
     }
 }

@@ -48,47 +48,13 @@ public class VirtualConnectionProperties extends ConnectionProperties
 
 
     /**
-     * Bean constructor with parent asset
+     * Copy/clone Constructor to return a copy of a connection object that is connected to an asset.
      *
-     * @param parentAsset description of the asset that this connection is attached to.
-     * @param connectionBean bean containing the properties
-     */
-    public VirtualConnectionProperties(AssetDescriptor parentAsset,
-                                       VirtualConnection connectionBean)
-    {
-        super(parentAsset, connectionBean);
-
-        if (connectionBean == null)
-        {
-            this.connectionBean = new VirtualConnection();
-        }
-        else
-        {
-            this.connectionBean = connectionBean;
-        }
-    }
-
-
-    /**
-     * Copy/clone Constructor to return a copy of a connection object that is not connected to an asset.
-     *
-     * @param templateConnection Connection to copy
+     * @param templateConnection template object to copy.
      */
     public VirtualConnectionProperties(VirtualConnectionProperties templateConnection)
     {
-        this(null, templateConnection);
-    }
-
-
-    /**
-     * Copy/clone Constructor to return a copy of a connection object that is connected to an asset.
-     *
-     * @param parentAsset description of the asset that this connection is attached to.
-     * @param templateConnection template object to copy.
-     */
-    public VirtualConnectionProperties(AssetDescriptor parentAsset, VirtualConnectionProperties templateConnection)
-    {
-        super(parentAsset, templateConnection);
+        super(templateConnection);
 
         if (templateConnection == null)
         {
@@ -102,7 +68,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
 
 
     /**
-     * Return the bean with all of the properties.
+     * Return the bean with all the properties.
      *
      * @return connection bean
      */
@@ -132,7 +98,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
 
             for (EmbeddedConnection embeddedConnectionBean : embeddedConnectionBeans)
             {
-                embeddedConnectionPropertiesList.add(new EmbeddedConnectionProperties(super.getParentAsset(), embeddedConnectionBean));
+                embeddedConnectionPropertiesList.add(new EmbeddedConnectionProperties(embeddedConnectionBean));
             }
 
             return embeddedConnectionPropertiesList;
@@ -210,7 +176,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
         }
         else
         {
-            return new ConnectorTypeProperties(super.getParentAsset(), connectorType);
+            return new ConnectorTypeProperties(connectorType);
         }
     }
 
@@ -231,7 +197,7 @@ public class VirtualConnectionProperties extends ConnectionProperties
         }
         else
         {
-            return new EndpointProperties(super.getParentAsset(), endpoint);
+            return new EndpointProperties(endpoint);
         }
     }
 

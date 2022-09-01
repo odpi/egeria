@@ -1049,7 +1049,7 @@ public class GovernanceConfigurationHandler
                                                                                              governanceEngineGUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
                                                                                              OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
-                                                                                             2,
+                                                                                             1,
                                                                                              false,
                                                                                              false,
                                                                                              null,

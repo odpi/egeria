@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * CertificationTypeElement contains the properties and header for a certification type retrieved from the metadata repository.
@@ -25,9 +25,9 @@ public class CertificationTypeElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader                  elementHeader      = null;
-    private CertificationTypeProperties    properties         = null;
-    private List<ExternalReferenceElement> externalReferences = null;
+    private ElementHeader               elementHeader  = null;
+    private CertificationTypeProperties properties     = null;
+    private RelatedElement              relatedElement = null;
 
 
     /**
@@ -50,7 +50,7 @@ public class CertificationTypeElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
-            externalReferences = template.getExternalReferences();
+            relatedElement = template.getRelatedElement();
         }
     }
 
@@ -102,35 +102,26 @@ public class CertificationTypeElement implements MetadataElement, Serializable
 
 
     /**
-     * Return details of the external references that have been linked to this governance definition.
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @return list of links to external references
+     * @return list of element stubs
      */
-    public List<ExternalReferenceElement> getExternalReferences()
+    public RelatedElement getRelatedElement()
     {
-        if (externalReferences == null)
-        {
-            return null;
-        }
-        else if (externalReferences.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return externalReferences;
-        }
+        return relatedElement;
     }
 
 
     /**
-     * Set up the details of the external references that have been linked to this governance definition.
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @param externalReferences list of links to external references
+     * @param relatedElement relationship details
      */
-    public void setExternalReferneces(List<ExternalReferenceElement> externalReferences)
+    public void setRelatedElement(RelatedElement relatedElement)
     {
-        this.externalReferences = externalReferences;
+        this.relatedElement = relatedElement;
     }
 
 
@@ -145,7 +136,7 @@ public class CertificationTypeElement implements MetadataElement, Serializable
         return "CertificationTypeElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
-                       ", externalReferences=" + externalReferences +
+                       ", relatedElement=" + relatedElement +
                        '}';
     }
 
@@ -170,7 +161,7 @@ public class CertificationTypeElement implements MetadataElement, Serializable
         CertificationTypeElement that = (CertificationTypeElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(externalReferences, that.externalReferences);
+                       Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -182,6 +173,6 @@ public class CertificationTypeElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, externalReferences);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
     }
 }

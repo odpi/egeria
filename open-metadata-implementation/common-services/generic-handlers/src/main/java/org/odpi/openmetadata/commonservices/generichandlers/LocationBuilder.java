@@ -13,6 +13,7 @@ import java.util.Map;
  */
 public class LocationBuilder extends ReferenceableBuilder
 {
+    private String identifier = null;
     private String displayName = null;
     private String description = null;
    
@@ -21,6 +22,7 @@ public class LocationBuilder extends ReferenceableBuilder
      * Create constructor
      *
      * @param qualifiedName unique name for the location
+     * @param identifier code value or symbol used to identify the location - typically unique.
      * @param displayName short display name for the location
      * @param description description of the location
      * @param additionalProperties additional properties for a location
@@ -32,6 +34,7 @@ public class LocationBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     LocationBuilder(String               qualifiedName,
+                    String               identifier,
                     String               displayName,
                     String               description,
                     Map<String, String>  additionalProperties,
@@ -51,6 +54,7 @@ public class LocationBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
+        this.identifier = identifier;
         this.displayName = displayName;
         this.description = description;
     }
@@ -60,6 +64,7 @@ public class LocationBuilder extends ReferenceableBuilder
      * Create constructor
      *
      * @param qualifiedName unique name for the location
+     * @param identifier code value or symbol used to identify the location - typically unique.
      * @param displayName short display name for the location
      * @param description description of the location
      * @param repositoryHelper helper methods
@@ -67,6 +72,7 @@ public class LocationBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     LocationBuilder(String               qualifiedName,
+                    String               identifier,
                     String               displayName,
                     String               description,
                     OMRSRepositoryHelper repositoryHelper,
@@ -82,6 +88,7 @@ public class LocationBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
+        this.identifier = identifier;
         this.displayName = displayName;
         this.description = description;
     }
@@ -117,6 +124,12 @@ public class LocationBuilder extends ReferenceableBuilder
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
+                                                                  identifier,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

@@ -163,7 +163,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                         Map<String, String> requestParameters = new HashMap<>();
 
                         requestParameters.put("RelationshipGUID", relatedMetadataElements.getRelationshipGUID());
-                        requestParameters.put("RelationshipTypeName", relatedMetadataElements.getRelationshipType().getElementTypeName());
+                        requestParameters.put("RelationshipTypeName", relatedMetadataElements.getRelationshipType().getTypeName());
 
                         List<NewActionTarget> actionTargets = new ArrayList<>();
 

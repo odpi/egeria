@@ -3,7 +3,14 @@
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LocationElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.AdjacentLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.DigitalLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.FixedLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.LocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.NestedLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileLocationProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.SecureLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -21,6 +28,8 @@ public interface LocationManagementInterface
      * type of location.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -30,6 +39,8 @@ public interface LocationManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createLocation(String             userId,
+                          String             externalSourceGUID,
+                          String             externalSourceName,
                           LocationProperties locationProperties) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException;
@@ -40,6 +51,8 @@ public interface LocationManagementInterface
      * The template defines additional classifications and relationships that should be added to the new location.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -50,6 +63,8 @@ public interface LocationManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     String createLocationFromTemplate(String             userId,
+                                      String             externalSourceGUID,
+                                      String             externalSourceName,
                                       String             templateGUID,
                                       TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
@@ -60,8 +75,10 @@ public interface LocationManagementInterface
      * Update the metadata element representing a location.
      *
      * @param userId calling user
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param locationProperties new properties for this element
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -69,8 +86,10 @@ public interface LocationManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void updateLocation(String             userId,
-                        boolean            isMergeUpdate,
+                        String             externalSourceGUID,
+                        String             externalSourceName,
                         String             locationGUID,
+                        boolean            isMergeUpdate,
                         LocationProperties locationProperties) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException;
@@ -80,30 +99,30 @@ public interface LocationManagementInterface
      * Classify the location to indicate that it represents a fixed physical location.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationGUID unique identifier of the metadata element to classify
-     * @param coordinates position of the location
-     * @param mapProjection map projection used to define the coordinates
-     * @param postalAddress postal address of the location (if appropriate)
-     * @param timeZone time zone for the location
+     * @param properties time zone and position of the location
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setLocationAsFixedPhysical(String userId,
-                                    String locationGUID,
-                                    String coordinates,
-                                    String mapProjection,
-                                    String postalAddress,
-                                    String timeZone) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
+    void setLocationAsFixedPhysical(String                  userId,
+                                    String                  externalSourceGUID,
+                                    String                  externalSourceName,
+                                    String                  locationGUID,
+                                    FixedLocationProperties properties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**
      * Remove the fixed physical location designation from the location.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationGUID unique identifier of the metadata element to unclassify
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -111,6 +130,8 @@ public interface LocationManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void clearLocationAsFixedPhysical(String userId,
+                                      String externalSourceGUID,
+                                      String externalSourceName,
                                       String locationGUID) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException;
@@ -120,26 +141,30 @@ public interface LocationManagementInterface
      * Classify the location to indicate that it represents a secure location.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationGUID unique identifier of the metadata element to classify
-     * @param description description of security at the site
-     * @param level level of security
+     * @param properties properties of security at the site
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setLocationAsSecure(String userId,
-                             String locationGUID,
-                             String description,
-                             String level) throws InvalidParameterException,
-                                                  UserNotAuthorizedException,
-                                                  PropertyServerException;
+    void setLocationAsSecure(String                   userId,
+                             String                   externalSourceGUID,
+                             String                   externalSourceName,
+                             String                   locationGUID,
+                             SecureLocationProperties properties) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
      * Remove the secure location designation from the location.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationGUID unique identifier of the metadata element to unclassify
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -147,6 +172,8 @@ public interface LocationManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void clearLocationAsSecure(String userId,
+                               String externalSourceGUID,
+                               String externalSourceName,
                                String locationGUID) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException;
@@ -156,24 +183,30 @@ public interface LocationManagementInterface
      * Classify the location to indicate that it represents a digital/cyber location.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationGUID unique identifier of the metadata element to classify
-     * @param networkAddress position of the location
+     * @param properties address of the location
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setLocationAsDigital(String userId,
-                              String locationGUID,
-                              String networkAddress) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
+    void setLocationAsDigital(String                    userId,
+                              String                    locationGUID,
+                              String                    externalSourceGUID,
+                              String                    externalSourceName,
+                              DigitalLocationProperties properties) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 
 
     /**
      * Remove the digital/cyber location designation from the location.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationGUID unique identifier of the metadata element to unclassify
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -181,49 +214,43 @@ public interface LocationManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void clearLocationAsDigital(String userId,
+                                String externalSourceGUID,
+                                String externalSourceName,
                                 String locationGUID) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException;
 
 
     /**
-     * Remove the metadata element representing a location.
-     *
-     * @param userId calling user
-     * @param locationGUID unique identifier of the metadata element to remove
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    void removeLocation(String userId,
-                        String locationGUID) throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException;
-
-
-    /**
      * Create a parent-child relationship between two locations.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param parentLocationGUID unique identifier of the location that is the broader location
      * @param childLocationGUID unique identifier of the location that is the smaller, nested location
+     * @param properties relationship properties
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupNestedLocation(String userId,
-                             String parentLocationGUID,
-                             String childLocationGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException;
+    void setupNestedLocation(String                   userId,
+                             String                   externalSourceGUID,
+                             String                   externalSourceName,
+                             String                   parentLocationGUID,
+                             String                   childLocationGUID,
+                             NestedLocationProperties properties) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
      * Remove a parent-child relationship between two locations.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param parentLocationGUID unique identifier of the location that is the broader location
      * @param childLocationGUID unique identifier of the location that is the smaller, nested location
      *
@@ -232,6 +259,8 @@ public interface LocationManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void clearNestedLocation(String userId,
+                             String externalSourceGUID,
+                             String externalSourceName,
                              String parentLocationGUID,
                              String childLocationGUID) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
@@ -242,24 +271,32 @@ public interface LocationManagementInterface
      * Create a peer-to-peer relationship between two locations.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationOneGUID unique identifier of the first location
      * @param locationTwoGUID unique identifier of the second location
+     * @param properties relationship properties
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupAdjacentLocation(String userId,
-                               String locationOneGUID,
-                               String locationTwoGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException;
+    void setupAdjacentLocation(String                     userId,
+                               String                     externalSourceGUID,
+                               String                     externalSourceName,
+                               String                     locationOneGUID,
+                               String                     locationTwoGUID,
+                               AdjacentLocationProperties properties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
 
 
     /**
      * Remove a peer-to-peer relationship between two locations.
      *
      * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
      * @param locationOneGUID unique identifier of the first location
      * @param locationTwoGUID unique identifier of the second location
      *
@@ -268,10 +305,125 @@ public interface LocationManagementInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     void clearAdjacentLocation(String userId,
+                               String externalSourceGUID,
+                               String externalSourceName,
                                String locationOneGUID,
                                String locationTwoGUID) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException;
+
+
+    /**
+     * Create a profile location relationship between an actor profile and a location.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param actorProfileGUID unique identifier of the actor profile
+     * @param locationGUID unique identifier of the  location
+     * @param properties type of association with the location
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setupProfileLocation(String                    userId,
+                              String                    externalSourceGUID,
+                              String                    externalSourceName,
+                              String                    actorProfileGUID,
+                              String                    locationGUID,
+                              ProfileLocationProperties properties) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
+
+
+    /**
+     * Remove a profile location relationship between an actor profile and a location.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param actorProfileGUID unique identifier of the actor profile
+     * @param locationGUID unique identifier of the  location
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearProfileLocation(String userId,
+                              String externalSourceGUID,
+                              String externalSourceName,
+                              String actorProfileGUID,
+                              String locationGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException;
+
+
+
+    /**
+     * Create an asset location relationship between an asset and a location.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param assetGUID unique identifier of the actor profile
+     * @param locationGUID unique identifier of the  location
+     * @param properties type of association with the location
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setupAssetLocation(String                  userId,
+                            String                  externalSourceGUID,
+                            String                  externalSourceName,
+                            String                  assetGUID,
+                            String                  locationGUID,
+                            AssetLocationProperties properties) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
+
+
+    /**
+     * Remove an asset location relationship between an asset and a location.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param assetGUID unique identifier of the asset
+     * @param locationGUID unique identifier of the  location
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearAssetLocation(String userId,
+                            String externalSourceGUID,
+                            String externalSourceName,
+                            String assetGUID,
+                            String locationGUID) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException;
+
+
+    /**
+     * Remove the metadata element representing a location.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param locationGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void removeLocation(String userId,
+                        String externalSourceGUID,
+                        String externalSourceName,
+                        String locationGUID) throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException;
 
 
 
@@ -299,7 +451,7 @@ public interface LocationManagementInterface
 
 
     /**
-     * Retrieve the list of location metadata elements with a matching qualified or display name.
+     * Retrieve the list of location metadata elements with a matching qualified name, identifier or display name.
      * There are no wildcards supported on this request.
      *
      * @param userId calling user
@@ -319,6 +471,136 @@ public interface LocationManagementInterface
                                              int    pageSize) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException;
+
+
+    /**
+     * Retrieve the list of adjacent location metadata elements linked to locationGUID.
+     *
+     * @param userId calling user
+     * @param locationGUID locationGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<LocationElement> getAdjacentLocations(String userId,
+                                               String locationGUID,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
+
+
+    /**
+     * Retrieve the list of nested location metadata elements linked to locationGUID.
+     *
+     * @param userId calling user
+     * @param locationGUID locationGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<LocationElement> getNestedLocations(String userId,
+                                             String locationGUID,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
+
+
+    /**
+     * Retrieve the list of location metadata elements that has the location identifier with locationGUID nested inside it.
+     *
+     * @param userId calling user
+     * @param locationGUID locationGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<LocationElement> getGroupingLocations(String userId,
+                                               String locationGUID,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
+
+
+    /**
+     * Retrieve the list of location metadata elements linked to actorProfileGUID.
+     *
+     * @param userId calling user
+     * @param actorProfileGUID actorProfileGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<LocationElement> getLocationsByProfile(String userId,
+                                                String actorProfileGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
+
+
+    /**
+     * Retrieve the list of location metadata elements linked to assetGUID.
+     *
+     * @param userId calling user
+     * @param assetGUID assetGUID to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<LocationElement> getKnownLocationsForAsset(String userId,
+                                                    String assetGUID,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
+
+
+    /**
+     * Retrieve the list of location metadata elements.
+     *
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<LocationElement> getLocations(String userId,
+                                       int    startFrom,
+                                       int    pageSize) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException;
 
 
     /**

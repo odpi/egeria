@@ -279,7 +279,7 @@ public interface OMRSRepositoryPropertiesHelper
      *
      * @param sourceName source of call
      * @param propertyName name of requested map property
-     * @param properties all of the properties of the instance
+     * @param properties all the properties of the instance
      * @param methodName method of caller
      * @return array property value or null
      */
@@ -296,7 +296,7 @@ public interface OMRSRepositoryPropertiesHelper
      *
      * @param sourceName source of call
      * @param propertyName name of requested map property
-     * @param properties all of the properties of the instance
+     * @param properties all the properties of the instance
      * @param methodName method of caller
      * @return array property value or null
      */

@@ -144,7 +144,7 @@ public class SimpleDataCatalogArchiveBuilder
                                                            null,
                                                            null);
 
-        archiveHelper.addDataContentForDataSet(databaseGUID, databaseSchemaGUID);
+        archiveHelper.addDataContentForDataSet(databaseGUID, databaseSchemaGUID, null, null);
 
         String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(databaseSchemaGUID,
                                                                             relationalTopLevelSchemaTypeName,

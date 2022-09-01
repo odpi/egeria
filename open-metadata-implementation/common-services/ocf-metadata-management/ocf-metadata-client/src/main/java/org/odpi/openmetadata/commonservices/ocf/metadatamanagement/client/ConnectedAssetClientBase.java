@@ -232,15 +232,15 @@ public class ConnectedAssetClientBase
             /*
              * If the connector is successfully created, set up the Connected Asset Properties for the connector.
              * The properties should be retrieved from the open metadata repositories, so use an OMAS implementation
-             * of the ConnectedAssetProperties object.
+             * of the EgeriaConnectedAssetProperties object.
              */
-            ConnectedAssetProperties connectedAssetProperties = new ConnectedAssetProperties(serviceName,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             serverPlatformURLRoot,
-                                                                                             newConnector.getConnectorInstanceId(),
-                                                                                             newConnector.getConnection(),
-                                                                                             assetGUID);
+            EgeriaConnectedAssetProperties connectedAssetProperties = new EgeriaConnectedAssetProperties(serviceName,
+                                                                                                         serverName,
+                                                                                                         userId,
+                                                                                                         serverPlatformURLRoot,
+                                                                                                         newConnector.getConnectorInstanceId(),
+                                                                                                         newConnector.getConnection(),
+                                                                                                         assetGUID);
 
             /*
              * Pass the new connected asset properties to the connector
@@ -260,7 +260,7 @@ public class ConnectedAssetClientBase
          * to be made, which contacts the OMAG server and retrieves the asset properties.
          *
          * Delaying the population of the connected asset properties ensures the latest values are returned to the
-         * caller (consider a long running connection).  Alternatively, these properties may not ever be used by the
+         * caller (consider a long-running connection).  Alternatively, these properties may not ever be used by the
          * caller so retrieving the properties at this point would be unnecessary.
          */
 
@@ -345,7 +345,7 @@ public class ConnectedAssetClientBase
      * @param userId       userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository.
      *
-     * @return Connector   connector instance.
+     * @return   connector instance.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).

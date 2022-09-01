@@ -36,15 +36,15 @@ import java.util.List;
  */
 public class OMRSMetadataHighwayManager
 {
-    private List<OMRSCohortManager>      cohortManagers = new ArrayList<>();
-    private String                       localServerName;                    /* set in constructor */
-    private String                       localServerType;                    /* set in constructor */
-    private String                       localOrganizationName;              /* set in constructor */
-    private OMRSLocalRepository          localRepository;                    /* set in constructor */
-    private OMRSRepositoryContentManager localRepositoryContentManager;      /* set in constructor */
-    private OMRSConnectionConsumer       enterpriseAccessConnectionConsumer; /* set in constructor */
-    private OMRSTopicConnector           enterpriseAccessTopicConnector;     /* set in constructor */
-    private AuditLog                     auditLog;
+    private final List<OMRSCohortManager>      cohortManagers = new ArrayList<>();
+    private final String                       localServerName;                    /* set in constructor */
+    private final String                       localServerType;                    /* set in constructor */
+    private final String                       localOrganizationName;              /* set in constructor */
+    private final OMRSLocalRepository          localRepository;                    /* set in constructor */
+    private final OMRSRepositoryContentManager localRepositoryContentManager;      /* set in constructor */
+    private final OMRSConnectionConsumer       enterpriseAccessConnectionConsumer; /* set in constructor */
+    private final OMRSTopicConnector           enterpriseAccessTopicConnector;     /* set in constructor */
+    private final AuditLog                     auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSMetadataHighwayManager.class);
 

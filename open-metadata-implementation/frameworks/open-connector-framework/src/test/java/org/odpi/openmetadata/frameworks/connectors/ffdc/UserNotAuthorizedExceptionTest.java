@@ -32,7 +32,7 @@ public class UserNotAuthorizedExceptionTest
      */
     @Test public void testNewException()
     {
-        UserNotAuthorizedException exception = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        UserNotAuthorizedException exception = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                               reportingClassName,
                                                                               reportingActionDescription,
                                                                               null);
@@ -49,7 +49,7 @@ public class UserNotAuthorizedExceptionTest
      */
     @Test public void testWrappingException()
     {
-        UserNotAuthorizedException exception = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        UserNotAuthorizedException exception = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                               reportingClassName,
                                                                               reportingActionDescription,
                                                                               reportedCaughtException,
@@ -67,18 +67,18 @@ public class UserNotAuthorizedExceptionTest
      */
     @Test public void testHashCode()
     {
-        UserNotAuthorizedException exception = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        UserNotAuthorizedException exception = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                               reportingClassName,
                                                                               reportingActionDescription,
                                                                               userId);
 
-        UserNotAuthorizedException exception2 = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        UserNotAuthorizedException exception2 = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                                reportingClassName,
                                                                                reportingActionDescription,
                                                                                reportedCaughtException,
                                                                                userId);
 
-        UserNotAuthorizedException exception3 = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+        UserNotAuthorizedException exception3 = new UserNotAuthorizedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName"),
                                                                                reportingClassName,
                                                                                reportingActionDescription,
                                                                                reportedCaughtException,

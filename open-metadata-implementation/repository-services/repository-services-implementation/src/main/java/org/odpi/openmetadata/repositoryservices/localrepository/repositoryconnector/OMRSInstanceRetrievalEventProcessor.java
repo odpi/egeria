@@ -6,8 +6,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
-import java.util.List;
-
 
 /**
  * OMRSInstanceRetrievalEventProcessor defines the interface used by the Enterprise OMRS Repository Connector
@@ -16,7 +14,7 @@ import java.util.List;
 public interface OMRSInstanceRetrievalEventProcessor
 {
     /**
-     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+     * Pass an entity that has been retrieved from a remote open metadata repository, so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.
@@ -29,7 +27,7 @@ public interface OMRSInstanceRetrievalEventProcessor
 
 
     /**
-     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
+     * Pass an entity that has been retrieved from a remote open metadata repository, so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.
@@ -42,7 +40,7 @@ public interface OMRSInstanceRetrievalEventProcessor
 
 
     /**
-     * Pass a relationship that has been retrieved from a remote open metadata repository so it can be validated and
+     * Pass a relationship that has been retrieved from a remote open metadata repository, so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
      * @param sourceName name of the source of this event.

@@ -6,6 +6,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
 
 import java.io.Serializable;
@@ -15,6 +17,10 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.SecurityGroupProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+
 /**
  * GovernanceDefinitionElement is the superclass used to return the common properties of a governance definition stored in the
  * open metadata repositories.
@@ -22,13 +28,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = GovernanceDefinitionGraph.class, name = "GovernanceDefinitionGraph")
+        })
 public class GovernanceDefinitionElement implements Serializable, MetadataElement
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader                  elementHeader      = null;
-    private GovernanceDefinitionProperties properties         = null;
-    private List<ExternalReferenceElement> externalReferences = null;
+    private ElementHeader                  elementHeader  = null;
+    private GovernanceDefinitionProperties properties     = null;
+    private RelatedElement                 relatedElement = null;
 
 
     /**
@@ -51,8 +61,32 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
         {
             this.elementHeader = template.getElementHeader();
             this.properties = template.getProperties();
-            this.externalReferences = template.getExternalReferences();
+            relatedElement = template.getRelatedElement();
         }
+    }
+
+
+    /**
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @return list of element stubs
+     */
+    public RelatedElement getRelatedElement()
+    {
+        return relatedElement;
+    }
+
+
+    /**
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
+     *
+     * @param relatedElement relationship details
+     */
+    public void setRelatedElement(RelatedElement relatedElement)
+    {
+        this.relatedElement = relatedElement;
     }
 
 
@@ -101,39 +135,6 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
 
 
     /**
-     * Return details of the external references that have been linked to this governance definition.
-     *
-     * @return list of links to external references
-     */
-    public List<ExternalReferenceElement> getExternalReferences()
-    {
-        if (externalReferences == null)
-        {
-            return null;
-        }
-        else if (externalReferences.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return externalReferences;
-        }
-    }
-
-
-    /**
-     * Set up the details of the external references that have been linked to this governance definition.
-     *
-     * @param externalReferences list of links to external references
-     */
-    public void setExternalReferneces(List<ExternalReferenceElement> externalReferences)
-    {
-        this.externalReferences = externalReferences;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -144,7 +145,7 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
         return "GovernanceDefinitionElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
-                       ", externalReferences=" + externalReferences +
+                       ", relatedElement=" + relatedElement +
                        '}';
     }
 
@@ -169,7 +170,7 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
         GovernanceDefinitionElement that = (GovernanceDefinitionElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(externalReferences, that.externalReferences);
+                       Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -181,6 +182,6 @@ public class GovernanceDefinitionElement implements Serializable, MetadataElemen
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, externalReferences);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
     }
 }

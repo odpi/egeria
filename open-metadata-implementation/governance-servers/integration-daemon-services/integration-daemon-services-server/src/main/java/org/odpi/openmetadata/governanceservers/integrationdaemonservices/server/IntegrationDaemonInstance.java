@@ -34,7 +34,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
      * @param localServerUserId userId to use for local server initiated actions
      * @param maxPageSize max number of results to return on single request.
      * @param integrationDaemonThread handler managing the threading for the active integration connectors in this server.
-     * @param integrationServiceHandlers handler for all of the active integration services in this server.
+     * @param integrationServiceHandlers handler for all the active integration services in this server.
      */
     IntegrationDaemonInstance(String                                 serverName,
                               String                                 serviceName,
@@ -52,7 +52,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
 
     /**
-     * Return the list of all of the integration service handlers for this integration daemon.
+     * Return the list of all the integration service handlers for this integration daemon.
      *
      * @param serviceOperationName name of calling request
      * @return list of integration service handlers.

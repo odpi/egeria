@@ -440,17 +440,16 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
         final String connectionDescription = "Client-side topic connection.";
         final String eventSource = "Topic Event Bus";
 
-        ElementType elementType = VirtualConnection.getVirtualConnectionType();
+        ElementOrigin elementOrigin = new ElementOrigin();
 
-        elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
+        elementOrigin.setOriginCategory(ElementOriginCategory.CONFIGURATION);
 
         String connectionName = "OutTopicConnector." + serviceName;
 
         VirtualConnection connection = new VirtualConnection();
 
-        elementType = VirtualConnection.getVirtualConnectionType();
-
-        connection.setType(elementType);
+        connection.setOrigin(elementOrigin);
+        connection.setType(VirtualConnection.getVirtualConnectionType());
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);

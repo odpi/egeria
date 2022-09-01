@@ -56,15 +56,15 @@ public class GovernanceLeadershipSample
 
 
     /*
-     * These are the names of the properties that are not represented in the open metadata types
+     * These are the names of the properties that are not represented in the open metadata types,
      * and so they are stored as additional properties.
      */
     private static final String   workLocationPropertyName = "WorkLocation";
     private static final String   contactTypePropertyName  = "ContactType";
 
-    private String serverName;
-    private String serverURLRoot;
-    private String clientUserId;
+    private final String serverName;
+    private final String serverURLRoot;
+    private final String clientUserId;
 
 
 
@@ -326,7 +326,9 @@ public class GovernanceLeadershipSample
 
         governanceRoleProperties = new GovernanceRoleProperties();
 
+        governanceRoleProperties.setTypeName("GovernanceOfficer");
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.DATA.getOrdinal());
+        governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + cdoAppointmentId);
         governanceRoleProperties.setRoleId(cdoAppointmentId);
         governanceRoleProperties.setTitle("Chief Data Role (CDO)");
 
@@ -336,7 +338,9 @@ public class GovernanceLeadershipSample
 
         governanceRoleProperties = new GovernanceRoleProperties();
 
+        governanceRoleProperties.setTypeName("GovernanceOfficer");
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.PRIVACY.getOrdinal());
+        governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + cpoAppointmentId);
         governanceRoleProperties.setRoleId(cpoAppointmentId);
         governanceRoleProperties.setTitle("Chief Privacy Role (CPO)");
 
@@ -346,7 +350,9 @@ public class GovernanceLeadershipSample
 
         governanceRoleProperties = new GovernanceRoleProperties();
 
+        governanceRoleProperties.setTypeName("GovernanceOfficer");
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.SECURITY.getOrdinal());
+        governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + csoAppointmentId);
         governanceRoleProperties.setRoleId(csoAppointmentId);
         governanceRoleProperties.setTitle("Chief Security Role (CSO)");
 
@@ -459,7 +465,7 @@ public class GovernanceLeadershipSample
         }
 
         /*
-         * Update Jule's job title
+         * Update Jules' job title
          */
         ppmClient.updatePersonalProfile(clientUserId,
                                         null,
@@ -500,7 +506,9 @@ public class GovernanceLeadershipSample
 
         governanceRoleProperties = new GovernanceRoleProperties();
 
+        governanceRoleProperties.setTypeName("GovernanceOfficer");
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.DATA.getOrdinal());
+        governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + cdoForITAppointmentId);
         governanceRoleProperties.setRoleId(cdoForITAppointmentId);
         governanceRoleProperties.setScope("IT Systems");
         governanceRoleProperties.setTitle("Chief Data Role (CDO) for IT");
@@ -518,7 +526,7 @@ public class GovernanceLeadershipSample
 
 
         /*
-         * Appointing Gary Geeke as as the governance officer for IT infrastructure.
+         * Appointing Gary Geeke as the governance officer for IT infrastructure.
          */
         System.out.println("Creating profile for Gary");
 
@@ -541,7 +549,9 @@ public class GovernanceLeadershipSample
 
         governanceRoleProperties = new GovernanceRoleProperties();
 
+        governanceRoleProperties.setTypeName("GovernanceOfficer");
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.IT_INFRASTRUCTURE.getOrdinal());
+        governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + infraGovForITAppointmentId);
         governanceRoleProperties.setRoleId(infraGovForITAppointmentId);
         governanceRoleProperties.setTitle("Chief Infrastructure Architect");
 
@@ -558,7 +568,7 @@ public class GovernanceLeadershipSample
 
 
         /*
-         * Appointing Polly Tasker as as the governance officer for software development.
+         * Appointing Polly Tasker as the governance officer for software development.
          */
         System.out.println("Creating profile for Polly");
 
@@ -581,7 +591,9 @@ public class GovernanceLeadershipSample
 
         governanceRoleProperties = new GovernanceRoleProperties();
 
+        governanceRoleProperties.setTypeName("GovernanceOfficer");
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.SOFTWARE_DEVELOPMENT.getOrdinal());
+        governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + projLeadForITAppointmentId);
         governanceRoleProperties.setRoleId(projLeadForITAppointmentId);
         governanceRoleProperties.setTitle("Chief Project Lead for Software");
 
@@ -597,7 +609,7 @@ public class GovernanceLeadershipSample
         this.printGovernanceRole(gplClient, clientUserId, projLeadForITGUID);
 
         /*
-         * Appointing Reggie Mint as as the corporate governance officer.
+         * Appointing Reggie Mint as the corporate governance officer.
          */
         System.out.println("Creating profile for Reggie");
 
@@ -620,7 +632,9 @@ public class GovernanceLeadershipSample
 
         governanceRoleProperties = new GovernanceRoleProperties();
 
+        governanceRoleProperties.setTypeName("GovernanceOfficer");
         governanceRoleProperties.setDomainIdentifier(GovernanceDomain.CORPORATE.getOrdinal());
+        governanceRoleProperties.setQualifiedName("GovernanceOfficer:" + corpAppointmentId);
         governanceRoleProperties.setRoleId(corpAppointmentId);
         governanceRoleProperties.setTitle("Corporate Governance Role");
 
@@ -663,7 +677,7 @@ public class GovernanceLeadershipSample
         System.out.println("Deleting all profiles and governance officers");
 
         /*
-         * Delete all of the governance officers
+         * Delete all the governance officers
          */
         gplClient.deleteGovernanceRole(clientUserId, cdoGUID);
         gplClient.deleteGovernanceRole(clientUserId, cdoForITGUID);
@@ -675,7 +689,7 @@ public class GovernanceLeadershipSample
 
 
         /*
-         * Delete all of the personal profiles
+         * Delete all the personal profiles
          */
         ppmClient.deletePersonalProfile(clientUserId, null, null, julesKeeperProfileGUID, julesKeeperEmpNo);
         ppmClient.deletePersonalProfile(clientUserId, null, null, ivorPadlockProfileGUID, ivorPadlockEmpNo);

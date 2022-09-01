@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.clientconstructors;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ValidValuesManager;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ReferenceDataManager;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -89,13 +89,13 @@ public class ClientConstructorTest
                                               String   serverPlatformRootURL,
                                               AuditLog auditLog) throws InvalidParameterException
     {
-        new ValidValuesManager(serverName, serverPlatformRootURL, auditLog);
-        new ValidValuesManager(serverName, serverPlatformRootURL);
-        new ValidValuesManager(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
-        new ValidValuesManager(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new ReferenceDataManager(serverName, serverPlatformRootURL, auditLog);
+        new ReferenceDataManager(serverName, serverPlatformRootURL);
+        new ReferenceDataManager(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
+        new ReferenceDataManager(serverName, serverPlatformRootURL, serverUserId, serverPassword);
 
         DigitalArchitectureRESTClient restClient = new DigitalArchitectureRESTClient(serverName, serverPlatformRootURL);
 
-        new ValidValuesManager(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+        new ReferenceDataManager(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
     }
 }

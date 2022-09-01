@@ -13,7 +13,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 
 /**
  * The OMRSRepositoryConnector defines the interface for an OMRS Repository Connector.  It is an abstract
- * class since not all of the methods for OMRSMetadataCollectionManager are implemented.
+ * class since not all the methods for OMRSMetadataCollectionManager are implemented.
  */
 public abstract class OMRSRepositoryConnector extends ConnectorBase implements OMRSMetadataCollectionManager,
                                                                                AuditLoggingComponent

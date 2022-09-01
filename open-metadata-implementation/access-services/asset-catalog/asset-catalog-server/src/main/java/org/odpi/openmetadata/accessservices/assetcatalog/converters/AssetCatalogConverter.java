@@ -6,7 +6,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogItemElement;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.ElementOriginCategory;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -358,33 +358,5 @@ public class AssetCatalogConverter<B> extends OpenMetadataAPIGenericConverter<B>
     private String mapToString(Map<String, Object> map) {
         return map.keySet().stream().map(key -> key + ": " + map.get(key))
                 .collect(Collectors.joining(", "));
-    }
-
-    /**
-     * Translate the repository services' InstanceProvenanceType to an ElementOrigin.
-     *
-     * @param instanceProvenanceType value from the repository services
-     * @return ElementOrigin enum
-     */
-    private ElementOriginCategory getElementOriginCategory(InstanceProvenanceType instanceProvenanceType) {
-        if (instanceProvenanceType != null) {
-            switch (instanceProvenanceType) {
-                case DEREGISTERED_REPOSITORY:
-                    return ElementOriginCategory.DEREGISTERED_REPOSITORY;
-                case EXTERNAL_SOURCE:
-                    return ElementOriginCategory.EXTERNAL_SOURCE;
-                case EXPORT_ARCHIVE:
-                    return ElementOriginCategory.EXPORT_ARCHIVE;
-                case LOCAL_COHORT:
-                    return ElementOriginCategory.LOCAL_COHORT;
-                case CONTENT_PACK:
-                    return ElementOriginCategory.CONTENT_PACK;
-                case CONFIGURATION:
-                    return ElementOriginCategory.CONFIGURATION;
-                case UNKNOWN:
-                    return ElementOriginCategory.UNKNOWN;
-            }
-        }
-        return ElementOriginCategory.UNKNOWN;
     }
 }

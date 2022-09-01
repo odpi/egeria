@@ -28,12 +28,12 @@ public class CommunityProfileEventClient implements CommunityProfileEventInterfa
 {
     private static final String  serviceName = "Community Profile OMAS";
 
-    private String        serverName;               /* Initialized in constructor */
-    private String        serverPlatformURLRoot;    /* Initialized in constructor */
-    private String        callerId;                 /* Initialized in constructor */
-    private OCFRESTClient restClient;               /* Initialized in constructor */
+    private final String        serverName;               /* Initialized in constructor */
+    private final String        serverPlatformURLRoot;    /* Initialized in constructor */
+    private final String        callerId;                 /* Initialized in constructor */
+    private final OCFRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     private CommunityProfileOutTopicClientConnector configurationEventTopicConnector = null;
     private AuditLog                                auditLog                         = null;

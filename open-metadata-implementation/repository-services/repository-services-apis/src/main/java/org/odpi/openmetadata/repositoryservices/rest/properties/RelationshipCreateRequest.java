@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelationshipCreateRequest provides the bean to hold all of the properties needed to create a new
+ * RelationshipCreateRequest provides the bean to hold all the properties needed to create a new
  * relationship.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

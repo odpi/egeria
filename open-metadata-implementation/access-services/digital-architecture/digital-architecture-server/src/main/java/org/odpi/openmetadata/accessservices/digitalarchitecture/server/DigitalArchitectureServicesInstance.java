@@ -13,36 +13,37 @@ import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
 
 /**
- * DigitalArchitectureServicesInstance caches references to objects for a specific server.
+ * DigitalArchitectureServicesInstance caches references to the runtime objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
 public class DigitalArchitectureServicesInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS;
+    private final static AccessServiceDescription myDescription = AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS;
 
 
-    private ReferenceableHandler<ElementHeader>     referenceableHandler;
-    private AssetHandler<ReferenceDataAssetElement> assetHandler;
+    private final ReferenceableHandler<ElementHeader>     referenceableHandler;
+    private final AssetHandler<ReferenceDataAssetElement> assetHandler;
 
-    private ConnectionHandler<ConnectionElement>       connectionHandler;
-    private ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
-    private EndpointHandler<EndpointElement>           endpointHandler;
+    private final ConnectionHandler<ConnectionElement>       connectionHandler;
+    private final ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
+    private final EndpointHandler<EndpointElement>           endpointHandler;
 
-    private LocationHandler<LocationElement>  locationHandler;
+    private final LocationHandler<LocationElement>  locationHandler;
 
-    private ValidValuesHandler<ValidValueElement,
-        ValidValueAssignmentConsumerElement,
-        ValidValueAssignmentDefinitionElement,
-        ValidValueImplAssetElement,
-        ValidValueImplDefinitionElement,
-        ValidValueMappingElement,
-        ReferenceValueAssignmentDefinitionElement,
-        ReferenceValueAssignmentItemElement> validValuesHandler;
+    private final ReferenceDataHandler<ValidValueElement,
+                                              ValidValueAssignmentConsumerElement,
+                                              ValidValueAssignmentDefinitionElement,
+                                              ValidValueImplAssetElement,
+                                              ValidValueImplDefinitionElement,
+                                              ValidValueMappingElement,
+                                              ReferenceValueAssignmentDefinitionElement,
+                                              ReferenceValueAssignmentItemElement> referenceDataHandler;
 
     /**
      * Set up the handlers for this server.
@@ -167,33 +168,33 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
                                                      publishZones,
                                                      auditLog);
 
-        this.validValuesHandler = new ValidValuesHandler<>(new ValidValueConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ValidValueElement.class,
-                                                           new ValidValueAssignmentConsumerConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ValidValueAssignmentConsumerElement.class,
-                                                           new ValidValueAssignmentDefinitionConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ValidValueAssignmentDefinitionElement.class,
-                                                           new ValidValueImplAssetConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ValidValueImplAssetElement.class,
-                                                           new ValidValueImplDefinitionConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ValidValueImplDefinitionElement.class,
-                                                           new ValidValueMappingConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ValidValueMappingElement.class,
-                                                           new ReferenceValueAssignmentDefinitionConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ReferenceValueAssignmentDefinitionElement.class,
-                                                           new ReferenceValueAssignmentItemConverter<>(repositoryHelper, serviceName, serverName),
-                                                           ReferenceValueAssignmentItemElement.class,
-                                                           serviceName,
-                                                           serverName,
-                                                           invalidParameterHandler,
-                                                           repositoryHandler,
-                                                           repositoryHelper,
-                                                           localServerUserId,
-                                                           securityVerifier,
-                                                           supportedZones,
-                                                           defaultZones,
-                                                           publishZones,
-                                                           auditLog);
+        this.referenceDataHandler = new ReferenceDataHandler<>(new ValidValueConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ValidValueElement.class,
+                                                               new ValidValueAssignmentConsumerConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ValidValueAssignmentConsumerElement.class,
+                                                               new ValidValueAssignmentDefinitionConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ValidValueAssignmentDefinitionElement.class,
+                                                               new ValidValueImplAssetConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ValidValueImplAssetElement.class,
+                                                               new ValidValueImplDefinitionConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ValidValueImplDefinitionElement.class,
+                                                               new ValidValueMappingConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ValidValueMappingElement.class,
+                                                               new ReferenceValueAssignmentDefinitionConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ReferenceValueAssignmentDefinitionElement.class,
+                                                               new ReferenceValueAssignmentItemConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ReferenceValueAssignmentItemElement.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
 
     }
 
@@ -299,19 +300,19 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    ValidValuesHandler<ValidValueElement,
+    ReferenceDataHandler<ValidValueElement,
             ValidValueAssignmentConsumerElement,
             ValidValueAssignmentDefinitionElement,
             ValidValueImplAssetElement,
             ValidValueImplDefinitionElement,
             ValidValueMappingElement,
             ReferenceValueAssignmentDefinitionElement,
-            ReferenceValueAssignmentItemElement> getValidValuesHandler() throws PropertyServerException
+            ReferenceValueAssignmentItemElement> getReferenceDataHandler() throws PropertyServerException
     {
-        final String methodName = "getValidValuesHandler";
+        final String methodName = "getReferenceDataHandler";
 
         validateActiveRepository(methodName);
 
-        return validValuesHandler;
+        return referenceDataHandler;
     }
 }

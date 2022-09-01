@@ -111,13 +111,18 @@ public class Meaning extends ElementBase
     public String toString()
     {
         return "Meaning{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       '}';
     }
 
 

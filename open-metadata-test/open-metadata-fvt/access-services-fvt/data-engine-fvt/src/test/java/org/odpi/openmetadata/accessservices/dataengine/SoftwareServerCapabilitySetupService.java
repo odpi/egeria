@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
- * Generates test data of type SoftwareServerCapability, and triggers requests via client for aforementioned type
+ * Generates test data of type SoftwareCapability, and triggers requests via client for aforementioned type
  */
 public class SoftwareServerCapabilitySetupService {
 
@@ -41,7 +41,7 @@ public class SoftwareServerCapabilitySetupService {
     }
 
     /**
-     * Delete a SoftwareServerCapability using the dataEngineClient received
+     * Delete a SoftwareCapability using the dataEngineClient received
      *
      * @param userId user id
      * @param dataEngineClient data engine client

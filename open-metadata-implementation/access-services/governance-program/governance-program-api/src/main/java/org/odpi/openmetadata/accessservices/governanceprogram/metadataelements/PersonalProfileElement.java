@@ -12,12 +12,13 @@ import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 
 /**
  * The PersonalProfileElement describes an individual who has (or will be) appointed to one of the
  * governance roles defined in the governance program.  Information about the personal profile is stored
- * as an Person entity.
+ * as a Person entity.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
