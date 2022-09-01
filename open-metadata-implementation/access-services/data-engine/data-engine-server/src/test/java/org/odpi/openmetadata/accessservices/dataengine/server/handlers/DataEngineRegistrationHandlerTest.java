@@ -19,7 +19,6 @@ import org.odpi.openmetadata.accessservices.dataengine.server.builders.ExternalD
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -31,7 +30,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -235,18 +233,20 @@ class DataEngineRegistrationHandlerTest {
         when(repositoryHelper.addLongMapPropertyToInstance(null, properties, SYNC_DATES_BY_KEY,
                 processingState.getSyncDatesByKey(), methodName)).thenReturn(properties);
 
-        doNothing().when(softwareServerCapabilityHandler).setClassificationInRepository(USER, GUID, GUID,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
-                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, methodName);
+        doNothing().when(softwareServerCapabilityHandler).setClassificationInRepository(USER, null,
+                null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, true, false, false,
+                null, methodName);
 
         registrationHandler.createDataEngineClassification(USER, processingState, softwareServerCapability.getQualifiedName());
 
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(repositoryHelper, times(1)).addLongMapPropertyToInstance(null, properties,
                 SYNC_DATES_BY_KEY, processingState.getSyncDatesByKey(), methodName);
-        verify(softwareServerCapabilityHandler, times(1)).setClassificationInRepository(USER, GUID, GUID,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
-                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, methodName);
+        verify(softwareServerCapabilityHandler, times(1)).setClassificationInRepository(USER, null,
+                null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, true, false, false,
+                null, methodName);
     }
 
     @Test
@@ -269,9 +269,10 @@ class DataEngineRegistrationHandlerTest {
                 processingState.getSyncDatesByKey(), methodName)).thenReturn(properties);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(softwareServerCapabilityHandler).setClassificationInRepository(USER, GUID, GUID,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
-                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, methodName);
+        doThrow(mockedException).when(softwareServerCapabilityHandler).setClassificationInRepository(USER, null,
+                null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, true, false, false,
+                null, methodName);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 registrationHandler.createDataEngineClassification(USER, processingState, softwareServerCapability.getQualifiedName()));

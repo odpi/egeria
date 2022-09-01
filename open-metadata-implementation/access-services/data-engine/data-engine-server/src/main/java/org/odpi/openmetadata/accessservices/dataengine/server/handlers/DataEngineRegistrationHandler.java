@@ -174,8 +174,8 @@ public class DataEngineRegistrationHandler {
                 processingState.getSyncDatesByKey(), methodName);
 
         softwareServerCapabilityHandler.setClassificationInRepository(userId,
-                externalEngineGUID,
-                externalSourceName,
+                null,
+                null,
                 externalEngineGUID,
                 EXTERNAL_ENGINE_PARAMETER_NAME,
                 SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
