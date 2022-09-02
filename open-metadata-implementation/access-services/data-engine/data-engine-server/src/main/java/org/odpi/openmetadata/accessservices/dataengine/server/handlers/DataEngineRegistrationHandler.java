@@ -14,8 +14,11 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -23,6 +26,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.QUALIFIED_NAME_PROPERTY_NAME;
@@ -169,9 +174,36 @@ public class DataEngineRegistrationHandler {
             throw new EntityNotKnownException(messageDefinition, this.getClass().getName(),
                     messageDefinition.getUserAction());
         }
+
+        //Check if the entity has this classification and if it does then merge the syncDatesByKey
+
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        EntityDetail retrievedEntity = softwareServerCapabilityHandler.getEntityByValue(userId, externalSourceName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                entityTypeDef.getGUID(), entityTypeDef.getName(), Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME),
+                false, false, null, methodName);
+
+        Map<String, Long> newSyncDatesByKey = new HashMap<>();
+
+        if (retrievedEntity.getClassifications() != null) {
+            for (Classification classification : retrievedEntity.getClassifications()) {
+                if (classification != null && classification.getName().equals(PROCESSING_STATE_CLASSIFICATION_TYPE_NAME)) {
+                    MapPropertyValue syncDatesByKey = (MapPropertyValue) classification.getProperties().getPropertyValue(SYNC_DATES_BY_KEY);
+                    for (Map.Entry entry : syncDatesByKey.getMapValues().getInstanceProperties().entrySet()) {
+                        newSyncDatesByKey.put(entry.getKey().toString(),
+                                ((Long) ((PrimitivePropertyValue) entry.getValue()).getPrimitiveValue()).longValue());
+                    }
+                    newSyncDatesByKey.putAll(processingState.getSyncDatesByKey());
+                }
+            }
+        }
+
+        if (newSyncDatesByKey.isEmpty()) {
+            newSyncDatesByKey = processingState.getSyncDatesByKey();
+        }
+
         InstanceProperties instanceProperties = new InstanceProperties();
         instanceProperties = repositoryHelper.addLongMapPropertyToInstance(null, instanceProperties, SYNC_DATES_BY_KEY,
-                processingState.getSyncDatesByKey(), methodName);
+                newSyncDatesByKey, methodName);
 
         softwareServerCapabilityHandler.setClassificationInRepository(userId,
                 null,
