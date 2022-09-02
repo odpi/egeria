@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
-
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
@@ -60,6 +61,24 @@ public interface RightsManagementInterface
                            LicenseTypeProperties properties) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException;
+
+
+    /**
+     * Update the status of a license type.
+     *
+     * @param userId calling user
+     * @param licenseTypeGUID identifier of the governance definition to change
+     * @param newStatus new status
+     *
+     * @throws InvalidParameterException guid, documentIdentifier or userId is null; documentIdentifier is not unique
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void setLicenseTypeStatus(String                     userId,
+                              String                     licenseTypeGUID,
+                              GovernanceDefinitionStatus newStatus) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 
 
     /**
@@ -170,25 +189,25 @@ public interface RightsManagementInterface
      * @param licenseTypeGUID unique identifier for the license type
      * @param properties the properties of the license
      *
+     * @return unique identifier of the new relationship
+     *
      * @throws InvalidParameterException one of the properties is invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void licenseElement(String            userId,
-                        String            elementGUID,
-                        String            licenseTypeGUID,
-                        LicenseProperties properties) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException;
+    String licenseElement(String            userId,
+                          String            elementGUID,
+                          String            licenseTypeGUID,
+                          LicenseProperties properties) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException;
 
 
     /**
-     * Update the properties of a license.  Remember to include the licenseId in the properties if the element has multiple licenses of the same
-     * type.
+     * Update the properties of a license.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the element being licensed
-     * @param licenseTypeGUID unique identifier for the license type
+     * @param licenseGUID unique identifier for the license relationship
      * @param isMergeUpdate should the supplied properties overlay the existing properties or replace them
      * @param properties the properties of the license
      *
@@ -197,8 +216,7 @@ public interface RightsManagementInterface
      * @throws UserNotAuthorizedException security access problem
      */
     void updateLicense(String            userId,
-                       String            elementGUID,
-                       String            licenseTypeGUID,
+                       String            licenseGUID,
                        boolean           isMergeUpdate,
                        LicenseProperties properties) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
@@ -209,19 +227,59 @@ public interface RightsManagementInterface
      * Remove the license for an element.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the element being licensed
-     * @param licenseTypeGUID unique identifier for the license type
-     * @param licenseId optional unique identifier from the license authority - it is used to disambiguate the licenses for the element.
+     * @param licenseGUID unique identifier for the license relationship
      *
      * @throws InvalidParameterException one of the properties is invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     void unlicenseElement(String userId,
-                          String elementGUID,
-                          String licenseTypeGUID,
-                          String licenseId)  throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException;
+                          String licenseGUID)  throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException;
 
+
+
+    /**
+     * Return information about the elements linked to a license.
+     *
+     * @param userId calling user
+     * @param licenseGUID unique identifier for the license relationship
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the subject area
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<RelatedElement> getLicensedElements(String userId,
+                                             String licenseGUID,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
+
+
+    /**
+     * Return information about the licenses linked to an element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier for the license relationship
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the subject area
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<LicenseElement> getLicenses(String userId,
+                                     String elementGUID,
+                                     int    startFrom,
+                                     int    pageSize) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
 }

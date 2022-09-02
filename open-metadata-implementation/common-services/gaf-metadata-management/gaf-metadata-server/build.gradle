@@ -6,13 +6,11 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
-    implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.slf4j:slf4j-api'
-    implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-api')
-    implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-topic-connectors')
+    implementation project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
@@ -23,7 +21,7 @@ dependencies {
     testImplementation 'junit:junit'
 }
 
-description = 'Governance Engine OMAS Server-side'
+description = 'Metadata Store Server-side'
 
 java {
     withJavadocJar()

@@ -154,7 +154,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
     {
         final String methodName = "createLocation";
         final String propertiesParameter = "locationProperties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations";
 
         return super.createReferenceable(userId, externalSourceGUID, externalSourceName, locationProperties, propertiesParameter, urlTemplate, methodName);
     }
@@ -184,7 +184,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
                                                                                            PropertyServerException
     {
         final String methodName = "createLocationFromTemplate";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/from-template/{2}";
 
         return super.createReferenceableFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties, urlTemplate, methodName);
     }
@@ -216,7 +216,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String methodName = "updateLocation";
         final String guidParameter = "locationGUID";
         final String propertiesParameter = "locationProperties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/update?isMergeUpdate={3}";
 
         super.updateReferenceable(userId,
                                   externalSourceGUID,
@@ -254,7 +254,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
     {
         final String methodName = "setLocationAsFixedPhysical";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/classify-as-fixed-location";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/classify-as-fixed-location";
 
         super.setReferenceableClassification(userId, externalSourceGUID, externalSourceName, locationGUID, locationGUIDParameter, properties, urlTemplate, methodName);
     }
@@ -281,7 +281,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
     {
         final String methodName = "clearLocationAsFixedPhysical";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-fixed-location/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-fixed-location/delete";
 
         super.removeReferenceableClassification(userId, externalSourceGUID, externalSourceName, locationGUID, locationGUIDParameter, urlTemplate, methodName);
     }
@@ -311,7 +311,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
     {
         final String methodName = "setLocationAsSecure";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-secure-location";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-secure-location";
 
         super.setReferenceableClassification(userId, externalSourceGUID, externalSourceName, locationGUID, locationGUIDParameter, properties, urlTemplate, methodName);
     }
@@ -339,7 +339,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
     {
         final String methodName = "clearLocationAsSecure";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-secure-location/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-secure-location/delete";
 
         super.removeReferenceableClassification(userId, externalSourceGUID, externalSourceName, locationGUID, locationGUIDParameter, urlTemplate, methodName);
     }
@@ -369,7 +369,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
     {
         final String methodName = "setLocationAsDigital";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-digital-location";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-digital-location";
 
         super.setReferenceableClassification(userId, externalSourceGUID, externalSourceName, locationGUID, locationGUIDParameter, properties, urlTemplate, methodName);
     }
@@ -397,7 +397,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
     {
         final String methodName = "clearLocationAsDigital";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-digital-location/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/classify-as-digital-location/delete";
 
         super.removeReferenceableClassification(userId, externalSourceGUID, externalSourceName, locationGUID, locationGUIDParameter, urlTemplate, methodName);
     }
@@ -425,7 +425,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
     {
         final String methodName = "removeLocation";
         final String guidParameter = "locationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/delete";
 
         super.removeReferenceable(userId, externalSourceGUID, externalSourceName, locationGUID, guidParameter, urlTemplate, methodName);
     }
@@ -458,7 +458,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String methodName = "setupNestedLocation";
         final String parentLocationGUIDParameter = "parentLocationGUID";
         final String childLocationGUIDParameter = "childLocationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-nested-location/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-nested-location/{3}";
 
         super.setupRelationship(userId, externalSourceGUID, externalSourceName, parentLocationGUID, parentLocationGUIDParameter, properties, childLocationGUID, childLocationGUIDParameter, urlTemplate, methodName);
     }
@@ -489,7 +489,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String methodName = "clearNestedLocation";
         final String parentLocationGUIDParameter = "parentLocationGUID";
         final String childLocationGUIDParameter = "childLocationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-nested-location/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-nested-location/{3}/delete";
 
         super.clearRelationship(userId, externalSourceGUID, externalSourceName, parentLocationGUID, parentLocationGUIDParameter, childLocationGUID, childLocationGUIDParameter, urlTemplate, methodName);
     }
@@ -522,7 +522,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String methodName = "setupAdjacentLocation";
         final String locationOneGUIDParameter = "locationOneGUID";
         final String locationTwoGUIDParameter = "locationTwoGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-peer-location/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-peer-location/{3}";
 
         super.setupRelationship(userId, externalSourceGUID, externalSourceName, locationOneGUID, locationOneGUIDParameter, properties, locationTwoGUID, locationTwoGUIDParameter, urlTemplate, methodName);
     }
@@ -553,7 +553,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String methodName = "clearAdjacentLocation";
         final String locationOneGUIDParameter = "locationOneGUID";
         final String locationTwoGUIDParameter = "locationTwoGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-peer-location/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-peer-location/{3}/delete";
 
         super.clearRelationship(userId, externalSourceGUID, externalSourceName, locationOneGUID, locationOneGUIDParameter, locationTwoGUID, locationTwoGUIDParameter, urlTemplate, methodName);
     }
@@ -586,7 +586,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String methodName            = "setupProfileLocation";
         final String actorGUIDParameter    = "actorProfileGUID";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate           = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-actor-profiles/{3}";
+        final String urlTemplate           = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-actor-profiles/{3}";
 
         super.setupRelationship(userId,
                                 externalSourceGUID,
@@ -626,7 +626,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String methodName = "clearProfileLocation";
         final String actorGUIDParameter = "actorProfileGUID";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-actor-profiles/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-actor-profiles/{3}/delete";
 
         super.clearRelationship(userId, externalSourceGUID, externalSourceName, locationGUID, locationGUIDParameter, actorProfileGUID, actorGUIDParameter, urlTemplate, methodName);
     }
@@ -659,7 +659,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String methodName            = "setupAssetLocation";
         final String actorGUIDParameter    = "assetGUID";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate           = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-assets/{3}";
+        final String urlTemplate           = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-assets/{3}";
 
         super.setupRelationship(userId,
                                 externalSourceGUID,
@@ -699,7 +699,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String methodName = "clearAssetLocation";
         final String actorGUIDParameter = "assetGUID";
         final String locationGUIDParameter = "locationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-assets/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/linked-to-assets/{3}/delete";
 
         super.clearRelationship(userId, externalSourceGUID, externalSourceName, locationGUID, locationGUIDParameter, assetGUID, actorGUIDParameter, urlTemplate, methodName);
     }
@@ -735,7 +735,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-search-string" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-search-string" +
                                              "?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
@@ -744,7 +744,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         requestBody.setSearchStringParameterName(parameterName);
 
         LocationListResponse restResult = restClient.callLocationsPostRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                requestBody,
                                                                                serverName,
                                                                                userId,
@@ -785,7 +785,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         invalidParameterHandler.validateName(name, nameParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-name?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -793,7 +793,7 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         requestBody.setNamePropertyName(nameParameter);
 
         LocationListResponse restResult = restClient.callLocationsPostRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                requestBody,
                                                                                serverName,
                                                                                userId,
@@ -834,10 +834,10 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         invalidParameterHandler.validateGUID(locationGUID, guidParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-peer-locations?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-peer-locations?startFrom={3}&pageSize={4}";
 
         LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                              urlTemplate,
                                                                               serverName,
                                                                               userId,
                                                                               locationGUID,
@@ -877,10 +877,10 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         invalidParameterHandler.validateGUID(locationGUID, guidParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-nested-locations?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-nested-locations?startFrom={3}&pageSize={4}";
 
         LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                              urlTemplate,
                                                                               serverName,
                                                                               userId,
                                                                               locationGUID,
@@ -920,10 +920,10 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         invalidParameterHandler.validateGUID(locationGUID, guidParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-grouping-locations?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-grouping-locations?startFrom={3}&pageSize={4}";
 
         LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                              urlTemplate,
                                                                               serverName,
                                                                               userId,
                                                                               locationGUID,
@@ -963,15 +963,15 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         invalidParameterHandler.validateGUID(actorProfileGUID, guidParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-actor-profile/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-actor-profile/{2}?startFrom={3}&pageSize={4}";
 
         LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               actorProfileGUID,
-                                                                               startFrom,
-                                                                               validatedPageSize);
+                                                                              urlTemplate,
+                                                                              serverName,
+                                                                              userId,
+                                                                              actorProfileGUID,
+                                                                              startFrom,
+                                                                              validatedPageSize);
 
         return restResult.getElements();
     }
@@ -1007,10 +1007,10 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-asset/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-asset/{2}?startFrom={3}&pageSize={4}";
 
         LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                              urlTemplate,
                                                                               serverName,
                                                                               userId,
                                                                               assetGUID,
@@ -1046,11 +1046,11 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         invalidParameterHandler.validateUserId(userId, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations?startFrom={2}&pageSize={3}";
 
 
         LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                              urlTemplate,
                                                                               serverName,
                                                                               userId,
                                                                               startFrom,
@@ -1084,10 +1084,10 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}";
 
         LocationResponse restResult = restClient.callLocationGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          locationGUID);

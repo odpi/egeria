@@ -39,7 +39,14 @@ public enum CommonServicesDescription implements Serializable
                                       "Open Metadata Security Services",
                                       null,
                                       "Authorization services for Open Metadata and Governance",
-                                      "https://egeria-project.org/services/metadata-security-services");
+                                      "https://egeria-project.org/services/metadata-security-services"),
+
+    GAF_METADATA_MANAGEMENT          (184,
+                                      ComponentDevelopmentStatus.STABLE,
+                                      "Open Metadata Store Services",
+                                      "open-metadata-store",
+                                      "Provides generic open metadata retrieval and management services for Open Metadata Access Services (OMASs).",
+                                      "https://egeria-project.org/services/gaf-metadata-management"),;
 
 
     private static final long     serialVersionUID    = 1L;

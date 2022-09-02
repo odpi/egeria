@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * GovernanceRoleConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into an GovernanceRoleElement bean.
+ * EntityDetail object into an GovernanceRoleElement bean.  Note it needs to support basic PersonRole elements as well as ite subtypes.
  */
 public class GovernanceRoleConverter<B> extends GovernanceProgramOMASConverter<B>
 {

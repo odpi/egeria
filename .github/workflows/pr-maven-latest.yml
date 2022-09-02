@@ -15,7 +15,7 @@ jobs:
     name: "Maven - latest release"
     if: startsWith(github.repository,'odpi/')
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         name: Checkout
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Cache Maven packages
-        uses: actions/cache@v3.0.6
+        uses: actions/cache@v3.0.8
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-java11-${{ hashFiles('**/pom.xml') }}

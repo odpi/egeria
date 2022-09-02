@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LicenseProperties implements Serializable
+public class LicenseProperties extends RelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -54,6 +54,8 @@ public class LicenseProperties implements Serializable
      */
     public LicenseProperties(LicenseProperties template)
     {
+        super (template);
+
         if (template != null)
         {
             this.licenseId = template.getLicenseId();
@@ -406,6 +408,9 @@ public class LicenseProperties implements Serializable
                        ", licenseeTypeName='" + licenseeTypeName + '\'' +
                        ", licenseePropertyName='" + licenseePropertyName + '\'' +
                        ", notes='" + notes + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -423,25 +428,25 @@ public class LicenseProperties implements Serializable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof LicenseProperties))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         LicenseProperties that = (LicenseProperties) objectToCompare;
-        return Objects.equals(licenseId, that.licenseId) &&
-                       Objects.equals(startDate, that.startDate) &&
-                       Objects.equals(endDate, that.endDate) &&
-                       Objects.equals(conditions, that.conditions) &&
-                       Objects.equals(licensedBy, that.licensedBy) &&
-                       Objects.equals(licensedByTypeName, that.licensedByTypeName) &&
-                       Objects.equals(licensedByPropertyName, that.licensedByPropertyName) &&
-                       Objects.equals(custodian, that.custodian) &&
-                       Objects.equals(custodianTypeName, that.custodianTypeName) &&
-                       Objects.equals(custodianPropertyName, that.custodianPropertyName) &&
-                       Objects.equals(licensee, that.licensee) &&
-                       Objects.equals(licenseeTypeName, that.licenseeTypeName) &&
-                       Objects.equals(licenseePropertyName, that.licenseePropertyName) &&
-                       Objects.equals(notes, that.notes);
+        return Objects.equals(licenseId, that.licenseId) && Objects.equals(startDate, that.startDate) && Objects.equals(
+                endDate, that.endDate) && Objects.equals(conditions, that.conditions) && Objects.equals(licensedBy,
+                                                                                                        that.licensedBy) && Objects.equals(
+                licensedByTypeName, that.licensedByTypeName) && Objects.equals(licensedByPropertyName,
+                                                                               that.licensedByPropertyName) && Objects.equals(
+                custodian, that.custodian) && Objects.equals(custodianTypeName, that.custodianTypeName) && Objects.equals(
+                custodianPropertyName, that.custodianPropertyName) && Objects.equals(licensee, that.licensee) && Objects.equals(
+                licenseeTypeName, that.licenseeTypeName) && Objects.equals(licenseePropertyName,
+                                                                           that.licenseePropertyName) && Objects.equals(notes,
+                                                                                                                        that.notes);
     }
 
 
@@ -453,7 +458,7 @@ public class LicenseProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(licenseId, startDate, endDate, conditions, licensedBy, licensedByTypeName, licensedByPropertyName,
+        return Objects.hash(super.hashCode(), licenseId, startDate, endDate, conditions, licensedBy, licensedByTypeName, licensedByPropertyName,
                             custodian, custodianTypeName, custodianPropertyName, licensee, licenseeTypeName, licenseePropertyName, notes);
     }
 }

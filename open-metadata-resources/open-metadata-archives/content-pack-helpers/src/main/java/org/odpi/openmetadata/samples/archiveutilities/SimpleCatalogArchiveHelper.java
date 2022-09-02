@@ -318,7 +318,7 @@ public class SimpleCatalogArchiveHelper
     private static final String COORDINATES_PROPERTY                         = "coordinates";
     private static final String MAP_PROJECTION_PROPERTY                      = "mapProjection";
     private static final String POSTAL_ADDRESS_PROPERTY                      = "postalAddress";
-    private static final String TIME_ZONE_PROPERTY                           = "timeZone";
+    private static final String TIME_ZONE_PROPERTY                           = "timezone";
     private static final String LEVEL_PROPERTY                               = "level";
 
     private static final String ASSOCIATION_TYPE_PROPERTY                    = "associationType";
