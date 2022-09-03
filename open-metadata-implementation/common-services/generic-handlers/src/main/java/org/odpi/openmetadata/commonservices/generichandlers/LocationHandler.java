@@ -149,8 +149,6 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            locationBuilder,
                                            effectiveTime,
                                            methodName);

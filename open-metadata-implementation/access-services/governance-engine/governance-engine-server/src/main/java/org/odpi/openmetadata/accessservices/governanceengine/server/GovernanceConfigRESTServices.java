@@ -18,11 +18,11 @@ import org.slf4j.LoggerFactory;
  */
 public class GovernanceConfigRESTServices
 {
-    private static GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
+    private static final GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
 
-    private static RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceConfigRESTServices.class),
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(GovernanceConfigRESTServices.class),
                                                                                   instanceHandler.getServiceName());
-    private    RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private  final   RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor

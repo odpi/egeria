@@ -214,8 +214,6 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                       externalSourceName,
                                                       OpenMetadataAPIMapper.LIKE_TYPE_GUID,
                                                       OpenMetadataAPIMapper.LIKE_TYPE_NAME,
-                                                      null,
-                                                      null,
                                                       builder,
                                                       effectiveTime,
                                                       methodName);

@@ -146,8 +146,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                         null,
                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME,
-                                                                        null,
-                                                                        null,
                                                                         builder,
                                                                         null,
                                                                         methodName);
