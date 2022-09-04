@@ -139,8 +139,6 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            null,
                                            methodName);

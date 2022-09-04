@@ -825,8 +825,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -912,8 +910,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            assetTypeId,
                                            assetTypeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
