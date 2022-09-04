@@ -7,6 +7,8 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -152,6 +154,8 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        add0053XRootSchemaType();
+
 
     }
 
@@ -159,6 +163,191 @@ public class OpenMetadataTypesArchive
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+
+    private void add0053XRootSchemaType()
+    {
+        this.archiveBuilder.addEntityDef(getRootSchemaTypeEntity());
+
+        this.archiveBuilder.addTypeDefPatch(updateTabularSchemaType());
+        this.archiveBuilder.addTypeDefPatch(updateDocumentSchemaType());
+        this.archiveBuilder.addTypeDefPatch(updateObjectSchemaType());
+        this.archiveBuilder.addTypeDefPatch(updateEventType());
+        this.archiveBuilder.addTypeDefPatch(updateRelationalDBSchemaType());
+        this.archiveBuilder.addTypeDefPatch(updateAPISchemaType());
+        this.archiveBuilder.addTypeDefPatch(updateDisplayDataSchemaType());
+        this.archiveBuilder.addTypeDefPatch(updateQuerySchemaType());
+    }
+
+
+    private EntityDef getRootSchemaTypeEntity()
+    {
+        final String guid            = "126962bf-dd26-4fcf-97d8-d0ad1fdd2d50";
+        final String name            = "RootSchemaType";
+        final String description     = "The root of a complex schema - normally attaches to an asset or port.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "ComplexSchemaType";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+    private TypeDefPatch updateTabularSchemaType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "TabularSchemaType";
+
+        final String superTypeName = "RootSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateDocumentSchemaType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DocumentSchemaType";
+
+        final String superTypeName = "RootSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateObjectSchemaType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ObjectSchemaType";
+
+        final String superTypeName = "RootSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+
+    private TypeDefPatch updateEventType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "EventType";
+
+        final String superTypeName = "RootSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateRelationalDBSchemaType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "RelationalDBSchemaType";
+
+        final String superTypeName = "RootSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateAPISchemaType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "APISchemaType";
+
+        final String superTypeName = "RootSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateDisplayDataSchemaType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DisplayDataSchemaType";
+
+        final String superTypeName = "RootSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
+
+
+    private TypeDefPatch updateQuerySchemaType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "QuerySchemaType";
+
+        final String superTypeName = "RootSchemaType";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+
+        return typeDefPatch;
+    }
 
 
     /*
