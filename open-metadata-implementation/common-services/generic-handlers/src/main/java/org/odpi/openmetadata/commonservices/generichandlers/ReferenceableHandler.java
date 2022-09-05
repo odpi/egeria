@@ -4415,8 +4415,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   null,
                                                                   OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
-                                                                  null,
-                                                                  null,
                                                                   builder,
                                                                   effectiveTime,
                                                                   methodName);

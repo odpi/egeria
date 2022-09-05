@@ -1506,6 +1506,46 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
     }
 
 
+
+    /**
+     * Return the properties from a named classification or null if classification not present or without properties.
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param classifications    list of classifications for an entity
+     * @param classificationName classification to retrieve
+     * @param methodName         calling method
+     * @return located properties - or null if none
+     */
+    @Override
+    public InstanceProperties getClassificationProperties(String                sourceName,
+                                                          List<Classification>  classifications,
+                                                          String                classificationName,
+                                                          String                methodName)
+    {
+        final String thisMethodName = "getClassificationProperties";
+
+        if (classificationName == null)
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName, thisMethodName, methodName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+
+        if (classifications != null)
+        {
+            for (Classification classification : classifications)
+            {
+                if (classificationName.equals(classification.getName()))
+                {
+                    return classification.getProperties();
+                }
+            }
+        }
+
+        return null;
+    }
+
+
     /**
      * Return the named classification from an existing entity.
      *

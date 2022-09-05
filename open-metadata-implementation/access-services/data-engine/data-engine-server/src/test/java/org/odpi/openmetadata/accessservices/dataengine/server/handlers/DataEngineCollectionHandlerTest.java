@@ -80,7 +80,7 @@ class DataEngineCollectionHandlerTest {
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         when(assetHandler.createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, COLLECTION_TYPE_GUID,
-                COLLECTION_TYPE_NAME, QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, null, methodName)).thenReturn(GUID);
+                COLLECTION_TYPE_NAME, mockedBuilder, null, methodName)).thenReturn(GUID);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
@@ -106,7 +106,7 @@ class DataEngineCollectionHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(assetHandler).createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, mockedBuilder, null, methodName);
+                COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, mockedBuilder, null, methodName);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 

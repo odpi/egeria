@@ -159,8 +159,6 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
                                            OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
