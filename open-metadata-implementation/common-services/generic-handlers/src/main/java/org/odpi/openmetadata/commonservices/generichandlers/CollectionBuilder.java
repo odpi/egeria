@@ -124,7 +124,7 @@ public class CollectionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
                                                                   displayName,
                                                                   methodName);
 

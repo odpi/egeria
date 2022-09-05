@@ -120,8 +120,6 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            externalSourceName,
                                            OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
                                            OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-                                           null,
-                                           null,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -344,7 +342,7 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
                                         null,
                                         null,
-                                        0,
+                                        2,
                                         forLineage,
                                         forDuplicateProcessing,
                                         serviceSupportedZones,

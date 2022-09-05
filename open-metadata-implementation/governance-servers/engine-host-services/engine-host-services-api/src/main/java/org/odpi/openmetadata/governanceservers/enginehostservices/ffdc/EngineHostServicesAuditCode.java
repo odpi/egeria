@@ -34,7 +34,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                        OMRSAuditLogRecordSeverity.STARTUP,
                        "The engine host {0} has initialized",
                        "The engine host services has completed initialization.",
-                       "Verify that all of the configured engine services have successfully started, the configuration for their " +
+                       "Verify that all the configured engine services have successfully started, the configuration for their " +
                                "assigned governance engines has been retrieved from the Governance Engine OMAS by the engine host services " +
                                "and the engine services are able to connect to their partner OMAS."),
 
@@ -164,7 +164,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                           OMRSAuditLogRecordSeverity.SECURITY,
                           "Engine host server {0} is not authorized to call the Governance Engine " +
                                   "OMAS running in server {1} on OMAG Server Platform {2} with userId {3}.  The error message was: {4}",
-                          "Some, or all of the metadata definitions needed for the governance engines are not accessible from the open" +
+                          "Some, or all the metadata definitions needed for the governance engines are not accessible from the open" +
                                   "metadata ecosystem.",
                           "The userId comes from the engine host's configuration document.  It is stored as the localServerUserId.  " +
                                   "The authorization failure may be limited to a single operation, or extend to all requests to the Governance " +
@@ -256,10 +256,10 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                           OMRSAuditLogRecordSeverity.INFO,
                                           "All governance service configuration is being refreshed for governance engine {0}",
                                           "The engine host services will call the Governance Engine OMAS in the metadata server to " +
-                                                  "retrieve details of all of the governance services configured for this engine." +
+                                                  "retrieve details of all the governance services configured for this engine." +
                                                   "During this process, some governance request may fail if the associated governance" +
                                                   "service is only partially configured.",
-                                          "Monitor the engine host services to ensure all of the governance services are retrieved. " +
+                                          "Monitor the engine host services to ensure all the governance services are retrieved. " +
                                                   "Then it is ready to process new governance requests."),
 
     FINISHED_ALL_GOVERNANCE_SERVICE_CONFIG("ENGINE-HOST-SERVICES-0029",
@@ -267,7 +267,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                           "Refreshing all governance service configuration has being completed for governance engine {0}",
                                           "The governance engine is ready to receive governance requests for all successfully loaded " +
                                                   "governance services.",
-                                          "No action is required as long as all of the expected governance services are loaded." +
+                                          "No action is required as long as all the expected governance services are loaded." +
                                                   "If there are any governance services missing then validate the configuration of" +
                                                   "the governance engine in the metadata server."),
 

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityListResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityResponse;
@@ -78,6 +78,7 @@ public class UserIdentityRESTServices
                                                                      null,
                                                                      null,
                                                                      requestBody.getProperties().getQualifiedName(),
+                                                                     requestBody.getProperties().getUserId(),
                                                                      requestBody.getProperties().getDistinguishedName(),
                                                                      requestBody.getProperties().getAdditionalProperties(),
                                                                      requestBody.getProperties().getTypeName(),
@@ -145,6 +146,7 @@ public class UserIdentityRESTServices
                                            userIdentityGUID,
                                            guidParameterName,
                                            requestBody.getProperties().getQualifiedName(),
+                                           requestBody.getProperties().getUserId(),
                                            requestBody.getProperties().getDistinguishedName(),
                                            requestBody.getProperties().getAdditionalProperties(),
                                            requestBody.getProperties().getTypeName(),
@@ -188,7 +190,7 @@ public class UserIdentityRESTServices
     public VoidResponse deleteUserIdentity(String                    serverName,
                                            String                    userId,
                                            String                    userIdentityGUID,
-                                           MetadataSourceRequestBody requestBody)
+                                           ExternalSourceRequestBody requestBody)
     {
         final String methodName        = "deleteUserIdentity";
         final String guidParameterName = "userIdentityGUID";
@@ -249,7 +251,7 @@ public class UserIdentityRESTServices
                                               String                    userId,
                                               String                    userIdentityGUID,
                                               String                    profileGUID,
-                                              MetadataSourceRequestBody requestBody)
+                                              ExternalSourceRequestBody requestBody)
     {
         final String methodName                    = "addIdentityToProfile";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
@@ -314,7 +316,7 @@ public class UserIdentityRESTServices
                                                   String                    userId,
                                                   String                    userIdentityGUID,
                                                   String                    profileGUID,
-                                                  MetadataSourceRequestBody requestBody)
+                                                  ExternalSourceRequestBody requestBody)
     {
         final String methodName                    = "removeIdentityFromProfile";
         final String userIdentityGUIDParameterName = "userIdentityGUID";

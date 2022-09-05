@@ -34,7 +34,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
     private final LikeHandler<Like>                                     likeHandler;
     private final SearchKeywordHandler<SearchKeyword>                   keywordHandler;
     private final LocationHandler<Location>                             locationHandler;
-    private final NoteLogHandler<NoteLog>                               noteLogHandler;
+    private final NoteLogHandler<NoteLogHeader>                         noteLogHandler;
     private final NoteHandler<Note>                                     noteHandler;
     private final RatingHandler<Rating>                                 ratingHandler;
     private final ReferenceableHandler<Referenceable>                   referenceableHandler;
@@ -270,7 +270,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
                                                          auditLog);
 
             this.noteLogHandler = new NoteLogHandler<>(new NoteLogConverter<>(repositoryHelper, serviceName, serverName),
-                                                       NoteLog.class,
+                                                       NoteLogHeader.class,
                                                        serviceName,
                                                        serverName,
                                                        invalidParameterHandler,
@@ -623,7 +623,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    NoteLogHandler<NoteLog> getNoteLogHandler() throws PropertyServerException
+    NoteLogHandler<NoteLogHeader> getNoteLogHandler() throws PropertyServerException
     {
         final String methodName = "getNoteLogHandler";
 

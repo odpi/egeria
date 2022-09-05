@@ -16,8 +16,9 @@ import java.util.Date;
  */
 public class GetRelationshipExecutor extends RepositoryExecutorBase
 {
-    private MaintenanceAccumulator accumulator;
-    private String                 relationshipGUID;
+    private final MaintenanceAccumulator accumulator;
+    private final String                 relationshipGUID;
+
     private boolean                allExceptions         = true;
     private Date                   asOfTime              = null;
     private Relationship           retrievedRelationship = null;

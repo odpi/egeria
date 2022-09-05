@@ -264,7 +264,7 @@ public class AssetConsumerResource
 
 
     /**
-     * Removes a tag from the repository.  All of the relationships to referenceables are lost.
+     * Removes a tag from the repository.  all the relationships to referenceables are lost.
      *
      * @param serverName   name of the server instances for this request
      * @param userId       String - userId of user making request.

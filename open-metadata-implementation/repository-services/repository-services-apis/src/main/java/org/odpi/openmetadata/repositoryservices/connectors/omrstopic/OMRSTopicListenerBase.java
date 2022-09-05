@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * OMRSTopicListenerBase provides a base class for a topic listener so it only needs to
+ * OMRSTopicListenerBase provides a base class for a topic listener, so it only needs to
  * override the methods for the events it cares about.
  */
 public class OMRSTopicListenerBase implements OMRSTopicListener
@@ -274,13 +274,13 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                             /*
                              * New type of registry event that this server does not understand ignore it
                              */
-                            log.debug("Unknown registry event: " + registryEvent.toString());
+                            log.debug("Unknown registry event: " + registryEvent);
                             break;
                     }
                 }
                 else
                 {
-                    log.debug("Ignored registry event: " + registryEvent.toString());
+                    log.debug("Ignored registry event: " + registryEvent);
                 }
             }
         }
@@ -966,7 +966,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
 
     /**
      * There is more than one member of the open metadata repository cohort that is using the same metadata
-     * collection Id.  This means that their metadata instances can be updated in more than one server and their
+     * collection id.  This means that their metadata instances can be updated in more than one server and there
      * is a potential for data integrity issues.
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
@@ -1003,7 +1003,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId  Id for the repository with the bad remote connection.
+     * @param targetMetadataCollectionId  id for the repository with the bad remote connection.
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
@@ -1388,10 +1388,9 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
-    @SuppressWarnings(value = "deprecation")
     public void processClassifiedEntityEvent(String         sourceName,
                                              String         originatorMetadataCollectionId,
                                              String         originatorServerName,
@@ -1424,7 +1423,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all the classifications.
      * @param classification new classification
      */
     @SuppressWarnings(value = "unused")
@@ -1475,10 +1474,9 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
-    @SuppressWarnings(value = {"deprecation", "unused"})
     public void processDeclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -1511,7 +1509,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      */
     @SuppressWarnings(value = "unused")
@@ -1562,11 +1560,10 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
-    @SuppressWarnings(value = "deprecation")
     public void processReclassifiedEntityEvent(String         sourceName,
                                                String         originatorMetadataCollectionId,
                                                String         originatorServerName,
@@ -1600,7 +1597,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all the classifications.
      * @param originalClassification classification that was removed
      * @param classification new classification
      */
@@ -1644,7 +1641,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
 
 
     /**
-     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
@@ -1782,7 +1779,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
 
 
     /**
-     * An existing entity has had its type changed.  Typically this action is taken to move an entity's
+     * An existing entity has had its type changed.  Typically, this action is taken to move an entity's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *
@@ -1962,7 +1959,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
 
 
     /**
-     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository,
      * but it is no longer returned on queries.
      * <p>
      * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
@@ -2093,7 +2090,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
 
 
     /**
-     * An existing relationship has had its type changed.  Typically this action is taken to move a relationship's
+     * An existing relationship has had its type changed.  Typically, this action is taken to move a relationship's
      * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
      * added.)  However, the type can be changed to any compatible type.
      *

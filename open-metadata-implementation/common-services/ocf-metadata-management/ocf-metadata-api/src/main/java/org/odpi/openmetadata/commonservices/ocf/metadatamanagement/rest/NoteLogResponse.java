@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLogHeader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * NoteLogResponse is the response structure used on the OMAS REST API calls that returns a
- * NoteLog object as a response.  It returns details of the note log, the first few notes and the total count
+ * NoteLogHeader object as a response.  It returns details of the note log, the first few notes and the total count
  * of the notes within it.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -29,9 +29,9 @@ public class NoteLogResponse extends OCFOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private NoteLog    noteLog   = null;
-    private List<Note> notes     = null;
-    private int        noteCount = 0;
+    private NoteLogHeader noteLog = null;
+    private List<Note>    notes   = null;
+    private int           noteCount = 0;
 
 
     /**
@@ -66,7 +66,7 @@ public class NoteLogResponse extends OCFOMASAPIResponse
      *
      * @return note log bean
      */
-    public NoteLog getNoteLog()
+    public NoteLogHeader getNoteLog()
     {
         return noteLog;
     }
@@ -77,7 +77,7 @@ public class NoteLogResponse extends OCFOMASAPIResponse
      *
      * @param noteLog bean
      */
-    public void setNoteLog(NoteLog noteLog)
+    public void setNoteLog(NoteLogHeader noteLog)
     {
         this.noteLog = noteLog;
     }

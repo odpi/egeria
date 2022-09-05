@@ -8,7 +8,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.samples.subjectar
  */
 public enum SubjectAreaSampleDefinitions
 {
-    ORGANIZATION(   "SubjectAreaDefinition:Organization",
+    ORGANIZATION(   "Organization",
                     null,
                     "Organization",
                     "Information relating to an organization.",
@@ -16,23 +16,23 @@ public enum SubjectAreaSampleDefinitions
                     "Controlling data management relating to different types of organizational structures and catalogues.",
                     0),
 
-    HOSPITAL(       "SubjectAreaDefinition:Organization:Hospital",
-                    "SubjectAreaDefinition:Organization",
+    HOSPITAL(       "Organization:Hospital",
+                    "Organization",
                     "Hospital",
                     "Information relating to a hospital's organization.",
                     "Across Coco Pharmaceuticals.",
                     "Controlling data management relating to different types of hospital organizational structures and catalogues.",
                     0),
 
-    SUPPLIER(       "SubjectAreaDefinition:Organization:Supplier",
-                    "SubjectAreaDefinition:Organization",
+    SUPPLIER(       "Organization:Supplier",
+                    "Organization",
                     "Supplier",
                     "Information relating to a supplier's organization.",
                     "Across Coco Pharmaceuticals.",
                     "Controlling data management relating to different types of supplier organizational structures and catalogues.",
                     0),
 
-    PERSON(         "SubjectAreaDefinition:Person",
+    PERSON(         "Person",
                     null,
                     "Person",
                     "Information relating to an individual.",
@@ -40,39 +40,39 @@ public enum SubjectAreaSampleDefinitions
                     "Controlling data management relating to information that describes an individual.",
                     0),
 
-    PATIENT(         "SubjectAreaDefinition:Person:Patient",
-                    "SubjectAreaDefinition:Person",
+    PATIENT(        "Person:Patient",
+                    "Person",
                     "Patient",
                     "Information relating to an individual patient.",
                     "Across Coco Pharmaceuticals.",
                     "Controlling data management relating to information that describes an individual patient.",
                     0),
 
-    CLINICIAN(         "SubjectAreaDefinition:Person:Clinician",
-                    "SubjectAreaDefinition:Person",
+    CLINICIAN(      "Person:Clinician",
+                    "Person",
                     "Clinician",
                     "Information relating to an individual who works with patients.",
                     "Across Coco Pharmaceuticals.",
                     "Controlling data management relating to information that describes an individual workign with patients.",
                     0),
 
-    EMPLOYEE(       "SubjectAreaDefinition:Person:Employee",
-                    "SubjectAreaDefinition:Person",
+    EMPLOYEE(       "Person:Employee",
+                    "Person",
                     "Employee",
                     "Information relating to an individual who is employed by an organization.",
                     "Across Coco Pharmaceuticals.",
                     "Controlling data management relating to information that describes an employee.",
                     0),
 
-    COLLABORATOR(   "SubjectAreaDefinition:Person:Collaborator",
-                    "SubjectAreaDefinition:Person",
+    COLLABORATOR(   "Person:Collaborator",
+                    "Person",
                     "Collaborator",
-                    "Information relating to an individual woth is a business partner.",
+                    "Information relating to an individual who is a business partner.",
                     "Across Coco Pharmaceuticals.",
                     "Controlling data management relating to information that describes an individuals who are business partners.",
                     0),
 
-    CLINICAL(       "SubjectAreaDefinition:Clinical",
+    CLINICAL(       "Clinical",
                     null,
                     "Clinical",
                     "Information relating to the work understanding medical conditions and their resolution.",
@@ -80,39 +80,39 @@ public enum SubjectAreaSampleDefinitions
                     "Controlling data management relating to research and patient care.",
                     0),
 
-    SYMPTOM(        "SubjectAreaDefinition:Clinical:Symptom",
-                    "Symptom:Clinical",
+    SYMPTOM(        "Clinical:Symptom",
                     "Clinical",
+                    "Symptom",
                     "Information relating to the symptoms of a medical condition.",
                     "Within research, sales and the data lake.",
                     "Controlling data management relating to research and patient care.",
                     0),
 
-    MEASUREMENT(    "SubjectAreaDefinition:Clinical:Measurement",
-                    "SubjectAreaDefinition:Clinical",
+    MEASUREMENT(    "Clinical:Measurement",
+                    "Clinical",
                     "Measurement",
                     "Information relating to the measurements taken to understanding medical conditions and their effectiveness.",
                     "Within research, sales and the data lake.",
                     "Controlling data management relating to research and patient care.",
                     0),
 
-    PERSCRIPTION(   "SubjectAreaDefinition:Clinical:Perscription",
-                    "SubjectAreaDefinition:Clinical",
-                    "Perscription",
+    PRESCRIPTION(   "Clinical:Prescription",
+                    "Clinical",
+                    "Prescription",
                     "Information relating to the treatment defined for a specific patient.",
                     "Within research, sales and the data lake.",
                     "Controlling data management relating to research and patient care.",
                     0),
 
-    OUTCOME(        "SubjectAreaDefinition:Clinical:Outcome",
-                    "SubjectAreaDefinition:Clinical",
+    OUTCOME(        "Clinical:Outcome",
+                    "Clinical",
                     "Outcome",
                     "Information relating to the work understanding the result of a course of treatment.",
                     "Within research, sales and the data lake.",
                     "Controlling data management relating to research and patient care.",
                     0),
 
-    TREATMENT(      "SubjectAreaDefinition:Treatment",
+    TREATMENT(      "Treatment",
                     null,
                     "Treatment",
                     "Information relating to the Coco Pharmaceutical products and practices around patient care.",
@@ -120,31 +120,31 @@ public enum SubjectAreaSampleDefinitions
                     "Controlling data management relating to Coco Pharmaceuticals' treatments.",
                     0),
 
-    PRODUCT(        "SubjectAreaDefinition:Treatment:Product",
-                    "SubjectAreaDefinition:Treatment",
+    PRODUCT(        "Treatment:Product",
+                    "Treatment",
                     "Product",
                     "Information relating to the Coco Pharmaceutical products.",
                     "Within research, sales, manufacturing and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' treatments.",
                     0),
 
-    ORDER(          "SubjectAreaDefinition:Treatment:Order",
-                    "SubjectAreaDefinition:Treatment",
+    ORDER(          "Treatment:Order",
+                    "Treatment",
                     "Order",
                     "Information relating to orders for Coco Pharmaceutical products.",
                     "Within research, sales, manufacturing and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' treatments.",
                     0),
 
-    RECIPE(         "SubjectAreaDefinition:Treatment:Recipe",
-                    "SubjectAreaDefinition:Treatment",
+    RECIPE(         "Treatment:Recipe",
+                    "Treatment",
                     "Recipe",
-                    "Information relating to the ingrediatns and manufacturing knowhow for Coco Pharmaceutical products.",
+                    "Information relating to the ingredients and manufacturing know-how for Coco Pharmaceutical products.",
                     "Within research, sales, manufacturing and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' treatments.",
                     0),
 
-    SERVICE_QUALITY("SubjectAreaDefinition:ServiceQuality",
+    SERVICE_QUALITY("ServiceQuality",
                     null,
                     "Service Quality",
                     "Information relating to the Coco Pharmaceuticals' business operations.",
@@ -152,32 +152,32 @@ public enum SubjectAreaSampleDefinitions
                     "Controlling data management relating to Coco Pharmaceuticals' business operations.",
                     0),
 
-    CONTRACT       ("SubjectAreaDefinition:ServiceQuality:Contract",
-                    "SubjectAreaDefinition:ServiceQuality",
+    CONTRACT       ("ServiceQuality:Contract",
+                    "ServiceQuality",
                     "Contract",
                     "Information relating to the Coco Pharmaceuticals' contracts.",
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' business operations.",
                     0),
 
-    STOCK          ("SubjectAreaDefinition:ServiceQuality:Stock",
-                    "SubjectAreaDefinition:ServiceQuality",
+    STOCK          ("ServiceQuality:Stock",
+                    "ServiceQuality",
                     "Stock",
                     "Information relating to the Coco Pharmaceuticals' stock management and control.",
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' business operations.",
                     0),
 
-    DISTRIBUTION   ("SubjectAreaDefinition:ServiceQuality:Distribution",
-                    "SubjectAreaDefinition:ServiceQuality",
+    DISTRIBUTION   ("ServiceQuality:Distribution",
+                    "ServiceQuality",
                     "Distribution",
                     "Information relating to the Coco Pharmaceuticals' distribution of treatments.",
                     "Within research, sales, manufacturing, finance and the data lake.",
                     "Controlling data management relating to Coco Pharmaceuticals' business operations.",
                     0),
 
-    INVOICE        ("SubjectAreaDefinition:ServiceQuality:Invoice",
-                    "SubjectAreaDefinition:ServiceQuality",
+    INVOICE        ("ServiceQuality:Invoice",
+                    "ServiceQuality",
                     "Invoice",
                     "Information relating to the Coco Pharmaceuticals' billing and payments.",
                     "Within research, sales, manufacturing, finance and the data lake.",
@@ -187,13 +187,13 @@ public enum SubjectAreaSampleDefinitions
     ;
 
 
-    private String subjectAreaName;
-    private String parentName;
-    private String displayName;
-    private String description;
-    private String scope;
-    private String usage;
-    private int    domain;
+    private final String subjectAreaName;
+    private final String parentName;
+    private final String displayName;
+    private final String description;
+    private final String scope;
+    private final String usage;
+    private final int    domain;
 
 
     SubjectAreaSampleDefinitions(String name,
@@ -205,6 +205,7 @@ public enum SubjectAreaSampleDefinitions
                                  int    domain)
     {
         this.subjectAreaName = name;
+        this.parentName = parentName;
         this.displayName = displayName;
         this.description = description;
         this.scope = scope;
@@ -227,7 +228,7 @@ public enum SubjectAreaSampleDefinitions
     /**
      * Return the name of the parent subject area - null for top level.
      *
-     * @return subject area name.
+     * @return parent subject area name.
      */
     public String getParentName()
     {
@@ -268,8 +269,9 @@ public enum SubjectAreaSampleDefinitions
 
 
     /**
-     * Get the typical usage of the subject area;
-     * @return
+     * Get the typical usage of the subject area.
+     *
+     * @return text
      */
     public String getUsage()
     {
@@ -305,4 +307,5 @@ public enum SubjectAreaSampleDefinitions
                        ", usage='" + usage + '\'' +
                        ", domain=" + domain +
                        '}';
-    }}
+    }
+}

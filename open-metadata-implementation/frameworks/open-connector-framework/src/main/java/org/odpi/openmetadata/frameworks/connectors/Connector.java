@@ -54,15 +54,15 @@ import java.util.Map;
  * </p>
  * <p>
  * Both the connector and the connector provider have base classes (ConnectorBase and
- * ConnectorProviderBase respectively) that implement all of the standard methods.  The connector developer extends
+ * ConnectorProviderBase respectively) that implement all the standard methods.  The connector developer extends
  * these classes to add the specific methods to manage the asset and configure the base classes.
  * </p>
  */
 public abstract class Connector
 {
-    private Map<String, Integer> counterMap   = new HashMap<>();
-    private Map<String, String>  propertyMap  = new HashMap<>();
-    private Map<String, Date>    timestampMap = new HashMap<>();
+    private final Map<String, Integer> counterMap   = new HashMap<>();
+    private final Map<String, String>  propertyMap  = new HashMap<>();
+    private final Map<String, Date>    timestampMap = new HashMap<>();
 
     /**
      * Default constructor
@@ -135,7 +135,7 @@ public abstract class Connector
 
 
     /**
-     * Retrieve all of the statistics gathered by the connector.
+     * Retrieve all the statistics gathered by the connector.
      *
      * @return name-value pairs for the statistics
      */

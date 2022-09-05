@@ -9,6 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation 'org.springframework:spring-web'
     implementation 'org.codehaus.plexus:plexus-utils'
     implementation 'org.springframework:spring-core'

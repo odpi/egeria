@@ -57,7 +57,7 @@ public enum GovernanceProgramErrorCode implements ExceptionMessageSet
     DUPLICATE_GOVERNANCE_OFFICER_FOR_ROLE_ID(404, "OMAS-GOVERNANCE-PROGRAM-404-013",
                                              "The governance program OMAS has retrieved multiple governance officer records with an appointment id of {0}",
                                              "Multiple governance officer records are linked to a governance appointment in the property server.",
-                                             "Details of the duplicate records are stored in the exception.  Use them to locate and correct some or all of the records so the employee number is a unique field."),
+                                             "Details of the duplicate records are stored in the exception.  Use them to locate and correct some or all the records so the employee number is a unique field."),
 
     GOVERNANCE_OFFICER_NOT_DELETED(404, "OMAS-GOVERNANCE-PROGRAM-404-014",
             "The governance program OMAS is not able to delete a governance officer record with an guid of {0} since the supplied appointmentId of {1} and " +

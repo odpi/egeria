@@ -123,7 +123,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "The unique identifier of the entity is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
     NO_RELATIONSHIPS_FOUND(404, "OMAG-REPOSITORY-HANDLER-404-008",
             "No {0} relationships are connected to the {1} entity with unique identifier {2}: the calling method is {3} and the server is {4}",
-            "The system is unable to process a request because no relationships have been discovered and it is unable to retrieve all of the information it needs.",
+            "The system is unable to process a request because no relationships have been discovered and it is unable to retrieve all the information it needs.",
             "Check that the unique identifier of the entity is correct and the metadata server supporting the request is running.  If these are " +
                                    "both correct, investigate why the relationships are missing.  It is likely that the process responsible for " +
                                    "the creation of the relationships has not yet run, or failed part way through its operation."),

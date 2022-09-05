@@ -85,47 +85,13 @@ public class ConnectorTypeProperties extends AssetReferenceable
 
 
     /**
-     * Bean constructor with parent asset
-     *
-     * @param parentAsset description of the asset that this connector type is attached to.
-     * @param connectorTypeBean bean containing the properties
-     */
-    public ConnectorTypeProperties(AssetDescriptor parentAsset,
-                                   ConnectorType   connectorTypeBean)
-    {
-        super(parentAsset, connectorTypeBean);
-
-        if (connectorTypeBean == null)
-        {
-            this.connectorTypeBean = new ConnectorType();
-        }
-        else
-        {
-            this.connectorTypeBean = connectorTypeBean;
-        }
-    }
-
-
-    /**
-     * Copy/clone constructor for a connectorType that is not connected to an asset (either directly or indirectly).
+     * Copy/clone constructor for a connectorType that is connected to an asset (either directly or indirectly).
      *
      * @param templateConnectorType template object to copy.
      */
     public ConnectorTypeProperties(ConnectorTypeProperties templateConnectorType)
     {
-        this(null, templateConnectorType);
-    }
-
-
-    /**
-     * Copy/clone constructor for a connectorType that is connected to an asset (either directly or indirectly).
-     *
-     * @param parentAsset description of the asset that this connector type is attached to.
-     * @param templateConnectorType template object to copy.
-     */
-    public ConnectorTypeProperties(AssetDescriptor parentAsset, ConnectorTypeProperties templateConnectorType)
-    {
-        super(parentAsset, templateConnectorType);
+        super(templateConnectorType);
 
         if (templateConnectorType == null)
         {

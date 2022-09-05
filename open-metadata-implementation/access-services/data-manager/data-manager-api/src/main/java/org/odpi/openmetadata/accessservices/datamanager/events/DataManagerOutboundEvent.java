@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.Objects;
 
@@ -25,8 +25,8 @@ public class DataManagerOutboundEvent extends DataManagerEventHeader
     /*
      * Always set up
      */
-    private DataManagerOutboundEventType eventType          = null;
-    private ElementStub                  principleElement   = null;
+    private DataManagerOutboundEventType eventType        = null;
+    private ElementStub                  principleElement = null;
 
     /*
      * For classification events

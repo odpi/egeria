@@ -229,20 +229,25 @@ public class ExternalIdentifier extends Referenceable
     public String toString()
     {
         return "ExternalIdentifier{" +
-                "identifier='" + identifier + '\'' +
-                ", description='" + description + '\'' +
-                ", usage='" + usage + '\'' +
-                ", source='" + source + '\'' +
-                ", keyPattern=" + keyPattern +
-                ", scope=" + scope +
-                ", scopeDescription='" + scopeDescription + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                '}';
+                       "URL='" + getURL() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       ", status=" + getStatus() +
+                       ", type=" + getType() +
+                       ", origin=" + getOrigin() +
+                       ", versions=" + getVersions() +
+                       ", GUID='" + getGUID() + '\'' +
+                       ", classifications=" + getClassifications() +
+                       ", identifier='" + identifier + '\'' +
+                       ", description='" + description + '\'' +
+                       ", usage='" + usage + '\'' +
+                       ", source='" + source + '\'' +
+                       ", keyPattern=" + keyPattern +
+                       ", scope=" + scope +
+                       ", scopeDescription='" + scopeDescription + '\'' +
+                       ", headerVersion=" + getHeaderVersion() +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       '}';
     }
 
 

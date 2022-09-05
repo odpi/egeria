@@ -29,7 +29,7 @@ import java.util.UUID;
  * identifier, a connection object and a metadata properties object for its connected asset.
  * These are supplied to the connector during its initialization.
  *
- * The ConnectorBase base class implements all of the methods required by the Connector interface.
+ * The ConnectorBase base class implements all the methods required by the Connector interface.
  * Each specific implementation of a connector then extends this interface to add the methods to work with the
  * particular type of asset it supports.  For example, a JDBC connector would add the standard JDBC SQL interface, the
  * OMRS Connectors add the metadata repository management APIs...
@@ -60,7 +60,7 @@ public abstract class ConnectorBase extends Connector
     public  ConnectorBase()
     {
         /*
-         * Nothing to do real initialization happens in the initialize() method.
+         * Nothing to do real initialization happens in the "initialize()" method.
          * This pattern is used to make it possible for ConnectorBrokerBase to support the dynamic loading and
          * instantiation of arbitrary connector instances without needing to know the specifics of their constructor
          * methods

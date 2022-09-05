@@ -33,8 +33,7 @@ public class RelatedAssetsResponseTest
     public RelatedAssetsResponseTest()
     {
         responseAsset.setGUID("TestGUID");
-        responseObject.setRelatedAsset(responseAsset);
-        responseObject.setTypeName(responseRelationship);
+        responseObject.setRelationshipName(responseRelationship);
         responseList.add(responseObject);
     }
 

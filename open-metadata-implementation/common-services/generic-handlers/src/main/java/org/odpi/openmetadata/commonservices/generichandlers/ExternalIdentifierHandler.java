@@ -28,7 +28,7 @@ import java.util.Map;
  * in third party technology. It runs server-side in the OMAG Server Platform and manages ExternalId entities through the OMRSRepositoryConnector
  * via the repository handler.
  *
- * The ExternalIdentifier is linked to the SoftwareServerCapability that represents the third party technology
+ * The ExternalIdentifier is linked to the SoftwareCapability that represents the third party technology
  * that generated the external identifier.  This is referred to as the scope. It is also linked to the element
  * (or elements) in open metadata that are equivalent to the metadata element(s) in the third party technology.
  * The correlation may be many-to-many.
@@ -853,8 +853,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                             null,
                                                             OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
                                                             OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
-                                                            null,
-                                                            null,
                                                             builder,
                                                             effectiveTime,
                                                             methodName);

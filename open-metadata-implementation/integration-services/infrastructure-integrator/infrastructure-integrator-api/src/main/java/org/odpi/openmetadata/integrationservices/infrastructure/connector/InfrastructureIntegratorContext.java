@@ -2295,6 +2295,8 @@ public class InfrastructureIntegratorContext
      *
      * @param dataSupplierGUID unique identifier of the data supplier
      * @param effectiveTime time when the hosting is effective
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
      * @return unique identifier and properties of the relationship
      *

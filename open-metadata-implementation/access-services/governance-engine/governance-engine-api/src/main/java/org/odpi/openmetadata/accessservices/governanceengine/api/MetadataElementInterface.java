@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.api;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ElementStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
@@ -261,7 +261,7 @@ public interface MetadataElementInterface
 
     /**
      * Update the properties of a specific metadata element.  The properties must match the type definition associated with the
-     * metadata element when it was created.  However, it is possible to update a few properties, or replace all of them by
+     * metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
      * the value used in the replaceProperties flag.
      *
      * @param userId caller's userId

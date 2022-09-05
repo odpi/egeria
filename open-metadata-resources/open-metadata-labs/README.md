@@ -9,6 +9,8 @@ experiment with different capabilities of ODPi Egeria.  As such we often refer t
 
 * [Documentation on setup and running](https://egeria-project.org/education/open-metadata-labs/overview/)
 
+All source for the labs has now moved to https://github.com/odpi/egeria-jupyter-notebooks
+
 ----
 * Return to [open-metadata-resources](..)
 * Return to [Site Map](../../Content-Organization.md)

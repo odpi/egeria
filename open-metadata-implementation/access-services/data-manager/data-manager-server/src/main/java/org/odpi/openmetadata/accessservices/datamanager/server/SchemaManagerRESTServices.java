@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.datamanager.server;
 
 
 import org.odpi.openmetadata.accessservices.datamanager.converters.ElementStubConverter;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueSetElement;
@@ -25,6 +24,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -339,14 +339,7 @@ public class SchemaManagerRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueSetElement,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueSetElement> handler = instanceHandler.getValidValuesSetHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getValidValueByName(userId,
                                                                     requestBody.getName(),
@@ -409,14 +402,7 @@ public class SchemaManagerRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler<ValidValueSetElement,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean,
-                                          OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueSetElement> handler = instanceHandler.getValidValuesSetHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.findValidValues(userId,
                                                                 requestBody.getSearchString(),

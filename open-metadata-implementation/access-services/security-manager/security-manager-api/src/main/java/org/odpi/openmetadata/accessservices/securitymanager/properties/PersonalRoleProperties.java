@@ -26,10 +26,13 @@ public class PersonalRoleProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    private String               roleId      = null; /* qualifiedName */
-    private String               scope       = null; /* scope */
-    private String               title       = null; /* name */
-    private String               description = null; /* description */
+    private String               qualifiedName = null; /* qualifiedName */
+    private String               roleId        = null; /* identifier */
+    private String               scope         = null; /* scope */
+    private String               title         = null; /* name */
+    private String               description   = null; /* description */
+
+    private int                  domainIdentifier = 0; /* Zero means not specific to a governance domain */
 
     private Map<String, String>  additionalProperties = null;
 
@@ -57,10 +60,12 @@ public class PersonalRoleProperties implements Serializable
     {
         if (template != null)
         {
+            this.qualifiedName        = template.getQualifiedName();
             this.roleId               = template.getRoleId();
             this.scope                = template.getScope();
             this.title                = template.getTitle();
             this.description          = template.getDescription();
+            this.domainIdentifier     = template.getDomainIdentifier();
             this.additionalProperties = template.getAdditionalProperties();
             this.effectiveFrom        = template.getEffectiveFrom();
             this.effectiveTo          = template.getEffectiveTo();
@@ -71,9 +76,31 @@ public class PersonalRoleProperties implements Serializable
 
 
     /**
-     * Return the unique identifier for this job role/appointment.
+     * Return the unique name for element in open metadata ecosystem.
      *
      * @return unique name
+     */
+    public String getQualifiedName()
+    {
+        return qualifiedName;
+    }
+
+
+    /**
+     * Set up the unique name for element in open metadata ecosystem.
+     *
+     * @param qualifiedName unique name
+     */
+    public void setQualifiedName(String qualifiedName)
+    {
+        this.qualifiedName = qualifiedName;
+    }
+
+
+    /**
+     * Return the unique identifier for this job role/appointment typically from an HR system.
+     *
+     * @return unique identifier
      */
     public String getRoleId()
     {
@@ -84,7 +111,7 @@ public class PersonalRoleProperties implements Serializable
     /**
      * Set up the unique identifier for this job role/appointment.
      *
-     * @param roleId unique name
+     * @param roleId unique identifier
      */
     public void setRoleId(String roleId)
     {
@@ -92,8 +119,9 @@ public class PersonalRoleProperties implements Serializable
     }
 
 
+
     /**
-     * Return the context in which the governance officer is appointed. This may be an organizational scope,
+     * Return the context in which the person is appointed. This may be an organizational scope,
      * location, or scope of assets.
      *
      * @return string description
@@ -105,7 +133,7 @@ public class PersonalRoleProperties implements Serializable
 
 
     /**
-     * Set up the context in which the governance officer is appointed. This may be an organizational scope,
+     * Set up the context in which the person is appointed. This may be an organizational scope,
      * location, or scope of assets.
      *
      * @param scope string description
@@ -139,9 +167,7 @@ public class PersonalRoleProperties implements Serializable
 
 
     /**
-     * Return the description of the job role for this governance appointment.  This may relate to the specific
-     * governance responsibilities, or may be their main role if the governance responsibilities are
-     * just an adjunct to their main role.
+     * Return the description of the job role.
      *
      * @return string description
      */
@@ -152,9 +178,7 @@ public class PersonalRoleProperties implements Serializable
 
 
     /**
-     * Set up the description of the job role for this governance officer.  This may relate to the specific
-     * governance responsibilities, or may be their main role if the governance responsibilities are
-     * just an adjunct to their main role.
+     * Set up the description of the job role.
      *
      * @param description string description
      */
@@ -165,9 +189,33 @@ public class PersonalRoleProperties implements Serializable
 
 
     /**
+     * Return the identifier of the governance domain that this role belongs to.  Zero means that the
+     * role is not specific to any domain.
+     *
+     * @return int
+     */
+    public int getDomainIdentifier()
+    {
+        return domainIdentifier;
+    }
+
+
+    /**
+     * Set up the identifier of the governance domain that this role belongs to.  Zero means that the
+     * role is not specific to any domain.
+     *
+     * @param domainIdentifier int
+     */
+    public void setDomainIdentifier(int domainIdentifier)
+    {
+        this.domainIdentifier = domainIdentifier;
+    }
+
+
+    /**
      * Return a copy of the additional properties.  Null means no additional properties are available.
      *
-     * @return AdditionalProperties
+     * @return AdditionalProperties map
      */
     public Map<String, String> getAdditionalProperties()
     {
@@ -189,7 +237,7 @@ public class PersonalRoleProperties implements Serializable
     /**
      * Set up additional properties.
      *
-     * @param additionalProperties Additional properties object
+     * @param additionalProperties Additional properties map
      */
     public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
@@ -309,10 +357,12 @@ public class PersonalRoleProperties implements Serializable
     public String toString()
     {
         return "PersonalRoleProperties{" +
-                       "roleId='" + roleId + '\'' +
+                       "qualifiedName='" + qualifiedName + '\'' +
+                       ", roleId='" + roleId + '\'' +
                        ", scope='" + scope + '\'' +
                        ", title='" + title + '\'' +
                        ", description='" + description + '\'' +
+                       ", domainIdentifier=" + domainIdentifier +
                        ", additionalProperties=" + additionalProperties +
                        ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
@@ -340,7 +390,9 @@ public class PersonalRoleProperties implements Serializable
             return false;
         }
         PersonalRoleProperties that = (PersonalRoleProperties) objectToCompare;
-        return Objects.equals(roleId, that.roleId) &&
+        return domainIdentifier == that.domainIdentifier &&
+                       Objects.equals(qualifiedName, that.qualifiedName) &&
+                       Objects.equals(roleId, that.roleId) &&
                        Objects.equals(scope, that.scope) &&
                        Objects.equals(title, that.title) &&
                        Objects.equals(description, that.description) &&
@@ -360,6 +412,6 @@ public class PersonalRoleProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(roleId, scope, title, description, additionalProperties, effectiveFrom, effectiveTo, typeName, extendedProperties);
+        return Objects.hash(qualifiedName, roleId, scope, title, description, domainIdentifier, additionalProperties, effectiveFrom, effectiveTo, typeName, extendedProperties);
     }
 }

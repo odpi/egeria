@@ -46,7 +46,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                        AssetConsumerLoggingInterface,
                                                                        AssetConsumerTaggingInterface
 {
-    private AssetConsumerRESTClient restClient;               /* Initialized in constructor */
+    private final AssetConsumerRESTClient restClient;               /* Initialized in constructor */
 
     private static final String  serviceURLName = "asset-consumer";
 
@@ -372,7 +372,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Returns a list of assets that match the token. The following calls are issued in
+     * Returns a list of assets that match the token. The following calls are issued
      * in order for find the asset.
      * - getAssetProperties passing the token as the GUID
      * - getAssetByName passing the token as the name
@@ -439,7 +439,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param userId           userId of user making request.
      * @param connectionName   this may be the qualifiedName or displayName of the connection.
      *
-     * @return Connector   connector instance - or null if there is no connection
+     * @return   connector instance - or null if there is no connection
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -483,7 +483,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param userId       userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository.
      *
-     * @return Connector   connector instance - or null if there is no connection
+     * @return    connector instance - or null if there is no connection
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -527,7 +527,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param userId           userId of user making request.
      * @param connectionGUID   the unique id for the connection within the metadata repository.
      *
-     * @return Connector   connector instance - or null if there is no connection
+     * @return  connector instance - or null if there is no connection
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -571,7 +571,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param userId       userId of user making request.
      * @param connection   the connection object that contains the properties needed to create the connection.
      *
-     * @return Connector   connector instance
+     * @return  connector instance
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -979,7 +979,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
-     * @return list of glossary terms that contain the properties that describe the term and its meaning.
+     * @return list of glossary terms that contain the properties that describe the term name, and it's meaning.
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -1310,7 +1310,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
     /**
      * Removes a tag from the repository.
-     * A private tag can be deleted by its creator and all of the references are lost;
+     * A private tag can be deleted by its creator and all the references are lost;
      * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
      *
      * @param userId    userId of user making request.

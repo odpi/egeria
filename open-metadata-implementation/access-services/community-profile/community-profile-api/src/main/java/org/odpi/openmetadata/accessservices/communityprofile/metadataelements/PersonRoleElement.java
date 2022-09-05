@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 /**
  * PersonalRoleElement contains the properties and header for a person role assigned to a profile retrieved from the metadata repository.
@@ -26,8 +26,8 @@ public class PersonRoleElement implements MetadataElement, Serializable
     private static final long     serialVersionUID = 1L;
 
     private ElementHeader        elementHeader = null;
-    private PersonRoleProperties properties    = null;
-    private List<ElementStub>    appointees    = null;
+    private PersonRoleProperties properties     = null;
+    private RelatedElement       relatedElement = null;
 
 
     /**
@@ -50,7 +50,7 @@ public class PersonRoleElement implements MetadataElement, Serializable
         {
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
-            appointees = template.getAppointees();
+            relatedElement = template.getRelatedElement();
         }
     }
 
@@ -102,24 +102,26 @@ public class PersonRoleElement implements MetadataElement, Serializable
 
 
     /**
-     * Return the list of Person profiles that are appointed to the role.
+     * Return details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
      *
      * @return list of element stubs
      */
-    public List<ElementStub> getAppointees()
+    public RelatedElement getRelatedElement()
     {
-        return appointees;
+        return relatedElement;
     }
 
 
     /**
-     * Set up  the list of Person profiles that are appointed to the role.
+     * Set up details of the relationship used to retrieve this element.
+     * Will be null if the element was retrieved directly rather than via a relationship.
      *
-     * @param appointees list of element stubs
+     * @param relatedElement relationship details
      */
-    public void setAppointees(List<ElementStub> appointees)
+    public void setRelatedElement(RelatedElement relatedElement)
     {
-        this.appointees = appointees;
+        this.relatedElement = relatedElement;
     }
 
 
@@ -134,7 +136,7 @@ public class PersonRoleElement implements MetadataElement, Serializable
         return "PersonRoleElement{" +
                        "elementHeader=" + elementHeader +
                        ", properties=" + properties +
-                       ", appointees=" + appointees +
+                       ", relatedElement=" + relatedElement +
                        '}';
     }
 
@@ -159,7 +161,7 @@ public class PersonRoleElement implements MetadataElement, Serializable
         PersonRoleElement that = (PersonRoleElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(appointees, that.appointees);
+                       Objects.equals(relatedElement, that.relatedElement);
     }
 
 
@@ -171,6 +173,6 @@ public class PersonRoleElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, appointees);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
     }
 }

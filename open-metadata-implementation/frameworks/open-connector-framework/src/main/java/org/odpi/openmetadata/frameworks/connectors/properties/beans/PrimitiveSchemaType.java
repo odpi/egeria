@@ -77,23 +77,8 @@ public class PrimitiveSchemaType extends SimpleSchemaType
     public String toString()
     {
         return "PrimitiveSchemaType{" +
-                "dataType='" + dataType + '\'' +
-                ", defaultValue='" + defaultValue + '\'' +
-                ", versionNumber='" + versionNumber + '\'' +
-                ", author='" + author + '\'' +
-                ", usage='" + usage + '\'' +
-                ", encodingStandard='" + encodingStandard + '\'' +
-                ", namespace='" + namespace + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
-                '}';
+                       "dataType='" + dataType + '\'' +
+                       ", defaultValue='" + defaultValue + '\'' +
+                       '}';
     }
 }

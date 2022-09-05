@@ -473,8 +473,6 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                            externalSourceName,
                                                            OpenMetadataAPIMapper.DATA_FIELD_TYPE_GUID,
                                                            OpenMetadataAPIMapper.DATA_FIELD_TYPE_NAME,
-                                                           null,
-                                                           null,
                                                            builder,
                                                            effectiveTime,
                                                            methodName);

@@ -45,7 +45,7 @@ public class InstanceType extends InstanceElementHeader
 
 
     /**
-     * Typical constructor that set all of the properties at once.
+     * Typical constructor that set all the properties at once.
      *
      * @param typeDefCategory the category of the type
      * @param typeDefGUID unique identifier of the type

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
      * @param profileGUID the unique identifier of the profile GUID that is the anchor of
      * @param profileGUIDParameterName parameter name supplying profileGUID
      * @param qualifiedName unique name for the user identity - used in other configuration
+     * @param elementUserId user account identifier
      * @param distinguishedName LDAP distinguished name
      * @param additionalProperties additional properties for a user identity
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
@@ -101,6 +103,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                      String              profileGUID,
                                      String              profileGUIDParameterName,
                                      String              qualifiedName,
+                                     String              elementUserId,
                                      String              distinguishedName,
                                      Map<String, String> additionalProperties,
                                      String              suppliedTypeName,
@@ -131,6 +134,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                                    repositoryHelper);
 
         UserIdentityBuilder builder = new UserIdentityBuilder(qualifiedName,
+                                                              elementUserId,
                                                               distinguishedName,
                                                               additionalProperties,
                                                               typeGUID,
@@ -150,8 +154,6 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                               externalSourceName,
                                                               typeGUID,
                                                               typeName,
-                                                              qualifiedName,
-                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                               builder,
                                                               effectiveTime,
                                                               methodName);
@@ -192,6 +194,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
      * @param userIdentityGUID unique identifier of the user identity to update
      * @param userIdentityGUIDParameterName parameter passing the userIdentityGUID
      * @param qualifiedName unique name for the user identity - used in other configuration
+     * @param elementUserId user account identifier
      * @param distinguishedName LDAP distinguished name
      * @param additionalProperties additional properties for a governance user identity
      * @param typeName type of user identity
@@ -215,6 +218,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                    String              userIdentityGUID,
                                    String              userIdentityGUIDParameterName,
                                    String              qualifiedName,
+                                   String              elementUserId,
                                    String              distinguishedName,
                                    Map<String, String> additionalProperties,
                                    String              typeName,
@@ -242,6 +246,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                                    repositoryHelper);
 
         UserIdentityBuilder builder = new UserIdentityBuilder(qualifiedName,
+                                                              elementUserId,
                                                               distinguishedName,
                                                               additionalProperties,
                                                               typeGUID,
@@ -470,18 +475,27 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return this.getBeansByQualifiedName(userId,
-                                            OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                            OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                            name,
-                                            nameParameterName,
-                                            supportedZones,
-                                            startFrom,
-                                            pageSize,
-                                            forLineage,
-                                            forDuplicateProcessing,
-                                            effectiveTime,
-                                            methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.USER_ID_PROPERTY_NAME);
+
+        return this.getBeansByValue(userId,
+                                    name,
+                                    nameParameterName,
+                                    OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
+                                    OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    true,
+                                    null,
+                                    null,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    supportedZones,
+                                    null,
+                                    startFrom,
+                                    pageSize,
+                                    effectiveTime,
+                                    methodName);
     }
 
 

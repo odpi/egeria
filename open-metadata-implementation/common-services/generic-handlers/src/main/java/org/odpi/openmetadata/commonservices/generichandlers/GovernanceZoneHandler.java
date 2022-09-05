@@ -82,7 +82,8 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
-     * @param qualifiedName unique name for the zone - used in other configuration
+     * @param qualifiedName unique name for the zone entity
+     * @param zoneName unique name for the zone - used in other configuration
      * @param displayName short display name for the zone
      * @param description description of the governance zone
      * @param criteria the criteria for inclusion in a governance zone
@@ -104,6 +105,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        String              externalSourceGUID,
                                        String              externalSourceName,
                                        String              qualifiedName,
+                                       String              zoneName,
                                        String              displayName,
                                        String              description,
                                        String              criteria,
@@ -131,6 +133,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    repositoryHelper);
 
         GovernanceZoneBuilder builder = new GovernanceZoneBuilder(qualifiedName,
+                                                                  zoneName,
                                                                   displayName,
                                                                   description,
                                                                   criteria,
@@ -149,8 +152,6 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -168,7 +169,8 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param zoneGUID unique identifier for the zone to change
      * @param zoneGUIDParameterName parameter supplying the zoneGUID
-     * @param qualifiedName unique name for the zone - used in other configuration
+     * @param qualifiedName unique name for the zone entity
+     * @param zoneName unique name for the zone - used in other configuration
      * @param displayName short display name for the zone
      * @param description description of the governance zone
      * @param criteria the criteria for inclusion in a governance zone
@@ -190,6 +192,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      String              zoneGUID,
                                      String              zoneGUIDParameterName,
                                      String              qualifiedName,
+                                     String              zoneName,
                                      String              displayName,
                                      String              description,
                                      String              criteria,
@@ -217,6 +220,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    repositoryHelper);
 
         GovernanceZoneBuilder builder = new GovernanceZoneBuilder(qualifiedName,
+                                                                  zoneName,
                                                                   displayName,
                                                                   description,
                                                                   criteria,
@@ -251,34 +255,37 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * Return information about a specific governance zone.
      *
      * @param userId calling user
-     * @param qualifiedName unique name for the zone
-     * @param qualifiedNameParameter name of parameter supplying the qualifiedName
+     * @param name unique name for the zone
+     * @param nameParameter name of parameter supplying the name
      * @param methodName calling method
      *
      * @return properties of the governance zone
      *
-     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws InvalidParameterException name or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     public B getGovernanceZone(String   userId,
-                               String   qualifiedName,
-                               String   qualifiedNameParameter,
+                               String   name,
+                               String   nameParameter,
                                String   methodName) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException
     {
-        return this.getBeanByUniqueName(userId,
-                                        qualifiedName,
-                                        qualifiedNameParameter,
-                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                        OpenMetadataAPIMapper.ZONE_TYPE_GUID,
-                                        OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                        false,
-                                        false,
-                                        supportedZones,
-                                        new Date(),
-                                        methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.ZONE_NAME_PROPERTY_NAME);
+
+        return this.getBeanByValue(userId,
+                                    name,
+                                    nameParameter,
+                                    OpenMetadataAPIMapper.ZONE_TYPE_GUID,
+                                    OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                    specificMatchPropertyNames,
+                                    false,
+                                    false,
+                                    new Date(),
+                                    methodName);
     }
 
 

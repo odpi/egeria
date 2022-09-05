@@ -6,12 +6,12 @@ import org.odpi.openmetadata.accessservices.communityprofile.converters.Communit
 import org.odpi.openmetadata.accessservices.communityprofile.events.CommunityProfileOutboundEventType;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ElementStub;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalProfileUniverse;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
@@ -58,7 +58,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param instance handlers for this server instance
      */
     public CommunityProfileOMRSTopicListener(int                               karmaPointIncrement,
-                                             int karmaPointPlateauThreshold,
+                                             int                               karmaPointPlateauThreshold,
                                              CommunityProfileOutTopicPublisher publisher,
                                              String                            serverUserId,
                                              AuditLog                          auditLog,
