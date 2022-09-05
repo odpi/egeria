@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
 import java.time.Clock;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.Instant;
 import java.util.Date;
 
 public class ClockService {
@@ -16,6 +15,6 @@ public class ClockService {
     }
 
     public Date getNow() {
-        return Date.from(LocalDate.now(clock).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return Date.from(Instant.now(clock));
     }
 }
