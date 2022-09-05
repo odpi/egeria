@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.properties.Securit
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -125,43 +126,40 @@ public class GovernanceDefinitionGraphConverter<B> extends GovernanceProgramOMAS
 
                     bean.setProperties(governanceDefinitionProperties);
 
-                    List<RelatedElement> parents            = new ArrayList<>();
-                    List<RelatedElement> peers              = new ArrayList<>();
-                    List<RelatedElement> children           = new ArrayList<>();
-                    List<RelatedElement> metrics            = new ArrayList<>();
-                    List<RelatedElement> externalReferences = new ArrayList<>();
-
                     if (relationships != null)
                     {
+                        List<RelatedElement> parents            = new ArrayList<>();
+                        List<RelatedElement> peers              = new ArrayList<>();
+                        List<RelatedElement> children           = new ArrayList<>();
+                        List<RelatedElement> metrics            = new ArrayList<>();
+                        List<RelatedElement> externalReferences = new ArrayList<>();
+                        List<RelatedElement> others             = new ArrayList<>();
+
                         for (Relationship relationship : relationships)
                         {
                             if (relationship != null)
                             {
+                                EntityProxy otherEnd = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+                                RelatedElement element = super.getRelatedElement(beanClass, relationship, otherEnd, methodName);
+
                                 if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.REFERENCEABLE_TO_EXT_REF_TYPE_NAME))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityTwoProxy(), methodName);
-
                                     externalReferences.add(element);
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_METRIC_TYPE_NAME))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityOneProxy(), methodName);
-
                                     metrics.add(element);
                                 }
-                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DRIVER_LINK_TYPE_NAME)) &&
-                                                 (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_POLICY_LINK_TYPE_NAME)) &&
-                                                 (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_CONTROL_LINK_TYPE_NAME)))
+                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_DRIVER_LINK_TYPE_NAME)) ||
+                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_POLICY_LINK_TYPE_NAME)) ||
+                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_CONTROL_LINK_TYPE_NAME)))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityOneProxy(), methodName);
 
                                     peers.add(element);
                                 }
-                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_RESPONSE_TYPE_NAME)) &&
-                                                 (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_IMPLEMENTATION_TYPE_NAME)))
+                                else if ((repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_RESPONSE_TYPE_NAME)) ||
+                                         (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.GOVERNANCE_IMPLEMENTATION_TYPE_NAME)))
                                 {
-                                    RelatedElement element = super.getRelatedElement(beanClass, relationship, relationship.getEntityOneProxy(), methodName);
-
                                     if (primaryEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID()))
                                     {
                                         parents.add(element);
@@ -171,41 +169,48 @@ public class GovernanceDefinitionGraphConverter<B> extends GovernanceProgramOMAS
                                         children.add(element);
                                     }
                                 }
+                                else
+                                {
+                                    others.add(element);
+                                }
                             }
                         }
-                    }
 
-                    if (! parents.isEmpty())
-                    {
-                        bean.setParents(parents);
-                    }
+                        if (! parents.isEmpty())
+                        {
+                            bean.setParents(parents);
+                        }
 
-                    if (! peers.isEmpty())
-                    {
-                        bean.setPeers(peers);
-                    }
+                        if (! peers.isEmpty())
+                        {
+                            bean.setPeers(peers);
+                        }
 
-                    if (! children.isEmpty())
-                    {
-                        bean.setChildren(children);
-                    }
+                        if (! children.isEmpty())
+                        {
+                            bean.setChildren(children);
+                        }
 
-                    if (! metrics.isEmpty())
-                    {
-                        bean.setMetrics(metrics);
-                    }
+                        if (! metrics.isEmpty())
+                        {
+                            bean.setMetrics(metrics);
+                        }
 
-                    if (! externalReferences.isEmpty())
-                    {
-                        bean.setExternalReferences(externalReferences);
+                        if (! externalReferences.isEmpty())
+                        {
+                            bean.setExternalReferences(externalReferences);
+                        }
+
+                        if (! others.isEmpty())
+                        {
+                            bean.setOthers(others);
+                        }
                     }
                 }
                 else
                 {
                     handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
-
-
             }
 
             return returnBean;

@@ -2667,7 +2667,7 @@ public class RepositoryHandler
                                                                                                    entityTypeGUID,
                                                                                                    classificationName,
                                                                                                    null,
-                                                                                                   MatchCriteria.ALL,
+                                                                                                   null,
                                                                                                    startingFrom,
                                                                                                    null,
                                                                                                    null,

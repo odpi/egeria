@@ -8,10 +8,12 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.G
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleHistory;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.AppointmentRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleAppointeeListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleHistoryResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

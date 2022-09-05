@@ -11,9 +11,9 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.S
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelatedElementListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaDefinitionResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaListResponse;
@@ -903,6 +903,8 @@ public class SubjectAreaRESTServices
                                                                                                                                               methodName);
                 List<ElementStub> definitions = elementStubConverter.getNewBeans(ElementStub.class, relationships, true, methodName);
                 subjectAreaDefinition.setAssociatedGovernanceDefinitions(definitions);
+
+                response.setProperties(subjectAreaDefinition);
             }
         }
         catch (Exception error)
@@ -1068,32 +1070,32 @@ public class SubjectAreaRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public RelatedElementListResponse getMembersOfSubjectArea(String serverName,
-                                                              String userId,
-                                                              String subjectAreaName,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public ElementStubListResponse getMembersOfSubjectArea(String serverName,
+                                                           String userId,
+                                                           String subjectAreaName,
+                                                           int    startFrom,
+                                                           int    pageSize)
     {
         final String methodName = "getMembersOfSubjectArea";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        ElementStubListResponse response = new ElementStubListResponse();
+        AuditLog                auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<ElementStub> handler = instanceHandler.getElementStubHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getSubjectAreaMembers(userId,
-                                                                  subjectAreaName,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  false,
-                                                                  false,
-                                                                  null,
-                                                                  methodName));
+            response.setElements(handler.getSubjectAreaMembers(userId,
+                                                               subjectAreaName,
+                                                               startFrom,
+                                                               pageSize,
+                                                               false,
+                                                               false,
+                                                               null,
+                                                               methodName));
         }
         catch (Exception error)
         {

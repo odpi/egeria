@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.properties.Subject
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -226,16 +227,16 @@ public interface SubjectAreasInterface
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
-     * @return properties of the subject area
+     * @return properties of the subject area members
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<RelatedElement> getMembersOfSubjectArea(String userId,
-                                                 String subjectAreaName,
-                                                 int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
+    List<ElementStub> getMembersOfSubjectArea(String userId,
+                                              String subjectAreaName,
+                                              int    startFrom,
+                                              int    pageSize) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 }

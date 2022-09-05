@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.server;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LocationElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.AdjacentLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.LocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.NestedLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileLocationProperties;
@@ -223,7 +222,7 @@ public class LocationRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof CommunityProperties)
+                if (requestBody.getProperties() instanceof LocationProperties)
                 {
                     LocationProperties locationProperties = (LocationProperties) requestBody.getProperties();
 
@@ -796,6 +795,22 @@ public class LocationRESTServices
                                                 parentLocationGUIDParameter,
                                                 childLocationGUID,
                                                 childLocationGUIDParameter,
+                                                requestBody.getProperties().getEffectiveFrom(),
+                                                requestBody.getProperties().getEffectiveTo(),
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupNestedLocation(userId,
+                                                null,
+                                                null,
+                                                parentLocationGUID,
+                                                parentLocationGUIDParameter,
+                                                childLocationGUID,
+                                                childLocationGUIDParameter,
                                                 null,
                                                 null,
                                                 false,
@@ -1118,6 +1133,23 @@ public class LocationRESTServices
                                                  new Date(),
                                                  methodName);
                 }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupProfileLocation(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 actorProfileGUID,
+                                                 actorProfileGUIDParameter,
+                                                 locationGUID,
+                                                 locationGUIDParameter,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
+                }
                 else
                 {
                     restExceptionHandler.handleInvalidPropertiesObject(ProfileLocationProperties.class.getName(), methodName);
@@ -1263,6 +1295,22 @@ public class LocationRESTServices
                                                assetGUIDParameter,
                                                properties.getEffectiveFrom(),
                                                properties.getEffectiveTo(),
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setupAssetLocation(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               locationGUID,
+                                               locationGUIDParameter,
+                                               assetGUID,
+                                               assetGUIDParameter,
+                                               null,
+                                               null,
                                                false,
                                                false,
                                                new Date(),

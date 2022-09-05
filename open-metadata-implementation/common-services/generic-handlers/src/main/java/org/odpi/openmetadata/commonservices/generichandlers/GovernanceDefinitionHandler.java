@@ -181,8 +181,6 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);

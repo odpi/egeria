@@ -243,8 +243,6 @@ public class ContributionRecordHandler<B> extends OpenMetadataAPIGenericHandler<
                                                                         null,
                                                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_GUID,
                                                                         OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
-                                                                        null,
-                                                                        null,
                                                                         builder,
                                                                         effectiveTime,
                                                                         methodName);

@@ -156,8 +156,6 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -232,8 +230,6 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_GUID,
                                            OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -318,8 +314,6 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_GUID,
                                                             OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             builder,
                                                             effectiveTime,
                                                             methodName);

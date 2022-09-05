@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -1400,8 +1401,11 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                          UserNotAuthorizedException
     {
         final String guidParameterName = "subjectAreaEntity.getGUID";
+        final String nameParameterName = "subjectAreaName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(subjectAreaName, nameParameterName, methodName);
+
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
@@ -1430,20 +1434,27 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   entity,
                                                   guidParameterName,
                                                   false,
-                                                  false,
-                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
                                                   serviceSupportedZones,
                                                   effectiveTime,
                                                   methodName);
 
-                        String name = repositoryHelper.getStringProperty(serviceName,
-                                                                         OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
-                                                                         entity.getProperties(),
-                                                                         methodName);
-
-                        if ((subjectAreaName == null) || (subjectAreaName.equals(name)))
+                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                     entity,
+                                                                                                     OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                                                                     methodName);
+                        if (classification != null)
                         {
-                            beans.add(converter.getNewBean(beanClass, entity, methodName));
+                            String name = repositoryHelper.getStringProperty(serviceName,
+                                                                             OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                             classification.getProperties(),
+                                                                             methodName);
+
+                            if ((subjectAreaName == null) || (subjectAreaName.equals(name)))
+                            {
+                                beans.add(converter.getNewBean(beanClass, entity, methodName));
+                            }
                         }
                     }
                     catch (Exception notVisible)
@@ -4404,8 +4415,6 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   null,
                                                                   OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.PROPERTY_FACET_TYPE_NAME,
-                                                                  null,
-                                                                  null,
                                                                   builder,
                                                                   effectiveTime,
                                                                   methodName);

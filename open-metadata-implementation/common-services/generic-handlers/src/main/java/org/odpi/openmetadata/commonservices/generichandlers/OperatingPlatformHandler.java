@@ -143,8 +143,6 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                     externalSourceName,
                                     OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_GUID,
                                     OpenMetadataAPIMapper.OPERATING_PLATFORM_TYPE_NAME,
-                                    qualifiedName,
-                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                     builder,
                                     effectiveTime,
                                     methodName);
