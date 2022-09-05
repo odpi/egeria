@@ -224,6 +224,7 @@ class DataEngineRegistrationHandlerTest {
         String methodName = "createDataEngineClassification";
         ProcessingState processingState = getProcessingState();
         InstanceProperties properties = new InstanceProperties();
+        EntityDetail entityDetail = mock(EntityDetail.class);
 
         SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
 
@@ -232,6 +233,13 @@ class DataEngineRegistrationHandlerTest {
 
         when(repositoryHelper.addLongMapPropertyToInstance(null, properties, SYNC_DATES_BY_KEY,
                 processingState.getSyncDatesByKey(), methodName)).thenReturn(properties);
+
+        when(softwareServerCapabilityHandler.getEntityByValue(USER, QUALIFIED_NAME, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
+                false, null, methodName)).thenReturn(entityDetail);
+
+        when(entityDetail.getClassifications()).thenReturn(null);
 
         doNothing().when(softwareServerCapabilityHandler).setClassificationInRepository(USER, null,
                 null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
@@ -259,11 +267,19 @@ class DataEngineRegistrationHandlerTest {
         String methodName = "createDataEngineClassification";
         ProcessingState processingState = getProcessingState();
         InstanceProperties properties = new InstanceProperties();
+        EntityDetail entityDetail = mock(EntityDetail.class);
 
         SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
 
         doReturn(GUID).when(registrationHandler).getExternalDataEngine(USER,
                 softwareServerCapability.getQualifiedName());
+
+        when(softwareServerCapabilityHandler.getEntityByValue(USER, QUALIFIED_NAME, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
+                false, null, methodName)).thenReturn(entityDetail);
+
+        when(entityDetail.getClassifications()).thenReturn(null);
 
         when(repositoryHelper.addLongMapPropertyToInstance(null, properties, SYNC_DATES_BY_KEY,
                 processingState.getSyncDatesByKey(), methodName)).thenReturn(properties);
