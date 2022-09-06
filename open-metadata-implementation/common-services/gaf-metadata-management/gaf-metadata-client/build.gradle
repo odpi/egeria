@@ -6,8 +6,7 @@
 
 dependencies {
     implementation 'org.springframework:spring-core'
-    implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-api')
-    implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-topic-connectors')
+    implementation project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
@@ -21,7 +20,7 @@ dependencies {
 
 }
 
-description = 'Governance Engine OMAS Client'
+description = 'Open Metadata Store Client'
 
 java {
     withJavadocJar()

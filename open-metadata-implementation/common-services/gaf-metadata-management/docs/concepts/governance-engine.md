@@ -72,7 +72,7 @@ type of governance service.
 Each governance engine has a unique name. 
 A **governance engine definition** for this unique name
 is created using the
-[Governance Engine OMAS API](../user).
+[Metadata Store Service API](../user).
 
 Figure 1 shows the structure of a governance engine definition.
 The open metadata types for this definition are in
@@ -90,8 +90,8 @@ and request parameters.  This is mapped to a call to a [governance service](gove
 
 ----
 
-* [Return to Governance Engine OMAS Concepts](.)
-* [Return to Governance Engine OMAS Overview](../..)
+* [Return to Metadata Store Service Concepts](.)
+* [Return to Metadata Store Service Overview](../..)
 
 
 

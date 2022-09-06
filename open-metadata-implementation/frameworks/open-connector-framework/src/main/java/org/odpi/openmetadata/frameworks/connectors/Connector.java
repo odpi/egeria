@@ -60,9 +60,9 @@ import java.util.Map;
  */
 public abstract class Connector
 {
-    private Map<String, Integer> counterMap   = new HashMap<>();
-    private Map<String, String>  propertyMap  = new HashMap<>();
-    private Map<String, Date>    timestampMap = new HashMap<>();
+    private final Map<String, Integer> counterMap   = new HashMap<>();
+    private final Map<String, String>  propertyMap  = new HashMap<>();
+    private final Map<String, Date>    timestampMap = new HashMap<>();
 
     /**
      * Default constructor

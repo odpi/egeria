@@ -28,6 +28,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -222,8 +223,8 @@ public class DataEngineCommonHandler {
 
             if (relationshipDifferences.hasInstancePropertiesDifferences()) {
                 genericHandler.updateRelationshipProperties(userId, externalSourceGUID, externalSourceName, relationshipGUID,
-                        GUID_PROPERTY_NAME, originalRelationship.getType().getTypeDefName(), true,
-                        relationshipProperties, false, false, getNow(), methodName);
+                                                            GUID_PROPERTY_NAME, originalRelationship.getType().getTypeDefName(), true,
+                                                            relationshipProperties, false, false, getNow(), methodName);
             }
         }
     }

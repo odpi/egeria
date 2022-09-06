@@ -44,6 +44,126 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
+    ReferenceableHandler<RelatedElement> getRelatedElementHandler(String userId,
+                                                                  String serverName,
+                                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                       serverName,
+                                                                                                                       serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getRelatedElementHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific converter for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return converter for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ReferenceableHandler<ElementStub> getElementStubHandler(String userId,
+                                                            String serverName,
+                                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                       serverName,
+                                                                                                                       serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getElementStubHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific converter for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return converter for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    AssetHandler<RelatedElement> getRelatedAssetHandler(String userId,
+                                                        String serverName,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                       serverName,
+                                                                                                                       serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getRelatedAssetHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific converter for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return converter for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    AssetHandler<ElementStub> getAssetHandler(String userId,
+                                              String serverName,
+                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                       serverName,
+                                                                                                                       serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getAssetHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific converter for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return converter for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
     ElementStubConverter<ElementStub> getElementStubConverter(String userId,
                                                               String serverName,
                                                               String serviceOperationName) throws InvalidParameterException,
@@ -107,8 +227,8 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
     ExternalReferenceHandler<ExternalReferenceElement> getExternalReferencesHandler(String userId,
                                                                                     String serverName,
                                                                                     String serviceOperationName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
     {
         GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
@@ -149,6 +269,89 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
     }
 
 
+    /**
+     * Retrieve a specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    GovernanceDefinitionHandler<GovernanceDefinitionGraph> getGovernanceDefinitionGraphHandler(String userId,
+                                                                                               String serverName,
+                                                                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                   UserNotAuthorizedException,
+                                                                                                                                   PropertyServerException
+    {
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getGovernanceDefinitionGraphHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    GovernanceDefinitionHandler<LicenseTypeElement> getLicenseTypeHandler(String userId,
+                                                                          String serverName,
+                                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException
+    {
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getLicenseTypeHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    CertificationHandler<CertificationTypeElement> getCertificationTypeHandler(String userId,
+                                                                               String serverName,
+                                                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
+    {
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getCertificationTypeHandler();
+        }
+
+        return null;
+    }
+
 
     /**
      * Retrieve a specific handler for the access service.
@@ -177,6 +380,61 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
         return null;
     }
 
+
+    /**
+     * Retrieve a specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    GovernanceMetricHandler<GovernanceMetricElement> getGovernanceMetricHandler(String userId,
+                                                                                String serverName,
+                                                                                String serviceOperationName) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getGovernanceMetricHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    GovernanceMetricHandler<GovernanceMetricImplementation> getGovernanceMetricImplementationHandler(String userId,
+                                                                                                     String serverName,
+                                                                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                         UserNotAuthorizedException,
+                                                                                                                                         PropertyServerException
+    {
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getGovernanceMetricImplementationHandler();
+        }
+
+        return null;
+    }
 
 
     /**
@@ -233,7 +491,6 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
 
         return null;
     }
-
 
 
     /**

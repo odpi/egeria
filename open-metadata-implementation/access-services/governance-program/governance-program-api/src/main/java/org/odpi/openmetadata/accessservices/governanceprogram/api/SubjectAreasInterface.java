@@ -3,12 +3,15 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -110,41 +113,6 @@ public interface SubjectAreasInterface
 
 
     /**
-     * Link a subject area to a governance definition that controls how the definitions in the subject area should be governed.
-     *
-     * @param userId calling user
-     * @param subjectAreaGUID unique identifier of the subject area
-     * @param definitionGUID unique identifier of the governance definition
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void linkSubjectAreaToGovernanceDefinition(String userId,
-                                               String subjectAreaGUID,
-                                               String definitionGUID) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
-
-
-    /**
-     * Remove the link between a subject area and a governance definition.
-     *
-     * @param userId calling user
-     * @param subjectAreaGUID unique identifier of the subject area
-     * @param definitionGUID unique identifier of the governance definition
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void unlinkSubjectAreaFromGovernanceDefinition(String userId,
-                                                   String subjectAreaGUID,
-                                                   String definitionGUID) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException;
-
-    /**
      * Return information about a specific subject area.
      *
      * @param userId calling user
@@ -217,4 +185,58 @@ public interface SubjectAreasInterface
                                                          String subjectAreaGUID) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException;
+
+    /**
+     * Add a subject area classification to a referenceable element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element
+     * @param properties identifier for a subject area
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null; qualifiedName is not unique
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void addSubjectAreaMemberClassification(String                              userId,
+                                            String                              elementGUID,
+                                            SubjectAreaClassificationProperties properties) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException;
+
+
+    /**
+     * Remove a subject area classification from a referenceable.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element
+     *
+     * @throws InvalidParameterException guid or userId is null; guid is not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void deleteSubjectAreaMemberClassification(String userId,
+                                               String elementGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param userId calling user
+     * @param subjectAreaName unique identifier for the subject area
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the subject area members
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<ElementStub> getMembersOfSubjectArea(String userId,
+                                              String subjectAreaName,
+                                              int    startFrom,
+                                              int    pageSize) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 }

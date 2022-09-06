@@ -509,6 +509,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                forDuplicateProcessing,
                                startingFrom,
                                pageSize,
+                               supportedZones,
                                effectiveTime,
                                methodName);
     }
@@ -1204,6 +1205,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                     forDuplicateProcessing,
                                                                     startFrom,
                                                                     pageSize,
+                                                                    supportedZones,
                                                                     effectiveTime,
                                                                     methodName);
 
@@ -1293,8 +1295,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                null,
                                                metadataElementTypeGUID,
                                                metadataElementTypeName,
-                                               null,
-                                               null,
                                                builder,
                                                effectiveTime,
                                                methodName);
@@ -1311,6 +1311,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                null,
                                                null,
                                                builder,
+                                               supportedZones,
                                                methodName);
         }
     }
@@ -1465,6 +1466,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                          forDuplicateProcessing,
                                          effectiveFrom,
                                          effectiveTo,
+                                         supportedZones,
                                          effectiveTime,
                                          methodName);
     }
@@ -1706,6 +1708,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                    forDuplicateProcessing,
                                                    effectiveFrom,
                                                    effectiveTo,
+                                                   supportedZones,
                                                    effectiveTime,
                                                    methodName);
     }

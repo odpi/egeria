@@ -145,8 +145,6 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             OpenMetadataAPIMapper.DATA_MANAGER_TYPE_GUID,
                                                             OpenMetadataAPIMapper.DATA_MANAGER_TYPE_NAME,
-                                                            uniqueName,
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             builder,
                                                             effectiveTime,
                                                             methodName);
@@ -257,8 +255,6 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             typeGUID,
                                                             typeName,
-                                                            uniqueName,
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             builder,
                                                             effectiveTime,
                                                             methodName);
@@ -328,6 +324,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
     }
 

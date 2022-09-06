@@ -73,7 +73,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create a definition of a operating platform.
+     * Create a definition of a external reference.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
@@ -159,8 +159,6 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
                                            OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -168,13 +166,13 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Update the operating platform.
+     * Update the external reference.
      *
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
-     * @param operatingPlatformGUID unique identifier of the operating platform to update
-     * @param operatingPlatformGUIDParameterName parameter passing the operatingPlatformGUID
+     * @param externalReferenceGUID unique identifier of the external reference to update
+     * @param externalReferenceGUIDParameterName parameter passing the externalReferenceGUID
      * @param qualifiedName unique name for the reference
      * @param displayName short display name for the reference
      * @param description description of the reference
@@ -183,7 +181,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param organization owning org for the reference
      * @param additionalProperties additional properties for an external reference
      * @param suppliedTypeName name of subtype or null
-     * @param extendedProperties  properties for a governance operatingPlatform subtype
+     * @param extendedProperties  properties for a governance externalReference subtype
      * @param isMergeUpdate should the properties be merged with existing properties or replace the existing properties?
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
@@ -199,8 +197,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
     public void   updateExternalReference(String              userId,
                                           String              externalSourceGUID,
                                           String              externalSourceName,
-                                          String              operatingPlatformGUID,
-                                          String              operatingPlatformGUIDParameterName,
+                                          String              externalReferenceGUID,
+                                          String              externalReferenceGUIDParameterName,
                                           String              qualifiedName,
                                           String              displayName,
                                           String              description,
@@ -223,7 +221,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         final String qualifiedNameParameterName = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(operatingPlatformGUID, operatingPlatformGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalReferenceGUID, externalReferenceGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         String typeName = OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME;
@@ -258,8 +256,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         this.updateBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
-                                    operatingPlatformGUID,
-                                    operatingPlatformGUIDParameterName,
+                                    externalReferenceGUID,
+                                    externalReferenceGUIDParameterName,
                                     typeGUID,
                                     typeName,
                                     forLineage,
@@ -278,8 +276,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
-     * @param operatingPlatformGUID unique identifier of the metadata element to remove
-     * @param operatingPlatformGUIDParameterName parameter supplying the operatingPlatformGUID
+     * @param externalReferenceGUID unique identifier of the metadata element to remove
+     * @param externalReferenceGUIDParameterName parameter supplying the externalReferenceGUID
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -292,8 +290,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
     public void removeExternalReference(String  userId,
                                         String  externalSourceGUID,
                                         String  externalSourceName,
-                                        String  operatingPlatformGUID,
-                                        String  operatingPlatformGUIDParameterName,
+                                        String  externalReferenceGUID,
+                                        String  externalReferenceGUIDParameterName,
                                         boolean forLineage,
                                         boolean forDuplicateProcessing,
                                         Date    effectiveTime,
@@ -304,8 +302,8 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
         this.deleteBeanInRepository(userId,
                                     externalSourceGUID,
                                     externalSourceName,
-                                    operatingPlatformGUID,
-                                    operatingPlatformGUIDParameterName,
+                                    externalReferenceGUID,
+                                    externalReferenceGUIDParameterName,
                                     OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_GUID,
                                     OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME,
                                     null,
@@ -318,17 +316,17 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return information about a specific operating platform.
+     * Return information about a specific external reference.
      *
      * @param userId calling user
-     * @param qualifiedName unique name for the operating platform
+     * @param qualifiedName unique name for the external reference
      * @param qualifiedNameParameter name of parameter supplying the qualifiedName
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return properties of the operating platform
+     * @return properties of the external reference
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
@@ -526,7 +524,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return information about the defined operating platforms.
+     * Return information about the defined external references.
      *
      * @param userId calling user
      * @param startingFrom position in the list (used when there are so many reports that paging is needed
@@ -536,7 +534,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      *
-     * @return properties of the operating platform
+     * @return properties of the external reference
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server

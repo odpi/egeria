@@ -5,8 +5,8 @@
 
 
 dependencies {
-    implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-server')
-    implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-api')
+    implementation project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-server')
+    implementation project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-api')
     implementation 'org.springframework:spring-web'
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'io.swagger.core.v3:swagger-annotations'
@@ -14,7 +14,7 @@ dependencies {
 
 }
 
-description = 'Governance Engine OMAS with Spring'
+description = 'Metadata Store with Spring'
 
 java {
     withJavadocJar()
