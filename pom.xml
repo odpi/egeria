@@ -153,14 +153,14 @@
         <junit.version>4.13.2</junit.version>
         <surefire.plugin.version>3.0.0-M7</surefire.plugin.version>
         <mockito.version>4.7.0</mockito.version>
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.0</slf4j.version>
         <testng.version>7.5</testng.version>
         <jackson.version>2.13.3</jackson.version>
         <jackson.databind.version>2.13.3</jackson.databind.version>
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.2.1</kafka.version>
         <tomcat.version>9.0.65</tomcat.version>
-        <netty.version>4.1.79.Final</netty.version>
+        <netty.version>4.1.80.Final</netty.version>
         <spring.ldap.core>2.4.1</spring.ldap.core>
         <janus.version>0.6.2</janus.version>
         <spring-boot.version>2.7.3</spring-boot.version>
@@ -205,11 +205,11 @@
         <ST4.version>4.3.3</ST4.version>
         <snappy.version>1.1.8.4</snappy.version>
         <swagger.version>2.2.2</swagger.version>
-        <snakeyaml.version>1.30</snakeyaml.version>
+        <snakeyaml.version>1.31</snakeyaml.version>
         <micrometer-registry-prometheus.version>1.9.3</micrometer-registry-prometheus.version>
         <classgraph.version>4.8.149</classgraph.version>
         <groovy.version>3.0.12</groovy.version>
-        <jcl-over-slf4j.version>1.7.36</jcl-over-slf4j.version>
+        <jcl-over-slf4j.version>2.0.0</jcl-over-slf4j.version>
         <reflections.version>0.10.2</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
@@ -223,7 +223,7 @@
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <thrift.version>0.16.0</thrift.version>
-        <elasticsearch.version>8.3.3</elasticsearch.version>
+        <elasticsearch.version>8.4.1</elasticsearch.version>
         <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -233,9 +233,9 @@
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
         <maven-shade.version>3.3.0</maven-shade.version>
         <maven-install.version>3.0.1</maven-install.version>
-        <owasp.version>7.1.1</owasp.version>
+        <owasp.version>7.1.2</owasp.version>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
-        <maven-pmd.version>3.17.0</maven-pmd.version>
+        <maven-pmd.version>3.18.0</maven-pmd.version>
         <maven-compiler.version>3.10.1</maven-compiler.version>
         <maven-download.version>1.6.8</maven-download.version>
         <spotbugs-maven.version>4.7.1</spotbugs-maven.version>
@@ -259,9 +259,9 @@
         <git-commit-plugin.version>4.9.10</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
-        <openlineage.version>0.12.0</openlineage.version>
+        <openlineage.version>0.13.1</openlineage.version>
         <properties.plugin.version>1.1.0</properties.plugin.version>
-        <cassandra.version>4.0.5</cassandra.version>
+        <cassandra.version>4.0.6</cassandra.version>
         <ant.version>1.10.12</ant.version>
         <gson.version>2.9.1</gson.version>
         <jnr.version>3.1.15</jnr.version>

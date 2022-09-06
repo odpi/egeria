@@ -995,24 +995,23 @@ public class GovernanceConfigurationHandler
                                                         defaultAnalysisParameters,
                                                         methodName);
 
-        governanceEngineHandler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     governanceEngineGUID,
-                                                     governanceEngineGUIDParameter,
-                                                     OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
-                                                     governanceServiceGUID,
-                                                     governanceServiceGUIDParameter,
-                                                     OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
-                                                     false,
-                                                     false,
-                                                     OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
-                                                     instanceProperties,
-                                                     null,
-                                                     null,
-                                                     new Date(),
-                                                     methodName);
+        governanceEngineHandler.multiLinkElementToElement(userId,
+                                                          null,
+                                                          null,
+                                                          governanceEngineGUID,
+                                                          governanceEngineGUIDParameter,
+                                                          OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                          governanceServiceGUID,
+                                                          governanceServiceGUIDParameter,
+                                                          OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                          false,
+                                                          false,
+                                                          governanceEngineHandler.getSupportedZones(),
+                                                          OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                          instanceProperties,
+                                                          new Date(),
+                                                          methodName);
     }
 
 

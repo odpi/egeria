@@ -176,8 +176,6 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                                 externalSourceName,
                                                                 schemaTypeTypeGUID,
                                                                 schemaTypeTypeName,
-                                                                schemaTypeQualifiedName,
-                                                                OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                 builder,
                                                                 effectiveTime,
                                                                 methodName);
@@ -462,8 +460,6 @@ class SchemaElementHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             schemaTypeBuilder.getTypeGUID(),
                                                             schemaTypeBuilder.getTypeName(),
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             schemaTypeBuilder,
                                                             effectiveTime,
                                                             methodName);

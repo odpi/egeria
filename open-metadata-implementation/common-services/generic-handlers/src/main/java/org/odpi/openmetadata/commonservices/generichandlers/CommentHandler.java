@@ -179,8 +179,6 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                           externalSourceName,
                                                           OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
                                                           OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                                          qualifiedName,
-                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                           builder,
                                                           effectiveTime,
                                                           methodName);
