@@ -103,6 +103,7 @@ public class LineageJobHelper {
         List<Vertex> inputPathsForColumns = this.graphHelper.getResult(this::getInputPathsForColumns, guid, this::handleRetrieveResultError);
 
         Vertex process = this.graphHelper.getResult(this::getNodeByGuid, guid, this::handleRetrieveResultError);
+        log.debug("Process guid ");
         inputPathsForColumns.forEach(columnIn -> findOutputColumns(columnIn, process));
     }
 
@@ -131,8 +132,8 @@ public class LineageJobHelper {
 
         Vertex vertexToStart;
         if (schemaElementVertices != null) {
-            List<Vertex> columnOutList = new ArrayList<>();
             for (Vertex schemaElementVertex : schemaElementVertices) {
+                List<Vertex> columnOutList = new ArrayList<>();
                 vertexToStart = this.graphHelper.getResult(this::isSchemaElementLinkedToProcess, schemaElementVertex, process, this::handleRetrieveResultError);
                 if (vertexToStart != null) {
                     columnOutList.addAll(this.graphHelper.getResult(this::findPathForOutputAsset, vertexToStart, columnIn, this::handleRetrieveResultError));
