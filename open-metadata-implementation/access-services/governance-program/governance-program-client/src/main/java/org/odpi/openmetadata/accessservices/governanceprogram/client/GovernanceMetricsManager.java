@@ -363,7 +363,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "clearGovernanceMeasurementsDataSet";
         final String guidParameter = "dataSetGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/data-sets/{2}/classify-as-governance-measurements-set/delete";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/data-sets/{2}/classify-as-governance-measurements-set/delete";
 
         super.removeReferenceableClassification(userId, dataSetGUID, guidParameter, urlTemplate, methodName);
     }
@@ -411,7 +411,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "clearGovernanceExpectations";
         final String guidParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/elements/{2}/classify-with-governance-expectations/delete";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-expectations/delete";
 
         super.removeReferenceableClassification(userId, elementGUID, guidParameter, urlTemplate, methodName);
     }
@@ -460,7 +460,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "clearGovernanceMeasurements";
         final String guidParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/elements/{2}/classify-with-governance-measurements/delete";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-measurements/delete";
 
         super.removeReferenceableClassification(userId, elementGUID, guidParameter, urlTemplate, methodName);
     }

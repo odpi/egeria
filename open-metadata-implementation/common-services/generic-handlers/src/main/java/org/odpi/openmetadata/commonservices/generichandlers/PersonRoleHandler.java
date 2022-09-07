@@ -173,8 +173,6 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            roleBuilder,
                                            effectiveTime,
                                            methodName);

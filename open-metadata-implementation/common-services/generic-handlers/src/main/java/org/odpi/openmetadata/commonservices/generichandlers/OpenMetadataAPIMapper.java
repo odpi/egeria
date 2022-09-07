@@ -231,7 +231,7 @@ public class OpenMetadataAPIMapper
     public static final String MAP_PROJECTION_PROPERTY_NAME              = "mapProjection";
     public static final String POSTAL_ADDRESS_PROPERTY_NAME              = "postalAddress";
     public static final String POSTAL_ADDRESS_PROPERTY_NAME_DEP          = "address";
-    public static final String TIME_ZONE_PROPERTY_NAME                   = "timeZone";
+    public static final String TIME_ZONE_PROPERTY_NAME                   = "timezone";
 
     public static final String SECURE_LOCATION_CLASSIFICATION_TYPE_GUID  = "e7b563c0-fcdd-4ba7-a046-eecf5c4638b8";
     public static final String SECURE_LOCATION_CLASSIFICATION_TYPE_NAME  = "SecureLocation";
@@ -1769,7 +1769,7 @@ public class OpenMetadataAPIMapper
     public static final int    REQUESTED_GA_STATUS_ORDINAL               = 0;
     public static final int    APPROVED_GA_STATUS_ORDINAL                = 1;
     public static final int    WAITING_GA_STATUS_ORDINAL                 = 2;
-    public static final int    IN_PROGRESS_GA_STATUS_ORDINAL             = 3;
+    public static final int    IN_PROGRESS_GA_STATUS_ORDINAL             = 4;
     public static final int    ACTIONED_GA_STATUS_ORDINAL                = 10;
     public static final int    INVALID_GA_STATUS_ORDINAL                 = 11;
     public static final int    IGNORED_GA_STATUS_ORDINAL                 = 12;

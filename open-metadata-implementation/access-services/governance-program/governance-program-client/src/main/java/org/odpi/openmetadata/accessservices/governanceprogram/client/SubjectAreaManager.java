@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.SubjectAreasInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -481,24 +481,24 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
-     * @return properties of the subject area
+     * @return properties of the subject area members
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<RelatedElement> getMembersOfSubjectArea(String userId,
-                                                        String subjectAreaName,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<ElementStub> getMembersOfSubjectArea(String userId,
+                                                     String subjectAreaName,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String methodName = "getMembersOfSubjectArea";
-        final String guidParameter = "subjectAreaGUID";
+        final String nameParameter = "subjectAreaName";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/members?startFrom={3}&pageSize={4}";
 
-        return super.getRelatedElements(userId, subjectAreaName, guidParameter, urlTemplate, startFrom, pageSize, methodName);
+        return super.getElementStubsByName(userId, subjectAreaName, nameParameter, urlTemplate, startFrom, pageSize, methodName);
     }
 }

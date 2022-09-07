@@ -60,7 +60,7 @@ public abstract class ConnectorBase extends Connector
     public  ConnectorBase()
     {
         /*
-         * Nothing to do real initialization happens in the initialize() method.
+         * Nothing to do real initialization happens in the "initialize()" method.
          * This pattern is used to make it possible for ConnectorBrokerBase to support the dynamic loading and
          * instantiation of arbitrary connector instances without needing to know the specifics of their constructor
          * methods

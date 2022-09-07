@@ -336,7 +336,7 @@ public class RelatedElementRESTServices
     {
         final String methodName               = "setupGovernedBy";
         final String elementGUIDParameterName = "elementGUID";
-        final String detailGUIDParameterName  = "governanceDefinitionGUID";
+        final String governanceDefinitionGUIDParameterName  = "governanceDefinitionGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -356,10 +356,10 @@ public class RelatedElementRESTServices
                     handler.addGovernedBy(userId,
                                           requestBody.getExternalSourceGUID(),
                                           requestBody.getExternalSourceName(),
+                                          governanceDefinitionGUID,
+                                          governanceDefinitionGUIDParameterName,
                                           elementGUID,
                                           elementGUIDParameterName,
-                                          governanceDefinitionGUID,
-                                          detailGUIDParameterName,
                                           requestBody.getProperties().getEffectiveFrom(),
                                           requestBody.getProperties().getEffectiveTo(),
                                           false,
@@ -372,10 +372,10 @@ public class RelatedElementRESTServices
                     handler.addGovernedBy(userId,
                                           requestBody.getExternalSourceGUID(),
                                           requestBody.getExternalSourceName(),
+                                          governanceDefinitionGUID,
+                                          governanceDefinitionGUIDParameterName,
                                           elementGUID,
                                           elementGUIDParameterName,
-                                          governanceDefinitionGUID,
-                                          detailGUIDParameterName,
                                           null,
                                           null,
                                           false,
@@ -422,7 +422,7 @@ public class RelatedElementRESTServices
     {
         final String methodName               = "clearGovernedBy";
         final String elementGUIDParameterName = "elementGUID";
-        final String detailGUIDParameterName  = "governanceDefinitionGUID";
+        final String governanceDefinitionGUIDParameterName  = "governanceDefinitionGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -440,10 +440,10 @@ public class RelatedElementRESTServices
                 handler.removeGovernedBy(userId,
                                          requestBody.getExternalSourceGUID(),
                                          requestBody.getExternalSourceName(),
+                                         governanceDefinitionGUID,
+                                         governanceDefinitionGUIDParameterName,
                                          elementGUID,
                                          elementGUIDParameterName,
-                                         governanceDefinitionGUID,
-                                         detailGUIDParameterName,
                                          false,
                                          false,
                                          new Date(),
@@ -454,10 +454,10 @@ public class RelatedElementRESTServices
                 handler.removeGovernedBy(userId,
                                          null,
                                          null,
+                                         governanceDefinitionGUID,
+                                         governanceDefinitionGUIDParameterName,
                                          elementGUID,
                                          elementGUIDParameterName,
-                                         governanceDefinitionGUID,
-                                         detailGUIDParameterName,
                                          false,
                                          false,
                                          new Date(),
@@ -610,8 +610,8 @@ public class RelatedElementRESTServices
                                                        RelationshipRequestBody requestBody)
     {
         final String methodName               = "setupGovernanceDefinitionScope";
-        final String elementGUIDParameterName = "governanceDefinitionGUID";
-        final String detailGUIDParameterName  = "scopeGUID";
+        final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
+        final String scopeGUIDParameterName  = "scopeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -632,9 +632,9 @@ public class RelatedElementRESTServices
                                                          requestBody.getExternalSourceGUID(),
                                                          requestBody.getExternalSourceName(),
                                                          governanceDefinitionGUID,
-                                                         elementGUIDParameterName,
+                                                         governanceDefinitionGUIDParameterName,
                                                          scopeGUID,
-                                                         detailGUIDParameterName,
+                                                         scopeGUIDParameterName,
                                                          requestBody.getProperties().getEffectiveFrom(),
                                                          requestBody.getProperties().getEffectiveTo(),
                                                          false,
@@ -648,9 +648,9 @@ public class RelatedElementRESTServices
                                                          requestBody.getExternalSourceGUID(),
                                                          requestBody.getExternalSourceName(),
                                                          governanceDefinitionGUID,
-                                                         elementGUIDParameterName,
+                                                         governanceDefinitionGUIDParameterName,
                                                          scopeGUID,
-                                                         detailGUIDParameterName,
+                                                         scopeGUIDParameterName,
                                                          null,
                                                          null,
                                                          false,
@@ -696,8 +696,8 @@ public class RelatedElementRESTServices
                                                        ExternalSourceRequestBody requestBody)
     {
         final String methodName               = "clearGovernanceDefinitionScope";
-        final String elementGUIDParameterName = "governanceDefinitionGUID";
-        final String detailGUIDParameterName  = "scopeGUID";
+        final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
+        final String scopeGUIDParameterName  = "scopeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -716,9 +716,9 @@ public class RelatedElementRESTServices
                                                         requestBody.getExternalSourceGUID(),
                                                         requestBody.getExternalSourceName(),
                                                         governanceDefinitionGUID,
-                                                        elementGUIDParameterName,
+                                                        governanceDefinitionGUIDParameterName,
                                                         scopeGUID,
-                                                        detailGUIDParameterName,
+                                                        scopeGUIDParameterName,
                                                         false,
                                                         false,
                                                         new Date(),
@@ -730,9 +730,9 @@ public class RelatedElementRESTServices
                                                         null,
                                                         null,
                                                         governanceDefinitionGUID,
-                                                        elementGUIDParameterName,
+                                                        governanceDefinitionGUIDParameterName,
                                                         scopeGUID,
-                                                        detailGUIDParameterName,
+                                                        scopeGUIDParameterName,
                                                         false,
                                                         false,
                                                         new Date(),

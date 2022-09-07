@@ -41,6 +41,7 @@ public class RelatedElementConverter<B> extends DataManagerOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
+    @SuppressWarnings(value="unchecked")
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,
