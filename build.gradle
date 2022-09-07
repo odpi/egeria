@@ -343,14 +343,18 @@ allprojects {
     task findDependency(type: DependencyInsightReportTask) {}
 
     // Whilst all modules have their own javadoc, we only build
-    // an aggregate for the client and API modules
+    // an aggregate for the client and API modules plus the REST calls
     javadoc {
         include ( "**/api/*.java" )
         include ( "**/client/*.java" )
+        include ( "**/clients/*.java" )
         include ( "**/properties/*.java" )
         include ( "**/metadataelements/*.java" )
         include ( "**/metadataelement/*.java" )
         include ( "**/events/*.java" )
+        include ( "**/rest/*.java" )
+        include ( "**/exceptions/*.java" )
+        include ( "**/beans/*.java" )
         include ( "**/ffdc/*.java" )
         include ( "**/configuration/*.java" )
         include ( "**/configuration/registration/*.java" )
@@ -360,6 +364,7 @@ allprojects {
         include ( "**/connector/*.java" )
         include ( "**/frameworks/*.java" )
         include ( "**/context/*.java" )
+        include ( "**/contextmanager/*.java" )
         include ( "**/graph/*.java" )
         include ( "**/model/*.java" )
         include ( "**/auditlog/*.java" )
@@ -371,10 +376,14 @@ allprojects {
         include ( "**/repositoryconnector/*.java" )
         include ( "**/repositoryeventmapper/*.java" )
         include ( "**/metadatacollectionstore/*.java" )
+        include ( "**/metadatacollectionstore/instances/*.java" )
+        include ( "**/metadatacollectionstore/typedefs/*.java" )
+        include ( "**/metadatacollectionstore/search/*.java" )
         include ( "**/metadatacollectionstore/utilities/*.java" )
         include ( "**/archiveutilities/*.java" )
-        include ( "**/clients/*.java" )
         include ( "**/metadatasecurity/*.java" )
+        include ( "**/spring/*.java" )
+        include ( "**/frameworks/**/*.java" )
     }
 }
 

@@ -103,8 +103,7 @@ public class DisplayIntegratorContextManager extends IntegrationContextManager
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
                                                         restClient,
-                                                        maxPageSize,
-                                                        auditLog);
+                                                        maxPageSize);
     }
 
 

@@ -48,7 +48,7 @@ public interface AssetConnectionManagementInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createConnection(String userId,
+    String createConnection(String               userId,
                             ConnectionProperties connectionProperties) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
@@ -68,8 +68,8 @@ public interface AssetConnectionManagementInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createConnectionFromTemplate(String userId,
-                                        String templateGUID,
+    String createConnectionFromTemplate(String             userId,
+                                        String             templateGUID,
                                         TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException;
@@ -87,9 +87,9 @@ public interface AssetConnectionManagementInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void updateConnection(String userId,
-                          String connectionGUID,
-                          boolean isMergeUpdate,
+    void updateConnection(String               userId,
+                          String               connectionGUID,
+                          boolean              isMergeUpdate,
                           ConnectionProperties connectionProperties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException;

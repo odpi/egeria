@@ -1,19 +1,19 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.datamanager.client;
+package org.odpi.openmetadata.accessservices.securitymanager.client;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ClassificationProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceableProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.RelationshipProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.datamanager.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
+import org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient;
+import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.ClassificationProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.ReferenceableProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.RelationshipProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.rest.ClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.securitymanager.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.accessservices.securitymanager.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.securitymanager.rest.RelatedElementListResponse;
+import org.odpi.openmetadata.accessservices.securitymanager.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.accessservices.securitymanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -24,15 +24,15 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * DataManagerBaseClient supports the common properties and functions for the Data Manager OMAS.
+ * SecurityManagerBaseClient supports the common properties and functions for the Data Manager OMAS.
  */
-public class DataManagerBaseClient
+public class SecurityManagerBaseClient
 {
     final String serverName;               /* Initialized in constructor */
     final String serverPlatformURLRoot;    /* Initialized in constructor */
 
-    final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    final DataManagerRESTClient   restClient;               /* Initialized in constructor */
+    final InvalidParameterHandler   invalidParameterHandler = new InvalidParameterHandler();
+    final SecurityManagerRESTClient restClient;               /* Initialized in constructor */
 
 
     /**
@@ -45,9 +45,9 @@ public class DataManagerBaseClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public DataManagerBaseClient(String serverName,
-                                 String serverPlatformURLRoot,
-                                 AuditLog auditLog) throws InvalidParameterException
+    public SecurityManagerBaseClient(String serverName,
+                                     String serverPlatformURLRoot,
+                                     AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -56,7 +56,7 @@ public class DataManagerBaseClient
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        this.restClient = new SecurityManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -69,8 +69,8 @@ public class DataManagerBaseClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public DataManagerBaseClient(String serverName,
-                                 String serverPlatformURLRoot) throws InvalidParameterException
+    public SecurityManagerBaseClient(String serverName,
+                                     String serverPlatformURLRoot) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -79,7 +79,7 @@ public class DataManagerBaseClient
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot);
+        this.restClient = new SecurityManagerRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -95,10 +95,10 @@ public class DataManagerBaseClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public DataManagerBaseClient(String serverName,
-                                 String serverPlatformURLRoot,
-                                 String userId,
-                                 String password) throws InvalidParameterException
+    public SecurityManagerBaseClient(String serverName,
+                                     String serverPlatformURLRoot,
+                                     String userId,
+                                     String password) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -107,7 +107,7 @@ public class DataManagerBaseClient
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.restClient = new SecurityManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -124,11 +124,11 @@ public class DataManagerBaseClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public DataManagerBaseClient(String   serverName,
-                                 String   serverPlatformURLRoot,
-                                 String   userId,
-                                 String   password,
-                                 AuditLog auditLog) throws InvalidParameterException
+    public SecurityManagerBaseClient(String   serverName,
+                                     String   serverPlatformURLRoot,
+                                     String   userId,
+                                     String   password,
+                                     AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -137,7 +137,7 @@ public class DataManagerBaseClient
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        this.restClient = new SecurityManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -152,10 +152,10 @@ public class DataManagerBaseClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public DataManagerBaseClient(String                serverName,
-                                 String                serverPlatformURLRoot,
-                                 DataManagerRESTClient restClient,
-                                 int                   maxPageSize) throws InvalidParameterException
+    public SecurityManagerBaseClient(String                serverName,
+                                     String                serverPlatformURLRoot,
+                                     SecurityManagerRESTClient restClient,
+                                     int                   maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 

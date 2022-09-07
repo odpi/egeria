@@ -111,7 +111,7 @@ public class InvalidParameterTest
         try
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
-            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             testCreateFileSystem(userId, client);
             testCreateFileManager(userId, client);

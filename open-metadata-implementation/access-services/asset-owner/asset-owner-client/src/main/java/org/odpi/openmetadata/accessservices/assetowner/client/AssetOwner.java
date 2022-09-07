@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectionResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.accessservices.assetowner.api.AssetKnowledgeInterface;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -59,7 +60,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                       String   serverPlatformURLRoot,
                       AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
 
         this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -76,7 +77,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     public AssetOwner(String serverName,
                       String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, serviceURLName);
 
         this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot);
     }
@@ -101,7 +102,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                       String   password,
                       AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
 
         this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -123,7 +124,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                       String userId,
                       String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, serviceURLName,  userId, password);
 
         this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -146,11 +147,32 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                       int                  maxPageSize,
                       AuditLog             auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         this.restClient = restClient;
+    }
+
+
+    /**
+     * Returns a comprehensive collection of properties about the requested asset.
+     *
+     * @param userId         userId of user making request.
+     * @param assetGUID      unique identifier for asset.
+     *
+     * @return a comprehensive collection of properties about the asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public AssetUniverse getAssetProperties(String userId,
+                                            String assetGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        return super.getAssetProperties(serviceURLName, userId, assetGUID);
     }
 
 
@@ -481,7 +503,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
 
     /**
-     * Unlinks the schema from the asset but does not delete it.  This means it can be be reattached to a different asset.
+     * Unlinks the schema from the asset but does not delete it.  This means it can be reattached to a different asset.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the schema is to be attached to
@@ -650,7 +672,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * Adds a connection to an asset.  Assets can have multiple connections attached.
      *
      * @param userId calling user
-     * @param assetGUID unique identifier of the attest to attach the connection to
+     * @param assetGUID unique identifier of the asset to attach the connection to
      * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
      * @param connection connection object.  If the connection is already stored (matching guid)
      *                   then the existing connection is used.
@@ -957,7 +979,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
      * @param ownerId userId or profileGUID of the owner - or null to clear the field
-     * @param ownerType indicator of the type of Id provides above - or null to clear the field
+     * @param ownerType indicator of the type of identifier provided above - or null to clear the field
      * @throws InvalidParameterException userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
@@ -998,7 +1020,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
      * @param ownerId unique identifier/property of the owner - or null to clear the field
-     * @param ownerTypeName name of the type of Id provided above - or null to clear the field
+     * @param ownerTypeName name of the type of identifier provided above - or null to clear the field
      * @param ownerPropertyName name of the property that describes the ownerId
      *
      * @throws InvalidParameterException userId is null
@@ -1856,7 +1878,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
 
     /**
-     * Create a new metadata element to represent a endpoint. Classifications can be added later to define the
+     * Create a new metadata element to represent an endpoint. Classifications can be added later to define the
      * type of endpoint.
      *
      * @param userId             calling user
@@ -1893,7 +1915,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
 
     /**
-     * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+     * Create a new metadata element to represent an endpoint using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new endpoint.
      *
      * @param userId             calling user
@@ -2277,6 +2299,8 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                                                                                      connectorTypeGUID);
         return restResult.getElement();
     }
+
+
     /*
      * ==============================================
      * AssetReviewInterface
@@ -2402,28 +2426,6 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
 
 
     /**
-     * Returns a comprehensive collection of properties about the requested asset.
-     *
-     * @param userId         userId of user making request.
-     * @param assetGUID      unique identifier for asset.
-     *
-     * @return a comprehensive collection of properties about the asset.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @Override
-    public AssetUniverse getAssetProperties(String userId,
-                                            String assetGUID) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
-    {
-        return super.getAssetProperties(serviceURLName, userId, assetGUID);
-    }
-
-
-    /**
      * Return a connector for the asset to enable the calling user to access the content.
      *
      * @param userId calling user
@@ -2472,7 +2474,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @param startingFrom position in the list (used when there are so many reports that paging is needed
-     * @param maximumResults maximum number of elements to return an this call
+     * @param maximumResults maximum number of elements to return on this call
      * @return list of discovery analysis reports
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
@@ -2673,10 +2675,10 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
      * another asset), discovery reports and associated feedback.
      *
-     * Given the depth of the delete performed by this call, it should be used with care.
+     * Given the depth of the delete request performed by this call, it should be used with care.
      *
      * @param userId calling user
-     * @param assetGUID unique identifier of the attest to attach the connection to
+     * @param assetGUID unique identifier of the asset to remove
      * @throws InvalidParameterException full path or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem

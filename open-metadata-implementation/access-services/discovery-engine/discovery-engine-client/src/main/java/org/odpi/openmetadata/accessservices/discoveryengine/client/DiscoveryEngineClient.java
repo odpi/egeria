@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class DiscoveryEngineClient extends ConnectedAssetClientBase
 {
-    private ODFRESTClient restClient;               /* Initialized in constructor */
+    private final ODFRESTClient restClient;               /* Initialized in constructor */
 
     private static final String  serviceURLName = "discovery-engine";
 
@@ -44,7 +44,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                  ODFRESTClient restClient,
                                  AuditLog      auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
 
         this.restClient = restClient;
     }
@@ -63,7 +63,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                  String   serverPlatformURLRoot,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
 
         this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -79,7 +79,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
     public DiscoveryEngineClient(String serverName,
                                  String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, serviceURLName);
 
         this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot);
     }
@@ -102,7 +102,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                  String     password,
                                  AuditLog   auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
 
         this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -123,7 +123,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                  String     userId,
                                  String     password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, serviceURLName);
 
         this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -145,7 +145,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                 int           maxPageSize,
                                 AuditLog      auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLName, maxPageSize, auditLog);
 
         this.restClient = restClient;
     }
@@ -369,7 +369,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @param userId       userId of user making request.
      * @param connection   the connection object that contains the properties needed to create the connection.
      *
-     * @return Connector   connector instance
+     * @return    connector instance
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -402,10 +402,10 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    AssetUniverse getAssetProperties(String userId,
-                                     String assetGUID) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
+    public AssetUniverse getAssetProperties(String userId,
+                                            String assetGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         return super.getAssetProperties(serviceURLName, userId, assetGUID);
     }
@@ -527,7 +527,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Update the properties of the discovery analysis report.
      *
      * @param userId calling user.
-     * @param updatedReport updated report - this will replace what was previous stored.
+     * @param updatedReport updated report - this will replace the current stored values.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
@@ -1303,7 +1303,6 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @param userId identifier of calling user
      * @param dataField new properties
      *
-     * @return fully filled out data field
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating the data field in the annotation store.

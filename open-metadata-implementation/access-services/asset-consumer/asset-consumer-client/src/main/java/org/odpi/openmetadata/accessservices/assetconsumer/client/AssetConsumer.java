@@ -12,11 +12,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +38,6 @@ import java.util.List;
  * about an asset.
  */
 public class AssetConsumer extends ConnectedAssetClientBase implements AssetConsumerAssetInterface,
-                                                                       AssetConsumerConnectorFactoryInterface,
                                                                        AssetConsumerFeedbackInterface,
                                                                        AssetConsumerGlossaryInterface,
                                                                        AssetConsumerLoggingInterface,
@@ -63,7 +60,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                          String   serverPlatformURLRoot,
                          AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
 
         this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -79,7 +76,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     public AssetConsumer(String serverName,
                          String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, serviceURLName);
 
         this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformURLRoot);
     }
@@ -102,7 +99,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                          String     password,
                          AuditLog   auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
 
         this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -123,7 +120,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                          String     userId,
                          String     password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, serviceURLName, userId, password);
 
         this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -146,9 +143,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                          int                     maxPageSize,
                          AuditLog                auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        super(serverName, serverPlatformURLRoot, serviceURLName, maxPageSize, auditLog);
 
         this.restClient = restClient;
     }
@@ -224,28 +219,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Returns a comprehensive collection of properties about the requested asset.
-     *
-     * @param userId         userId of user making request.
-     * @param assetGUID      unique identifier for asset.
-     *
-     * @return a comprehensive collection of properties about the asset.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @Override
-    public AssetUniverse getAssetProperties(String userId,
-                                            String assetGUID) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
-    {
-        return super.getAssetProperties(serviceURLName, userId, assetGUID);
-    }
-
-
-    /**
      * Return a list of assets with the requested name.  The name must match exactly.
      *
      * @param userId calling user
@@ -272,6 +245,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         return retrieveAssets(userId, name, startFrom, pageSize, urlTemplate, methodName);
     }
+
 
     /**
      * Return a list of assets with the requested search string in their name, qualified name
@@ -406,7 +380,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         try
         {
-            asset = this.getAssetSummary(restClient, serviceURLName, userId, assetToken, methodName);
+            asset = this.getAssetSummary(userId, assetToken, methodName);
         }
         catch (Exception error)
         {
@@ -426,169 +400,25 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     }
 
 
-    /*
-     * ===============================================
-     * AssetConsumerConnectorFactoryInterface
-     * ===============================================
-     */
-
 
     /**
-     * Returns the connector corresponding to the supplied connection name.
+     * Returns a comprehensive collection of properties about the requested asset.
      *
-     * @param userId           userId of user making request.
-     * @param connectionName   this may be the qualifiedName or displayName of the connection.
+     * @param userId         userId of user making request.
+     * @param assetGUID      unique identifier for asset.
      *
-     * @return   connector instance - or null if there is no connection
+     * @return a comprehensive collection of properties about the asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
-     *                                      the creation of a connector.
-     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @Override
-    public Connector getConnectorByName(String userId,
-                                        String connectionName) throws InvalidParameterException,
-                                                                      ConnectionCheckedException,
-                                                                      ConnectorCheckedException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
+    public AssetUniverse getAssetProperties(String userId,
+                                            String assetGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
-        final String methodName = "getConnectorByName";
-        final String nameParameter = "connectionName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(connectionName, nameParameter, methodName);
-
-        Connection connection = super.getConnectionByName(restClient, serviceURLName, userId, connectionName);
-
-        if (connection != null)
-        {
-            return this.getConnectorForConnection(restClient,
-                                                  serviceURLName,
-                                                  userId,
-                                                  connection,
-                                                  methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Returns the connector corresponding to the supplied asset GUID.
-     *
-     * @param userId       userId of user making request.
-     * @param assetGUID   the unique id for the asset within the metadata repository.
-     *
-     * @return    connector instance - or null if there is no connection
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
-     *                                      the creation of a connector.
-     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @Override
-    public Connector getConnectorForAsset(String userId,
-                                          String assetGUID) throws InvalidParameterException,
-                                                                   ConnectionCheckedException,
-                                                                   ConnectorCheckedException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
-    {
-        final  String  methodName = "getConnectorForAsset";
-        final  String  guidParameter = "assetGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
-
-        Connection connection = this.getConnectionForAsset(restClient, serviceURLName, userId, assetGUID);
-
-        if (connection != null)
-        {
-            return this.getConnectorForConnection(restClient,
-                                                  serviceURLName,
-                                                  userId,
-                                                  connection,
-                                                  methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Returns the connector corresponding to the supplied connection GUID.
-     *
-     * @param userId           userId of user making request.
-     * @param connectionGUID   the unique id for the connection within the metadata repository.
-     *
-     * @return  connector instance - or null if there is no connection
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
-     *                                      the creation of a connector.
-     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @Override
-    public Connector getConnectorByGUID(String userId,
-                                        String connectionGUID) throws InvalidParameterException,
-                                                                      ConnectionCheckedException,
-                                                                      ConnectorCheckedException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
-    {
-        final  String  methodName = "getConnectorByGUID";
-        final  String  guidParameter = "connectionGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
-
-        Connection connection = super.getConnectionByGUID(restClient, serviceURLName, userId, connectionGUID);
-
-        if (connection != null)
-        {
-            return this.getConnectorForConnection(restClient,
-                                                  serviceURLName,
-                                                  userId,
-                                                  connection,
-                                                  methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Returns the connector corresponding to the supplied connection.
-     *
-     * @param userId       userId of user making request.
-     * @param connection   the connection object that contains the properties needed to create the connection.
-     *
-     * @return  connector instance
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
-     *                                      the creation of a connector.
-     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
-     */
-    @Override
-    public Connector  getConnectorByConnection(String     userId,
-                                               Connection connection) throws InvalidParameterException,
-                                                                             ConnectionCheckedException,
-                                                                             ConnectorCheckedException
-    {
-        final  String  methodName = "getConnectorByConnection";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        return this.getConnectorForConnection(restClient, serviceURLName, userId, connection, methodName);
+        return super.getAssetProperties(serviceURLName, userId, assetGUID);
     }
 
 
