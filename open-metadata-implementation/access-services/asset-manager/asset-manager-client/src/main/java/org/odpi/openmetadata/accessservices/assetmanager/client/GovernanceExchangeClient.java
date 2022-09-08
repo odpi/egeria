@@ -502,7 +502,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
     {
         final String methodName = "findGovernanceActionProcesses";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-processes/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-processes/by-search-string?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -513,7 +513,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         GovernanceActionProcessElementsResponse restResult = restClient.callGovernanceActionProcessElementsPostRESTCall(methodName,
-                                                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                                                        urlTemplate,
                                                                                                                         requestBody,
                                                                                                                         serverName,
                                                                                                                         userId,
@@ -550,7 +550,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
     {
         final String methodName = "getGovernanceActionProcessesByName";
         final String nameParameterName = "name";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-processes/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-processes/by-name?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -561,7 +561,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
         requestBody.setNameParameterName(nameParameterName);
 
         GovernanceActionProcessElementsResponse restResult = restClient.callGovernanceActionProcessElementsPostRESTCall(methodName,
-                                                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                                                        urlTemplate,
                                                                                                                         requestBody,
                                                                                                                         serverName,
                                                                                                                         userId,
@@ -593,13 +593,13 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
     {
         final String methodName = "getGovernanceActionProcessByGUID";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-processes/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-processes/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
         GovernanceActionProcessElementResponse restResult = restClient.callGovernanceActionProcessGetRESTCall(methodName,
-                                                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                                                              urlTemplate,
                                                                                                               serverName,
                                                                                                               userId,
                                                                                                               processGUID);
@@ -638,7 +638,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
     {
         final String methodName = "findGovernanceActionTypes";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-types/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-types/by-search-string?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -649,7 +649,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         GovernanceActionTypeElementsResponse restResult = restClient.callGovernanceActionTypeElementsPostRESTCall(methodName,
-                                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                                  urlTemplate,
                                                                                                                   requestBody,
                                                                                                                   serverName,
                                                                                                                   userId,
@@ -685,7 +685,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
     {
         final String methodName = "getGovernanceActionTypesByName";
         final String nameParameterName = "name";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-types/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-types/by-name?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -696,7 +696,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
         requestBody.setNameParameterName(nameParameterName);
 
         GovernanceActionTypeElementsResponse restResult = restClient.callGovernanceActionTypeElementsPostRESTCall(methodName,
-                                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                                  urlTemplate,
                                                                                                                   requestBody,
                                                                                                                   serverName,
                                                                                                                   userId,
@@ -727,13 +727,13 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
     {
         final String methodName = "getGovernanceActionTypeByGUID";
         final String guidParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-types/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-types/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actionTypeGUID, guidParameterName, methodName);
 
         GovernanceActionTypeElementResponse restResult = restClient.callGovernanceActionTypeGetRESTCall(methodName,
-                                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                                        urlTemplate,
                                                                                                         serverName,
                                                                                                         userId,
                                                                                                         actionTypeGUID);
@@ -762,13 +762,13 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
     {
         final String methodName = "getFirstActionType";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-processes/{2}/first-action-type";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-processes/{2}/first-action-type";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
         GovernanceActionTypeElementResponse restResult = restClient.callGovernanceActionTypeGetRESTCall(methodName,
-                                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                                        urlTemplate,
                                                                                                         serverName,
                                                                                                         userId,
                                                                                                         processGUID);
@@ -801,13 +801,13 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
     {
         final String methodName = "getNextGovernanceActionTypes";
         final String guidParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-types/{2}/next-action-type?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-action-types/{2}/next-action-type?startFrom={4}&pageSize={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actionTypeGUID, guidParameterName, methodName);
 
         NextGovernanceActionTypeElementsResponse restResult = restClient.callNextGovernanceActionTypesGetRESTCall(methodName,
-                                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                                  urlTemplate,
                                                                                                                   serverName,
                                                                                                                   userId,
                                                                                                                   actionTypeGUID,
@@ -838,13 +838,13 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
     {
         final String methodName = "getGovernanceAction";
         final String guidParameterName = "governanceActionGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-actions/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-actions/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceActionGUID, guidParameterName, methodName);
 
         GovernanceActionElementResponse restResult = restClient.callGovernanceActionGetRESTCall(methodName,
-                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                urlTemplate,
                                                                                                 serverName,
                                                                                                 userId,
                                                                                                 governanceActionGUID);
@@ -873,12 +873,12 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
                                                                                        PropertyServerException
     {
         final String methodName = "getGovernanceActions";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-actions?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-actions?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   serverName,
                                                                                                   userId,
                                                                                                   Integer.toString(startFrom),
@@ -908,12 +908,12 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
                                                                                              PropertyServerException
     {
         final String methodName = "getActiveGovernanceActions";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-actions/active?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-manager/users/{1}/governance-actions/active?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   serverName,
                                                                                                   userId,
                                                                                                   Integer.toString(startFrom),

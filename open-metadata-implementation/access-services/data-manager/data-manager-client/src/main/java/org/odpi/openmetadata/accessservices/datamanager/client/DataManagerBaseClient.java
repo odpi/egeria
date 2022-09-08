@@ -373,7 +373,7 @@ public class DataManagerBaseClient
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -416,7 +416,7 @@ public class DataManagerBaseClient
         requestBody.setExternalSourceName(externalSourceName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,

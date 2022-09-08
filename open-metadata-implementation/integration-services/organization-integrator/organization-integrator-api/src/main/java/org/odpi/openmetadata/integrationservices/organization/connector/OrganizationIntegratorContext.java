@@ -864,6 +864,27 @@ public class OrganizationIntegratorContext
 
 
     /**
+     * Create a UserIdentity that is for the sole use of a specific actor profile.
+     *
+     * @param profileGUID unique identifier of the profile
+     * @param newIdentity properties for the new userIdentity
+     *
+     * @return unique identifier of the UserIdentity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String createUserIdentityForProfile(String                 profileGUID,
+                                               UserIdentityProperties newIdentity) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        return userIdentityClient.createUserIdentityForProfile(userId, externalSourceGUID, externalSourceName, profileGUID, newIdentity);
+    }
+
+
+    /**
      * Update a UserIdentity.
      *
      * @param userIdentityGUID unique identifier of the UserIdentity

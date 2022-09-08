@@ -8,11 +8,9 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.E
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReferenceProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalReferenceListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalReferenceResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -145,7 +143,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
                                                                                          PropertyServerException
     {
         final String methodName = "createExternalReference";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references";
         final String propertiesParameterName = "properties";
 
         return super.createReferenceable(userId, properties, propertiesParameterName, urlTemplate, methodName);
@@ -173,7 +171,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
                                                                                        PropertyServerException
     {
         final String methodName = "updateExternalReference";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}/update?isMergeUpdate={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}/update?isMergeUpdate={4}";
         final String guidParameterName = "externalReferenceGUID";
         final String propertiesParameterName = "properties";
 
@@ -198,7 +196,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
                                                                              PropertyServerException
     {
         final String methodName = "deleteExternalReference";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}/delete";
         final String guidParameterName = "externalReferenceGUID";
 
         super.removeReferenceable(userId, externalReferenceGUID, guidParameterName, urlTemplate, methodName);
@@ -226,7 +224,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
                                                                                                       UserNotAuthorizedException
     {
         final String methodName = "linkExternalReferenceToElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/external-references/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/external-references/{3}/link";
 
         final String elementGUIDParameterName = "attachedToGUID";
         final String externalReferenceGUIDParameterName = "externalReferenceGUID";
@@ -255,7 +253,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
                                                                                         UserNotAuthorizedException
     {
         final String methodName = "unlinkExternalReferenceToElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/external-references/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/external-references/{3}/unlink";
 
         final String elementGUIDParameterName = "attachedToGUID";
         final String externalReferenceGUIDParameterName = "externalReferenceGUID";
@@ -284,7 +282,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
 
     {
         final String methodName = "getExternalReferenceByGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/{2}";
 
         final String guidParameterName = "externalReferenceGUID";
 
@@ -292,7 +290,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
         invalidParameterHandler.validateGUID(externalReferenceGUID, guidParameterName, methodName);
 
         ExternalReferenceResponse restResult = restClient.callExternalReferenceGetRESTCall(methodName,
-                                                                                           serverPlatformURLRoot + urlTemplate,
+                                                                                            urlTemplate,
                                                                                            serverName,
                                                                                            userId,
                                                                                            externalReferenceGUID);
@@ -324,7 +322,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
                                                                                              UserNotAuthorizedException
     {
         final String methodName = "findExternalReferencesById";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/by-resource-id?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/by-resource-id?startFrom={2}&pageSize={3}";
         final String resourceIdParameterName = "resourceId";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -338,7 +336,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
         requestBody.setSearchStringParameterName(resourceIdParameterName);
 
         ExternalReferenceListResponse restResult = restClient.callExternalReferenceListPostRESTCall(methodName,
-                                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                                    urlTemplate,
                                                                                                     requestBody,
                                                                                                     serverName,
                                                                                                     userId,
@@ -372,7 +370,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
                                                                                              UserNotAuthorizedException
     {
         final String methodName = "getExternalReferencesByURL";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/by-url?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/external-references/by-url?startFrom={2}&pageSize={3}";
         final String urlParameterName = "resourceId";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -385,7 +383,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
         requestBody.setNameParameterName(urlParameterName);
 
         ExternalReferenceListResponse restResult = restClient.callExternalReferenceListPostRESTCall(methodName,
-                                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                                   urlTemplate,
                                                                                                    requestBody,
                                                                                                    serverName,
                                                                                                    userId,
@@ -419,7 +417,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
                                                                                                      UserNotAuthorizedException
     {
         final String methodName = "retrieveAttachedExternalReferences";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/external-references?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/external-references?startFrom={3}&pageSize={4}";
         final String guidParameterName = "attachedToGUID";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -429,12 +427,12 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ExternalReferenceListResponse restResult = restClient.callExternalReferenceListGetRESTCall(methodName,
-                                                                                                   serverPlatformURLRoot + urlTemplate,
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    attachedToGUID,
-                                                                                                    startFrom,
-                                                                                                    queryPageSize);
+                                                                                                   urlTemplate,
+                                                                                                   serverName,
+                                                                                                   userId,
+                                                                                                   attachedToGUID,
+                                                                                                   startFrom,
+                                                                                                   queryPageSize);
 
         return restResult.getElements();
     }
@@ -464,7 +462,7 @@ public class ExternalReferenceManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "getElementsForExternalReference";
         final String guidParameter = "externalReferenceGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/external-references/{2}?&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/external-references/{2}?&startFrom={3}&pageSize={4}";
 
         return super.getRelatedElements(userId, externalReferenceGUID, guidParameter, urlTemplate, startFrom, pageSize, methodName);
     }

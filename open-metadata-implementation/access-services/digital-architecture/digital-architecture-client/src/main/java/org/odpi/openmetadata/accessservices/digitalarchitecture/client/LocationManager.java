@@ -151,10 +151,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateObject(locationProperties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(locationProperties.getQualifiedName(), nameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   locationProperties,
                                                                   serverName,
                                                                   userId);
@@ -190,10 +190,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateObject(templateProperties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), nameParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/from-template/{2}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
@@ -236,10 +236,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
             invalidParameterHandler.validateName(locationProperties.getQualifiedName(), qualifiedNameParameter, methodName);
         }
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/update?isMergeUpdate={3}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         locationProperties,
                                         serverName,
                                         userId,
@@ -277,7 +277,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/classify-as-fixed-location";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/classify-as-fixed-location";
 
         FixedLocationRequestBody requestBody = new FixedLocationRequestBody();
 
@@ -287,7 +287,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         requestBody.setTimeZone(timeZone);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -316,10 +316,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-fixed-location/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-fixed-location/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -353,7 +353,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-secure-location";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-secure-location";
 
         SecureLocationRequestBody requestBody = new SecureLocationRequestBody();
 
@@ -361,7 +361,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         requestBody.setLevel(level);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -391,10 +391,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-secure-location/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-secure-location/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -426,14 +426,14 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-digital-location";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-digital-location";
 
         DigitalLocationRequestBody requestBody = new DigitalLocationRequestBody();
 
         requestBody.setNetworkAddress(networkAddress);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -463,10 +463,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-digital-location/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/classify-as-digital-location/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -496,10 +496,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, guidParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -533,10 +533,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateGUID(parentLocationGUID, parentLocationGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(childLocationGUID, childLocationGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/has-nested-location/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/has-nested-location/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -571,10 +571,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateGUID(parentLocationGUID, parentLocationGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(childLocationGUID, childLocationGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/has-nested-location/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/has-nested-location/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -609,10 +609,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateGUID(locationOneGUID, locationOneGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(locationTwoGUID, locationTwoGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/linked-to-peer-location/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/linked-to-peer-location/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -647,10 +647,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateGUID(locationOneGUID, locationOneGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(locationTwoGUID, locationTwoGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/linked-to-peer-location/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}/linked-to-peer-location/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -690,7 +690,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/by-search-string" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/by-search-string" +
                                              "?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
@@ -699,12 +699,12 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         requestBody.setSearchStringParameterName(parameterName);
 
         LocationsResponse restResult = restClient.callLocationsPostRESTCall(methodName,
-                                                                                serverPlatformURLRoot + urlTemplate,
-                                                                                requestBody,
-                                                                                serverName,
-                                                                                userId,
-                                                                                startFrom,
-                                                                                validatedPageSize);
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -740,7 +740,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateName(name, nameParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/by-name?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -748,12 +748,12 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         requestBody.setNamePropertyName(nameParameter);
 
         LocationsResponse restResult = restClient.callLocationsPostRESTCall(methodName,
-                                                                                serverPlatformURLRoot + urlTemplate,
-                                                                                requestBody,
-                                                                                serverName,
-                                                                                userId,
-                                                                                startFrom,
-                                                                                validatedPageSize);
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElementList();
     }
@@ -783,10 +783,10 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(locationGUID, locationGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/locations/{2}";
 
         LocationResponse restResult = restClient.callLocationGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          locationGUID);

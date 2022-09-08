@@ -447,7 +447,7 @@ public class EndpointManagerClient implements EndpointManagerInterface
         requestBody.setSearchStringParameterName(parameterName);
 
         EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
-                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            urlTemplate,
                                                                             requestBody,
                                                                             serverName,
                                                                             userId,
@@ -496,7 +496,7 @@ public class EndpointManagerClient implements EndpointManagerInterface
         requestBody.setNamePropertyName(nameParameter);
 
         EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
-                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            urlTemplate,
                                                                             requestBody,
                                                                             serverName,
                                                                             userId,
@@ -545,7 +545,7 @@ public class EndpointManagerClient implements EndpointManagerInterface
         requestBody.setNamePropertyName(nameParameter);
 
         EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
-                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            urlTemplate,
                                                                             requestBody,
                                                                             serverName,
                                                                             userId,

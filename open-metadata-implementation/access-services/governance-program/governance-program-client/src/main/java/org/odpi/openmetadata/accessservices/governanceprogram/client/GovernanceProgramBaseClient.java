@@ -236,7 +236,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -283,7 +283,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -332,7 +332,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setInitialStatus(initialStatus);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -377,7 +377,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -431,7 +431,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -486,7 +486,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -518,7 +518,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/update-status";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/update-status";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
@@ -529,7 +529,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setStatus(newStatus);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -583,7 +583,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -624,7 +624,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -660,7 +660,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -707,7 +707,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -757,7 +757,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
-                                                                serverPlatformURLRoot + urlTemplate,
+                                                                urlTemplate,
                                                                 requestBody,
                                                                 serverName,
                                                                 userId,
@@ -805,7 +805,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -846,7 +846,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setRelationshipName(relationshipName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -890,7 +890,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         requestBody.setRelationshipName(relationshipName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -929,7 +929,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
 
         RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                                             urlTemplate,
                                                                                              serverName,
                                                                                              userId,
                                                                                              startingElementGUID,
@@ -970,7 +970,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
         ElementStubListResponse restResult = restClient.callElementStubListGetRESTCall(methodName,
-                                                                                       serverPlatformURLRoot + urlTemplate,
+                                                                                       urlTemplate,
                                                                                        serverName,
                                                                                        userId,
                                                                                        name,
@@ -1011,7 +1011,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
 
         GovernanceDefinitionListResponse restResult = restClient.callGovernanceDefinitionListGetRESTCall(methodName,
-                                                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                                                         urlTemplate,
                                                                                                          serverName,
                                                                                                          userId,
                                                                                                          startingElementGUID,
@@ -1090,7 +1090,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1122,7 +1122,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName = "elementGUID";
         final String detailGUIDParameterName  = "detailGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/more-information/{3}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/more-information/{3}";
 
         this.setupRelationship(userId,
                                elementGUID,
@@ -1158,7 +1158,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName = "elementGUID";
         final String detailGUIDParameterName  = "detailGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/more-information/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/more-information/{3}/delete";
 
         this.clearRelationship(userId,
                                elementGUID,
@@ -1195,7 +1195,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getMoreInformation";
         final String guidPropertyName  = "elementGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/more-information/by-descriptive-element/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/more-information/by-descriptive-element/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, elementGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1225,7 +1225,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getDescriptiveElements";
         final String guidPropertyName  = "detailGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/more-information/by-detail-element/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/more-information/by-detail-element/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, detailGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1255,7 +1255,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName     = "elementGUID";
         final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/governed-by/{3}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/governed-by/{3}";
 
         this.setupRelationship(userId,
                                elementGUID,
@@ -1291,7 +1291,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName  = "elementGUID";
         final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/governed-by/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/governed-by/{3}/delete";
 
         this.clearRelationship(userId,
                                elementGUID,
@@ -1328,7 +1328,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getGovernanceDefinitionsForElement";
         final String guidPropertyName  = "elementGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/governed-by/by-element/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/governed-by/by-element/{2}?startFrom={3}&pageSize={4}";
 
         return this.getGovernanceDefinitionElements(userId, elementGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1358,7 +1358,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getGovernedElements";
         final String guidPropertyName  = "governanceDefinitionGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/governed-by/by-governance-definition/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/governed-by/by-governance-definition/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, governanceDefinitionGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1386,7 +1386,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String scopeGUIDParameterName                = "scopeGUID";
         final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/governance-definition-scopes/{3}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/governance-definition-scopes/{3}";
 
         this.setupRelationship(userId,
                                scopeGUID,
@@ -1423,7 +1423,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String scopeGUIDParameterName                = "scopeGUID";
         final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/governance-definition-scopes/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/governance-definition-scopes/{3}/delete";
 
         this.clearRelationship(userId,
                                scopeGUID,
@@ -1460,7 +1460,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getGovernanceDefinitionScopes";
         final String guidPropertyName  = "governanceDefinitionGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/governance-definition-scopes/by-governance-definition/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/governance-definition-scopes/by-governance-definition/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, governanceDefinitionGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1490,7 +1490,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getScopedGovernanceDefinitions";
         final String guidPropertyName  = "scopeGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/governance-definition-scopes/by-scope/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/governance-definition-scopes/by-scope/{2}?startFrom={3}&pageSize={4}";
 
         return this.getGovernanceDefinitionElements(userId, scopeGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1518,7 +1518,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String personRoleGUIDParameterName               = "personRoleGUID";
         final String governanceResponsibilityGUIDParameterName = "governanceResponsibilityGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/governance-responsibility-assignments/{3}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/governance-responsibility-assignments/{3}";
 
         this.setupRelationship(userId,
                                personRoleGUID,
@@ -1554,7 +1554,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String personRoleGUIDParameterName               = "personRoleGUID";
         final String governanceResponsibilityGUIDParameterName = "governanceResponsibilityGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/governance-responsibility-assignments/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/governance-responsibility-assignments/{3}/delete";
 
         this.clearRelationship(userId,
                                personRoleGUID,
@@ -1591,7 +1591,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getResponsibleRole";
         final String guidPropertyName  = "governanceResponsibilityGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/governance-responsibility-assignments/by-responsibility/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/governance-responsibility-assignments/by-responsibility/{2}?startFrom={3}&pageSize={4}";
 
         return this.getGovernanceRoleElements(userId, governanceResponsibilityGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1621,7 +1621,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getRoleResponsibilities";
         final String guidPropertyName  = "personRoleGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/governance-responsibility-assignments/by-role/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/governance-responsibility-assignments/by-role/{2}?startFrom={3}&pageSize={4}";
 
         return this.getGovernanceDefinitionElements(userId, personRoleGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
 
@@ -1652,7 +1652,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName     = "elementGUID";
         final String stakeholderGUIDParameterName = "stakeholderGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/stakeholders/{3}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/stakeholders/{3}";
 
         this.setupRelationship(userId,
                                elementGUID,
@@ -1688,7 +1688,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName     = "elementGUID";
         final String stakeholderGUIDParameterName = "stakeholderGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/stakeholders/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/stakeholders/{3}/delete";
 
         this.clearRelationship(userId,
                                elementGUID,
@@ -1725,7 +1725,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getStakeholders";
         final String guidPropertyName  = "elementGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/stakeholders/by-commissioned-element/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/stakeholders/by-commissioned-element/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, elementGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1755,7 +1755,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getStakeholderCommissionedElements";
         final String guidPropertyName  = "stakeholderGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/stakeholders/by-stakeholder/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/stakeholders/by-stakeholder/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, stakeholderGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1786,7 +1786,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName = "elementGUID";
         final String scopeGUIDParameterName   = "scopeGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/assignment-scopes/{3}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/assignment-scopes/{3}";
 
         this.setupRelationship(userId,
                                elementGUID,
@@ -1822,7 +1822,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName = "elementGUID";
         final String scopeGUIDParameterName   = "scopeGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/assignment-scopes/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/assignment-scopes/{3}/delete";
 
         this.clearRelationship(userId,
                                elementGUID,
@@ -1859,7 +1859,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getAssignedScopes";
         final String guidPropertyName  = "elementGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/assignment-scopes/by-assigned-actor/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/assignment-scopes/by-assigned-actor/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, elementGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1889,7 +1889,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getAssignedActors";
         final String guidPropertyName  = "scopeGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/assignment-scopes/by-assigned-scope/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/assignment-scopes/by-assigned-scope/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, scopeGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -1920,7 +1920,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName  = "elementGUID";
         final String resourceGUIDParameterName = "resourceGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/resource-list/{3}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/resource-list/{3}";
 
         this.setupRelationship(userId,
                                elementGUID,
@@ -1956,7 +1956,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String elementGUIDParameterName  = "elementGUID";
         final String resourceGUIDParameterName = "resourceGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/{2}/resource-list/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/{2}/resource-list/{3}/delete";
 
         this.clearRelationship(userId,
                                elementGUID,
@@ -1993,7 +1993,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getResourceList";
         final String guidPropertyName  = "elementGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/resource-list/by-assignee/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/resource-list/by-assignee/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, elementGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -2023,7 +2023,7 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         final String methodName        = "getSupportedByResource";
         final String guidPropertyName  = "resourceGUID";
 
-        final String urlTemplate = elementsURLTemplatePrefix + "/resource-list/by-resource/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + elementsURLTemplatePrefix + "/resource-list/by-resource/{2}?startFrom={3}&pageSize={4}";
 
         return this.getRelatedElements(userId, resourceGUID, guidPropertyName, urlTemplate, startFrom, pageSize, methodName);
     }

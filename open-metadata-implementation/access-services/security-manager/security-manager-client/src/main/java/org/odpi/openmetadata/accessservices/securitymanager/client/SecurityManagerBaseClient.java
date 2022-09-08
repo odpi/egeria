@@ -373,7 +373,7 @@ public class SecurityManagerBaseClient
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -416,7 +416,7 @@ public class SecurityManagerBaseClient
         requestBody.setExternalSourceName(externalSourceName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,

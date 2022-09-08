@@ -193,7 +193,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
                                                                                                   PropertyServerException
     {
         final String   methodName = "createGovernanceDefinition";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions";
         final String   propertiesParameterName = "properties";
 
         return super.createGovernanceDefinition(userId, properties, propertiesParameterName, initialStatus, urlTemplate, methodName);
@@ -221,7 +221,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
                                                                                               PropertyServerException
     {
         final String methodName = "updateGovernanceDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/update?isMergeUpdate={3}";
 
         final String guidParameterName = "definitionGUID";
         final String propertiesParameterName = "properties";
@@ -278,7 +278,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
                                                                           PropertyServerException
     {
         final String methodName = "deleteGovernanceDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/delete";
         final String guidParameterName = "definitionGUID";
 
         super.removeReferenceable(userId, definitionGUID, guidParameterName, urlTemplate, methodName);
@@ -314,7 +314,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
                                                                                  PropertyServerException
     {
         final String methodName = "linkPeerDefinitions";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/peers/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/peers/{3}/link";
 
         final String definitionOneGUIDParameterName = "definitionOneGUID";
         final String definitionTwoGUIDParameterName = "definitionTwoGUID";
@@ -355,7 +355,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
                                                                           PropertyServerException
     {
         final String methodName = "unlinkPeerDefinitions";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/peers/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/peers/{3}/unlink";
 
         final String definitionOneGUIDParameterName = "definitionOneGUID";
         final String definitionTwoGUIDParameterName = "definitionTwoGUID";
@@ -403,7 +403,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
                                                                                             PropertyServerException
     {
         final String methodName = "setupSupportingDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/supporting-definitions/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/supporting-definitions/{3}/link";
 
         final String definitionOneGUIDParameterName = "definitionGUID";
         final String definitionTwoGUIDParameterName = "supportingDefinitionGUID";
@@ -444,7 +444,7 @@ public class GovernanceDefinitionManager extends GovernanceProgramBaseClient imp
                                                                               PropertyServerException
     {
         final String methodName = "clearSupportingDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/supporting-definitions/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/supporting-definitions/{3}/unlink";
 
         final String definitionOneGUIDParameterName = "definitionGUID";
         final String definitionTwoGUIDParameterName = "supportingDefinitionGUID";

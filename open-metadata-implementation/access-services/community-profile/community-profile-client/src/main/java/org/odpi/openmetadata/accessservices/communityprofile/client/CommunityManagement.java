@@ -136,10 +136,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
     /**
      * Create a new metadata element to represent a community.
      *
-     * This method issues an HTTP POST command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities.
-     * The request body is of type <i>ReferenceableRequestBody</i>.  This holds the external source identifiers and the referenceableProperties are set to the supplied <i>communityProperties</i>.
-     * The HTTP response is of type <i>GUIDResponse</i>.
-     *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
@@ -169,10 +165,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
     /**
      * Create a new metadata element to represent a community using an existing metadata element as a template.
-     *
-     * This method issues an HTTP POST command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities/from-template/{templateGUID}.
-     * The request body is of type <i>TemplateRequestBody</i>.  This holds the external source identifiers and the supplied <i>templateProperties</i>.
-     * The HTTP response is of type <i>GUIDResponse</i>.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
@@ -204,10 +196,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
     /**
      * Update the metadata element representing a community.
-     *
-     * This method issues an HTTP POST command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities/{communityGUID}?isMergeUpdate={isMergeUpdate}.
-     * The request body is of type <i>ReferenceableRequestBody</i>.  This holds the external source identifiers and the referenceableProperties are set to the supplied <i>communityProperties</i>.
-     * The HTTP response is of type <i>VoidResponse</i>.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
@@ -242,10 +230,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
     /**
      * Create a membership relationship between a community and a person role to show that anyone appointed to the role is a member of the community.
      *
-     * This method issues an HTTP POST command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities/{communityGUID}/community-roles/{personRoleGUID}.
-     * The request body is of type <i>RelationshipRequestBody</i>.  This holds the external source identifiers and the relationshipProperties are set to the supplied <i>membershipProperties</i>.
-     * The HTTP response is of type <i>VoidResponse</i>.
-     *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
@@ -279,10 +263,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
     /**
      * Remove a membership relationship between a community and a person role.
-     *
-     * This method issues an HTTP POST command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities/{communityGUID}/community-roles/{personRoleGUID}/delete.
-     * The request body is of type <i>ExternalSourceRequestBody</i>.  This holds the external source identifiers.
-     * The HTTP response is of type <i>VoidResponse</i>.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
@@ -323,10 +303,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
     /**
      * Remove the metadata element representing a community.
      *
-     * This method issues an HTTP POST command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities/{communityGUID}/delete.
-     * The request body is of type <i>ExternalSourceRequestBody</i>.  This holds the external source identifiers.
-     * The HTTP response is of type <i>VoidResponse</i>.
-     *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
@@ -355,10 +331,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
     /**
      * Retrieve the list of metadata elements that contain the search string.
      * The search string is treated as a regular expression.
-     *
-     * This method issues an HTTP POST command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities/by-search-string?startFrom={startFrom}&pageSize={pageSize}.
-     * The request body is of type <i>SearchStringRequestBody</i>.  This holds the search string.
-     * The HTTP response is of type <i>CommunityListResponse</i>.
      *
      * @param userId calling user
      * @param searchString string to find in the properties
@@ -409,10 +381,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
      * Retrieve the list of metadata elements with a matching qualified or display name.
      * There are no wildcards supported on this request.
      *
-     * This method issues an HTTP POST command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities/by-name?startFrom={startFrom}&pageSize={pageSize}.
-     * The request body is of type <i>NameRequestBody</i>.  This holds the name to search for.
-     * The HTTP response is of type <i>CommunityListResponse</i>.
-     *
      * @param userId calling user
      * @param name name to search for
      * @param startFrom paging start point
@@ -461,9 +429,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
     /**
      * Retrieve the list of all communities defined in open metadata.
      *
-     * This method issues an HTTP GET command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities?startFrom={startFrom}&pageSize={pageSize}.
-     * The HTTP response is of type <i>CommunityListResponse</i>.
-     *
      * @param userId calling user
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -502,9 +467,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
     /**
      * Return information about the person roles linked to a community.
-     *
-     * This method issues an HTTP GET command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/person-roles/by-community/{communityGUID}?startFrom={startFrom}&pageSize={pageSize}.
-     * The HTTP response is of type <i>PersonRoleListResponse</i>.
      *
      * @param userId calling user
      * @param communityGUID unique identifier for the community
@@ -547,9 +509,6 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
     /**
      * Retrieve the metadata element with the supplied unique identifier.
-     *
-     * This method issues an HTTP GET command with a URL of <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/communities/{communityGUID}?startFrom={startFrom}&pageSize={pageSize}.
-     * The HTTP response is of type <i>CommunityResponse</i>.
      *
      * @param userId calling user
      * @param communityGUID unique identifier of the requested metadata element

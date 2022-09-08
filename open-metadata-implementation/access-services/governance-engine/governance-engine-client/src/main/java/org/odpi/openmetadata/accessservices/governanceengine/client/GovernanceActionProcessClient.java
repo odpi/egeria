@@ -137,7 +137,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         final String methodName = "createGovernanceActionProcess";
         final String propertiesParameterName = "processProperties";
         final String qualifiedNameParameterName = "processProperties.getQualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
@@ -149,7 +149,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         requestBody.setProperties(processProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -185,7 +185,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         final String guidParameterName = "processGUID";
         final String propertiesParameterName = "processProperties";
         final String qualifiedNameParameterName = "processProperties.getQualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
@@ -203,7 +203,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         requestBody.setProperties(processProperties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -231,13 +231,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "publishGovernanceActionProcess";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/publish";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/publish";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -266,13 +266,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "withdrawGovernanceActionProcess";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/withdraw";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/withdraw";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -299,13 +299,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "removeGovernanceActionProcess";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/remove";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -339,7 +339,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "findGovernanceActionProcesses";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/by-search-string?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -350,7 +350,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         GovernanceActionProcessElementsResponse restResult = restClient.callGovernanceActionProcessElementsPostRESTCall(methodName,
-                                                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                                                        urlTemplate,
                                                                                                                         requestBody,
                                                                                                                         serverName,
                                                                                                                         userId,
@@ -387,7 +387,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "getGovernanceActionProcessesByName";
         final String nameParameterName = "name";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/by-name?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -398,7 +398,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         requestBody.setNameParameterName(nameParameterName);
 
         GovernanceActionProcessElementsResponse restResult = restClient.callGovernanceActionProcessElementsPostRESTCall(methodName,
-                                                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                                                        urlTemplate,
                                                                                                                         requestBody,
                                                                                                                         serverName,
                                                                                                                         userId,
@@ -430,13 +430,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "getGovernanceActionProcessByGUID";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
         GovernanceActionProcessElementResponse restResult = restClient.callGovernanceActionProcessGetRESTCall(methodName,
-                                                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                                                              urlTemplate,
                                                                                                               serverName,
                                                                                                               userId,
                                                                                                               processGUID);
@@ -472,14 +472,14 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         final String methodName = "createGovernanceActionType";
         final String propertiesParameterName = "actionTypeProperties";
         final String qualifiedNameParameterName = "actionTypeProperties.getQualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(actionTypeProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(actionTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   actionTypeProperties,
                                                                   serverName,
                                                                   userId);
@@ -513,7 +513,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         final String guidParameterName = "actionTypeGUID";
         final String propertiesParameterName = "actionTypeProperties";
         final String qualifiedNameParameterName = "actionTypeProperties.getQualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actionTypeGUID, guidParameterName, methodName);
@@ -530,7 +530,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         requestBody.setProperties(actionTypeProperties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -556,13 +556,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "removeGovernanceActionType";
         final String guidParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/remove";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actionTypeGUID, guidParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -595,7 +595,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "findGovernanceActionTypes";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/by-search-string?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -606,7 +606,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         GovernanceActionTypeElementsResponse restResult = restClient.callGovernanceActionTypeElementsPostRESTCall(methodName,
-                                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                                  urlTemplate,
                                                                                                                   requestBody,
                                                                                                                   serverName,
                                                                                                                   userId,
@@ -642,7 +642,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "getGovernanceActionTypesByName";
         final String nameParameterName = "name";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/by-name?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
@@ -653,7 +653,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         requestBody.setNameParameterName(nameParameterName);
 
         GovernanceActionTypeElementsResponse restResult = restClient.callGovernanceActionTypeElementsPostRESTCall(methodName,
-                                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                                  urlTemplate,
                                                                                                                   requestBody,
                                                                                                                   serverName,
                                                                                                                   userId,
@@ -684,13 +684,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "getGovernanceActionTypeByGUID";
         final String guidParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actionTypeGUID, guidParameterName, methodName);
 
         GovernanceActionTypeElementResponse restResult = restClient.callGovernanceActionTypeGetRESTCall(methodName,
-                                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                                        urlTemplate,
                                                                                                         serverName,
                                                                                                         userId,
                                                                                                         actionTypeGUID);
@@ -724,14 +724,14 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         final String methodName = "setupFirstActionType";
         final String processGUIDParameterName = "processGUID";
         final String actionTypeGUIDParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-type/{3}/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-type/{3}/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(actionTypeGUID, actionTypeGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         guard,
                                         serverName,
                                         userId,
@@ -760,13 +760,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "getFirstActionType";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-type";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-type";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
         GovernanceActionTypeElementResponse restResult = restClient.callGovernanceActionTypeGetRESTCall(methodName,
-                                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                                        urlTemplate,
                                                                                                         serverName,
                                                                                                         userId,
                                                                                                         processGUID);
@@ -793,13 +793,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "removeFirstActionType";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-type/remove";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/{2}/first-action-type/remove";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -838,7 +838,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         final String methodName = "setupNextActionType";
         final String currentGUIDParameterName = "currentActionTypeGUID";
         final String nextGUIDParameterName = "nextActionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/next-action-types/{3}/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/next-action-types/{3}/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(currentActionTypeGUID, currentGUIDParameterName, methodName);
@@ -851,7 +851,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         requestBody.setIgnoreMultipleTriggers(ignoreMultipleTriggers);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -887,7 +887,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "updateNextActionType";
         final String guidParameterName = "nextActionLinkGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/next-action-types/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/next-action-types/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(nextActionLinkGUID, guidParameterName, methodName);
@@ -899,7 +899,7 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
         requestBody.setIgnoreMultipleTriggers(ignoreMultipleTriggers);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -931,13 +931,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "getNextGovernanceActionTypes";
         final String guidParameterName = "actionTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/next-action-type?startFrom={4}&pageSize={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/{2}/next-action-type?startFrom={4}&pageSize={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actionTypeGUID, guidParameterName, methodName);
 
         NextGovernanceActionTypeElementsResponse restResult = restClient.callNextGovernanceActionTypesGetRESTCall(methodName,
-                                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                                  urlTemplate,
                                                                                                                   serverName,
                                                                                                                   userId,
                                                                                                                   actionTypeGUID,
@@ -966,13 +966,13 @@ public class GovernanceActionProcessClient implements GovernanceActionProcessInt
     {
         final String methodName = "removeFirstActionType";
         final String guidParameterName = "processGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/next-action-type/{2}/remove";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-types/next-action-type/{2}/remove";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actionLinkGUID, guidParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,

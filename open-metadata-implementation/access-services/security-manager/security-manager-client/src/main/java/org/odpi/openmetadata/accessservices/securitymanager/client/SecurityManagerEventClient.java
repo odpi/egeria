@@ -156,7 +156,7 @@ public class SecurityManagerEventClient implements SecurityManagerEventInterface
         final String methodName = "registerListener";
         final String nameParameter = "listener";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/security-manager/users/{1}/topics/out-topic-connection/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/security-manager/users/{1}/topics/out-topic-connection/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(listener, nameParameter, methodName);
@@ -168,7 +168,7 @@ public class SecurityManagerEventClient implements SecurityManagerEventInterface
              * event bus.
              */
             ConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName,
-                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                    urlTemplate,
                                                                                     serverName,
                                                                                     userId,
                                                                                     callerId);

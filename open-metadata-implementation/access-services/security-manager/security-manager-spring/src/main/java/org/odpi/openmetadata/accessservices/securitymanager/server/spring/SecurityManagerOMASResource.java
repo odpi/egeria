@@ -382,7 +382,7 @@ public class SecurityManagerOMASResource
      * PropertyServerException  - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/user-identities/{userIdentityGUID}/personal-profiles/{profileGUID}/link")
+    @PostMapping(path = "/user-identities/{userIdentityGUID}/profiles/{profileGUID}/link")
 
     public VoidResponse  addIdentityToProfile(@PathVariable String                    serverName,
                                               @PathVariable String                    userId,

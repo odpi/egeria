@@ -203,13 +203,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName = "getAssetForConnectionName";
         final String   nameParameter = "connectionName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-connection-name/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-connection-name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectionName, nameParameter, methodName);
 
         GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
-                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                 urlTemplate,
                                                                  serverName,
                                                                  userId,
                                                                  connectionName);
@@ -241,7 +241,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
 
         return retrieveAssets(userId, name, startFrom, pageSize, urlTemplate, methodName);
     }
@@ -271,7 +271,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                               UserNotAuthorizedException
     {
         final String methodName = "findAssets";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-search-string?startFrom={2}&pageSize={3}";
 
         return retrieveAssets(userId, searchString, startFrom, pageSize, urlTemplate, methodName);
     }
@@ -302,7 +302,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                      UserNotAuthorizedException
     {
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
-                                                                          serverPlatformURLRoot + urlTemplate,
+                                                                          urlTemplate,
                                                                           searchString,
                                                                           serverName,
                                                                           userId,
@@ -454,7 +454,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   methodName  = "addRatingToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/ratings";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/ratings";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
@@ -465,7 +465,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setPublic(isPublic);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -492,13 +492,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   methodName = "removeRatingFromAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/ratings/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/ratings/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -527,7 +527,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   methodName  = "addLikeToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/likes";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/likes";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
@@ -535,7 +535,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         FeedbackRequestBody requestBody = new FeedbackRequestBody();
         requestBody.setIsPublic(isPublic);
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -562,13 +562,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   methodName = "removeLikeFromAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/likes/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/likes/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -603,7 +603,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   methodName  = "addCommentToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/comments";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/comments";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
@@ -614,7 +614,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setIsPublic(isPublic);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -652,7 +652,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     {
         final String   methodName  = "addCommentReply";
         final String   commentGUIDParameter = "commentGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/comments/{2}/replies";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/comments/{2}/replies";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(commentGUID, commentGUIDParameter, methodName);
@@ -663,7 +663,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setIsPublic(isPublic);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -700,7 +700,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   methodName  = "updateComment";
         final String   assetGUIDParameter = "assetGUID";
         final String   commentGUIDParameter = "commentGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/comments/{3}/update";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/comments/{3}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
@@ -712,7 +712,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setIsPublic(isPublic);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -743,14 +743,14 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final  String  assetGUIDParameter = "assetGUID";
         final  String  commentGUIDParameter = "commentGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/comments/{3}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/comments/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(commentGUID, commentGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -785,14 +785,14 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                          UserNotAuthorizedException
     {
         final String   methodName = "getMeaning";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/{2}";
         final String   guidParameter = "guid";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
 
         GlossaryTermResponse restResult = restClient.callGlossaryTermGetRESTCall(methodName,
-                                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                                 urlTemplate,
                                                                                  serverName,
                                                                                  userId,
                                                                                  guid);
@@ -823,7 +823,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                          UserNotAuthorizedException
     {
         final String   methodName = "getMeaningByName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-name/{2}?startFrom={3}&pageSize={4}";
 
         return retrieveMeanings(userId, term, startFrom, pageSize, urlTemplate, methodName);
     }
@@ -851,7 +851,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                      UserNotAuthorizedException
     {
         final String   methodName = "findMeanings";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-search-string/{2}?startFrom={3}&pageSize={4}";
 
         return retrieveMeanings(userId, term, startFrom, pageSize, urlTemplate, methodName);
     }
@@ -887,7 +887,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateName(term, nameParameter, methodName);
 
         GlossaryTermListResponse restResult = restClient.callGlossaryTermListPostRESTCall(methodName,
-                                                                                          serverPlatformURLRoot + urlTemplate,
+                                                                                          urlTemplate,
                                                                                           term,
                                                                                           serverName,
                                                                                           userId,
@@ -921,14 +921,14 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                    UserNotAuthorizedException
     {
         final String   methodName = "getAssetsByMeaning";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-meaning/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-meaning/{2}?startFrom={3}&pageSize={4}";
         final String   termGUIDParameterName = "termGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(termGUID, termGUIDParameterName, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          termGUID,
@@ -975,7 +975,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   methodName = "addLogMessageToAsset";
         final String   guidParameter = "assetGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/log-records";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/log-records";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
@@ -988,7 +988,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setMessage(message);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1026,7 +1026,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                             PropertyServerException,
                                                             UserNotAuthorizedException
     {
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -1036,7 +1036,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         tagRequestBody.setDescription(tagDescription);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   tagRequestBody,
                                                                   serverName,
                                                                   userId);
@@ -1121,7 +1121,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   methodName = "updateTagDescription";
         final String   guidParameter = "tagGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/{2}/update";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(tagGUID, guidParameter, methodName);
@@ -1130,7 +1130,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         tagRequestBody.setDescription(tagDescription);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         tagRequestBody,
                                         serverName,
                                         userId,
@@ -1159,13 +1159,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   methodName = "deleteTag";
         final String   guidParameter = "tagGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/{2}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(tagGUID, guidParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -1191,14 +1191,14 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                          UserNotAuthorizedException
     {
         final String   methodName = "getTag";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/{2}";
         final String   guidParameter = "guid";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
 
         TagResponse restResult = restClient.callInformalTagGetRESTCall(methodName,
-                                                                       serverPlatformURLRoot + urlTemplate,
+                                                                       urlTemplate,
                                                                        serverName,
                                                                        userId,
                                                                        guid);
@@ -1229,7 +1229,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                           UserNotAuthorizedException
     {
         final String   methodName = "getTagsByName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-name?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-name?startFrom={2}&pageSize={3}";
 
         return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
     }
@@ -1257,7 +1257,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                             UserNotAuthorizedException
     {
         final String   methodName = "getTagsByName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-name?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-name?startFrom={2}&pageSize={3}";
 
         return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
     }
@@ -1285,7 +1285,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                      UserNotAuthorizedException
     {
         final String   methodName = "findTags";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-search-string?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-search-string?startFrom={2}&pageSize={3}";
 
         return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
     }
@@ -1313,7 +1313,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                        UserNotAuthorizedException
     {
         final String   methodName = "findTags";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-search-string?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private/by-search-string?startFrom={2}&pageSize={3}";
 
         return retrieveTags(userId, tag, startFrom, pageSize, urlTemplate, methodName);
     }
@@ -1349,7 +1349,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateName(tag, nameParameter, methodName);
 
         TagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
-                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                             urlTemplate,
                                                                              tag,
                                                                              serverName,
                                                                              userId,
@@ -1384,7 +1384,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   assetGUIDParameterName = "assetGUID";
         final String   tagGUIDParameterName = "tagGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/tags/{3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/tags/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
@@ -1393,7 +1393,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         FeedbackRequestBody requestBody = new FeedbackRequestBody();
         requestBody.setIsPublic(isPublic);
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1426,7 +1426,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   elementGUIDParameterName = "elementGUID";
         final String   tagGUIDParameterName = "tagGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/elements/{2}/tags/{3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/elements/{2}/tags/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
@@ -1435,7 +1435,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         FeedbackRequestBody requestBody = new FeedbackRequestBody();
         requestBody.setIsPublic(isPublic);
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1467,14 +1467,14 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   assetGUIDParameterName = "assetGUID";
         final String   tagGUIDParameterName = "tagGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/tags/{3}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/tags/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -1505,14 +1505,14 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         final String   elementGUIDParameterName = "elementGUID";
         final String   tagGUIDParameterName = "tagGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/elements/{2}/tags/{3}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/elements/{2}/tags/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -1545,14 +1545,14 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                UserNotAuthorizedException
     {
         final String   methodName = "getAssetsByTag";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-tag/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-tag/{2}?startFrom={3}&pageSize={4}";
         final String   tagGUIDParameterName = "tagGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          tagGUID,
