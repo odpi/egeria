@@ -296,6 +296,8 @@ public class RepositoryHandler
 
     /**
      * Use the dates in the entities and return the one that was last updated most recently.
+     * If the dates are equal, then compare GUIDs in order to always retrieve the same entity (no matter
+     * which of the is the current and which is the new one).
      *
      * @param currentEntity current entity
      * @param newEntity next peer entity
@@ -315,6 +317,18 @@ public class RepositoryHandler
         if (newLastUpdate == null)
         {
             newLastUpdate = newEntity.getCreateTime();
+        }
+
+        if(currentLastUpdate.equals(newLastUpdate))
+        {
+            if(currentEntity.getGUID().compareTo(newEntity.getGUID()) >= 0)
+            {
+                return currentEntity;
+            }
+            else
+            {
+                return newEntity;
+            }
         }
 
         if (currentLastUpdate.before(newLastUpdate))
