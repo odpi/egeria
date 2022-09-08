@@ -1851,7 +1851,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Add the requested classification to a specific entity.
+     * Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+     * created, classified, and stored in the repository by this method.
      *
      * @param userId unique identifier for requesting user.
      * @param entityProxy entity as a proxy
@@ -1863,7 +1864,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is either not known or not valid
      *                                         for the entity.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
@@ -1876,7 +1876,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                          String               classificationName,
                                          InstanceProperties   classificationProperties) throws InvalidParameterException,
                                                                                                RepositoryErrorException,
-                                                                                               EntityNotKnownException,
                                                                                                ClassificationErrorException,
                                                                                                PropertyErrorException,
                                                                                                UserNotAuthorizedException,
@@ -1936,7 +1935,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Add the requested classification to a specific entity.
+     * Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+     * created, classified, and stored in the repository by this method.
      *
      * @param userId unique identifier for requesting user.
      * @param entityProxy entity as a proxy
@@ -1952,7 +1952,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is either not known or not valid
      *                                         for the entity.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
@@ -1969,7 +1968,6 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                          String               classificationOriginGUID,
                                          InstanceProperties   classificationProperties) throws InvalidParameterException,
                                                                                                RepositoryErrorException,
-                                                                                               EntityNotKnownException,
                                                                                                ClassificationErrorException,
                                                                                                PropertyErrorException,
                                                                                                UserNotAuthorizedException,
