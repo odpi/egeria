@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":10,"i4":10,"i5":6,"i6":6,"i7":6,"i8":10,"i9":10,"i10":6,"i11":10,"i12":10,"i13":6,"i14":10,"i15":6,"i16":6,"i17":10,"i18":6,"i19":10,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":6,"i31":6,"i32":6,"i33":6,"i34":6,"i35":6,"i36":10,"i37":6,"i38":6,"i39":6,"i40":6,"i41":6,"i42":10,"i43":10,"i44":6,"i45":42,"i46":10,"i47":6,"i48":6,"i49":6,"i50":6,"i51":6,"i52":6,"i53":6,"i54":6,"i55":6,"i56":10,"i57":10,"i58":6,"i59":6,"i60":10,"i61":6,"i62":6,"i63":10,"i64":6,"i65":6,"i66":42,"i67":10,"i68":42,"i69":10,"i70":6,"i71":6,"i72":6,"i73":6,"i74":6,"i75":6,"i76":6,"i77":6,"i78":10,"i79":10,"i80":6,"i81":10,"i82":6,"i83":6,"i84":10,"i85":6,"i86":6,"i87":6,"i88":10,"i89":6,"i90":6,"i91":6,"i92":6,"i93":6,"i94":10,"i95":6,"i96":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":10,"i4":10,"i5":6,"i6":6,"i7":6,"i8":10,"i9":10,"i10":6,"i11":10,"i12":10,"i13":6,"i14":10,"i15":6,"i16":6,"i17":10,"i18":6,"i19":10,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6,"i27":6,"i28":6,"i29":6,"i30":6,"i31":6,"i32":6,"i33":6,"i34":6,"i35":6,"i36":10,"i37":6,"i38":6,"i39":6,"i40":6,"i41":6,"i42":10,"i43":10,"i44":6,"i45":42,"i46":10,"i47":6,"i48":6,"i49":6,"i50":6,"i51":6,"i52":6,"i53":6,"i54":6,"i55":6,"i56":10,"i57":10,"i58":6,"i59":6,"i60":10,"i61":6,"i62":6,"i63":10,"i64":6,"i65":6,"i66":42,"i67":10,"i68":42,"i69":10,"i70":6,"i71":6,"i72":6,"i73":6,"i74":10,"i75":6,"i76":6,"i77":6,"i78":6,"i79":10,"i80":10,"i81":6,"i82":10,"i83":6,"i84":6,"i85":10,"i86":6,"i87":6,"i88":6,"i89":10,"i90":6,"i91":6,"i92":6,"i93":6,"i94":6,"i95":10,"i96":6,"i97":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -1081,6 +1081,13 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </td>
 </tr>
 <tr id="i74" class="altColor">
+<td class="colFirst"><code>protected void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reportUnsupportedOptionalFunction(java.lang.String)">reportUnsupportedOptionalFunction</a></span>&#8203;(java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Return an exception to indicate that the method is unsupported but this is ok because it is optional.</div>
+</td>
+</tr>
+<tr id="i75" class="rowColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#restoreEntity(java.lang.String,java.lang.String)">restoreEntity</a></span>&#8203;(java.lang.String&nbsp;userId,
              java.lang.String&nbsp;deletedEntityGUID)</code></th>
@@ -1088,7 +1095,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Restore the requested entity to the state it was before it was deleted.</div>
 </td>
 </tr>
-<tr id="i75" class="rowColor">
+<tr id="i76" class="altColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#restoreRelationship(java.lang.String,java.lang.String)">restoreRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;deletedRelationshipGUID)</code></th>
@@ -1096,7 +1103,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Restore a deleted relationship into the metadata collection.</div>
 </td>
 </tr>
-<tr id="i76" class="altColor">
+<tr id="i77" class="rowColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reTypeEntity(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary)">reTypeEntity</a></span>&#8203;(java.lang.String&nbsp;userId,
             java.lang.String&nbsp;entityGUID,
@@ -1106,7 +1113,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Change the type of an existing entity.</div>
 </td>
 </tr>
-<tr id="i77" class="rowColor">
+<tr id="i78" class="altColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reTypeRelationship(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary)">reTypeRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;relationshipGUID,
@@ -1116,7 +1123,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Change the type of an existing relationship.</div>
 </td>
 </tr>
-<tr id="i78" class="altColor">
+<tr id="i79" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveClassificationReferenceCopy(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification)">saveClassificationReferenceCopy</a></span>&#8203;(java.lang.String&nbsp;userId,
                                org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail&nbsp;entity,
@@ -1125,7 +1132,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Save the classification as a reference copy.</div>
 </td>
 </tr>
-<tr id="i79" class="rowColor">
+<tr id="i80" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveClassificationReferenceCopy(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification)">saveClassificationReferenceCopy</a></span>&#8203;(java.lang.String&nbsp;userId,
                                org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy&nbsp;entity,
@@ -1134,7 +1141,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Save the classification as a reference copy.</div>
 </td>
 </tr>
-<tr id="i80" class="altColor">
+<tr id="i81" class="rowColor">
 <td class="colFirst"><code>abstract void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveEntityReferenceCopy(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail)">saveEntityReferenceCopy</a></span>&#8203;(java.lang.String&nbsp;userId,
                        org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail&nbsp;entity)</code></th>
@@ -1142,7 +1149,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Save the entity as a reference copy.</div>
 </td>
 </tr>
-<tr id="i81" class="rowColor">
+<tr id="i82" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveInstanceReferenceCopies(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph)">saveInstanceReferenceCopies</a></span>&#8203;(java.lang.String&nbsp;userId,
                            org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph&nbsp;instances)</code></th>
@@ -1150,7 +1157,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Save the entities and relationships supplied in the instance graph as a reference copies.</div>
 </td>
 </tr>
-<tr id="i82" class="altColor">
+<tr id="i83" class="rowColor">
 <td class="colFirst"><code>abstract void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#saveRelationshipReferenceCopy(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship)">saveRelationshipReferenceCopy</a></span>&#8203;(java.lang.String&nbsp;userId,
                              org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship&nbsp;relationship)</code></th>
@@ -1158,7 +1165,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Save the relationship as a reference copy.</div>
 </td>
 </tr>
-<tr id="i83" class="rowColor">
+<tr id="i84" class="altColor">
 <td class="colFirst"><code>abstract java.util.List&lt;org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#searchForTypeDefs(java.lang.String,java.lang.String)">searchForTypeDefs</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;searchCriteria)</code></th>
@@ -1166,14 +1173,14 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Return the TypeDefs that match the search criteria.</div>
 </td>
 </tr>
-<tr id="i84" class="altColor">
+<tr id="i85" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a></span>&#8203;(<a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </td>
 </tr>
-<tr id="i85" class="rowColor">
+<tr id="i86" class="altColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#undoEntityUpdate(java.lang.String,java.lang.String)">undoEntityUpdate</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;entityGUID)</code></th>
@@ -1181,7 +1188,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Undo the last update to an entity and return the previous content.</div>
 </td>
 </tr>
-<tr id="i86" class="altColor">
+<tr id="i87" class="rowColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#undoRelationshipUpdate(java.lang.String,java.lang.String)">undoRelationshipUpdate</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;relationshipGUID)</code></th>
@@ -1189,7 +1196,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Undo the latest change to a relationship (either a change of properties or status).</div>
 </td>
 </tr>
-<tr id="i87" class="rowColor">
+<tr id="i88" class="altColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEntityClassification(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">updateEntityClassification</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;entityGUID,
@@ -1199,7 +1206,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Update one or more properties in one of an entity's classifications.</div>
 </td>
 </tr>
-<tr id="i88" class="altColor">
+<tr id="i89" class="rowColor">
 <td class="colFirst"><code>org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEntityClassification(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">updateEntityClassification</a></span>&#8203;(java.lang.String&nbsp;userId,
                           org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy&nbsp;entityProxy,
@@ -1209,7 +1216,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Update one or more properties in one of an entity's classifications.</div>
 </td>
 </tr>
-<tr id="i89" class="rowColor">
+<tr id="i90" class="altColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEntityProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">updateEntityProperties</a></span>&#8203;(java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;entityGUID,
@@ -1218,7 +1225,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Update selected properties in an entity.</div>
 </td>
 </tr>
-<tr id="i90" class="altColor">
+<tr id="i91" class="rowColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEntityStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)">updateEntityStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;entityGUID,
@@ -1227,7 +1234,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Update the status for a specific entity.</div>
 </td>
 </tr>
-<tr id="i91" class="rowColor">
+<tr id="i92" class="altColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelationshipProperties(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties)">updateRelationshipProperties</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;relationshipGUID,
@@ -1236,7 +1243,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Update the properties of a specific relationship.</div>
 </td>
 </tr>
-<tr id="i92" class="altColor">
+<tr id="i93" class="rowColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelationshipStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)">updateRelationshipStatus</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;relationshipGUID,
@@ -1245,7 +1252,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Update the status of a specific relationship.</div>
 </td>
 </tr>
-<tr id="i93" class="rowColor">
+<tr id="i94" class="altColor">
 <td class="colFirst"><code>abstract org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch)">updateTypeDef</a></span>&#8203;(java.lang.String&nbsp;userId,
              org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch&nbsp;typeDefPatch)</code></th>
@@ -1253,14 +1260,14 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Update one or more properties of the TypeDef.</div>
 </td>
 </tr>
-<tr id="i94" class="altColor">
+<tr id="i95" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateRepositoryConnector(java.lang.String)">validateRepositoryConnector</a></span>&#8203;(java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
 <div class="block">Verify that a metadata collection is operating with a parent connector.</div>
 </td>
 </tr>
-<tr id="i95" class="rowColor">
+<tr id="i96" class="altColor">
 <td class="colFirst"><code>abstract boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyAttributeTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef)">verifyAttributeTypeDef</a></span>&#8203;(java.lang.String&nbsp;userId,
                       org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef&nbsp;attributeTypeDef)</code></th>
@@ -1268,7 +1275,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Verify that a definition of an AttributeTypeDef is either new or matches the definition already stored.</div>
 </td>
 </tr>
-<tr id="i96" class="altColor">
+<tr id="i97" class="rowColor">
 <td class="colFirst"><code>abstract boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#verifyTypeDef(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef)">verifyTypeDef</a></span>&#8203;(java.lang.String&nbsp;userId,
              org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef&nbsp;typeDef)</code></th>
@@ -3537,7 +3544,8 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
                                                                                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
                                                                                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
                                                                                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
-<div class="block">Add the requested classification to a specific entity.</div>
+<div class="block">Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+ created, classified, and stored in the repository by this method.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
@@ -3550,7 +3558,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - one of the parameters is invalid or null.</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
                                   the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the entity identified by the guid is not found in the metadata collection</dd>
+<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the entity proxy was not found and could not be created</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</code> - the requested classification is either not known or not valid
                                          for the entity.</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException</code> - one or more of the requested properties are not defined, or have different
@@ -3629,7 +3637,8 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
                                                                                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException,
                                                                                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
                                                                                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
-<div class="block">Add the requested classification to a specific entity.</div>
+<div class="block">Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+ created, classified, and stored in the repository by this method.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - unique identifier for requesting user.</dd>
@@ -3717,7 +3726,7 @@ public&nbsp;java.lang.String&nbsp;getMetadataCollectionId()
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException</code> - one of the parameters is invalid or null.</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException</code> - there is a problem communicating with the metadata repository where
                                   the metadata collection is stored.</dd>
-<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the entity identified by the guid is not found in the metadata collection</dd>
+<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException</code> - the entity proxy was not found and could not be created</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException</code> - the requested classification is not set on the entity.</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the userId is not permitted to perform this operation.</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support maintenance of metadata.</dd>
@@ -5087,7 +5096,7 @@ public&nbsp;org.odpi.openmetadata.repositoryservices.connectors.stores.metadatac
 <a id="saveInstanceReferenceCopies(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>saveInstanceReferenceCopies</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;saveInstanceReferenceCopies&#8203;(java.lang.String&nbsp;userId,
@@ -5126,6 +5135,23 @@ public&nbsp;org.odpi.openmetadata.repositoryservices.connectors.stores.metadatac
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidRelationshipException</code> - the new relationship has invalid contents.</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - the repository does not support reference copies of instances.</dd>
 <dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException</code> - the userId is not permitted to perform this operation.</dd>
+</dl>
+</li>
+</ul>
+<a id="reportUnsupportedOptionalFunction(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>reportUnsupportedOptionalFunction</h4>
+<pre class="methodSignature">protected&nbsp;void&nbsp;reportUnsupportedOptionalFunction&#8203;(java.lang.String&nbsp;methodName)
+                                          throws org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</pre>
+<div class="block">Return an exception to indicate that the method is unsupported but this is ok because it is optional.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - calling method</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException</code> - optional function not supported</dd>
 </dl>
 </li>
 </ul>
