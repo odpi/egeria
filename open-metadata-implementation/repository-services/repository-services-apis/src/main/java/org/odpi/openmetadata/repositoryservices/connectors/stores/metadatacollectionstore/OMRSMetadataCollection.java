@@ -1882,18 +1882,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                UserNotAuthorizedException,
                                                                                                FunctionNotSupportedException
     {
-        EntityDetail entityDetail = this.classifyEntity(userId,
-                                                        entityProxy.getGUID(),
-                                                        classificationName,
-                                                        classificationProperties);
-
-        for (Classification classification : entityDetail.getClassifications())
-        {
-            if (classification.getName().equals(classificationName))
-            {
-                return classification;
-            }
-        }
+        final String methodName = "classifyEntity";
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 
@@ -1985,22 +1975,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                UserNotAuthorizedException,
                                                                                                FunctionNotSupportedException
     {
-        EntityDetail entityDetail = this.classifyEntity(userId,
-                                                        entityProxy.getGUID(),
-                                                        classificationName,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        classificationOrigin,
-                                                        classificationOriginGUID,
-                                                        classificationProperties);
-
-        for (Classification classification : entityDetail.getClassifications())
-        {
-            if (classification.getName().equals(classificationName))
-            {
-                return classification;
-            }
-        }
+        final String methodName = "classifyEntity";
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 
@@ -3454,5 +3430,20 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                        methodName);
             }
         }
+    }
+
+    /**
+     * Return an exception to indicate that the method is unsupported but this is ok because it is optional.
+     *
+     * @param methodName calling method
+     * @throws FunctionNotSupportedException optional function not supported
+     */
+    protected void reportUnsupportedOptionalFunction(String methodName) throws FunctionNotSupportedException
+    {
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                this.getClass().getName(),
+                repositoryName),
+                this.getClass().getName(),
+                methodName);
     }
 }
