@@ -167,6 +167,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public AssetUniverse getAssetProperties(String userId,
                                             String assetGUID) throws InvalidParameterException,
                                                                      PropertyServerException,
