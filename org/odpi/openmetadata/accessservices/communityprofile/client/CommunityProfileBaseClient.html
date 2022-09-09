@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -135,7 +135,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="CommunityManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityManagement</a></code>, <code><a href="LocationManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">LocationManagement</a></code>, <code><a href="ValidValueManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">ValidValueManagement</a></code></dd>
+<dd><code><a href="CommunityManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityManagement</a></code>, <code><a href="LocationManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">LocationManagement</a></code>, <code><a href="UserIdentityManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">UserIdentityManagement</a></code>, <code><a href="ValidValueManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">ValidValueManagement</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">CommunityProfileBaseClient</span>
@@ -190,7 +190,7 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient,int)">CommunityProfileBaseClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;serverPlatformURLRoot,
-                          org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
+                          <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
                           int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
@@ -407,6 +407,23 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <div class="block">Create a "Stakeholder" relationship between an element and its stakeholder.</div>
 </td>
 </tr>
+<tr id="i17" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String)">updateRelationship</a></span>&#8203;(java.lang.String&nbsp;userId,
+                  java.lang.String&nbsp;externalSourceGUID,
+                  java.lang.String&nbsp;externalSourceName,
+                  java.lang.String&nbsp;primaryElementGUID,
+                  java.lang.String&nbsp;primaryElementGUIDParameterName,
+                  <a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">RelationshipProperties</a>&nbsp;properties,
+                  java.lang.String&nbsp;secondaryElementGUID,
+                  java.lang.String&nbsp;secondaryElementGUIDParameterName,
+                  boolean&nbsp;isMergeUpdate,
+                  java.lang.String&nbsp;urlTemplate,
+                  java.lang.String&nbsp;methodName)</code></th>
+<td class="colLast">
+<div class="block">Update the properties of the relationship between two elements.</div>
+</td>
+</tr>
 </table>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -533,7 +550,7 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <h4>CommunityProfileBaseClient</h4>
 <pre>public&nbsp;CommunityProfileBaseClient&#8203;(java.lang.String&nbsp;serverName,
                                   java.lang.String&nbsp;serverPlatformURLRoot,
-                                  org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
+                                  <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
                                   int&nbsp;maxPageSize)
                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
@@ -559,6 +576,47 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="updateRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateRelationship</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;updateRelationship&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;externalSourceGUID,
+                               java.lang.String&nbsp;externalSourceName,
+                               java.lang.String&nbsp;primaryElementGUID,
+                               java.lang.String&nbsp;primaryElementGUIDParameterName,
+                               <a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">RelationshipProperties</a>&nbsp;properties,
+                               java.lang.String&nbsp;secondaryElementGUID,
+                               java.lang.String&nbsp;secondaryElementGUIDParameterName,
+                               boolean&nbsp;isMergeUpdate,
+                               java.lang.String&nbsp;urlTemplate,
+                               java.lang.String&nbsp;methodName)
+                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<div class="block">Update the properties of the relationship between two elements.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - the name of the calling user</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
+<dd><code>primaryElementGUID</code> - unique identifier of the primary element</dd>
+<dd><code>primaryElementGUIDParameterName</code> - name of parameter passing the primaryElementGUID</dd>
+<dd><code>properties</code> - describes the properties for the relationship</dd>
+<dd><code>secondaryElementGUID</code> - unique identifier of the element to connect it to</dd>
+<dd><code>secondaryElementGUIDParameterName</code> - name of parameter passing the secondaryElementGUID</dd>
+<dd><code>isMergeUpdate</code> - should the supplied properties be overlaid on the existing properties (true) or replace them (false</dd>
+<dd><code>urlTemplate</code> - URL to call (no expected placeholders)</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</li>
+</ul>
 <a id="removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>

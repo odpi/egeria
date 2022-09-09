@@ -122,7 +122,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</li>
+<li><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</a></li>
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryAnnotationStoreClient</li>
@@ -136,7 +136,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <hr>
 <pre>public class <span class="typeNameLabel">DiscoveryAnnotationStoreClient</span>
-extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre>
+extends <a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></pre>
 <div class="block">DiscoveryAnnotationStoreClient provides a client-side implementation of the ODF DiscoveryAnnotationStore
  that is backed by calls to the Discovery Engine OMAS.
 
@@ -160,8 +160,8 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore">
 <!--   -->
 </a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</h3>
-<code>assetGUID, discoveryReport, userId</code></li>
+<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.discovery.<a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></h3>
+<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#assetGUID">assetGUID</a>, <a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#discoveryReport">discoveryReport</a>, <a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#userId">userId</a></code></li>
 </ul>
 </li>
 </ul>
@@ -365,8 +365,8 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</h3>
-<code>getDiscoveryReport</code></li>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.discovery.<a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></h3>
+<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getDiscoveryReport()">getDiscoveryReport</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -434,7 +434,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return the annotation subtype names.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getTypesOfAnnotation</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getTypesOfAnnotation()">getTypesOfAnnotation</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of type names that are subtypes of annotation</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -457,7 +457,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return the annotation subtype names mapped to their descriptions.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getTypesOfAnnotationWithDescriptions</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getTypesOfAnnotationWithDescriptions()">getTypesOfAnnotationWithDescriptions</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>map of type names that are subtypes of annotation to their descriptions</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -481,7 +481,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return the list of Annotations created for the asset by previous runs of the discovery service.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getPreviousAnnotationsForAsset</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getPreviousAnnotationsForAsset(int,int)">getPreviousAnnotationsForAsset</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>startingFrom</code> - starting position in the list.</dd>
 <dd><code>maximumResults</code> - maximum number of elements that can be returned</dd>
@@ -511,7 +511,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
  discovery reports that are not waiting or in progress.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getPreviousAnnotationsForAsset</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getPreviousAnnotationsForAsset(org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus,int,int)">getPreviousAnnotationsForAsset</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>status</code> - status value to use on the query</dd>
 <dd><code>startingFrom</code> - starting position in the list.</dd>
@@ -539,7 +539,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return the current list of annotations for this discovery run.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getNewAnnotationsForAsset</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getNewAnnotationsForAsset(int,int)">getNewAnnotationsForAsset</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>startingFrom</code> - starting position in the list.</dd>
 <dd><code>maximumResults</code> - maximum number of elements that can be returned</dd>
@@ -567,7 +567,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return any annotations attached to this annotation.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getExtendedAnnotations</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getExtendedAnnotations(java.lang.String,int,int)">getExtendedAnnotations</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>annotationGUID</code> - parent annotation</dd>
 <dd><code>startingFrom</code> - starting position in the list</dd>
@@ -594,7 +594,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return a specific annotation stored in the annotation store (previous or new).</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getAnnotation</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getAnnotation(java.lang.String)">getAnnotation</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>annotationGUID</code> - unique identifier of the annotation</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -619,7 +619,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Add a new annotation to the annotation store as a top level annotation linked directly off of the report.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>addAnnotationToDiscoveryReport</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#addAnnotationToDiscoveryReport(org.odpi.openmetadata.frameworks.discovery.properties.Annotation)">addAnnotationToDiscoveryReport</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>annotation</code> - annotation object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -645,7 +645,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Add a new annotation and link it to an existing annotation.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>addAnnotationToAnnotation</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#addAnnotationToAnnotation(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.Annotation)">addAnnotationToAnnotation</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>parentAnnotationGUID</code> - unique identifier of the annotation that this new one is to be attached to</dd>
 <dd><code>annotation</code> - annotation object</dd>
@@ -671,7 +671,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Replace the current properties of an annotation.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>updateAnnotation</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#updateAnnotation(org.odpi.openmetadata.frameworks.discovery.properties.Annotation)">updateAnnotation</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>annotation</code> - new properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -694,7 +694,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Remove an annotation from the annotation store.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>deleteAnnotation</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#deleteAnnotation(java.lang.String)">deleteAnnotation</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>annotationGUID</code> - unique identifier of the annotation</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -718,7 +718,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return the list of data fields from previous runs of the discovery service.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getPreviousDataFieldsForAsset</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getPreviousDataFieldsForAsset(int,int)">getPreviousDataFieldsForAsset</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>startingFrom</code> - starting position in the list.</dd>
 <dd><code>maximumResults</code> - maximum number of elements that can be returned</dd>
@@ -745,7 +745,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return the current list of data fields for this discovery run.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getNewDataFieldsForAsset</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getNewDataFieldsForAsset(int,int)">getNewDataFieldsForAsset</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>startingFrom</code> - starting position in the list.</dd>
 <dd><code>maximumResults</code> - maximum number of elements that can be returned</dd>
@@ -773,7 +773,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return any annotations attached to this annotation.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getNestedDataFields</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getNestedDataFields(java.lang.String,int,int)">getNestedDataFields</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>parentDataFieldGUID</code> - parent data field identifier</dd>
 <dd><code>startingFrom</code> - starting position in the list</dd>
@@ -800,7 +800,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Return a specific data field stored in the annotation store (previous or new).</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getDataField</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#getDataField(java.lang.String)">getDataField</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>dataFieldGUID</code> - unique identifier of the data field</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -826,7 +826,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Add a new data field to the Annotation store linked off of an annotation (typically SchemaAnalysisAnnotation).</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>addDataFieldToDiscoveryReport</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#addDataFieldToDiscoveryReport(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DataField)">addDataFieldToDiscoveryReport</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>annotationGUID</code> - unique identifier of the annotation that the data field is to be linked to</dd>
 <dd><code>dataField</code> - dataField object</dd>
@@ -854,7 +854,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Add a new data field and link it to an existing data field.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>addDataFieldToDataField</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#addDataFieldToDataField(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.DataField)">addDataFieldToDataField</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>parentDataFieldGUID</code> - unique identifier of the data field that this new one is to be attached to</dd>
 <dd><code>dataField</code> - data field object</dd>
@@ -881,7 +881,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Add a new annotation and link it to an existing data field.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>addAnnotationToDataField</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#addAnnotationToDataField(java.lang.String,org.odpi.openmetadata.frameworks.discovery.properties.Annotation)">addAnnotationToDataField</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>parentDataFieldGUID</code> - unique identifier of the data field that this new one is to be attached to</dd>
 <dd><code>annotation</code> - data field object</dd>
@@ -907,7 +907,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Replace the current properties of a data field.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>updateDataField</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#updateDataField(org.odpi.openmetadata.frameworks.discovery.properties.DataField)">updateDataField</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>dataField</code> - new properties</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -930,7 +930,7 @@ extends org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</pre
 <div class="block">Remove a data field from the annotation store.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>deleteDataField</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html#deleteDataField(java.lang.String)">deleteDataField</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryAnnotationStore.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryAnnotationStore</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>dataFieldGUID</code> - unique identifier of the data field</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

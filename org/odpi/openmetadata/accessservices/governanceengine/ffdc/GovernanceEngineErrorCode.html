@@ -136,12 +136,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code>java.io.Serializable</code>, <code>java.lang.Comparable&lt;<a href="GovernanceEngineErrorCode.html" title="enum in org.odpi.openmetadata.accessservices.governanceengine.ffdc">GovernanceEngineErrorCode</a>&gt;</code>, <code>org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet</code></dd>
+<dd><code>java.io.Serializable</code>, <code>java.lang.Comparable&lt;<a href="GovernanceEngineErrorCode.html" title="enum in org.odpi.openmetadata.accessservices.governanceengine.ffdc">GovernanceEngineErrorCode</a>&gt;</code>, <code><a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></code></dd>
 </dl>
 <hr>
 <pre>public enum <span class="typeNameLabel">GovernanceEngineErrorCode</span>
 extends java.lang.Enum&lt;<a href="GovernanceEngineErrorCode.html" title="enum in org.odpi.openmetadata.accessservices.governanceengine.ffdc">GovernanceEngineErrorCode</a>&gt;
-implements org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet</pre>
+implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></pre>
 <div class="block">The GovernanceEngineErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  the Governance Engine Access Service.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  <p>
@@ -213,14 +213,14 @@ implements org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessag
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/auditlog/messagesets/ExceptionMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageDefinition</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMessageDefinition()">getMessageDefinition</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Retrieve a message definition object for an exception.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/auditlog/messagesets/ExceptionMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageDefinition</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMessageDefinition(java.lang.String...)">getMessageDefinition</a></span>&#8203;(java.lang.String...&nbsp;params)</code></th>
 <td class="colLast">
 <div class="block">Retrieve a message definition object for an exception.</div>
@@ -373,11 +373,11 @@ not permitted.)</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>getMessageDefinition</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition&nbsp;getMessageDefinition()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/auditlog/messagesets/ExceptionMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageDefinition</a>&nbsp;getMessageDefinition()</pre>
 <div class="block">Retrieve a message definition object for an exception.  This method is used when there are no message inserts.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getMessageDefinition</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet</code></dd>
+<dd><code><a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html#getMessageDefinition()">getMessageDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>message definition object.</dd>
 </dl>
@@ -389,11 +389,11 @@ not permitted.)</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>getMessageDefinition</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition&nbsp;getMessageDefinition&#8203;(java.lang.String...&nbsp;params)</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/auditlog/messagesets/ExceptionMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageDefinition</a>&nbsp;getMessageDefinition&#8203;(java.lang.String...&nbsp;params)</pre>
 <div class="block">Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getMessageDefinition</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet</code></dd>
+<dd><code><a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html#getMessageDefinition(java.lang.String...)">getMessageDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>params</code> - array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>

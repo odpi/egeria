@@ -187,7 +187,7 @@ implements <a href="../api/SecurityManagerInterface.html" title="interface in or
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient,int)">SecurityManagerClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serverPlatformURLRoot,
-                     org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient&nbsp;restClient,
+                     <a href="rest/SecurityManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.client.rest">SecurityManagerRESTClient</a>&nbsp;restClient,
                      int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
@@ -333,7 +333,7 @@ implements <a href="../api/SecurityManagerInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i12" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getElementsGovernedBySecurityGroup(java.lang.String,java.lang.String,int,int)">getElementsGovernedBySecurityGroup</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;securityGroupGUID,
                                   int&nbsp;startFrom,
@@ -541,7 +541,7 @@ implements <a href="../api/SecurityManagerInterface.html" title="interface in or
 <h4>SecurityManagerClient</h4>
 <pre>public&nbsp;SecurityManagerClient&#8203;(java.lang.String&nbsp;serverName,
                              java.lang.String&nbsp;serverPlatformURLRoot,
-                             org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient&nbsp;restClient,
+                             <a href="rest/SecurityManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.client.rest">SecurityManagerRESTClient</a>&nbsp;restClient,
                              int&nbsp;maxPageSize)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
@@ -685,13 +685,13 @@ implements <a href="../api/SecurityManagerInterface.html" title="interface in or
 <ul class="blockList">
 <li class="blockList">
 <h4>getElementsGovernedBySecurityGroup</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub&gt;&nbsp;getElementsGovernedBySecurityGroup&#8203;(java.lang.String&nbsp;userId,
-                                                                                                                                   java.lang.String&nbsp;securityGroupGUID,
-                                                                                                                                   int&nbsp;startFrom,
-                                                                                                                                   int&nbsp;pageSize)
-                                                                                                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                                                                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                                                                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;getElementsGovernedBySecurityGroup&#8203;(java.lang.String&nbsp;userId,
+                                                                      java.lang.String&nbsp;securityGroupGUID,
+                                                                      int&nbsp;startFrom,
+                                                                      int&nbsp;pageSize)
+                                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Return the elements that are governed by the supplied security group.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>

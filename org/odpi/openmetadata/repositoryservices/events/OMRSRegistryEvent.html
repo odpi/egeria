@@ -196,7 +196,7 @@ extends <a href="OMRSEvent.html" title="class in org.odpi.openmetadata.repositor
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventErrorCode,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">OMRSRegistryEvent</a></span>&#8203;(<a href="OMRSRegistryEventErrorCode.html" title="enum in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEventErrorCode</a>&nbsp;errorCode,
                  java.lang.String&nbsp;errorMessage,
                  java.lang.String&nbsp;targetMetadataCollectionId,
-                 org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;remoteConnection)</code></th>
+                 <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;remoteConnection)</code></th>
 <td class="colLast">
 <div class="block">Constructor for the REGISTRATION_ERROR_EVENT outbound event.</div>
 </td>
@@ -211,7 +211,7 @@ extends <a href="OMRSEvent.html" title="class in org.odpi.openmetadata.repositor
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventType,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">OMRSRegistryEvent</a></span>&#8203;(<a href="OMRSRegistryEventType.html" title="enum in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEventType</a>&nbsp;registryEventType,
                  java.util.Date&nbsp;registrationTimestamp,
                  java.lang.String&nbsp;metadataCollectionName,
-                 org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;remoteConnection)</code></th>
+                 <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;remoteConnection)</code></th>
 <td class="colLast">
 <div class="block">Constructor for a normal outbound event.</div>
 </td>
@@ -270,7 +270,7 @@ extends <a href="OMRSEvent.html" title="class in org.odpi.openmetadata.repositor
 </td>
 </tr>
 <tr id="i5" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection</code></td>
+<td class="colFirst"><code><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRemoteConnection()">getRemoteConnection</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the remote connection used to create a connector used to call the repository across the network.</div>
@@ -338,7 +338,7 @@ extends <a href="OMRSEvent.html" title="class in org.odpi.openmetadata.repositor
 <pre>public&nbsp;OMRSRegistryEvent&#8203;(<a href="OMRSRegistryEventType.html" title="enum in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEventType</a>&nbsp;registryEventType,
                          java.util.Date&nbsp;registrationTimestamp,
                          java.lang.String&nbsp;metadataCollectionName,
-                         org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;remoteConnection)</pre>
+                         <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;remoteConnection)</pre>
 <div class="block">Constructor for a normal outbound event.  It sets the event type and the other parameters
  used in a registry event payload.</div>
 <dl>
@@ -373,7 +373,7 @@ extends <a href="OMRSEvent.html" title="class in org.odpi.openmetadata.repositor
 <pre>public&nbsp;OMRSRegistryEvent&#8203;(<a href="OMRSRegistryEventErrorCode.html" title="enum in org.odpi.openmetadata.repositoryservices.events">OMRSRegistryEventErrorCode</a>&nbsp;errorCode,
                          java.lang.String&nbsp;errorMessage,
                          java.lang.String&nbsp;targetMetadataCollectionId,
-                         org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;remoteConnection)</pre>
+                         <a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;remoteConnection)</pre>
 <div class="block">Constructor for the REGISTRATION_ERROR_EVENT outbound event.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -445,7 +445,7 @@ extends <a href="OMRSEvent.html" title="class in org.odpi.openmetadata.repositor
 <ul class="blockList">
 <li class="blockList">
 <h4>getRemoteConnection</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;getRemoteConnection()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;getRemoteConnection()</pre>
 <div class="block">Return the remote connection used to create a connector used to call the repository across the network.
  If this is a normal registry event then this connection is for the local repository.
  If this an error event, then this is the connection for the target repository.</div>

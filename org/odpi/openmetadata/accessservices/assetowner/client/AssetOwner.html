@@ -136,7 +136,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/AssetClassificationInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetClassificationInterface</a></code>, <code><a href="../api/AssetConnectionManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetConnectionManagementInterface</a></code>, <code><a href="../api/AssetDecommissioningInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetDecommissioningInterface</a></code>, <code><a href="../api/AssetKnowledgeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetKnowledgeInterface</a></code>, <code><a href="../api/AssetOnboardingInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingInterface</a></code>, <code><a href="../api/AssetReviewInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetReviewInterface</a></code></dd>
+<dd><code><a href="../api/AssetClassificationInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetClassificationInterface</a></code>, <code><a href="../api/AssetConnectionManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetConnectionManagementInterface</a></code>, <code><a href="../api/AssetDecommissioningInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetDecommissioningInterface</a></code>, <code><a href="../api/AssetKnowledgeInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetKnowledgeInterface</a></code>, <code><a href="../api/AssetOnboardingInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingInterface</a></code>, <code><a href="../api/AssetReviewInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetReviewInterface</a></code>, <code><a href="../../../commonservices/ocf/metadatamanagement/api/ConnectorFactoryInterface.html" title="interface in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.api">ConnectorFactoryInterface</a></code></dd>
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
@@ -172,7 +172,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>protected org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient</code></td>
+<td class="colFirst"><code>protected <a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#restClient">restClient</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -229,7 +229,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">AssetOwner</a></span>&#8203;(java.lang.String&nbsp;serverName,
           java.lang.String&nbsp;serverPlatformURLRoot,
-          org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient&nbsp;restClient,
+          <a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a>&nbsp;restClient,
           int&nbsp;maxPageSize,
           <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
@@ -318,7 +318,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addConnectionToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">addConnectionToAsset</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;assetGUID,
                     java.lang.String&nbsp;assetSummary,
-                    org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection)</code></th>
+                    <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
@@ -454,7 +454,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEndpoint(java.lang.String,org.odpi.openmetadata.accessservices.assetowner.properties.EndpointProperties)">createEndpoint</a></span>&#8203;(java.lang.String&nbsp;userId,
               <a href="../properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">EndpointProperties</a>&nbsp;endpointProperties)</code></th>
 <td class="colLast">
-<div class="block">Create a new metadata element to represent a endpoint.</div>
+<div class="block">Create a new metadata element to represent an endpoint.</div>
 </td>
 </tr>
 <tr id="i20" class="altColor">
@@ -463,7 +463,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
                           java.lang.String&nbsp;templateGUID,
                           <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.assetowner.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
 <td class="colLast">
-<div class="block">Create a new metadata element to represent a endpoint using an existing metadata element as a template.</div>
+<div class="block">Create a new metadata element to represent an endpoint using an existing metadata element as a template.</div>
 </td>
 </tr>
 <tr id="i21" class="rowColor">
@@ -805,7 +805,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAssetOwner(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType)">updateAssetOwner</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;assetGUID,
                 java.lang.String&nbsp;ownerId,
-                org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType&nbsp;ownerType)</code></th>
+                <a href="../../../frameworks/connectors/properties/beans/OwnerType.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">OwnerType</a>&nbsp;ownerType)</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
@@ -853,7 +853,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.<a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">ConnectedAssetClientBase</a></h3>
-<code><a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetForConnection(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getAssetForConnection</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetProperties(java.lang.String,java.lang.String,java.lang.String)">getAssetProperties</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetSummary(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getAssetSummary</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionByGUID(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionByGUID</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionByName(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionByName</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionForAsset(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionForAsset</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorForConnection(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)">getConnectorForConnection</a></code></li>
+<code><a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetForConnection(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getAssetForConnection</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetProperties(java.lang.String,java.lang.String,java.lang.String)">getAssetProperties</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetSummary(java.lang.String,java.lang.String,java.lang.String)">getAssetSummary</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionByGUID(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionByGUID</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionByName(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionByName</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionForAsset(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionForAsset</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorByConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">getConnectorByConnection</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorByGUID(java.lang.String,java.lang.String)">getConnectorByGUID</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorByName(java.lang.String,java.lang.String)">getConnectorByName</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorForAsset(java.lang.String,java.lang.String)">getConnectorForAsset</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorForConnection(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)">getConnectorForConnection</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -884,7 +884,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <ul class="blockListLast">
 <li class="blockList">
 <h4>restClient</h4>
-<pre>protected&nbsp;org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient restClient</pre>
+<pre>protected&nbsp;<a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a> restClient</pre>
 </li>
 </ul>
 </li>
@@ -999,7 +999,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <h4>AssetOwner</h4>
 <pre>public&nbsp;AssetOwner&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;serverPlatformURLRoot,
-                  org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient&nbsp;restClient,
+                  <a href="rest/AssetOwnerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.rest">AssetOwnerRESTClient</a>&nbsp;restClient,
                   int&nbsp;maxPageSize,
                   <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
@@ -1027,6 +1027,33 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getAssetProperties(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAssetProperties</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/connectors/properties/AssetUniverse.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetUniverse</a>&nbsp;getAssetProperties&#8203;(java.lang.String&nbsp;userId,
+                                        java.lang.String&nbsp;assetGUID)
+                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<div class="block">Returns a comprehensive collection of properties about the requested asset.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/AssetReviewInterface.html#getAssetProperties(java.lang.String,java.lang.String)">getAssetProperties</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetReviewInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetReviewInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>assetGUID</code> - unique identifier for asset.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>a comprehensive collection of properties about the asset.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving the asset properties from the property servers).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</li>
+</ul>
 <a id="getTypesOfAsset(java.lang.String)">
 <!--   -->
 </a>
@@ -1273,7 +1300,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Unlinks the schema from the asset but does not delete it.  This means it can be be reattached to a different asset.</div>
+<div class="block">Unlinks the schema from the asset but does not delete it.  This means it can be reattached to a different asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/AssetOnboardingInterface.html#detachSchemaTypeFromAsset(java.lang.String,java.lang.String)">detachSchemaTypeFromAsset</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetOnboardingInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingInterface</a></code></dd>
@@ -1391,7 +1418,7 @@ implements <a href="../api/AssetKnowledgeInterface.html" title="interface in org
 public&nbsp;void&nbsp;addConnectionToAsset&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;assetGUID,
                                  java.lang.String&nbsp;assetSummary,
-                                 org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection)
+                                 <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)
                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1402,7 +1429,7 @@ public&nbsp;void&nbsp;addConnectionToAsset&#8203;(java.lang.String&nbsp;userId,
 <dd><code><a href="../api/AssetOnboardingInterface.html#addConnectionToAsset(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">addConnectionToAsset</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetOnboardingInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetGUID</code> - unique identifier of the attest to attach the connection to</dd>
+<dd><code>assetGUID</code> - unique identifier of the asset to attach the connection to</dd>
 <dd><code>assetSummary</code> - summary of the asset that is stored in the relationship between the asset and the connection.</dd>
 <dd><code>connection</code> - connection object.  If the connection is already stored (matching guid)
                    then the existing connection is used.</dd>
@@ -1619,7 +1646,7 @@ public&nbsp;void&nbsp;addConnectionToAsset&#8203;(java.lang.String&nbsp;userId,
 public&nbsp;void&nbsp;updateAssetOwner&#8203;(java.lang.String&nbsp;userId,
                              java.lang.String&nbsp;assetGUID,
                              java.lang.String&nbsp;ownerId,
-                             org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType&nbsp;ownerType)
+                             <a href="../../../frameworks/connectors/properties/beans/OwnerType.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">OwnerType</a>&nbsp;ownerType)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
@@ -1632,7 +1659,7 @@ public&nbsp;void&nbsp;updateAssetOwner&#8203;(java.lang.String&nbsp;userId,
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetGUID</code> - unique identifier for the asset to update</dd>
 <dd><code>ownerId</code> - userId or profileGUID of the owner - or null to clear the field</dd>
-<dd><code>ownerType</code> - indicator of the type of Id provides above - or null to clear the field</dd>
+<dd><code>ownerType</code> - indicator of the type of identifier provided above - or null to clear the field</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - userId is null</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -1662,7 +1689,7 @@ public&nbsp;void&nbsp;updateAssetOwner&#8203;(java.lang.String&nbsp;userId,
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetGUID</code> - unique identifier for the asset to update</dd>
 <dd><code>ownerId</code> - unique identifier/property of the owner - or null to clear the field</dd>
-<dd><code>ownerTypeName</code> - name of the type of Id provided above - or null to clear the field</dd>
+<dd><code>ownerTypeName</code> - name of the type of identifier provided above - or null to clear the field</dd>
 <dd><code>ownerPropertyName</code> - name of the property that describes the ownerId</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - userId is null</dd>
@@ -2254,7 +2281,7 @@ public&nbsp;void&nbsp;updateAssetOwner&#8203;(java.lang.String&nbsp;userId,
                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create a new metadata element to represent a endpoint. Classifications can be added later to define the
+<div class="block">Create a new metadata element to represent an endpoint. Classifications can be added later to define the
  type of endpoint.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -2283,7 +2310,7 @@ public&nbsp;void&nbsp;updateAssetOwner&#8203;(java.lang.String&nbsp;userId,
                                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+<div class="block">Create a new metadata element to represent an endpoint using an existing metadata element as a template.
  The template defines additional classifications and relationships that should be added to the new endpoint.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -2627,33 +2654,6 @@ public&nbsp;void&nbsp;updateAssetOwner&#8203;(java.lang.String&nbsp;userId,
 </dl>
 </li>
 </ul>
-<a id="getAssetProperties(java.lang.String,java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getAssetProperties</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/connectors/properties/AssetUniverse.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetUniverse</a>&nbsp;getAssetProperties&#8203;(java.lang.String&nbsp;userId,
-                                        java.lang.String&nbsp;assetGUID)
-                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Returns a comprehensive collection of properties about the requested asset.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/AssetReviewInterface.html#getAssetProperties(java.lang.String,java.lang.String)">getAssetProperties</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetReviewInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetReviewInterface</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>userId</code> - userId of user making request.</dd>
-<dd><code>assetGUID</code> - unique identifier for asset.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>a comprehensive collection of properties about the asset.</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving the asset properties from the property servers).</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
-</dl>
-</li>
-</ul>
 <a id="getConnectorToAsset(java.lang.String,java.lang.String)">
 <!--   -->
 </a>
@@ -2702,7 +2702,7 @@ public&nbsp;void&nbsp;updateAssetOwner&#8203;(java.lang.String&nbsp;userId,
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetGUID</code> - unique identifier of the asset</dd>
 <dd><code>startingFrom</code> - position in the list (used when there are so many reports that paging is needed</dd>
-<dd><code>maximumResults</code> - maximum number of elements to return an this call</dd>
+<dd><code>maximumResults</code> - maximum number of elements to return on this call</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of discovery analysis reports</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -2842,13 +2842,13 @@ public&nbsp;void&nbsp;updateAssetOwner&#8203;(java.lang.String&nbsp;userId,
 <div class="block">Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
  another asset), discovery reports and associated feedback.
 
- Given the depth of the delete performed by this call, it should be used with care.</div>
+ Given the depth of the delete request performed by this call, it should be used with care.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/AssetDecommissioningInterface.html#deleteAsset(java.lang.String,java.lang.String)">deleteAsset</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetDecommissioningInterface.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetDecommissioningInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>assetGUID</code> - unique identifier of the attest to attach the connection to</dd>
+<dd><code>assetGUID</code> - unique identifier of the asset to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - full path or userId is null</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>

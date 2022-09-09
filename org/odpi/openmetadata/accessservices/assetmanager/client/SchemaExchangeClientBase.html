@@ -195,7 +195,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">SchemaExchangeClientBase</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;serverPlatformURLRoot,
-                        org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient&nbsp;restClient,
+                        <a href="rest/AssetManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.rest">AssetManagerRESTClient</a>&nbsp;restClient,
                         int&nbsp;maxPageSize,
                         <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
 <td class="colLast">
@@ -461,7 +461,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 </td>
 </tr>
 <tr id="i16" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,boolean,boolean)">getSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;assetManagerGUID,
                    java.lang.String&nbsp;assetManagerName,
@@ -715,7 +715,7 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <h4>SchemaExchangeClientBase</h4>
 <pre>public&nbsp;SchemaExchangeClientBase&#8203;(java.lang.String&nbsp;serverName,
                                 java.lang.String&nbsp;serverPlatformURLRoot,
-                                org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient&nbsp;restClient,
+                                <a href="rest/AssetManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.rest">AssetManagerRESTClient</a>&nbsp;restClient,
                                 int&nbsp;maxPageSize,
                                 <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
@@ -1170,16 +1170,16 @@ implements <a href="../api/SchemaExchangeInterface.html" title="interface in org
 <ul class="blockList">
 <li class="blockList">
 <h4>getSchemaTypeParent</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;getSchemaTypeParent&#8203;(java.lang.String&nbsp;userId,
-                                                                                                      java.lang.String&nbsp;assetManagerGUID,
-                                                                                                      java.lang.String&nbsp;assetManagerName,
-                                                                                                      java.lang.String&nbsp;schemaTypeGUID,
-                                                                                                      java.util.Date&nbsp;effectiveTime,
-                                                                                                      boolean&nbsp;forLineage,
-                                                                                                      boolean&nbsp;forDuplicateProcessing)
-                                                                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;getSchemaTypeParent&#8203;(java.lang.String&nbsp;userId,
+                                         java.lang.String&nbsp;assetManagerGUID,
+                                         java.lang.String&nbsp;assetManagerName,
+                                         java.lang.String&nbsp;schemaTypeGUID,
+                                         java.util.Date&nbsp;effectiveTime,
+                                         boolean&nbsp;forLineage,
+                                         boolean&nbsp;forDuplicateProcessing)
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>

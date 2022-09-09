@@ -270,7 +270,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String,java.lang.String)">validateConnection</a></span>&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String,java.lang.String)">validateConnection</a></span>&#8203;(<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection,
                   java.lang.String&nbsp;parameterName,
                   java.lang.String&nbsp;methodName)</code></th>
 <td class="colLast">
@@ -299,8 +299,8 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateInstanceProvenanceForUpdate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateInstanceProvenanceForUpdate</a></span>&#8203;(java.lang.String&nbsp;instanceGUID,
                                    java.lang.String&nbsp;parameterName,
-                                   org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;instanceHeader,
-                                   org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory&nbsp;expectedOriginCategory,
+                                   <a href="../../frameworks/connectors/properties/beans/ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a>&nbsp;instanceHeader,
+                                   <a href="../../frameworks/connectors/properties/beans/ElementOriginCategory.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementOriginCategory</a>&nbsp;expectedOriginCategory,
                                    java.lang.String&nbsp;expectedMetadataCollectionGUID,
                                    java.lang.String&nbsp;expectedMetadataCollectionName,
                                    java.lang.String&nbsp;serviceName,
@@ -479,7 +479,7 @@ extends java.lang.Object</pre>
 <h4>validateOMAGServerPlatformURL</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateOMAGServerPlatformURL&#8203;(java.lang.String&nbsp;omagServerPlatformURL,
                                           java.lang.String&nbsp;methodName)
-                                   throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                                   throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if a server URL or  has not been supplied.  It is typically
  used in OMAG Clients or OMAG Servers that call other OMAG Servers.</div>
 <dl>
@@ -487,7 +487,7 @@ extends java.lang.Object</pre>
 <dd><code>omagServerPlatformURL</code> - url of the server</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the server URL or server name are not set</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the server URL or server name are not set</dd>
 </dl>
 </li>
 </ul>
@@ -500,7 +500,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateOMAGServerPlatformURL&#8203;(java.lang.String&nbsp;omagServerPlatformURL,
                                           java.lang.String&nbsp;serverName,
                                           java.lang.String&nbsp;methodName)
-                                   throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                                   throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if a server URL or  has not been supplied.  It is typically
  used in OMAG Clients or OMAG Servers that call other OMAG Servers.</div>
 <dl>
@@ -509,7 +509,7 @@ extends java.lang.Object</pre>
 <dd><code>serverName</code> - requested server</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the server URL or server name are not set</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the server URL or server name are not set</dd>
 </dl>
 </li>
 </ul>
@@ -521,14 +521,14 @@ extends java.lang.Object</pre>
 <h4>validateUserId</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateUserId&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;methodName)
-                    throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                    throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied userId is null</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - user name to validate</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the userId is null</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the userId is null</dd>
 </dl>
 </li>
 </ul>
@@ -541,7 +541,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateGUID&#8203;(java.lang.String&nbsp;guid,
                          java.lang.String&nbsp;guidParameter,
                          java.lang.String&nbsp;methodName)
-                  throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                  throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied GUID is null</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -549,7 +549,7 @@ extends java.lang.Object</pre>
 <dd><code>guidParameter</code> - name of the parameter that passed the guid.</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the guid is null</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the guid is null</dd>
 </dl>
 </li>
 </ul>
@@ -562,7 +562,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateName&#8203;(java.lang.String&nbsp;name,
                          java.lang.String&nbsp;nameParameter,
                          java.lang.String&nbsp;methodName)
-                  throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                  throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied name is null</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -570,7 +570,7 @@ extends java.lang.Object</pre>
 <dd><code>nameParameter</code> - name of the parameter that passed the name.</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the name is null</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the name is null</dd>
 </dl>
 </li>
 </ul>
@@ -583,7 +583,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateSearchString&#8203;(java.lang.String&nbsp;searchString,
                                  java.lang.String&nbsp;searchParameter,
                                  java.lang.String&nbsp;methodName)
-                          throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                          throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied search string is null</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -591,7 +591,7 @@ extends java.lang.Object</pre>
 <dd><code>searchParameter</code> - name of the parameter that passed the searchString.</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the searchString is null</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the searchString is null</dd>
 </dl>
 </li>
 </ul>
@@ -604,7 +604,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateObject&#8203;(java.lang.Object&nbsp;object,
                            java.lang.String&nbsp;nameParameter,
                            java.lang.String&nbsp;methodName)
-                    throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                    throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied object is null</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -612,7 +612,7 @@ extends java.lang.Object</pre>
 <dd><code>nameParameter</code> - name of the parameter that passed the object.</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the object is null</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the object is null</dd>
 </dl>
 </li>
 </ul>
@@ -625,7 +625,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateEnum&#8203;(java.lang.Object&nbsp;enumValue,
                          java.lang.String&nbsp;parameterName,
                          java.lang.String&nbsp;methodName)
-                  throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                  throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied enum is null</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -633,7 +633,7 @@ extends java.lang.Object</pre>
 <dd><code>parameterName</code> - name of the parameter that passed the enum.</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the enum is null</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the enum is null</dd>
 </dl>
 </li>
 </ul>
@@ -646,7 +646,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateText&#8203;(java.lang.String&nbsp;text,
                          java.lang.String&nbsp;parameterName,
                          java.lang.String&nbsp;methodName)
-                  throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                  throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied text field is null</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -654,7 +654,7 @@ extends java.lang.Object</pre>
 <dd><code>parameterName</code> - name of the parameter that passed the name.</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the text is null</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the text is null</dd>
 </dl>
 </li>
 </ul>
@@ -667,7 +667,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;int&nbsp;validatePaging&#8203;(int&nbsp;startFrom,
                           int&nbsp;pageSize,
                           java.lang.String&nbsp;methodName)
-                   throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                   throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied paging values don't make sense. If page size is zero it means return as much as there is.
  in which case this method sets the page size to the maximum value for this server.  If the server has its max page size set to zero
  then zero is used.</div>
@@ -679,7 +679,7 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>validated page size.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the paging options are incorrect</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the paging options are incorrect</dd>
 </dl>
 </li>
 </ul>
@@ -692,7 +692,7 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateStringArray&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;stringArray,
                                 java.lang.String&nbsp;parameterName,
                                 java.lang.String&nbsp;methodName)
-                         throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                         throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied array is null or empty</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -700,7 +700,7 @@ extends java.lang.Object</pre>
 <dd><code>parameterName</code> - name of the parameter that passed the array.</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the array is null or empty</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the array is null or empty</dd>
 </dl>
 </li>
 </ul>
@@ -716,7 +716,7 @@ extends java.lang.Object</pre>
                                java.lang.String&nbsp;elementGUID,
                                java.lang.String&nbsp;elementTypeName,
                                java.lang.String&nbsp;methodName)
-                        throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                        throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">When attached elements are being retrieved for an anchor, this method checks that the anchor is set up correctly
  in the element's anchors classification.</div>
 <dl>
@@ -728,7 +728,7 @@ extends java.lang.Object</pre>
 <dd><code>elementTypeName</code> - type of element being retrieved</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - exception raise when the anchors do not match</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - exception raise when the anchors do not match</dd>
 </dl>
 </li>
 </ul>
@@ -738,10 +738,10 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>validateConnection</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;validateConnection&#8203;(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection&nbsp;connection,
+<pre class="methodSignature">public&nbsp;void&nbsp;validateConnection&#8203;(<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection,
                                java.lang.String&nbsp;parameterName,
                                java.lang.String&nbsp;methodName)
-                        throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                        throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied connection is null</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -749,7 +749,7 @@ extends java.lang.Object</pre>
 <dd><code>parameterName</code> - name of the parameter that passed the connection.</dd>
 <dd><code>methodName</code> - name of the method making the call.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the connection is null</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the connection is null</dd>
 </dl>
 </li>
 </ul>
@@ -764,7 +764,7 @@ extends java.lang.Object</pre>
                                          java.lang.String&nbsp;serviceName,
                                          java.lang.String&nbsp;methodName,
                                          <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper)
-                                  throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                                  throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied type name is not of the correct subclass</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -776,7 +776,7 @@ extends java.lang.Object</pre>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier (guid) of typeName</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the type name is not correct</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the type name is not correct</dd>
 </dl>
 </li>
 </ul>
@@ -790,7 +790,7 @@ extends java.lang.Object</pre>
                                             java.lang.String&nbsp;methodName,
                                             java.lang.String&nbsp;actualType,
                                             java.lang.String&nbsp;expectedType)
-                                     throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                                     throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception if the supplied guid returned an instance of the wrong type</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -799,7 +799,7 @@ extends java.lang.Object</pre>
 <dd><code>actualType</code> - type of retrieved instance</dd>
 <dd><code>expectedType</code> - type the instance should be</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the guid is for the wrong type of object</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the guid is for the wrong type of object</dd>
 </dl>
 </li>
 </ul>
@@ -811,13 +811,13 @@ extends java.lang.Object</pre>
 <h4>validateInstanceProvenanceForUpdate</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;validateInstanceProvenanceForUpdate&#8203;(java.lang.String&nbsp;instanceGUID,
                                                 java.lang.String&nbsp;parameterName,
-                                                org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase&nbsp;instanceHeader,
-                                                org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory&nbsp;expectedOriginCategory,
+                                                <a href="../../frameworks/connectors/properties/beans/ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a>&nbsp;instanceHeader,
+                                                <a href="../../frameworks/connectors/properties/beans/ElementOriginCategory.html" title="enum in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementOriginCategory</a>&nbsp;expectedOriginCategory,
                                                 java.lang.String&nbsp;expectedMetadataCollectionGUID,
                                                 java.lang.String&nbsp;expectedMetadataCollectionName,
                                                 java.lang.String&nbsp;serviceName,
                                                 java.lang.String&nbsp;methodName)
-                                         throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                                         throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Validate that an instance is from the expected metadata collection.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -830,7 +830,7 @@ extends java.lang.Object</pre>
 <dd><code>serviceName</code> - name of calling service</dd>
 <dd><code>methodName</code> - name of calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the metadata collection id or origin is not correct</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the metadata collection id or origin is not correct</dd>
 </dl>
 </li>
 </ul>
@@ -846,7 +846,7 @@ extends java.lang.Object</pre>
                                          java.util.List&lt;java.lang.String&gt;&nbsp;supportedZones,
                                          java.lang.String&nbsp;serviceName,
                                          java.lang.String&nbsp;methodName)
-                                  throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                                  throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Compare the supported zones with the zones stored in the asset.  If the asset is not in
  one of the supported zones then throw an exception. Otherwise, return ok.
  Null values in either returns ok.
@@ -862,7 +862,7 @@ extends java.lang.Object</pre>
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the asset is not in the supported zone.</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the asset is not in the supported zone.</dd>
 </dl>
 </li>
 </ul>
@@ -876,7 +876,7 @@ extends java.lang.Object</pre>
                                     java.lang.String&nbsp;serviceName,
                                     java.lang.String&nbsp;serverName,
                                     java.lang.String&nbsp;methodName)
-                             throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                             throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception to indicate that the call to a method is not supported.
  This is a temporary situation.</div>
 <dl>
@@ -886,7 +886,7 @@ extends java.lang.Object</pre>
 <dd><code>serverName</code> - name of this server</dd>
 <dd><code>methodName</code> - name of the called method.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the method is not supported</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the method is not supported</dd>
 </dl>
 </li>
 </ul>
@@ -902,7 +902,7 @@ extends java.lang.Object</pre>
                                 java.lang.String&nbsp;serviceName,
                                 java.lang.String&nbsp;serverName,
                                 java.lang.String&nbsp;methodName)
-                         throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                         throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception to indicate that the requested element is not recognized.
  This is probably due to the types of metadata repositories that this server is connected to.</div>
 <dl>
@@ -914,7 +914,7 @@ extends java.lang.Object</pre>
 <dd><code>serverName</code> - name of this server</dd>
 <dd><code>methodName</code> - name of the called method.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the element is not known</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the element is not known</dd>
 </dl>
 </li>
 </ul>
@@ -929,7 +929,7 @@ extends java.lang.Object</pre>
                                  java.lang.String&nbsp;typeName,
                                  java.lang.String&nbsp;serviceName,
                                  java.lang.String&nbsp;methodName)
-                          throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                          throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Report the fact that a unique name that was requested for a new entity is already in use or not a permitted value.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -939,7 +939,7 @@ extends java.lang.Object</pre>
 <dd><code>serviceName</code> - calling service</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the unique name is in use</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the unique name is in use</dd>
 </dl>
 </li>
 </ul>
@@ -953,7 +953,7 @@ extends java.lang.Object</pre>
                                           java.lang.String&nbsp;type,
                                           java.lang.String&nbsp;serviceName,
                                           java.lang.String&nbsp;methodName)
-                                   throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</pre>
+                                   throws <a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></pre>
 <div class="block">Throw an exception to indicate that the call to a method is not supported.
  This is a temporary situation.</div>
 <dl>
@@ -963,7 +963,7 @@ extends java.lang.Object</pre>
 <dd><code>serviceName</code> - name of called service</dd>
 <dd><code>methodName</code> - name of the called method.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException</code> - the guid is in use</dd>
+<dd><code><a href="exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.commonservices.ffdc.exceptions">InvalidParameterException</a></code> - the guid is in use</dd>
 </dl>
 </li>
 </ul>

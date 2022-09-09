@@ -131,12 +131,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="SubjectAreaClient.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.client">SubjectAreaClient</a>&lt;T&gt;</code>, <code>org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization&lt;T&gt;</code></dd>
+<dd><code><a href="SubjectAreaClient.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.client">SubjectAreaClient</a>&lt;T&gt;</code>, <code><a href="../../../commonservices/ffdc/rest/ResponseParameterization.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">ResponseParameterization</a>&lt;T&gt;</code></dd>
 </dl>
 <hr>
 <pre>public abstract class <span class="typeNameLabel">AbstractSubjectArea&lt;T&gt;</span>
 extends java.lang.Object
-implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.client">SubjectAreaClient</a>&lt;T&gt;, org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization&lt;T&gt;</pre>
+implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmetadata.accessservices.subjectarea.client">SubjectAreaClient</a>&lt;T&gt;, <a href="../../../commonservices/ffdc/rest/ResponseParameterization.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">ResponseParameterization</a>&lt;T&gt;</pre>
 </li>
 </ul>
 </div>
@@ -285,7 +285,7 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.lang.Class&lt;? extends org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse&gt;</code></td>
+<td class="colFirst"><code>java.lang.Class&lt;? extends <a href="../../../commonservices/ffdc/rest/GenericResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">GenericResponse</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#responseType()">responseType</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -319,8 +319,8 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization</h3>
-<code>getParameterizedType, resultType</code></li>
+<h3>Methods inherited from interface&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="../../../commonservices/ffdc/rest/ResponseParameterization.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">ResponseParameterization</a></h3>
+<code><a href="../../../commonservices/ffdc/rest/ResponseParameterization.html#getParameterizedType()">getParameterizedType</a>, <a href="../../../commonservices/ffdc/rest/ResponseParameterization.html#resultType()">resultType</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaClient">
@@ -669,10 +669,12 @@ implements <a href="SubjectAreaClient.html" title="interface in org.odpi.openmet
 <ul class="blockList">
 <li class="blockList">
 <h4>responseType</h4>
-<pre class="methodSignature">public&nbsp;java.lang.Class&lt;? extends org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse&gt;&nbsp;responseType()</pre>
+<pre class="methodSignature">public&nbsp;java.lang.Class&lt;? extends <a href="../../../commonservices/ffdc/rest/GenericResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">GenericResponse</a>&gt;&nbsp;responseType()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>responseType</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization&lt;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&gt;</code></dd>
+<dd><code><a href="../../../commonservices/ffdc/rest/ResponseParameterization.html#responseType()">responseType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../commonservices/ffdc/rest/ResponseParameterization.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">ResponseParameterization</a>&lt;<a href="AbstractSubjectArea.html" title="type parameter in AbstractSubjectArea">T</a>&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the response class type inherited from <a href="../../../commonservices/ffdc/rest/GenericResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest"><code>GenericResponse</code></a></dd>
 </dl>
 </li>
 </ul>

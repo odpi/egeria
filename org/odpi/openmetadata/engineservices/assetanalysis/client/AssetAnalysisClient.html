@@ -122,7 +122,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</li>
+<li><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</a></li>
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.engineservices.assetanalysis.client.AssetAnalysisClient</li>
@@ -140,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">AssetAnalysisClient</span>
-extends org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine
+extends <a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a>
 implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.openmetadata.engineservices.assetanalysis.api">AssetAnalysisAPI</a></pre>
 <div class="block">AssetAnalysisClient is a client-side library for calling a specific discovery engine with an engine host server.</div>
 </li>
@@ -412,7 +412,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <div class="block">Request the execution of a discovery service to explore a specific asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>discoverAsset</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryEngine.html#discoverAsset(java.lang.String,java.lang.String,java.lang.String)">discoverAsset</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>assetGUID</code> - identifier of the asset to analyze.</dd>
@@ -442,7 +442,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <div class="block">Request the execution of a discovery service to explore a specific asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>discoverAsset</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryEngine.html#discoverAsset(java.lang.String,java.lang.String,java.lang.String,java.util.Map)">discoverAsset</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>assetGUID</code> - identifier of the asset to analyze.</dd>
@@ -474,7 +474,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <div class="block">Request the execution of a discovery service to explore a specific asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>discoverAsset</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryEngine.html#discoverAsset(java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.util.List)">discoverAsset</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>assetGUID</code> - identifier of the asset to analyze.</dd>
@@ -507,7 +507,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
  each retrieved asset.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>scanAllAssets</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryEngine.html#scanAllAssets(java.lang.String,java.lang.String,java.util.Map,java.util.List)">scanAllAssets</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>discoveryRequestType</code> - identifier of the type of analysis - this determines which discovery service to run.</dd>
@@ -534,7 +534,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <div class="block">Request the status of an executing discovery request.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getDiscoveryStatus</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryEngine.html#getDiscoveryStatus(java.lang.String,java.lang.String)">getDiscoveryStatus</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>discoveryRequestGUID</code> - identifier of the discovery request.</dd>
@@ -561,7 +561,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <div class="block">Request the discovery report for a discovery request that has completed.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getDiscoveryReport</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryEngine.html#getDiscoveryReport(java.lang.String,java.lang.String)">getDiscoveryReport</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>discoveryRequestGUID</code> - identifier of the discovery request.</dd>
@@ -590,7 +590,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <div class="block">Return the annotations linked direction to the report.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getDiscoveryReportAnnotations</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryEngine.html#getDiscoveryReportAnnotations(java.lang.String,java.lang.String,int,int)">getDiscoveryReportAnnotations</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>discoveryRequestGUID</code> - identifier of the discovery request.</dd>
@@ -621,7 +621,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
 <div class="block">Return any annotations attached to this annotation.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getExtendedAnnotations</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryEngine.html#getExtendedAnnotations(java.lang.String,java.lang.String,int,int)">getExtendedAnnotations</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>annotationGUID</code> - anchor annotation</dd>
@@ -651,7 +651,7 @@ implements <a href="../api/AssetAnalysisAPI.html" title="interface in org.odpi.o
  for an annotation.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getAnnotation</code>&nbsp;in class&nbsp;<code>org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine</code></dd>
+<dd><code><a href="../../../frameworks/discovery/DiscoveryEngine.html#getAnnotation(java.lang.String,java.lang.String)">getAnnotation</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/discovery/DiscoveryEngine.html" title="class in org.odpi.openmetadata.frameworks.discovery">DiscoveryEngine</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>annotationGUID</code> - unique identifier of the annotation</dd>

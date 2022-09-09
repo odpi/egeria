@@ -131,12 +131,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code>org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization&lt;<a href="../../../../../accessservices/subjectarea/properties/objects/graph/Graph.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Graph</a>&gt;</code>, <code><a href="GlossaryAuthorViewGraph.html" title="interface in org.odpi.openmetadata.viewservices.glossaryauthor.fvt.client.graph">GlossaryAuthorViewGraph</a></code></dd>
+<dd><code><a href="../../../../../commonservices/ffdc/rest/ResponseParameterization.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">ResponseParameterization</a>&lt;<a href="../../../../../accessservices/subjectarea/properties/objects/graph/Graph.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Graph</a>&gt;</code>, <code><a href="GlossaryAuthorViewGraph.html" title="interface in org.odpi.openmetadata.viewservices.glossaryauthor.fvt.client.graph">GlossaryAuthorViewGraph</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">GlossaryAuthorViewGraphClient</span>
 extends java.lang.Object
-implements <a href="GlossaryAuthorViewGraph.html" title="interface in org.odpi.openmetadata.viewservices.glossaryauthor.fvt.client.graph">GlossaryAuthorViewGraph</a>, org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization&lt;<a href="../../../../../accessservices/subjectarea/properties/objects/graph/Graph.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Graph</a>&gt;</pre>
+implements <a href="GlossaryAuthorViewGraph.html" title="interface in org.odpi.openmetadata.viewservices.glossaryauthor.fvt.client.graph">GlossaryAuthorViewGraph</a>, <a href="../../../../../commonservices/ffdc/rest/ResponseParameterization.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">ResponseParameterization</a>&lt;<a href="../../../../../accessservices/subjectarea/properties/objects/graph/Graph.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Graph</a>&gt;</pre>
 <div class="block">The class acts as a wrapper class for calling the REST services for Glossary Author Graph related services.</div>
 </li>
 </ul>
@@ -319,7 +319,7 @@ implements <a href="GlossaryAuthorViewGraph.html" title="interface in org.odpi.o
 </td>
 </tr>
 <tr id="i14" class="altColor">
-<td class="colFirst"><code>java.lang.Class&lt;? extends org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse&gt;</code></td>
+<td class="colFirst"><code>java.lang.Class&lt;? extends <a href="../../../../../commonservices/ffdc/rest/GenericResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">GenericResponse</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#responseType()">responseType</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -353,8 +353,8 @@ implements <a href="GlossaryAuthorViewGraph.html" title="interface in org.odpi.o
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization</h3>
-<code>getParameterizedType, resultType</code></li>
+<h3>Methods inherited from interface&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="../../../../../commonservices/ffdc/rest/ResponseParameterization.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">ResponseParameterization</a></h3>
+<code><a href="../../../../../commonservices/ffdc/rest/ResponseParameterization.html#getParameterizedType()">getParameterizedType</a>, <a href="../../../../../commonservices/ffdc/rest/ResponseParameterization.html#resultType()">resultType</a></code></li>
 </ul>
 </li>
 </ul>
@@ -860,10 +860,12 @@ implements <a href="GlossaryAuthorViewGraph.html" title="interface in org.odpi.o
 <ul class="blockListLast">
 <li class="blockList">
 <h4>responseType</h4>
-<pre class="methodSignature">public&nbsp;java.lang.Class&lt;? extends org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse&gt;&nbsp;responseType()</pre>
+<pre class="methodSignature">public&nbsp;java.lang.Class&lt;? extends <a href="../../../../../commonservices/ffdc/rest/GenericResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">GenericResponse</a>&gt;&nbsp;responseType()</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>responseType</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization&lt;<a href="../../../../../accessservices/subjectarea/properties/objects/graph/Graph.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Graph</a>&gt;</code></dd>
+<dd><code><a href="../../../../../commonservices/ffdc/rest/ResponseParameterization.html#responseType()">responseType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../commonservices/ffdc/rest/ResponseParameterization.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">ResponseParameterization</a>&lt;<a href="../../../../../accessservices/subjectarea/properties/objects/graph/Graph.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph">Graph</a>&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the response class type inherited from <a href="../../../../../commonservices/ffdc/rest/GenericResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest"><code>GenericResponse</code></a></dd>
 </dl>
 </li>
 </ul>

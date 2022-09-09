@@ -142,7 +142,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public class <span class="typeNameLabel">CommunityManagement</span>
 extends <a href="CommunityProfileBaseClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityProfileBaseClient</a>
 implements <a href="../api/CommunityManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">CommunityManagementInterface</a></pre>
-<div class="block">CommunityManagerClient supports the APIs to maintain communities and their related objects.</div>
+<div class="block">CommunityManagerClient supports the APIs to maintain communities and their related objects.
+
+ It issues REST API calls to the Open Metadata Server running Community Profile OMAS that have a URL that begins:
+
+ <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}</div>
 </li>
 </ul>
 </div>
@@ -191,7 +195,7 @@ implements <a href="../api/CommunityManagementInterface.html" title="interface i
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient,int)">CommunityManagement</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;serverPlatformURLRoot,
-                   org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
+                   <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
                    int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
@@ -271,7 +275,7 @@ implements <a href="../api/CommunityManagementInterface.html" title="interface i
               int&nbsp;startFrom,
               int&nbsp;pageSize)</code></th>
 <td class="colLast">
-<div class="block">Retrieve the list of communities.</div>
+<div class="block">Retrieve the list of all communities defined in open metadata.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
@@ -342,7 +346,7 @@ implements <a href="../api/CommunityManagementInterface.html" title="interface i
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.communityprofile.client.<a href="CommunityProfileBaseClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityProfileBaseClient</a></h3>
-<code><a href="CommunityProfileBaseClient.html#clearAssignmentScope(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearAssignmentScope</a>, <a href="CommunityProfileBaseClient.html#clearMoreInformation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearMoreInformation</a>, <a href="CommunityProfileBaseClient.html#clearResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearResource</a>, <a href="CommunityProfileBaseClient.html#clearStakeholder(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearStakeholder</a>, <a href="CommunityProfileBaseClient.html#getAssignedActors(java.lang.String,java.lang.String,int,int)">getAssignedActors</a>, <a href="CommunityProfileBaseClient.html#getAssignedScopes(java.lang.String,java.lang.String,int,int)">getAssignedScopes</a>, <a href="CommunityProfileBaseClient.html#getDescriptiveElements(java.lang.String,java.lang.String,int,int)">getDescriptiveElements</a>, <a href="CommunityProfileBaseClient.html#getMoreInformation(java.lang.String,java.lang.String,int,int)">getMoreInformation</a>, <a href="CommunityProfileBaseClient.html#getResourceList(java.lang.String,java.lang.String,int,int)">getResourceList</a>, <a href="CommunityProfileBaseClient.html#getStakeholderCommissionedElements(java.lang.String,java.lang.String,int,int)">getStakeholderCommissionedElements</a>, <a href="CommunityProfileBaseClient.html#getStakeholders(java.lang.String,java.lang.String,int,int)">getStakeholders</a>, <a href="CommunityProfileBaseClient.html#getSupportedByResource(java.lang.String,java.lang.String,int,int)">getSupportedByResource</a>, <a href="CommunityProfileBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a>, <a href="CommunityProfileBaseClient.html#setupAssignmentScope(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.AssignmentScopeProperties,java.lang.String)">setupAssignmentScope</a>, <a href="CommunityProfileBaseClient.html#setupMoreInformation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties,java.lang.String)">setupMoreInformation</a>, <a href="CommunityProfileBaseClient.html#setupResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceListProperties,java.lang.String)">setupResource</a>, <a href="CommunityProfileBaseClient.html#setupStakeholder(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.StakeholderProperties,java.lang.String)">setupStakeholder</a></code></li>
+<code><a href="CommunityProfileBaseClient.html#clearAssignmentScope(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearAssignmentScope</a>, <a href="CommunityProfileBaseClient.html#clearMoreInformation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearMoreInformation</a>, <a href="CommunityProfileBaseClient.html#clearResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearResource</a>, <a href="CommunityProfileBaseClient.html#clearStakeholder(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearStakeholder</a>, <a href="CommunityProfileBaseClient.html#getAssignedActors(java.lang.String,java.lang.String,int,int)">getAssignedActors</a>, <a href="CommunityProfileBaseClient.html#getAssignedScopes(java.lang.String,java.lang.String,int,int)">getAssignedScopes</a>, <a href="CommunityProfileBaseClient.html#getDescriptiveElements(java.lang.String,java.lang.String,int,int)">getDescriptiveElements</a>, <a href="CommunityProfileBaseClient.html#getMoreInformation(java.lang.String,java.lang.String,int,int)">getMoreInformation</a>, <a href="CommunityProfileBaseClient.html#getResourceList(java.lang.String,java.lang.String,int,int)">getResourceList</a>, <a href="CommunityProfileBaseClient.html#getStakeholderCommissionedElements(java.lang.String,java.lang.String,int,int)">getStakeholderCommissionedElements</a>, <a href="CommunityProfileBaseClient.html#getStakeholders(java.lang.String,java.lang.String,int,int)">getStakeholders</a>, <a href="CommunityProfileBaseClient.html#getSupportedByResource(java.lang.String,java.lang.String,int,int)">getSupportedByResource</a>, <a href="CommunityProfileBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a>, <a href="CommunityProfileBaseClient.html#setupAssignmentScope(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.AssignmentScopeProperties,java.lang.String)">setupAssignmentScope</a>, <a href="CommunityProfileBaseClient.html#setupMoreInformation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties,java.lang.String)">setupMoreInformation</a>, <a href="CommunityProfileBaseClient.html#setupResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceListProperties,java.lang.String)">setupResource</a>, <a href="CommunityProfileBaseClient.html#setupStakeholder(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.StakeholderProperties,java.lang.String)">setupStakeholder</a>, <a href="CommunityProfileBaseClient.html#updateRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String)">updateRelationship</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -469,7 +473,7 @@ implements <a href="../api/CommunityManagementInterface.html" title="interface i
 <h4>CommunityManagement</h4>
 <pre>public&nbsp;CommunityManagement&#8203;(java.lang.String&nbsp;serverName,
                            java.lang.String&nbsp;serverPlatformURLRoot,
-                           org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
+                           <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
                            int&nbsp;maxPageSize)
                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
@@ -516,7 +520,7 @@ implements <a href="../api/CommunityManagementInterface.html" title="interface i
 <dd><code>userId</code> - calling user</dd>
 <dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
 <dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
-<dd><code>communityProperties</code> - properties about the community to store</dd>
+<dd><code>communityProperties</code> - properties about the community to store.  The qualifiedName property must be supplied and must be unique.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new community</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -574,8 +578,7 @@ implements <a href="../api/CommunityManagementInterface.html" title="interface i
                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Update the metadata element representing a community.  It is possible to use the subtype property classes or
- set up specialized properties in extended properties.</div>
+<div class="block">Update the metadata element representing a community.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/CommunityManagementInterface.html#updateCommunity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties)">updateCommunity</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CommunityManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">CommunityManagementInterface</a></code></dd>
@@ -762,7 +765,7 @@ implements <a href="../api/CommunityManagementInterface.html" title="interface i
                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve the list of communities.</div>
+<div class="block">Retrieve the list of all communities defined in open metadata.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/CommunityManagementInterface.html#getCommunities(java.lang.String,int,int)">getCommunities</a></code>&nbsp;in interface&nbsp;<code><a href="../api/CommunityManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">CommunityManagementInterface</a></code></dd>

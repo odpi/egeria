@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10,"i61":10,"i62":10,"i63":10,"i64":10,"i65":10,"i66":10,"i67":10,"i68":10,"i69":10,"i70":10,"i71":10,"i72":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10,"i33":10,"i34":10,"i35":10,"i36":10,"i37":10,"i38":10,"i39":10,"i40":10,"i41":10,"i42":10,"i43":10,"i44":10,"i45":10,"i46":10,"i47":10,"i48":10,"i49":10,"i50":10,"i51":10,"i52":10,"i53":10,"i54":10,"i55":10,"i56":10,"i57":10,"i58":10,"i59":10,"i60":10,"i61":10,"i62":10,"i63":10,"i64":10,"i65":10,"i66":10,"i67":10,"i68":10,"i69":10,"i70":10,"i71":10,"i72":10,"i73":10,"i74":10,"i75":10,"i76":10,"i77":10,"i78":10,"i79":10,"i80":10,"i81":10,"i82":10,"i83":10,"i84":10,"i85":10,"i86":10,"i87":10,"i88":10,"i89":10,"i90":10,"i91":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -153,8 +153,9 @@ extends java.lang.Object</pre>
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr class="altColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,java.lang.String,java.lang.String,java.lang.String)">TopicIntegratorContext</a></span>&#8203;(<a href="../../../accessservices/datamanager/client/EventBrokerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">EventBrokerClient</a>&nbsp;eventBrokerClient,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,java.lang.String,java.lang.String,java.lang.String)">TopicIntegratorContext</a></span>&#8203;(<a href="../../../accessservices/datamanager/client/EventBrokerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">EventBrokerClient</a>&nbsp;eventBrokerClient,
                       <a href="../../../accessservices/datamanager/client/ConnectionManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">ConnectionManagerClient</a>&nbsp;connectionManagerClient,
+                      <a href="../../../accessservices/datamanager/client/ValidValueManagement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">ValidValueManagement</a>&nbsp;validValueManagement,
                       <a href="../../../accessservices/datamanager/client/DataManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerEventClient</a>&nbsp;eventClient,
                       java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;eventBrokerGUID,
@@ -215,19 +216,43 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearReferenceValueTag(java.lang.String,java.lang.String)">clearReferenceValueTag</a></span>&#8203;(java.lang.String&nbsp;elementGUID,
+                      java.lang.String&nbsp;validValueGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove a reference value assignment relationship between an element and a valid value.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
+<td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearSchemaTypes(java.lang.String)">clearSchemaTypes</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the linked schema types from a schema attribute.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearValidValueMember(java.lang.String,java.lang.String)">clearValidValueMember</a></span>&#8203;(java.lang.String&nbsp;validValueSetGUID,
+                     java.lang.String&nbsp;validValueMemberGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove a membership relationship between a validValue and a validValueSet that it belongs to.</div>
+</td>
+</tr>
+<tr id="i7" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearValidValues(java.lang.String,java.lang.String)">clearValidValues</a></span>&#8203;(java.lang.String&nbsp;elementGUID,
+                java.lang.String&nbsp;validValueGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove a valid value assignment relationship between an element and a valid value.</div>
+</td>
+</tr>
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnection(org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties)">createConnection</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ConnectionProperties</a>&nbsp;connectionProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a connection.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createConnectionFromTemplate(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createConnectionFromTemplate</a></span>&#8203;(java.lang.String&nbsp;templateGUID,
                             <a href="../../../accessservices/datamanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
@@ -235,14 +260,14 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a connection using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEndpoint(org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties)">createEndpoint</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">EndpointProperties</a>&nbsp;endpointProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent an endpoint</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEndpointFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createEndpointFromTemplate</a></span>&#8203;(java.lang.String&nbsp;networkAddress,
                           java.lang.String&nbsp;templateGUID,
@@ -251,7 +276,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a endpoint using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEnumSchemaType(org.odpi.openmetadata.accessservices.datamanager.properties.EnumSchemaTypeProperties,java.lang.String)">createEnumSchemaType</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/EnumSchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">EnumSchemaTypeProperties</a>&nbsp;schemaTypeProperties,
                     java.lang.String&nbsp;validValuesSetGUID)</code></th>
@@ -259,7 +284,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type that has a fixed set of values that are described by a valid value set.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEventType(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.EventTypeProperties)">createEventType</a></span>&#8203;(java.lang.String&nbsp;topicGUID,
                <a href="../../../accessservices/datamanager/properties/EventTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">EventTypeProperties</a>&nbsp;properties)</code></th>
@@ -267,23 +292,23 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a event type.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createEventTypeFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createEventTypeFromTemplate</a></span>&#8203;(java.lang.String&nbsp;templateGUID,
                            java.lang.String&nbsp;topicGUID,
                            <a href="../../../accessservices/datamanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
 <td class="colLast">
-<div class="block">Create a new metadata element to represent a event type using an existing metadata element as a template.</div>
+<div class="block">Create a new metadata element to represent an event type using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createLiteralSchemaType(org.odpi.openmetadata.accessservices.datamanager.properties.LiteralSchemaTypeProperties)">createLiteralSchemaType</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/LiteralSchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">LiteralSchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a schema type that has a fixed value.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMapSchemaType(org.odpi.openmetadata.accessservices.datamanager.properties.MapSchemaTypeProperties,java.lang.String,java.lang.String)">createMapSchemaType</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/MapSchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">MapSchemaTypeProperties</a>&nbsp;schemaTypeProperties,
                    java.lang.String&nbsp;mapFromSchemaTypeGUID,
@@ -292,14 +317,14 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createPrimitiveSchemaType(org.odpi.openmetadata.accessservices.datamanager.properties.PrimitiveSchemaTypeProperties)">createPrimitiveSchemaType</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/PrimitiveSchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">PrimitiveSchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a primitive schema type such as a string, integer or character.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttribute(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties)">createSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;schemaElementGUID,
                      <a href="../../../accessservices/datamanager/properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties)</code></th>
@@ -307,7 +332,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema attribute.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaAttributeFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createSchemaAttributeFromTemplate</a></span>&#8203;(java.lang.String&nbsp;schemaElementGUID,
                                  java.lang.String&nbsp;templateGUID,
@@ -316,7 +341,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema attribute using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaTypeChoice(org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeChoiceProperties,java.util.List)">createSchemaTypeChoice</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/SchemaTypeChoiceProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">SchemaTypeChoiceProperties</a>&nbsp;schemaTypeProperties,
                       java.util.List&lt;java.lang.String&gt;&nbsp;schemaTypeOptionGUIDs)</code></th>
@@ -324,7 +349,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a list of possible schema types that can be used for the attached schema attribute.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createSchemaTypeFromTemplate(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createSchemaTypeFromTemplate</a></span>&#8203;(java.lang.String&nbsp;templateGUID,
                             <a href="../../../accessservices/datamanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
@@ -332,21 +357,21 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a schema type using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createStructSchemaType(org.odpi.openmetadata.accessservices.datamanager.properties.StructSchemaTypeProperties)">createStructSchemaType</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/StructSchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">StructSchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a schema type.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createTopic(org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperties)">createTopic</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/TopicProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TopicProperties</a>&nbsp;topicProperties)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a topic.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createTopicFromTemplate(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createTopicFromTemplate</a></span>&#8203;(java.lang.String&nbsp;templateGUID,
                        <a href="../../../accessservices/datamanager/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
@@ -354,7 +379,14 @@ extends java.lang.Object</pre>
 <div class="block">Create a new metadata element to represent a topic using an existing metadata element as a template.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i25" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createValidValue(org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties)">createValidValue</a></span>&#8203;(<a href="../../../accessservices/datamanager/properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)</code></th>
+<td class="colLast">
+<div class="block">Create a new metadata element to represent a valid value.</div>
+</td>
+</tr>
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ConnectionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findConnections(java.lang.String,int,int)">findConnections</a></span>&#8203;(java.lang.String&nbsp;searchString,
                int&nbsp;startFrom,
@@ -363,7 +395,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ConnectorTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findConnectorTypes(java.lang.String,int,int)">findConnectorTypes</a></span>&#8203;(java.lang.String&nbsp;searchString,
                   int&nbsp;startFrom,
@@ -372,7 +404,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of connector type metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findEndpoints(java.lang.String,int,int)">findEndpoints</a></span>&#8203;(java.lang.String&nbsp;searchString,
              int&nbsp;startFrom,
@@ -381,7 +413,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of endpoint metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EventTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EventTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findEventTypes(java.lang.String,int,int)">findEventTypes</a></span>&#8203;(java.lang.String&nbsp;searchString,
               int&nbsp;startFrom,
@@ -390,7 +422,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of event type metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaAttributes(java.lang.String,java.lang.String,int,int)">findSchemaAttributes</a></span>&#8203;(java.lang.String&nbsp;searchString,
                     java.lang.String&nbsp;typeName,
@@ -400,7 +432,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attribute metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findSchemaType(java.lang.String,java.lang.String,int,int)">findSchemaType</a></span>&#8203;(java.lang.String&nbsp;searchString,
               java.lang.String&nbsp;typeName,
@@ -410,7 +442,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema type metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i28" class="altColor">
+<tr id="i32" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/TopicElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">TopicElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findTopics(java.lang.String,int,int)">findTopics</a></span>&#8203;(java.lang.String&nbsp;searchString,
           int&nbsp;startFrom,
@@ -419,7 +451,16 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of topic metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i33" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findValidValues(java.lang.String,int,int)">findValidValues</a></span>&#8203;(java.lang.String&nbsp;searchString,
+               int&nbsp;startFrom,
+               int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of metadata elements that contain the search string.</div>
+</td>
+</tr>
+<tr id="i34" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueSetElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueSetElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findValidValueSet(java.lang.String,int,int)">findValidValueSet</a></span>&#8203;(java.lang.String&nbsp;searchString,
                  int&nbsp;startFrom,
@@ -428,14 +469,31 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of valid value set metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i30" class="altColor">
+<tr id="i35" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAllValidValues(int,int)">getAllValidValues</a></span>&#8203;(int&nbsp;startFrom,
+                 int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of valid values.</div>
+</td>
+</tr>
+<tr id="i36" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAssigneesOfReferenceValue(java.lang.String,int,int)">getAssigneesOfReferenceValue</a></span>&#8203;(java.lang.String&nbsp;validValueGUID,
+                            int&nbsp;startFrom,
+                            int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the person roles linked to a validValue.</div>
+</td>
+</tr>
+<tr id="i37" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ConnectionElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionByGUID(java.lang.String)">getConnectionByGUID</a></span>&#8203;(java.lang.String&nbsp;connectionGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i31" class="rowColor">
+<tr id="i38" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ConnectionElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectionsByName(java.lang.String,int,int)">getConnectionsByName</a></span>&#8203;(java.lang.String&nbsp;name,
                     int&nbsp;startFrom,
@@ -444,14 +502,14 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i32" class="altColor">
+<tr id="i39" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ConnectorTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypeByGUID(java.lang.String)">getConnectorTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;connectorTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the connector type metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i33" class="rowColor">
+<tr id="i40" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ConnectorTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConnectorTypesByName(java.lang.String,int,int)">getConnectorTypesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                        int&nbsp;startFrom,
@@ -460,14 +518,23 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of connector type metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i34" class="altColor">
+<tr id="i41" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">RelatedElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getConsumersOfValidValue(java.lang.String,int,int)">getConsumersOfValidValue</a></span>&#8203;(java.lang.String&nbsp;validValueGUID,
+                        int&nbsp;startFrom,
+                        int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the consumers linked to a validValue.</div>
+</td>
+</tr>
+<tr id="i42" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointByGUID(java.lang.String)">getEndpointByGUID</a></span>&#8203;(java.lang.String&nbsp;endpointGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the endpoint metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i35" class="rowColor">
+<tr id="i43" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EndpointElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EndpointElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEndpointsByName(java.lang.String,int,int)">getEndpointsByName</a></span>&#8203;(java.lang.String&nbsp;name,
                   int&nbsp;startFrom,
@@ -476,7 +543,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of endpoint metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i36" class="altColor">
+<tr id="i44" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventBrokerName()">getEventBrokerName</a></span>()</code></th>
 <td class="colLast">
@@ -484,14 +551,14 @@ extends java.lang.Object</pre>
  document.</div>
 </td>
 </tr>
-<tr id="i37" class="rowColor">
+<tr id="i45" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/EventTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EventTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventTypeByGUID(java.lang.String)">getEventTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the event type metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i38" class="altColor">
+<tr id="i46" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EventTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EventTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventTypesByName(java.lang.String,int,int)">getEventTypesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                    int&nbsp;startFrom,
@@ -500,7 +567,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of event type metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i39" class="rowColor">
+<tr id="i47" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EventTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EventTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventTypesForEventSet(java.lang.String,int,int)">getEventTypesForEventSet</a></span>&#8203;(java.lang.String&nbsp;eventSetGUID,
                         int&nbsp;startFrom,
@@ -509,7 +576,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of event types associated with a topic.</div>
 </td>
 </tr>
-<tr id="i40" class="altColor">
+<tr id="i48" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/EventTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">EventTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getEventTypesForTopic(java.lang.String,int,int)">getEventTypesForTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID,
                      int&nbsp;startFrom,
@@ -518,7 +585,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of event types associated with a topic.</div>
 </td>
 </tr>
-<tr id="i41" class="rowColor">
+<tr id="i49" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/TopicElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">TopicElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMyTopics(int,int)">getMyTopics</a></span>&#8203;(int&nbsp;startFrom,
            int&nbsp;pageSize)</code></th>
@@ -526,7 +593,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of topics created by this caller.</div>
 </td>
 </tr>
-<tr id="i42" class="altColor">
+<tr id="i50" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedAttributes(java.lang.String,int,int)">getNestedAttributes</a></span>&#8203;(java.lang.String&nbsp;parentSchemaElementGUID,
                    int&nbsp;startFrom,
@@ -535,14 +602,23 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attributes associated with a StructSchemaType or nested underneath a schema attribute.</div>
 </td>
 </tr>
-<tr id="i43" class="rowColor">
+<tr id="i51" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getReferenceValues(java.lang.String,int,int)">getReferenceValues</a></span>&#8203;(java.lang.String&nbsp;elementGUID,
+                  int&nbsp;startFrom,
+                  int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return information about the valid values linked as reference value tags to an element.</div>
+</td>
+</tr>
+<tr id="i52" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaAttributeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributeByGUID(java.lang.String)">getSchemaAttributeByGUID</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the schema attribute metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i44" class="altColor">
+<tr id="i53" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/SchemaAttributeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaAttributeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaAttributesByName(java.lang.String,java.lang.String,int,int)">getSchemaAttributesByName</a></span>&#8203;(java.lang.String&nbsp;name,
                          java.lang.String&nbsp;typeName,
@@ -552,14 +628,14 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema attribute metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i45" class="rowColor">
+<tr id="i54" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByGUID(java.lang.String)">getSchemaTypeByGUID</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the schema type metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i46" class="altColor">
+<tr id="i55" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeByName(java.lang.String,java.lang.String,int,int)">getSchemaTypeByName</a></span>&#8203;(java.lang.String&nbsp;name,
                    java.lang.String&nbsp;typeName,
@@ -569,7 +645,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of schema type metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i47" class="rowColor">
+<tr id="i56" class="altColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/SchemaTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">SchemaTypeElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeForElement(java.lang.String,java.lang.String)">getSchemaTypeForElement</a></span>&#8203;(java.lang.String&nbsp;parentElementGUID,
                        java.lang.String&nbsp;parentElementTypeName)</code></th>
@@ -577,21 +653,30 @@ extends java.lang.Object</pre>
 <div class="block">Return the schema type associated with a specific open metadata element (data asset, process or port).</div>
 </td>
 </tr>
-<tr id="i48" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader</code></td>
+<tr id="i57" class="rowColor">
+<td class="colFirst"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSchemaTypeParent(java.lang.String)">getSchemaTypeParent</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 </td>
 </tr>
-<tr id="i49" class="rowColor">
+<tr id="i58" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getSetsForValidValue(java.lang.String,int,int)">getSetsForValidValue</a></span>&#8203;(java.lang.String&nbsp;validValueGUID,
+                    int&nbsp;startFrom,
+                    int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Page through the list of valid value sets that a valid value definition/set belongs to.</div>
+</td>
+</tr>
+<tr id="i59" class="rowColor">
 <td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/TopicElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">TopicElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTopicByGUID(java.lang.String)">getTopicByGUID</a></span>&#8203;(java.lang.String&nbsp;guid)</code></th>
 <td class="colLast">
 <div class="block">Retrieve the topic metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i50" class="altColor">
+<tr id="i60" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/TopicElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">TopicElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTopicsByName(java.lang.String,int,int)">getTopicsByName</a></span>&#8203;(java.lang.String&nbsp;name,
                int&nbsp;startFrom,
@@ -600,7 +685,23 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of topic metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i51" class="rowColor">
+<tr id="i61" class="rowColor">
+<td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueByGUID(java.lang.String)">getValidValueByGUID</a></span>&#8203;(java.lang.String&nbsp;validValueGUID)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the metadata element with the supplied unique identifier.</div>
+</td>
+</tr>
+<tr id="i62" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValuesByName(java.lang.String,int,int)">getValidValuesByName</a></span>&#8203;(java.lang.String&nbsp;name,
+                    int&nbsp;startFrom,
+                    int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the list of metadata elements with a matching qualified or display name.</div>
+</td>
+</tr>
+<tr id="i63" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueSetElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueSetElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueSetByName(java.lang.String,int,int)">getValidValueSetByName</a></span>&#8203;(java.lang.String&nbsp;name,
                       int&nbsp;startFrom,
@@ -609,57 +710,73 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve the list of valid value set metadata elements with a matching qualified or display name.</div>
 </td>
 </tr>
-<tr id="i52" class="altColor">
+<tr id="i64" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValueSetMembers(java.lang.String,int,int)">getValidValueSetMembers</a></span>&#8203;(java.lang.String&nbsp;validValueSetGUID,
+                       int&nbsp;startFrom,
+                       int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Page through the members of a valid value set.</div>
+</td>
+</tr>
+<tr id="i65" class="rowColor">
+<td class="colFirst"><code><a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidValuesForConsumer(java.lang.String)">getValidValuesForConsumer</a></span>&#8203;(java.lang.String&nbsp;elementGUID)</code></th>
+<td class="colLast">
+<div class="block">Return information about the valid value set linked to an element as its set of valid values.</div>
+</td>
+</tr>
+<tr id="i66" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishTopic(java.lang.String)">publishTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID)</code></th>
 <td class="colLast">
 <div class="block">Update the zones for the topic asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
-<tr id="i53" class="rowColor">
+<tr id="i67" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#registerListener(org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener)">registerListener</a></span>&#8203;(<a href="../../../accessservices/datamanager/api/DataManagerEventListener.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DataManagerEventListener</a>&nbsp;listener)</code></th>
 <td class="colLast">
 <div class="block">Register a listener object that will be passed each of the events published by the Data Manager OMAS.</div>
 </td>
 </tr>
-<tr id="i54" class="altColor">
+<tr id="i68" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeConnection(java.lang.String)">removeConnection</a></span>&#8203;(java.lang.String&nbsp;connectionGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a connection.</div>
 </td>
 </tr>
-<tr id="i55" class="rowColor">
+<tr id="i69" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEndpoint(java.lang.String)">removeEndpoint</a></span>&#8203;(java.lang.String&nbsp;endpointGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a endpoint.</div>
 </td>
 </tr>
-<tr id="i56" class="altColor">
+<tr id="i70" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeEventType(java.lang.String,java.lang.String)">removeEventType</a></span>&#8203;(java.lang.String&nbsp;eventTypeGUID,
                java.lang.String&nbsp;qualifiedName)</code></th>
 <td class="colLast">
-<div class="block">Remove the metadata element representing a event type.</div>
+<div class="block">Remove the metadata element representing an event type.</div>
 </td>
 </tr>
-<tr id="i57" class="rowColor">
+<tr id="i71" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaAttribute(java.lang.String)">removeSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a schema attribute.</div>
 </td>
 </tr>
-<tr id="i58" class="altColor">
+<tr id="i72" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeSchemaType(java.lang.String)">removeSchemaType</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a schema type.</div>
 </td>
 </tr>
-<tr id="i59" class="rowColor">
+<tr id="i73" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeTopic(java.lang.String,java.lang.String)">removeTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID,
            java.lang.String&nbsp;qualifiedName)</code></th>
@@ -667,14 +784,21 @@ extends java.lang.Object</pre>
 <div class="block">Remove the metadata element representing a topic.</div>
 </td>
 </tr>
-<tr id="i60" class="altColor">
+<tr id="i74" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeValidValue(java.lang.String)">removeValidValue</a></span>&#8203;(java.lang.String&nbsp;validValueGUID)</code></th>
+<td class="colLast">
+<div class="block">Remove the metadata element representing a valid value.</div>
+</td>
+</tr>
+<tr id="i75" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setEventBrokerIsHome(boolean)">setEventBrokerIsHome</a></span>&#8203;(boolean&nbsp;eventBrokerIsHome)</code></th>
 <td class="colLast">
 <div class="block">Set up the flag that controls the ownership of metadata created for this Event Broker.</div>
 </td>
 </tr>
-<tr id="i61" class="rowColor">
+<tr id="i76" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupAssetConnection(java.lang.String,java.lang.String,java.lang.String)">setupAssetConnection</a></span>&#8203;(java.lang.String&nbsp;assetGUID,
                     java.lang.String&nbsp;assetSummary,
@@ -683,7 +807,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a relationship between an asset and its connection.</div>
 </td>
 </tr>
-<tr id="i62" class="altColor">
+<tr id="i77" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupConnectorType(java.lang.String,java.lang.String)">setupConnectorType</a></span>&#8203;(java.lang.String&nbsp;connectionGUID,
                   java.lang.String&nbsp;connectorTypeGUID)</code></th>
@@ -691,7 +815,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a relationship between a connection and a connector type.</div>
 </td>
 </tr>
-<tr id="i63" class="rowColor">
+<tr id="i78" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupEmbeddedConnection(java.lang.String,int,java.lang.String,java.util.Map,java.lang.String)">setupEmbeddedConnection</a></span>&#8203;(java.lang.String&nbsp;connectionGUID,
                        int&nbsp;position,
@@ -702,7 +826,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a relationship between a virtual connection and an embedded connection.</div>
 </td>
 </tr>
-<tr id="i64" class="altColor">
+<tr id="i79" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupEndpoint(java.lang.String,java.lang.String)">setupEndpoint</a></span>&#8203;(java.lang.String&nbsp;connectionGUID,
              java.lang.String&nbsp;endpointGUID)</code></th>
@@ -710,7 +834,17 @@ extends java.lang.Object</pre>
 <div class="block">Create a relationship between a connection and an endpoint.</div>
 </td>
 </tr>
-<tr id="i65" class="rowColor">
+<tr id="i80" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupReferenceValueTag(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceValueAssignmentProperties,java.lang.String)">setupReferenceValueTag</a></span>&#8203;(java.lang.String&nbsp;elementGUID,
+                      <a href="../../../accessservices/datamanager/properties/ReferenceValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceValueAssignmentProperties</a>&nbsp;properties,
+                      java.lang.String&nbsp;validValueGUID)</code></th>
+<td class="colLast">
+<div class="block">Create a reference value assignment relationship between an element and a valid value to show that
+ the valid value is a semiformal tag/classification.</div>
+</td>
+</tr>
+<tr id="i81" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupSchemaType(java.lang.String,java.lang.String,java.lang.String)">setupSchemaType</a></span>&#8203;(java.lang.String&nbsp;relationshipTypeName,
                java.lang.String&nbsp;schemaAttributeGUID,
@@ -719,7 +853,26 @@ extends java.lang.Object</pre>
 <div class="block">Connect a schema type to a schema attribute.</div>
 </td>
 </tr>
-<tr id="i66" class="altColor">
+<tr id="i82" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupValidValueMember(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueMembershipProperties,java.lang.String)">setupValidValueMember</a></span>&#8203;(java.lang.String&nbsp;validValueSetGUID,
+                     <a href="../../../accessservices/datamanager/properties/ValidValueMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueMembershipProperties</a>&nbsp;properties,
+                     java.lang.String&nbsp;validValueMemberGUID)</code></th>
+<td class="colLast">
+<div class="block">Create a membership relationship between a validValue and a validValueSet that it belongs to.</div>
+</td>
+</tr>
+<tr id="i83" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setupValidValues(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueAssignmentProperties,java.lang.String)">setupValidValues</a></span>&#8203;(java.lang.String&nbsp;elementGUID,
+                <a href="../../../accessservices/datamanager/properties/ValidValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueAssignmentProperties</a>&nbsp;properties,
+                java.lang.String&nbsp;validValueGUID)</code></th>
+<td class="colLast">
+<div class="block">Create a valid value assignment relationship between an element and a valid value (typically, a valid value set) to show that
+ the valid value defines the values that can be stored in the data item that the element represents.</div>
+</td>
+</tr>
+<tr id="i84" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateConnection(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties)">updateConnection</a></span>&#8203;(java.lang.String&nbsp;connectionGUID,
                 boolean&nbsp;isMergeUpdate,
@@ -728,25 +881,25 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing a connection.</div>
 </td>
 </tr>
-<tr id="i67" class="rowColor">
+<tr id="i85" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEndpoint(boolean,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties)">updateEndpoint</a></span>&#8203;(boolean&nbsp;isMergeUpdate,
               java.lang.String&nbsp;endpointGUID,
               <a href="../../../accessservices/datamanager/properties/EndpointProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">EndpointProperties</a>&nbsp;endpointProperties)</code></th>
 <td class="colLast">
-<div class="block">Update the metadata element representing a endpoint.</div>
+<div class="block">Update the metadata element representing an endpoint.</div>
 </td>
 </tr>
-<tr id="i68" class="altColor">
+<tr id="i86" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateEventType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.EventTypeProperties)">updateEventType</a></span>&#8203;(java.lang.String&nbsp;eventTypeGUID,
                boolean&nbsp;isMergeUpdate,
                <a href="../../../accessservices/datamanager/properties/EventTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">EventTypeProperties</a>&nbsp;properties)</code></th>
 <td class="colLast">
-<div class="block">Update the metadata element representing a event type.</div>
+<div class="block">Update the metadata element representing an event type.</div>
 </td>
 </tr>
-<tr id="i69" class="rowColor">
+<tr id="i87" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaAttribute(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties)">updateSchemaAttribute</a></span>&#8203;(java.lang.String&nbsp;schemaAttributeGUID,
                      boolean&nbsp;isMergeUpdate,
@@ -755,7 +908,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the properties of the metadata element representing a schema attribute.</div>
 </td>
 </tr>
-<tr id="i70" class="altColor">
+<tr id="i88" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties)">updateSchemaType</a></span>&#8203;(java.lang.String&nbsp;schemaTypeGUID,
                 boolean&nbsp;isMergeUpdate,
@@ -764,7 +917,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing a schema type.</div>
 </td>
 </tr>
-<tr id="i71" class="rowColor">
+<tr id="i89" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateTopic(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperties)">updateTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID,
            boolean&nbsp;isMergeUpdate,
@@ -773,7 +926,16 @@ extends java.lang.Object</pre>
 <div class="block">Update the metadata element representing a topic.</div>
 </td>
 </tr>
-<tr id="i72" class="altColor">
+<tr id="i90" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateValidValue(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties)">updateValidValue</a></span>&#8203;(java.lang.String&nbsp;validValueGUID,
+                boolean&nbsp;isMergeUpdate,
+                <a href="../../../accessservices/datamanager/properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)</code></th>
+<td class="colLast">
+<div class="block">Update the metadata element representing a valid value.</div>
+</td>
+</tr>
+<tr id="i91" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawTopic(java.lang.String)">withdrawTopic</a></span>&#8203;(java.lang.String&nbsp;topicGUID)</code></th>
 <td class="colLast">
@@ -804,7 +966,7 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a id="&lt;init&gt;(org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,java.lang.String,java.lang.String,java.lang.String)">
+<a id="&lt;init&gt;(org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient,org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient,org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement,org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -812,6 +974,7 @@ extends java.lang.Object</pre>
 <h4>TopicIntegratorContext</h4>
 <pre>public&nbsp;TopicIntegratorContext&#8203;(<a href="../../../accessservices/datamanager/client/EventBrokerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">EventBrokerClient</a>&nbsp;eventBrokerClient,
                               <a href="../../../accessservices/datamanager/client/ConnectionManagerClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">ConnectionManagerClient</a>&nbsp;connectionManagerClient,
+                              <a href="../../../accessservices/datamanager/client/ValidValueManagement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">ValidValueManagement</a>&nbsp;validValueManagement,
                               <a href="../../../accessservices/datamanager/client/DataManagerEventClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerEventClient</a>&nbsp;eventClient,
                               java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;eventBrokerGUID,
@@ -821,6 +984,7 @@ extends java.lang.Object</pre>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>eventBrokerClient</code> - client to map request to</dd>
 <dd><code>connectionManagerClient</code> - client for managing connections</dd>
+<dd><code>validValueManagement</code> - client for managing valid value sets and definitions</dd>
 <dd><code>eventClient</code> - client to register for events</dd>
 <dd><code>userId</code> - integration daemon's userId</dd>
 <dd><code>eventBrokerGUID</code> - unique identifier of the software server capability for the event broker</dd>
@@ -1176,7 +1340,7 @@ extends java.lang.Object</pre>
                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create a new metadata element to represent a event type using an existing metadata element as a template.</div>
+<div class="block">Create a new metadata element to represent an event type using an existing metadata element as a template.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
@@ -1203,7 +1367,7 @@ extends java.lang.Object</pre>
                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Update the metadata element representing a event type.</div>
+<div class="block">Update the metadata element representing an event type.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>eventTypeGUID</code> - unique identifier of the metadata element to update</dd>
@@ -1227,7 +1391,7 @@ extends java.lang.Object</pre>
                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Remove the metadata element representing a event type.</div>
+<div class="block">Remove the metadata element representing an event type.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>eventTypeGUID</code> - unique identifier of the metadata element to remove</dd>
@@ -1760,10 +1924,10 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getSchemaTypeParent</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader&nbsp;getSchemaTypeParent&#8203;(java.lang.String&nbsp;schemaTypeGUID)
-                                                                                               throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                                                                      <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                                                                      <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;getSchemaTypeParent&#8203;(java.lang.String&nbsp;schemaTypeGUID)
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2459,7 +2623,7 @@ extends java.lang.Object</pre>
                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+<div class="block">Update the metadata element representing an endpoint.  It is possible to use the subtype property classes or
  set up specialized properties in extended properties.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
@@ -2632,7 +2796,7 @@ extends java.lang.Object</pre>
 <a id="getConnectorTypeByGUID(java.lang.String)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>getConnectorTypeByGUID</h4>
 <pre class="methodSignature">public&nbsp;<a href="../../../accessservices/datamanager/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ConnectorTypeElement</a>&nbsp;getConnectorTypeByGUID&#8203;(java.lang.String&nbsp;connectorTypeGUID)
@@ -2643,6 +2807,484 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>connectorTypeGUID</code> - unique identifier of the requested metadata element</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>requested metadata element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="createValidValue(org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createValidValue</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createValidValue&#8203;(<a href="../../../accessservices/datamanager/properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)
+                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a new metadata element to represent a valid value.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueProperties</code> - properties about the valid value to store</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the new valid value</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="updateValidValue(java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateValidValue</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;updateValidValue&#8203;(java.lang.String&nbsp;validValueGUID,
+                             boolean&nbsp;isMergeUpdate,
+                             <a href="../../../accessservices/datamanager/properties/ValidValueProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueProperties</a>&nbsp;validValueProperties)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the metadata element representing a valid value.  It is possible to use the subtype property classes or
+ set up specialized properties in extended properties.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>validValueProperties</code> - new properties for the metadata element</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="setupValidValueMember(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueMembershipProperties,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setupValidValueMember</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setupValidValueMember&#8203;(java.lang.String&nbsp;validValueSetGUID,
+                                  <a href="../../../accessservices/datamanager/properties/ValidValueMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueMembershipProperties</a>&nbsp;properties,
+                                  java.lang.String&nbsp;validValueMemberGUID)
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a membership relationship between a validValue and a validValueSet that it belongs to.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueSetGUID</code> - unique identifier of the valid value set</dd>
+<dd><code>properties</code> - describes the properties of the membership</dd>
+<dd><code>validValueMemberGUID</code> - unique identifier of the member</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearValidValueMember(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearValidValueMember</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;clearValidValueMember&#8203;(java.lang.String&nbsp;validValueSetGUID,
+                                  java.lang.String&nbsp;validValueMemberGUID)
+                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove a membership relationship between a validValue and a validValueSet that it belongs to.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueSetGUID</code> - unique identifier of the valid value set</dd>
+<dd><code>validValueMemberGUID</code> - unique identifier of the member</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="setupValidValues(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueAssignmentProperties,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setupValidValues</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setupValidValues&#8203;(java.lang.String&nbsp;elementGUID,
+                             <a href="../../../accessservices/datamanager/properties/ValidValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ValidValueAssignmentProperties</a>&nbsp;properties,
+                             java.lang.String&nbsp;validValueGUID)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a valid value assignment relationship between an element and a valid value (typically, a valid value set) to show that
+ the valid value defines the values that can be stored in the data item that the element represents.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>elementGUID</code> - unique identifier of the element</dd>
+<dd><code>properties</code> - describes the permissions that the role has in the validValue</dd>
+<dd><code>validValueGUID</code> - unique identifier of the valid value</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearValidValues(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearValidValues</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;clearValidValues&#8203;(java.lang.String&nbsp;elementGUID,
+                             java.lang.String&nbsp;validValueGUID)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove a valid value assignment relationship between an element and a valid value.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>elementGUID</code> - unique identifier of the element</dd>
+<dd><code>validValueGUID</code> - unique identifier of the valid value</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="setupReferenceValueTag(java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceValueAssignmentProperties,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setupReferenceValueTag</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setupReferenceValueTag&#8203;(java.lang.String&nbsp;elementGUID,
+                                   <a href="../../../accessservices/datamanager/properties/ReferenceValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceValueAssignmentProperties</a>&nbsp;properties,
+                                   java.lang.String&nbsp;validValueGUID)
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a reference value assignment relationship between an element and a valid value to show that
+ the valid value is a semiformal tag/classification.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>elementGUID</code> - unique identifier of the element</dd>
+<dd><code>properties</code> - describes the quality of the assignment</dd>
+<dd><code>validValueGUID</code> - unique identifier of the valid value</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="clearReferenceValueTag(java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearReferenceValueTag</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;clearReferenceValueTag&#8203;(java.lang.String&nbsp;elementGUID,
+                                   java.lang.String&nbsp;validValueGUID)
+                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove a reference value assignment relationship between an element and a valid value.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>elementGUID</code> - unique identifier of the element</dd>
+<dd><code>validValueGUID</code> - unique identifier of the valid value</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="removeValidValue(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>removeValidValue</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;removeValidValue&#8203;(java.lang.String&nbsp;validValueGUID)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove the metadata element representing a valid value.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueGUID</code> - unique identifier of the metadata element to remove</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="findValidValues(java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>findValidValues</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;&nbsp;findValidValues&#8203;(java.lang.String&nbsp;searchString,
+                                                         int&nbsp;startFrom,
+                                                         int&nbsp;pageSize)
+                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the list of metadata elements that contain the search string.
+ The search string is treated as a regular expression.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>searchString</code> - string to find in the properties</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching metadata elements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getValidValuesByName(java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getValidValuesByName</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;&nbsp;getValidValuesByName&#8203;(java.lang.String&nbsp;name,
+                                                              int&nbsp;startFrom,
+                                                              int&nbsp;pageSize)
+                                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the list of metadata elements with a matching qualified or display name.
+ There are no wildcards supported on this request.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>name</code> - name to search for</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching metadata elements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getAllValidValues(int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAllValidValues</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;&nbsp;getAllValidValues&#8203;(int&nbsp;startFrom,
+                                                           int&nbsp;pageSize)
+                                                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the list of valid values.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching metadata elements</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</li>
+</ul>
+<a id="getValidValueSetMembers(java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getValidValueSetMembers</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;&nbsp;getValidValueSetMembers&#8203;(java.lang.String&nbsp;validValueSetGUID,
+                                                                 int&nbsp;startFrom,
+                                                                 int&nbsp;pageSize)
+                                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Page through the members of a valid value set.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueSetGUID</code> - unique identifier of the valid value set</dd>
+<dd><code>startFrom</code> - paging starting point</dd>
+<dd><code>pageSize</code> - maximum number of return values.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of valid value beans</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
+<a id="getSetsForValidValue(java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getSetsForValidValue</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;&nbsp;getSetsForValidValue&#8203;(java.lang.String&nbsp;validValueGUID,
+                                                              int&nbsp;startFrom,
+                                                              int&nbsp;pageSize)
+                                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Page through the list of valid value sets that a valid value definition/set belongs to.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueGUID</code> - unique identifier of valid value to query</dd>
+<dd><code>startFrom</code> - paging starting point</dd>
+<dd><code>pageSize</code> - maximum number of return values.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of valid value beans</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
+<a id="getValidValuesForConsumer(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getValidValuesForConsumer</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&nbsp;getValidValuesForConsumer&#8203;(java.lang.String&nbsp;elementGUID)
+                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the valid value set linked to an element as its set of valid values.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>elementGUID</code> - unique identifier for the element using the valid value set</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching actor profiles (hopefully only one)</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getConsumersOfValidValue(java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getConsumersOfValidValue</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">RelatedElement</a>&gt;&nbsp;getConsumersOfValidValue&#8203;(java.lang.String&nbsp;validValueGUID,
+                                                               int&nbsp;startFrom,
+                                                               int&nbsp;pageSize)
+                                                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                               <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                               <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the consumers linked to a validValue.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueGUID</code> - unique identifier for the validValue</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching actor profiles (hopefully only one)</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getReferenceValues(java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getReferenceValues</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&gt;&nbsp;getReferenceValues&#8203;(java.lang.String&nbsp;elementGUID,
+                                                            int&nbsp;startFrom,
+                                                            int&nbsp;pageSize)
+                                                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the valid values linked as reference value tags to an element.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>elementGUID</code> - unique identifier for the element</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of valid values</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getAssigneesOfReferenceValue(java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAssigneesOfReferenceValue</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../../../accessservices/datamanager/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">RelatedElement</a>&gt;&nbsp;getAssigneesOfReferenceValue&#8203;(java.lang.String&nbsp;validValueGUID,
+                                                                   int&nbsp;startFrom,
+                                                                   int&nbsp;pageSize)
+                                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Return information about the person roles linked to a validValue.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueGUID</code> - unique identifier for the validValue</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching actor profiles (hopefully only one)</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - guid is null</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="getValidValueByGUID(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getValidValueByGUID</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../accessservices/datamanager/metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">ValidValueElement</a>&nbsp;getValidValueByGUID&#8203;(java.lang.String&nbsp;validValueGUID)
+                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the metadata element with the supplied unique identifier.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>validValueGUID</code> - unique identifier of the requested metadata element</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>requested metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -122,7 +122,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="CommunityProfileBaseClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">org.odpi.openmetadata.accessservices.communityprofile.client.CommunityProfileBaseClient</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -131,11 +136,11 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/UserIdentityManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">UserIdentityManagementInterface</a></code></dd>
+<dd><code><a href="../api/RelatedElementsManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">RelatedElementsManagementInterface</a></code>, <code><a href="../api/UserIdentityManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">UserIdentityManagementInterface</a></code></dd>
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">UserIdentityManagement</span>
-extends java.lang.Object
+extends <a href="CommunityProfileBaseClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityProfileBaseClient</a>
 implements <a href="../api/UserIdentityManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">UserIdentityManagementInterface</a></pre>
 <div class="block">UserIdentityManagement is the client for explicitly managing the user identity entities and associating them with
  profiles.  It is typically used when the relationship between user identities and profiles are many to one.</div>
@@ -187,7 +192,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 <tr class="rowColor">
 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient,int)">UserIdentityManagement</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;serverPlatformURLRoot,
-                      org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
+                      <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
                       int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
@@ -242,6 +247,17 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 </td>
 </tr>
 <tr id="i2" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createUserIdentityForProfile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties)">createUserIdentityForProfile</a></span>&#8203;(java.lang.String&nbsp;userId,
+                            java.lang.String&nbsp;externalSourceGUID,
+                            java.lang.String&nbsp;externalSourceName,
+                            java.lang.String&nbsp;profileGUID,
+                            <a href="../properties/UserIdentityProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">UserIdentityProperties</a>&nbsp;newIdentity)</code></th>
+<td class="colLast">
+<div class="block">Create a UserIdentity that is for the sole use of a specific actor profile.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteUserIdentity(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">deleteUserIdentity</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;externalSourceGUID,
@@ -251,7 +267,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 <div class="block">Remove a user identity object.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">UserIdentityElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findUserIdentities(java.lang.String,java.lang.String,int,int)">findUserIdentities</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;searchString,
@@ -261,7 +277,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 <div class="block">Retrieve the list of user identity metadata elements that contain the search string.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">UserIdentityElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUserIdentitiesByName(java.lang.String,java.lang.String,int,int)">getUserIdentitiesByName</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;name,
@@ -271,7 +287,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 <div class="block">Retrieve the list of user identity metadata elements with a matching qualified name.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">UserIdentityElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getUserIdentityByGUID(java.lang.String,java.lang.String)">getUserIdentityByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;userIdentityGUID)</code></th>
@@ -279,7 +295,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 <div class="block">Retrieve the userIdentity metadata element with the supplied unique identifier.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeIdentityFromProfile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeIdentityFromProfile</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;externalSourceGUID,
@@ -290,7 +306,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 <div class="block">Unlink a user identity from a profile.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateProfileIdentity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties)">updateProfileIdentity</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;externalSourceGUID,
@@ -303,7 +319,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 <div class="block">Update the properties of the relationship between a user identity and profile.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateUserIdentity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties)">updateUserIdentity</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;externalSourceGUID,
@@ -316,6 +332,13 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.communityprofile.client.CommunityProfileBaseClient">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.communityprofile.client.<a href="CommunityProfileBaseClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityProfileBaseClient</a></h3>
+<code><a href="CommunityProfileBaseClient.html#clearAssignmentScope(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearAssignmentScope</a>, <a href="CommunityProfileBaseClient.html#clearMoreInformation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearMoreInformation</a>, <a href="CommunityProfileBaseClient.html#clearResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearResource</a>, <a href="CommunityProfileBaseClient.html#clearStakeholder(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearStakeholder</a>, <a href="CommunityProfileBaseClient.html#getAssignedActors(java.lang.String,java.lang.String,int,int)">getAssignedActors</a>, <a href="CommunityProfileBaseClient.html#getAssignedScopes(java.lang.String,java.lang.String,int,int)">getAssignedScopes</a>, <a href="CommunityProfileBaseClient.html#getDescriptiveElements(java.lang.String,java.lang.String,int,int)">getDescriptiveElements</a>, <a href="CommunityProfileBaseClient.html#getMoreInformation(java.lang.String,java.lang.String,int,int)">getMoreInformation</a>, <a href="CommunityProfileBaseClient.html#getResourceList(java.lang.String,java.lang.String,int,int)">getResourceList</a>, <a href="CommunityProfileBaseClient.html#getStakeholderCommissionedElements(java.lang.String,java.lang.String,int,int)">getStakeholderCommissionedElements</a>, <a href="CommunityProfileBaseClient.html#getStakeholders(java.lang.String,java.lang.String,int,int)">getStakeholders</a>, <a href="CommunityProfileBaseClient.html#getSupportedByResource(java.lang.String,java.lang.String,int,int)">getSupportedByResource</a>, <a href="CommunityProfileBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a>, <a href="CommunityProfileBaseClient.html#setupAssignmentScope(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.AssignmentScopeProperties,java.lang.String)">setupAssignmentScope</a>, <a href="CommunityProfileBaseClient.html#setupMoreInformation(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties,java.lang.String)">setupMoreInformation</a>, <a href="CommunityProfileBaseClient.html#setupResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceListProperties,java.lang.String)">setupResource</a>, <a href="CommunityProfileBaseClient.html#setupStakeholder(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.StakeholderProperties,java.lang.String)">setupStakeholder</a>, <a href="CommunityProfileBaseClient.html#updateRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String)">updateRelationship</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -438,7 +461,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 <h4>UserIdentityManagement</h4>
 <pre>public&nbsp;UserIdentityManagement&#8203;(java.lang.String&nbsp;serverName,
                               java.lang.String&nbsp;serverPlatformURLRoot,
-                              org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient&nbsp;restClient,
+                              <a href="rest/CommunityProfileRESTClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.rest">CommunityProfileRESTClient</a>&nbsp;restClient,
                               int&nbsp;maxPageSize)
                        throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
@@ -495,6 +518,40 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
 </dl>
 </li>
 </ul>
+<a id="createUserIdentityForProfile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createUserIdentityForProfile</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;createUserIdentityForProfile&#8203;(java.lang.String&nbsp;userId,
+                                                     java.lang.String&nbsp;externalSourceGUID,
+                                                     java.lang.String&nbsp;externalSourceName,
+                                                     java.lang.String&nbsp;profileGUID,
+                                                     <a href="../properties/UserIdentityProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">UserIdentityProperties</a>&nbsp;newIdentity)
+                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<div class="block">Create a UserIdentity that is for the sole use of a specific actor profile.  When the profile is deleted, the user identity is
+ deleted.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/UserIdentityManagementInterface.html#createUserIdentityForProfile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties)">createUserIdentityForProfile</a></code>&nbsp;in interface&nbsp;<code><a href="../api/UserIdentityManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">UserIdentityManagementInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - the name of the calling user.</dd>
+<dd><code>externalSourceGUID</code> - unique identifier of software server capability representing the caller</dd>
+<dd><code>externalSourceName</code> - unique name of software server capability representing the caller</dd>
+<dd><code>profileGUID</code> - unique identifier of the profile</dd>
+<dd><code>newIdentity</code> - properties for the new userIdentity</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of the UserIdentity</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</li>
+</ul>
 <a id="updateUserIdentity(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties)">
 <!--   -->
 </a>
@@ -541,8 +598,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Remove a user identity object.  This will fail if the profile would be left without an
- associated user identity.</div>
+<div class="block">Remove a user identity object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/UserIdentityManagementInterface.html#deleteUserIdentity(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">deleteUserIdentity</a></code>&nbsp;in interface&nbsp;<code><a href="../api/UserIdentityManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">UserIdentityManagementInterface</a></code></dd>
@@ -573,8 +629,7 @@ implements <a href="../api/UserIdentityManagementInterface.html" title="interfac
                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Link a user identity to a profile.  This will fail if the user identity is already connected to
- a profile.</div>
+<div class="block">Link a user identity to a profile.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/UserIdentityManagementInterface.html#addIdentityToProfile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties)">addIdentityToProfile</a></code>&nbsp;in interface&nbsp;<code><a href="../api/UserIdentityManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">UserIdentityManagementInterface</a></code></dd>

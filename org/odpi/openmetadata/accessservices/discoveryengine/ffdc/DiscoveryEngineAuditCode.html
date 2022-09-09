@@ -136,12 +136,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code>java.io.Serializable</code>, <code>java.lang.Comparable&lt;<a href="DiscoveryEngineAuditCode.html" title="enum in org.odpi.openmetadata.accessservices.discoveryengine.ffdc">DiscoveryEngineAuditCode</a>&gt;</code>, <code>org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet</code></dd>
+<dd><code>java.io.Serializable</code>, <code>java.lang.Comparable&lt;<a href="DiscoveryEngineAuditCode.html" title="enum in org.odpi.openmetadata.accessservices.discoveryengine.ffdc">DiscoveryEngineAuditCode</a>&gt;</code>, <code><a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></code></dd>
 </dl>
 <hr>
 <pre>public enum <span class="typeNameLabel">DiscoveryEngineAuditCode</span>
 extends java.lang.Enum&lt;<a href="DiscoveryEngineAuditCode.html" title="enum in org.odpi.openmetadata.accessservices.discoveryengine.ffdc">DiscoveryEngineAuditCode</a>&gt;
-implements org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet</pre>
+implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></pre>
 <div class="block">The DiscoveryEngineAuditCode is used to define the message content for the OMRS Audit Log.
 
  The 5 fields in the enum are:
@@ -215,14 +215,14 @@ implements org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessage
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMessageDefinition()">getMessageDefinition</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Retrieve a message definition object for logging.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition</code></td>
+<td class="colFirst"><code><a href="../../../frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMessageDefinition(java.lang.String...)">getMessageDefinition</a></span>&#8203;(java.lang.String...&nbsp;params)</code></th>
 <td class="colLast">
 <div class="block">Retrieve a message definition object for logging.</div>
@@ -386,11 +386,11 @@ not permitted.)</div>
 <ul class="blockList">
 <li class="blockList">
 <h4>getMessageDefinition</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition&nbsp;getMessageDefinition()</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a>&nbsp;getMessageDefinition()</pre>
 <div class="block">Retrieve a message definition object for logging.  This method is used when there are no message inserts.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getMessageDefinition</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet</code></dd>
+<dd><code><a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html#getMessageDefinition()">getMessageDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>message definition object.</dd>
 </dl>
@@ -402,11 +402,11 @@ not permitted.)</div>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getMessageDefinition</h4>
-<pre class="methodSignature">public&nbsp;org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition&nbsp;getMessageDefinition&#8203;(java.lang.String...&nbsp;params)</pre>
+<pre class="methodSignature">public&nbsp;<a href="../../../frameworks/auditlog/messagesets/AuditLogMessageDefinition.html" title="class in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageDefinition</a>&nbsp;getMessageDefinition&#8203;(java.lang.String...&nbsp;params)</pre>
 <div class="block">Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>getMessageDefinition</code>&nbsp;in interface&nbsp;<code>org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet</code></dd>
+<dd><code><a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html#getMessageDefinition(java.lang.String...)">getMessageDefinition</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogMessageSet</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>params</code> - array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>

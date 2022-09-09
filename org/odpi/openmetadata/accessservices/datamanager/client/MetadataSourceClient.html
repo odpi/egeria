@@ -88,7 +88,7 @@ loadScripts(document, 'script');</script>
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
@@ -122,7 +122,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li><a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase</a></li>
+<li><a href="DataManagerBaseClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">org.odpi.openmetadata.accessservices.datamanager.client.DataManagerBaseClient</a></li>
 <li>
 <ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient</li>
@@ -140,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">MetadataSourceClient</span>
-extends <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">ConnectedAssetClientBase</a>
+extends <a href="DataManagerBaseClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerBaseClient</a>
 implements <a href="../api/MetadataSourceInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">MetadataSourceInterface</a></pre>
 <div class="block">MetadataSourceClient is the client for setting up the SoftwareServerCapabilities that represent metadata sources.</div>
 </li>
@@ -149,23 +149,6 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <div class="summary">
 <ul class="blockList">
 <li class="blockList">
-<!-- =========== FIELD SUMMARY =========== -->
-<section role="region">
-<ul class="blockList">
-<li class="blockList"><a id="field.summary">
-<!--   -->
-</a>
-<h3>Field Summary</h3>
-<ul class="blockList">
-<li class="blockList"><a id="fields.inherited.from.class.org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase">
-<!--   -->
-</a>
-<h3>Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.<a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">ConnectedAssetClientBase</a></h3>
-<code><a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#auditLog">auditLog</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#nullRequestBody">nullRequestBody</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#serverName">serverName</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#serverPlatformURLRoot">serverPlatformURLRoot</a></code></li>
-</ul>
-</li>
-</ul>
-</section>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <section role="region">
 <ul class="blockList">
@@ -206,11 +189,10 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 </td>
 </tr>
 <tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">MetadataSourceClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient,int)">MetadataSourceClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;serverPlatformURLRoot,
-                    org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient&nbsp;restClient,
-                    int&nbsp;maxPageSize,
-                    <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
+                    <a href="rest/DataManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client.rest">DataManagerRESTClient</a>&nbsp;restClient,
+                    int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that is to be used within an OMAG Server.</div>
 </td>
@@ -324,11 +306,11 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.datamanager.client.DataManagerBaseClient">
 <!--   -->
 </a>
-<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.<a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html" title="class in org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client">ConnectedAssetClientBase</a></h3>
-<code><a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetForConnection(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getAssetForConnection</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetProperties(java.lang.String,java.lang.String,java.lang.String)">getAssetProperties</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getAssetSummary(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getAssetSummary</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionByGUID(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionByGUID</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionByName(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionByName</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectionForAsset(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,java.lang.String)">getConnectionForAsset</a>, <a href="../../../commonservices/ocf/metadatamanagement/client/ConnectedAssetClientBase.html#getConnectorForConnection(org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.lang.String)">getConnectorForConnection</a></code></li>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.datamanager.client.<a href="DataManagerBaseClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerBaseClient</a></h3>
+<code><a href="DataManagerBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -447,7 +429,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<a id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient,int)">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -455,9 +437,8 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <h4>MetadataSourceClient</h4>
 <pre>public&nbsp;MetadataSourceClient&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;serverPlatformURLRoot,
-                            org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient&nbsp;restClient,
-                            int&nbsp;maxPageSize,
-                            <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                            <a href="rest/DataManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client.rest">DataManagerRESTClient</a>&nbsp;restClient,
+                            int&nbsp;maxPageSize)
                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that is to be used within an OMAG Server.</div>
 <dl>
@@ -466,7 +447,6 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>restClient</code> - pre-initialized REST client</dd>
 <dd><code>maxPageSize</code> - pre-initialized parameter limit</dd>
-<dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem with the information about the remote OMAS</dd>
 </dl>
@@ -781,7 +761,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <ul class="subNavList">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li><a href="#field.summary">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor.summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method.summary">Method</a></li>
 </ul>
