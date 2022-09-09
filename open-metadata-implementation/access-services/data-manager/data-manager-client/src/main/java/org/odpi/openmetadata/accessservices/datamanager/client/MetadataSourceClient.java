@@ -19,11 +19,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 /**
  * MetadataSourceClient is the client for setting up the SoftwareServerCapabilities that represent metadata sources.
  */
-public class MetadataSourceClient extends ConnectedAssetClientBase implements MetadataSourceInterface
+public class MetadataSourceClient extends DataManagerBaseClient implements MetadataSourceInterface
 {
-    private DataManagerRESTClient restClient;               /* Initialized in constructor */
-
-     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/metadata-sources";
+    private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/metadata-sources";
 
 
     /**
@@ -40,8 +38,6 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
                                 AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -57,8 +53,6 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -81,9 +75,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
                                 String   password,
                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -103,9 +95,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
                                 String userId,
                                 String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
-
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -116,18 +106,14 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
     public MetadataSourceClient(String                serverName,
                                 String                serverPlatformURLRoot,
                                 DataManagerRESTClient restClient,
-                                int                   maxPageSize,
-                                AuditLog              auditLog) throws InvalidParameterException
+                                int                   maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
-        
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 

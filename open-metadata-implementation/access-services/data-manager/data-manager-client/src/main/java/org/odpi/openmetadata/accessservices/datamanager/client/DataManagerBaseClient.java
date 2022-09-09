@@ -124,10 +124,10 @@ public class DataManagerBaseClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public DataManagerBaseClient(String serverName,
-                                 String serverPlatformURLRoot,
-                                 String userId,
-                                 String password,
+    public DataManagerBaseClient(String   serverName,
+                                 String   serverPlatformURLRoot,
+                                 String   userId,
+                                 String   password,
                                  AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
@@ -373,7 +373,7 @@ public class DataManagerBaseClient
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -416,7 +416,7 @@ public class DataManagerBaseClient
         requestBody.setExternalSourceName(externalSourceName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,

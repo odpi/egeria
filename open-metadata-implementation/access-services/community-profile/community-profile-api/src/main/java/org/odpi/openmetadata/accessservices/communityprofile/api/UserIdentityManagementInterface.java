@@ -27,7 +27,7 @@ public interface UserIdentityManagementInterface
      * @param userId the name of the calling user.
      * @param externalSourceGUID unique identifier of software server capability representing the caller
      * @param externalSourceName unique name of software server capability representing the caller
-     * @param newIdentity properties for the new userIdentity.
+     * @param newIdentity properties for the new userIdentity
      *
      * @return unique identifier of the UserIdentity
      *
@@ -41,6 +41,30 @@ public interface UserIdentityManagementInterface
                               UserIdentityProperties newIdentity) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException;
+
+
+    /**
+     * Create a UserIdentity that is for the sole use of a specific actor profile.
+     *
+     * @param userId the name of the calling user.
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param profileGUID unique identifier of the profile
+     * @param newIdentity properties for the new userIdentity
+     *
+     * @return unique identifier of the UserIdentity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    String createUserIdentityForProfile(String                 userId,
+                                        String                 externalSourceGUID,
+                                        String                 externalSourceName,
+                                        String                 profileGUID,
+                                        UserIdentityProperties newIdentity) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException;
 
 
     /**

@@ -282,6 +282,58 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
     }
 
 
+
+    /**
+     * Create a new metadata element.
+     *
+     * @param userId                  calling user
+     * @param properties              properties about the element to store
+     * @param propertiesParameterName name of parameter passing the properties
+     * @param urlTemplate             URL to call (no expected placeholders)
+     * @param methodName              calling method
+     *
+     * @return unique identifier of the new element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createReferenceableWithAnchor(String                  userId,
+                                         String                  externalSourceGUID,
+                                         String                  externalSourceName,
+                                         String                  anchorGUID,
+                                         String                  anchorGUIDParameterName,
+                                         ReferenceableProperties properties,
+                                         String                  propertiesParameterName,
+                                         String                  urlTemplate,
+                                         String                  methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        ReferenceableRequestBody requestBody = new ReferenceableRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setAnchorGUID(anchorGUID);
+        requestBody.setProperties(properties);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
     /**
      * Update the metadata element.  It is possible to use the subtype property classes or
      * set up specialized properties in extended properties.
@@ -448,18 +500,18 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    void setupRelationship(String userId,
-                           String externalSourceGUID,
-                           String externalSourceName,
-                           String primaryElementGUID,
-                           String primaryElementGUIDParameterName,
+    void setupRelationship(String                 userId,
+                           String                 externalSourceGUID,
+                           String                 externalSourceName,
+                           String                 primaryElementGUID,
+                           String                 primaryElementGUIDParameterName,
                            RelationshipProperties properties,
-                           String secondaryElementGUID,
-                           String secondaryElementGUIDParameterName,
-                           String urlTemplate,
-                           String methodName) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException
+                           String                 secondaryElementGUID,
+                           String                 secondaryElementGUIDParameterName,
+                           String                 urlTemplate,
+                           String                 methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
@@ -479,6 +531,55 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
                                         primaryElementGUID,
                                         secondaryElementGUID);
     }
+
+
+
+    /**
+     * Update the properties of the relationship between two elements.
+     *
+     * @param userId the name of the calling user
+     * @param externalSourceGUID                unique identifier of software capability representing the caller
+     * @param externalSourceName                unique name of software capability representing the caller
+     * @param primaryElementGUID                unique identifier of the primary element
+     * @param primaryElementGUIDParameterName   name of parameter passing the primaryElementGUID
+     * @param properties                        describes the properties for the relationship
+     * @param secondaryElementGUID              unique identifier of the element to connect it to
+     * @param secondaryElementGUIDParameterName name of parameter passing the secondaryElementGUID
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
+     * @param urlTemplate                       URL to call (no expected placeholders)
+     * @param methodName                        calling method
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateRelationship(String                 userId,
+                                   String                 externalSourceGUID,
+                                   String                 externalSourceName,
+                                   String                 primaryElementGUID,
+                                   String                 primaryElementGUIDParameterName,
+                                   RelationshipProperties properties,
+                                   String                 secondaryElementGUID,
+                                   String                 secondaryElementGUIDParameterName,
+                                   boolean                isMergeUpdate,
+                                   String                 urlTemplate,
+                                   String                 methodName) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(primaryElementGUID, primaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(secondaryElementGUID, secondaryElementGUIDParameterName, methodName);
+
+        RelationshipRequestBody requestBody = new RelationshipRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setProperties(properties);
+
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId, primaryElementGUID, secondaryElementGUID, isMergeUpdate);
+    }
+
 
 
     /**

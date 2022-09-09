@@ -145,7 +145,7 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
         final String methodName = "createGovernanceZone";
 
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones";
 
         return super.createReferenceable(userId, properties, propertiesParameter, urlTemplate, methodName);
     }
@@ -175,7 +175,7 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
 
         final String guidParameter = "zoneGUID";
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}?isMergeUpdate={3}";
 
         super.updateReferenceable(userId,
                                   zoneGUID,
@@ -207,7 +207,7 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
         final String methodName = "deleteGovernanceZone";
 
         final String guidParameter = "zoneGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/delete}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/delete}";
 
         super.removeReferenceable(userId, zoneGUID, guidParameter, urlTemplate, methodName);
     }
@@ -236,7 +236,7 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
 
         final String parentZoneGUIDParameterName = "parentZoneGUID";
         final String childZoneGUIDParameterName = "childZoneGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/nested-zone/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/nested-zone/{3}/link";
 
         super.setupRelationship(userId,
                                 parentZoneGUID,
@@ -272,7 +272,7 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
 
         final String parentZoneGUIDParameterName = "parentZoneGUID";
         final String childZoneGUIDParameterName = "childZoneGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/nested-zone/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/nested-zone/{3}/unlink";
 
         clearRelationship(userId,
                           parentZoneGUID,
@@ -306,13 +306,13 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
         final String methodName = "getGovernanceZoneByGUID";
 
         final String guidParameter = "zoneGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(zoneGUID, guidParameter, methodName);
 
         GovernanceZoneResponse restResult = restClient.callGovernanceZoneGetRESTCall(methodName,
-                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      zoneGUID);
@@ -340,13 +340,13 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
         final String methodName = "getGovernanceZoneByName";
 
         final String qualifiedNameParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/name/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
         GovernanceZoneResponse restResult = restClient.callGovernanceZoneGetRESTCall(methodName,
-                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      qualifiedName);
@@ -378,14 +378,14 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
                                                                                            PropertyServerException
     {
         final String methodName = "getGovernanceZonesForDomain";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/for-domain?domainIdentifier={2}&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/for-domain?domainIdentifier={2}&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         GovernanceZoneListResponse restResult = restClient.callGovernanceZoneListGetRESTCall(methodName,
-                                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                                             urlTemplate,
                                                                                              serverName,
                                                                                              userId,
                                                                                              domainIdentifier,
@@ -417,13 +417,13 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
         final String methodName = "getGovernanceZoneDefinitionByGUID";
 
         final String guidParameter = "zoneGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/with-definitions";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zones/{2}/with-definitions";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(zoneGUID, guidParameter, methodName);
 
         GovernanceZoneDefinitionResponse restResult = restClient.callGovernanceZoneDefinitionGetRESTCall(methodName,
-                                                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                                                         urlTemplate,
                                                                                                          serverName,
                                                                                                          userId,
                                                                                                          zoneGUID);

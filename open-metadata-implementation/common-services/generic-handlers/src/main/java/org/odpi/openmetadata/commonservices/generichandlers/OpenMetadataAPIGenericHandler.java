@@ -13573,15 +13573,28 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Now add the new relationship.
          */
-
-        repositoryHandler.createRelationship(userId,
-                                             attachmentTypeGUID,
-                                             externalSourceGUID,
-                                             externalSourceName,
-                                             startingGUID,
-                                             newAttachingGUID,
-                                             relationshipProperties,
-                                             methodName);
+        if (startAtEnd1)
+        {
+            repositoryHandler.createRelationship(userId,
+                                                 attachmentTypeGUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 startingGUID,
+                                                 newAttachingGUID,
+                                                 relationshipProperties,
+                                                 methodName);
+        }
+        else
+        {
+            repositoryHandler.createRelationship(userId,
+                                                 attachmentTypeGUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 newAttachingGUID,
+                                                 startingGUID,
+                                                 relationshipProperties,
+                                                 methodName);
+        }
 
 
         /*

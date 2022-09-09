@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManager
 import org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
+import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.EventBrokerProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.PermittedSynchronization;
@@ -35,6 +36,7 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
     private EventBrokerClient       eventBrokerClient       = null;
     private ConnectionManagerClient connectionManagerClient = null;
     private MetadataSourceClient    metadataSourceClient    = null;
+    private ValidValueManagement    validValueManagement    = null;
     private DataManagerRESTClient   restClient              = null;
 
     /**
@@ -108,11 +110,15 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
                                                               maxPageSize,
                                                               auditLog);
 
+        validValueManagement = new ValidValueManagement(partnerOMASServerName,
+                                                        partnerOMASPlatformRootURL,
+                                                        restClient,
+                                                        maxPageSize);
+
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
                                                         restClient,
-                                                        maxPageSize,
-                                                        auditLog);
+                                                        maxPageSize);
     }
 
 
@@ -214,6 +220,7 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
 
             serviceSpecificConnector.setContext(new TopicIntegratorContext(eventBrokerClient,
                                                                            connectionManagerClient,
+                                                                           validValueManagement,
                                                                            dataManagerEventClient,
                                                                            localServerUserId,
                                                                            metadataSourceGUID,

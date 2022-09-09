@@ -1,96 +1,100 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.rest;
+package org.odpi.openmetadata.accessservices.securitymanager.rest;
+
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.ClassificationProperties;
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * ProfileIdentityRequestBody provides the request body payload for working on ProfileIdentity relationships.
+ * ClassificationRequestBody describes the request body used when attaching classification to elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProfileIdentityRequestBody extends ExternalSourceRequestBody
+public class ClassificationRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private ProfileIdentityProperties properties = null;
+    private ClassificationProperties properties = null;
+
 
     /**
      * Default constructor
      */
-    public ProfileIdentityRequestBody()
+    public ClassificationRequestBody()
     {
+        super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.
      *
      * @param template object to copy
      */
-    public ProfileIdentityRequestBody(ProfileIdentityRequestBody template)
+    public ClassificationRequestBody(ClassificationRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            this.properties = template.getProperties();
+            properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the properties for this profile identity.
+     * Return the properties for the classification.
      *
-     * @return properties bean
+     * @return properties object
      */
-    public ProfileIdentityProperties getProperties()
+    public ClassificationProperties getProperties()
     {
         return properties;
     }
 
 
     /**
-     * Set up the properties for this profile identity.
+     * Set up the properties for the classification.
      *
-     * @param properties properties bean
+     * @param properties properties object
      */
-    public void setProperties(ProfileIdentityProperties properties)
+    public void setProperties(ClassificationProperties properties)
     {
         this.properties = properties;
     }
 
 
     /**
-     * JSON-style toString.
+     * JSON-style toString
      *
-     * @return list of properties and their values.
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
-        return "ProfileIdentityRequestBody{" +
-                       "properties=" + properties +
-                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+        return "ClassificationRequestBody{" +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", properties=" + properties +
                        '}';
     }
 
 
     /**
-     * Equals method that returns true if containing properties are the same.
+     * Return comparison result based on the content of the properties.
      *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
+     * @param objectToCompare test object
+     * @return result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -107,8 +111,8 @@ public class ProfileIdentityRequestBody extends ExternalSourceRequestBody
         {
             return false;
         }
-        ProfileIdentityRequestBody that = (ProfileIdentityRequestBody) objectToCompare;
-        return Objects.equals(properties, that.properties);
+        ClassificationRequestBody that = (ClassificationRequestBody) objectToCompare;
+        return Objects.equals(getProperties(), that.getProperties());
     }
 
 

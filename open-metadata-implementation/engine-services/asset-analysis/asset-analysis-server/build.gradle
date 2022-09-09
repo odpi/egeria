@@ -10,6 +10,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-discovery-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-api')
     implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-client')
@@ -20,7 +21,6 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 

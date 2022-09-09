@@ -23,10 +23,16 @@ import java.util.List;
 
 /**
  * CommunityManagerClient supports the APIs to maintain communities and their related objects.
+ *
+ * It issues REST API calls to the Open Metadata Server running Community Profile OMAS that have a URL that begins:
+ *
+ * <i>serverPlatformURLRoot</i>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}
+ *
  */
 public class CommunityManagement extends CommunityProfileBaseClient implements CommunityManagementInterface
 {
-    private static final String communityURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/communities";
+    private static final String baseURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
+    private static final String communityURLTemplatePrefix = baseURLTemplatePrefix + "/communities";
 
 
     /**
@@ -133,7 +139,7 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
-     * @param communityProperties properties about the community to store
+     * @param communityProperties properties about the community to store.  The qualifiedName property must be supplied and must be unique.
      *
      * @return unique identifier of the new community
      *
@@ -189,8 +195,7 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
 
     /**
-     * Update the metadata element representing a community.  It is possible to use the subtype property classes or
-     * set up specialized properties in extended properties.
+     * Update the metadata element representing a community.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
@@ -422,7 +427,7 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
 
     /**
-     * Retrieve the list of communities.
+     * Retrieve the list of all communities defined in open metadata.
      *
      * @param userId calling user
      * @param startFrom paging start point
@@ -488,7 +493,7 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(communityGUID, guidPropertyName, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + communityURLTemplatePrefix + "/person-roles/by-community/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/by-community/{2}?startFrom={3}&pageSize={4}";
 
         PersonRoleListResponse restResult = restClient.callPersonRoleListGetRESTCall(methodName,
                                                                                      urlTemplate,

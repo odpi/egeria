@@ -143,7 +143,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
                                                                                              PropertyServerException
     {
         final String methodName = "createGovernanceMetric";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics";
         final String propertiesParameterName = "metricProperties";
 
         return super.createReferenceable(userId, metricProperties, propertiesParameterName, urlTemplate, methodName);
@@ -171,7 +171,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
                                                                                             PropertyServerException
     {
         final String methodName = "updateGovernanceMetric";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/update?isMergeUpdate={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/update?isMergeUpdate={4}";
 
         final String guidParameterName = "metricGUID";
         final String propertiesParameterName = "metricProperties";
@@ -197,7 +197,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
                                                                   PropertyServerException
     {
         final String methodName = "deleteExternalReference";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/delete";
         final String guidParameterName = "metricGUID";
 
         super.removeReferenceable(userId, metricGUID, guidParameterName, urlTemplate, methodName);
@@ -226,7 +226,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
                                                                                                        PropertyServerException
     {
         final String methodName = "setupGovernanceDefinitionMetric";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-definitions/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-definitions/{3}/link";
 
         final String metricGUIDParameterName = "metricGUID";
         final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
@@ -254,7 +254,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
                                                                                         PropertyServerException
     {
         final String methodName = "clearGovernanceDefinitionMetric";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-definitions/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-definitions/{3}/unlink";
 
         final String metricGUIDParameterName = "metricGUID";
         final String governanceDefinitionGUIDParameterName = "governanceDefinitionGUID";
@@ -284,7 +284,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
                                                                                       PropertyServerException
     {
         final String methodName = "setupGovernanceResults";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-results/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-results/{3}/link";
 
         final String metricGUIDParameterName = "metricGUID";
         final String dataSetGUIDParameterName = "dataSetGUID";
@@ -312,7 +312,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
                                                                   PropertyServerException
     {
         final String methodName = "clearGovernanceResults";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-results/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}/governance-results/{3}/unlink";
 
         final String metricGUIDParameterName = "metricGUID";
         final String governanceDefinitionGUIDParameterName = "dataSetGUID";
@@ -340,7 +340,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "setGovernanceMeasurementsDataSet";
         final String guidParameter = "dataSetGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/data-sets/{2}/classify-as-governance-measurements-set";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/data-sets/{2}/classify-as-governance-measurements-set";
 
         super.setReferenceableClassification(userId, dataSetGUID, guidParameter, properties, urlTemplate, methodName);
     }
@@ -363,7 +363,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "clearGovernanceMeasurementsDataSet";
         final String guidParameter = "dataSetGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/data-sets/{2}/classify-as-governance-measurements-set/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/data-sets/{2}/classify-as-governance-measurements-set/delete";
 
         super.removeReferenceableClassification(userId, dataSetGUID, guidParameter, urlTemplate, methodName);
     }
@@ -388,7 +388,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "setGovernanceExpectations";
         final String guidParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-expectations";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-expectations";
 
         super.setReferenceableClassification(userId, elementGUID, guidParameter, properties, urlTemplate, methodName);
     }
@@ -411,7 +411,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "clearGovernanceExpectations";
         final String guidParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-expectations/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-expectations/delete";
 
         super.removeReferenceableClassification(userId, elementGUID, guidParameter, urlTemplate, methodName);
     }
@@ -437,7 +437,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "setGovernanceMeasurements";
         final String guidParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-measurements";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-measurements";
 
         super.setReferenceableClassification(userId, elementGUID, guidParameter, properties, urlTemplate, methodName);
     }
@@ -460,7 +460,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
     {
         final String methodName = "clearGovernanceMeasurements";
         final String guidParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-measurements/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/classify-with-governance-measurements/delete";
 
         super.removeReferenceableClassification(userId, elementGUID, guidParameter, urlTemplate, methodName);
     }
@@ -485,7 +485,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
                                                                                        PropertyServerException
     {
         final String methodName = "getGovernanceMetricByGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/{2}";
 
         final String guidParameterName = "metricGUID";
 
@@ -493,10 +493,10 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
         invalidParameterHandler.validateGUID(metricGUID, guidParameterName, methodName);
 
         GovernanceMetricResponse restResult = restClient.callGovernanceMetricGetRESTCall(methodName,
-                                                                                          serverPlatformURLRoot + urlTemplate,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          metricGUID);
+                                                                                         urlTemplate,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         metricGUID);
 
         return restResult.getElement();
     }
@@ -525,10 +525,9 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
                                                                                        UserNotAuthorizedException
     {
         final String methodName = "findGovernanceMetrics";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-metrics/by-search-string?startFrom={2}&pageSize={3}";
         final String searchStringParameterName = "searchString";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
 
@@ -539,7 +538,7 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         GovernanceMetricListResponse restResult = restClient.callGovernanceMetricListPostRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   requestBody,
                                                                                                   serverName,
                                                                                                   userId,

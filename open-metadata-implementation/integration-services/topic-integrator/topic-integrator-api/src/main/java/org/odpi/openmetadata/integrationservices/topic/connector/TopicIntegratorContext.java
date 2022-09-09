@@ -5,11 +5,41 @@ package org.odpi.openmetadata.integrationservices.topic.connector;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
 import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
-import org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient;
+import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EventTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.TopicElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueSetElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.EnumSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.EventTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.LiteralSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.MapSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.PrimitiveSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeChoiceProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.StructSchemaTypeProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueAssignmentProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueMembershipProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ValidValueProperties;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.util.List;
@@ -22,6 +52,7 @@ import java.util.Map;
 public class TopicIntegratorContext
 {
     private final ConnectionManagerClient connectionManagerClient;
+    private final ValidValueManagement    validValueManagement;
     private final EventBrokerClient       eventBrokerClient;
     private final DataManagerEventClient  eventClient;
     private final String                  userId;
@@ -35,6 +66,7 @@ public class TopicIntegratorContext
      *
      * @param eventBrokerClient client to map request to
      * @param connectionManagerClient client for managing connections
+     * @param validValueManagement client for managing valid value sets and definitions
      * @param eventClient client to register for events
      * @param userId integration daemon's userId
      * @param eventBrokerGUID unique identifier of the software server capability for the event broker
@@ -42,6 +74,7 @@ public class TopicIntegratorContext
      */
     public TopicIntegratorContext(EventBrokerClient       eventBrokerClient,
                                   ConnectionManagerClient connectionManagerClient,
+                                  ValidValueManagement    validValueManagement,
                                   DataManagerEventClient  eventClient,
                                   String                  userId,
                                   String                  eventBrokerGUID,
@@ -49,6 +82,7 @@ public class TopicIntegratorContext
     {
         this.eventBrokerClient       = eventBrokerClient;
         this.connectionManagerClient = connectionManagerClient;
+        this.validValueManagement    = validValueManagement;
         this.eventClient             = eventClient;
         this.userId                  = userId;
         this.eventBrokerGUID         = eventBrokerGUID;
@@ -361,7 +395,7 @@ public class TopicIntegratorContext
 
 
     /**
-     * Create a new metadata element to represent a event type using an existing metadata element as a template.
+     * Create a new metadata element to represent an event type using an existing metadata element as a template.
      *
      * @param templateGUID unique identifier of the metadata element to copy
      * @param topicGUID unique identifier of the topic where the event type is located
@@ -391,7 +425,7 @@ public class TopicIntegratorContext
 
 
     /**
-     * Update the metadata element representing a event type.
+     * Update the metadata element representing an event type.
      *
      * @param eventTypeGUID unique identifier of the metadata element to update
      * @param isMergeUpdate are unspecified properties unchanged (true) or removed?
@@ -412,7 +446,7 @@ public class TopicIntegratorContext
 
 
     /**
-     * Remove the metadata element representing a event type.
+     * Remove the metadata element representing an event type.
      *
      * @param eventTypeGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
@@ -1533,7 +1567,7 @@ public class TopicIntegratorContext
 
 
     /**
-     * Update the metadata element representing a endpoint.  It is possible to use the subtype property classes or
+     * Update the metadata element representing an endpoint.  It is possible to use the subtype property classes or
      * set up specialized properties in extended properties.
      *
      * @param endpointGUID unique identifier of the metadata element to update
@@ -1704,5 +1738,409 @@ public class TopicIntegratorContext
                                                                                         PropertyServerException
     {
         return connectionManagerClient.getConnectorTypeByGUID(userId, connectorTypeGUID);
+    }
+
+
+
+
+    /* =====================================================================================================================
+     * A ValidValue is the top level object for working with connectors
+     */
+
+    /**
+     * Create a new metadata element to represent a valid value.
+     *
+     * @param validValueProperties properties about the valid value to store
+     *
+     * @return unique identifier of the new valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createValidValue(ValidValueProperties validValueProperties) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return validValueManagement.createValidValue(userId, eventBrokerGUID, eventBrokerName, validValueProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a valid value.  It is possible to use the subtype property classes or
+     * set up specialized properties in extended properties.
+     *
+     * @param validValueGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param validValueProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateValidValue(String               validValueGUID,
+                                 boolean              isMergeUpdate,
+                                 ValidValueProperties validValueProperties) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        validValueManagement.updateValidValue(userId, eventBrokerGUID, eventBrokerName, validValueGUID, isMergeUpdate, validValueProperties);
+    }
+
+
+    /**
+     * Create a membership relationship between a validValue and a validValueSet that it belongs to.
+     *
+     * @param validValueSetGUID unique identifier of the valid value set
+     * @param properties describes the properties of the membership
+     * @param validValueMemberGUID unique identifier of the member
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupValidValueMember(String                         validValueSetGUID,
+                                      ValidValueMembershipProperties properties,
+                                      String                         validValueMemberGUID) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        validValueManagement.setupValidValueMember(userId, eventBrokerGUID, eventBrokerName, validValueSetGUID, properties, validValueMemberGUID);
+    }
+
+
+    /**
+     * Remove a membership relationship between a validValue and a validValueSet that it belongs to.
+     *
+     * @param validValueSetGUID unique identifier of the valid value set
+     * @param validValueMemberGUID unique identifier of the member
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearValidValueMember(String validValueSetGUID,
+                                      String validValueMemberGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        validValueManagement.clearValidValueMember(userId, eventBrokerGUID, eventBrokerName, validValueSetGUID, validValueMemberGUID);
+    }
+
+
+    /**
+     * Create a valid value assignment relationship between an element and a valid value (typically, a valid value set) to show that
+     * the valid value defines the values that can be stored in the data item that the element represents.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties describes the permissions that the role has in the validValue
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupValidValues(String                         elementGUID,
+                                 ValidValueAssignmentProperties properties,
+                                 String                         validValueGUID) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        validValueManagement.setupValidValues(userId, eventBrokerGUID, eventBrokerName, elementGUID, properties, validValueGUID);
+    }
+
+
+    /**
+     * Remove a valid value assignment relationship between an element and a valid value.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearValidValues(String elementGUID,
+                                 String validValueGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        validValueManagement.clearValidValues(userId, eventBrokerGUID, eventBrokerName, elementGUID, validValueGUID);
+    }
+
+
+    /**
+     * Create a reference value assignment relationship between an element and a valid value to show that
+     * the valid value is a semiformal tag/classification.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param properties describes the quality of the assignment
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setupReferenceValueTag(String                             elementGUID,
+                                       ReferenceValueAssignmentProperties properties,
+                                       String                             validValueGUID) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        validValueManagement.setupReferenceValueTag(userId, eventBrokerGUID, eventBrokerName, elementGUID, properties, validValueGUID);
+    }
+
+
+    /**
+     * Remove a reference value assignment relationship between an element and a valid value.
+     *
+     * @param elementGUID unique identifier of the element
+     * @param validValueGUID unique identifier of the valid value
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void clearReferenceValueTag(String elementGUID,
+                                       String validValueGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        validValueManagement.clearReferenceValueTag(userId, eventBrokerGUID, eventBrokerName, elementGUID, validValueGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a valid value.
+     *
+     * @param validValueGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeValidValue(String validValueGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        validValueManagement.removeValidValue(userId, eventBrokerGUID, eventBrokerName, validValueGUID);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> findValidValues(String searchString,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return validValueManagement.findValidValues(userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> getValidValuesByName(String name,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        return validValueManagement.getValidValuesByName(userId, name, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of valid values.
+     *
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<ValidValueElement> getAllValidValues(int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        return validValueManagement.getAllValidValues(userId, startFrom, pageSize);
+    }
+
+
+    /**
+     * Page through the members of a valid value set.
+     *
+     * @param validValueSetGUID          unique identifier of the valid value set
+     * @param startFrom                  paging starting point
+     * @param pageSize                   maximum number of return values.
+     * @return list of valid value beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<ValidValueElement> getValidValueSetMembers(String  validValueSetGUID,
+                                                           int     startFrom,
+                                                           int     pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return validValueManagement.getValidValueSetMembers(userId, validValueSetGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Page through the list of valid value sets that a valid value definition/set belongs to.
+     *
+     * @param validValueGUID          unique identifier of valid value to query
+     * @param startFrom               paging starting point
+     * @param pageSize                maximum number of return values.
+     * @return list of valid value beans
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    the repository is not available or not working properly.
+     */
+    public List<ValidValueElement> getSetsForValidValue(String  validValueGUID,
+                                                        int     startFrom,
+                                                        int     pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return validValueManagement.getSetsForValidValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the valid value set linked to an element as its set of valid values.
+     *
+     * @param elementGUID unique identifier for the element using the valid value set
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public ValidValueElement getValidValuesForConsumer(String elementGUID) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        return validValueManagement.getValidValuesForConsumer(userId, elementGUID);
+    }
+
+
+    /**
+     * Return information about the consumers linked to a validValue.
+     *
+     * @param validValueGUID unique identifier for the validValue
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<RelatedElement> getConsumersOfValidValue(String validValueGUID,
+                                                         int    startFrom,
+                                                         int    pageSize) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return validValueManagement.getConsumersOfValidValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the valid values linked as reference value tags to an element.
+     *
+     * @param elementGUID unique identifier for the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of valid values
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<ValidValueElement> getReferenceValues(String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        return validValueManagement.getReferenceValues(userId, elementGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return information about the person roles linked to a validValue.
+     *
+     * @param validValueGUID unique identifier for the validValue
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of matching actor profiles (hopefully only one)
+     *
+     * @throws InvalidParameterException guid is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<RelatedElement> getAssigneesOfReferenceValue(String validValueGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        return validValueManagement.getAssigneesOfReferenceValue(userId, validValueGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the metadata element with the supplied unique identifier.
+     *
+     * @param validValueGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ValidValueElement getValidValueByGUID(String validValueGUID) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        return validValueManagement.getValidValueByGUID(userId, validValueGUID);
     }
 }

@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ITProfileResource
 {
-    private ITProfileRESTServices restAPI = new ITProfileRESTServices();
+    private final ITProfileRESTServices restAPI = new ITProfileRESTServices();
 
     /**
      * Default constructor
@@ -52,11 +52,11 @@ public class ITProfileResource
 
 
     /**
-     * Create a definition of a IT profile.
+     * Create a definition of an IT profile.
      *
      * @param serverName called server
      * @param userId calling user
-     * @param requestBody properties for a IT profile
+     * @param requestBody properties for an IT profile
      *
      * @return unique identifier of IT profile
      *
@@ -365,7 +365,7 @@ public class ITProfileResource
      * PropertyServerException  - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/user-identities/{userIdentityGUID}/personal-profiles/{profileGUID}/link")
+    @PostMapping(path = "/user-identities/{userIdentityGUID}/profiles/{profileGUID}/link")
 
     public VoidResponse  addIdentityToProfile(@PathVariable String                    serverName,
                                               @PathVariable String                    userId,

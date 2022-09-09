@@ -147,13 +147,12 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
                                                                              PropertyServerException
     {
         final String methodName = "createStandardGovernanceStatusLevels";
-
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/standard-set";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/standard-set";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
-                                                                serverPlatformURLRoot + urlTemplate,
+                                                                urlTemplate,
                                                                 nullRequestBody,
                                                                 serverName,
                                                                 userId);
@@ -187,7 +186,7 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
     {
         final String methodName = "createGovernanceStatusIdentifierSet";
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets";
 
 
         return super.createReferenceable(userId, properties, propertiesParameter, urlTemplate, methodName);
@@ -215,7 +214,7 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
         final String methodName = "updateGovernanceStatusIdentifierSet";
         final String guidParameter = "setGUID";
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/{2}/update";
 
         super.updateReferenceable(userId, setGUID, guidParameter, false, properties, propertiesParameter, urlTemplate, methodName);
     }
@@ -239,7 +238,7 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
     {
         final String methodName = "removeGovernanceStatusIdentifierSet";
         final String guidParameter = "setGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/{2}/delete";
 
         super.removeReferenceable(userId, setGUID, guidParameter, urlTemplate, methodName);
     }
@@ -262,12 +261,12 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
                                                                                                               PropertyServerException
     {
         final String methodName = "getGovernanceStatusIdentifierSets";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GovernanceStatusIdentifierSetListResponse restResult = restClient.callStatusIdentifierSetListGetRESTCall(methodName,
-                                                                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                                                                 urlTemplate,
                                                                                                                  serverName,
                                                                                                                  userId);
         return restResult.getElements();
@@ -294,13 +293,13 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
     {
         final String methodName = "getGovernanceStatusIdentifierSet";
         final String guidParameter = "setGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(setGUID, guidParameter, methodName);
 
         GovernanceStatusIdentifierSetResponse restResult = restClient.callStatusIdentifierSetGetRESTCall(methodName,
-                                                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                                                         urlTemplate,
                                                                                                          serverName,
                                                                                                          userId,
                                                                                                          setGUID);
@@ -335,7 +334,7 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
         final String methodName = "createGovernanceStatusIdentifier";
         final String guidParameter = "setGUID";
         final String propertiesParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/identifier";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/identifier";
 
         return super.createReferenceableWithAnchor(userId, setGUID, guidParameter, properties, propertiesParameter, urlTemplate, methodName);
     }
@@ -362,7 +361,7 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
         final String methodName = "updateGovernanceStatusIdentifier";
         final String guidParameter = "identifierGUID";
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/identifier/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/identifier/{2}/update";
 
         super.updateReferenceable(userId, identifierGUID, guidParameter, false, properties, propertiesParameter, urlTemplate, methodName);
     }
@@ -386,7 +385,7 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
     {
         final String methodName = "removeGovernanceStatusIdentifier";
         final String guidParameter = "identifierGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/identifier/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/identifier/{2}/delete";
 
         super.removeReferenceable(userId, identifierGUID, guidParameter, urlTemplate, methodName);
     }
@@ -411,12 +410,12 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
                                                                                                           PropertyServerException
     {
         final String methodName = "getGovernanceStatusIdentifier";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/identifier/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-status-sets/identifier/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GovernanceStatusIdentifierResponse restResult = restClient.callStatusIdentifierGetRESTCall(methodName,
-                                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                                   urlTemplate,
                                                                                                    serverName,
                                                                                                    userId,
                                                                                                    levelIdentifier);

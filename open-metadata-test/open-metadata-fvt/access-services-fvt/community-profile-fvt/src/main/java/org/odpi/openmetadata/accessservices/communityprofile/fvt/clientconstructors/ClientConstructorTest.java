@@ -3,9 +3,9 @@
 
 package org.odpi.openmetadata.accessservices.communityprofile.fvt.clientconstructors;
 
+import org.odpi.openmetadata.accessservices.communityprofile.client.CommunityManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.MetadataSourceClient;
-import org.odpi.openmetadata.accessservices.communityprofile.client.MyProfileManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.client.PersonalProfileManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -78,8 +78,8 @@ public class ClientConstructorTest
 
         thisTest.testMetadataSourceClient(serverName, serverPlatformRootURL, auditLog);
         thisTest.testUserIdentityManagement(serverName, serverPlatformRootURL, auditLog);
-        thisTest.testMyProfileManagement(serverName, serverPlatformRootURL, auditLog);
-        thisTest.testPersonalProfileManagement(serverName, serverPlatformRootURL, auditLog);
+        thisTest.testOrganizationManagement(serverName, serverPlatformRootURL, auditLog);
+        thisTest.testCommunityManagement(serverName, serverPlatformRootURL, auditLog);
     }
 
 
@@ -143,18 +143,18 @@ public class ClientConstructorTest
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    private void testMyProfileManagement(String   serverName,
-                                         String   serverPlatformRootURL,
-                                         AuditLog auditLog) throws InvalidParameterException
+    private void testOrganizationManagement(String   serverName,
+                                            String   serverPlatformRootURL,
+                                            AuditLog auditLog) throws InvalidParameterException
     {
-        new MyProfileManagement(serverName, serverPlatformRootURL, auditLog);
-        new MyProfileManagement(serverName, serverPlatformRootURL);
-        new MyProfileManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
-        new MyProfileManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new OrganizationManagement(serverName, serverPlatformRootURL, auditLog);
+        new OrganizationManagement(serverName, serverPlatformRootURL);
+        new OrganizationManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
+        new OrganizationManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
 
         CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
 
-        new MyProfileManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
+        new OrganizationManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
     }
 
 
@@ -167,17 +167,17 @@ public class ClientConstructorTest
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    private void testPersonalProfileManagement(String   serverName,
-                                               String   serverPlatformRootURL,
-                                               AuditLog auditLog) throws InvalidParameterException
+    private void testCommunityManagement(String   serverName,
+                                         String   serverPlatformRootURL,
+                                         AuditLog auditLog) throws InvalidParameterException
     {
-        new PersonalProfileManagement(serverName, serverPlatformRootURL, auditLog);
-        new PersonalProfileManagement(serverName, serverPlatformRootURL);
-        new PersonalProfileManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword,  auditLog);
-        new PersonalProfileManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new CommunityManagement(serverName, serverPlatformRootURL, auditLog);
+        new CommunityManagement(serverName, serverPlatformRootURL);
+        new CommunityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword,  auditLog);
+        new CommunityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
 
         CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
 
-        new PersonalProfileManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
+        new CommunityManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
     }
 }
