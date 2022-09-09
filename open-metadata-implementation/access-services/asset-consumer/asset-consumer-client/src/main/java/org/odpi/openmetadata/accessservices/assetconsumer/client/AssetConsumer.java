@@ -400,7 +400,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
     }
 
 
-
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
@@ -413,6 +412,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @Override
     public AssetUniverse getAssetProperties(String userId,
                                             String assetGUID) throws InvalidParameterException,
                                                                      PropertyServerException,
