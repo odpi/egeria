@@ -6,7 +6,7 @@ package org.odpi.openmetadata.commonservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,23 +17,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ElementHeadersResponse is a response object for passing back a list of element headers
+ * ValidMetadataValueListResponse is a response object for passing back a list of ValidMetadataValue properties
  * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ElementHeadersResponse extends OMAGGAFAPIResponse
+public class ValidMetadataValueListResponse extends OMAGGAFAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ElementHeader> elementList = null;
+    private List<ValidMetadataValue> elementList = null;
 
 
     /**
      * Default constructor
      */
-    public ElementHeadersResponse()
+    public ValidMetadataValueListResponse()
     {
     }
 
@@ -43,7 +43,7 @@ public class ElementHeadersResponse extends OMAGGAFAPIResponse
      *
      * @param template object to copy
      */
-    public ElementHeadersResponse(ElementHeadersResponse template)
+    public ValidMetadataValueListResponse(ValidMetadataValueListResponse template)
     {
         super(template);
 
@@ -59,7 +59,7 @@ public class ElementHeadersResponse extends OMAGGAFAPIResponse
      *
      * @return result object
      */
-    public List<ElementHeader> getElementList()
+    public List<ValidMetadataValue> getElementList()
     {
         if (elementList == null)
         {
@@ -81,7 +81,7 @@ public class ElementHeadersResponse extends OMAGGAFAPIResponse
      *
      * @param elementList result object
      */
-    public void setElementList(List<ElementHeader> elementList)
+    public void setElementList(List<ValidMetadataValue> elementList)
     {
         this.elementList = elementList;
     }
@@ -95,19 +95,19 @@ public class ElementHeadersResponse extends OMAGGAFAPIResponse
     @Override
     public String toString()
     {
-        return "ElementHeadersResponse{" +
-                "elementList=" + elementList +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+        return "ValidMetadataValueListResponse{" +
+                       "elementList=" + elementList +
+                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                       ", actionDescription='" + getActionDescription() + '\'' +
+                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
+                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
+                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
+                       ", exceptionProperties=" + getExceptionProperties() +
+                       '}';
     }
 
 
@@ -132,7 +132,7 @@ public class ElementHeadersResponse extends OMAGGAFAPIResponse
         {
             return false;
         }
-        ElementHeadersResponse that = (ElementHeadersResponse) objectToCompare;
+        ValidMetadataValueListResponse that = (ValidMetadataValueListResponse) objectToCompare;
         return Objects.equals(elementList, that.elementList);
     }
 
