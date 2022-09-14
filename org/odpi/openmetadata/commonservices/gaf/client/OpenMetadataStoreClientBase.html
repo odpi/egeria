@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10,"i31":10,"i32":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -131,7 +131,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MetadataElementInterface</a></code>, <code><a href="../api/SpecialGovernanceActionInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">SpecialGovernanceActionInterface</a></code></dd>
+<dd><code><a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MetadataElementInterface</a></code>, <code><a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MultiLanguageInterface</a></code>, <code><a href="../api/SpecialGovernanceActionInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">SpecialGovernanceActionInterface</a></code>, <code><a href="../api/ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">ValidMetadataValuesInterface</a></code></dd>
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
@@ -140,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public abstract class <span class="typeNameLabel">OpenMetadataStoreClientBase</span>
 extends java.lang.Object
-implements <a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MetadataElementInterface</a>, <a href="../api/SpecialGovernanceActionInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">SpecialGovernanceActionInterface</a></pre>
+implements <a href="../api/MetadataElementInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MetadataElementInterface</a>, <a href="../api/SpecialGovernanceActionInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">SpecialGovernanceActionInterface</a>, <a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MultiLanguageInterface</a>, <a href="../api/ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">ValidMetadataValuesInterface</a></pre>
 <div class="block">OpenMetadataStoreClientBase sits in the governance context of a governance action service when it is running in the engine host OMAG server.
  It is however shared by all the governance action services running in an engine service so that we only need one connector to the topic
  listener for the watchdog governance services.</div>
@@ -225,6 +225,26 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 </td>
 </tr>
 <tr id="i1" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearTranslation</a></span>&#8203;(java.lang.String&nbsp;userId,
+                java.lang.String&nbsp;elementGUID,
+                java.lang.String&nbsp;language,
+                java.lang.String&nbsp;locale)</code></th>
+<td class="colLast">
+<div class="block">Remove the translation for a particular language/locale for a metadata element.</div>
+</td>
+</tr>
+<tr id="i2" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#clearValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+                       java.lang.String&nbsp;typeName,
+                       java.lang.String&nbsp;propertyName,
+                       java.lang.String&nbsp;preferredValue)</code></th>
+<td class="colLast">
+<div class="block">Remove a valid value for a property.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createIncidentReport(java.lang.String,java.lang.String,int,java.lang.String,java.util.List,java.util.List,java.util.Map,java.util.Map,java.lang.String)">createIncidentReport</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;qualifiedName,
@@ -239,7 +259,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Create an incident report to capture the situation detected by this governance action service.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.lang.String)">createMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;metadataElementTypeName,
@@ -252,7 +272,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Create a new metadata element in the metadata store.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createRelatedElementsInStore(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">createRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;relationshipTypeName,
@@ -268,7 +288,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Create a relationship between two metadata elements.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteMetadataElementInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">deleteMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;metadataElementGUID,
@@ -279,7 +299,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Delete a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#deleteRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">deleteRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;relationshipGUID,
@@ -290,7 +310,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Delete a relationship between two metadata elements.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMetadataElements(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.util.List,org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.util.Date,int,int)">findMetadataElements</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;metadataElementTypeName,
@@ -309,7 +329,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Return a list of metadata elements that match the supplied criteria.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,int,int)">findMetadataElementsWithString</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;searchString,
@@ -322,7 +342,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Retrieve the metadata elements that contain the requested string.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RelatedMetadataElements.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElements</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#findRelationshipsBetweenMetadataElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.util.Date,int,int)">findRelationshipsBetweenMetadataElements</a></span>&#8203;(java.lang.String&nbsp;userId,
                                         java.lang.String&nbsp;relationshipTypeName,
@@ -338,7 +358,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Return a list of relationships that match the requested conditions.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">getMetadataElementByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                         java.lang.String&nbsp;elementGUID,
@@ -349,7 +369,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Retrieve the metadata element using its unique identifier.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">getMetadataElementByUniqueName</a></span>&#8203;(java.lang.String&nbsp;userId,
                               java.lang.String&nbsp;uniqueName,
@@ -361,7 +381,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Retrieve the metadata element using its unique name (typically the qualified name).</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">getMetadataElementGUIDByUniqueName</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;uniqueName,
@@ -373,7 +393,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../../../frameworks/governanceaction/properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getRelatedMetadataElements(java.lang.String,java.lang.String,int,java.lang.String,boolean,boolean,java.util.Date,int,int)">getRelatedMetadataElements</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;elementGUID,
@@ -388,7 +408,48 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Retrieve the metadata elements connected to the supplied element.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i15" class="rowColor">
+<td class="colFirst"><code><a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">TranslationDetail</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getTranslation</a></span>&#8203;(java.lang.String&nbsp;userId,
+              java.lang.String&nbsp;elementGUID,
+              java.lang.String&nbsp;language,
+              java.lang.String&nbsp;locale)</code></th>
+<td class="colLast">
+<div class="block">Retrieve the translation for the matching language/locale.</div>
+</td>
+</tr>
+<tr id="i16" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">TranslationDetail</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTranslations(java.lang.String,java.lang.String,int,int)">getTranslations</a></span>&#8203;(java.lang.String&nbsp;userId,
+               java.lang.String&nbsp;elementGUID,
+               int&nbsp;startFrom,
+               int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve all translations associated with a metadata element.</div>
+</td>
+</tr>
+<tr id="i17" class="rowColor">
+<td class="colFirst"><code><a href="../properties/ValidMetadataValue.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">ValidMetadataValue</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getValidMetadataValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+                     java.lang.String&nbsp;typeName,
+                     java.lang.String&nbsp;propertyName,
+                     java.lang.String&nbsp;preferredValue)</code></th>
+<td class="colLast">
+<div class="block">Retrieve details of a specific valid value for a property.</div>
+</td>
+</tr>
+<tr id="i18" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../properties/ValidMetadataValue.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">ValidMetadataValue</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getValidMetadataValues(java.lang.String,java.lang.String,java.lang.String,int,int)">getValidMetadataValues</a></span>&#8203;(java.lang.String&nbsp;userId,
+                      java.lang.String&nbsp;typeName,
+                      java.lang.String&nbsp;propertyName,
+                      int&nbsp;startFrom,
+                      int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Retrieve all the valid values for the requested property.</div>
+</td>
+</tr>
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkConsolidatedDuplicate(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)">linkConsolidatedDuplicate</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;consolidatedElementGUID,
@@ -403,7 +464,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Identify an element that acts as a consolidated version for a set of duplicate elements.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#linkElementsAsPeerDuplicates(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean)">linkElementsAsPeerDuplicates</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;metadataElement1GUID,
@@ -419,7 +480,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Link elements as peer duplicates.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#openToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,java.util.Date,java.lang.String)">openToDo</a></span>&#8203;(java.lang.String&nbsp;userId,
         java.lang.String&nbsp;toDoQualifiedName,
@@ -432,7 +493,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Create a To-Do request for someone to work on.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">reclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;metadataElementGUID,
@@ -446,7 +507,26 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i23" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.properties.TranslationDetail)">setTranslation</a></span>&#8203;(java.lang.String&nbsp;userId,
+              java.lang.String&nbsp;elementGUID,
+              <a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">TranslationDetail</a>&nbsp;translationDetail)</code></th>
+<td class="colLast">
+<div class="block">Create or update the translation for a particular language/locale for a metadata element.</div>
+</td>
+</tr>
+<tr id="i24" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setUpValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue)">setUpValidMetadataValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+                       java.lang.String&nbsp;typeName,
+                       java.lang.String&nbsp;propertyName,
+                       <a href="../properties/ValidMetadataValue.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">ValidMetadataValue</a>&nbsp;validMetadataValue)</code></th>
+<td class="colLast">
+<div class="block">Create or update the valid value for a particular open metadata property name.</div>
+</td>
+</tr>
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#unclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date)">unclassifyMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;metadataElementGUID,
@@ -458,7 +538,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Remove the named classification from a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateClassificationEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                                       java.lang.String&nbsp;metadataElementGUID,
@@ -472,7 +552,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateMetadataElementEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                                        java.lang.String&nbsp;metadataElementGUID,
@@ -485,7 +565,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Update the status of specific metadata element.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">updateMetadataElementInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;metadataElementGUID,
@@ -498,7 +578,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Update the properties of a specific metadata element.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus,java.util.Date)">updateMetadataElementStatusInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                                   java.lang.String&nbsp;metadataElementGUID,
@@ -510,7 +590,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Update the status of specific metadata element.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.util.Date,java.util.Date)">updateRelatedElementsEffectivityInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                                        java.lang.String&nbsp;relationshipGUID,
@@ -523,7 +603,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i31" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Date)">updateRelatedElementsInStore</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;relationshipGUID,
@@ -534,6 +614,16 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                             java.util.Date&nbsp;effectiveTime)</code></th>
 <td class="colLast">
 <div class="block">Update the properties associated with a relationship.</div>
+</td>
+</tr>
+<tr id="i32" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#validateMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateMetadataValue</a></span>&#8203;(java.lang.String&nbsp;userId,
+                     java.lang.String&nbsp;typeName,
+                     java.lang.String&nbsp;propertyName,
+                     java.lang.String&nbsp;actualValue)</code></th>
+<td class="colLast">
+<div class="block">Validate whether the value found in an open metadata property is valid.</div>
 </td>
 </tr>
 </table>
@@ -1532,7 +1622,7 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
 <a id="linkConsolidatedDuplicate(java.lang.String,java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>linkConsolidatedDuplicate</h4>
 <pre class="methodSignature">public&nbsp;void&nbsp;linkConsolidatedDuplicate&#8203;(java.lang.String&nbsp;userId,
@@ -1568,6 +1658,279 @@ implements <a href="../api/MetadataElementInterface.html" title="interface in or
                                     not valid for this type of relationship</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to create this type of relationship</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem with the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.properties.TranslationDetail)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setTranslation</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setTranslation&#8203;(java.lang.String&nbsp;userId,
+                           java.lang.String&nbsp;elementGUID,
+                           <a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">TranslationDetail</a>&nbsp;translationDetail)
+                    throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                           <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create or update the translation for a particular language/locale for a metadata element.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/MultiLanguageInterface.html#setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.properties.TranslationDetail)">setTranslation</a></code>&nbsp;in interface&nbsp;<code><a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MultiLanguageInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>elementGUID</code> - unique identifier of the element that this translation is related to</dd>
+<dd><code>translationDetail</code> - properties of the translation</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the service is not able to access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="clearTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearTranslation</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;clearTranslation&#8203;(java.lang.String&nbsp;userId,
+                             java.lang.String&nbsp;elementGUID,
+                             java.lang.String&nbsp;language,
+                             java.lang.String&nbsp;locale)
+                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove the translation for a particular language/locale for a metadata element.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/MultiLanguageInterface.html#clearTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearTranslation</a></code>&nbsp;in interface&nbsp;<code><a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MultiLanguageInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>elementGUID</code> - unique identifier of the element that this translation is related to</dd>
+<dd><code>language</code> - language requested</dd>
+<dd><code>locale</code> - optional locale to qualify which translation if there are multiple translations for the language.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the language is null or not known or not unique (add locale)</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the service is not able to access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="getTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTranslation</h4>
+<pre class="methodSignature">public&nbsp;<a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">TranslationDetail</a>&nbsp;getTranslation&#8203;(java.lang.String&nbsp;userId,
+                                        java.lang.String&nbsp;elementGUID,
+                                        java.lang.String&nbsp;language,
+                                        java.lang.String&nbsp;locale)
+                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                        <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve the translation for the matching language/locale.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/MultiLanguageInterface.html#getTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getTranslation</a></code>&nbsp;in interface&nbsp;<code><a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MultiLanguageInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>elementGUID</code> - unique identifier of the element that this translation is related to</dd>
+<dd><code>language</code> - language requested</dd>
+<dd><code>locale</code> - optional locale to qualify which translation if there are multiple translations for the language.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>the properties of the translation or null if there is none</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the service is not able to access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="getTranslations(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTranslations</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">TranslationDetail</a>&gt;&nbsp;getTranslations&#8203;(java.lang.String&nbsp;userId,
+                                                         java.lang.String&nbsp;elementGUID,
+                                                         int&nbsp;startFrom,
+                                                         int&nbsp;pageSize)
+                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve all translations associated with a metadata element.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/MultiLanguageInterface.html#getTranslations(java.lang.String,java.lang.String,int,int)">getTranslations</a></code>&nbsp;in interface&nbsp;<code><a href="../api/MultiLanguageInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">MultiLanguageInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>elementGUID</code> - unique identifier of the element that this translation is related to</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of translation properties or null if there are none</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique identifier is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the service is not able to access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="setUpValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setUpValidMetadataValue</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setUpValidMetadataValue&#8203;(java.lang.String&nbsp;userId,
+                                    java.lang.String&nbsp;typeName,
+                                    java.lang.String&nbsp;propertyName,
+                                    <a href="../properties/ValidMetadataValue.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">ValidMetadataValue</a>&nbsp;validMetadataValue)
+                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create or update the valid value for a particular open metadata property name.  If the typeName is null, this valid value
+ applies to properties of this name from all types.  The valid value is stored in the preferredValue property.  If a valid value is
+ already set up for this property (with overlapping effective dates) then the valid value is updated.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ValidMetadataValuesInterface.html#setUpValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue)">setUpValidMetadataValue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">ValidMetadataValuesInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>typeName</code> - type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types</dd>
+<dd><code>propertyName</code> - name of property that this valid value applies</dd>
+<dd><code>validMetadataValue</code> - preferred value to use in the open metadata types plus additional descriptive values.</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the property name is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the service is not able to create/access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="clearValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>clearValidMetadataValue</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;clearValidMetadataValue&#8203;(java.lang.String&nbsp;userId,
+                                    java.lang.String&nbsp;typeName,
+                                    java.lang.String&nbsp;propertyName,
+                                    java.lang.String&nbsp;preferredValue)
+                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Remove a valid value for a property.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ValidMetadataValuesInterface.html#clearValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearValidMetadataValue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">ValidMetadataValuesInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>typeName</code> - type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types</dd>
+<dd><code>propertyName</code> - name of property that this valid value applies</dd>
+<dd><code>preferredValue</code> - specific valid value to remove</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the property name is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the service is not able to create/access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="validateMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>validateMetadataValue</h4>
+<pre class="methodSignature">public&nbsp;boolean&nbsp;validateMetadataValue&#8203;(java.lang.String&nbsp;userId,
+                                     java.lang.String&nbsp;typeName,
+                                     java.lang.String&nbsp;propertyName,
+                                     java.lang.String&nbsp;actualValue)
+                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Validate whether the value found in an open metadata property is valid.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ValidMetadataValuesInterface.html#validateMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">validateMetadataValue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">ValidMetadataValuesInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>typeName</code> - type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types</dd>
+<dd><code>propertyName</code> - name of property that this valid value applies</dd>
+<dd><code>actualValue</code> - value stored in the property - if this is null, true is only returned if null is set up as a valid value.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value).</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the property name is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the service is not able to create/access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="getValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getValidMetadataValue</h4>
+<pre class="methodSignature">public&nbsp;<a href="../properties/ValidMetadataValue.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">ValidMetadataValue</a>&nbsp;getValidMetadataValue&#8203;(java.lang.String&nbsp;userId,
+                                                java.lang.String&nbsp;typeName,
+                                                java.lang.String&nbsp;propertyName,
+                                                java.lang.String&nbsp;preferredValue)
+                                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve details of a specific valid value for a property.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ValidMetadataValuesInterface.html#getValidMetadataValue(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">getValidMetadataValue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">ValidMetadataValuesInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>typeName</code> - type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types</dd>
+<dd><code>propertyName</code> - name of property that this valid value applies</dd>
+<dd><code>preferredValue</code> - valid value to match</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>specific valid value definition or none if there is no definition stored</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the property name is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the service is not able to create/access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
+</dl>
+</li>
+</ul>
+<a id="getValidMetadataValues(java.lang.String,java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>getValidMetadataValues</h4>
+<pre class="methodSignature">public&nbsp;java.util.List&lt;<a href="../properties/ValidMetadataValue.html" title="class in org.odpi.openmetadata.commonservices.gaf.properties">ValidMetadataValue</a>&gt;&nbsp;getValidMetadataValues&#8203;(java.lang.String&nbsp;userId,
+                                                                 java.lang.String&nbsp;typeName,
+                                                                 java.lang.String&nbsp;propertyName,
+                                                                 int&nbsp;startFrom,
+                                                                 int&nbsp;pageSize)
+                                                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Retrieve all the valid values for the requested property.</div>
+<dl>
+<dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
+<dd><code><a href="../api/ValidMetadataValuesInterface.html#getValidMetadataValues(java.lang.String,java.lang.String,java.lang.String,int,int)">getValidMetadataValues</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ValidMetadataValuesInterface.html" title="interface in org.odpi.openmetadata.commonservices.gaf.api">ValidMetadataValuesInterface</a></code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - caller's userId</dd>
+<dd><code>typeName</code> - type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types</dd>
+<dd><code>propertyName</code> - name of property that this valid value applies</dd>
+<dd><code>startFrom</code> - paging start point</dd>
+<dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of valid values defined for the property</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the property name is null or not known.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the service is not able to create/access the element</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
 </dl>
 </li>
 </ul>

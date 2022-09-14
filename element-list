@@ -219,6 +219,7 @@ org.odpi.openmetadata.commonservices.gaf.api
 org.odpi.openmetadata.commonservices.gaf.client
 org.odpi.openmetadata.commonservices.gaf.client.rest
 org.odpi.openmetadata.commonservices.gaf.ffdc
+org.odpi.openmetadata.commonservices.gaf.properties
 org.odpi.openmetadata.commonservices.gaf.rest
 org.odpi.openmetadata.commonservices.gaf.server.spring
 org.odpi.openmetadata.commonservices.generichandlers.ffdc

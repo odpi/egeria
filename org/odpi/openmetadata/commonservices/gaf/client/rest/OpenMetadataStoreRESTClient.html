@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -237,6 +237,15 @@ extends <a href="../../../ocf/metadatamanagement/client/OCFRESTClient.html" titl
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
+<td class="colFirst"><code><a href="../../../ffdc/rest/BooleanResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">BooleanResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callBooleanGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callBooleanGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
+                      java.lang.String&nbsp;urlTemplate,
+                      java.lang.Object...&nbsp;params)</code></th>
+<td class="colLast">
+<div class="block">Issue a GET REST call that returns a BooleanResponse object.</div>
+</td>
+</tr>
+<tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/ElementHeaderResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">ElementHeaderResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callElementHeaderPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callElementHeaderPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                              java.lang.String&nbsp;urlTemplate,
@@ -246,7 +255,7 @@ extends <a href="../../../ocf/metadatamanagement/client/OCFRESTClient.html" titl
 <div class="block">Issue a POST REST call that returns a ElementHeaderResponse object.</div>
 </td>
 </tr>
-<tr id="i1" class="rowColor">
+<tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../rest/ElementHeadersResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">ElementHeadersResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callElementHeadersPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callElementHeadersPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                               java.lang.String&nbsp;urlTemplate,
@@ -256,7 +265,7 @@ extends <a href="../../../ocf/metadatamanagement/client/OCFRESTClient.html" titl
 <div class="block">Issue a POST REST call that returns a ElementHeadersResponse object.</div>
 </td>
 </tr>
-<tr id="i2" class="altColor">
+<tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">OpenMetadataElementResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callOpenMetadataElementGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOpenMetadataElementGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                   java.lang.String&nbsp;urlTemplate,
@@ -265,7 +274,7 @@ extends <a href="../../../ocf/metadatamanagement/client/OCFRESTClient.html" titl
 <div class="block">Issue a GET REST call that returns a OpenMetadataElementResponse object.</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../rest/OpenMetadataElementResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">OpenMetadataElementResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callOpenMetadataElementPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">callOpenMetadataElementPostRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
                                    java.lang.String&nbsp;urlTemplate,
@@ -273,15 +282,6 @@ extends <a href="../../../ocf/metadatamanagement/client/OCFRESTClient.html" titl
                                    java.lang.Object...&nbsp;params)</code></th>
 <td class="colLast">
 <div class="block">Issue a POST REST call that returns a OpenMetadataElementResponse object.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
-<td class="colFirst"><code><a href="../../rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">OpenMetadataElementsResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callOpenMetadataElementsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callOpenMetadataElementsGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
-                                   java.lang.String&nbsp;urlTemplate,
-                                   java.lang.Object...&nbsp;params)</code></th>
-<td class="colLast">
-<div class="block">Issue a GET REST call that returns a OpenMetadataElementsResponse object.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
@@ -330,6 +330,42 @@ extends <a href="../../../ocf/metadatamanagement/client/OCFRESTClient.html" titl
                                            java.lang.Object...&nbsp;params)</code></th>
 <td class="colLast">
 <div class="block">Issue a POST REST call that returns a RelatedMetadataElementsListResponse object.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
+<td class="colFirst"><code><a href="../../rest/TranslationDetailResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">TranslationDetailResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callTranslationDetailGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callTranslationDetailGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
+                                java.lang.String&nbsp;urlTemplate,
+                                java.lang.Object...&nbsp;params)</code></th>
+<td class="colLast">
+<div class="block">Issue a GET REST call that returns a TranslationDetailResponse object.</div>
+</td>
+</tr>
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code><a href="../../rest/TranslationListResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">TranslationListResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callTranslationListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callTranslationListGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
+                              java.lang.String&nbsp;urlTemplate,
+                              java.lang.Object...&nbsp;params)</code></th>
+<td class="colLast">
+<div class="block">Issue a GET REST call that returns a TranslationListResponse object.</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
+<td class="colFirst"><code><a href="../../rest/ValidMetadataValueResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">ValidMetadataValueResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callValidMetadataValueGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callValidMetadataValueGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
+                                 java.lang.String&nbsp;urlTemplate,
+                                 java.lang.Object...&nbsp;params)</code></th>
+<td class="colLast">
+<div class="block">Issue a GET REST call that returns a ValidMetadataValueResponse object.</div>
+</td>
+</tr>
+<tr id="i13" class="rowColor">
+<td class="colFirst"><code><a href="../../rest/ValidMetadataValueListResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">ValidMetadataValueListResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#callValidMetadataValueListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">callValidMetadataValueListGetRESTCall</a></span>&#8203;(java.lang.String&nbsp;methodName,
+                                     java.lang.String&nbsp;urlTemplate,
+                                     java.lang.Object...&nbsp;params)</code></th>
+<td class="colLast">
+<div class="block">Issue a GET REST call that returns a ValidMetadataValueListResponse object.</div>
 </td>
 </tr>
 </table>
@@ -537,33 +573,6 @@ extends <a href="../../../ocf/metadatamanagement/client/OCFRESTClient.html" titl
 </dl>
 </li>
 </ul>
-<a id="callOpenMetadataElementsGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>callOpenMetadataElementsGetRESTCall</h4>
-<pre class="methodSignature">public&nbsp;<a href="../../rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">OpenMetadataElementsResponse</a>&nbsp;callOpenMetadataElementsGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
-                                                                        java.lang.String&nbsp;urlTemplate,
-                                                                        java.lang.Object...&nbsp;params)
-                                                                 throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                                        <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                                                        <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Issue a GET REST call that returns a OpenMetadataElementsResponse object.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>methodName</code> - name of the method being called.</dd>
-<dd><code>urlTemplate</code> - template of the URL for the REST API call, with place-holders for the parameters.</dd>
-<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>response object</dd>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
-</dl>
-</li>
-</ul>
 <a id="callOpenMetadataElementsPostRESTCall(java.lang.String,java.lang.String,java.lang.Object,java.lang.Object...)">
 <!--   -->
 </a>
@@ -737,7 +746,7 @@ extends <a href="../../../ocf/metadatamanagement/client/OCFRESTClient.html" titl
 <a id="callRelatedMetadataElementListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>callRelatedMetadataElementListGetRESTCall</h4>
 <pre class="methodSignature">public&nbsp;<a href="../../rest/RelatedMetadataElementListResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">RelatedMetadataElementListResponse</a>&nbsp;callRelatedMetadataElementListGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
@@ -747,6 +756,141 @@ extends <a href="../../../ocf/metadatamanagement/client/OCFRESTClient.html" titl
                                                                                     <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                                                     <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Issue a GET REST call that returns a RelatedMetadataElementListResponse object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call, with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>response object</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
+<a id="callTranslationDetailGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>callTranslationDetailGetRESTCall</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../rest/TranslationDetailResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">TranslationDetailResponse</a>&nbsp;callTranslationDetailGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
+                                                                  java.lang.String&nbsp;urlTemplate,
+                                                                  java.lang.Object...&nbsp;params)
+                                                           throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                  <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                  <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Issue a GET REST call that returns a TranslationDetailResponse object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call, with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>response object</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
+<a id="callTranslationListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>callTranslationListGetRESTCall</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../rest/TranslationListResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">TranslationListResponse</a>&nbsp;callTranslationListGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
+                                                              java.lang.String&nbsp;urlTemplate,
+                                                              java.lang.Object...&nbsp;params)
+                                                       throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                              <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                              <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Issue a GET REST call that returns a TranslationListResponse object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call, with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>response object</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
+<a id="callValidMetadataValueListGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>callValidMetadataValueListGetRESTCall</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../rest/ValidMetadataValueListResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">ValidMetadataValueListResponse</a>&nbsp;callValidMetadataValueListGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
+                                                                            java.lang.String&nbsp;urlTemplate,
+                                                                            java.lang.Object...&nbsp;params)
+                                                                     throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                            <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                            <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Issue a GET REST call that returns a ValidMetadataValueListResponse object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call, with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>response object</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
+<a id="callValidMetadataValueGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>callValidMetadataValueGetRESTCall</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../rest/ValidMetadataValueResponse.html" title="class in org.odpi.openmetadata.commonservices.gaf.rest">ValidMetadataValueResponse</a>&nbsp;callValidMetadataValueGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
+                                                                    java.lang.String&nbsp;urlTemplate,
+                                                                    java.lang.Object...&nbsp;params)
+                                                             throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                    <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                                    <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Issue a GET REST call that returns a ValidMetadataValueResponse object.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>methodName</code> - name of the method being called.</dd>
+<dd><code>urlTemplate</code> - template of the URL for the REST API call, with place-holders for the parameters.</dd>
+<dd><code>params</code> - a list of parameters that are slotted into the url template.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>response object</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to make this request.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the repository is not available or not working properly.</dd>
+</dl>
+</li>
+</ul>
+<a id="callBooleanGetRESTCall(java.lang.String,java.lang.String,java.lang.Object...)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>callBooleanGetRESTCall</h4>
+<pre class="methodSignature">public&nbsp;<a href="../../../ffdc/rest/BooleanResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">BooleanResponse</a>&nbsp;callBooleanGetRESTCall&#8203;(java.lang.String&nbsp;methodName,
+                                              java.lang.String&nbsp;urlTemplate,
+                                              java.lang.Object...&nbsp;params)
+                                       throws <a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                              <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                              <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Issue a GET REST call that returns a BooleanResponse object.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>methodName</code> - name of the method being called.</dd>
