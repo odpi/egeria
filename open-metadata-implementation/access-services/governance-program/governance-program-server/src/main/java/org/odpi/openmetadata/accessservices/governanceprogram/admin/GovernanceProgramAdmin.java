@@ -13,6 +13,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.util.List;
+
 public class GovernanceProgramAdmin extends AccessServiceAdmin
 {
     private OMRSRepositoryConnector           repositoryConnector = null;
@@ -57,15 +59,31 @@ public class GovernanceProgramAdmin extends AccessServiceAdmin
         {
             this.auditLog = auditLog;
             this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-            this.instance = new GovernanceProgramServicesInstance(repositoryConnector,
-                                                                  auditLog,
-                                                                  serverUserName,
-                                                                  enterpriseOMRSRepositoryConnector.getMaxPageSize());
-            this.serverName = instance.getServerName();
-
             this.accessServiceConfig = accessServiceConfigurationProperties;
             this.omrsTopicConnector = enterpriseOMRSTopicConnector;
             this.serverUserName = serverUserName;
+
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                     accessServiceConfig.getAccessServiceName(),
+                                                                     auditLog);
+
+            List<String> defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                 accessServiceConfig.getAccessServiceName(),
+                                                                 auditLog);
+
+            List<String> publishZones = this.extractPublishZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                 accessServiceConfig.getAccessServiceName(),
+                                                                 auditLog);
+
+            this.instance = new GovernanceProgramServicesInstance(repositoryConnector,
+                                                                  supportedZones,
+                                                                  defaultZones,
+                                                                  publishZones,
+                                                                  auditLog,
+                                                                  serverUserName,
+                                                                  enterpriseOMRSRepositoryConnector.getMaxPageSize());
+
+            this.serverName = instance.getServerName();
 
             auditLog.logMessage(actionDescription,
                                 GovernanceProgramAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),

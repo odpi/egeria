@@ -15,6 +15,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.util.List;
+
 
 /**
  * GovernanceProgramServicesInstance caches references to OMRS objects for a specific server.
@@ -50,6 +52,9 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      * Set up the local repository connector that will service the REST Calls.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param supportedZones list of zones that SecurityManager is allowed to serve Assets from.
+     * @param defaultZones list of zones that SecurityManager sets up in new Asset instances.
+     * @param publishZones list of zones that SecurityManager sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId to use for server initiated requests
      * @param maxPageSize maximum number of results on a single request
@@ -57,12 +62,18 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      * @throws NewInstanceException a problem occurred during initialization
      */
     public GovernanceProgramServicesInstance(OMRSRepositoryConnector repositoryConnector,
+                                             List<String>            supportedZones,
+                                             List<String>            defaultZones,
+                                             List<String>            publishZones,
                                              AuditLog                auditLog,
                                              String                  localServerUserId,
                                              int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
+              supportedZones,
+              defaultZones,
+              publishZones,
               auditLog,
               localServerUserId,
               maxPageSize);
