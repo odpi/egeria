@@ -182,6 +182,7 @@ public class DuplicateEntityIterator
                                 {
                                     log.debug("KnownDuplicate classification detected");
                                     deduplicationNeeded = true;
+                                    break;
                                 }
                             }
                         }
