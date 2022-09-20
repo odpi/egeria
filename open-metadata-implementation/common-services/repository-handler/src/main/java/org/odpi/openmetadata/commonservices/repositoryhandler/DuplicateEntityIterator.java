@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * DuplicateEntityIterator retrieves the list of entities that need to be processed for a specific entity.
@@ -269,17 +271,23 @@ public class DuplicateEntityIterator
                                      */
                                     final String guidParameterName = "peerProxy.getGUID()";
 
-                                    EntityDetail peerEntity = repositoryHandler.validateEntityGUID(userId,
-                                                                                                   peerProxy.getGUID(),
-                                                                                                   guidParameterName,
-                                                                                                   entityTypeName,
-                                                                                                   methodName);
-
                                     /*
-                                     * Save the entity for later processing since it may link to peer entities that the current processing entity
-                                     * does not know about.
+                                     * Filter out the peers that were already added to the list of unprocessed peers.
                                      */
-                                    unprocessedPeers.add(peerEntity);
+                                    if(!unprocessedPeers.stream().map(InstanceHeader::getGUID).collect(Collectors.toList()).contains(peerProxy.getGUID()))
+                                    {
+                                        EntityDetail peerEntity = repositoryHandler.validateEntityGUID(userId,
+                                                                                                       peerProxy.getGUID(),
+                                                                                                       guidParameterName,
+                                                                                                       entityTypeName,
+                                                                                                       methodName);
+
+                                        /*
+                                        * Save the entity for later processing since it may link to peer entities that the current processing entity
+                                        * does not know about.
+                                        */
+                                        unprocessedPeers.add(peerEntity);
+                                    }
                                 }
                             }
                         }
