@@ -1292,6 +1292,8 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
     @Override
     public TypeDef getTypeDefByName(String  typeName)
     {
+        String methodName = "getTypeDefByName";
+
         Object  namedObject = nameMap.get(typeName);
 
         if (namedObject instanceof TypeDef)
@@ -1300,7 +1302,9 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
         }
         else
         {
-            return null;
+            throw new OMRSLogicErrorException(OMRSErrorCode.UNKNOWN_TYPENAME.getMessageDefinition(typeName),
+                                              this.getClass().getName(),
+                                              methodName);
         }
     }
 
