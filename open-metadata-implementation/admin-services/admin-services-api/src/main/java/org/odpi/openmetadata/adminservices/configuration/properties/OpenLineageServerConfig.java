@@ -28,7 +28,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     private String openLineageName;
     private String openLineageDescription;
     private String lineageServerURL;
-    private Connection inTopicConnection;
+    private Connection assetLineageTopicConnectionOverride;
     private Connection lineageGraphConnection;
     private int jobIntervalInSeconds;
     private OLSSimplifiedAccessServiceConfig accessServiceConfig;
@@ -55,7 +55,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
             openLineageName = template.openLineageName;
             openLineageDescription = template.openLineageDescription;
             lineageServerURL = template.lineageServerURL;
-            inTopicConnection = template.inTopicConnection;
+            assetLineageTopicConnectionOverride = template.assetLineageTopicConnectionOverride;
             lineageGraphConnection = template.lineageGraphConnection;
             accessServiceConfig = template.accessServiceConfig;
             backgroundJobs = template.backgroundJobs;
@@ -142,17 +142,17 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
      *
      * @return Connection for In Topic
      */
-    public Connection getInTopicConnection() {
-        return inTopicConnection;
+    public Connection getAssetLineageTopicConnectionOverride() {
+        return assetLineageTopicConnectionOverride;
     }
 
     /**
      * Set up the OCF Connection for the Out Topic used to pass requests to this Open Lineage.
      *
-     * @param inTopicConnection Connection for In Topic
+     * @param assetLineageTopicConnectionOverride Connection for In Topic
      */
-    public void setInTopicConnection(Connection inTopicConnection) {
-        this.inTopicConnection = inTopicConnection;
+    public void setAssetLineageTopicConnectionOverride(Connection assetLineageTopicConnectionOverride) {
+        this.assetLineageTopicConnectionOverride = assetLineageTopicConnectionOverride;
     }
 
 
@@ -233,7 +233,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 ", openLineageName='" + openLineageName + '\'' +
                 ", openLineageDescription='" + openLineageDescription + '\'' +
                 ", lineageServerURL='" + lineageServerURL + '\'' +
-                ", inTopicConnection=" + inTopicConnection +
+                ", inTopicConnection=" + assetLineageTopicConnectionOverride +
                 ", openLineageGraphConnection=" + lineageGraphConnection +
                 ", accessServiceConfig=" + accessServiceConfig +
                 ", backgroundJobs=" + backgroundJobs +
@@ -249,7 +249,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 Objects.equals(openLineageName, that.openLineageName) &&
                 Objects.equals(openLineageDescription, that.openLineageDescription) &&
                 Objects.equals(lineageServerURL, that.lineageServerURL) &&
-                Objects.equals(inTopicConnection, that.inTopicConnection) &&
+                Objects.equals(assetLineageTopicConnectionOverride, that.assetLineageTopicConnectionOverride) &&
                 Objects.equals(lineageGraphConnection, that.lineageGraphConnection) &&
                 Objects.equals(accessServiceConfig, that.accessServiceConfig) &&
                 Objects.equals(backgroundJobs, that.backgroundJobs);
@@ -258,6 +258,6 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode() {
         return Objects.hash(openLineageId, openLineageName, openLineageDescription, lineageServerURL,
-                inTopicConnection, lineageGraphConnection, accessServiceConfig, backgroundJobs);
+                assetLineageTopicConnectionOverride, lineageGraphConnection, accessServiceConfig, backgroundJobs);
     }
 }

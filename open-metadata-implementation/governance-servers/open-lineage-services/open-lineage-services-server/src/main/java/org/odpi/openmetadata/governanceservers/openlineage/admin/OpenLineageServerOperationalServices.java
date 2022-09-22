@@ -136,9 +136,8 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "initializeOLS";
         final String actionDescription = "Initialize Open lineage Services";
         Connection lineageGraphConnection = openLineageServerConfig.getLineageGraphConnection();
-        OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
 
-        Connection inTopicConnection = getAssetLineageOutTopicConnection(methodName, accessServiceConfig);
+        Connection inTopicConnection = getAssetLineageOutTopicConnection(openLineageServerConfig, methodName);
 
         this.lineageGraphConnector = (OpenLineageGraphConnector) getConnector(lineageGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR);
@@ -163,9 +162,12 @@ public class OpenLineageServerOperationalServices {
         logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
     }
 
-    private Connection getAssetLineageOutTopicConnection(String methodName, OLSSimplifiedAccessServiceConfig accessServiceConfig) throws InvalidParameterException, InterruptedException {
+    private Connection getAssetLineageOutTopicConnection(OpenLineageServerConfig openLineageServerConfig, String methodName) throws
+                                                                                                                             InvalidParameterException,
+                                                                                                                             InterruptedException {
 
         OCFRESTClient restClient;
+        OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
         String serverName = accessServiceConfig.getServerName();
         String serverPlatformURLRoot = accessServiceConfig.getServerPlatformUrlRoot();
         String serverPassword = accessServiceConfig.getPassword();
@@ -181,7 +183,13 @@ public class OpenLineageServerOperationalServices {
             Thread.sleep(RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT);
             restResult = getConnection(methodName, restClient, accessServiceConfig);
         }
-        return restResult.getConnection();
+
+        Connection assetLineageConnection = restResult.getConnection();
+        Connection assetLineageTopicConnectionOverride = openLineageServerConfig.getAssetLineageTopicConnectionOverride();
+        if (assetLineageTopicConnectionOverride != null) {
+            assetLineageConnection.setConfigurationProperties(assetLineageTopicConnectionOverride.getConfigurationProperties());
+        }
+        return assetLineageConnection;
     }
 
     private ConnectionResponse getConnection(String methodName, OCFRESTClient restClient, OLSSimplifiedAccessServiceConfig accessServiceConfig) {
@@ -252,10 +260,13 @@ public class OpenLineageServerOperationalServices {
      * @param connection the  connection as provided by the user in the configure Open Lineage Services HTTP call.
      * @param errorCode  The error code that should be used when the connector can not be obtained.
      * @param auditCode  The audit code that should be used when the connector can not be obtained.
+     *
      * @return The connector returned by the ConnectorBroker
+     *
      * @throws OMAGConfigurationErrorException
      */
-    private Connector getConnector(Connection connection, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode) throws OMAGConfigurationErrorException {
+    private Connector getConnector(Connection connection, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode) throws
+                                                                                                                                      OMAGConfigurationErrorException {
         final String actionDescription = "Obtaining graph database connector";
         final String methodName = "getGraphConnector";
         Connector connector = null;
@@ -297,9 +308,11 @@ public class OpenLineageServerOperationalServices {
      * @param errorCode         The error code that should be used when the connector can not be initialized.
      * @param auditCode         The audit code that should be used when the connector can not be initialized.
      * @param actionDescription The action taking place in this method, used in error reporting
+     *
      * @throws OMAGConfigurationErrorException
      */
-    private void initializeGraphConnectorDB(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
+    private void initializeGraphConnectorDB(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode,
+                                            OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
         final String methodName = "initializeGraphConnectorDB";
         try {
             connector.initializeGraphDB(this.auditLog);
@@ -317,6 +330,7 @@ public class OpenLineageServerOperationalServices {
      * @param errorCode         The error code that should be used when the connector can not be started.
      * @param auditCode         The audit code that should be used when the connector can not be started.
      * @param actionDescription The action taking place in this method, used in error reporting.
+     *
      * @throws OMAGConfigurationErrorException
      */
     private void startGraphConnector(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
@@ -366,6 +380,7 @@ public class OpenLineageServerOperationalServices {
      * @param methodName        The name of the calling method.
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the error occurred.
+     *
      * @throws OMAGConfigurationErrorException
      */
     private void throwOMAGConfigurationErrorException(OpenLineageServerErrorCode errorCode, String errorDetails, String methodName,
@@ -393,6 +408,7 @@ public class OpenLineageServerOperationalServices {
      * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the exception occurred.
+     *
      * @throws OMAGConfigurationErrorException
      */
     private void exceptionToOMAGConfigurationError(Exception e, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
@@ -417,6 +433,7 @@ public class OpenLineageServerOperationalServices {
      * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the exception occurred.
+     *
      * @throws PropertyServerException The service had trouble shutting down.
      */
     private void exceptionToPropertyServerException(Exception e, OpenLineageServerErrorCode errorCode, String methodName, OpenLineageServerAuditCode
@@ -441,6 +458,7 @@ public class OpenLineageServerOperationalServices {
      * @param e                 The exception object that was thrown
      * @param auditCode         Details about the exception that occurred, in a format intended for system administrators.
      * @param actionDescription The action that was taking place when the exception occurred.
+     *
      * @throws OMAGConfigurationErrorException
      */
     private void OCFCheckedExceptionToOMAGConfigurationError(OCFCheckedExceptionBase e, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
@@ -498,6 +516,7 @@ public class OpenLineageServerOperationalServices {
      * @param connector         The connector that is to be disconnected.
      * @param auditCode         The potential error that could occur, in a format intended for system administrators.
      * @param actionDescription The action taking place in this method, used in error reporting.
+     *
      * @throws PropertyServerException
      */
     private void disconnectGraphConnector(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode, String actionDescription) throws PropertyServerException {
