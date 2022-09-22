@@ -713,7 +713,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
      * @param userId callers userId
      * @param entity entity to test
      * @param entityProxy entity proxy when entity is not available
-     * @return entity detail if it is to be send.
+     * @return entity detail if it is to be sent.
      */
     private EntityDetail entityOfInterest(String       userId,
                                           EntityDetail entity,

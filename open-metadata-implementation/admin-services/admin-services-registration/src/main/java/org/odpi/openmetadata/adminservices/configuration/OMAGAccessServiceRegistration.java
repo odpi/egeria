@@ -23,7 +23,7 @@ public class OMAGAccessServiceRegistration
      * A map is used so multiple registrations from the same access service are ignored.
      * The last registration is used.
      */
-    static private Map<String, AccessServiceRegistration> accessServiceRegistrationMap = new HashMap<>();
+    static private final Map<String, AccessServiceRegistration> accessServiceRegistrationMap = new HashMap<>();
 
 
     /**

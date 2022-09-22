@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/common-services/{serviceURLName}/connected-asset/users/{userId}")
 
-@Tag(name="OCF Metadata Management Services", description="OCF metadata management provides common services for Open Metadata Access Services (OMASs) that are supporting the Open Connector Framework (OCF).", externalDocs=@ExternalDocumentation(description="OCF Metadata Management",url="https://egeria-project.org/services/ocf-metadata-management/"))
+@Tag(name="Connected Asset Services", description="Provides common services for Open Metadata Access Services (OMASs) that managed connections, create connectors and retrieve information related to the asset connected to the connection.", externalDocs=@ExternalDocumentation(description="Connected Asset Services",url="https://egeria-project.org/services/ocf-metadata-management/"))
 
 public class ConnectedAssetResource
 {

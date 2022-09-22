@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-distribution</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.11-SNAPSHOT</version>
+        <version>3.12-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Assemblies</name>
@@ -25,7 +25,7 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/master</url>
     </scm>
 
     <artifactId>open-metadata-assemblies</artifactId>

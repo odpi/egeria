@@ -5,14 +5,14 @@
 
 A governance action process is a predefined sequence of
 [governance actions](governance-action.md) that are coordinated by
-the [Governance Engine OMAS](../..).
+the [Metadata Store Service](../..).
 
 The steps in a governance action process are defined by linked [governance action types](governance-action-type.md).
 Each governance action type provides the specification of the governance action to run.
 The links between then show which guards cause the governance action to run.
 
 Details of how to set up governance action process is described in the 
-[Governance Engine OMAS User Guide](../user).
+[Metadata Store Service User Guide](../user).
 
 
 ## Open metadata types
@@ -33,8 +33,8 @@ so it can support comments and have [governance actions](governance-action.md) l
 
 ----
 
-* [Return to Governance Engine OMAS Concepts](.)
-* [Return to Governance Engine OMAS Overview](../..)
+* [Return to Metadata Store Service Concepts](.)
+* [Return to Metadata Store Service Overview](../..)
 
 
 

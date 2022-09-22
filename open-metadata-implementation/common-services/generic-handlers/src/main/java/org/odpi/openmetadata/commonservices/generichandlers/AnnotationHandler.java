@@ -360,8 +360,6 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            typeGUID,
                                            typeName,
-                                           null,
-                                           null,
                                            builder,
                                            new Date(),
                                            methodName);
@@ -723,8 +721,6 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                                   null,
                                                                   typeGUID,
                                                                   typeName,
-                                                                  null,
-                                                                  null,
                                                                   builder,
                                                                   effectiveTime,
                                                                   methodName);

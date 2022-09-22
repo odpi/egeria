@@ -181,8 +181,6 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -333,7 +331,6 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param definitionChildGUID unique identifier of the definition sub-definition
      * @param definitionChildGUIDParameterName parameter supplying the sub-definition
      * @param definitionChildTypeName type name of the sub-definition
-     * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
      * @param rationale why are these definitions linked
      * @param effectiveFrom starting time for this relationship (null for all time)
@@ -354,7 +351,6 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                             String  definitionChildGUID,
                                             String  definitionChildGUIDParameterName,
                                             String  definitionChildTypeName,
-                                            String  relationshipTypeGUID,
                                             String  relationshipTypeName,
                                             String  rationale,
                                             Date    effectiveFrom,
@@ -366,6 +362,16 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
+        final String typeNameParameter = "relationshipTypeName";
+
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameter, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                               null,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
+
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
                                                                                      OpenMetadataAPIMapper.RATIONALE_PROPERTY_NAME,
@@ -405,7 +411,6 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param definitionChildGUID unique identifier of the definition sub-definition
      * @param definitionChildGUIDParameterName parameter supplying the sub-definition
      * @param definitionChildTypeName type name of the sub-definition
-     * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
      * @param description why are these definitions linked
      * @param effectiveFrom starting time for this relationship (null for all time)
@@ -426,7 +431,6 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                       String  definitionChildGUID,
                                       String  definitionChildGUIDParameterName,
                                       String  definitionChildTypeName,
-                                      String  relationshipTypeGUID,
                                       String  relationshipTypeName,
                                       String  description,
                                       Date    effectiveFrom,
@@ -438,6 +442,16 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
+        final String typeNameParameter = "relationshipTypeName";
+
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameter, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                               null,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
+
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
                                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
@@ -475,9 +489,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @param definitionParentTypeName typename of super-definition
      * @param definitionChildGUID unique identifier of the definition sub-definition
      * @param definitionChildGUIDParameterName parameter supplying the sub-definition
-     * @param definitionChildTypeGUID type guid of the sub-definition
      * @param definitionChildTypeName type name of the sub-definition
-     * @param relationshipTypeGUID unique identifier of the relationship type
      * @param relationshipTypeName unique name of the relationship type
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -494,9 +506,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                             String  definitionParentTypeName,
                                             String  definitionChildGUID,
                                             String  definitionChildGUIDParameterName,
-                                            String  definitionChildTypeGUID,
                                             String  definitionChildTypeName,
-                                            String  relationshipTypeGUID,
                                             String  relationshipTypeName,
                                             boolean forLineage,
                                             boolean forDuplicateProcessing,
@@ -505,6 +515,26 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
+        final String typeNameParameter = "relationshipTypeName";
+        final String definitionParentTypeNameParameter = "definitionParentTypeName";
+        final String definitionChildTypeNameParameter = "definitionChildTypeName";
+
+        invalidParameterHandler.validateName(relationshipTypeName, typeNameParameter, methodName);
+        invalidParameterHandler.validateName(definitionParentTypeName, definitionParentTypeNameParameter, methodName);
+        invalidParameterHandler.validateName(definitionChildTypeName, definitionChildTypeNameParameter, methodName);
+
+        String relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                               null,
+                                                                               serviceName,
+                                                                               methodName,
+                                                                               repositoryHelper);
+
+        String definitionChildTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                                  null,
+                                                                                  serviceName,
+                                                                                  methodName,
+                                                                                  repositoryHelper);
+
         this.unlinkElementFromElement(userId,
                                       false,
                                       null,
@@ -571,8 +601,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * The search string is treated as a regular expression.
      *
      * @param userId calling user
-     * @param typeGUID GUID of the type of governance definition
-     * @param typeName name of the type of governance definition
+     * @param suppliedTypeName name of the type of governance definition
      * @param searchString string to find in the properties
      * @param searchStringParameterName name of parameter supplying the search string
      * @param startFrom paging start point
@@ -589,8 +618,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<B> findGovernanceDefinitions(String  userId,
-                                             String  typeGUID,
-                                             String  typeName,
+                                             String  suppliedTypeName,
                                              String  searchString,
                                              String  searchStringParameterName,
                                              int     startFrom,
@@ -602,6 +630,19 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
+        String typeName = OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
@@ -682,8 +723,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * Return information about the defined governance definitions.
      *
      * @param userId calling user
-     * @param typeGUID GUID of the type of governance definition
-     * @param typeName name of the type of governance definition
+     * @param suppliedTypeName name of the type of governance definition
      * @param startFrom position in the list (used when there are so many reports that paging is needed
      * @param pageSize maximum number of elements to return on this call
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -698,8 +738,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public List<B> getGovernanceDefinitions(String  userId,
-                                            String  typeGUID,
-                                            String  typeName,
+                                            String  suppliedTypeName,
                                             int     startFrom,
                                             int     pageSize,
                                             boolean forLineage,
@@ -709,6 +748,18 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
+        String typeName = OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
         return this.getBeansByType(userId,
                                    typeGUID,
                                    typeName,
@@ -727,8 +778,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * Return information about the defined governance zones for a specific domain.
      *
      * @param userId calling user
-     * @param typeGUID GUID of the type of governance definition
-     * @param typeName name of the type of governance definition
+     * @param suppliedTypeName name of the type of governance definition
      * @param domainIdentifier identifier of domain - 0 is for all domains
      * @param startFrom position in the list (used when there are so many reports that paging is needed
      * @param pageSize maximum number of elements to return on this call
@@ -744,8 +794,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException security access problem
      */
     public List<B> getGovernanceDefinitionsByDomain(String  userId,
-                                                    String  typeGUID,
-                                                    String  typeName,
+                                                    String  suppliedTypeName,
                                                     int     domainIdentifier,
                                                     int     startFrom,
                                                     int     pageSize,
@@ -759,8 +808,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         if (domainIdentifier == 0)
         {
             return this.getGovernanceDefinitions(userId,
-                                                 typeGUID,
-                                                 typeName,
+                                                 suppliedTypeName,
                                                  startFrom,
                                                  pageSize,
                                                  forLineage,
@@ -768,6 +816,19 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                                  effectiveTime,
                                                  methodName);
         }
+
+        String typeName = OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
 
         List<EntityDetail> entities = this.getEntitiesByType(userId,
                                                              typeGUID,
@@ -819,8 +880,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * There are no wildcards supported on this request.
      *
      * @param userId calling user
-     * @param typeGUID GUID of the type of governance definition
-     * @param typeName name of the type of governance definition
+     * @param suppliedTypeName name of the type of governance definition
      * @param name name to search for
      * @param nameParameterName parameter supplying name
      * @param startFrom paging start point
@@ -837,8 +897,7 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<B>   getGovernanceDefinitionsByName(String  userId,
-                                                    String  typeGUID,
-                                                    String  typeName,
+                                                    String  suppliedTypeName,
                                                     String  name,
                                                     String  nameParameterName,
                                                     int     startFrom,
@@ -857,6 +916,18 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.TITLE_PROPERTY_NAME);
 
+        String typeName = OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME;
+
+        if (suppliedTypeName != null)
+        {
+            typeName = suppliedTypeName;
+        }
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
@@ -1057,6 +1128,113 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
     }
 
 
+
+    /**
+     * Retrieve the governance definitions attached to the requested scope.
+     *
+     * @param userId calling user
+     * @param governanceDefinitionTypeName name of the type of required governance definitions
+     * @param elementGUID unique identifier of the scoping metadata element
+     * @param elementGUIDParameterName parameter name of the elementGUID
+     * @param elementTypeName name of the type of the starting element
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of governance definition element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<B> getScopedGovernanceDefinitions(String  userId,
+                                                 String  elementGUID,
+                                                 String  elementGUIDParameterName,
+                                                 String  elementTypeName,
+                                                 String  governanceDefinitionTypeName,
+                                                 int     startFrom,
+                                                 int     pageSize,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime,
+                                                 String  methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        return this.getAttachedElements(userId,
+                                        elementGUID,
+                                        elementGUIDParameterName,
+                                        elementTypeName,
+                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_GUID,
+                                        OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_SCOPE_TYPE_NAME,
+                                        governanceDefinitionTypeName,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+    /**
+     * Returns the list of roles that are responsible for the supplied governance definition.
+     *
+     * @param userId       String   userId of user making request.
+     * @param personRoleGUID    String   unique id for element.
+     * @param personRoleGUIDParameterName name of parameter supplying the GUID
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getGovernanceResponsibilitiesForRole(String       userId,
+                                                        String       personRoleGUID,
+                                                        String       personRoleGUIDParameterName,
+                                                        int          startFrom,
+                                                        int          pageSize,
+                                                        boolean      forLineage,
+                                                        boolean      forDuplicateProcessing,
+                                                        Date         effectiveTime,
+                                                        String       methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        personRoleGUID,
+                                        personRoleGUIDParameterName,
+                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                        OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                        OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
     /**
      * Retrieve the definition metadata element with the supplied unique identifier.
      *
@@ -1094,5 +1272,63 @@ public class GovernanceDefinitionHandler<B> extends ReferenceableHandler<B>
                                           effectiveTime,
                                           methodName);
 
+    }
+
+
+
+    /**
+     * Retrieve the definition metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param guidParameterName parameter name of guid
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getGovernanceDefinitionInContext(String  userId,
+                                              String  guid,
+                                              String  guidParameterName,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing,
+                                              Date    effectiveTime,
+                                              String  methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        EntityDetail entity = this.getEntityFromRepository(userId,
+                                                           guid,
+                                                           guidParameterName,
+                                                           null,
+                                                           null,
+                                                           OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           supportedZones,
+                                                           effectiveTime,
+                                                           methodName);
+
+        if (entity != null)
+        {
+            List<Relationship> relationships = this.getAllAttachmentLinks(userId,
+                                                                          guid,
+                                                                          guidParameterName,
+                                                                          OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          effectiveTime,
+                                                                          methodName);
+
+            return converter.getNewComplexBean(beanClass, entity, relationships, methodName);
+        }
+
+        return null;
     }
 }

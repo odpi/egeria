@@ -8,14 +8,16 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.G
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneDefinition;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneDefinitionResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceZoneHandler;
@@ -59,7 +61,7 @@ public class GovernanceZoneRESTServices
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param requestBody other properties for a governance zone
+     * @param requestBody properties to store
      *
      * @return unique identifier of the new zone or
      * InvalidParameterException full path or userId is null or
@@ -68,7 +70,7 @@ public class GovernanceZoneRESTServices
      */
     public GUIDResponse createGovernanceZone(String                   serverName,
                                              String                   userId,
-                                             GovernanceZoneProperties requestBody)
+                                             ReferenceableRequestBody requestBody)
     {
         final String methodName = "createGovernanceZone";
 
@@ -81,26 +83,35 @@ public class GovernanceZoneRESTServices
         {
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+                if (requestBody.getProperties() instanceof GovernanceZoneProperties)
+                {
+                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                    GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
-                String zoneGUID = handler.createGovernanceZone(userId,
-                                                               null,
-                                                               null,
-                                                               requestBody.getQualifiedName(),
-                                                               requestBody.getZoneName(),
-                                                               requestBody.getDisplayName(),
-                                                               requestBody.getDescription(),
-                                                               requestBody.getCriteria(),
-                                                               requestBody.getScope(),
-                                                               requestBody.getDomainIdentifier(),
-                                                               requestBody.getAdditionalProperties(),
-                                                               requestBody.getTypeName(),
-                                                               requestBody.getExtendedProperties(),
-                                                               new Date(),
-                                                               methodName);
+                    GovernanceZoneProperties properties = (GovernanceZoneProperties) requestBody.getProperties();
 
-                response.setGUID(zoneGUID);
+                    String zoneGUID = handler.createGovernanceZone(userId,
+                                                                   requestBody.getExternalSourceGUID(),
+                                                                   requestBody.getExternalSourceName(),
+                                                                   properties.getQualifiedName(),
+                                                                   properties.getZoneName(),
+                                                                   properties.getDisplayName(),
+                                                                   properties.getDescription(),
+                                                                   properties.getCriteria(),
+                                                                   properties.getScope(),
+                                                                   properties.getDomainIdentifier(),
+                                                                   properties.getAdditionalProperties(),
+                                                                   properties.getTypeName(),
+                                                                   properties.getExtendedProperties(),
+                                                                   new Date(),
+                                                                   methodName);
+
+                    response.setGUID(zoneGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceZoneProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -135,7 +146,7 @@ public class GovernanceZoneRESTServices
                                              String                   userId,
                                              String                   zoneGUID,
                                              boolean                  isMergeUpdate,
-                                             GovernanceZoneProperties requestBody)
+                                             ReferenceableRequestBody requestBody)
     {
         final String methodName = "updateGovernanceZone";
         final String guidParameter = "zoneGUID";
@@ -149,26 +160,35 @@ public class GovernanceZoneRESTServices
         {
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+                if (requestBody.getProperties() instanceof GovernanceZoneProperties)
+                {
+                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                    GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
-                handler.updateGovernanceZone(userId,
-                                             null,
-                                             null,
-                                             zoneGUID,
-                                             guidParameter,
-                                             requestBody.getQualifiedName(),
-                                             requestBody.getZoneName(),
-                                             requestBody.getDisplayName(),
-                                             requestBody.getDescription(),
-                                             requestBody.getCriteria(),
-                                             requestBody.getScope(),
-                                             requestBody.getDomainIdentifier(),
-                                             requestBody.getAdditionalProperties(),
-                                             requestBody.getTypeName(),
-                                             requestBody.getExtendedProperties(),
-                                             isMergeUpdate,
-                                             methodName);
+                    GovernanceZoneProperties properties = (GovernanceZoneProperties) requestBody.getProperties();
+
+                    handler.updateGovernanceZone(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 zoneGUID,
+                                                 guidParameter,
+                                                 properties.getQualifiedName(),
+                                                 properties.getZoneName(),
+                                                 properties.getDisplayName(),
+                                                 properties.getDescription(),
+                                                 properties.getCriteria(),
+                                                 properties.getScope(),
+                                                 properties.getDomainIdentifier(),
+                                                 properties.getAdditionalProperties(),
+                                                 properties.getTypeName(),
+                                                 properties.getExtendedProperties(),
+                                                 isMergeUpdate,
+                                                 methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceZoneProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -191,18 +211,17 @@ public class GovernanceZoneRESTServices
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param zoneGUID unique identifier of zone
-     * @param requestBody null request body
+     * @param requestBody external source request body
      *
      * @return void or
      *  InvalidParameterException guid or userId is null; guid is not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse deleteGovernanceZone(String serverName,
-                                             String          userId,
-                                             String          zoneGUID,
-                                             NullRequestBody requestBody)
+    public VoidResponse deleteGovernanceZone(String                    serverName,
+                                             String                    userId,
+                                             String                    zoneGUID,
+                                             ExternalSourceRequestBody requestBody)
     {
         final String methodName = "deleteGovernanceZone";
         final String guidParameter = "zoneGUID";
@@ -217,19 +236,38 @@ public class GovernanceZoneRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
-            handler.deleteBeanInRepository(userId,
-                                           null,
-                                           null,
-                                           zoneGUID,
-                                           guidParameter,
-                                           OpenMetadataAPIMapper.ZONE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                           null,
-                                           null,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
+            if (requestBody != null)
+            {
+                handler.deleteBeanInRepository(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               zoneGUID,
+                                               guidParameter,
+                                               OpenMetadataAPIMapper.ZONE_TYPE_GUID,
+                                               OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
+            else
+            {
+                handler.deleteBeanInRepository(userId,
+                                               null,
+                                               null,
+                                               zoneGUID,
+                                               guidParameter,
+                                               OpenMetadataAPIMapper.ZONE_TYPE_GUID,
+                                               OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+            }
         }
         catch (Exception error)
         {
@@ -249,19 +287,18 @@ public class GovernanceZoneRESTServices
      * @param userId calling user
      * @param parentZoneGUID unique identifier of the parent zone
      * @param childZoneGUID unique identifier of the child zone
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse linkZonesInHierarchy(String          serverName,
-                                             String          userId,
-                                             String          parentZoneGUID,
-                                             String          childZoneGUID,
-                                             NullRequestBody requestBody)
+    public VoidResponse linkZonesInHierarchy(String                  serverName,
+                                             String                  userId,
+                                             String                  parentZoneGUID,
+                                             String                  childZoneGUID,
+                                             RelationshipRequestBody requestBody)
     {
         final String methodName = "linkZonesInHierarchy";
 
@@ -278,24 +315,48 @@ public class GovernanceZoneRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
-            handler.linkElementToElement(userId,
-                                         null,
-                                         null,
-                                         parentZoneGUID,
-                                         parentZoneGUIDParameterName,
-                                         OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                         childZoneGUID,
-                                         childZoneGUIDParameterName,
-                                         OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                         false,
-                                         false,
-                                         OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
-                                         OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
-                                         (InstanceProperties) null,
-                                         null,
-                                         null,
-                                         new Date(),
-                                         methodName);
+            if (requestBody.getProperties() != null)
+            {
+                handler.linkElementToElement(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             parentZoneGUID,
+                                             parentZoneGUIDParameterName,
+                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                             childZoneGUID,
+                                             childZoneGUIDParameterName,
+                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                             false,
+                                             false,
+                                             OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
+                                             OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
+                                             null,
+                                             requestBody.getProperties().getEffectiveFrom(),
+                                             requestBody.getProperties().getEffectiveTo(),
+                                             new Date(),
+                                             methodName);
+            }
+            else
+            {
+                handler.linkElementToElement(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             parentZoneGUID,
+                                             parentZoneGUIDParameterName,
+                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                             childZoneGUID,
+                                             childZoneGUIDParameterName,
+                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                             false,
+                                             false,
+                                             OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
+                                             OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
+                                             (InstanceProperties) null,
+                                             null,
+                                             null,
+                                             new Date(),
+                                             methodName);
+            }
         }
         catch (Exception error)
         {
@@ -314,19 +375,18 @@ public class GovernanceZoneRESTServices
      * @param userId calling user
      * @param parentZoneGUID unique identifier of the parent zone
      * @param childZoneGUID unique identifier of the child zone
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse unlinkZonesInHierarchy(String          serverName,
-                                               String          userId,
-                                               String          parentZoneGUID,
-                                               String          childZoneGUID,
-                                               NullRequestBody requestBody)
+    public VoidResponse unlinkZonesInHierarchy(String                  serverName,
+                                               String                  userId,
+                                               String                  parentZoneGUID,
+                                               String                  childZoneGUID,
+                                               RelationshipRequestBody requestBody)
     {
         final String methodName = "unlinkZonesInHierarchy";
 
@@ -343,23 +403,46 @@ public class GovernanceZoneRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
-            handler.unlinkElementFromElement(userId,
-                                             false,
-                                             null,
-                                             null,
-                                             parentZoneGUID,
-                                             parentZoneGUIDParameterName,
-                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                             childZoneGUID,
-                                             childZoneGUIDParameterName,
-                                             OpenMetadataAPIMapper.ZONE_TYPE_GUID,
-                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                             false,
-                                             false,
-                                             OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
-                                             OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
-                                             null,
-                                             methodName);
+            if (requestBody != null)
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 parentZoneGUID,
+                                                 parentZoneGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                 childZoneGUID,
+                                                 childZoneGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
+                                                 null,
+                                                 methodName);
+            }
+            else
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 parentZoneGUID,
+                                                 parentZoneGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                 childZoneGUID,
+                                                 childZoneGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.ZONE_HIERARCHY_TYPE_NAME,
+                                                 null,
+                                                 methodName);
+            }
         }
         catch (Exception error)
         {
@@ -378,19 +461,18 @@ public class GovernanceZoneRESTServices
      * @param userId calling user
      * @param zoneGUID unique identifier of the zone
      * @param definitionGUID unique identifier of the governance definition
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse linkZoneToGovernanceDefinition(String          serverName,
-                                                       String          userId,
-                                                       String          zoneGUID,
-                                                       String          definitionGUID,
-                                                       NullRequestBody requestBody)
+    public VoidResponse linkZoneToGovernanceDefinition(String                  serverName,
+                                                       String                  userId,
+                                                       String                  zoneGUID,
+                                                       String                  definitionGUID,
+                                                       RelationshipRequestBody requestBody)
     {
         final String methodName = "linkZoneToGovernanceDefinition";
 
@@ -407,24 +489,72 @@ public class GovernanceZoneRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
-            handler.linkElementToElement(userId,
-                                         null,
-                                         null,
-                                         definitionGUID,
-                                         definitionGUIDParameterName,
-                                         OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
-                                         zoneGUID,
-                                         zoneGUIDParameterName,
-                                         OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                         false,
-                                         false,
-                                         OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
-                                         OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
-                                         (InstanceProperties) null,
-                                         null,
-                                         null,
-                                         new Date(),
-                                         methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() != null)
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 definitionGUID,
+                                                 definitionGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                 zoneGUID,
+                                                 zoneGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                                 null,
+                                                 requestBody.getProperties().getEffectiveFrom(),
+                                                 requestBody.getProperties().getEffectiveTo(),
+                                                 new Date(),
+                                                 methodName);
+                }
+                else
+                {
+                    handler.linkElementToElement(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 definitionGUID,
+                                                 definitionGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                 zoneGUID,
+                                                 zoneGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                                 (InstanceProperties) null,
+                                                 null,
+                                                 null,
+                                                 new Date(),
+                                                 methodName);
+                }
+            }
+            else
+            {
+                handler.linkElementToElement(userId,
+                                             null,
+                                             null,
+                                             definitionGUID,
+                                             definitionGUIDParameterName,
+                                             OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                             zoneGUID,
+                                             zoneGUIDParameterName,
+                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                             false,
+                                             false,
+                                             OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                             OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                             (InstanceProperties) null,
+                                             null,
+                                             null,
+                                             new Date(),
+                                             methodName);
+            }
         }
         catch (Exception error)
         {
@@ -443,19 +573,18 @@ public class GovernanceZoneRESTServices
      * @param userId calling user
      * @param zoneGUID unique identifier of the zone
      * @param definitionGUID unique identifier of the governance definition
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse unlinkZoneFromGovernanceDefinition(String          serverName,
-                                                           String          userId,
-                                                           String          zoneGUID,
-                                                           String          definitionGUID,
-                                                           NullRequestBody requestBody)
+    public VoidResponse unlinkZoneFromGovernanceDefinition(String                  serverName,
+                                                           String                  userId,
+                                                           String                  zoneGUID,
+                                                           String                  definitionGUID,
+                                                           RelationshipRequestBody requestBody)
     {
         final String methodName = "unlinkZoneToGovernanceDefinition";
 
@@ -472,23 +601,46 @@ public class GovernanceZoneRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
-            handler.unlinkElementFromElement(userId,
-                                             false,
-                                             null,
-                                             null,
-                                             definitionGUID,
-                                             definitionGUIDParameterName,
-                                             OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
-                                             zoneGUID,
-                                             zoneGUIDParameterName,
-                                             OpenMetadataAPIMapper.ZONE_TYPE_GUID,
-                                             OpenMetadataAPIMapper.ZONE_TYPE_NAME,
-                                             false,
-                                             false,
-                                             OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
-                                             OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
-                                             null,
-                                             methodName);
+            if (requestBody != null)
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 definitionGUID,
+                                                 definitionGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                 zoneGUID,
+                                                 zoneGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                                 null,
+                                                 methodName);
+            }
+            else
+            {
+                handler.unlinkElementFromElement(userId,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 definitionGUID,
+                                                 definitionGUIDParameterName,
+                                                 OpenMetadataAPIMapper.GOVERNANCE_DEFINITION_TYPE_NAME,
+                                                 zoneGUID,
+                                                 zoneGUIDParameterName,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.ZONE_TYPE_NAME,
+                                                 false,
+                                                 false,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.GOVERNED_BY_TYPE_NAME,
+                                                 null,
+                                                 methodName);
+            }
         }
         catch (Exception error)
         {

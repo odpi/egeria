@@ -19,7 +19,7 @@ Governance services are run by the
 [Open Metadata Engine Services (OMES)](../../../../engine-services)
 in an [Engine Host](https://egeria-project.org/concepts/engine-host)
 OMAG Server.  The [Engine Host Services](../../../../governance-servers/engine-host-services)
-called the [Governance Engine OMAS](../..)
+called the [Metadata Store Service](../..)
 
 They are used by the [Governance Engines](https://egeria-project.org/concepts/governance-engine)
 to determine which [Governance Service](https://egeria-project.org/concepts/governance-service)
@@ -38,8 +38,8 @@ governance service via the **SupportedGovernanceService** relationship.
 
 ----
 
-* [Return to Governance Engine OMAS Concepts](.)
-* [Return to Governance Engine OMAS Overview](../..)
+* [Return to Metadata Store Service Concepts](.)
+* [Return to Metadata Store Service Overview](../..)
 
 
 

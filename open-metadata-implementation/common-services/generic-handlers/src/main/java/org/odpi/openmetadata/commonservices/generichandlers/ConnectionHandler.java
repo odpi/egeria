@@ -608,8 +608,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             connectionTypeGUID,
                                                             connectionTypeName,
-                                                            connection.getQualifiedName(),
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             connectionBuilder,
                                                             effectiveTime,
                                                             methodName);
@@ -1217,8 +1215,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             connectionTypeId,
                                                             connectionTypeName,
-                                                            qualifiedName,
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             builder,
                                                             effectiveTime,
                                                             methodName);
@@ -1511,6 +1507,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
     }
 
@@ -2084,10 +2081,25 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                    UserNotAuthorizedException
     {
         /*
+         * This checks the asset is visible to the user.
+         */
+        EntityDetail assetEntity = getEntityFromRepository(userId,
+                                                           assetGUID,
+                                                           assetGUIDParameterName,
+                                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                           null,
+                                                           null,
+                                                           forLineage,
+                                                           forDuplicateProcessing,
+                                                           serviceSupportedZones,
+                                                           effectiveTime,
+                                                           methodName);
+
+        /*
          * Each returned entity has been verified as readable by the user before it is returned.
          */
         List<EntityDetail> connectionEntities = this.getAttachedEntities(userId,
-                                                                         assetGUID,
+                                                                         assetEntity,
                                                                          assetGUIDParameterName,
                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                                          OpenMetadataAPIMapper.ASSET_TO_CONNECTION_TYPE_GUID,
@@ -2104,58 +2116,15 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                          effectiveTime,
                                                                          methodName);
 
-        EntityDetail selectedEntity = null;
+        EntityDetail selectedEntity;
+
         if (connectionEntities == null)
         {
             return null;
         }
-        else if (connectionEntities.size() == 1)
-        {
-            selectedEntity = connectionEntities.get(0);
-        }
         else
         {
-            /*
-             * Multiple connections have been returned.  The code below asks the security verifier to choose which one should be
-             * returned to the caller.
-             */
-            List<org.odpi.openmetadata.metadatasecurity.properties.Connection> candidateConnections = new ArrayList<>();
-
-            for (EntityDetail connectionEntity : connectionEntities)
-            {
-                if (connectionEntity != null)
-                {
-                    org.odpi.openmetadata.metadatasecurity.properties.Connection candidateConnection = super.getConnectionFromEntity(connectionEntity,
-                                                                                                                                     methodName);
-
-                    candidateConnections.add(candidateConnection);
-                }
-            }
-
-            org.odpi.openmetadata.metadatasecurity.properties.Connection connection = securityVerifier.validateUserForAssetConnectionList(userId, null, candidateConnections);
-
-            if (connection != null)
-            {
-                for (EntityDetail connectionEntity : connectionEntities)
-                {
-                    if ((connectionEntity != null) && (connectionEntity.getGUID() != null))
-                    {
-                        if (connectionEntity.getGUID().equals(connection.getGUID()))
-                        {
-                            selectedEntity = connectionEntity;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_CONNECTIONS_FOUND.getMessageDefinition(Integer.toString(candidateConnections.size()),
-                                                                                                                           assetGUID,
-                                                                                                                           methodName,
-                                                                                                                           serverName),
-                                                  this.getClass().getName(),
-                                                  methodName);
-            }
+            selectedEntity = securityVerifier.selectConnection(userId, assetEntity, connectionEntities, repositoryHelper, serviceName, methodName);
         }
 
         return getFullConnection(userId, selectedEntity, forLineage, forDuplicateProcessing, effectiveTime, methodName);

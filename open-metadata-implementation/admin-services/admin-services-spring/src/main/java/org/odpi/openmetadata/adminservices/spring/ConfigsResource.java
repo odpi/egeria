@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 public class ConfigsResource
 {
-    private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
+    private final OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
     /**
      * Return all the server configuration documents

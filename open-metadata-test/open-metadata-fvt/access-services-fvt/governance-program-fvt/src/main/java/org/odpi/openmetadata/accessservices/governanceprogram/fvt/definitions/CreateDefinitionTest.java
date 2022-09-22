@@ -274,4 +274,5 @@ public class CreateDefinitionTest
 
         return domainGUID;
     }
+
 }

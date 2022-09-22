@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Governance Engine OMAS Documentation
+# Metadata Store Service Documentation
 
 * [Concept Descriptions](concepts)
 * [User Guide](user)

@@ -81,7 +81,7 @@ public class SoftwareServerCapabilityHandler extends ReferenceableHandler<Softwa
 		
 		// create SoftwareCapability
 		String guid = createBeanInRepository(userId, null, null, IdMap.CAPABILITY_TYPE_GUID,
-				IdMap.CAPABILITY_TYPE_NAME, null, null, builder, new Date(), methodName);
+				IdMap.CAPABILITY_TYPE_NAME, builder, new Date(), methodName);
 
 		return guid;
 	}

@@ -84,7 +84,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
         long eventRetryCount = 0;
 
         messagePublishRequestCount++;
-        log.info("Metrics: messagePublishRequestCount {}", messagePublishRequestCount);
+        log.debug("Metrics: messagePublishRequestCount {}", messagePublishRequestCount);
 
         if (producer == null) {
             try {
@@ -107,11 +107,11 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                 log.debug("Sending message try {} [0 based] : {}", eventRetryCount,event);
                 ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topicName, localServerId, event);
                 kafkaSendAttemptCount++;
-                log.info("Metrics: kafkaSendAttemptCount {}", kafkaSendAttemptCount);
+                log.debug("Metrics: kafkaSendAttemptCount {}", kafkaSendAttemptCount);
                 producer.send(producerRecord).get();
                 eventSent = true;
                 messageSendCount++;
-                log.info("Metrics: messageSendCount {}", messageSendCount);
+                log.debug("Metrics: messageSendCount {}", messageSendCount);
             } catch (ExecutionException error) {
                 kafkaSendFailCount++;
                 log.debug("Metrics: kafkaSendFailCount {}", kafkaSendFailCount);
@@ -129,7 +129,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                     producer = null;
 
                     messageFailedSendCount++;
-                    log.info(messageFailedCountString, messageFailedSendCount);
+                    log.warn(messageFailedCountString, messageFailedSendCount);
 
                     throw new ConnectorCheckedException(
                             KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
@@ -141,7 +141,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                     producer.close();
                     producer = null;
                     messageFailedSendCount++;
-                    log.info(messageFailedCountString, messageFailedSendCount);
+                    log.warn(messageFailedCountString, messageFailedSendCount);
                     log.error("Retryable Exception closed producer after {} tries", eventRetryCount);
                     break;
                 } else {
@@ -171,7 +171,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                 }
 
                 messageFailedSendCount++;
-                log.info(messageFailedCountString, messageFailedSendCount);
+                log.warn(messageFailedCountString, messageFailedSendCount);
 
                 throw new ConnectorCheckedException(
                         KafkaOpenMetadataTopicConnectorErrorCode.ERROR_SENDING_EVENT.getMessageDefinition(
@@ -225,7 +225,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                     }
                 }
             } catch (InterruptedException error) {
-                log.info("Woken up from sleep ");
+                log.debug("Woken up from sleep ");
                 Thread.currentThread().interrupt();
             } catch (Exception error) {
                 log.warn("Bad exception from sending events: {}",error.getMessage());
@@ -240,7 +240,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
                 }
             }
         }
-        log.debug("Exiting main loop for topic {} & cleaning up", topicName);
+        log.info("Exiting main loop for topic {} & cleaning up", topicName);
 
         /* producer may have already closed by exception handler in publishEvent */
         if (producer != null) {
@@ -265,8 +265,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable {
      */
     private void putEvent(String newEvent) {
         inmemoryPutMessageCount++;
-        log.info("Metrics: inmemoryPutMessageCount {}", inmemoryPutMessageCount);
-        log.info("Metrics: sendBufferSize {}", sendBuffer.size());
+        log.debug("Metrics: inmemoryPutMessageCount {}", inmemoryPutMessageCount);
+        log.debug("Metrics: sendBufferSize {}", sendBuffer.size());
         sendBuffer.add(newEvent);
     }
 

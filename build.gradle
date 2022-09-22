@@ -19,10 +19,10 @@ buildscript {
  */
 
 plugins {
-        id "io.freefair.aggregate-javadoc" version "6.5.0.3"
-        id "io.freefair.lombok" version "6.5.0.3"
+        id "io.freefair.lombok" version "6.5.1"
+        id "io.freefair.aggregate-javadoc" version "6.5.1"
         // Checks for unnecessary dependencies
-        id 'com.autonomousapps.dependency-analysis' version "1.12.0"
+        id 'com.autonomousapps.dependency-analysis' version "1.13.1"
         // helps resolve log implementation clashes
         id 'dev.jacomet.logging-capabilities' version "0.10.0"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
@@ -38,7 +38,7 @@ plugins {
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '3.11-SNAPSHOT'
+    version = '3.12-SNAPSHOT'
 
     // Mostly java, so default to this for now
     apply plugin: 'java'
@@ -77,7 +77,7 @@ allprojects {
         commonsloggingVersion = '1.2'
         commonstextVersion = '1.9'
         commonscliVersion = '1.5.0'
-        elasticsearchVersion = '8.3.3'
+        elasticsearchVersion = '8.4.1'
         findbugsVersion = '3.0.2'
         glassfishVersion = '1.1.4'
         gremlinVersion = '3.5.2'
@@ -85,7 +85,7 @@ allprojects {
         guavaVersion = '31.1-jre'
         hamcrestVersion = '2.2'
         hdrhistogramVersion = '2.1.12'
-        hibernatevalidatorVersion = '6.2.3.Final'
+        hibernatevalidatorVersion = '6.2.4.Final'
         httpclientVersion = '4.5.13'
         httpcoreVersion = '4.4.15'
         jacksonVersion = '2.13.3'
@@ -97,7 +97,7 @@ allprojects {
         javassistVersion = '3.29.0-GA'
         jaxbVersion = '2.3.1'
         jenaVersion = '4.2.0'
-        jodatimeVersion = '2.10.14'
+        jodatimeVersion = '2.11.1'
         jsonldVersion = '0.13.4'
         junitVersion = '4.13.2'
         junitjupiterVersion = '5.9.0'
@@ -108,38 +108,38 @@ allprojects {
         logbackVersion = '1.2.11'
         lettuceVersion = '6.2.0.RELEASE'
         luceneVersion = '8.11.1'
-        nettyVersion = '4.1.79.Final'
+        nettyVersion = '4.1.80.Final'
         ossVersion = '4.14.1'
-        mockitoVersion = '4.6.1'
-        openlineageVersion = '0.12.0'
+        openlineageVersion = '0.13.1'
+        mockitoVersion = '4.7.0'
         plexusVersion = '3.4.2'
-        prometheusVersion = '1.9.2'
+        prometheusVersion = '1.9.3'
         quartzVersion = '2.3.2'
         reflectionsVersion = '0.10.2'
         sanitizerVersion = '1.2.3'
         servletVersion = '4.0.1'
         sleepycatVersion = '18.3.12'
-        slf4jVersion = '1.7.36'
-        snakeyamlVersion = '1.30'
+        snakeyamlVersion = '1.31'
+        slf4jVersion = '2.0.0'
         snappyVersion = '1.1.8.4'
         spotbugsVersion = '4.7.1'
-        springbootVersion = '2.7.2'
-        springdocVersion = '1.6.9'
+        springdocVersion = '1.6.11'
+        springbootVersion = '2.7.3'
         springdataVersion = '2.7.2'
         springldapVersion = '2.4.1'
         swaggerVersion = '2.2.2'
-        springsecurityVersion = '5.7.2'
+        springsecurityVersion = '5.7.3'
         testngVersion = '7.6.1'
         springwebVersion = '5.3.22'
         thriftVersion = '0.16.0'
-        tinkVersion = '1.6.1'
+        tinkVersion = '1.7.0'
         tomcatVersion = '9.0.65'
         validationVersion = '2.0.1.Final'
         antVersion = '1.10.12'
         gsonVersion = '2.9.1'
-        protobufVersion = '3.21.4'
+        protobufVersion = '3.21.5'
         jnrVersion = '3.1.15'
-        cassandraVersion = '4.0.5'
+        cassandraVersion = '4.0.6'
         osgiVersion = '8.0.0'
         log4jVersion = '2.18.0'
         jacksonjdk8Version = '2.13.3'
@@ -343,14 +343,18 @@ allprojects {
     task findDependency(type: DependencyInsightReportTask) {}
 
     // Whilst all modules have their own javadoc, we only build
-    // an aggregate for the client and API modules
+    // an aggregate for the client and API modules plus the REST calls
     javadoc {
         include ( "**/api/*.java" )
         include ( "**/client/*.java" )
+        include ( "**/clients/*.java" )
         include ( "**/properties/*.java" )
         include ( "**/metadataelements/*.java" )
         include ( "**/metadataelement/*.java" )
         include ( "**/events/*.java" )
+        include ( "**/rest/*.java" )
+        include ( "**/exceptions/*.java" )
+        include ( "**/beans/*.java" )
         include ( "**/ffdc/*.java" )
         include ( "**/configuration/*.java" )
         include ( "**/configuration/registration/*.java" )
@@ -360,6 +364,7 @@ allprojects {
         include ( "**/connector/*.java" )
         include ( "**/frameworks/*.java" )
         include ( "**/context/*.java" )
+        include ( "**/contextmanager/*.java" )
         include ( "**/graph/*.java" )
         include ( "**/model/*.java" )
         include ( "**/auditlog/*.java" )
@@ -371,10 +376,14 @@ allprojects {
         include ( "**/repositoryconnector/*.java" )
         include ( "**/repositoryeventmapper/*.java" )
         include ( "**/metadatacollectionstore/*.java" )
+        include ( "**/metadatacollectionstore/instances/*.java" )
+        include ( "**/metadatacollectionstore/typedefs/*.java" )
+        include ( "**/metadatacollectionstore/search/*.java" )
         include ( "**/metadatacollectionstore/utilities/*.java" )
         include ( "**/archiveutilities/*.java" )
-        include ( "**/clients/*.java" )
         include ( "**/metadatasecurity/*.java" )
+        include ( "**/spring/*.java" )
+        include ( "**/frameworks/**/*.java" )
     }
 }
 
@@ -424,65 +433,6 @@ dependencyAnalysis {
             }
             onUnusedDependencies {
                 exclude("junit:junit", "org.junit.jupiter:junit-jupiter-api", "org.junit.jupiter:junit-jupiter-engine", "com.fasterxml.jackson.core:jackson-annotations")
-            }
-        }
-        // These are exceptions which have been investigated, and the currently reported unused
-        // dependencies are needed to prevent compilation failure
-        project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:frameworks:open-connector-framework")
-            }
-        }
-        project(':open-metadata-implementation:server-chassis:server-chassis-spring') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:common-services:ffdc-services")
-            }
-        }
-        project(':open-metadata-resources:open-metadata-archives:open-connector-archives') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:frameworks:audit-log-framework")
-            }
-        }
-        project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:repository-services:repository-services-archive-utilities")
-            }
-        }
-        project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:access-services:asset-owner:asset-owner-api",
-                        ":open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client",
-                        ":open-metadata-implementation:frameworks:open-connector-framework")
-            }
-        }
-        project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:access-services:asset-owner:asset-owner-api",
-                        ":open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client",
-                        ":open-metadata-implementation:frameworks:open-connector-framework")
-            }
-        }
-        project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:access-services:asset-consumer:asset-consumer-api",
-                        ":open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client")
-            }
-        }
-        project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:access-services:asset-consumer:asset-consumer-api",
-                        ":open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client",
-                        ":open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector")
-            }
-        }
-        project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:common-services:ffdc-services")
-            }
-        }
-        project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample') {
-            onUnusedDependencies {
-                exclude(":open-metadata-implementation:common-services:ffdc-services")
             }
         }
     }

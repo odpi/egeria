@@ -229,6 +229,7 @@ public interface LocationManagementInterface
      * @param externalSourceName unique name of software capability representing the caller
      * @param parentLocationGUID unique identifier of the location that is the broader location
      * @param childLocationGUID unique identifier of the location that is the smaller, nested location
+     * @param properties relationship properties
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request

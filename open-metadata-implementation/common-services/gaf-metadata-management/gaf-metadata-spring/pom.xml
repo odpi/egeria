@@ -7,9 +7,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>governance-engine</artifactId>
+        <artifactId>gaf-metadata-management</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.11-SNAPSHOT</version>
+        <version>3.12-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -20,23 +20,23 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Governance Engine OMAS with Spring</name>
+    <name>Metadata Store Service with Spring</name>
     <description>
-        Spring-based REST API for the Governance Engine Open Metadata Access Service (OMAS).
+        Spring-based REST API for the Metadata Store Service.
     </description>
 
-    <artifactId>governance-engine-spring</artifactId>
+    <artifactId>gaf-metadata-spring</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-engine-server</artifactId>
+            <artifactId>gaf-metadata-server</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-engine-api</artifactId>
+            <artifactId>gaf-metadata-api</artifactId>
         </dependency>
 
         <dependency>

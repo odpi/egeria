@@ -228,17 +228,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getMoreInformation(userId,
-                                       elementGUID,
-                                       guidPropertyName,
-                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                       startFrom,
-                                       pageSize,
-                                       false,
-                                       false,
-                                       new Date(),
-                                       methodName);
+            response.setElementList(handler.getMoreInformation(userId,
+                                                               elementGUID,
+                                                               guidPropertyName,
+                                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                               startFrom,
+                                                               pageSize,
+                                                               false,
+                                                               false,
+                                                               new Date(),
+                                                               methodName));
         }
         catch (Exception error)
         {
@@ -285,17 +285,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getDescriptiveElements(userId,
-                                           detailGUID,
-                                           guidPropertyName,
-                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                           startFrom,
-                                           pageSize,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
+            response.setElementList(handler.getDescriptiveElements(userId,
+                                                                   detailGUID,
+                                                                   guidPropertyName,
+                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   false,
+                                                                   false,
+                                                                   new Date(),
+                                                                   methodName));
         }
         catch (Exception error)
         {
@@ -366,19 +366,20 @@ public class RelatedElementRESTServices
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    handler.addMoreInformation(userId,
-                                               requestBody.getExternalSourceGUID(),
-                                               requestBody.getExternalSourceName(),
-                                               elementGUID,
-                                               elementGUIDParameterName,
-                                               stakeholderGUID,
-                                               stakeholderGUIDParameterName,
-                                               null,
-                                               null,
-                                               false,
-                                               false,
-                                               new Date(),
-                                               methodName);
+                    handler.addStakeholder(userId,
+                                           requestBody.getExternalSourceGUID(),
+                                           requestBody.getExternalSourceName(),
+                                           elementGUID,
+                                           elementGUIDParameterName,
+                                           stakeholderGUID,
+                                           stakeholderGUIDParameterName,
+                                           null,
+                                           null,
+                                           null,
+                                           false,
+                                           false,
+                                           new Date(),
+                                           methodName);
                 }
                 else
                 {
@@ -510,17 +511,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getStakeholders(userId,
-                                    elementGUID,
-                                    guidPropertyName,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                    startFrom,
-                                    pageSize,
-                                    false,
-                                    false,
-                                    new Date(),
-                                    methodName);
+            response.setElementList(handler.getStakeholders(userId,
+                                                            elementGUID,
+                                                            guidPropertyName,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            startFrom,
+                                                            pageSize,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -567,17 +568,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getCommissionedByStakeholder(userId,
-                                                 stakeholderGUID,
-                                                 guidPropertyName,
-                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                 startFrom,
-                                                 pageSize,
-                                                 false,
-                                                 false,
-                                                 new Date(),
-                                                 methodName);
+            response.setElementList(handler.getCommissionedByStakeholder(userId,
+                                                                         stakeholderGUID,
+                                                                         guidPropertyName,
+                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName));
         }
         catch (Exception error)
         {
@@ -795,17 +796,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getAssignmentScope(userId,
-                                       elementGUID,
-                                       guidPropertyName,
-                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                       startFrom,
-                                       pageSize,
-                                       false,
-                                       false,
-                                       new Date(),
-                                       methodName);
+            response.setElementList(handler.getAssignmentScope(userId,
+                                                               elementGUID,
+                                                               guidPropertyName,
+                                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                               startFrom,
+                                                               pageSize,
+                                                               false,
+                                                               false,
+                                                               new Date(),
+                                                               methodName));
         }
         catch (Exception error)
         {
@@ -852,17 +853,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getAssignedActors(userId,
-                                      scopeGUID,
-                                      guidPropertyName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      startFrom,
-                                      pageSize,
-                                      false,
-                                      false,
-                                      new Date(),
-                                      methodName);
+            response.setElementList(handler.getAssignedActors(userId,
+                                                              scopeGUID,
+                                                              guidPropertyName,
+                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                              startFrom,
+                                                              pageSize,
+                                                              false,
+                                                              false,
+                                                              new Date(),
+                                                              methodName));
         }
         catch (Exception error)
         {
@@ -1080,16 +1081,16 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getResourceList(userId,
-                                    elementGUID,
-                                    guidPropertyName,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                    startFrom,
-                                    pageSize,
-                                    false,
-                                    false,
-                                    new Date(),
-                                    methodName);
+            response.setElementList(handler.getResourceList(userId,
+                                                            elementGUID,
+                                                            guidPropertyName,
+                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            startFrom,
+                                                            pageSize,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -1137,16 +1138,16 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            handler.getSupportedByResource(userId,
-                                    resourceGUID,
-                                    guidPropertyName,
-                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                    startFrom,
-                                    pageSize,
-                                    false,
-                                    false,
-                                    new Date(),
-                                    methodName);
+            response.setElementList(handler.getSupportedByResource(userId,
+                                                                   resourceGUID,
+                                                                   guidPropertyName,
+                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   false,
+                                                                   false,
+                                                                   new Date(),
+                                                                   methodName));
         }
         catch (Exception error)
         {

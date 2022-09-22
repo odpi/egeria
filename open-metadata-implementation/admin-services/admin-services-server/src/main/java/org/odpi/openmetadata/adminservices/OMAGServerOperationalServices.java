@@ -20,6 +20,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
@@ -368,6 +369,26 @@ public class OMAGServerOperationalServices
 
                     instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
                     activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
+
+                    /*
+                     * The enterprise repository services have been requested so GAF metadata management can also be started.
+                     */
+                    GAFMetadataOperationalServices operationalGAFMetadataServices;
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STARTING);
+                    operationalGAFMetadataServices = new GAFMetadataOperationalServices(configuration.getLocalServerName(),
+                                                                                        enterpriseRepositoryConnector,
+                                                                                        operationalRepositoryServices.getAuditLog(
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceCode(),
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceDevelopmentStatus(),
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(),
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceDescription(),
+                                                                                                CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceWiki()),
+                                                                                        configuration.getLocalServerUserId(),
+                                                                                        configuration.getMaxPageSize());
+
+                    instance.setOperationalGAFMetadataServices(operationalGAFMetadataServices);
+                    activatedServiceList.add(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName());
                 }
 
                 /*
@@ -1237,7 +1258,18 @@ public class OMAGServerOperationalServices
                     instance.getOperationalOCFMetadataServices().shutdown();
 
                     instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
+                }
 
+                /*
+                 * Shutdown the GAF metadata management services
+                 */
+                if (instance.getOperationalGAFMetadataServices() != null)
+                {
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.STOPPING);
+
+                    instance.getOperationalGAFMetadataServices().shutdown();
+
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*

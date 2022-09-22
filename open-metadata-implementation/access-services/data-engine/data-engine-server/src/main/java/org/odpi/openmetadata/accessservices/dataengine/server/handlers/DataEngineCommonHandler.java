@@ -218,8 +218,8 @@ public class DataEngineCommonHandler {
 
             if (relationshipDifferences.hasInstancePropertiesDifferences()) {
                 genericHandler.updateRelationshipProperties(userId, externalSourceGUID, externalSourceName, relationshipGUID,
-                        GUID_PROPERTY_NAME, originalRelationship.getType().getTypeDefName(), true,
-                        relationshipProperties, false, false, null, methodName);
+                                                            GUID_PROPERTY_NAME, originalRelationship.getType().getTypeDefName(), true,
+                                                            relationshipProperties, false, false, null, methodName);
             }
         }
     }

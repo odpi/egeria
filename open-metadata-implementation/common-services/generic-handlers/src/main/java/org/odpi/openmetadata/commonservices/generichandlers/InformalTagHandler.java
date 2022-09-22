@@ -270,8 +270,6 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            externalSourceName,
                                            OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_GUID,
                                            OpenMetadataAPIMapper.INFORMAL_TAG_TYPE_NAME,
-                                           null,
-                                           null,
                                            builder,
                                            effectiveTime,
                                            methodName);

@@ -107,13 +107,6 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                             "The system is unable to claim a governance action because another Engine Host OMAG Server has got there first.",
                             "This is a normal event if there are more than one Engine Host OMAG Server running the same governance engine."),
 
-
-    MULTIPLE_CONNECTIONS_FOUND(404, "OMAG-GENERIC-HANDLERS-404-001",
-            "{0} connections are connected to the asset with unique identifier {1}; the calling method is {2} and the server is {3}",
-            "The system is unable to process a request because multiple connections have been discovered and it is unsure which connection to " +
-                                       "return.",
-            "use the getConnectionsForAsset to page through the list of connections to select the one that is appropriate for your use case."),
-
     MULTIPLE_ENTITIES_FOUND(404, "OMAG-GENERIC-HANDLERS-404-002",
             "Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2}; the calling method is {3}, the name parameter is {4} and the server is {5}",
             "The system is unable to process a request because multiple entities have been discovered and it is unsure which entity to use.",

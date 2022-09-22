@@ -183,8 +183,6 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                externalSourceName,
                                                                OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_GUID,
                                                                OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
-                                                               null,
-                                                               null,
                                                                builder,
                                                                effectiveTime,
                                                                methodName);

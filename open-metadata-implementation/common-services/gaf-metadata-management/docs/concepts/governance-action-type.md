@@ -8,7 +8,7 @@ A governance action type is a template for a [governance action](governance-acti
 A set of linked governance action types form the definition of a
 [governance action process](governance-action-process.md).
 
-Governance action types are defined through the [Governance Engine OMAS](../..)
+Governance action types are defined through the [Metadata Store Service](../..)
 and this OMAS also coordinates the create of a governance action
 from the governance action type as part of its execution of the
 governance action process.
@@ -22,8 +22,8 @@ model of the Open Metadata Types.
 
 ----
 
-* [Return to Governance Engine OMAS Concepts](.)
-* [Return to Governance Engine OMAS Overview](../..)
+* [Return to Metadata Store Service Concepts](.)
+* [Return to Metadata Store Service Overview](../..)
 
 
 

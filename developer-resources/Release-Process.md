@@ -64,7 +64,7 @@ are GPG signed and distributed to [Maven Central](https://oss.sonatype.org).
 #### 4. Update master version & cleanup notes
 * `git checkout master`
 * `git pull upstream master`
-* Edit all files (command line or IDE) to replace 'x.y-SNAPSHOT' with the next version, ie change '1.3-SNAPSHOT' to '3.11-SNAPSHOT'. Most of the changes are in pom.xml files, however some code & documentation also has references to our versions and all need modifying. 
+* Edit all files (command line or IDE) to replace 'x.y-SNAPSHOT' with the next version, ie change '1.3-SNAPSHOT' to '3.12-SNAPSHOT'. Most of the changes are in pom.xml files, however some code & documentation also has references to our versions and all need modifying. 
 * If using an IDE like IntelliJ make sure you have all hits by searching again as by default only a limited number of hits are shown - see https://youtrack.jetbrains.com/issue/IDEA-157855 for Intellij advice.
 * Commit
 * Now remove all the release notes from the 'release-notes' directory other than README.md - so users will always get directed to the latest in master

@@ -111,24 +111,6 @@ public interface GovernanceStatusLevelInterface
                                                                                                        PropertyServerException;
 
 
-    /**
-     * Retrieve the Governance Level Identifier Set for a requested governance status.
-     *
-     * @param userId calling user
-     * @param classificationName classificationName to search for
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    GovernanceStatusIdentifierSetElement getGovernanceStatusIdentifierSet(String userId,
-                                                                          String classificationName) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException;
-
-
 
 
     /**

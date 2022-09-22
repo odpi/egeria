@@ -833,7 +833,7 @@ public class OMAGServerPlatformInstanceMap
         {
             validateUserAsServerInvestigator(userId, serverInstance);
 
-            return serverInstance.getRegisteredServices();
+            return serverInstance.getConfiguredServices();
         }
         else /* server is not active */
         {

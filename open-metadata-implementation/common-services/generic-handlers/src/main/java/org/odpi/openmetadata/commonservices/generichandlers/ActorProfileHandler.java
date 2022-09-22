@@ -149,8 +149,6 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -214,6 +212,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                            qualifiedName,
                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
+                                           supportedZones,
                                            methodName);
     }
 
@@ -270,7 +269,11 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        if (!isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,

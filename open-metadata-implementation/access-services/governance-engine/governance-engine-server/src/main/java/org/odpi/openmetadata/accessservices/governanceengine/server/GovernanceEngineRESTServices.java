@@ -1254,6 +1254,7 @@ public class GovernanceEngineRESTServices
                                                      requestBody.getStewardPropertyName(),
                                                      requestBody.getSource(),
                                                      requestBody.getNotes(),
+                                                     instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                      methodName);
             }
             else
@@ -1320,6 +1321,7 @@ public class GovernanceEngineRESTServices
                                                   requestBody.getNotes(),
                                                   requestBody.getSourceElementGUIDs(),
                                                   sourceElementGUIDsParameterName,
+                                                  instanceHandler.getSupportedZones(userId, serverName,methodName),
                                                   methodName);
             }
             else

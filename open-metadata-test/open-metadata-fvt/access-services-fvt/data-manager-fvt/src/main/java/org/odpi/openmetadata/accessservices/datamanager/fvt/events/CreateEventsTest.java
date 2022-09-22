@@ -257,7 +257,7 @@ public class CreateEventsTest
         try
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
-            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             EventBrokerProperties properties = new EventBrokerProperties();
             properties.setQualifiedName(eventBrokerName);

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.Co
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ProfileIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ProfileLocationElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
@@ -207,13 +208,14 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
 
                     if (relationships != null)
                     {
-                        ElementStub                  superTeam = null;
-                        List<ElementStub>            subTeams  = new ArrayList<>();
+                        ElementStub                  superTeam            = null;
+                        List<ElementStub>            subTeams             = new ArrayList<>();
                         List<ElementStub>            teamLeaders          = new ArrayList<>();
                         List<ElementStub>            teamMembers          = new ArrayList<>();
                         List<ProfileIdentityElement> profileIdentities    = new ArrayList<>();
                         List<ProfileLocationElement> locations            = new ArrayList<>();
                         List<ElementStub>            roles                = new ArrayList<>();
+                        List<RelatedElement>         businessCapabilities   = new ArrayList<>();
                         List<ElementStub>            linkedInfrastructure = new ArrayList<>();
 
                         for (Relationship relationship : relationships)
@@ -253,6 +255,14 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                                     ElementStub elementStub = super.getElementStub(beanClass, entityProxy, methodName);
 
                                     linkedInfrastructure.add(elementStub);
+                                }
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.ORGANIZATIONAL_CAPABILITY_TYPE_NAME))
+                                {
+                                    EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
+
+                                    RelatedElement relatedElement = super.getRelatedElement(beanClass, relationship, entityProxy, methodName);
+
+                                    businessCapabilities.add(relatedElement);
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME))
                                 {
@@ -335,6 +345,11 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                         if (! roles.isEmpty())
                         {
                             bean.setPersonRoles(roles);
+                        }
+
+                        if (! businessCapabilities.isEmpty())
+                        {
+                            bean.setBusinessCapability(businessCapabilities);
                         }
 
                         if (! locations.isEmpty())

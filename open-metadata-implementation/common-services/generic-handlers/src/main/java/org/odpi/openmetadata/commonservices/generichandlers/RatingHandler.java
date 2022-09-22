@@ -229,8 +229,6 @@ public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         externalSourceName,
                                                         OpenMetadataAPIMapper.RATING_TYPE_GUID,
                                                         OpenMetadataAPIMapper.RATING_TYPE_NAME,
-                                                        null,
-                                                        null,
                                                         builder,
                                                         effectiveTime,
                                                         methodName);

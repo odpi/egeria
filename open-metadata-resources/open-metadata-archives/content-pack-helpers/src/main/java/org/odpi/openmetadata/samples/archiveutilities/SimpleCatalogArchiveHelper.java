@@ -182,7 +182,7 @@ public class SimpleCatalogArchiveHelper
     private static final String PROFILE_IDENTITY_RELATIONSHIP_NAME          = "ProfileIdentity";
     private static final String CONTACT_THROUGH_RELATIONSHIP_NAME           = "ContactThrough";
     private static final String PEER_RELATIONSHIP_NAME                      = "Peer";
-    private static final String PERSONAL_ROLE_APPOINTMENT_RELATIONSHIP_NAME = "PersonalRoleAppointment";
+    private static final String PERSONAL_ROLE_APPOINTMENT_RELATIONSHIP_NAME = "PersonRoleAppointment";
     private static final String TEAM_STRUCTURE_RELATIONSHIP_NAME            = "TeamStructure";
     private static final String TEAM_MEMBERSHIP_RELATIONSHIP_NAME           = "TeamMembership";
     private static final String TEAM_LEADERSHIP_RELATIONSHIP_NAME           = "TeamLeadership";
@@ -318,7 +318,7 @@ public class SimpleCatalogArchiveHelper
     private static final String COORDINATES_PROPERTY                         = "coordinates";
     private static final String MAP_PROJECTION_PROPERTY                      = "mapProjection";
     private static final String POSTAL_ADDRESS_PROPERTY                      = "postalAddress";
-    private static final String TIME_ZONE_PROPERTY                           = "timeZone";
+    private static final String TIME_ZONE_PROPERTY                           = "timezone";
     private static final String LEVEL_PROPERTY                               = "level";
 
     private static final String ASSOCIATION_TYPE_PROPERTY                    = "associationType";

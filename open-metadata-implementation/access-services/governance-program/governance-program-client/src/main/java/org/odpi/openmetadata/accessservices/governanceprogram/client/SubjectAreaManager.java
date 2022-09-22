@@ -7,15 +7,14 @@ import org.odpi.openmetadata.accessservices.governanceprogram.api.SubjectAreasIn
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
 
@@ -23,16 +22,8 @@ import java.util.List;
 /**
  * The SubjectAreasInterface is used by the governance team to define the subject area for topic related governance definitions.
  */
-public class SubjectAreaManager implements SubjectAreasInterface
+public class SubjectAreaManager extends GovernanceProgramBaseClient implements SubjectAreasInterface
 {
-    private final String                      serverName;               /* Initialized in constructor */
-    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
-
-
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
@@ -44,13 +35,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
     public SubjectAreaManager(String serverName,
                               String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -70,13 +55,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
                               String userId,
                               String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -96,14 +75,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
                               int      maxPageSize,
                               AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
 
 
@@ -127,14 +99,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
                               int      maxPageSize,
                               AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
@@ -153,14 +118,7 @@ public class SubjectAreaManager implements SubjectAreasInterface
                               GovernanceProgramRESTClient restClient,
                               int                         maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -185,20 +143,9 @@ public class SubjectAreaManager implements SubjectAreasInterface
         final String methodName = "createSubjectArea";
 
         final String propertiesParameter = "properties";
-        final String qualifiedNameParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameter, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
-
-        GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
-                                                                serverPlatformURLRoot + urlTemplate,
-                                                                properties,
-                                                                serverName,
-                                                                userId);
-
-        return response.getGUID();
+        return super.createReferenceable(userId, properties, propertiesParameter, urlTemplate, methodName);
     }
 
 
@@ -225,25 +172,10 @@ public class SubjectAreaManager implements SubjectAreasInterface
         final String methodName = "updateSubjectArea";
 
         final String guidParameter = "subjectAreaGUID";
-        final String qualifiedNameParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}?isMergeUpdate={3}";
+        final String propertiesParameter = "properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}?isMergeUpdate={3}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(subjectAreaGUID, guidParameter, methodName);
-        invalidParameterHandler.validateObject(properties, qualifiedNameParameter, methodName);
-
-        if (! isMergeUpdate)
-        {
-            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
-        }
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        subjectAreaGUID,
-                                        isMergeUpdate);
+        super.updateReferenceable(userId, subjectAreaGUID, guidParameter, isMergeUpdate, properties, propertiesParameter, urlTemplate, methodName);
     }
 
 
@@ -266,17 +198,9 @@ public class SubjectAreaManager implements SubjectAreasInterface
         final String methodName = "deleteSubjectArea";
 
         final String guidParameter = "subjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/delete}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/delete}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(subjectAreaGUID, guidParameter, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        subjectAreaGUID);
+        super.removeReferenceable(userId, subjectAreaGUID, guidParameter, urlTemplate, methodName);
     }
 
 
@@ -303,19 +227,17 @@ public class SubjectAreaManager implements SubjectAreasInterface
 
         final String parentSubjectAreaGUIDParameterName = "parentSubjectAreaGUID";
         final String childSubjectAreaGUIDParameterName = "childSubjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/link";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(parentSubjectAreaGUID, parentSubjectAreaGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(childSubjectAreaGUID, childSubjectAreaGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        parentSubjectAreaGUID,
-                                        childSubjectAreaGUID);
+        super.setupRelationship(userId,
+                                parentSubjectAreaGUID,
+                                parentSubjectAreaGUIDParameterName,
+                                null,
+                                null,
+                                childSubjectAreaGUID,
+                                childSubjectAreaGUIDParameterName,
+                                urlTemplate,
+                                methodName);
     }
 
 
@@ -341,97 +263,17 @@ public class SubjectAreaManager implements SubjectAreasInterface
 
         final String parentSubjectAreaGUIDParameterName = "parentSubjectAreaGUID";
         final String childSubjectAreaGUIDParameterName = "childSubjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/unlink";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(parentSubjectAreaGUID, parentSubjectAreaGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(childSubjectAreaGUID, childSubjectAreaGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        parentSubjectAreaGUID,
-                                        childSubjectAreaGUID);
+        super.clearRelationship(userId,
+                                parentSubjectAreaGUID,
+                                parentSubjectAreaGUIDParameterName,
+                                null,
+                                childSubjectAreaGUID,
+                                childSubjectAreaGUIDParameterName,
+                                urlTemplate,
+                                methodName);
     }
-
-
-    /**
-     * Link a subject area to a governance definition that controls how the definitions in the subject area should be governed.
-     *
-     * @param userId calling user
-     * @param subjectAreaGUID unique identifier of the subject area
-     * @param definitionGUID unique identifier of the governance definition
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void linkSubjectAreaToGovernanceDefinition(String userId,
-                                                      String subjectAreaGUID,
-                                                      String definitionGUID) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        final String methodName = "linkSubjectAreaToGovernanceDefinition";
-
-        final String subjectAreaGUIDParameterName = "subjectAreaGUID";
-        final String definitionGUIDParameterName = "definitionGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/governed-by/{3}/link";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(subjectAreaGUID, subjectAreaGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(definitionGUID, definitionGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        subjectAreaGUID,
-                                        definitionGUID);
-    }
-
-
-    /**
-     * Remove the link between a subject area and a governance definition.
-     *
-     * @param userId calling user
-     * @param subjectAreaGUID unique identifier of the subject area
-     * @param definitionGUID unique identifier of the governance definition
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    public void unlinkSubjectAreaFromGovernanceDefinition(String userId,
-                                                          String subjectAreaGUID,
-                                                          String definitionGUID) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        final String methodName = "unlinkSubjectAreaFromGovernanceDefinition";
-
-        final String subjectAreaGUIDParameterName = "subjectAreaGUID";
-        final String definitionGUIDParameterName = "definitionGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/governed-by/{3}/unlink";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(subjectAreaGUID, subjectAreaGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(definitionGUID, definitionGUIDParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        subjectAreaGUID,
-                                        definitionGUID);
-    }
-
 
     /**
      * Return information about a specific subject area.
@@ -454,13 +296,13 @@ public class SubjectAreaManager implements SubjectAreasInterface
         final String methodName = "getSubjectAreaByGUID";
 
         final String guidParameter = "subjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(subjectAreaGUID, guidParameter, methodName);
 
         SubjectAreaResponse restResult = restClient.callSubjectAreaGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                subjectAreaGUID);
@@ -489,13 +331,13 @@ public class SubjectAreaManager implements SubjectAreasInterface
         final String methodName = "getSubjectAreaByName";
 
         final String qualifiedNameParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/name/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
         SubjectAreaResponse restResult = restClient.callSubjectAreaGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                qualifiedName);
@@ -527,14 +369,14 @@ public class SubjectAreaManager implements SubjectAreasInterface
                                                                                      PropertyServerException
     {
         final String methodName = "getSubjectAreasForDomain";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/for-domain?domainIdentifier={2}&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/for-domain?domainIdentifier={2}&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         SubjectAreaListResponse restResult = restClient.callSubjectAreaListGetRESTCall(methodName,
-                                                                                       serverPlatformURLRoot + urlTemplate,
+                                                                                       urlTemplate,
                                                                                        serverName,
                                                                                        userId,
                                                                                        domainIdentifier,
@@ -564,18 +406,98 @@ public class SubjectAreaManager implements SubjectAreasInterface
                                                                                                PropertyServerException
     {
         final String methodName = "getSubjectAreaDefinitionByGUID";
-
         final String guidParameter = "subjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/with-definitions";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/with-definitions";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(subjectAreaGUID, guidParameter, methodName);
 
         SubjectAreaDefinitionResponse restResult = restClient.callSubjectAreaDefinitionGetRESTCall(methodName,
-                                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                                   urlTemplate,
                                                                                                    serverName,
                                                                                                    userId,
                                                                                                    subjectAreaGUID);
         return restResult.getProperties();
+    }
+
+
+    /**
+     * Add a subject area classification to a referenceable element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element
+     * @param properties identifier for a subject area
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null; qualifiedName is not unique
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void addSubjectAreaMemberClassification(String                              userId,
+                                                   String                              elementGUID,
+                                                   SubjectAreaClassificationProperties properties) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
+    {
+        final String methodName = "addSubjectAreaMemberClassification";
+
+        final String guidParameter = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/subject-area";
+
+        super.setReferenceableClassification(userId, elementGUID, guidParameter, properties, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Remove a subject area classification from a referenceable.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier for the element
+     *
+     * @throws InvalidParameterException guid or userId is null; guid is not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public void deleteSubjectAreaMemberClassification(String userId,
+                                                      String elementGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String methodName = "deleteSubjectAreaMemberClassification";
+        final String guidParameter = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/subject-area/delete";
+
+        super.removeReferenceableClassification(userId, elementGUID, guidParameter, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Return information about the contents of a subject area such as the glossaries, reference data sets and quality definitions.
+     *
+     * @param userId calling user
+     * @param subjectAreaName unique identifier for the subject area
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return properties of the subject area members
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Override
+    public List<ElementStub> getMembersOfSubjectArea(String userId,
+                                                     String subjectAreaName,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String methodName = "getMembersOfSubjectArea";
+        final String nameParameter = "subjectAreaName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/members?startFrom={3}&pageSize={4}";
+
+        return super.getElementStubsByName(userId, subjectAreaName, nameParameter, urlTemplate, startFrom, pageSize, methodName);
     }
 }

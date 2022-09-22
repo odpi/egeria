@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.securitymanager.client.rest.Security
 import org.odpi.openmetadata.accessservices.securitymanager.properties.*;
 import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityManagerRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -18,10 +17,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 /**
  * MetadataSourceClient is the client for setting up the SoftwareServerCapabilities that represent metadata sources.
  */
-public class MetadataSourceClient extends ConnectedAssetClientBase implements MetadataSourceInterface
+public class MetadataSourceClient extends SecurityManagerBaseClient implements MetadataSourceInterface
 {
-    private SecurityManagerRESTClient restClient;               /* Initialized in constructor */
-
      private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/security-manager/users/{1}/metadata-sources";
 
 
@@ -39,8 +36,6 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
                                 AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
-
-        this.restClient = new SecurityManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -56,8 +51,6 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
-
-        this.restClient = new SecurityManagerRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -80,9 +73,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
                                 String   password,
                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
-
-        this.restClient = new SecurityManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -102,9 +93,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
                                 String userId,
                                 String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
-
-        this.restClient = new SecurityManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -115,18 +104,14 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient pre-initialized REST client
      * @param maxPageSize pre-initialized parameter limit
-     * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public MetadataSourceClient(String                serverName,
-                                String                serverPlatformURLRoot,
+    public MetadataSourceClient(String                    serverName,
+                                String                    serverPlatformURLRoot,
                                 SecurityManagerRESTClient restClient,
-                                int                   maxPageSize,
-                                AuditLog              auditLog) throws InvalidParameterException
+                                int                       maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
-        
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 

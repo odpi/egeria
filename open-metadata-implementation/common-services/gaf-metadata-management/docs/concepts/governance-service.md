@@ -69,7 +69,7 @@ Related governance services are configured together as a
 [governance engine](https://egeria-project.org/concepts/governance-engine) and they run in
 the appropriate [Open Metadata Engine Service (OMES)](../../../../engine-services).
 
-The [Governance Engine OMAS](..) provides:
+The [Metadata Store Service](..) provides:
 * The API to create [governance engine definitions](governance-engine.md) for the governance services.
 * The API to link governance services together into [governance action processes](https://egeria-project.org/concepts/governance-action-process).
 * The metadata support for the [Engine Host Services](../../../../governance-servers/engine-host-services)
@@ -79,8 +79,8 @@ The [Governance Engine OMAS](..) provides:
 
 ----
 
-* [Return to Governance Engine OMAS Concepts](.)
-* [Return to Governance Engine OMAS Overview](../..)
+* [Return to Metadata Store Service Concepts](.)
+* [Return to Metadata Store Service Overview](../..)
 
 
 

@@ -13,7 +13,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
 }
 
-description = 'Governance Engine OMAS API'
+description = 'Open Metadata Store API'
 
 java {
     withJavadocJar()

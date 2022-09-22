@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.RESTClientConn
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.http.HttpHeadersThreadLocal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
@@ -25,6 +26,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -161,20 +163,19 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             T responseObject;
 
-            if (basicAuthorizationHeader == null)
-            {
-                responseObject = restTemplate.getForObject(urlTemplate, returnClass);
-            }
-            else
-            {
-                HttpEntity<?> request = new HttpEntity<>(basicAuthorizationHeader);
+            HttpHeaders headers = getHttpHeaders();
 
-                ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.GET, request, returnClass);
+            if (headers.isEmpty()) {
+                responseObject = restTemplate.getForObject(urlTemplate, returnClass);
+            } else {
+                HttpEntity<?> request = new HttpEntity<>(headers);
+
+                ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.GET, request, returnClass);
 
                 responseObject = responseEntity.getBody();
             }
 
-            
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -233,7 +234,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     {
         try
         {
-            if(log.isDebugEnabled()) 
+            if(log.isDebugEnabled())
             {
                 //avoid calling Arrays.toString if not debug level
                 log.debug("Calling {} with URL template {} and parameters {}.",
@@ -245,20 +246,19 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             T  responseObject;
 
-            if (basicAuthorizationHeader == null)
-            {
-                responseObject = restTemplate.getForObject(urlTemplate, returnClass, params);
-            }
-            else
-            {
-                HttpEntity<?> request = new HttpEntity<>(basicAuthorizationHeader);
+            HttpHeaders headers = getHttpHeaders();
 
-                ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.GET, request, returnClass, params);
+            if (headers.isEmpty()) {
+                responseObject = restTemplate.getForObject(urlTemplate, returnClass, params);
+            } else {
+                HttpEntity<?> request = new HttpEntity<>(headers);
+
+                ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.GET, request, returnClass, params);
 
                 responseObject = responseEntity.getBody();
             }
 
-            
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -322,22 +322,21 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             T  responseObject;
 
-            if (basicAuthorizationHeader == null)
-            {
+            HttpHeaders headers = getHttpHeaders();
+
+            if (headers.isEmpty()) {
                 responseObject = restTemplate.postForObject(urlTemplate, requestBody, returnClass);
-            }
-            else
-            {
+            } else {
                 HttpEntity<?> request;
 
                 if (requestBody != null)
                 {
-                    request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+                    request = new HttpEntity<>(requestBody, headers);
                 }
                 else
                 {
                     log.warn("Poorly formed POST call made by {}.", methodName);
-                    request = new HttpEntity<>(basicAuthorizationHeader);
+                    request = new HttpEntity<>(headers);
                 }
 
                 ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.POST, request, returnClass);
@@ -345,7 +344,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 responseObject = responseEntity.getBody();
             }
 
-             
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -355,7 +354,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 log.debug("Returning from {} with no response object.", methodName);
             }
 
-            
+
 
             return responseObject;
         }
@@ -420,22 +419,21 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
             T  responseObject;
 
-            if (basicAuthorizationHeader == null)
-            {
+            HttpHeaders headers = getHttpHeaders();
+
+            if (headers.isEmpty()) {
                 responseObject = restTemplate.postForObject(urlTemplate, requestBody, returnClass, params);
-            }
-            else
-            {
+            } else {
                 HttpEntity<?> request;
 
                 if (requestBody != null)
                 {
-                    request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+                    request = new HttpEntity<>(requestBody, headers);
                 }
                 else
                 {
                     log.warn("Poorly formed POST call made by {}.", methodName);
-                    request = new HttpEntity<>(basicAuthorizationHeader);
+                    request = new HttpEntity<>(headers);
                 }
 
                 ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.POST, request, returnClass, params);
@@ -443,7 +441,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 responseObject = responseEntity.getBody();
             }
 
-             
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -527,7 +525,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, returnClass, params);
             T responseObject = responseEntity.getBody();
 
-             
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -588,22 +586,21 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
             T  responseObject = null;
 
-            if (basicAuthorizationHeader == null)
-            {
+            HttpHeaders headers = getHttpHeaders();
+
+            if (headers.isEmpty()) {
                 restTemplate.delete(urlTemplate);
-            }
-            else
-            {
+            } else {
                 HttpEntity<?> request;
 
                 if (requestBody != null)
                 {
-                    request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+                    request = new HttpEntity<>(requestBody, headers);
                 }
                 else
                 {
                     log.warn("Poorly formed POST call made by {}.", methodName);
-                    request = new HttpEntity<>(basicAuthorizationHeader);
+                    request = new HttpEntity<>(headers);
                 }
 
                 ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, returnClass);
@@ -611,7 +608,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
                 responseObject = responseEntity.getBody();
             }
 
-             
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -689,7 +686,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
             ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, returnClass, params);
             T  responseObject = responseEntity.getBody();
-             
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -758,26 +755,28 @@ public class SpringRESTClientConnector extends RESTClientConnector
             T responseObject;
 
             HttpEntity<?> request;
-            if (basicAuthorizationHeader == null)
-            {
+
+            HttpHeaders headers = getHttpHeaders();
+
+            if (headers.isEmpty()) {
                 request = new HttpEntity<>(requestBody);
             }
             else {
                 if (requestBody != null)
                 {
-                    request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+                    request = new HttpEntity<>(requestBody, headers);
                 }
                 else
                 {
                     log.warn("Poorly formed POST call made by {}.", methodName);
-                    request = new HttpEntity<>(basicAuthorizationHeader);
+                    request = new HttpEntity<>(headers);
                 }
             }
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.POST, request, responseType, params);
 
             responseObject = responseEntity.getBody();
 
-            
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -847,19 +846,20 @@ public class SpringRESTClientConnector extends RESTClientConnector
             T responseObject;
 
             HttpEntity<?> request;
-            if (basicAuthorizationHeader == null) {
+
+            HttpHeaders headers = getHttpHeaders();
+
+            if (headers.isEmpty()) {
                 request = HttpEntity.EMPTY;
-            }
-            else
-            {
-                request = new HttpEntity<>(basicAuthorizationHeader);
+            } else {
+                request = new HttpEntity<>(headers);
             }
 
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.GET, request, responseType, params);
 
             responseObject = responseEntity.getBody();
 
-            
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -936,7 +936,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             }
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.DELETE, request, responseType, params);
             T responseObject = responseEntity.getBody();
-            
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -1015,7 +1015,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
             ResponseEntity<T> responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PUT, request, responseType, params);
             T responseObject = responseEntity.getBody();
 
-            
+
             if (responseObject != null)
             {
                 log.debug("Returning from {} with response object {}", methodName, responseObject);
@@ -1050,5 +1050,29 @@ public class SpringRESTClientConnector extends RESTClientConnector
                     errorCode.getUserAction(),
                     error);
         }
+    }
+
+    /**
+     * Creates the http headers for the requests. It checks if there are headers saved in the thread local or
+     * any basic authorisation headers and adds them to the list.
+     *
+     * @return http headers
+     */
+    private HttpHeaders getHttpHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+
+        Map<String, String> threadLocalHeaders = HttpHeadersThreadLocal.getHeadersThreadLocal().get();
+
+        if (threadLocalHeaders != null) {
+            for (Map.Entry<String, String> entry : threadLocalHeaders.entrySet()) {
+                headers.set(entry.getKey(), entry.getValue());
+            }
+        }
+
+        if (basicAuthorizationHeader != null) {
+            headers.addAll(basicAuthorizationHeader);
+        }
+
+        return headers;
     }
 }

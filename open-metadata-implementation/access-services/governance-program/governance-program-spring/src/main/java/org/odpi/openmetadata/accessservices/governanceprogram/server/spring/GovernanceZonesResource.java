@@ -4,13 +4,14 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneDefinitionResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceZoneRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,9 +57,9 @@ public class GovernanceZonesResource
      */
     @PostMapping(path = "/governance-zones")
 
-    public GUIDResponse createGovernanceZone(@PathVariable String                   serverName,
-                                             @PathVariable String                   userId,
-                                             @RequestBody  GovernanceZoneProperties requestBody)
+    public GUIDResponse createGovernanceZone(@PathVariable String                  serverName,
+                                             @PathVariable String                  userId,
+                                             @RequestBody ReferenceableRequestBody requestBody)
     {
         return restAPI.createGovernanceZone(serverName, userId, requestBody);
     }
@@ -84,7 +85,7 @@ public class GovernanceZonesResource
                                              @PathVariable String                   userId,
                                              @PathVariable String                   zoneGUID,
                                              @RequestParam boolean                  isMergeUpdate,
-                                             @RequestBody  GovernanceZoneProperties requestBody)
+                                             @RequestBody  ReferenceableRequestBody requestBody)
     {
         return restAPI.updateGovernanceZone(serverName, userId, zoneGUID, isMergeUpdate, requestBody);
     }
@@ -96,7 +97,7 @@ public class GovernanceZonesResource
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param zoneGUID unique identifier of zone
-     * @param requestBody null requestBody
+     * @param requestBody external source requestBody
      *
      * @return void or
      *  InvalidParameterException guid or userId is null; guid is not known
@@ -109,7 +110,7 @@ public class GovernanceZonesResource
                                              @PathVariable String userId,
                                              @PathVariable String zoneGUID,
                                              @RequestBody(required = false)
-                                                           NullRequestBody requestBody)
+                                                     ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteGovernanceZone(serverName, userId, zoneGUID, requestBody);
     }
@@ -123,7 +124,7 @@ public class GovernanceZonesResource
      * @param userId calling user
      * @param parentZoneGUID unique identifier of the parent zone
      * @param childZoneGUID unique identifier of the child zone
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -137,7 +138,7 @@ public class GovernanceZonesResource
                                              @PathVariable String          parentZoneGUID,
                                              @PathVariable String          childZoneGUID,
                                              @RequestBody(required = false)
-                                                           NullRequestBody requestBody)
+                                                     RelationshipRequestBody requestBody)
     {
         return restAPI.linkZonesInHierarchy(serverName, userId, parentZoneGUID, childZoneGUID, requestBody);
     }
@@ -150,7 +151,7 @@ public class GovernanceZonesResource
      * @param userId calling user
      * @param parentZoneGUID unique identifier of the parent zone
      * @param childZoneGUID unique identifier of the child zone
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -164,7 +165,7 @@ public class GovernanceZonesResource
                                                @PathVariable String          parentZoneGUID,
                                                @PathVariable String          childZoneGUID,
                                                @RequestBody(required = false)
-                                                             NullRequestBody requestBody)
+                                                             RelationshipRequestBody requestBody)
     {
         return restAPI.unlinkZonesInHierarchy(serverName, userId, parentZoneGUID, childZoneGUID, requestBody);
     }
@@ -177,7 +178,7 @@ public class GovernanceZonesResource
      * @param userId calling user
      * @param zoneGUID unique identifier of the zone
      * @param definitionGUID unique identifier of the governance definition
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -191,7 +192,7 @@ public class GovernanceZonesResource
                                                        @PathVariable String          zoneGUID,
                                                        @PathVariable String          definitionGUID,
                                                        @RequestBody(required = false)
-                                                                     NullRequestBody requestBody)
+                                                                     RelationshipRequestBody requestBody)
     {
         return restAPI.linkZoneToGovernanceDefinition(serverName, userId, zoneGUID, definitionGUID, requestBody);
     }
@@ -204,7 +205,7 @@ public class GovernanceZonesResource
      * @param userId calling user
      * @param zoneGUID unique identifier of the zone
      * @param definitionGUID unique identifier of the governance definition
-     * @param requestBody null requestBody
+     * @param requestBody relationship requestBody
      *
      * @return void or
      *  InvalidParameterException one of the guids is null or not known
@@ -218,7 +219,7 @@ public class GovernanceZonesResource
                                                            @PathVariable String          zoneGUID,
                                                            @PathVariable String          definitionGUID,
                                                            @RequestBody(required = false)
-                                                                         NullRequestBody requestBody)
+                                                                         RelationshipRequestBody requestBody)
     {
         return restAPI.unlinkZoneFromGovernanceDefinition(serverName, userId, zoneGUID, definitionGUID, requestBody);
     }
