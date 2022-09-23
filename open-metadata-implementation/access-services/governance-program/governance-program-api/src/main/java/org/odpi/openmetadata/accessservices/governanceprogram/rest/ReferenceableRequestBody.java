@@ -48,6 +48,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
 
         if (template != null)
         {
+            anchorGUID = template.getAnchorGUID();
             properties = template.getProperties();
         }
     }

@@ -187,7 +187,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                  PropertyServerException
     {
         final String   methodName = "createSecurityGroup";
-        final String   urlTemplate = urlTemplatePrefix + "/security-groups";
+        final String   urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups";
 
         final String   docIdParameterName = "documentIdentifier";
         final String   titleParameterName = "title";
@@ -199,7 +199,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
         invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   properties,
                                                                   serverName,
                                                                   userId);
@@ -229,7 +229,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                 PropertyServerException
     {
         final String methodName = "updateSecurityGroup";
-        final String urlTemplate = urlTemplatePrefix + "/security-groups/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/{2}/update?isMergeUpdate={3}";
 
         final String guidParameterName = "securityGroupGUID";
         final String docIdParameterName = "documentIdentifier";
@@ -247,7 +247,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
         }
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         properties,
                                         serverName,
                                         userId,
@@ -273,14 +273,14 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                       PropertyServerException
     {
         final String methodName = "deleteSecurityGroup";
-        final String urlTemplate = urlTemplatePrefix + "/security-groups/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/{2}/delete";
         final String guidParameterName = "securityGroupGUID";
 
         invalidParameterHandler.validateGUID(securityGroupGUID, guidParameterName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -311,7 +311,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                                     PropertyServerException
     {
         final String   methodName = "getSecurityGroupsForDistinguishedName";
-        final String   urlTemplate = urlTemplatePrefix + "/security-groups/for-distinguished-name/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/for-distinguished-name/{2}?startFrom={3}&pageSize={4}";
         final String   parameterName = "distinguishedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -320,7 +320,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         SecurityGroupsResponse restResult = restClient.callSecurityGroupsGetRESTCall(methodName,
-                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      distinguishedName,
@@ -354,7 +354,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                         PropertyServerException
     {
         final String methodName = "getElementsGovernedBySecurityGroup";
-        final String urlTemplate = urlTemplatePrefix + "/security-groups/{2}/governed-by/elements?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/{2}/governed-by/elements?startFrom={3}&pageSize={4}";
         final String guidParameterName = "securityGroupGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -363,7 +363,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ElementStubsResponse restResult = restClient.callElementStubsGetRESTCall(methodName,
-                                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                                 urlTemplate,
                                                                                  serverName,
                                                                                  userId,
                                                                                  securityGroupGUID,
@@ -397,7 +397,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
                                                                                  PropertyServerException
     {
         final String methodName = "findSecurityGroups";
-        final String urlTemplate = urlTemplatePrefix + "/security-groups/by-search-string?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/security-groups/by-search-string?startFrom={2}&pageSize={3}";
         final String searchStringParameterName = "searchString";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -411,7 +411,7 @@ public class SecurityGroupManagement implements SecurityGroupInterface
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         SecurityGroupsResponse restResult = restClient.callSecurityGroupsPostRESTCall(methodName,
-                                                                                      serverPlatformURLRoot + urlTemplate,
+                                                                                      urlTemplate,
                                                                                       requestBody,
                                                                                       serverName,
                                                                                       userId,

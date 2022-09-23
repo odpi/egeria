@@ -1,97 +1,100 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.rest;
+package org.odpi.openmetadata.accessservices.securitymanager.rest;
+
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
+import org.odpi.openmetadata.accessservices.securitymanager.properties.ReferenceableProperties;
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * UserIdentityRequestBody provides the request body payload for working on UserIdentity entities and their
- * link to profiles.
+ * RelationshipRequestBody describes the request body used when linking elements together.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UserIdentityRequestBody extends ExternalSourceRequestBody
+public class ReferenceableRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private UserIdentityProperties properties = null;
+    private ReferenceableProperties properties = null;
+
 
     /**
      * Default constructor
      */
-    public UserIdentityRequestBody()
+    public ReferenceableRequestBody()
     {
+        super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.
      *
      * @param template object to copy
      */
-    public UserIdentityRequestBody(UserIdentityRequestBody template)
+    public ReferenceableRequestBody(ReferenceableRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            this.properties = template.getProperties();
+            properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the properties for this user identity.
+     * Return the properties for the relationship.
      *
-     * @return properties bean
+     * @return properties object
      */
-    public UserIdentityProperties getProperties()
+    public ReferenceableProperties getProperties()
     {
         return properties;
     }
 
 
     /**
-     * Set up the properties for this user identity.
+     * Set up the properties for the relationship.
      *
-     * @param properties properties bean
+     * @param properties properties object
      */
-    public void setProperties(UserIdentityProperties properties)
+    public void setProperties(ReferenceableProperties properties)
     {
         this.properties = properties;
     }
 
 
     /**
-     * JSON-style toString.
+     * JSON-style toString
      *
-     * @return list of properties and their values.
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
-        return "UserIdentityRequestBody{" +
-                       "properties=" + properties +
-                       ", externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+        return "ReferenceableRequestBody{" +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", properties=" + properties +
                        '}';
     }
 
 
     /**
-     * Equals method that returns true if containing properties are the same.
+     * Return comparison result based on the content of the properties.
      *
-     * @param objectToCompare object to compare
-     * @return boolean result of comparison
+     * @param objectToCompare test object
+     * @return result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -108,8 +111,8 @@ public class UserIdentityRequestBody extends ExternalSourceRequestBody
         {
             return false;
         }
-        UserIdentityRequestBody that = (UserIdentityRequestBody) objectToCompare;
-        return Objects.equals(properties, that.properties);
+        ReferenceableRequestBody that = (ReferenceableRequestBody) objectToCompare;
+        return Objects.equals(getProperties(), that.getProperties());
     }
 
 
