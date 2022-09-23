@@ -148,7 +148,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                                             PropertyServerException
     {
         final String methodName = "createCertificationType";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types";
         final String propertiesParameterName = "properties";
 
         return super.createGovernanceDefinition(userId, properties, propertiesParameterName, initialStatus, urlTemplate, methodName);
@@ -176,7 +176,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                                        PropertyServerException
     {
         final String methodName = "updateCertificationType";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/update?isMergeUpdate={3}";
         final String guidParameterName = "certificationTypeGUID";
         final String propertiesParameterName = "properties";
 
@@ -208,7 +208,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                              PropertyServerException
     {
         final String methodName = "deleteCertificationType";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}/delete";
         final String guidParameterName = "certificationTypeGUID";
 
         super.removeReferenceable(userId, certificationTypeGUID, guidParameterName, urlTemplate, methodName);
@@ -234,7 +234,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                                                     PropertyServerException
     {
         final String methodName = "getCertificationTypeByGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/{2}";
 
         final String guidParameterName = "certificationTypeGUID";
 
@@ -242,7 +242,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
         invalidParameterHandler.validateGUID(certificationTypeGUID, guidParameterName, methodName);
 
         CertificationTypeResponse restResult = restClient.callCertificationTypeGetRESTCall(methodName,
-                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      certificationTypeGUID);
@@ -270,7 +270,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                                                   PropertyServerException
     {
         final String   methodName = "getCertificationTypeByDocId";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-document-id/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-document-id/{2}";
 
         final String   documentIdParameterName = "documentId";
 
@@ -278,7 +278,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
         invalidParameterHandler.validateName(documentIdentifier, documentIdParameterName, methodName);
 
         CertificationTypeResponse restResult = restClient.callCertificationTypeGetRESTCall(methodName,
-                                                                                           serverPlatformURLRoot + urlTemplate,
+                                                                                           urlTemplate,
                                                                                            serverName,
                                                                                            userId,
                                                                                            documentIdentifier);
@@ -310,7 +310,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                                                PropertyServerException
     {
         final String methodName = "getCertificationTypesByTitle";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-title?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-title?startFrom={2}&pageSize={3}";
         final String titleParameterName = "title";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
@@ -324,7 +324,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
         requestBody.setSearchStringParameterName(titleParameterName);
 
         CertificationTypeListResponse restResult = restClient.callCertificationTypeListPostRESTCall(methodName,
-                                                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                                                    urlTemplate,
                                                                                                     requestBody,
                                                                                                     serverName,
                                                                                                     userId,
@@ -358,14 +358,14 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                                                          PropertyServerException
     {
         final String methodName = "getCertificationTypeByDomainId";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-domain/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certification-types/by-domain/{2}?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         CertificationTypeListResponse restResult = restClient.callCertificationTypeListGetRESTCall(methodName,
-                                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                                   urlTemplate,
                                                                                                    serverName,
                                                                                                    userId,
                                                                                                    domainIdentifier,
@@ -402,7 +402,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                             PropertyServerException
     {
         final String methodName = "certifyElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/certification-types/{3}/certify";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/certification-types/{3}/certify";
 
         final String elementGUIDParameterName = "elementGUID";
         final String certificationTypeGUIDParameterName = "certificationTypeGUID";
@@ -440,7 +440,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                                 PropertyServerException
     {
         final String methodName = "updateCertification";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certifications/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certifications/{2}/update?isMergeUpdate={3}";
 
         final String certificationGUIDParameterName = "certificationGUID";
 
@@ -472,7 +472,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
                                                                        PropertyServerException
     {
         final String methodName = "decertifyElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certifications/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/certifications/{2}/delete";
 
         final String certificationGUIDParameterName = "certificationGUID";
 
@@ -510,7 +510,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
     {
         final String methodName = "getCertifiedElements";
         final String guidParameter = "certificationTypeGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/certifications/{2}?&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/certifications/{2}?&startFrom={3}&pageSize={4}";
 
         return super.getRelatedElements(userId, certificationTypeGUID, guidParameter, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -540,7 +540,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
     {
         final String methodName = "getLicences";
         final String guidParameterName = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/certifications?&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/certifications?&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
@@ -548,7 +548,7 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                                             urlTemplate,
                                                                                              serverName,
                                                                                              userId,
                                                                                              elementGUID,

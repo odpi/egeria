@@ -23,14 +23,14 @@ import java.util.List;
  */
 public class SecurityManagerServicesInstance extends OMASServiceInstance
 {
-    private static AccessServiceDescription myDescription = AccessServiceDescription.SECURITY_MANAGER_OMAS;
+    private final static AccessServiceDescription myDescription = AccessServiceDescription.SECURITY_MANAGER_OMAS;
 
-    private SoftwareCapabilityHandler<SecurityManagerElement> softwareCapabilityHandler;
-    private GovernanceDefinitionHandler<SecurityGroupElement> securityGroupHandler;
-    private UserIdentityHandler<UserIdentityElement>          userIdentityHandler;
-    private ContactDetailsHandler<ContactMethodElement>       contactDetailsHandler;
-    private ActorProfileHandler<ActorProfileElement>          actorProfileHandler;
-    private PersonRoleHandler<PersonRoleElement>              personRoleHandler;
+    private final SoftwareCapabilityHandler<SecurityManagerElement> softwareCapabilityHandler;
+    private final GovernanceDefinitionHandler<SecurityGroupElement> securityGroupHandler;
+    private final UserIdentityHandler<UserIdentityElement>          userIdentityHandler;
+    private final ContactDetailsHandler<ContactMethodElement>       contactDetailsHandler;
+    private final ActorProfileHandler<ActorProfileElement>          actorProfileHandler;
+    private final PersonRoleHandler<PersonRoleElement>              personRoleHandler;
 
 
     /**
@@ -48,13 +48,13 @@ public class SecurityManagerServicesInstance extends OMASServiceInstance
      * @throws NewInstanceException a problem occurred during initialization
      */
     public SecurityManagerServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                           List<String>           supportedZones,
-                                           List<String>           defaultZones,
-                                           List<String>           publishZones,
-                                           AuditLog               auditLog,
-                                           String                 localServerUserId,
-                                           int                    maxPageSize,
-                                           Connection             outTopicEventBusConnection) throws NewInstanceException
+                                           List<String>            supportedZones,
+                                           List<String>            defaultZones,
+                                           List<String>            publishZones,
+                                           AuditLog                auditLog,
+                                           String                  localServerUserId,
+                                           int                     maxPageSize,
+                                           Connection              outTopicEventBusConnection) throws NewInstanceException
     {
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,

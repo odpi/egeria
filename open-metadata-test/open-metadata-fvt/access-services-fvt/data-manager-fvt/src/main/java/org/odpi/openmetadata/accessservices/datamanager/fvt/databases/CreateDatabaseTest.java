@@ -403,7 +403,7 @@ public class CreateDatabaseTest
         try
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
-            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             DatabaseManagerProperties properties = new DatabaseManagerProperties();
             properties.setQualifiedName(databaseManagerName);

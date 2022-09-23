@@ -24,6 +24,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
+    private String                  anchorGUID = null;
     private ReferenceableProperties properties = null;
 
 
@@ -47,6 +48,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
 
         if (template != null)
         {
+            anchorGUID = template.getAnchorGUID();
             properties = template.getProperties();
         }
     }
@@ -75,6 +77,28 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
 
 
     /**
+     * Return an optional anchor GUID to attach the new element to.
+     *
+     * @return guid
+     */
+    public String getAnchorGUID()
+    {
+        return anchorGUID;
+    }
+
+
+    /**
+     * Set up an optional anchor GUID to attach the new element to.
+     *
+     * @param anchorGUID guid
+     */
+    public void setAnchorGUID(String anchorGUID)
+    {
+        this.anchorGUID = anchorGUID;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -85,6 +109,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
         return "ReferenceableRequestBody{" +
                        "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", anchorGUID='" + anchorGUID + '\'' +
                        ", properties=" + properties +
                        '}';
     }
@@ -103,16 +128,16 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof ReferenceableRequestBody))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ReferenceableRequestBody that = (ReferenceableRequestBody) objectToCompare;
-        return Objects.equals(getProperties(), that.getProperties());
+        return Objects.equals(anchorGUID, that.anchorGUID) && Objects.equals(properties, that.properties);
     }
 
 
@@ -124,6 +149,6 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(super.hashCode(), anchorGUID, properties);
     }
 }

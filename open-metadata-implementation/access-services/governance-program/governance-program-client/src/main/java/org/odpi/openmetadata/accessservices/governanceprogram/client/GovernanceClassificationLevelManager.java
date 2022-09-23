@@ -149,13 +149,13 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
         final String methodName = "createStandardGovernanceClassificationLevels";
 
         final String classificationNameParameter = "classificationName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/standard-set/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/standard-set/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(classificationName, classificationNameParameter, methodName);
 
         GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
-                                                                serverPlatformURLRoot + urlTemplate,
+                                                                urlTemplate,
                                                                 nullRequestBody,
                                                                 serverName,
                                                                 userId,
@@ -193,7 +193,7 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
         final String classificationNameParameter = "classificationName";
         final String identifierPropertyNameParameter = "identifierPropertyName";
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets";
 
         invalidParameterHandler.validateObject(properties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(properties.getClassificationName(), classificationNameParameter, methodName);
@@ -227,7 +227,7 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
         final String identifierPropertyNameParameter = "identifierPropertyName";
         final String guidParameter = "setGUID";
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/{2}/update";
 
         invalidParameterHandler.validateObject(properties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(properties.getClassificationName(), classificationNameParameter, methodName);
@@ -255,7 +255,7 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
     {
         final String methodName = "removeGovernanceLevelIdentifierSet";
         final String guidParameter = "setGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/{2}/delete";
 
         super.removeReferenceable(userId, setGUID, guidParameter, urlTemplate, methodName);
     }
@@ -279,12 +279,12 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
     {
         final String methodName = "getGovernanceLevelIdentifierSets";
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GovernanceLevelIdentifierSetListResponse restResult = restClient.callLevelIdentifierSetListGetRESTCall(methodName,
-                                                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                                                               urlTemplate,
                                                                                                                serverName,
                                                                                                                userId);
         return restResult.getElements();
@@ -312,13 +312,13 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
         final String methodName = "getGovernanceLevelIdentifierSet";
 
         final String classificationNameParameter = "classificationName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/classification-name/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/classification-name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(classificationName, classificationNameParameter, methodName);
 
         GovernanceLevelIdentifierSetResponse restResult = restClient.callLevelIdentifierSetGetRESTCall(methodName,
-                                                                                                       serverPlatformURLRoot + urlTemplate,
+                                                                                                       urlTemplate,
                                                                                                        serverName,
                                                                                                        userId,
                                                                                                        classificationName);
@@ -349,13 +349,13 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
         final String methodName = "getGovernanceLevelIdentifierSet";
 
         final String guidParameter = "setGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(setGUID, guidParameter, methodName);
 
         GovernanceLevelIdentifierSetResponse restResult = restClient.callLevelIdentifierSetGetRESTCall(methodName,
-                                                                                                       serverPlatformURLRoot + urlTemplate,
+                                                                                                       urlTemplate,
                                                                                                        serverName,
                                                                                                        userId,
                                                                                                        setGUID);
@@ -391,7 +391,7 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
 
         final String guidParameter = "setGUID";
         final String propertiesParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/identifier";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/identifier";
 
         return super.createReferenceableWithAnchor(userId, setGUID, guidParameter, properties, propertiesParameter, urlTemplate, methodName);
     }
@@ -419,7 +419,7 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
 
         final String guidParameter = "identifierGUID";
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/identifier/{2}/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/identifier/{2}/update";
 
         super.updateReferenceable(userId, identifierGUID, guidParameter, false, properties, propertiesParameter, urlTemplate, methodName);
     }
@@ -444,7 +444,7 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
         final String methodName = "removeGovernanceLevelIdentifier";
 
         final String guidParameter = "identifierGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/identifier/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/identifier/{2}/delete";
 
         super.removeReferenceable(userId, identifierGUID, guidParameter, urlTemplate, methodName);
     }
@@ -473,13 +473,13 @@ public class GovernanceClassificationLevelManager extends GovernanceProgramBaseC
         final String methodName = "getGovernanceLevelIdentifier";
 
         final String classificationNameParameter = "classificationName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/classification-name/{2}/identifier/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/classification-level-sets/classification-name/{2}/identifier/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(classificationName, classificationNameParameter, methodName);
 
         GovernanceLevelIdentifierResponse restResult = restClient.callLevelIdentifierGetRESTCall(methodName,
-                                                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                                                 urlTemplate,
                                                                                                  serverName,
                                                                                                  userId,
                                                                                                  classificationName,
