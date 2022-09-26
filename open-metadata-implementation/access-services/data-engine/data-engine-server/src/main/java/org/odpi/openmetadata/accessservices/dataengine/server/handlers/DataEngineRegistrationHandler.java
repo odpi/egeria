@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ExternalDataEnginePropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.service.ClockService;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
@@ -49,6 +50,7 @@ public class DataEngineRegistrationHandler {
     private final OMRSRepositoryHelper repositoryHelper;
     private final SoftwareCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler;
     private final InvalidParameterHandler invalidParameterHandler;
+    private final ClockService clockService;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -62,12 +64,14 @@ public class DataEngineRegistrationHandler {
     public DataEngineRegistrationHandler(String serviceName, String serverName,
                                          InvalidParameterHandler invalidParameterHandler,
                                          OMRSRepositoryHelper repositoryHelper,
-                                         SoftwareCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler) {
+                                         SoftwareCapabilityHandler<SoftwareServerCapability> softwareServerCapabilityHandler,
+                                         ClockService clockService) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.softwareServerCapabilityHandler = softwareServerCapabilityHandler;
+        this.clockService = clockService;
     }
 
     /**
@@ -101,8 +105,8 @@ public class DataEngineRegistrationHandler {
                     null,  entityTypeDef.getName(), null, externalEngineName,
                     softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
                     softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
-                    softwareServerCapability.getAdditionalProperties(), null,null, null, null, false,
-                     false, null, methodName);
+                    softwareServerCapability.getAdditionalProperties(), null, null, null,
+                    null, false, false, clockService.getNow(), methodName);
         } else {
             ExternalDataEnginePropertiesBuilder builder = getExternalDataEnginePropertiesBuilder(softwareServerCapability);
             InstanceProperties properties = builder.getInstanceProperties(methodName);
@@ -136,7 +140,7 @@ public class DataEngineRegistrationHandler {
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
         EntityDetail retrievedEntity = softwareServerCapabilityHandler.getEntityByValue(userId, qualifiedName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME),
-                false, false, null, methodName);
+                false, false, clockService.getNow(), methodName);
 
         if (retrievedEntity == null) {
             return null;

@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ExternalDataEnginePropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.service.ClockService;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -75,6 +76,9 @@ class DataEngineRegistrationHandlerTest {
 
     @Mock
     private InvalidParameterHandler invalidParameterHandler;
+
+    @Mock
+    private ClockService clockService;
 
     @InjectMocks
     @Spy

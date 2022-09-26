@@ -109,9 +109,10 @@ public class DataEngineSchemaTypeHandler {
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         String schemaTypeGUID;
+        Date now = dataEngineCommonHandler.getNow();
         if (originalSchemaTypeEntity.isEmpty()) {
             schemaTypeGUID = schemaTypeHandler.addSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeBuilder,
-                      null, null, false, false, null, methodName);
+                      null, null, false, false, now, methodName);
         } else {
             schemaTypeGUID = originalSchemaTypeEntity.get().getGUID();
             EntityDetail updatedSchemaTypeEntity = buildSchemaTypeEntityDetail(schemaTypeGUID, schemaType);
@@ -120,7 +121,7 @@ public class DataEngineSchemaTypeHandler {
 
             if (entityDetailDifferences.hasInstancePropertiesDifferences()) {
                 schemaTypeHandler.updateSchemaType(userId, externalSourceGUID, externalSourceName, schemaTypeGUID, SCHEMA_TYPE_GUID_PARAMETER_NAME,
-                        schemaTypeBuilder, true, false, false, null, methodName);
+                        schemaTypeBuilder, true, false, false, now, methodName);
             }
         }
 

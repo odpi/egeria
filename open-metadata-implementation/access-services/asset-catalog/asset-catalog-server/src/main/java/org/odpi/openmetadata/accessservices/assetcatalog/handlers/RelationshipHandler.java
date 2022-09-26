@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.handlers;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.converters.AssetCatalogConverter;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetCatalogBean;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.ClockService;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
@@ -14,8 +15,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-
-import java.util.Date;
 
 /**
  * Relationship Handler supports the lookup of the asset's relationship from the repositories.
@@ -29,6 +28,7 @@ public class RelationshipHandler {
     private final InvalidParameterHandler invalidParameterHandler;
     private final OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler;
     private final CommonHandler commonHandler;
+    private final ClockService clockService;
 
     private final String sourceName;
 
@@ -41,15 +41,18 @@ public class RelationshipHandler {
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      * @param assetHandler            provides utilities for manipulating asset catalog objects using a generic handler
      * @param errorHandler            provides common validation routines for the other handler classes
+     * @param clockService            clock service
      */
     public RelationshipHandler(String sourceName, InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler,
                                OMRSRepositoryHelper repositoryHelper, OpenMetadataAPIGenericHandler<AssetCatalogBean> assetHandler,
-                               RepositoryErrorHandler errorHandler) {
+                               RepositoryErrorHandler errorHandler, ClockService clockService) {
         this.sourceName = sourceName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.assetHandler = assetHandler;
-        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, assetHandler, errorHandler);
+        this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, assetHandler, errorHandler,
+                clockService);
+        this.clockService = clockService;
     }
 
     /**
@@ -84,7 +87,8 @@ public class RelationshipHandler {
 
         Relationship relationshipBetweenEntities = assetHandler.getUniqueAttachmentLink(userId, entity1GUID,
             Constants.GUID_PARAMETER, "", relationshipTypeGUID, relationshipType, entity2GUID,
-            "", 0, false, false, null, methodName);
+            "", 0, false, false, clockService.getNow(),
+                methodName);
 
         if (relationshipBetweenEntities != null) {
             AssetCatalogConverter<AssetCatalogBean> converter = new AssetCatalogConverter<>(repositoryHelper, serverName,

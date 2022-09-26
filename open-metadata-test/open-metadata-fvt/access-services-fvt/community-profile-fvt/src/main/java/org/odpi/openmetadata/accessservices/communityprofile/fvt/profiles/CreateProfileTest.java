@@ -4,9 +4,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.fvt.profiles;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.client.MyProfileManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.client.PersonalProfileManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties;
@@ -18,7 +16,6 @@ import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -228,36 +225,6 @@ public class CreateProfileTest
     }
 
 
-
-    /**
-     * Create and return a personal profile manager client.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
-     * @param auditLog logging destination
-     * @return client
-     * @throws FVTUnexpectedCondition the test case failed
-     */
-    private PersonalProfileManagement getProfileManagerClient(String   serverName,
-                                                              String   serverPlatformRootURL,
-                                                              AuditLog auditLog) throws FVTUnexpectedCondition
-    {
-        final String activityName = "getProfileManagerClient";
-
-        try
-        {
-            CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL, auditLog);
-
-            return new PersonalProfileManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
-        }
-        catch (Exception unexpectedError)
-        {
-            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
-        }
-    }
-
-
-
     /**
      * Create and return a personal profile manager client.
      *
@@ -284,35 +251,5 @@ public class CreateProfileTest
             throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
         }
     }
-
-
-    /**
-     * Create and return a my profile manager client.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
-     * @param auditLog logging destination
-     * @return client
-     * @throws FVTUnexpectedCondition the test case failed
-     */
-    private MyProfileManagement getMyProfileManagerClient(String   serverName,
-                                                          String   serverPlatformRootURL,
-                                                          AuditLog auditLog) throws FVTUnexpectedCondition
-    {
-        final String activityName = "getMyProfileManagerClient";
-
-        try
-        {
-            CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL, auditLog);
-
-            return new MyProfileManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
-        }
-        catch (Exception unexpectedError)
-        {
-            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
-        }
-    }
-
-
 
 }

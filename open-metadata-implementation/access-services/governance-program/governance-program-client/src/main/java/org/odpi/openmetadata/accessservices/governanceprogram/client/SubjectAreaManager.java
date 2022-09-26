@@ -143,7 +143,7 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
         final String methodName = "createSubjectArea";
 
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas";
 
         return super.createReferenceable(userId, properties, propertiesParameter, urlTemplate, methodName);
     }
@@ -173,7 +173,7 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
 
         final String guidParameter = "subjectAreaGUID";
         final String propertiesParameter = "properties";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}?isMergeUpdate={3}";
 
         super.updateReferenceable(userId, subjectAreaGUID, guidParameter, isMergeUpdate, properties, propertiesParameter, urlTemplate, methodName);
     }
@@ -198,7 +198,7 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
         final String methodName = "deleteSubjectArea";
 
         final String guidParameter = "subjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/delete}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/delete}";
 
         super.removeReferenceable(userId, subjectAreaGUID, guidParameter, urlTemplate, methodName);
     }
@@ -227,7 +227,7 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
 
         final String parentSubjectAreaGUIDParameterName = "parentSubjectAreaGUID";
         final String childSubjectAreaGUIDParameterName = "childSubjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/link";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/link";
 
         super.setupRelationship(userId,
                                 parentSubjectAreaGUID,
@@ -263,7 +263,7 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
 
         final String parentSubjectAreaGUIDParameterName = "parentSubjectAreaGUID";
         final String childSubjectAreaGUIDParameterName = "childSubjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/unlink";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/nested-subject-area/{3}/unlink";
 
         super.clearRelationship(userId,
                                 parentSubjectAreaGUID,
@@ -296,13 +296,13 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
         final String methodName = "getSubjectAreaByGUID";
 
         final String guidParameter = "subjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(subjectAreaGUID, guidParameter, methodName);
 
         SubjectAreaResponse restResult = restClient.callSubjectAreaGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                subjectAreaGUID);
@@ -331,13 +331,13 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
         final String methodName = "getSubjectAreaByName";
 
         final String qualifiedNameParameter = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/name/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
         SubjectAreaResponse restResult = restClient.callSubjectAreaGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                qualifiedName);
@@ -369,14 +369,14 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
                                                                                      PropertyServerException
     {
         final String methodName = "getSubjectAreasForDomain";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/for-domain?domainIdentifier={2}&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/for-domain?domainIdentifier={2}&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         SubjectAreaListResponse restResult = restClient.callSubjectAreaListGetRESTCall(methodName,
-                                                                                       serverPlatformURLRoot + urlTemplate,
+                                                                                       urlTemplate,
                                                                                        serverName,
                                                                                        userId,
                                                                                        domainIdentifier,
@@ -406,15 +406,14 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
                                                                                                PropertyServerException
     {
         final String methodName = "getSubjectAreaDefinitionByGUID";
-
         final String guidParameter = "subjectAreaGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/with-definitions";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/with-definitions";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(subjectAreaGUID, guidParameter, methodName);
 
         SubjectAreaDefinitionResponse restResult = restClient.callSubjectAreaDefinitionGetRESTCall(methodName,
-                                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                                   urlTemplate,
                                                                                                    serverName,
                                                                                                    userId,
                                                                                                    subjectAreaGUID);
@@ -443,7 +442,7 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
         final String methodName = "addSubjectAreaMemberClassification";
 
         final String guidParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/subject-area";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/subject-area";
 
         super.setReferenceableClassification(userId, elementGUID, guidParameter, properties, urlTemplate, methodName);
     }
@@ -467,7 +466,7 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
     {
         final String methodName = "deleteSubjectAreaMemberClassification";
         final String guidParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/subject-area/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/subject-area/delete";
 
         super.removeReferenceableClassification(userId, elementGUID, guidParameter, urlTemplate, methodName);
     }
@@ -497,7 +496,7 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
     {
         final String methodName = "getMembersOfSubjectArea";
         final String nameParameter = "subjectAreaName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/members?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/subject-areas/{2}/members?startFrom={3}&pageSize={4}";
 
         return super.getElementStubsByName(userId, subjectAreaName, nameParameter, urlTemplate, startFrom, pageSize, methodName);
     }

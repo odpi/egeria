@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client.rest;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -13,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 /**
  * RESTClient is responsible for issuing calls to the Governance Program OMAS REST APIs.
  */
-public class GovernanceProgramRESTClient extends OCFRESTClient
+public class GovernanceProgramRESTClient extends FFDCRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -25,8 +24,8 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public GovernanceProgramRESTClient(String    serverName,
-                                       String    serverPlatformURLRoot,
+    public GovernanceProgramRESTClient(String   serverName,
+                                       String   serverPlatformURLRoot,
                                        AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
@@ -92,7 +91,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a CertificationTypeResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return CertificationTypeResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -117,7 +116,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a list of CertificationTypeElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return CertificationTypeListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -139,35 +138,10 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a list of CertificationElement objects.
-     *
-     * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
-     * @return CertificationListResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public CertificationListResponse callCertificationListGetRESTCall(String    methodName,
-                                                                      String    urlTemplate,
-                                                                      Object... params) throws InvalidParameterException,
-                                                                                                       PropertyServerException,
-                                                                                                       UserNotAuthorizedException
-    {
-        CertificationListResponse restResult = this.callGetRESTCall(methodName, CertificationListResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
      * Issue a POST REST call that returns a list of CertificationTypeElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return CertificationTypeListResponse
@@ -194,7 +168,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ElementStubListResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return ElementStubListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -219,7 +193,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a ExternalReferenceResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return ExternalReferenceResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -244,7 +218,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a list of ExternalReferenceElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return ExternalReferenceListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -269,7 +243,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a list of ExternalReferenceElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return ExternalReferenceListResponse
@@ -296,7 +270,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a list of GovernanceDefinitionListResponse objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDefinitionListResponse
@@ -323,7 +297,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceDefinitionListResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDefinitionListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -348,7 +322,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceDefinitionResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDefinitionResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -373,7 +347,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceDefinitionGraphResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDefinitionGraphResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -398,7 +372,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceMetricImplementationListResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDefinitionGraphResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -423,7 +397,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a list of GovernanceDomainSetListResponse objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDomainSetListResponse
@@ -450,7 +424,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceDomainSetListResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDomainSetResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -476,7 +450,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceDomainSetResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDomainSetResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -501,7 +475,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a list of GovernanceDomainListResponse objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDomainListResponse
@@ -528,7 +502,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a list of GovernanceDomainListResponse objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDomainListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -553,7 +527,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceDomainResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceDomainResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -578,7 +552,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceMetricResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceMetricResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -600,35 +574,10 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a list of GovernanceMetricElement objects.
-     *
-     * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
-     * @return GovernanceMetricListResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public GovernanceMetricListResponse callGovernanceMetricListGetRESTCall(String    methodName,
-                                                                            String    urlTemplate,
-                                                                            Object... params) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
-    {
-        GovernanceMetricListResponse restResult = this.callGetRESTCall(methodName, GovernanceMetricListResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
      * Issue a POST REST call that returns a list ofGovernanceMetricElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceMetricListResponse
@@ -655,7 +604,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a LicenseTypeResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return LicenseTypeResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -680,7 +629,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a list of LicenseTypeElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return LicenseTypeListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -706,7 +655,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a list of LicenseElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return LicenseListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -731,7 +680,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a list of LicenseTypeElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return LicenseTypeListResponse
@@ -758,7 +707,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceStatusIdentifierResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceStatusIdentifierResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -784,7 +733,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceLevelIdentifierResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceLevelIdentifierResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -810,7 +759,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceStatusIdentifierSetResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceStatusIdentifierSetResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -837,7 +786,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceStatusIdentifierSetListResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceStatusIdentifierSetListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -862,7 +811,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a list of GovernanceLevelIdentifierResponse objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceLevelIdentifierResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -887,7 +836,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a list of GovernanceLevelIdentifierListResponse objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceLevelIdentifierListResponse
@@ -914,7 +863,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceLevelIdentifierSetResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceLevelIdentifierSetResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -939,7 +888,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a list of GovernanceLevelIdentifierSetListResponse objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceLevelIdentifierSetListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -964,7 +913,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a list of GovernanceLevelIdentifierSetResponse objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceLevelIdentifierSetResponse
@@ -991,7 +940,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceRoleResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceRoleResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -1016,7 +965,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceRoleHistoryResponse object.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceRoleHistoryResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -1041,7 +990,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a list of GovernanceRoleElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceRoleListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -1067,7 +1016,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a POST REST call that returns a list of GovernanceRoleElement objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceRoleListResponse
@@ -1094,7 +1043,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a list of GovernanceRoleAppointee objects.
      *
      * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param urlTemplate  template of the URL with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return GovernanceRoleAppointeeListResponse
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -1120,7 +1069,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceZoneResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GovernanceZoneResponse
@@ -1146,7 +1095,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceZoneListResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GovernanceZoneListResponse
@@ -1172,7 +1121,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a GovernanceZoneDefinitionResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GovernanceZoneDefinitionResponse
@@ -1198,39 +1147,12 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
 
 
 
-    /**
-     * Issue a POST REST call that returns a GovernanceZoneResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the REST call - contains most of the parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return GovernanceZoneResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public GovernanceZoneResponse callGovernanceZonePostRESTCall(String    methodName,
-                                                                 String    urlTemplate,
-                                                                 Object    requestBody,
-                                                                 Object... params) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        GovernanceZoneResponse restResult = this.callPostRESTCall(methodName, GovernanceZoneResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
 
     /**
      * Issue a GET REST call that returns a SubjectAreaResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return SubjectAreaResponse
@@ -1256,7 +1178,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a SubjectAreaDefinitionResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return SubjectAreaDefinitionResponse
@@ -1283,7 +1205,7 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
      * Issue a GET REST call that returns a SubjectAreaListResponse object.
      *
      * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param urlTemplate template of the URL with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return SubjectAreaListResponse
@@ -1303,87 +1225,6 @@ public class GovernanceProgramRESTClient extends OCFRESTClient
 
         return restResult;
     }
-
-
-    /**
-     * Issue a POST REST call that returns a SubjectAreaListResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the REST call - contains most of the parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return SubjectAreaListResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public SubjectAreaListResponse callSubjectAreaListPostRESTCall(String    methodName,
-                                                                   String    urlTemplate,
-                                                                   Object    requestBody,
-                                                                   Object... params) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
-    {
-        SubjectAreaListResponse restResult = this.callPostRESTCall(methodName, SubjectAreaListResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a PersonRoleElement in a response object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    public PersonRoleResponse callPersonRoleGetRESTCall(String    methodName,
-                                                        String    urlTemplate,
-                                                        Object... params) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        PersonRoleResponse restResult = this.callGetRESTCall(methodName, PersonRoleResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-
-    /**
-     * Issue a GET REST call that returns a list of PersonRoleElements in a response object.
-     *
-     * @param methodName  name of the method being called
-     * @param urlTemplate   REST API call URL template with place-holders for the parameters
-     * @param params  a list of parameters that are slotted into the url template
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    public PersonRoleListResponse callPersonRoleListGetRESTCall(String    methodName,
-                                                                String    urlTemplate,
-                                                                Object... params)  throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        PersonRoleListResponse restResult = this.callGetRESTCall(methodName, PersonRoleListResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
 
 
     /**

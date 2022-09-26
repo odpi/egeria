@@ -132,6 +132,7 @@ public class CreateGovernanceZoneSample
         catch (Exception error)
         {
             System.out.println("There was an exception when calling the GovernanceZoneManager client.  Error message is: " + error.getMessage());
+            System.exit(-1);
         }
     }
 

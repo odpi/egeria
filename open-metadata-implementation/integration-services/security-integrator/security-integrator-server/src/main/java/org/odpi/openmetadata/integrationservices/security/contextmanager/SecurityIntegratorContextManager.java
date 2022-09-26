@@ -98,8 +98,7 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
                                                         restClient,
-                                                        maxPageSize,
-                                                        auditLog);
+                                                        maxPageSize);
 
         securityManagerClient = new SecurityManagerClient(partnerOMASServerName,
                                                           partnerOMASPlatformRootURL,

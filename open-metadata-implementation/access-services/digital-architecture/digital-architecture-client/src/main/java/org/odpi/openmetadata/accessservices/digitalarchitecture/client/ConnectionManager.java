@@ -164,10 +164,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateObject(connectionProperties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(connectionProperties.getQualifiedName(), nameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   connectionProperties,
                                                                   serverName,
                                                                   userId);
@@ -203,10 +203,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateObject(templateProperties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), nameParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/from-template/{2}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
@@ -249,10 +249,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
             invalidParameterHandler.validateName(connectionProperties.getQualifiedName(), qualifiedNameParameter, methodName);
         }
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/update?isMergeUpdate={3}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         connectionProperties,
                                         serverName,
                                         userId,
@@ -287,10 +287,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(connectorTypeGUID, connectorTypeGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/connector-types/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/connector-types/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -325,10 +325,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(connectorTypeGUID, connectorTypeGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/connector-types/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/connector-types/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -363,10 +363,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/endpoints/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/endpoints/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -401,10 +401,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/endpoints/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/endpoints/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -451,10 +451,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         requestBody.setDisplayName(displayName);
         requestBody.setArguments(arguments);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/embedded-connections/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/embedded-connections/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -489,10 +489,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(embeddedConnectionGUID, embeddedConnectionGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/embedded-connections/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/embedded-connections/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -529,14 +529,14 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/assets/{2}/connections/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/assets/{2}/connections/{3}";
 
         StringRequestBody requestBody = new StringRequestBody();
 
         requestBody.setString(assetSummary);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -571,10 +571,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/assets/{2}/connections/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/assets/{2}/connections/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -605,10 +605,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -647,7 +647,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/by-search-string" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/by-search-string" +
                                              "?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
@@ -656,7 +656,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         requestBody.setSearchStringParameterName(parameterName);
 
         ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
-                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                urlTemplate,
                                                                                 requestBody,
                                                                                 serverName,
                                                                                 userId,
@@ -697,7 +697,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateName(name, nameParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/by-name?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -705,7 +705,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         requestBody.setNamePropertyName(nameParameter);
 
         ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
-                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                urlTemplate,
                                                                                 requestBody,
                                                                                 serverName,
                                                                                 userId,
@@ -740,10 +740,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connections/{2}";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                             urlTemplate,
                                                                              serverName,
                                                                              userId,
                                                                              connectionGUID);
@@ -778,10 +778,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateObject(endpointProperties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), nameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   endpointProperties,
                                                                   serverName,
                                                                   userId);
@@ -819,10 +819,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateObject(templateProperties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), nameParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/network-address/{2}/from-template/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/network-address/{2}/from-template/{3}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
@@ -866,10 +866,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateGUID(endpointGUID, guidParameter, methodName);
         invalidParameterHandler.validateObject(endpointProperties, propertiesParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/{2}/update?isMergeUpdate={3}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         endpointProperties,
                                         serverName,
                                         userId,
@@ -901,10 +901,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(endpointGUID, guidParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/{2}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/{2}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -942,7 +942,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/by-search-string" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/by-search-string" +
                                              "?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
@@ -951,7 +951,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         requestBody.setSearchStringParameterName(parameterName);
 
         EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
-                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            urlTemplate,
                                                                             requestBody,
                                                                             serverName,
                                                                             userId,
@@ -992,7 +992,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateName(name, nameParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/by-name?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -1000,7 +1000,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         requestBody.setNamePropertyName(nameParameter);
 
         EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
-                                                                            serverPlatformURLRoot + urlTemplate,
+                                                                            urlTemplate,
                                                                             requestBody,
                                                                             serverName,
                                                                             userId,
@@ -1035,10 +1035,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/endpoints/{2}";
 
         EndpointResponse restResult = restClient.callEndpointGetRESTCall(methodName,
-                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          endpointGUID);
@@ -1071,10 +1071,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateObject(connectorTypeProperties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(connectorTypeProperties.getQualifiedName(), nameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   connectorTypeProperties,
                                                                   serverName,
                                                                   userId);
@@ -1110,10 +1110,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateObject(templateProperties, propertiesParameter, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), nameParameter, methodName);
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/from-template/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/from-template/{2}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
@@ -1156,10 +1156,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
             invalidParameterHandler.validateName(connectorTypeProperties.getQualifiedName(), qualifiedNameParameter, methodName);
         }
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/{2}/update?isMergeUpdate={3}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         connectorTypeProperties,
                                         serverName,
                                         userId,
@@ -1190,10 +1190,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectorTypeGUID, guidParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/{2}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/{2}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -1231,7 +1231,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/by-search-string" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/by-search-string" +
                                              "?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
@@ -1240,7 +1240,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         requestBody.setSearchStringParameterName(parameterName);
 
         ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
-                                                                                      serverPlatformURLRoot + urlTemplate,
+                                                                                      urlTemplate,
                                                                                       requestBody,
                                                                                       serverName,
                                                                                       userId,
@@ -1281,7 +1281,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateName(name, nameParameter, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/by-name?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -1289,7 +1289,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         requestBody.setNamePropertyName(nameParameter);
 
         ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
-                                                                                      serverPlatformURLRoot + urlTemplate,
+                                                                                      urlTemplate,
                                                                                       requestBody,
                                                                                       serverName,
                                                                                       userId,
@@ -1324,10 +1324,10 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectorTypeGUID, connectorTypeGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/{2}";
 
         ConnectorTypeResponse restResult = restClient.callMyConnectorTypeGetRESTCall(methodName,
-                                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                                     urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      connectorTypeGUID);
