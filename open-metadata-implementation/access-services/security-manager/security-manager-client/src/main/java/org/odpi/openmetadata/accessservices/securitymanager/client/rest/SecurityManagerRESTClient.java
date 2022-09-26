@@ -115,6 +115,33 @@ public class SecurityManagerRESTClient extends OCFRESTClient
     }
 
 
+
+    /**
+     * Issue a GET REST call that returns a RelatedElementListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate  REST API call URL template with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public RelatedElementListResponse callRelatedElementListGetRESTCall(String    methodName,
+                                                                        String    urlTemplate,
+                                                                        Object... params) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        RelatedElementListResponse restResult = this.callGetRESTCall(methodName, RelatedElementListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
     /**
      * Issue a GET REST call that returns a SecurityGroupResponse object.
      *

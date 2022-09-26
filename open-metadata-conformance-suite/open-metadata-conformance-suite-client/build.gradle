@@ -12,7 +12,7 @@ dependencies {
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-api')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     runtimeOnly 'ch.qos.logback:logback-classic'

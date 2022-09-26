@@ -156,14 +156,13 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName        = "getMetadataElementByGUID";
         final String guidParameterName = "elementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
 
         OpenMetadataElementResponse restResult = restClient.callOpenMetadataElementGetRESTCall(methodName,
-                                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                                               urlTemplate,
                                                                                                serverName,
                                                                                                userId,
                                                                                                elementGUID,
@@ -203,8 +202,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName          = "getMetadataElementByUniqueName";
         final String defaultPropertyName = "qualifiedName";
         final String nameParameterName   = "uniqueName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/by-unique-name?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/by-unique-name?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
@@ -223,7 +221,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         }
 
         OpenMetadataElementResponse restResult = restClient.callOpenMetadataElementPostRESTCall(methodName,
-                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                urlTemplate,
                                                                                                 requestBody,
                                                                                                 serverName,
                                                                                                 userId,
@@ -264,8 +262,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName          = "getMetadataElementGUIDByUniqueName";
         final String defaultPropertyName = "qualifiedName";
         final String nameParameterName   = "uniqueName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/guid-by-unique-name?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/guid-by-unique-name?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
@@ -284,7 +281,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         }
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -326,8 +323,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName                = "findMetadataElementsWithString";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/by-search-string?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}&startFrom={5}&pageSize={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/by-search-string?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -338,7 +334,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   requestBody,
                                                                                                   serverName,
                                                                                                   userId,
@@ -387,15 +383,14 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName            = "getRelatedMetadataElements";
         final String guidParameterName     = "elementGUID";
         final String typeNameParameterName = "relationshipTypeName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/type/{3}?startingAtEnd={4}&forLineage={5}&forDuplicateProcessing={6}&effectiveTime={7}&startFrom={8}&pageSize={9}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/type/{3}?startingAtEnd={4}&forLineage={5}&forDuplicateProcessing={6}&effectiveTime={7}&startFrom={8}&pageSize={9}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
 
         RelatedMetadataElementListResponse restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
-                                                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                                                             urlTemplate,
                                                                                                              serverName,
                                                                                                              userId,
                                                                                                              elementGUID,
@@ -456,8 +451,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
                                                                                                  PropertyServerException
     {
         final String methodName = "findMetadataElements";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/by-search-specification?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}&startFrom={5}&pageSize={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/by-search-specification?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -472,7 +466,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setSequencingOrder(sequencingOrder);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   requestBody,
                                                                                                   serverName,
                                                                                                   userId,
@@ -523,8 +517,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
                                                                                                                     PropertyServerException
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/by-search-specification?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}&startFrom={5}&pageSize={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/by-search-specification?forLineage={2}&forDuplicateProcessing={3}&effectiveTime={4}&startFrom={5}&pageSize={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -536,14 +529,13 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setSequencingOrder(sequencingOrder);
 
         RelatedMetadataElementsListResponse restResult = restClient.callRelatedMetadataElementsListPostRESTCall(methodName,
-                                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                                urlTemplate,
                                                                                                                 requestBody,
                                                                                                                 serverName,
                                                                                                                 userId,
                                                                                                                 forLineage,
                                                                                                                 forDuplicateProcessing,
-                                                                                                                this.getEffectiveTimeAsLong(
-                                                                                                                        effectiveTime),
+                                                                                                                this.getEffectiveTimeAsLong(effectiveTime),
                                                                                                                 Integer.toString(startFrom),
                                                                                                                 Integer.toString(pageSize));
 
@@ -585,8 +577,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName               = "createMetadataElementInStore";
         final String elementTypeParameterName = "metadataElementTypeName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
@@ -601,7 +592,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setTemplateGUID(templateGUID);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -641,8 +632,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName        = "updateMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/update-properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -656,7 +646,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -692,8 +682,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName        = "updateMetadataElementStatusInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/update-status";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/update-status";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -706,7 +695,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -744,8 +733,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName        = "updateMetadataElementEffectivityInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/update-effectivity";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/update-effectivity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -759,7 +747,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -791,8 +779,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName        = "deleteMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -804,7 +791,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -848,8 +835,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName                  = "classifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -865,7 +851,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -907,8 +893,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName                  = "reclassifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/update-properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -923,7 +908,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -964,8 +949,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName                  = "updateClassificationEffectivityInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/update-effectivity";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/update-effectivity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -980,7 +964,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1016,8 +1000,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName                  = "unclassifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/metadata-elements/{2}/classifications/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1030,7 +1013,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1080,8 +1063,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String elementTypeParameterName = "relationshipTypeName";
         final String end1ParameterName        = "metadataElement1GUID";
         final String end2ParameterName        = "metadataElement2GUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, elementTypeParameterName, methodName);
@@ -1101,7 +1083,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -1140,7 +1122,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "updateRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/update-properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
@@ -1154,7 +1136,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1191,7 +1173,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "updateRelatedElementsEffectivityInStore";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/update-effectivity";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/update-effectivity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
@@ -1205,7 +1187,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1237,7 +1219,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "deleteRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
@@ -1249,7 +1231,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1284,7 +1266,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "updateActionTargetStatus";
         final String guidParameterName = "actionTargetGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/action-targets/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/action-targets/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(actionTargetGUID, guidParameterName, methodName);
@@ -1297,7 +1279,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setCompletionDate(completionDate);
         
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId);
@@ -1325,7 +1307,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "updateGovernanceActionStatus";
         final String guidParameterName = "governanceActionGUID";
         final String statusParameterName = "governanceActionStatus";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}/status/update";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}/status/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceActionGUID, guidParameterName, methodName);
@@ -1336,7 +1318,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setStatus(governanceActionStatus);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1370,7 +1352,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "recordCompletionStatus";
         final String statusParameterName = "status";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}/completion-status";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}/completion-status";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateEnum(status, statusParameterName, methodName);
@@ -1383,7 +1365,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setNewActionTargets(newActionTargets);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1437,7 +1419,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "initiateGovernanceAction";
         final String qualifiedNameParameterName = "qualifiedName";
         final String engineNameParameterName = "governanceEngineName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-actions/initiate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/governance-actions/initiate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
@@ -1459,7 +1441,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setOriginatorEngineName(originatorEngineName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -1500,7 +1482,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "initiateGovernanceAction";
         final String qualifiedNameParameterName = "processQualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/initiate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-action-processes/initiate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(processQualifiedName, qualifiedNameParameterName, methodName);
@@ -1516,7 +1498,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setOriginatorEngineName(originatorEngineName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -1545,13 +1527,13 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "getGovernanceAction";
         final String guidParameterName = "governanceActionGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceActionGUID, guidParameterName, methodName);
 
         GovernanceActionElementResponse restResult = restClient.callGovernanceActionGetRESTCall(methodName,
-                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                urlTemplate,
                                                                                                 serverName,
                                                                                                 userId,
                                                                                                 governanceActionGUID);
@@ -1578,13 +1560,13 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "claimGovernanceAction";
         final String guidParameterName = "governanceActionGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}/claim";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/{2}/claim";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceActionGUID, guidParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -1614,12 +1596,12 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
                                                                                        PropertyServerException
     {
         final String methodName = "getGovernanceActions";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   serverName,
                                                                                                   userId,
                                                                                                   Integer.toString(startFrom),
@@ -1651,12 +1633,12 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
                                                                                              PropertyServerException
     {
         final String methodName = "getActiveGovernanceActions";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/active?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-actions/active?startFrom={2}&pageSize={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   serverName,
                                                                                                   userId,
                                                                                                   Integer.toString(startFrom),
@@ -1690,13 +1672,13 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "getActiveClaimedGovernanceActions";
         final String guidParameterName = "governanceEngineGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/active-governance-actions?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/governance-engines/{2}/active-governance-actions?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceEngineGUID, guidParameterName, methodName);
 
         GovernanceActionElementsResponse restResult = restClient.callGovernanceActionsGetRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   serverName,
                                                                                                   userId,
                                                                                                   governanceEngineGUID,
@@ -1741,7 +1723,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
     {
         final String methodName = "createIncidentReport";
         final String qualifiedNameParameterName = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/incident-reports";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/incident-reports";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
@@ -1758,7 +1740,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setOriginatorGUID(originatorGUID);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -1803,7 +1785,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "linkElementsAsPeerDuplicates";
         final String end1ParameterName = "metadataElement1GUID";
         final String end2ParameterName = "metadataElement2GUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/link-as-peer-duplicate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/link-as-peer-duplicate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElement1GUID, end1ParameterName, methodName);
@@ -1822,7 +1804,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setSetKnownDuplicate(setKnownDuplicate);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId);
@@ -1864,7 +1846,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         final String methodName = "linkConsolidatedDuplicate";
         final String consolidatedElementGUIDParameterName = "consolidatedElementGUID";
         final String sourceElementGUIDsParameterName = "sourceElementGUIDs";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/link-as-consolidated-duplicate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/open-metadata-store/related-elements/link-as-consolidated-duplicate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(consolidatedElementGUID, consolidatedElementGUIDParameterName, methodName);
@@ -1882,7 +1864,7 @@ public class GovernanceEngineClient implements MetadataElementInterface, Governa
         requestBody.setSourceElementGUIDs(sourceElementGUIDs);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId);

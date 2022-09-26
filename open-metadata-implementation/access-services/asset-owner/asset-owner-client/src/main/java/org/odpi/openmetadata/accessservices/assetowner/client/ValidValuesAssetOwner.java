@@ -165,7 +165,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
     {
         final String   methodName = "createValidValueSet";
         final String   nameParameter = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}//valid-values/new-set";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}//valid-values/new-set";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
@@ -180,7 +180,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         requestBody.setExtendedProperties(extendedProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -226,7 +226,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
     {
         final String   methodName = "createValidValueDefinition";
         final String   nameParameter = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/new-definition?isDefaultValue={2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/new-definition?isDefaultValue={2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
@@ -242,7 +242,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         requestBody.setExtendedProperties(extendedProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -292,7 +292,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         final String   methodName = "updateValidValue";
         final String   guidParameter = "validValueGUID";
         final String   nameParameter = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/update";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, guidParameter, methodName);
@@ -310,7 +310,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         requestBody.setExtendedProperties(extendedProperties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -340,14 +340,14 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         final String   methodName = "deleteValidValue";
         final String   guidParameter = "validValueGUID";
         final String   nameParameter = "qualifiedName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, guidParameter, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         qualifiedName,
                                         serverName,
                                         userId,
@@ -379,14 +379,14 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         final String   methodName = "attachValidValueToSet";
         final String   setGUIDParameter = "setGUID";
         final String   validValueGUIDParameter = "validValueGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/sets/{2}/members/{3}?isDefaultValue={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/sets/{2}/members/{3}?isDefaultValue={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(setGUID, setGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -417,14 +417,14 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         final String   methodName = "detachValidValueFromSet";
         final String   setGUIDParameter = "setGUID";
         final String   validValueGUIDParameter = "validValueGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/sets/{2}/members/{3}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/sets/{2}/members/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(setGUID, setGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -453,16 +453,16 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
     {
         final String   methodName = "getValidValueByGUID";
         final String   validValueGUIDParameter = "validValueGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
         ValidValueResponse restResult = restClient.callValidValueGetRESTCall(methodName,
-                                                                                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                                                                                  serverName,
-                                                                                                                                  userId,
-                                                                                                                                  validValueGUID);
+                                                                             urlTemplate,
+                                                                             serverName,
+                                                                             userId,
+                                                                             validValueGUID);
         return restResult.getElement();
     }
 
@@ -492,13 +492,13 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
     {
         final String   methodName = "getValidValueByName";
         final String   validValueNameParameter = "validValueName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/by-name?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/by-name?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(validValueName, validValueNameParameter, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                 validValueName,
                                                                                 serverName,
                                                                                 userId,
@@ -534,14 +534,14 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
     {
         final String   methodName = "getValidValueByName";
         final String   parameterName = "searchString";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/by-search-string?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/by-search-string?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
-                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                urlTemplate,
                                                                                 searchString,
                                                                                 serverName,
                                                                                 userId,
@@ -576,14 +576,14 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
     {
         final String   methodName = "getValidValueSetMembers";
         final String   validValueGUIDParameter = "validValueSetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/sets/{2}/members?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/sets/{2}/members?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueSetGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                validValueSetGUID,
@@ -617,14 +617,14 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
     {
         final String   methodName = "getSetsForValidValue";
         final String   validValueGUIDParameter = "validValueSetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/set-membership?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/{2}/set-membership?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                validValueGUID,

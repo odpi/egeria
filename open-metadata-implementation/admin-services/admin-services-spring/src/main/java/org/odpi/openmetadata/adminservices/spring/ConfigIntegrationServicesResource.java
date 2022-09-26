@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ConfigIntegrationServicesResource
 {
-    private OMAGServerAdminForIntegrationServices adminAPI = new OMAGServerAdminForIntegrationServices();
+    private final OMAGServerAdminForIntegrationServices adminAPI = new OMAGServerAdminForIntegrationServices();
 
 
     /**

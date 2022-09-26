@@ -113,7 +113,7 @@ public class CreateConnectionTest
 
         ConnectionManagerClient client = thisTest.getConnectionClient(serverName, serverPlatformRootURL, auditLog);
 
-        String databaseManagerGUID = thisTest.getDatabaseManager(serverName, serverPlatformRootURL, userId, auditLog);
+        String databaseManagerGUID = thisTest.getDatabaseManager(serverName, serverPlatformRootURL, userId);
         String connectionGUID = thisTest.getConnection(client, databaseManagerGUID, userId);
         String endpointGUID = thisTest.createEndpoint(client, databaseManagerGUID, connectionGUID, userId);
         thisTest.addConnectorType(client, databaseManagerGUID, connectionGUID, userId);
@@ -180,21 +180,19 @@ public class CreateConnectionTest
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId calling user
-     * @param auditLog logging destination
      * @return unique identifier of the connection manager entity
      * @throws FVTUnexpectedCondition the test case failed
      */
     private String getDatabaseManager(String   serverName,
                                       String   serverPlatformRootURL,
-                                      String   userId,
-                                      AuditLog auditLog) throws FVTUnexpectedCondition
+                                      String   userId) throws FVTUnexpectedCondition
     {
         final String activityName = "getDatabaseManager";
 
         try
         {
             DataManagerRESTClient     restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
-            MetadataSourceClient client          = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            MetadataSourceClient client          = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             DatabaseManagerProperties properties = new DatabaseManagerProperties();
             properties.setQualifiedName(databaseManagerName);
