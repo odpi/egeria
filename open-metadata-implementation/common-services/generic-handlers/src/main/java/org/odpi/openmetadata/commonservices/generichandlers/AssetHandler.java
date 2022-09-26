@@ -15,6 +15,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -2752,11 +2753,27 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
                 if (entity != null)
                 {
-                    List<String>    assetZones = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                         OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                                                         entity.getProperties(),
-                                                                                         methodName);
+                    List<String> assetZones;
 
+                    try
+                    {
+                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                     entity,
+                                                                                                     OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                                                                     methodName);
+
+                        assetZones = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                             OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                             classification.getProperties(),
+                                                                             methodName);
+                    }
+                    catch (ClassificationErrorException notPresent)
+                    {
+                        assetZones = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                             OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                             entity.getProperties(),
+                                                                             methodName);
+                    }
 
                     if ((assetZones != null) && (assetZones.contains(zoneName)))
                     {

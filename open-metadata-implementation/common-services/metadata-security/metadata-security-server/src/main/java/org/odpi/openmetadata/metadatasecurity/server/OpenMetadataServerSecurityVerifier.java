@@ -273,6 +273,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @param defaultZones setting of the default zones for the service
      * @param supportedZones setting of the supported zones for the service
+     * @param publishZones setting of the zones that are set when an asset is published for the service
      * @param originalAsset original values for the asset
      * @param updatedAsset updated values for the asset
      *
@@ -945,6 +946,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param serviceName calling service
      * @param methodName calling method
      * @return single connection entity, or null
+     * @throws UserNotAuthorizedException the user is not able to use any of the connections
      * @throws PropertyServerException unable to reduce the number of connections to
      */
     public EntityDetail selectConnection(String               userId,
@@ -1161,6 +1163,10 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param newProperties properties for new entity
      * @param classifications classifications for new entity
      * @param instanceStatus status for new entity
+     * @param defaultZones initial setting of the asset's zone membership
+     * @param repositoryHelper manipulates repository service objects
+     * @param serviceName calling service
+     * @param methodName calling method
      * @throws UserNotAuthorizedException the user is not authorized to access this zone
      * @throws InvalidParameterException Something wrong with the supplied parameters
      * @throws PropertyServerException logic error because classification type not recognized

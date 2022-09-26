@@ -40,7 +40,7 @@ public class OMRSArchiveManager
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
      * the open metadata repository.  The Logger is for standard debug.
      */
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
     /**
      * Constructor to save the initial list of open metadata archives from the server startup configuration.

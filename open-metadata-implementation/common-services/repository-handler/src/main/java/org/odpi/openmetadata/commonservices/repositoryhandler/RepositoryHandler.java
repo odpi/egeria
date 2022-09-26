@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -297,7 +298,7 @@ public class RepositoryHandler
     /**
      * Use the dates in the entities and return the one that was last updated most recently.
      * If the dates are equal, then compare GUIDs in order to always retrieve the same entity (no matter
-     * which of the is the current and which is the new one).
+     * which of the entities is the current and which is the new one).
      *
      * @param currentEntity current entity
      * @param newEntity next peer entity
@@ -1403,10 +1404,7 @@ public class RepositoryHandler
         {
             if (entityDetail == null)
             {
-                /*
-                 * This is to check that the entity is in an appropriate state to add the classification.
-                 */
-               entityDetail = this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                entityDetail = this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
             }
 
             // create a proxy representation to allow classification of entities incoming from other metadata collections
@@ -1449,6 +1447,71 @@ public class RepositoryHandler
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (ClassificationErrorException error)
+        {
+            /*
+             * There was a problem adding the classification.  It probably means that another thread/server
+             * is simultaneously adding the same classification to the same element.
+             * The example that caused this code to be added was the attachment of Anchors classifications
+             * to new entities being processed by multiple event listener threads from the OMASs.
+             */
+            try
+            {
+                entityDetail = this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing,
+                                                    effectiveTime, methodName);
+
+                if (entityDetail.getClassifications() != null)
+                {
+                    for (Classification classification : entityDetail.getClassifications())
+                    {
+                        if (classificationTypeName.equals(classification.getName()))
+                        {
+                            /*
+                             * The same classification is already present on the entity.
+                             * This means two threads were updating the same classification on the same entity
+                             * at the same time.
+                             */
+                            if (classification.getProperties() == null)
+                            {
+                                if (properties == null)
+                                {
+                                    /*
+                                     * No concern as the updates are identical.
+                                     */
+                                    return entityDetail;
+                                }
+                            }
+                            else
+                            {
+                                if (classification.getProperties().equals(properties))
+                                {
+                                    /*
+                                     * No concern as the updates are identical.
+                                     */
+                                    return entityDetail;
+                                }
+                            }
+
+                            /*
+                             * The change to the classification is incompatible with the conflicting
+                             * change, so the appropriate exception is returned to the caller.
+                             */
+                            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+                        }
+                    }
+
+                    errorHandler.handleRepositoryError(error, methodName, localMethodName);
+                }
+                else
+                {
+                    errorHandler.handleRepositoryError(error, methodName, localMethodName);
+                }
+            }
+            catch (Exception nestedError)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
         }
         catch (Exception error)
         {

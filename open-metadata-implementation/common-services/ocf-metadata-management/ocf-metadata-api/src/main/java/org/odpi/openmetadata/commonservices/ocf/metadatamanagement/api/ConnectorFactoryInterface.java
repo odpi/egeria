@@ -1,21 +1,25 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.api;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.api;
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 
 /**
- * AssetConsumerConnectorFactoryInterface is used by applications and tools as a factory for Open
+ * ConnectorFactoryInterface is used by applications and tools as a factory for Open
  * Connector Framework (OCF) connectors.  The configuration for the connectors is managed as open metadata in
- * a Connection definition.  The caller to the Asset Consumer OMAS passes either the name, GUID or URL for the
- * connection to the appropriate method to retrieve a connector.  The Asset Consumer OMAS retrieves the connection
+ * a Connection definition.  The caller to the interface passes either the name, GUID or URL for the
+ * connection to the appropriate method to retrieve a connector.  The service retrieves the connection
  * from the metadata repository and creates an appropriate connector as described the connection and
  * returns it to the caller.
  */
-public interface AssetConsumerConnectorFactoryInterface
+public interface ConnectorFactoryInterface
 {
     /**
      * Returns the connector corresponding to the supplied connection name.
@@ -23,7 +27,7 @@ public interface AssetConsumerConnectorFactoryInterface
      * @param userId           userId of user making request.
      * @param connectionName   this may be the qualifiedName or displayName of the connection.
      *
-     * @return Connector   connector instance.
+     * @return   connector instance.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -46,7 +50,7 @@ public interface AssetConsumerConnectorFactoryInterface
      * @param userId           userId of user making request.
      * @param connectionGUID   the unique id for the connection within the metadata repository.
      *
-     * @return Connector   connector instance.
+     * @return    connector instance.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -68,7 +72,7 @@ public interface AssetConsumerConnectorFactoryInterface
      * @param userId       userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository.
      *
-     * @return Connector   connector instance.
+     * @return    connector instance.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
@@ -91,7 +95,7 @@ public interface AssetConsumerConnectorFactoryInterface
      * @param userId       userId of user making request.
      * @param connection   the connection object that contains the properties needed to create the connection.
      *
-     * @return Connector   connector instance
+     * @return    connector instance
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing

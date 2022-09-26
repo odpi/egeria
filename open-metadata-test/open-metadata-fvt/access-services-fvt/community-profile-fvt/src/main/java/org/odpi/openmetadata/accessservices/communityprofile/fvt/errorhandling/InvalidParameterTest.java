@@ -3,17 +3,18 @@
 
 package org.odpi.openmetadata.accessservices.communityprofile.fvt.errorhandling;
 
-import org.odpi.openmetadata.accessservices.communityprofile.client.MyProfileManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.CommunityManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
 
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
-
-import java.util.HashMap;
 
 /**
  * InvalidParameterTest calls each non-constructor method with a series of null or invalid parameters.
@@ -56,7 +57,7 @@ public class InvalidParameterTest
 
 
     /**
-     * Run all of the tests in this class.
+     * Run all the tests in this class.
      *
      * @param serverPlatformRootURL root url of the server
      * @param serverName name of the server
@@ -78,10 +79,160 @@ public class InvalidParameterTest
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceDescription(),
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceWiki());
 
-        thisTest.testMyProfileClient(serverName, serverPlatformRootURL, userId, auditLog);
+        thisTest.testOrganizationClient(serverName, serverPlatformRootURL, userId, auditLog);
+        thisTest.testCommunityClient(serverName, serverPlatformRootURL, userId, auditLog);
+    }
+    
+    
+    /**
+     * Create a client using each of its constructors.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId calling user
+     * @param auditLog logging destination
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void testCommunityClient(String   serverName,
+                                     String   serverPlatformRootURL,
+                                     String   userId,
+                                     AuditLog auditLog) throws FVTUnexpectedCondition
+    {
+        final String activityName = "testCommunityClient";
+
+        try
+        {
+            CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL, auditLog);
+            CommunityManagement        client     = new CommunityManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
+
+            testSetUpCommunity(client, userId);
+        }
+        catch (FVTUnexpectedCondition testCaseError)
+        {
+            throw testCaseError;
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
     }
 
 
+
+    /**
+     * Test null userId passed to createCommunity.
+     *
+     * @param client client to call
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void testSetUpCommunityNoUserId(CommunityManagement client) throws FVTUnexpectedCondition
+    {
+        final String activityName = "testSetUpCommunityNoUserId";
+
+        try
+        {
+            CommunityProperties properties = new CommunityProperties();
+            properties.setQualifiedName("TestQualifiedName");
+            client.createCommunity(null, null, null, properties);
+
+            throw new FVTUnexpectedCondition(testCaseName, activityName);
+        }
+        catch (InvalidParameterException expectedException)
+        {
+            // ignore
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Test null properties passed to createCommunity.
+     *
+     * @param client client to call
+     * @param userId calling user
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void testSetUpCommunityNoProperties(CommunityManagement client,
+                                                String              userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "testSetUpCommunityNoProperties";
+
+        try
+        {
+            client.createCommunity(userId, null, null, null);
+
+            throw new FVTUnexpectedCondition(testCaseName, activityName);
+        }
+        catch (InvalidParameterException expectedException)
+        {
+            // ignore
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Test null userId passed to createCommunity.
+     *
+     * @param client client to call
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void testSetUpCommunityNoName(CommunityManagement client,
+                                          String              userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "testSetUpCommunityNoUserId";
+
+        try
+        {
+            client.createCommunity(userId, null, null, new CommunityProperties());
+
+            throw new FVTUnexpectedCondition(testCaseName, activityName);
+        }
+        catch (InvalidParameterException expectedException)
+        {
+            // ignore
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Test null qualifiedName passed to createCommunity.
+     *
+     * @param client client to call
+     * @param userId calling user
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void testSetUpCommunity(CommunityManagement client,
+                                    String              userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "testSetUpProfileNoName";
+
+        try
+        {
+            testSetUpCommunityNoUserId(client);
+            testSetUpCommunityNoProperties(client, userId);
+            testSetUpCommunityNoName(client, userId);
+
+        }
+        catch (FVTUnexpectedCondition expectedException)
+        {
+            // ignore
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
 
     /**
      * Create a client using each of its constructors.
@@ -92,21 +243,21 @@ public class InvalidParameterTest
      * @param auditLog logging destination
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testMyProfileClient(String   serverName,
-                                     String   serverPlatformRootURL,
-                                     String   userId,
-                                     AuditLog auditLog) throws FVTUnexpectedCondition
+    private void testOrganizationClient(String   serverName,
+                                        String   serverPlatformRootURL,
+                                        String   userId,
+                                        AuditLog auditLog) throws FVTUnexpectedCondition
     {
-        final String activityName = "testMyProfileClient";
+        final String activityName = "testOrganizationClient";
 
         try
         {
             CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL, auditLog);
-            MyProfileManagement        client     = new MyProfileManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
+            OrganizationManagement        client  = new OrganizationManagement(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             testGetMyProfile(client);
-            testGetMyKarmaPoints(client);
-            testSetUpMyProfile(userId, client);
+            testGetProfileByUserId(client);
+            testSetUpProfile(userId, client);
         }
         catch (FVTUnexpectedCondition testCaseError)
         {
@@ -125,7 +276,7 @@ public class InvalidParameterTest
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testGetMyProfile(MyProfileManagement client) throws FVTUnexpectedCondition
+    private void testGetMyProfile(OrganizationManagement client) throws FVTUnexpectedCondition
     {
         final String activityName = "testGetMyProfile";
 
@@ -146,13 +297,13 @@ public class InvalidParameterTest
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testGetMyProfileNoUserId(MyProfileManagement client) throws FVTUnexpectedCondition
+    private void testGetMyProfileNoUserId(OrganizationManagement client) throws FVTUnexpectedCondition
     {
         final String activityName = "testGetMyProfileNoUserId";
 
         try
         {
-            client.getMyProfile(null);
+            client.getActorProfiles(null, 0, 0);
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
@@ -172,13 +323,13 @@ public class InvalidParameterTest
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testGetMyKarmaPoints(MyProfileManagement client) throws FVTUnexpectedCondition
+    private void testGetProfileByUserId(OrganizationManagement client) throws FVTUnexpectedCondition
     {
         final String activityName = "testGetMyKarmaPoints";
 
         try
         {
-            testGetMyKarmaPointsNoUserId(client);
+            testGetProfileByUserIdNoUserId(client);
         }
         catch (Exception unexpectedError)
         {
@@ -193,13 +344,13 @@ public class InvalidParameterTest
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testGetMyKarmaPointsNoUserId(MyProfileManagement client) throws FVTUnexpectedCondition
+    private void testGetProfileByUserIdNoUserId(OrganizationManagement client) throws FVTUnexpectedCondition
     {
-        final String activityName = "testGetMyKarmaPointsNoUserId";
+        final String activityName = "testGetProfileByUserIdNoUserId";
 
         try
         {
-            client.getMyKarmaPoints(null);
+            client.getActorProfileByUserId(null, "testProfileUserId");
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
         catch (InvalidParameterException expectedException)
@@ -220,16 +371,16 @@ public class InvalidParameterTest
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testSetUpMyProfile(String              userId,
-                                    MyProfileManagement client) throws FVTUnexpectedCondition
+    private void testSetUpProfile(String              userId,
+                                  OrganizationManagement client) throws FVTUnexpectedCondition
     {
-        final String activityName = "testSetUpMyProfileNoUserId";
+        final String activityName = "testSetUpProfile";
 
         try
         {
-            testSetUpMyProfileNoUserId(client);
-            testSetUpMyProfileNoQualifiedName(client, userId);
-            testSetUpMyProfileNoKnownName(client, userId);
+            testSetUpProfileNoUserId(client);
+            testSetUpProfileNoProperties(client, userId);
+            testSetUpProfileNoName(client, userId);
         }
         catch (Exception unexpectedError)
         {
@@ -239,46 +390,20 @@ public class InvalidParameterTest
 
 
     /**
-     * Test null userId passed to getMyKarmaPoints.
+     * Test null userId passed to createActorProfile.
      *
      * @param client client to call
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testSetUpMyProfileNoUserId(MyProfileManagement client) throws FVTUnexpectedCondition
+    private void testSetUpProfileNoUserId(OrganizationManagement client) throws FVTUnexpectedCondition
     {
         final String activityName = "testSetUpMyProfileNoUserId";
 
         try
         {
-            client.setUpMyProfile(null, "qualifiedName", "fullName", "knownName", "jobTitle", "jobRoleDescription", new HashMap<>());
-            throw new FVTUnexpectedCondition(testCaseName, activityName);
-        }
-        catch (InvalidParameterException expectedException)
-        {
-            // ignore
-        }
-        catch (Exception unexpectedError)
-        {
-            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
-        }
-    }
-
-
-    /**
-     * Test null qualifiedName passed to createFileSystem.
-     *
-     * @param client client to call
-     * @param userId calling user
-     * @throws FVTUnexpectedCondition the test case failed
-     */
-    private void testSetUpMyProfileNoQualifiedName(MyProfileManagement client,
-                                                   String              userId) throws FVTUnexpectedCondition
-    {
-        final String activityName = "testSetUpMyProfileNoQualifiedName";
-
-        try
-        {
-            client.setUpMyProfile(userId, null, "fullName", "knownName", "jobTitle", "jobRoleDescription", new HashMap<>());
+            ActorProfileProperties properties = new ActorProfileProperties();
+            properties.setQualifiedName("TestQualifiedName");
+            client.createActorProfile(null, null, null, properties, null);
 
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
@@ -294,20 +419,49 @@ public class InvalidParameterTest
 
 
     /**
-     * Test null knownName passed to createFileSystem.
+     * Test null properties passed to createActorProfile.
      *
      * @param client client to call
      * @param userId calling user
      * @throws FVTUnexpectedCondition the test case failed
      */
-    private void testSetUpMyProfileNoKnownName(MyProfileManagement client,
-                                                   String              userId) throws FVTUnexpectedCondition
+    private void testSetUpProfileNoProperties(OrganizationManagement client,
+                                              String                 userId) throws FVTUnexpectedCondition
     {
-        final String activityName = "testSetUpMyProfileNoKnownName";
+        final String activityName = "testSetUpProfileNoProperties";
 
         try
         {
-            client.setUpMyProfile(userId, "qualifiedName", "fullName", null, "jobTitle", "jobRoleDescription", new HashMap<>());
+            client.createActorProfile(userId, null, null, null, null);
+
+            throw new FVTUnexpectedCondition(testCaseName, activityName);
+        }
+        catch (InvalidParameterException expectedException)
+        {
+            // ignore
+        }
+        catch (Exception unexpectedError)
+        {
+            throw new FVTUnexpectedCondition(testCaseName, activityName, unexpectedError);
+        }
+    }
+
+
+    /**
+     * Test null qualifiedName passed to createActorProfile.
+     *
+     * @param client client to call
+     * @param userId calling user
+     * @throws FVTUnexpectedCondition the test case failed
+     */
+    private void testSetUpProfileNoName(OrganizationManagement client,
+                                        String              userId) throws FVTUnexpectedCondition
+    {
+        final String activityName = "testSetUpProfileNoName";
+
+        try
+        {
+            client.createActorProfile(userId, null, null,  new ActorProfileProperties(), null);
 
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }
