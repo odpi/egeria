@@ -1371,7 +1371,7 @@ public class RepositoryHandler
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public EntityDetail  classifyEntity(String               userId,
+    public EntityDetail classifyEntity(String               userId,
                                        String               externalSourceGUID,
                                        String               externalSourceName,
                                        String               entityGUID,
