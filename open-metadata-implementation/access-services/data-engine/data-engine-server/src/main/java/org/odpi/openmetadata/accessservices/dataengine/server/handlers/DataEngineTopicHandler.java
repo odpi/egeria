@@ -46,7 +46,8 @@ public class DataEngineTopicHandler {
      * @param dataEngineRegistrationHandler provides utilities for  software server capability entities
      */
     public DataEngineTopicHandler(InvalidParameterHandler invalidParameterHandler, AssetHandler<Topic> topicHandler,
-                                  DataEngineRegistrationHandler dataEngineRegistrationHandler, DataEngineCommonHandler dataEngineCommonHandler) {
+                                  DataEngineRegistrationHandler dataEngineRegistrationHandler,
+                                  DataEngineCommonHandler dataEngineCommonHandler) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.topicHandler = topicHandler;
         this.registrationHandler = dataEngineRegistrationHandler;
@@ -79,6 +80,7 @@ public class DataEngineTopicHandler {
             extendedProperties.put(TOPIC_TYPE_PROPERTY_NAME, topic.getTopicType());
         }
         int ownerTypeOrdinal = dataEngineCommonHandler.getOwnerTypeOrdinal(topic.getOwnerType());
+        Date now = dataEngineCommonHandler.getNow();
         String topicGUID;
         if (originalTopicEntity.isEmpty()) {
             topicHandler.verifyExternalSourceIdentity(userId, externalSourceGUID, externalSourceName,
@@ -87,12 +89,13 @@ public class DataEngineTopicHandler {
                      topic.getDisplayName(), topic.getDescription(), topic.getZoneMembership(), topic.getOwner(), ownerTypeOrdinal,
                      topic.getOriginOrganizationGUID(), topic.getOriginBusinessCapabilityGUID(), topic.getOtherOriginValues(),
                      topic.getAdditionalProperties(), TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, extendedProperties,
-                     null, null, InstanceStatus.ACTIVE, null, methodName);
+                     null, null, InstanceStatus.ACTIVE, now, methodName);
         } else {
             topicGUID = originalTopicEntity.get().getGUID();
-            topicHandler.updateAsset(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME, topic.getQualifiedName(),
-                                     topic.getDisplayName(), topic.getDescription(), topic.getAdditionalProperties(), TOPIC_TYPE_GUID, TOPIC_TYPE_NAME,
-                                     extendedProperties, null, null, true, false, false, null, methodName);
+            topicHandler.updateAsset(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
+                    topic.getQualifiedName(), topic.getDisplayName(), topic.getDescription(), topic.getAdditionalProperties(),
+                    TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, extendedProperties, null, null, true,
+                    false, false, now, methodName);
         }
 
         return topicGUID;
@@ -155,6 +158,7 @@ public class DataEngineTopicHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         topicHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
-                TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, null, null, false, false, null, methodName);
+                TOPIC_TYPE_GUID, TOPIC_TYPE_NAME, null, null, false,
+                false, dataEngineCommonHandler.getNow(), methodName);
     }
 }

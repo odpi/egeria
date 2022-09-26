@@ -83,6 +83,7 @@ public class DataEngineEventTypeHandler {
                 EVENT_TYPE_TYPE_NAME);
         String eventTypeGUID;
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
+        Date now = dataEngineCommonHandler.getNow();
         if (originalEventTypeEntity.isEmpty()) {
             eventTypeHandler.verifyExternalSourceIdentity(userId, externalSourceGUID, externalSourceName,
                     false, false, null, null);
@@ -90,14 +91,14 @@ public class DataEngineEventTypeHandler {
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
                     eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null,
-                    null, null, false, false, null, methodName);
+                    null, null, false, false, now, methodName);
         } else {
             eventTypeGUID = originalEventTypeEntity.get().getGUID();
             eventTypeHandler.updateEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, EVENT_TYPE_GUID_PARAMETER_NAME,
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
                     eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null,
-                    null, null, true,false, false, null, methodName);
+                    null, null, true,false, false, now, methodName);
         }
 
         List<Attribute> attributeList = eventType.getAttributeList();
@@ -151,6 +152,6 @@ public class DataEngineEventTypeHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         eventTypeHandler.removeEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, EVENT_TYPE_GUID_PARAMETER_NAME, qualifiedName,
-              false, false, null, methodName);
+              false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 }
