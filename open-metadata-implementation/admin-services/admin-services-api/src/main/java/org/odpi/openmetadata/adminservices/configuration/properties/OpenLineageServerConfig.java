@@ -136,18 +136,16 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     }
 
     /**
-     * Return the OCF Connection for the In Topic used to pass requests to this Open Lineage.
-     * For example, the output topic of Governance Engine OMAS can be provided
-     * (e.g. "open-metadata.access-services.GovernanceEngine.outTopic")
+     * Return the connection override object as defined in the server configuration
      *
-     * @return Connection for In Topic
+     * @return Connection override object as defined in the server configuration
      */
     public Connection getAssetLineageTopicConnectionOverride() {
         return assetLineageTopicConnectionOverride;
     }
 
     /**
-     * Set up the OCF Connection for the Out Topic used to pass requests to this Open Lineage.
+     * Sets Connection override object in the server configuration
      *
      * @param assetLineageTopicConnectionOverride Connection for In Topic
      */
@@ -233,7 +231,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
                 ", openLineageName='" + openLineageName + '\'' +
                 ", openLineageDescription='" + openLineageDescription + '\'' +
                 ", lineageServerURL='" + lineageServerURL + '\'' +
-                ", inTopicConnection=" + assetLineageTopicConnectionOverride +
+                ", assetLineageTopicConnectionOverride=" + assetLineageTopicConnectionOverride +
                 ", openLineageGraphConnection=" + lineageGraphConnection +
                 ", accessServiceConfig=" + accessServiceConfig +
                 ", backgroundJobs=" + backgroundJobs +

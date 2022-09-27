@@ -186,7 +186,7 @@ public class OpenLineageServerOperationalServices {
 
         Connection assetLineageConnection = restResult.getConnection();
         Connection assetLineageTopicConnectionOverride = openLineageServerConfig.getAssetLineageTopicConnectionOverride();
-        if (assetLineageTopicConnectionOverride != null) {
+        if (assetLineageConnection!= null && assetLineageTopicConnectionOverride != null) {
             assetLineageConnection.setConfigurationProperties(assetLineageTopicConnectionOverride.getConfigurationProperties());
         }
         return assetLineageConnection;
