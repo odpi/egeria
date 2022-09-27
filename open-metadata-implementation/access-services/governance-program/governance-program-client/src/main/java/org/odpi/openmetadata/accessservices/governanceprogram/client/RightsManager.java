@@ -149,7 +149,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                                      PropertyServerException
     {
         final String   methodName = "createLicenseType";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types";
         final String   propertiesParameterName = "properties";
 
         return super.createGovernanceDefinition(userId, properties, propertiesParameterName, initialStatus, urlTemplate, methodName);
@@ -177,7 +177,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                            PropertyServerException
     {
         final String methodName = "updateLicenseType";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/update?isMergeUpdate={3}";
 
         final String guidParameterName = "licenseTypeGUID";
         final String propertiesParameterName = "properties";
@@ -234,7 +234,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                  PropertyServerException
     {
         final String methodName = "deleteLicenseType";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}/delete";
         final String guidParameterName = "licenseTypeGUID";
 
         super.removeReferenceable(userId, licenseTypeGUID, guidParameterName, urlTemplate, methodName);
@@ -260,7 +260,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                                   PropertyServerException
     {
         final String methodName = "getLicenseTypeByGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/{2}";
 
         final String guidParameterName = "licenseTypeGUID";
 
@@ -268,7 +268,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
         invalidParameterHandler.validateGUID(licenseTypeGUID, guidParameterName, methodName);
 
         LicenseTypeResponse restResult = restClient.callLicenseTypeGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                licenseTypeGUID);
@@ -296,7 +296,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                                       PropertyServerException
     {
         final String   methodName = "getLicenseTypeByDocId";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-document-id/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-document-id/{2}";
 
         final String   documentIdParameterName = "documentId";
 
@@ -304,7 +304,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
         invalidParameterHandler.validateName(documentIdentifier, documentIdParameterName, methodName);
 
         LicenseTypeResponse restResult = restClient.callLicenseTypeGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                documentIdentifier);
@@ -336,7 +336,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                                    PropertyServerException
     {
         final String methodName = "getLicenseTypesByTitle";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-title?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-title?startFrom={2}&pageSize={3}";
         final String titleParameterName = "title";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -349,7 +349,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
         requestBody.setSearchStringParameterName(titleParameterName);
 
         LicenseTypeListResponse restResult = restClient.callLicenseTypeListPostRESTCall(methodName,
-                                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                                        urlTemplate,
                                                                                         requestBody,
                                                                                         serverName,
                                                                                         userId,
@@ -383,14 +383,14 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                                      PropertyServerException
     {
         final String methodName = "getLicenseTypeByDomainId";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-domain/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/license-types/by-domain/{2}?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         LicenseTypeListResponse restResult = restClient.callLicenseTypeListGetRESTCall(methodName,
-                                                                                       serverPlatformURLRoot + urlTemplate,
+                                                                                       urlTemplate,
                                                                                        serverName,
                                                                                        userId,
                                                                                        domainIdentifier,
@@ -428,7 +428,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                       PropertyServerException
     {
         final String methodName = "licenseElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/license-types/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/license-types/{3}";
 
         final String elementGUIDParameterName = "elementGUID";
         final String licenseTypeGUIDParameterName = "licenseTypeGUID";
@@ -466,7 +466,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                     PropertyServerException
     {
         final String methodName = "updateLicense";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/licenses/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/licenses/{2}/update?isMergeUpdate={3}";
 
         final String licenseGUIDParameterName = "licenseGUID";
 
@@ -498,7 +498,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
                                                                  PropertyServerException
     {
         final String methodName = "unlicenseElement";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/licenses/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/licenses/{2}/delete";
 
         final String licenseGUIDParameterName = "licenseGUID";
 
@@ -535,7 +535,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
     {
         final String methodName = "getLicencedElements";
         final String guidParameter = "licenseGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/licenses/{2}?&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/licenses/{2}?&startFrom={3}&pageSize={4}";
 
         return super.getRelatedElements(userId, licenseGUID, guidParameter, urlTemplate, startFrom, pageSize, methodName);
     }
@@ -565,7 +565,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
     {
         final String methodName = "getLicences";
         final String guidParameterName = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/licenses?&startFrom={3}&pageSize={4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/elements/{2}/licenses?&startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
@@ -573,7 +573,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         LicenseListResponse restResult = restClient.callLicenseListGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                elementGUID,

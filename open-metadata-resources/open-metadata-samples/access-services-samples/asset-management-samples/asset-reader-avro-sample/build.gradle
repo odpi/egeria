@@ -9,13 +9,14 @@ plugins {
 }
 
 dependencies {
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
-    implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
+    compileOnly project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
     runtimeOnly 'ch.qos.logback:logback-classic'
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
+    compileOnly  project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
+    compileOnly project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
 

@@ -3,8 +3,12 @@
 package org.odpi.openmetadata.commonservices.gaf.client;
 
 import org.odpi.openmetadata.commonservices.gaf.api.MetadataElementInterface;
+import org.odpi.openmetadata.commonservices.gaf.api.MultiLanguageInterface;
 import org.odpi.openmetadata.commonservices.gaf.api.SpecialGovernanceActionInterface;
+import org.odpi.openmetadata.commonservices.gaf.api.ValidMetadataValuesInterface;
 import org.odpi.openmetadata.commonservices.gaf.client.rest.OpenMetadataStoreRESTClient;
+import org.odpi.openmetadata.commonservices.gaf.properties.TranslationDetail;
+import org.odpi.openmetadata.commonservices.gaf.properties.ValidMetadataValue;
 import org.odpi.openmetadata.commonservices.gaf.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
@@ -33,10 +37,13 @@ import java.util.Map;
  * It is however shared by all the governance action services running in an engine service so that we only need one connector to the topic
  * listener for the watchdog governance services.
  */
-public abstract class OpenMetadataStoreClientBase implements MetadataElementInterface, SpecialGovernanceActionInterface
+public abstract class OpenMetadataStoreClientBase implements MetadataElementInterface,
+                                                             SpecialGovernanceActionInterface,
+                                                             MultiLanguageInterface,
+                                                             ValidMetadataValuesInterface
 {
-    private final String            serverName;               /* Initialized in constructor */
-    private final String            serviceURLMarker;         /* Initialized in constructor */
+    private final String                      serverName;               /* Initialized in constructor */
+    private final String                      serviceURLMarker;         /* Initialized in constructor */
     private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
     private final OpenMetadataStoreRESTClient restClient;               /* Initialized in constructor */
 
@@ -173,14 +180,13 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "getMetadataElementByGUID";
         final String guidParameterName = "elementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}?forLineage={4}&forDuplicateProcessing={5}&effectiveTime={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}?forLineage={4}&forDuplicateProcessing={5}&effectiveTime={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
 
         OpenMetadataElementResponse restResult = restClient.callOpenMetadataElementGetRESTCall(methodName,
-                                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                                               urlTemplate,
                                                                                                serverName,
                                                                                                serviceURLMarker,
                                                                                                userId,
@@ -221,8 +227,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName          = "getMetadataElementByUniqueName";
         final String defaultPropertyName = "qualifiedName";
         final String nameParameterName   = "uniqueName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
@@ -241,7 +246,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         }
 
         OpenMetadataElementResponse restResult = restClient.callOpenMetadataElementPostRESTCall(methodName,
-                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                urlTemplate,
                                                                                                 requestBody,
                                                                                                 serverName,
                                                                                                 serviceURLMarker,
@@ -283,8 +288,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName          = "getMetadataElementGUIDByUniqueName";
         final String defaultPropertyName = "qualifiedName";
         final String nameParameterName   = "uniqueName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/guid-by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/guid-by-unique-name?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameterName, methodName);
@@ -303,7 +307,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         }
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -345,8 +349,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName                = "findMetadataElementsWithString";
         final String searchStringParameterName = "searchString";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-string?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
@@ -357,7 +360,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   requestBody,
                                                                                                   serverName,
                                                                                                   serviceURLMarker,
@@ -407,15 +410,14 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName            = "getRelatedMetadataElements";
         final String guidParameterName     = "elementGUID";
         final String typeNameParameterName = "relationshipTypeName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/type/{4}?startingAtEnd={5}&forLineage={6}&forDuplicateProcessing={7}&effectiveTime={8}&startFrom={9}&pageSize={10}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/type/{4}?startingAtEnd={5}&forLineage={6}&forDuplicateProcessing={7}&effectiveTime={8}&startFrom={9}&pageSize={10}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
 
         RelatedMetadataElementListResponse restResult = restClient.callRelatedMetadataElementListGetRESTCall(methodName,
-                                                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                                                             urlTemplate,
                                                                                                              serverName,
                                                                                                              serviceURLMarker,
                                                                                                              userId,
@@ -424,8 +426,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                                              Integer.toString(startingAtEnd),
                                                                                                              forLineage,
                                                                                                              forDuplicateProcessing,
-                                                                                                             this.getEffectiveTimeAsLong(
-                                                                                                                     effectiveTime),
+                                                                                                             this.getEffectiveTimeAsLong(effectiveTime),
                                                                                                              Integer.toString(startFrom),
                                                                                                              Integer.toString(pageSize));
 
@@ -477,8 +478,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                                  PropertyServerException
     {
         final String methodName = "findMetadataElements";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -493,7 +493,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setSequencingOrder(sequencingOrder);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
-                                                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                                                  urlTemplate,
                                                                                                   requestBody,
                                                                                                   serverName,
                                                                                                   serviceURLMarker,
@@ -545,8 +545,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
                                                                                                                     PropertyServerException
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -558,15 +557,14 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setSequencingOrder(sequencingOrder);
 
         RelatedMetadataElementsListResponse restResult = restClient.callRelatedMetadataElementsListPostRESTCall(methodName,
-                                                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                                                urlTemplate,
                                                                                                                 requestBody,
                                                                                                                 serverName,
                                                                                                                 serviceURLMarker,
                                                                                                                 userId,
                                                                                                                 forLineage,
                                                                                                                 forDuplicateProcessing,
-                                                                                                                this.getEffectiveTimeAsLong(
-                                                                                                                        effectiveTime),
+                                                                                                                this.getEffectiveTimeAsLong(effectiveTime),
                                                                                                                 Integer.toString(startFrom),
                                                                                                                 Integer.toString(pageSize));
 
@@ -608,8 +606,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName               = "createMetadataElementInStore";
         final String elementTypeParameterName = "metadataElementTypeName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
@@ -624,7 +621,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setTemplateGUID(templateGUID);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   serviceURLMarker,
@@ -665,8 +662,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "updateMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -680,7 +676,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -717,8 +713,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "updateMetadataElementStatusInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-status";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-status";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -731,7 +726,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -770,8 +765,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "updateMetadataElementEffectivityInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-effectivity";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/update-effectivity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -785,7 +779,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -818,8 +812,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName        = "deleteMetadataElementInStore";
         final String guidParameterName = "metadataElementGUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -831,7 +824,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -876,8 +869,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName                  = "classifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -893,7 +885,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -935,8 +927,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName                  = "reclassifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/update-properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -951,7 +942,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -993,8 +984,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName                  = "updateClassificationEffectivityInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/update-effectivity";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/update-effectivity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1009,7 +999,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -1045,8 +1035,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName                  = "unclassifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -1059,7 +1048,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callGUIDPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -1110,8 +1099,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String elementTypeParameterName = "relationshipTypeName";
         final String end1ParameterName        = "metadataElement1GUID";
         final String end2ParameterName        = "metadataElement2GUID";
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/new";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, elementTypeParameterName, methodName);
@@ -1131,7 +1119,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   serviceURLMarker,
@@ -1171,7 +1159,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "updateRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-properties";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
@@ -1185,7 +1173,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -1223,7 +1211,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "updateRelatedElementsEffectivityInStore";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-effectivity";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/update-effectivity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
@@ -1237,7 +1225,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -1270,7 +1258,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "deleteRelatedElementsInStore";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);
@@ -1282,7 +1270,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -1326,7 +1314,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
     {
         final String methodName = "createIncidentReport";
         final String qualifiedNameParameterName = "qualifiedName";
-        final String urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/incident-reports";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/incident-reports";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
@@ -1343,7 +1331,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setOriginatorGUID(originatorGUID);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   serviceURLMarker,
@@ -1507,6 +1495,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         return todoGUID;
     }
 
+
     /**
      * Link elements as peer duplicates. Create a simple relationship between two elements.
      * If the relationship already exists, the properties are updated.
@@ -1543,7 +1532,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName = "linkElementsAsPeerDuplicates";
         final String end1ParameterName = "metadataElement1GUID";
         final String end2ParameterName = "metadataElement2GUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/link-as-peer-duplicate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/link-as-peer-duplicate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElement1GUID, end1ParameterName, methodName);
@@ -1562,7 +1551,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setSetKnownDuplicate(setKnownDuplicate);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
@@ -1605,7 +1594,7 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         final String methodName = "linkConsolidatedDuplicate";
         final String consolidatedElementGUIDParameterName = "consolidatedElementGUID";
         final String sourceElementGUIDsParameterName = "sourceElementGUIDs";
-        final String urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/link-as-consolidated-duplicate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/related-elements/link-as-consolidated-duplicate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(consolidatedElementGUID, consolidatedElementGUIDParameterName, methodName);
@@ -1623,10 +1612,388 @@ public abstract class OpenMetadataStoreClientBase implements MetadataElementInte
         requestBody.setSourceElementGUIDs(sourceElementGUIDs);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         serviceURLMarker,
                                         userId);
+    }
+
+
+    /**
+     * Create or update the translation for a particular language/locale for a metadata element.
+     *
+     * @param userId caller's userId
+     * @param elementGUID unique identifier of the element that this translation is related to
+     * @param translationDetail properties of the translation
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public void setTranslation(String            userId,
+                               String            elementGUID,
+                               TranslationDetail translationDetail) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "setTranslation";
+        final String elementGUIDParameterName = "elementGUID";
+        final String translationDetailParameterName = "translationDetail";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/multi-language/set-translation/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(translationDetail, translationDetailParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        translationDetail,
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        elementGUID);
+    }
+
+
+    /**
+     * Remove the translation for a particular language/locale for a metadata element.
+     *
+     * @param userId caller's userId
+     * @param elementGUID unique identifier of the element that this translation is related to
+     * @param language language requested
+     * @param locale optional locale to qualify which translation if there are multiple translations for the language.
+     *
+     * @throws InvalidParameterException  the language is null or not known or not unique (add locale)
+     * @throws UserNotAuthorizedException the service is not able to access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public void clearTranslation(String userId,
+                                 String elementGUID,
+                                 String language,
+                                 String locale) throws InvalidParameterException,
+                                                       UserNotAuthorizedException,
+                                                       PropertyServerException
+    {
+        final String methodName = "clearTranslation";
+        final String elementGUIDParameterName = "elementGUID";
+        final String languageParameterName = "language";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/multi-language/clear-translation/{3}?language={4}&locale={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(language, languageParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new NullRequestBody(),
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        elementGUID,
+                                        language,
+                                        locale);
+    }
+
+
+    /**
+     * Retrieve the translation for the matching language/locale.
+     *
+     * @param userId caller's userId
+     * @param elementGUID unique identifier of the element that this translation is related to
+     * @param language language requested
+     * @param locale optional locale to qualify which translation if there are multiple translations for the language.
+     *
+     * @return the properties of the translation or null if there is none
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public TranslationDetail getTranslation(String userId,
+                                            String elementGUID,
+                                            String language,
+                                            String locale) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String methodName = "getTranslation";
+        final String elementGUIDParameterName = "elementGUID";
+        final String languageParameterName = "language";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/multi-language/get-translation/{3}?language={4}&locale={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(language, languageParameterName, methodName);
+
+        TranslationDetailResponse response = restClient.callTranslationDetailGetRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         serverName,
+                                                                                         serviceURLMarker,
+                                                                                         userId,
+                                                                                         elementGUID,
+                                                                                         language,
+                                                                                         locale);
+
+        return response.getElement();
+    }
+
+
+    /**
+     * Retrieve all translations associated with a metadata element.
+     *
+     * @param userId caller's userId
+     * @param elementGUID unique identifier of the element that this translation is related to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return
+     *
+     * @return list of translation properties or null if there are none
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public List<TranslationDetail> getTranslations(String userId,
+                                                   String elementGUID,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String methodName = "getTranslations";
+        final String elementGUIDParameterName = "elementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/multi-language/get-translations/{3}?startFrom={4}&pageSize={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        TranslationListResponse response = restClient.callTranslationListGetRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     new NullRequestBody(),
+                                                                                     serverName,
+                                                                                     serviceURLMarker,
+                                                                                     userId,
+                                                                                     elementGUID,
+                                                                                     startFrom,
+                                                                                     pageSize);
+
+        return response.getElementList();
+    }
+
+
+    /**
+     * Create or update the valid value for a particular open metadata property name.  If the typeName is null, this valid value
+     * applies to properties of this name from all types.  The valid value is stored in the preferredValue property.  If a valid value is
+     * already set up for this property (with overlapping effective dates) then the valid value is updated.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param validMetadataValue preferred value to use in the open metadata types plus additional descriptive values.
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public void setUpValidMetadataValue(String             userId,
+                                        String             typeName,
+                                        String             propertyName,
+                                        ValidMetadataValue validMetadataValue) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName = "setUpValidMetadataValue";
+        final String propertyNameParameterName = "propertyName";
+        final String propertiesParameterName = "validMetadataValue";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/setup-valid-metadata-value/{3}?typeName={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+        invalidParameterHandler.validateObject(validMetadataValue, propertiesParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        validMetadataValue,
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        propertyName,
+                                        typeName);
+    }
+
+
+    /**
+     * Remove a valid value for a property.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue specific valid value to remove
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public void clearValidMetadataValue(String userId,
+                                        String typeName,
+                                        String propertyName,
+                                        String preferredValue) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "clearValidMetadataValue";
+        final String propertyNameParameterName = "propertyName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/clear-valid-metadata-value/{3}?preferredValue={4}&typeName={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        new NullRequestBody(),
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        propertyName,
+                                        preferredValue,
+                                        typeName);
+    }
+
+
+    /**
+     * Validate whether the value found in an open metadata property is valid.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param actualValue value stored in the property - if this is null, true is only returned if null is set up as a valid value.
+     *
+     * @return boolean flag - true if the value is one of the defined valid values or there are no valid values set up for the property (and so any value is value).
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public boolean validateMetadataValue(String userId,
+                                         String typeName,
+                                         String propertyName,
+                                         String actualValue) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String methodName = "validateMetadataValue";
+        final String propertyNameParameterName = "propertyName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/validate/{3}?actualValue={4}&typeName={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+
+        BooleanResponse response = restClient.callBooleanGetRESTCall(methodName,
+                                                                     urlTemplate,
+                                                                     new NullRequestBody(),
+                                                                     serverName,
+                                                                     serviceURLMarker,
+                                                                     userId,
+                                                                     propertyName,
+                                                                     actualValue,
+                                                                     typeName);
+
+        return response.getFlag();
+    }
+
+
+    /**
+     * Retrieve details of a specific valid value for a property.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param preferredValue valid value to match
+     *
+     * @return specific valid value definition or none if there is no definition stored
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public ValidMetadataValue getValidMetadataValue(String userId,
+                                                    String typeName,
+                                                    String propertyName,
+                                                    String preferredValue) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String methodName = "getValidMetadataValue";
+        final String propertyNameParameterName = "propertyName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/get-valid-metadata-value/{3}?preferredValue={4}&typeName={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+
+        ValidMetadataValueResponse response = restClient.callValidMetadataValueGetRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           new NullRequestBody(),
+                                                                                           serverName,
+                                                                                           serviceURLMarker,
+                                                                                           userId,
+                                                                                           propertyName,
+                                                                                           preferredValue,
+                                                                                           typeName);
+
+        return response.getElement();
+    }
+
+
+    /**
+     * Retrieve all the valid values for the requested property.
+     *
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of valid values defined for the property
+     *
+     * @throws InvalidParameterException  the property name is null or not known.
+     * @throws UserNotAuthorizedException the service is not able to create/access the element
+     * @throws PropertyServerException    there is a problem accessing the metadata store
+     */
+    @Override
+    public List<ValidMetadataValue> getValidMetadataValues(String userId,
+                                                           String typeName,
+                                                           String propertyName,
+                                                           int    startFrom,
+                                                           int    pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName = "getValidMetadataValues";
+        final String propertyNameParameterName = "propertyName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/common-services/{1}/open-metadata-store/users/{2}/valid-metadata-values/get-valid-metadata-values/{3}?typeName={4}?startFrom={5}&pageSize={6}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(propertyName, propertyNameParameterName, methodName);
+
+        ValidMetadataValueListResponse response = restClient.callValidMetadataValueListGetRESTCall(methodName,
+                                                                                                   urlTemplate,
+                                                                                                   new NullRequestBody(),
+                                                                                                   serverName,
+                                                                                                   serviceURLMarker,
+                                                                                                   userId,
+                                                                                                   propertyName,
+                                                                                                   typeName,
+                                                                                                   startFrom,
+                                                                                                   pageSize);
+
+        return response.getElementList();
     }
 }

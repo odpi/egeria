@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.OwnerType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.service.ClockService;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +50,7 @@ public class DataEngineCommonHandler {
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
+    private final ClockService clockService;
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineCommonHandler.class);
 
@@ -63,13 +66,14 @@ public class DataEngineCommonHandler {
      */
     public DataEngineCommonHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                                    OpenMetadataAPIGenericHandler<Referenceable> genericHandler, OMRSRepositoryHelper repositoryHelper,
-                                   DataEngineRegistrationHandler dataEngineRegistrationHandler) {
+                                   DataEngineRegistrationHandler dataEngineRegistrationHandler, ClockService clockService) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.genericHandler = genericHandler;
         this.repositoryHelper = repositoryHelper;
         this.dataEngineRegistrationHandler = dataEngineRegistrationHandler;
+        this.clockService = clockService;
     }
 
     /**
@@ -131,7 +135,7 @@ public class DataEngineCommonHandler {
 
         EntityDetail retrievedEntity = genericHandler.getEntityByValue(userId, qualifiedName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME),
-                false, false, null, methodName);
+                false, false, getNow(), methodName);
 
         String guid = null;
         if(retrievedEntity != null) {
@@ -163,7 +167,7 @@ public class DataEngineCommonHandler {
 
         EntityDetail retrievedEntity = genericHandler.getEntityFromRepository(userId, entityDetailGUID,
                 CommonMapper.GUID_PROPERTY_NAME, entityTypeName, null, null,
-                false, false, null, null, methodName);
+                false, false, null, getNow(), methodName);
 
         return Optional.ofNullable(retrievedEntity);
     }
@@ -208,7 +212,8 @@ public class DataEngineCommonHandler {
             genericHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, firstGUID,
                     CommonMapper.GUID_PROPERTY_NAME, firstEntityTypeName, secondGUID, CommonMapper.GUID_PROPERTY_NAME,
                     secondEntityTypeName, false, false, null,
-                    relationshipTypeDef.getGUID(), relationshipTypeName, relationshipProperties, null, null, null, methodName);
+                    relationshipTypeDef.getGUID(), relationshipTypeName, relationshipProperties, null,
+                    null, getNow(), methodName);
         } else {
             Relationship originalRelationship = relationship.get();
             String relationshipGUID = originalRelationship.getGUID();
@@ -219,7 +224,7 @@ public class DataEngineCommonHandler {
             if (relationshipDifferences.hasInstancePropertiesDifferences()) {
                 genericHandler.updateRelationshipProperties(userId, externalSourceGUID, externalSourceName, relationshipGUID,
                                                             GUID_PROPERTY_NAME, originalRelationship.getType().getTypeDefName(), true,
-                                                            relationshipProperties, false, false, null, methodName);
+                                                            relationshipProperties, false, false, getNow(), methodName);
             }
         }
     }
@@ -255,7 +260,7 @@ public class DataEngineCommonHandler {
         Relationship relationshipBetweenEntities = genericHandler.getUniqueAttachmentLink(userId, firstGUID,
                  CommonMapper.GUID_PROPERTY_NAME, firstEntityTypeName, relationshipTypeDef.getGUID(),
                 relationshipTypeDef.getName(), secondGUID, secondEntityTypeName, 0,
-                false, false, null, methodName);
+                false, false, getNow(), methodName);
 
         if (relationshipBetweenEntities == null) {
             return Optional.empty();
@@ -293,7 +298,8 @@ public class DataEngineCommonHandler {
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
 
         genericHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, entityGUID, GUID_PROPERTY_NAME,
-                entityTypeDef.getGUID(), entityTypeDef.getName(), null, null, false, false, null, methodName);
+                entityTypeDef.getGUID(), entityTypeDef.getName(), null, null,
+                false, false, getNow(), methodName);
     }
 
     /**
@@ -364,7 +370,8 @@ public class DataEngineCommonHandler {
 
         List<EntityDetail> entities = genericHandler.getAttachedEntities(userId, guid, CommonMapper.GUID_PROPERTY_NAME,
                 entityTypeName, relationshipTypeDef.getGUID(), relationshipTypeName, resultingElementTypeName,
-                null, null, 0, false, false, 0, invalidParameterHandler.getMaxPagingSize(), null, methodName);
+                null, null, 0, false,
+                false, 0, invalidParameterHandler.getMaxPagingSize(), getNow(), methodName);
 
         if (CollectionUtils.isEmpty(entities)) {
             return new HashSet<>();
@@ -399,7 +406,7 @@ public class DataEngineCommonHandler {
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId, relationshipTypeName);
         EntityDetail entity = genericHandler.getAttachedEntity(userId, entityGUID, GUID_PROPERTY_NAME,
                 entityTypeName, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), null,
-                false, false, null, methodName);
+                false, false, getNow(), methodName);
         return Optional.ofNullable(entity);
     }
 
@@ -408,5 +415,9 @@ public class DataEngineCommonHandler {
             throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName, this.getClass().getName(),
                     serverName), this.getClass().getName(), methodName);
         }
+    }
+
+    protected Date getNow() {
+        return clockService.getNow();
     }
 }

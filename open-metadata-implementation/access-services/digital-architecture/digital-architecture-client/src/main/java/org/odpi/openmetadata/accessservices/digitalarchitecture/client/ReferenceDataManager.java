@@ -171,7 +171,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets";
 
         ValidValueProperties requestBody = new ValidValueProperties();
         requestBody.setQualifiedName(qualifiedName);
@@ -184,7 +184,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setExtendedProperties(extendedProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -236,7 +236,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}?isDefaultValue={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}?isDefaultValue={3}";
 
         ValidValueProperties requestBody = new ValidValueProperties();
         requestBody.setQualifiedName(qualifiedName);
@@ -250,7 +250,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setExtendedProperties(extendedProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
+                                                                  urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -309,7 +309,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, guidParameter, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/update?isMergeUpdate={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/update?isMergeUpdate={3}";
 
         ValidValueProperties requestBody = new ValidValueProperties();
         requestBody.setQualifiedName(qualifiedName);
@@ -323,7 +323,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setExtendedProperties(extendedProperties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -359,10 +359,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, guidParameter, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         qualifiedName,
                                         serverName,
                                         userId,
@@ -399,10 +399,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(setGUID, setGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}/members/{3}?isDefaultValue={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}/members/{3}?isDefaultValue={4}";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -438,10 +438,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(setGUID, setGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}/members/{3}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}/members/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -483,7 +483,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/implementations/{3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/implementations/{3}";
 
         ValidValuesImplProperties requestBody = new ValidValuesImplProperties();
 
@@ -492,7 +492,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setAdditionalValues(additionalValues);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -524,10 +524,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/assets/classify-as-reference-data";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/assets/classify-as-reference-data";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -561,10 +561,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/implementations/{3}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/implementations/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -596,10 +596,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/assets/declassify-as-reference-data";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/assets/declassify-as-reference-data";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -636,13 +636,13 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(consumerGUID, consumerGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/consumers/{3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/consumers/{3}";
 
         ValidValueAssignmentProperties requestBody = new ValidValueAssignmentProperties();
         requestBody.setStrictRequirement(strictRequirement);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -677,10 +677,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(consumerGUID, consumerGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/consumers/{3}/delete";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/consumers/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -722,7 +722,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(referenceableGUID, referenceableGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/reference-values/{2}/items/{3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/reference-values/{2}/items/{3}";
 
         ReferenceValueAssignmentProperties requestBody = new ReferenceValueAssignmentProperties();
         requestBody.setConfidence(confidence);
@@ -730,7 +730,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setNotes(notes);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -765,11 +765,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(referenceableGUID, referenceableGUIDParameter, methodName);
 
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/reference-values/{2}/items/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/reference-values/{2}/items/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -813,7 +812,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValue1GUID, validValue1GUIDParameter, methodName);
         invalidParameterHandler.validateGUID(validValue2GUID, validValue2GUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/map/{3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/map/{3}";
 
         ValidValuesMappingProperties requestBody = new ValidValuesMappingProperties();
         requestBody.setAssociationDescription(associationDescription);
@@ -822,7 +821,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setNotes(notes);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -858,11 +857,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValue1GUID, validValue1GUIDParameter, methodName);
         invalidParameterHandler.validateGUID(validValue2GUID, validValue2GUIDParameter, methodName);
 
-        final String urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/map/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/map/{3}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -895,10 +893,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}";
 
         ValidValueResponse restResult = restClient.callValidValueGetRESTCall(methodName,
-                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                             urlTemplate,
                                                                              serverName,
                                                                              userId,
                                                                              validValueGUID);
@@ -935,7 +933,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(validValueName, validValueNameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-name?startFrom={2}&pageSize={3}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-name?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 
@@ -943,7 +941,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setNamePropertyName(validValueNameParameter);
 
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
-                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                urlTemplate,
                                                                                 requestBody,
                                                                                 serverName,
                                                                                 userId,
@@ -984,7 +982,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-search-string" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-search-string" +
                 "?startFrom={2}&pageSize={3}";
 
         SearchStringRequestBody requestBody = new SearchStringRequestBody();
@@ -993,7 +991,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setSearchStringParameterName(parameterName);
 
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
-                                                                                serverPlatformURLRoot + urlTemplate,
+                                                                                urlTemplate,
                                                                                 requestBody,
                                                                                 serverName,
                                                                                 userId,
@@ -1033,10 +1031,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueSetGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}/members?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}/members?startFrom={3}&pageSize={4}";
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                validValueSetGUID,
@@ -1075,10 +1073,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/set-membership?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/set-membership?startFrom={3}&pageSize={4}";
 
         ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                validValueGUID,
@@ -1117,12 +1115,11 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/consumers?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/consumers?startFrom={3}&pageSize={4}";
 
         ValidValueAssignmentConsumersResponse restResult =
                 restClient.callValidValueAssignmentConsumersGetRESTCall(methodName,
-                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                        urlTemplate,
                                                                         serverName,
                                                                         userId,
                                                                         validValueGUID,
@@ -1161,11 +1158,11 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(referenceableGUID, referenceableGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/referenceables/{2}/valid-value-assignments?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/referenceables/{2}/valid-value-assignments?startFrom={3}&pageSize={4}";
 
         ValidValueAssignmentDefinitionsResponse restResult =
                 restClient.callValidValueAssignmentDefinitionsGetRESTCall(methodName,
-                                                                          serverPlatformURLRoot + urlTemplate,
+                                                                          urlTemplate,
                                                                           serverName,
                                                                           userId,
                                                                           referenceableGUID,
@@ -1204,12 +1201,11 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/implementations" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/implementations" +
                 "?startFrom={3}&pageSize={4}";
 
         ValidValuesImplAssetsResponse restResult = restClient.callValidValuesImplAssetsGetRESTCall(methodName,
-                                                                                                   serverPlatformURLRoot + urlTemplate,
+                                                                                                   urlTemplate,
                                                                                                    serverName,
                                                                                                    userId,
                                                                                                    validValueGUID,
@@ -1249,12 +1245,11 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/implementations?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/implementations?startFrom={3}&pageSize={4}";
 
         ValidValuesImplDefinitionsResponse restResult =
                 restClient.callValidValuesImplDefinitionsGetRESTCall(methodName,
-                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                     urlTemplate,
                                                                      serverName,
                                                                      userId,
                                                                      assetGUID,
@@ -1294,12 +1289,11 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/mapped-values" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/mapped-values" +
                 "?startFrom={3}&pageSize={4}";
 
         ValidValueMappingsResponse restResult = restClient.callValidValueMappingsGetRESTCall(methodName,
-                                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                                             urlTemplate,
                                                                                              serverName,
                                                                                              userId,
                                                                                              validValueGUID,
@@ -1340,12 +1334,11 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/map-relationships" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/map-relationships" +
                 "?startFrom={3}&pageSize={4}";
 
         ValidValuesMappingsResponse restResult = restClient.callValidValuesMappingsGetRESTCall(methodName,
-                                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                                               urlTemplate,
                                                                                                serverName,
                                                                                                userId,
                                                                                                validValueGUID,
@@ -1384,13 +1377,12 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/reference-values/assigned-items" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/reference-values/assigned-items" +
                 "?startFrom={3}&pageSize={4}";
 
         ReferenceValueAssignmentItemsResponse restResult =
                 restClient.callReferenceValueAssignmentItemsGetRESTCall(methodName,
-                                                                        serverPlatformURLRoot + urlTemplate,
+                                                                        urlTemplate,
                                                                         serverName,
                                                                         userId,
                                                                         validValueGUID,
@@ -1429,13 +1421,12 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         invalidParameterHandler.validateGUID(referenceableGUID, referenceableGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/referenceables/{2}/reference-value-assignments" +
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/referenceables/{2}/reference-value-assignments" +
                 "?startFrom={3}&pageSize={4}";
 
         ReferenceValueAssignmentDefinitionsResponse restResult =
                 restClient.callReferenceValueAssignmentDefinitionsGetRESTCall(methodName,
-                                                                              serverPlatformURLRoot + urlTemplate,
+                                                                              urlTemplate,
                                                                               serverName,
                                                                               userId,
                                                                               referenceableGUID,

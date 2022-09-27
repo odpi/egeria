@@ -220,7 +220,7 @@ public class StewardshipAction implements DuplicateManagementInterface
 
         final String element1GUIDParameter = "element1GUID";
         final String element2GUIDParameter = "element2GUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/peer-duplicate-of/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/peer-duplicate-of/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
@@ -236,7 +236,7 @@ public class StewardshipAction implements DuplicateManagementInterface
         requestBody.setNotes(notes);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -267,14 +267,14 @@ public class StewardshipAction implements DuplicateManagementInterface
 
         final String element1GUIDParameter = "element1GUID";
         final String element2GUIDParameter = "element2GUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/peer-duplicate-of/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/peer-duplicate-of/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(element1GUID, element1GUIDParameter, methodName);
         invalidParameterHandler.validateGUID(element2GUID, element2GUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -302,14 +302,14 @@ public class StewardshipAction implements DuplicateManagementInterface
         final String methodName = "markElementAsKnownDuplicate";
 
         final String elementGUIDParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/known-duplicate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/known-duplicate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameter, methodName);
 
         
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -336,14 +336,14 @@ public class StewardshipAction implements DuplicateManagementInterface
         final String methodName = "unmarkElementAsKnownDuplicate";
 
         final String elementGUIDParameter = "elementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/known-duplicate/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/known-duplicate/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameter, methodName);
 
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -375,13 +375,13 @@ public class StewardshipAction implements DuplicateManagementInterface
     {
         final String methodName        = "getPeerDuplicates";
         final String guidParameterName = "elementGUID";
-        final String urlTemplate       = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/peer-duplicates?startFrom={3}&pageSize={4}";
+        final String urlTemplate       = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/peer-duplicates?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
 
         DuplicatesResponse restResult = restClient.callDuplicatesGetRESTCall(methodName,
-                                                                             serverPlatformURLRoot + urlTemplate,
+                                                                             urlTemplate,
                                                                              serverName,
                                                                              userId,
                                                                              elementGUID,
@@ -426,7 +426,7 @@ public class StewardshipAction implements DuplicateManagementInterface
         final String methodName = "markAsConsolidatedDuplicate";
 
         final String element1GUIDParameter = "consolidatedDuplicateGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/consolidated-duplicate";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/consolidated-duplicate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, element1GUIDParameter, methodName);
@@ -441,7 +441,7 @@ public class StewardshipAction implements DuplicateManagementInterface
         requestBody.setNotes(notes);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -471,14 +471,14 @@ public class StewardshipAction implements DuplicateManagementInterface
 
         final String element1GUIDParameter = "consolidatedDuplicateGUID";
         final String element2GUIDParameter = "contributingElementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/consolidated-duplicate/{2}/contributing-element/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/consolidated-duplicate/{2}/contributing-element/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, element1GUIDParameter, methodName);
         invalidParameterHandler.validateGUID(contributingElementGUID, element2GUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -509,14 +509,14 @@ public class StewardshipAction implements DuplicateManagementInterface
 
         final String element1GUIDParameter = "consolidatedDuplicateGUID";
         final String element2GUIDParameter = "contributingElementGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/consolidated-duplicate/{2}/contributing-elements/{3}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/consolidated-duplicate/{2}/contributing-elements/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, element1GUIDParameter, methodName);
         invalidParameterHandler.validateGUID(contributingElementGUID, element2GUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
@@ -549,13 +549,13 @@ public class StewardshipAction implements DuplicateManagementInterface
     {
         final String methodName        = "getContributingDuplicates";
         final String guidParameterName = "consolidatedDuplicateGUID";
-        final String urlTemplate       = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/consolidated-duplicate/{2}/contributing-elements?startFrom={3}&pageSize={4}";
+        final String urlTemplate       = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/consolidated-duplicate/{2}/contributing-elements?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, guidParameterName, methodName);
 
         ElementStubsResponse restResult = restClient.callElementStubsGetRESTCall(methodName,
-                                                                                 serverPlatformURLRoot + urlTemplate,
+                                                                                 urlTemplate,
                                                                                  serverName,
                                                                                  userId,
                                                                                  consolidatedDuplicateGUID,
@@ -586,13 +586,13 @@ public class StewardshipAction implements DuplicateManagementInterface
     {
         final String methodName        = "getConsolidatedDuplicate";
         final String guidParameterName = "elementGUID";
-        final String urlTemplate       = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/consolidated-duplicate";
+        final String urlTemplate       = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/consolidated-duplicate";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
 
         ElementStubResponse restResult = restClient.callElementStubGetRESTCall(methodName,
-                                                                               serverPlatformURLRoot + urlTemplate,
+                                                                               urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                elementGUID);
@@ -620,13 +620,13 @@ public class StewardshipAction implements DuplicateManagementInterface
         final String methodName = "removeConsolidatedDuplicate";
 
         final String element1GUIDParameter = "consolidatedDuplicateGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/consolidated-duplicate/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/stewardship-action/users/{1}/elements/{2}/consolidated-duplicate/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(consolidatedDuplicateGUID, element1GUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,

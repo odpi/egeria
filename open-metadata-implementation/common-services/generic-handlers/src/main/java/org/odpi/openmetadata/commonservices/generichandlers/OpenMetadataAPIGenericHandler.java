@@ -1729,7 +1729,6 @@ public class OpenMetadataAPIGenericHandler<B>
             anchorsClassification = null;
         }
 
-
         /*
          * This is an attempt to trap an intermittent error recorded in issue #4680.
          */
@@ -1760,25 +1759,22 @@ public class OpenMetadataAPIGenericHandler<B>
 
                 if (anchorsClassification == null)
                 {
-                    if (anchorGUID != null)
-                    {
-                        repositoryHandler.classifyEntity(localServerUserId,
-                                                         null,
-                                                         null,
-                                                         targetGUID,
-                                                         null,
-                                                         targetGUIDParameterName,
-                                                         targetEntity.getType().getTypeDefName(),
-                                                         OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
-                                                         ClassificationOrigin.ASSIGNED,
-                                                         null,
-                                                         anchorsProperties,
-                                                         forLineage,
-                                                         forDuplicateProcessing,
-                                                         effectiveTime,
-                                                         methodName);
-                    }
+                    repositoryHandler.classifyEntity(localServerUserId,
+                                                     null,
+                                                     null,
+                                                     targetGUID,
+                                                     null,
+                                                     targetGUIDParameterName,
+                                                     targetEntity.getType().getTypeDefName(),
+                                                     OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                     ClassificationOrigin.ASSIGNED,
+                                                     null,
+                                                     anchorsProperties,
+                                                     forLineage,
+                                                     forDuplicateProcessing,
+                                                     effectiveTime,
+                                                     methodName);
                 }
                 else
                 {
@@ -13573,15 +13569,28 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * Now add the new relationship.
          */
-
-        repositoryHandler.createRelationship(userId,
-                                             attachmentTypeGUID,
-                                             externalSourceGUID,
-                                             externalSourceName,
-                                             startingGUID,
-                                             newAttachingGUID,
-                                             relationshipProperties,
-                                             methodName);
+        if (startAtEnd1)
+        {
+            repositoryHandler.createRelationship(userId,
+                                                 attachmentTypeGUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 startingGUID,
+                                                 newAttachingGUID,
+                                                 relationshipProperties,
+                                                 methodName);
+        }
+        else
+        {
+            repositoryHandler.createRelationship(userId,
+                                                 attachmentTypeGUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 newAttachingGUID,
+                                                 startingGUID,
+                                                 relationshipProperties,
+                                                 methodName);
+        }
 
 
         /*

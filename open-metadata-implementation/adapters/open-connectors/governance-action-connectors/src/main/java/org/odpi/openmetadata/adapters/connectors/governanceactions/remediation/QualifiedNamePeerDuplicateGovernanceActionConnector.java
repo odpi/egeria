@@ -78,6 +78,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                 null, null, null, null, null, true);
                         outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.DUPLICATE_ASSIGNED_GUARD);
                         completionStatus = CompletionStatus.ACTIONED;
+                        break;
                     }
                 }
             }

@@ -105,6 +105,7 @@ public class DataEngineRelationalDataHandler {
         Optional<EntityDetail> originalDatabaseEntity = findDatabaseEntity(userId, database.getQualifiedName());
 
         int ownerTypeOrdinal = dataEngineCommonHandler.getOwnerTypeOrdinal(database.getOwnerType());
+        Date now = dataEngineCommonHandler.getNow();
         String databaseGUID;
         if (originalDatabaseEntity.isEmpty()) {
             databaseGUID = relationalDataHandler.createDatabase(userId, externalSourceGUID, externalSourceName, database.getQualifiedName(),
@@ -114,7 +115,7 @@ public class DataEngineRelationalDataHandler {
                     database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(), database.getDatabaseType(),
                     database.getDatabaseVersion(), database.getDatabaseInstance(), database.getDatabaseImportedFrom(),
                     database.getAdditionalProperties(), DATABASE_TYPE_NAME, null, null,
-                    null, null, false, false, null, methodName);
+                    null, null, false, false, now, methodName);
         } else {
             databaseGUID = originalDatabaseEntity.get().getGUID();
             relationalDataHandler.updateDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, database.getQualifiedName(),
@@ -124,13 +125,13 @@ public class DataEngineRelationalDataHandler {
                     database.getEncodingDescription(), database.getEncodingProperties(), database.getDatabaseType(), database.getDatabaseVersion(),
                     database.getDatabaseInstance(), database.getDatabaseImportedFrom(), database.getAdditionalProperties(),
                     DATABASE_TYPE_NAME, null, null, null, null, true,
-                    false, false, null, methodName);
+                    false, false, now, methodName);
         }
 
         if (database.getIncomplete()) {
             databaseSchemaAssetHandler.setClassificationInRepository(userId, externalSourceGUID, externalSourceName, databaseGUID,
                     DATABASE_GUID, DATABASE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
-                    null, true, false, false, null, methodName);
+                    null, true, false, false, now, methodName);
         }
 
         dataEngineConnectionAndEndpointHandler.upsertConnectionAndEndpoint(database.getQualifiedName(),
@@ -219,13 +220,14 @@ public class DataEngineRelationalDataHandler {
 
         String databaseSchemaGUID;
         int ownerTypeOrdinal = dataEngineCommonHandler.getOwnerTypeOrdinal(databaseSchema.getOwnerType());
+        Date now = dataEngineCommonHandler.getNow();
         if (originalDatabaseSchemaEntity.isEmpty()) {
             databaseSchemaGUID = relationalDataHandler.createDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseGUID,
                     databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(), databaseSchema.getOwner(),
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                     databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
-                    null, null, null, false, false, null, methodName);
+                    null, null, null, false, false, now, methodName);
         } else {
             databaseSchemaGUID = originalDatabaseSchemaEntity.get().getGUID();
             relationalDataHandler.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
@@ -233,22 +235,21 @@ public class DataEngineRelationalDataHandler {
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                     databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
-                    null, null, null, true,
-                    false, false, null, methodName);
+                    null, null, null, true, false, false, now, methodName);
 
             if (StringUtils.isNotEmpty(databaseGUID)) {
                 databaseSchemaAssetHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, databaseGUID,
                    DATABASE_GUID, OpenMetadataAPIMapper.DATABASE_TYPE_NAME, databaseSchemaGUID, DATABASE_SCHEMA_GUID,
                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, false, false,
                    OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID, OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
-                                                                (InstanceProperties) null, null, null, null, methodName);
+                        (InstanceProperties) null, null, null, now, methodName);
             }
         }
 
         if (databaseSchema.getIncomplete()) {
             databaseSchemaAssetHandler.setClassificationInRepository(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID, DATABASE_SCHEMA_GUID,
                     DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
-                    null, true, false, false, null, methodName);
+                    null, true, false, false, now, methodName);
         }
         return databaseSchemaGUID;
     }
@@ -277,6 +278,7 @@ public class DataEngineRelationalDataHandler {
         String relationalTableGUID;
         Optional<EntityDetail> originalRelationalTableEntity = dataEngineCommonHandler.findEntity(userId,
                 relationalTable.getQualifiedName(), RELATIONAL_TABLE_TYPE_NAME);
+        Date now = dataEngineCommonHandler.getNow();
         if (originalRelationalTableEntity.isEmpty()) {
             Optional<EntityDetail> databaseSchemaEntity = findDatabaseSchemaEntity(userId, databaseSchemaQualifiedName);
             if (databaseSchemaEntity.isEmpty()) {
@@ -288,22 +290,24 @@ public class DataEngineRelationalDataHandler {
             relationalTableGUID = relationalDataHandler.createDatabaseTable(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    RELATIONAL_TABLE_TYPE_NAME, null, null, null, null, false, false, null, methodName);
+                    RELATIONAL_TABLE_TYPE_NAME, null, null, null, null,
+                    false, false, now, methodName);
         } else {
             relationalTableGUID = originalRelationalTableEntity.get().getGUID();
             relationalDataHandler.updateDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID,
                     relationalTable.getQualifiedName(), relationalTable.getDisplayName(), relationalTable.getDescription(),
                     relationalTable.getIsDeprecated(), relationalTable.getAliases(), relationalTable.getAdditionalProperties(),
-                    RELATIONAL_TABLE_TYPE_NAME, null, null, null, null, true,
-                    false, false, null, methodName);
+                    RELATIONAL_TABLE_TYPE_NAME, null, null, null, null,
+                    true, false, false, now, methodName);
         }
 
         upsertRelationalColumns(userId, externalSourceGUID, externalSourceName, relationalTableGUID, relationalTable.getColumns());
 
         if (relationalTable.getIncomplete()) {
-            databaseSchemaAssetHandler.setClassificationInRepository(userId, externalSourceGUID, externalSourceName, relationalTableGUID, RELATIONAL_TABLE_TYPE_GUID,
-                    RELATIONAL_TABLE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID, INCOMPLETE_CLASSIFICATION_TYPE_NAME,
-                    null, true, false, false, null, methodName);
+            databaseSchemaAssetHandler.setClassificationInRepository(userId, externalSourceGUID, externalSourceName,
+                    relationalTableGUID, RELATIONAL_TABLE_TYPE_GUID, RELATIONAL_TABLE_TYPE_NAME, INCOMPLETE_CLASSIFICATION_TYPE_GUID,
+                    INCOMPLETE_CLASSIFICATION_TYPE_NAME, null, true, false,
+                    false, now, methodName);
         }
         return relationalTableGUID;
     }
@@ -330,6 +334,7 @@ public class DataEngineRelationalDataHandler {
             return;
         }
 
+        Date now = dataEngineCommonHandler.getNow();
         for (RelationalColumn column : columns) {
             int sortOrder = dataEngineCommonHandler.getSortOrder(column);
 
@@ -343,7 +348,7 @@ public class DataEngineRelationalDataHandler {
                         column.getAllowsDuplicateValues(), column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder,
                         column.getMinimumLength(), column.getLength(), column.getPrecision(), column.getIsNullable(), column.getNativeClass(),
                         column.getAliases(), column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null,
-                        null, null, null, false, false, null, methodName);
+                        null, null, null, false, false, now, methodName);
             } else {
                 relationalDataHandler.updateDatabaseColumn(userId, externalSourceGUID, externalSourceName,
                         originalRelationalColumnEntity.get().getGUID(), column.getQualifiedName(), column.getDisplayName(), column.getDescription(),
@@ -351,8 +356,9 @@ public class DataEngineRelationalDataHandler {
                         column.getPosition(), column.getMinCardinality(), column.getMaxCardinality(), column.getAllowsDuplicateValues(),
                         column.getOrderedValues(), column.getDefaultValueOverride(), sortOrder, column.getMinimumLength(), column.getLength(),
                         column.getPrecision(), column.getIsNullable(), column.getNativeClass(), column.getAliases(),
-                        column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null, null, null,
-                        null, true, false, false, null, methodName);
+                        column.getAdditionalProperties(), RELATIONAL_COLUMN_TYPE_NAME, null,
+                        null, null, null, true, false,
+                        false, now, methodName);
             }
         }
     }
@@ -402,7 +408,7 @@ public class DataEngineRelationalDataHandler {
             String databaseQualifiedName = databaseEntity.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
             relationalDataHandler.removeDatabase(userId, externalSourceGUID, externalSourceName, databaseGUID, databaseQualifiedName,
-                                                 false, false, null, methodName);
+                                                 false, false, dataEngineCommonHandler.getNow(), methodName);
         } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, databaseGUID);
         }
@@ -442,7 +448,7 @@ public class DataEngineRelationalDataHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         relationalDataHandler.removeDatabaseTable(userId, externalSourceGUID, externalSourceName, relationalTableGUID, GUID_PROPERTY_NAME,
-                tableQualifiedName, false, false, null, methodName);
+                tableQualifiedName, false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 
     public void removeDatabaseSchema(String userId, String databaseSchemaGUID, String externalSourceName, DeleteSemantic deleteSemantic)
@@ -460,7 +466,7 @@ public class DataEngineRelationalDataHandler {
             String databaseSchemaQualifiedName = databaseSchemaEntity.getProperties().getPropertyValue(QUALIFIED_NAME_PROPERTY_NAME).valueAsString();
             String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
             relationalDataHandler.removeDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
-            databaseSchemaQualifiedName, false, false, null, methodName);
+            databaseSchemaQualifiedName, false, false, dataEngineCommonHandler.getNow(), methodName);
 
         } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.ENTITY_NOT_DELETED, methodName, databaseSchemaGUID);
