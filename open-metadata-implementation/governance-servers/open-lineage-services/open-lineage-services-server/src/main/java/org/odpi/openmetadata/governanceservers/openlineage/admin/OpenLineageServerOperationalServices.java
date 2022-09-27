@@ -20,6 +20,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageQueryService;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageServerAuditCode;
@@ -41,6 +43,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -53,6 +56,7 @@ public class OpenLineageServerOperationalServices {
 
     private static final String EMPTY_STRING = "";
     private static final int RETRIEVE_OUT_TOPIC_CONNECTION_TIMEOUT = 60_000;
+    private static final String KAFKA_OPEN_METADATA_TOPIC_PROVIDER = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
 
     private final String localServerName;
     private final String localServerUserId;
@@ -184,10 +188,21 @@ public class OpenLineageServerOperationalServices {
             restResult = getConnection(methodName, restClient, accessServiceConfig);
         }
 
-        Connection assetLineageConnection = restResult.getConnection();
+        VirtualConnection assetLineageConnection = (VirtualConnection) restResult.getConnection();
         Connection assetLineageTopicConnectionOverride = openLineageServerConfig.getAssetLineageTopicConnectionOverride();
-        if (assetLineageConnection!= null && assetLineageTopicConnectionOverride != null) {
-            assetLineageConnection.setConfigurationProperties(assetLineageTopicConnectionOverride.getConfigurationProperties());
+        if (assetLineageConnection != null && assetLineageTopicConnectionOverride != null) {
+            Map<String, Object> configurationProperties = assetLineageTopicConnectionOverride.getConfigurationProperties();
+
+            List<EmbeddedConnection> embeddedConnections = assetLineageConnection.getEmbeddedConnections();
+            for (EmbeddedConnection embeddedConnection : embeddedConnections) {
+                Connection connection = embeddedConnection.getEmbeddedConnection();
+                if (connection != null && KAFKA_OPEN_METADATA_TOPIC_PROVIDER.equalsIgnoreCase(connection.getConnectorType().getConnectorProviderClassName())) {
+                    connection.setConfigurationProperties(configurationProperties);
+                    embeddedConnection.setEmbeddedConnection(connection);
+                }
+            }
+
+            assetLineageConnection.setConfigurationProperties(configurationProperties);
         }
         return assetLineageConnection;
     }
