@@ -53,6 +53,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngin
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaAttributeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.service.ClockService;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
@@ -71,6 +72,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.time.Clock;
 import java.util.List;
 
 /**
@@ -310,11 +312,12 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                         Referenceable.class, serviceName, serverName, invalidParameterHandler, repositoryHandler,
                         repositoryHelper, localServerUserId, securityVerifier, supportedZones, defaultZones, publishZones, auditLog);
 
+        ClockService clockService = new ClockService(Clock.systemUTC());
         dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler,
-                repositoryHelper, softwareServerCapabilityHandler);
+                repositoryHelper, softwareServerCapabilityHandler, clockService);
 
         dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
-                referenceableHandler, repositoryHelper, dataEngineRegistrationHandler);
+                referenceableHandler, repositoryHelper, dataEngineRegistrationHandler, clockService);
 
         final ConnectionHandler<org.odpi.openmetadata.accessservices.dataengine.model.Connection> connectionHandler =
                 new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
@@ -366,7 +369,7 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
                 dataEngineConnectionAndEndpointHandler);
 
         dataEngineFindHandler = new DataEngineFindHandler(invalidParameterHandler, repositoryHelper, referenceableHandler,
-                serviceName, serverName);
+                dataEngineCommonHandler, serviceName, serverName);
 
         dataEngineTopicHandler = new DataEngineTopicHandler(invalidParameterHandler, topicHandler,
                 dataEngineRegistrationHandler, dataEngineCommonHandler);
