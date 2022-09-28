@@ -23,7 +23,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Collections;
@@ -167,16 +166,15 @@ public class DataEngineRegistrationHandler {
     public void createDataEngineClassification(String userId, ProcessingState processingState, String externalSourceName) throws
             InvalidParameterException,
             UserNotAuthorizedException,
-            PropertyServerException, EntityNotKnownException {
+            PropertyServerException {
         final String methodName = "createDataEngineClassification";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        String externalEngineGUID = this.getExternalDataEngine(userId, externalSourceName);
-        if (externalEngineGUID == null) {
+        String externalSourceGUID = this.getExternalDataEngine(userId, externalSourceName);
+        if (externalSourceGUID == null) {
             ExceptionMessageDefinition messageDefinition = DataEngineErrorCode.SOFTWARE_SERVER_CAPABILITY_NOT_FOUND.getMessageDefinition(externalSourceName);
-            throw new EntityNotKnownException(messageDefinition, this.getClass().getName(),
-                    messageDefinition.getUserAction());
+            throw new InvalidParameterException(messageDefinition, this.getClass().getName(), methodName, EXTERNAL_ENGINE_PARAMETER_NAME);
         }
 
         //Check if the entity has this classification and if it does then merge the syncDatesByKey
@@ -212,7 +210,7 @@ public class DataEngineRegistrationHandler {
         softwareServerCapabilityHandler.setClassificationInRepository(userId,
                 null,
                 null,
-                externalEngineGUID,
+                externalSourceGUID,
                 EXTERNAL_ENGINE_PARAMETER_NAME,
                 SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                 PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,

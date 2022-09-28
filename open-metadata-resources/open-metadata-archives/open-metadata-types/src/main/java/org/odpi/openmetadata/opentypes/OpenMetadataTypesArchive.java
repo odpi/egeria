@@ -176,7 +176,8 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addClassificationDef(addProcessingStateClassification());
     }
-    private ClassificationDef addProcessingStateClassification(){
+
+    private ClassificationDef addProcessingStateClassification() {
         final String guid = "261fb0aa-b884-4ee8-87ea-a60510e9751d";
         final String name = "ProcessingState";
         final String description = "Stores processing state information used by various SoftwareCapabilities.";
