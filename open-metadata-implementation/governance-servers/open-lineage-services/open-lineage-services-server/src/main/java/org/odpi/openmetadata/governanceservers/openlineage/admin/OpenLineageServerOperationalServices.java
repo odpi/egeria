@@ -194,14 +194,15 @@ public class OpenLineageServerOperationalServices {
             Map<String, Object> configurationProperties = assetLineageTopicConnectionOverride.getConfigurationProperties();
 
             List<EmbeddedConnection> embeddedConnections = assetLineageConnection.getEmbeddedConnections();
-            for (EmbeddedConnection embeddedConnection : embeddedConnections) {
-                Connection connection = embeddedConnection.getEmbeddedConnection();
-                if (connection != null && KAFKA_OPEN_METADATA_TOPIC_PROVIDER.equalsIgnoreCase(connection.getConnectorType().getConnectorProviderClassName())) {
-                    connection.setConfigurationProperties(configurationProperties);
-                    embeddedConnection.setEmbeddedConnection(connection);
+            if (embeddedConnections != null) {
+                for (EmbeddedConnection embeddedConnection : embeddedConnections) {
+                    Connection connection = embeddedConnection.getEmbeddedConnection();
+                    if (connection != null && KAFKA_OPEN_METADATA_TOPIC_PROVIDER.equalsIgnoreCase(connection.getConnectorType().getConnectorProviderClassName())) {
+                        connection.setConfigurationProperties(configurationProperties);
+                        embeddedConnection.setEmbeddedConnection(connection);
+                    }
                 }
             }
-
             assetLineageConnection.setConfigurationProperties(configurationProperties);
         }
         return assetLineageConnection;
