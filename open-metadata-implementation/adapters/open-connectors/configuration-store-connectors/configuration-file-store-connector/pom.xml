@@ -10,7 +10,7 @@
     <parent>
         <artifactId>configuration-store-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.12-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <name>Configuration File Store Connector</name>
