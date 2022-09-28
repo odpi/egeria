@@ -248,7 +248,7 @@ public class LineageGraphQueryHelper {
     private boolean needsAdditionalNodeContext(LineageVertex lineageVertex) {
         List<String> types = new ArrayList<>();
         types.addAll(DATA_FILE_AND_SUBTYPES);
-        types.addAll(Arrays.asList(RELATIONAL_TABLE, GLOSSARY_TERM, GLOSSARY_CATEGORY, PROCESS,
+        types.addAll(Arrays.asList(RELATIONAL_TABLE, GLOSSARY_TERM, GLOSSARY_CATEGORY, GLOSSARY, PROCESS,
                 TABULAR_COLUMN, TABULAR_FILE_COLUMN, RELATIONAL_COLUMN, NODE_LABEL_SUB_PROCESS, TOPIC, EVENT_SCHEMA_ATTRIBUTE));
         return types.contains(lineageVertex.getNodeType());
     }

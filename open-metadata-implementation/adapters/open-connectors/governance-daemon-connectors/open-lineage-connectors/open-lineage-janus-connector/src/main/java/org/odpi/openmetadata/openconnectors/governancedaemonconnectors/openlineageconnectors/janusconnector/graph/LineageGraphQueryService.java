@@ -92,12 +92,15 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_FILE_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TERM_CATEGORIZATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TOPIC;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_CATEGORY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.DESTINATION_CONDENSATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CLASSIFICATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_COLUMN_DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TABLE_DATA_FLOW;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TERM_ANCHOR;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_CONDENSED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
@@ -331,6 +334,10 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
         String label = queriedVertex.label();
         Graph graph;
         switch (label) {
+            case GLOSSARY:
+                graph = this.graphHelper.getResult(this::glossaryVerticalLineage, guid, this::handleVerticalLineageNotFoundException);
+                break;
+            case GLOSSARY_CATEGORY:
             case GLOSSARY_TERM:
                 graph = this.graphHelper.getResult(this::glossaryTermVerticalLineage, guid, this::handleVerticalLineageNotFoundException);
                 break;
@@ -361,6 +368,17 @@ public class LineageGraphQueryService implements OpenLineageQueryService {
     private void handleGetQueriedVertexException(Exception e, String guid) {
         auditLog.logException(COULD_NOT_RETRIEVE_VERTEX.getFormattedErrorMessage(guid), COULD_NOT_RETRIEVE_VERTEX.getMessageDefinition(guid), e);
         throw new JanusConnectorException(this.getClass().getName(), "getQueriedVertex", COULD_NOT_RETRIEVE_VERTEX);
+    }
+
+    /**
+     * Returns a subgraph by navigating {@link org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants#EDGE_LABEL_TERM_ANCHOR}
+     *
+     * @param guid guid to extract vertical lineage for
+     * @return a subgraph in an Open Lineage specific format.
+     */
+    private Graph glossaryVerticalLineage(GraphTraversalSource g, String guid) {
+        return (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(EDGE_LABEL_TERM_ANCHOR)
+                .subgraph(S).cap(S).next();
     }
 
     /**
