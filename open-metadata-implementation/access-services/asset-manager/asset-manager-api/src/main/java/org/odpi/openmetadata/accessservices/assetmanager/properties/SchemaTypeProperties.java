@@ -275,7 +275,7 @@ public class SchemaTypeProperties extends SchemaProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

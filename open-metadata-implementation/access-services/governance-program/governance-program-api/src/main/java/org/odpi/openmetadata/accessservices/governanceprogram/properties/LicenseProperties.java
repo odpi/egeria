@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,27 +16,30 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * LicenseProperties describe the details of a license that shows that an element is licensed with a particular license type.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LicenseProperties extends RelationshipProperties
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    private String licenseId              = null;
-    private Date   startDate              = null;
-    private Date   endDate                = null;
-    private String conditions             = null;
-    private String licensedBy             = null;
-    private String licensedByTypeName     = null;
-    private String licensedByPropertyName = null;
-    private String custodian              = null;
-    private String custodianTypeName      = null;
-    private String custodianPropertyName  = null;
-    private String licensee               = null;
-    private String licenseeTypeName       = null;
-    private String licenseePropertyName   = null;
-    private String notes                  = null;
+    private String              licenseId              = null;
+    private Date                startDate              = null;
+    private Date                endDate                = null;
+    private String              conditions             = null;
+    private String              licensedBy             = null;
+    private String              licensedByTypeName     = null;
+    private String              licensedByPropertyName = null;
+    private String              custodian              = null;
+    private String              custodianTypeName      = null;
+    private String              custodianPropertyName  = null;
+    private String              licensee               = null;
+    private String              licenseeTypeName       = null;
+    private String              licenseePropertyName   = null;
+    private Map<String, String> entitlements           = null;
+    private Map<String, String> restrictions           = null;
+    private Map<String, String> obligations            = null;
+    private String              notes                  = null;
 
 
     /**
@@ -54,7 +57,7 @@ public class LicenseProperties extends RelationshipProperties
      */
     public LicenseProperties(LicenseProperties template)
     {
-        super (template);
+        super(template);
 
         if (template != null)
         {
@@ -71,6 +74,9 @@ public class LicenseProperties extends RelationshipProperties
             this.licensee = template.getLicensee();
             this.licenseeTypeName = template.getLicenseeTypeName();
             this.licenseePropertyName = template.getLicenseePropertyName();
+            this.entitlements = template.getEntitlements();
+            this.restrictions = template.getRestrictions();
+            this.obligations = template.getObligations();
             this.notes = template.getNotes();
         }
     }
@@ -230,7 +236,6 @@ public class LicenseProperties extends RelationshipProperties
     }
 
 
-
     /**
      * Return the person/team responsible for ensuring that the license conditions are adhered to.
      *
@@ -364,6 +369,72 @@ public class LicenseProperties extends RelationshipProperties
 
 
     /**
+     * Return the entitlements granted by the license.
+     *
+     * @return name value pairs
+     */
+    public Map<String, String> getEntitlements()
+    {
+        return entitlements;
+    }
+
+
+    /**
+     * Set up the entitlements granted by the license.
+     *
+     * @param entitlements name value pairs
+     */
+    public void setEntitlements(Map<String, String> entitlements)
+    {
+        this.entitlements = entitlements;
+    }
+
+
+    /**
+     * Return the restrictions imposed by the license.
+     *
+     * @return name value pairs
+     */
+    public Map<String, String> getRestrictions()
+    {
+        return restrictions;
+    }
+
+
+    /**
+     * Set up the restrictions imposed by the license.
+     *
+     * @param restrictions name value pairs
+     */
+    public void setRestrictions(Map<String, String> restrictions)
+    {
+        this.restrictions = restrictions;
+    }
+
+
+    /**
+     * Return the obligations stipulated by the license.
+     *
+     * @return name value pairs
+     */
+    public Map<String, String> getObligations()
+    {
+        return obligations;
+    }
+
+
+    /**
+     * Set up the obligations stipulated by the license.
+     *
+     * @param obligations name value pairs
+     */
+    public void setObligations(Map<String, String> obligations)
+    {
+        this.obligations = obligations;
+    }
+
+
+    /**
      * Return any notes associated with the license.
      *
      * @return string text
@@ -407,6 +478,9 @@ public class LicenseProperties extends RelationshipProperties
                        ", licensee='" + licensee + '\'' +
                        ", licenseeTypeName='" + licenseeTypeName + '\'' +
                        ", licenseePropertyName='" + licenseePropertyName + '\'' +
+                       ", entitlements=" + entitlements +
+                       ", restrictions=" + restrictions +
+                       ", obligations=" + obligations +
                        ", notes='" + notes + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
@@ -419,6 +493,7 @@ public class LicenseProperties extends RelationshipProperties
      * Equals method that returns true if containing properties are the same.
      *
      * @param objectToCompare object to compare
+     *
      * @return boolean result of comparison
      */
     @Override
@@ -437,16 +512,23 @@ public class LicenseProperties extends RelationshipProperties
             return false;
         }
         LicenseProperties that = (LicenseProperties) objectToCompare;
-        return Objects.equals(licenseId, that.licenseId) && Objects.equals(startDate, that.startDate) && Objects.equals(
-                endDate, that.endDate) && Objects.equals(conditions, that.conditions) && Objects.equals(licensedBy,
-                                                                                                        that.licensedBy) && Objects.equals(
-                licensedByTypeName, that.licensedByTypeName) && Objects.equals(licensedByPropertyName,
-                                                                               that.licensedByPropertyName) && Objects.equals(
-                custodian, that.custodian) && Objects.equals(custodianTypeName, that.custodianTypeName) && Objects.equals(
-                custodianPropertyName, that.custodianPropertyName) && Objects.equals(licensee, that.licensee) && Objects.equals(
-                licenseeTypeName, that.licenseeTypeName) && Objects.equals(licenseePropertyName,
-                                                                           that.licenseePropertyName) && Objects.equals(notes,
-                                                                                                                        that.notes);
+        return Objects.equals(licenseId, that.licenseId) &&
+                       Objects.equals(startDate, that.startDate) &&
+                       Objects.equals(endDate, that.endDate) &&
+                       Objects.equals(conditions, that.conditions) &&
+                       Objects.equals(licensedBy, that.licensedBy) &&
+                       Objects.equals(licensedByTypeName, that.licensedByTypeName) &&
+                       Objects.equals(licensedByPropertyName, that.licensedByPropertyName) &&
+                       Objects.equals(custodian, that.custodian) &&
+                       Objects.equals(custodianTypeName, that.custodianTypeName) &&
+                       Objects.equals(custodianPropertyName, that.custodianPropertyName) &&
+                       Objects.equals(licensee, that.licensee) &&
+                       Objects.equals(licenseeTypeName, that.licenseeTypeName) &&
+                       Objects.equals(licenseePropertyName, that.licenseePropertyName) &&
+                       Objects.equals(entitlements, that.entitlements) &&
+                       Objects.equals(restrictions, that.restrictions) &&
+                       Objects.equals(obligations, that.obligations) &&
+                       Objects.equals(notes, that.notes);
     }
 
 
@@ -459,6 +541,7 @@ public class LicenseProperties extends RelationshipProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), licenseId, startDate, endDate, conditions, licensedBy, licensedByTypeName, licensedByPropertyName,
-                            custodian, custodianTypeName, custodianPropertyName, licensee, licenseeTypeName, licenseePropertyName, notes);
+                            custodian, custodianTypeName, custodianPropertyName, licensee, licenseeTypeName, licenseePropertyName,
+                            obligations, restrictions, entitlements, notes);
     }
 }

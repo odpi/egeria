@@ -116,7 +116,7 @@ public class GovernanceMeasurementsDataSetProperties extends ClassificationPrope
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

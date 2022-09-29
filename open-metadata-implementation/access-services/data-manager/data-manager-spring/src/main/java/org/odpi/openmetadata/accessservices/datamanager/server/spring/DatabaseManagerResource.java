@@ -6,12 +6,10 @@ package org.odpi.openmetadata.accessservices.datamanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.accessservices.datamanager.server.DatabaseManagerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
@@ -53,24 +51,20 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
-     * @param databaseProperties properties to store
+     * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases")
+    @PostMapping(path = "/databases")
 
-    public GUIDResponse createDatabase(@PathVariable String             serverName,
-                                       @PathVariable String             userId,
-                                       @PathVariable String             databaseManagerGUID,
-                                       @PathVariable String             databaseManagerName,
-                                       @RequestBody  DatabaseProperties databaseProperties)
+    public GUIDResponse createDatabase(@PathVariable String                   serverName,
+                                       @PathVariable String                   userId,
+                                       @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createDatabase(serverName, userId, databaseManagerGUID, databaseManagerName, databaseProperties);
+        return restAPI.createDatabase(serverName, userId, requestBody);
     }
 
 
@@ -79,26 +73,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/from-template/{templateGUID}")
+    @PostMapping(path = "/databases/from-template/{templateGUID}")
 
-    public GUIDResponse createDatabaseFromTemplate(@PathVariable String             serverName,
-                                                   @PathVariable String             userId,
-                                                   @PathVariable String             databaseManagerGUID,
-                                                   @PathVariable String             databaseManagerName,
-                                                   @PathVariable String             templateGUID,
-                                                   @RequestBody  TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseFromTemplate(@PathVariable String              serverName,
+                                                   @PathVariable String              userId,
+                                                   @PathVariable String              templateGUID,
+                                                   @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createDatabaseFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, templateProperties);
+        return restAPI.createDatabaseFromTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -107,26 +97,25 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseGUID unique identifier of the metadata element to update
-     * @param databaseProperties new properties for this element
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for this element
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/{databaseGUID}")
+    @PostMapping(path = "/databases/{databaseGUID}")
 
-    public VoidResponse updateDatabase(@PathVariable String             serverName,
-                                       @PathVariable String             userId,
-                                       @PathVariable String             databaseManagerGUID,
-                                       @PathVariable String             databaseManagerName,
-                                       @PathVariable String             databaseGUID,
-                                       @RequestBody  DatabaseProperties databaseProperties)
+    public VoidResponse updateDatabase(@PathVariable String                   serverName,
+                                       @PathVariable String                   userId,
+                                       @PathVariable String                   databaseGUID,
+                                       @RequestParam(required = false)
+                                                     boolean                  isMergeUpdate,
+                                       @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.updateDatabase(serverName, userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseProperties);
+        return restAPI.updateDatabase(serverName, userId, databaseGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -138,7 +127,7 @@ public class DatabaseManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseGUID unique identifier of the metadata element to publish
-     * @param nullRequestBody empty request body
+     * @param requestBody classification request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -147,12 +136,12 @@ public class DatabaseManagerResource
      */
     @PostMapping(path = "/databases/{databaseGUID}/publish")
 
-    public VoidResponse publishDatabase(@PathVariable                  String          serverName,
-                                        @PathVariable                  String          userId,
-                                        @PathVariable                  String          databaseGUID,
-                                        @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse publishDatabase(@PathVariable                  String                    serverName,
+                                        @PathVariable                  String                    userId,
+                                        @PathVariable                  String                    databaseGUID,
+                                        @RequestBody(required = false) ClassificationRequestBody requestBody)
     {
-        return restAPI.publishDatabase(serverName, userId, databaseGUID, nullRequestBody);
+        return restAPI.publishDatabase(serverName, userId, databaseGUID, requestBody);
     }
 
 
@@ -164,7 +153,7 @@ public class DatabaseManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseGUID unique identifier of the metadata element to withdraw
-     * @param nullRequestBody empty request body
+     * @param requestBody classification request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -173,12 +162,12 @@ public class DatabaseManagerResource
      */
     @PostMapping(path = "/databases/{databaseGUID}/withdraw")
 
-    public VoidResponse withdrawDatabase(@PathVariable                  String          serverName,
-                                         @PathVariable                  String          userId,
-                                         @PathVariable                  String          databaseGUID,
-                                         @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse withdrawDatabase(@PathVariable                  String                    serverName,
+                                         @PathVariable                  String                    userId,
+                                         @PathVariable                  String                    databaseGUID,
+                                         @RequestBody(required = false) ClassificationRequestBody requestBody)
     {
-        return restAPI.withdrawDatabase(serverName, userId, databaseGUID, nullRequestBody);
+        return restAPI.withdrawDatabase(serverName, userId, databaseGUID, requestBody);
     }
 
 
@@ -187,28 +176,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody empty request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/{databaseGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/databases/{databaseGUID}/delete")
 
-    public VoidResponse removeDatabase(@PathVariable                  String          serverName,
-                                       @PathVariable                  String          userId,
-                                       @PathVariable                  String          databaseManagerGUID,
-                                       @PathVariable                  String          databaseManagerName,
-                                       @PathVariable                  String          databaseGUID,
-                                       @PathVariable                  String          qualifiedName,
-                                       @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabase(@PathVariable                  String                    serverName,
+                                       @PathVariable                  String                    userId,
+                                       @PathVariable                  String                    databaseGUID,
+                                       @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeDatabase(serverName, userId, databaseManagerGUID, databaseManagerName, databaseGUID, qualifiedName, nullRequestBody);
+        return restAPI.removeDatabase(serverName, userId, databaseGUID, requestBody);
     }
 
 
@@ -325,26 +308,20 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
-     * @param databaseGUID unique identifier of the database where the schema is located
-     * @param databaseSchemaProperties properties about the database schema
+     * @param requestBody properties about the database schema
      *
      * @return unique identifier of the new database schema or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/{databaseGUID}/schemas")
+    @PostMapping(path = "/databases/schemas")
 
     public GUIDResponse createDatabaseSchema(@PathVariable String                   serverName,
                                              @PathVariable String                   userId,
-                                             @PathVariable String                   databaseManagerGUID,
-                                             @PathVariable String                   databaseManagerName,
-                                             @PathVariable String                   databaseGUID,
-                                             @RequestBody  DatabaseSchemaProperties databaseSchemaProperties)
+                                             @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createDatabaseSchema(serverName, userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseSchemaProperties);
+        return restAPI.createDatabaseSchema(serverName, userId, requestBody);
     }
 
 
@@ -353,28 +330,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseGUID unique identifier of the database where the schema is located
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new database schema or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/{databaseGUID}/schemas/from-template/{templateGUID}")
+    @PostMapping(path = "/databases/schemas/from-template/{templateGUID}")
 
-    public GUIDResponse createDatabaseSchemaFromTemplate(@PathVariable String             serverName,
-                                                         @PathVariable String             userId,
-                                                         @PathVariable String             databaseManagerGUID,
-                                                         @PathVariable String             databaseManagerName,
-                                                         @PathVariable String             templateGUID,
-                                                         @PathVariable String             databaseGUID,
-                                                         @RequestBody  TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseSchemaFromTemplate(@PathVariable String              serverName,
+                                                         @PathVariable String              userId,
+                                                         @PathVariable String              templateGUID,
+                                                         @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createDatabaseSchemaFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseGUID, templateProperties);
+        return restAPI.createDatabaseSchemaFromTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -383,26 +354,25 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to update
-     * @param databaseSchemaProperties new properties for the metadata element
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for the metadata element
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}")
+    @PostMapping(path = "/databases/schemas/{databaseSchemaGUID}")
 
     public VoidResponse updateDatabaseSchema(@PathVariable String                   serverName,
                                              @PathVariable String                   userId,
-                                             @PathVariable String                   databaseManagerGUID,
-                                             @PathVariable String                   databaseManagerName,
                                              @PathVariable String                   databaseSchemaGUID,
-                                             @RequestBody  DatabaseSchemaProperties databaseSchemaProperties)
+                                             @RequestParam(required = false)
+                                                           boolean                  isMergeUpdate,
+                                             @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.updateDatabaseSchema(serverName, userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseSchemaProperties);
+        return restAPI.updateDatabaseSchema(serverName, userId, databaseSchemaGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -414,7 +384,7 @@ public class DatabaseManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseSchemaGUID unique identifier of the metadata element to publish
-     * @param nullRequestBody empty request body
+     * @param requestBody classification request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -423,12 +393,12 @@ public class DatabaseManagerResource
      */
     @PostMapping(path = "/databases/schemas/{databaseSchemaGUID}/publish")
 
-    public VoidResponse publishDatabaseSchema(@PathVariable                  String          serverName,
-                                              @PathVariable                  String          userId,
-                                              @PathVariable                  String          databaseSchemaGUID,
-                                              @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse publishDatabaseSchema(@PathVariable                  String                    serverName,
+                                              @PathVariable                  String                    userId,
+                                              @PathVariable                  String                    databaseSchemaGUID,
+                                              @RequestBody(required = false) ClassificationRequestBody requestBody)
     {
-        return restAPI.publishDatabaseSchema(serverName, userId, databaseSchemaGUID, nullRequestBody);
+        return restAPI.publishDatabaseSchema(serverName, userId, databaseSchemaGUID, requestBody);
     }
 
 
@@ -440,7 +410,7 @@ public class DatabaseManagerResource
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseSchemaGUID unique identifier of the metadata element to withdraw
-     * @param nullRequestBody empty request body
+     * @param requestBody classification request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -449,12 +419,12 @@ public class DatabaseManagerResource
      */
     @PostMapping(path = "/databases/schemas/{databaseSchemaGUID}/withdraw")
 
-    public VoidResponse withdrawDatabaseSchema(@PathVariable                  String          serverName,
-                                               @PathVariable                  String          userId,
-                                               @PathVariable                  String          databaseSchemaGUID,
-                                               @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse withdrawDatabaseSchema(@PathVariable                  String                    serverName,
+                                               @PathVariable                  String                    userId,
+                                               @PathVariable                  String                    databaseSchemaGUID,
+                                               @RequestBody(required = false) ClassificationRequestBody requestBody)
     {
-        return restAPI.withdrawDatabase(serverName, userId, databaseSchemaGUID, nullRequestBody);
+        return restAPI.withdrawDatabase(serverName, userId, databaseSchemaGUID, requestBody);
     }
 
 
@@ -463,28 +433,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/databases/schemas/{databaseSchemaGUID}/delete")
 
-    public VoidResponse removeDatabaseSchema(@PathVariable                  String          serverName,
-                                             @PathVariable                  String          userId,
-                                             @PathVariable                  String          databaseManagerGUID,
-                                             @PathVariable                  String          databaseManagerName,
-                                             @PathVariable                  String          databaseSchemaGUID,
-                                             @PathVariable                  String          qualifiedName,
-                                             @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabaseSchema(@PathVariable                  String                    serverName,
+                                             @PathVariable                  String                    userId,
+                                             @PathVariable                  String                    databaseSchemaGUID,
+                                             @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeDatabaseSchema(serverName, userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, qualifiedName, nullRequestBody);
+        return restAPI.removeDatabaseSchema(serverName, userId, databaseSchemaGUID, requestBody);
     }
 
 
@@ -600,23 +564,19 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
-     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
      * @param requestBody qualified name of the schema type - suggest "SchemaOf:" + asset's qualified name
      * @return unique identifier of the database schema type or
      *  InvalidParameterException the bean properties are invalid
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException problem accessing the property server
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/schema-type")
+    @PostMapping(path = "/databases/schema-type")
 
-    public GUIDResponse createDatabaseSchemaType(@PathVariable String          serverName,
-                                                 @PathVariable String          userId,
-                                                 @PathVariable String          databaseManagerGUID,
-                                                 @PathVariable String          databaseManagerName,
-                                                 @RequestBody  NameRequestBody requestBody)
+    public GUIDResponse createDatabaseSchemaType(@PathVariable String                   serverName,
+                                                 @PathVariable String                   userId,
+                                                 @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createDatabaseSchemaType(serverName, userId, databaseManagerGUID, databaseManagerName, requestBody);
+        return restAPI.createDatabaseSchemaType(serverName, userId, requestBody);
     }
 
 
@@ -626,8 +586,6 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
-     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
      * @param databaseAssetGUID unique identifier of the asset to connect the schema to
      * @param schemaTypeGUID identifier for schema Type object
      * @param requestBody null request body
@@ -636,18 +594,16 @@ public class DatabaseManagerResource
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException problem accessing the property server
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/schema-type/{schemaTypeGUID}")
+    @PostMapping(path = "/databases/{databaseAssetGUID}/schema-type/{schemaTypeGUID}")
 
-    public  VoidResponse attachSchemaTypeToDatabaseAsset(@PathVariable String          serverName,
-                                                         @PathVariable String          userId,
-                                                         @PathVariable String          databaseManagerGUID,
-                                                         @PathVariable String          databaseManagerName,
-                                                         @PathVariable String          databaseAssetGUID,
-                                                         @PathVariable String          schemaTypeGUID,
+    public  VoidResponse attachSchemaTypeToDatabaseAsset(@PathVariable String                  serverName,
+                                                         @PathVariable String                  userId,
+                                                         @PathVariable String                  databaseAssetGUID,
+                                                         @PathVariable String                  schemaTypeGUID,
                                                          @RequestBody(required = false)
-                                                                       NullRequestBody requestBody)
+                                                                       RelationshipRequestBody requestBody)
     {
-        return restAPI.attachSchemaTypeToDatabaseAsset(serverName, userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, schemaTypeGUID, requestBody);
+        return restAPI.attachSchemaTypeToDatabaseAsset(serverName, userId, databaseAssetGUID, schemaTypeGUID, requestBody);
     }
 
 
@@ -656,26 +612,20 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
-     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
-     * @param databaseTableProperties properties for the database table
+     * @param requestBody properties for the database table
      *
      * @return unique identifier of the new metadata element for the database table or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables")
+    @PostMapping(path = "/databases/tables")
 
-    public GUIDResponse createDatabaseTable(@PathVariable String                  serverName,
-                                            @PathVariable String                  userId,
-                                            @PathVariable String                  databaseManagerGUID,
-                                            @PathVariable String                  databaseManagerName,
-                                            @PathVariable String                  databaseAssetGUID,
-                                            @RequestBody  DatabaseTableProperties databaseTableProperties)
+    public GUIDResponse createDatabaseTable(@PathVariable String                   serverName,
+                                            @PathVariable String                   userId,
+                                            @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createDatabaseTable(serverName, userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, databaseTableProperties);
+        return restAPI.createDatabaseTable(serverName, userId, requestBody);
     }
 
 
@@ -684,28 +634,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new database table or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables/from-template/{templateGUID}")
+    @PostMapping(path = "/databases/tables/from-template/{templateGUID}")
 
-    public GUIDResponse createDatabaseTableFromTemplate(@PathVariable String             serverName,
-                                                        @PathVariable String             userId,
-                                                        @PathVariable String             databaseManagerGUID,
-                                                        @PathVariable String             databaseManagerName,
-                                                        @PathVariable String             templateGUID,
-                                                        @PathVariable String             databaseAssetGUID,
-                                                        @RequestBody  TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseTableFromTemplate(@PathVariable String              serverName,
+                                                        @PathVariable String              userId,
+                                                        @PathVariable String              templateGUID,
+                                                        @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createDatabaseTableFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
+        return restAPI.createDatabaseTableFromTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -714,26 +658,20 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseSchemaTypeGUID unique identifier of the database or database schema where the database table is located
-     * @param databaseTableProperties properties for the database table
+     * @param requestBody properties for the database table
      *
      * @return unique identifier of the new metadata element for the database table or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/schema-type/{databaseSchemaTypeGUID}/tables")
+    @PostMapping(path = "/databases/schema-type/tables")
 
-    public GUIDResponse createDatabaseTableForSchemaType(@PathVariable String                  serverName,
-                                                         @PathVariable String                  userId,
-                                                         @PathVariable String                  databaseManagerGUID,
-                                                         @PathVariable String                  databaseManagerName,
-                                                         @PathVariable String                  databaseSchemaTypeGUID,
-                                                         @RequestBody  DatabaseTableProperties databaseTableProperties)
+    public GUIDResponse createDatabaseTableForSchemaType(@PathVariable String                   serverName,
+                                                         @PathVariable String                   userId,
+                                                         @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createDatabaseTableForSchemaType(serverName, userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, databaseTableProperties);
+        return restAPI.createDatabaseTableForSchemaType(serverName, userId, requestBody);
     }
 
 
@@ -742,26 +680,25 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseTableGUID unique identifier of the database table to update
-     * @param databaseTableProperties new properties for the database table
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for the database table
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}")
+    @PostMapping(path = "/databases/tables/{databaseTableGUID}")
 
-    public VoidResponse updateDatabaseTable(@PathVariable String                  serverName,
-                                            @PathVariable String                  userId,
-                                            @PathVariable String                  databaseManagerGUID,
-                                            @PathVariable String                  databaseManagerName,
-                                            @PathVariable String                  databaseTableGUID,
-                                            @RequestBody  DatabaseTableProperties databaseTableProperties)
+    public VoidResponse updateDatabaseTable(@PathVariable String                   serverName,
+                                            @PathVariable String                   userId,
+                                            @PathVariable String                   databaseTableGUID,
+                                            @RequestParam(required = false)
+                                                          boolean                  isMergeUpdate,
+                                            @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.updateDatabaseTable(serverName, userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseTableProperties);
+        return restAPI.updateDatabaseTable(serverName, userId, databaseTableGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -770,28 +707,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseTableGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody empty request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/databases/tables/{databaseTableGUID}/delete")
 
-    public VoidResponse removeDatabaseTable(@PathVariable                  String          serverName,
-                                            @PathVariable                  String          userId,
-                                            @PathVariable                  String          databaseManagerGUID,
-                                            @PathVariable                  String          databaseManagerName,
-                                            @PathVariable                  String          databaseTableGUID,
-                                            @PathVariable                  String          qualifiedName,
-                                            @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabaseTable(@PathVariable                  String                    serverName,
+                                            @PathVariable                  String                    userId,
+                                            @PathVariable                  String                    databaseTableGUID,
+                                            @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeDatabaseTable(serverName, userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, qualifiedName, nullRequestBody);
+        return restAPI.removeDatabaseTable(serverName, userId, databaseTableGUID, requestBody);
     }
 
 
@@ -836,7 +767,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/assets/{databaseAssetGUID}/tables")
+    @GetMapping(path = "/databases/{databaseAssetGUID}/tables")
 
     public DatabaseTablesResponse getTablesForDatabaseAsset(@PathVariable String serverName,
                                                             @PathVariable String userId,
@@ -902,26 +833,20 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
-     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
-     * @param databaseViewProperties properties for the new view
+     * @param requestBody properties for the new view
      *
      * @return unique identifier of the new metadata element for the database view or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables/views")
+    @PostMapping(path = "/databases/tables/views")
 
-    public GUIDResponse createDatabaseView(@PathVariable String                 serverName,
-                                           @PathVariable String                 userId,
-                                           @PathVariable String                 databaseManagerGUID,
-                                           @PathVariable String                 databaseManagerName,
-                                           @PathVariable String                 databaseAssetGUID,
-                                           @RequestBody  DatabaseViewProperties databaseViewProperties)
+    public GUIDResponse createDatabaseView(@PathVariable String                   serverName,
+                                           @PathVariable String                   userId,
+                                           @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createDatabaseView(serverName, userId, databaseManagerGUID, databaseManagerName, databaseAssetGUID, databaseViewProperties);
+        return restAPI.createDatabaseView(serverName, userId, requestBody);
     }
 
 
@@ -930,28 +855,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseAssetGUID unique identifier of the database or database schema where the database view is located.
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the database view or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables/views/from-template/{templateGUID}")
+    @PostMapping(path = "/databases/tables/views/from-template/{templateGUID}")
 
-    public GUIDResponse createDatabaseViewFromTemplate(@PathVariable String             serverName,
-                                                       @PathVariable String             userId,
-                                                       @PathVariable String             databaseManagerGUID,
-                                                       @PathVariable String             databaseManagerName,
-                                                       @PathVariable String             templateGUID,
-                                                       @PathVariable String             databaseAssetGUID,
-                                                       @RequestBody  TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseViewFromTemplate(@PathVariable String              serverName,
+                                                       @PathVariable String              userId,
+                                                       @PathVariable String              templateGUID,
+                                                       @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createDatabaseViewFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseAssetGUID, templateProperties);
+        return restAPI.createDatabaseViewFromTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -960,26 +879,20 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseSchemaTypeGUID unique identifier of the schema type where the database view is located.
-     * @param databaseViewProperties properties for the new view
+     * @param requestBody properties for the new view
      *
      * @return unique identifier of the new metadata element for the database view or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/schema-type/{databaseSchemaTypeGUID}/tables/views")
+    @PostMapping(path = "/databases/schema-type/tables/views")
 
-    public GUIDResponse createDatabaseViewForSchemaType(@PathVariable String                 serverName,
-                                                        @PathVariable String                 userId,
-                                                        @PathVariable String                 databaseManagerGUID,
-                                                        @PathVariable String                 databaseManagerName,
-                                                        @PathVariable String                 databaseSchemaTypeGUID,
-                                                        @RequestBody  DatabaseViewProperties databaseViewProperties)
+    public GUIDResponse createDatabaseViewForSchemaType(@PathVariable String                   serverName,
+                                                        @PathVariable String                   userId,
+                                                        @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createDatabaseViewForSchemaType(serverName, userId, databaseManagerGUID, databaseManagerName, databaseSchemaTypeGUID, databaseViewProperties);
+        return restAPI.createDatabaseViewForSchemaType(serverName, userId, requestBody);
     }
 
 
@@ -988,26 +901,25 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseViewGUID unique identifier of the database view to update
-     * @param databaseViewProperties properties for the new database view
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody properties for the new database view
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/views/{databaseViewGUID}")
+    @PostMapping(path = "/databases/tables/views/{databaseViewGUID}")
 
-    public VoidResponse updateDatabaseView(@PathVariable String                 serverName,
-                                           @PathVariable String                 userId,
-                                           @PathVariable String                 databaseManagerGUID,
-                                           @PathVariable String                 databaseManagerName,
-                                           @PathVariable String                 databaseViewGUID,
-                                           @RequestBody  DatabaseViewProperties databaseViewProperties)
+    public VoidResponse updateDatabaseView(@PathVariable String                   serverName,
+                                           @PathVariable String                   userId,
+                                           @PathVariable String                   databaseViewGUID,
+                                           @RequestParam(required = false)
+                                                         boolean                  isMergeUpdate,
+                                           @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.updateDatabaseView(serverName, userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, databaseViewProperties);
+        return restAPI.updateDatabaseView(serverName, userId, databaseViewGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -1016,28 +928,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseViewGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/views/{databaseViewGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/databases/tables/views/{databaseViewGUID}/delete")
 
-    public VoidResponse removeDatabaseView(@PathVariable                  String          serverName,
-                                           @PathVariable                  String          userId,
-                                           @PathVariable                  String          databaseManagerGUID,
-                                           @PathVariable                  String          databaseManagerName,
-                                           @PathVariable                  String          databaseViewGUID,
-                                           @PathVariable                  String          qualifiedName,
-                                           @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabaseView(@PathVariable                  String                    serverName,
+                                           @PathVariable                  String                    userId,
+                                           @PathVariable                  String                    databaseViewGUID,
+                                           @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeDatabaseView(serverName, userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, qualifiedName, nullRequestBody);
+        return restAPI.removeDatabaseView(serverName, userId, databaseViewGUID, requestBody);
     }
 
 
@@ -1082,7 +988,7 @@ public class DatabaseManagerResource
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/databases/assets/{databaseAssetGUID}/tables/views")
+    @GetMapping(path = "/databases/{databaseAssetGUID}/tables/views")
 
     public DatabaseViewsResponse getViewsForDatabaseAsset(@PathVariable String serverName,
                                                           @PathVariable String userId,
@@ -1154,26 +1060,20 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
+     * @param requestBody properties for the new column
      *
      * @return unique identifier of the new metadata element for the database column or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}/columns")
+    @PostMapping(path = "/databases/tables/columns")
 
     public GUIDResponse createDatabaseColumn(@PathVariable String                   serverName,
                                              @PathVariable String                   userId,
-                                             @PathVariable String                   databaseManagerGUID,
-                                             @PathVariable String                   databaseManagerName,
-                                             @PathVariable String                   databaseTableGUID,
-                                             @RequestBody  DatabaseColumnProperties databaseColumnProperties)
+                                             @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createDatabaseColumn(serverName, userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseColumnProperties);
+        return restAPI.createDatabaseColumn(serverName, userId, requestBody);
     }
 
 
@@ -1182,28 +1082,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the database column
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}/columns/from-template/{templateGUID}")
+    @PostMapping(path = "/databases/tables/columns/from-template/{templateGUID}")
 
-    public GUIDResponse createDatabaseColumnFromTemplate(@PathVariable String             serverName,
-                                                         @PathVariable String             userId,
-                                                         @PathVariable String             databaseManagerGUID,
-                                                         @PathVariable String             databaseManagerName,
-                                                         @PathVariable String             templateGUID,
-                                                         @PathVariable String             databaseTableGUID,
-                                                         @RequestBody  TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseColumnFromTemplate(@PathVariable String              serverName,
+                                                         @PathVariable String              userId,
+                                                         @PathVariable String              templateGUID,
+                                                         @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createDatabaseColumnFromTemplate(serverName, userId, databaseManagerGUID, databaseManagerName, templateGUID, databaseTableGUID, templateProperties);
+        return restAPI.createDatabaseColumnFromTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -1212,26 +1106,25 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to update
-     * @param databaseColumnProperties new properties for the metadata element
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for the metadata element
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}")
+    @PostMapping(path = "/databases/tables/columns/{databaseColumnGUID}")
 
     public VoidResponse updateDatabaseColumn(@PathVariable String                   serverName,
                                              @PathVariable String                   userId,
-                                             @PathVariable String                   databaseManagerGUID,
-                                             @PathVariable String                   databaseManagerName,
                                              @PathVariable String                   databaseColumnGUID,
-                                             @RequestBody  DatabaseColumnProperties databaseColumnProperties)
+                                             @RequestParam(required = false)
+                                                           boolean                  isMergeUpdate,
+                                             @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.updateDatabaseColumn(serverName, userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databaseColumnProperties);
+        return restAPI.updateDatabaseColumn(serverName, userId, databaseColumnGUID, isMergeUpdate, requestBody);
     }
 
 
@@ -1240,28 +1133,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}/{qualifiedName}/delete")
+    @PostMapping(path = "/databases/tables/columns/{databaseColumnGUID}/delete")
 
-    public VoidResponse removeDatabaseColumn(@PathVariable                  String          serverName,
-                                             @PathVariable                  String          userId,
-                                             @PathVariable                  String          databaseManagerGUID,
-                                             @PathVariable                  String          databaseManagerName,
-                                             @PathVariable                  String          databaseColumnGUID,
-                                             @PathVariable                  String          qualifiedName,
-                                             @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabaseColumn(@PathVariable                  String                    serverName,
+                                             @PathVariable                  String                    userId,
+                                             @PathVariable                  String                    databaseColumnGUID,
+                                             @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeDatabaseColumn(serverName, userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, qualifiedName, nullRequestBody);
+        return restAPI.removeDatabaseColumn(serverName, userId, databaseColumnGUID, requestBody);
     }
 
 
@@ -1373,30 +1260,26 @@ public class DatabaseManagerResource
 
     /**
      * Classify a column in a database table as the primary key.  This means each row has a different value
-     * in this column and it can be used to uniquely identify the column.
+     * in this column, and it can be used to uniquely identify the column.
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
-     * @param databasePrimaryKeyProperties properties to store
+     * @param requestBody properties to store
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}/primary-key")
+    @PostMapping(path = "/databases/tables/columns/{databaseColumnGUID}/primary-key")
 
-    public VoidResponse setPrimaryKeyOnColumn(@PathVariable String                       serverName,
-                                              @PathVariable String                       userId,
-                                              @PathVariable String                       databaseManagerGUID,
-                                              @PathVariable String                       databaseManagerName,
-                                              @PathVariable String                       databaseColumnGUID,
-                                              @RequestBody  DatabasePrimaryKeyProperties databasePrimaryKeyProperties)
+    public VoidResponse setPrimaryKeyOnColumn(@PathVariable String                    serverName,
+                                              @PathVariable String                    userId,
+                                              @PathVariable String                    databaseColumnGUID,
+                                              @RequestBody  ClassificationRequestBody requestBody)
     {
-        return restAPI.setPrimaryKeyOnColumn(serverName, userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databasePrimaryKeyProperties);
+        return restAPI.setPrimaryKeyOnColumn(serverName, userId, databaseColumnGUID, requestBody);
     }
 
 
@@ -1405,26 +1288,22 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}/primary-key/delete")
+    @PostMapping(path = "/databases/tables/columns/{databaseColumnGUID}/primary-key/delete")
 
-    public VoidResponse removePrimaryKeyFromColumn(@PathVariable                  String          serverName,
-                                                   @PathVariable                  String          userId,
-                                                   @PathVariable                  String          databaseManagerGUID,
-                                                   @PathVariable                  String          databaseManagerName,
-                                                   @PathVariable                  String          databaseColumnGUID,
-                                                   @RequestBody(required = false) NullRequestBody nullRequestBody)
+    public VoidResponse removePrimaryKeyFromColumn(@PathVariable                  String                    serverName,
+                                                   @PathVariable                  String                    userId,
+                                                   @PathVariable                  String                    databaseColumnGUID,
+                                                   @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removePrimaryKeyFromColumn(serverName, userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, nullRequestBody);
+        return restAPI.removePrimaryKeyFromColumn(serverName, userId, databaseColumnGUID, requestBody);
     }
 
 
@@ -1434,28 +1313,24 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param primaryKeyColumnGUID unique identifier of the column containing the primary key
      * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from the other table
-     * @param databaseForeignKeyProperties properties about the foreign key relationship
+     * @param requestBody properties about the foreign key relationship
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}")
+    @PostMapping(path = "/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}")
 
-    public VoidResponse addForeignKeyRelationship(@PathVariable String                       serverName,
-                                                  @PathVariable String                       userId,
-                                                  @PathVariable String                       databaseManagerGUID,
-                                                  @PathVariable String                       databaseManagerName,
-                                                  @PathVariable String                       primaryKeyColumnGUID,
-                                                  @PathVariable String                       foreignKeyColumnGUID,
-                                                  @RequestBody  DatabaseForeignKeyProperties databaseForeignKeyProperties)
+    public VoidResponse addForeignKeyRelationship(@PathVariable String                  serverName,
+                                                  @PathVariable String                  userId,
+                                                  @PathVariable String                  primaryKeyColumnGUID,
+                                                  @PathVariable String                  foreignKeyColumnGUID,
+                                                  @RequestBody  RelationshipRequestBody requestBody)
     {
-        return restAPI.addForeignKeyRelationship(serverName, userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID, databaseForeignKeyProperties);
+        return restAPI.addForeignKeyRelationship(serverName, userId, primaryKeyColumnGUID, foreignKeyColumnGUID, requestBody);
     }
 
 
@@ -1464,27 +1339,23 @@ public class DatabaseManagerResource
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the owning DBMS
-     * @param databaseManagerName unique name of software server capability representing the owning DBMS
      * @param primaryKeyColumnGUID unique identifier of the column that is the linked primary key
      * @param foreignKeyColumnGUID unique identifier of the column the contains the primary key from another table
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}/delete")
+    @PostMapping(path = "/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}/delete")
 
     public VoidResponse removeForeignKeyRelationship(@PathVariable                  String          serverName,
                                                      @PathVariable                  String          userId,
-                                                     @PathVariable                  String          databaseManagerGUID,
-                                                     @PathVariable                  String          databaseManagerName,
                                                      @PathVariable                  String          primaryKeyColumnGUID,
                                                      @PathVariable                  String          foreignKeyColumnGUID,
-                                                     @RequestBody(required = false) NullRequestBody nullRequestBody)
+                                                     @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
-        return restAPI.removeForeignKeyRelationship(serverName, userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID, nullRequestBody);
+        return restAPI.removeForeignKeyRelationship(serverName, userId, primaryKeyColumnGUID, foreignKeyColumnGUID, requestBody);
     }
 }

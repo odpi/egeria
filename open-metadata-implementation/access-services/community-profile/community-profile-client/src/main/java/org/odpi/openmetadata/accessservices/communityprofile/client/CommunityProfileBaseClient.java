@@ -282,11 +282,14 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
     }
 
 
-
     /**
-     * Create a new metadata element.
+     * Create a new metadata element that is attached to the parent.
      *
      * @param userId                  calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param parentGUID              unique identifier of the parent element
+     * @param parentGUIDParameterName name of parameter passing the parentGUID
      * @param properties              properties about the element to store
      * @param propertiesParameterName name of parameter passing the properties
      * @param urlTemplate             URL to call (no expected placeholders)
@@ -298,11 +301,11 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createReferenceableWithAnchor(String                  userId,
+    String createReferenceableWithParent(String                  userId,
                                          String                  externalSourceGUID,
                                          String                  externalSourceName,
-                                         String                  anchorGUID,
-                                         String                  anchorGUIDParameterName,
+                                         String                  parentGUID,
+                                         String                  parentGUIDParameterName,
                                          ReferenceableProperties properties,
                                          String                  propertiesParameterName,
                                          String                  urlTemplate,
@@ -313,7 +316,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         final String qualifiedNameParameterName = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
@@ -321,7 +324,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
-        requestBody.setAnchorGUID(anchorGUID);
+        requestBody.setParentGUID(parentGUID);
         requestBody.setProperties(properties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,

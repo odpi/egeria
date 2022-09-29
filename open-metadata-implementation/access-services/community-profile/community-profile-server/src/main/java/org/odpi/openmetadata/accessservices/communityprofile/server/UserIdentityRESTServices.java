@@ -83,7 +83,7 @@ public class UserIdentityRESTServices
                     String userIdentityGUID = handler.createUserIdentity(userId,
                                                                          requestBody.getExternalSourceGUID(),
                                                                          requestBody.getExternalSourceName(),
-                                                                         requestBody.getAnchorGUID(),
+                                                                         requestBody.getParentGUID(),
                                                                          profileGUIDParameterName,
                                                                          userIdentityProperties.getQualifiedName(),
                                                                          userIdentityProperties.getUserId(),

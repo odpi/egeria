@@ -14,6 +14,7 @@ public class TranslationDetail implements Serializable
     private static final long   serialVersionUID = 1L;
 
     private String              language               = null;
+    private String              codeSet                = null;
     private String              locale                 = null;
     private String              displayName            = null;
     private String              description            = null;
@@ -38,6 +39,7 @@ public class TranslationDetail implements Serializable
         if (template != null)
         {
             language = template.getLanguage();
+            codeSet = template.getCodeSet();
             locale = template.getLocale();
             displayName = template.getDisplayName();
             description = template.getDescription();
@@ -65,6 +67,28 @@ public class TranslationDetail implements Serializable
     public void setLanguage(String language)
     {
         this.language = language;
+    }
+
+
+    /**
+     * Return the code set for the translation.
+     *
+     * @return string name
+     */
+    public String getCodeSet()
+    {
+        return codeSet;
+    }
+
+
+    /**
+     * Set up the code set for the translation.
+     *
+     * @param codeSet string name
+     */
+    public void setCodeSet(String codeSet)
+    {
+        this.codeSet = codeSet;
     }
 
 
@@ -159,6 +183,25 @@ public class TranslationDetail implements Serializable
 
 
     /**
+     * Generate a string containing the properties.
+     *
+     * @return string value
+     */
+    @Override
+    public String toString()
+    {
+        return "TranslationDetail{" +
+                       "language='" + language + '\'' +
+                       ", codeSet='" + codeSet + '\'' +
+                       ", locale='" + locale + '\'' +
+                       ", displayName='" + displayName + '\'' +
+                       ", description='" + description + '\'' +
+                       ", additionalTranslations=" + additionalTranslations +
+                       '}';
+    }
+
+
+    /**
      * Equals method that returns true if containing properties are the same.
      *
      * @param objectToCompare object to compare
@@ -177,6 +220,7 @@ public class TranslationDetail implements Serializable
         }
         TranslationDetail that = (TranslationDetail) objectToCompare;
         return Objects.equals(language, that.language) &&
+                       Objects.equals(codeSet, that.codeSet) &&
                        Objects.equals(locale, that.locale) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
@@ -192,6 +236,6 @@ public class TranslationDetail implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(language, locale, displayName, description, additionalTranslations);
+        return Objects.hash(language, codeSet, locale, displayName, description, additionalTranslations);
     }
 }
