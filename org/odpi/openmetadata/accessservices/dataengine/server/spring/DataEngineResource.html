@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10,"i29":10,"i30":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -432,6 +432,15 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i28" class="altColor">
+<td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertProcessingState(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody)">upsertProcessingState</a></span>&#8203;(java.lang.String&nbsp;userId,
+                     java.lang.String&nbsp;serverName,
+                     <a href="../../rest/ProcessingStateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">ProcessingStateRequestBody</a>&nbsp;requestBody)</code></th>
+<td class="colLast">
+<div class="block">Create or update a processing state entity with the provided properties</div>
+</td>
+</tr>
+<tr id="i29" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertRelationalTable(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody)">upsertRelationalTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;serverName,
@@ -440,7 +449,7 @@ extends java.lang.Object</pre>
 <div class="block">Create a RelationalTable entity with all the needed relationships</div>
 </td>
 </tr>
-<tr id="i29" class="rowColor">
+<tr id="i30" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#upsertTopic(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody)">upsertTopic</a></span>&#8203;(java.lang.String&nbsp;userId,
            java.lang.String&nbsp;serverName,
@@ -1193,7 +1202,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 <a id="deleteEventType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.DeleteRequestBody)">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>deleteEventType</h4>
 <pre class="methodSignature">@DeleteMapping(path="/event-types")
@@ -1209,6 +1218,30 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 <dd><code>serverName</code> - name of server instance to call</dd>
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>requestBody</code> - properties for the database</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>void response</dd>
+</dl>
+</li>
+</ul>
+<a id="upsertProcessingState(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>upsertProcessingState</h4>
+<pre class="methodSignature">@PostMapping(path="/processing-state")
+public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;upsertProcessingState&#8203;(@PathVariable("userId")
+                                          java.lang.String&nbsp;userId,
+                                          @PathVariable("serverName")
+                                          java.lang.String&nbsp;serverName,
+                                          @RequestBody
+                                          <a href="../../rest/ProcessingStateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.dataengine.rest">ProcessingStateRequestBody</a>&nbsp;requestBody)</pre>
+<div class="block">Create or update a processing state entity with the provided properties</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - name of server instance to call</dd>
+<dd><code>userId</code> - the name of the calling user</dd>
+<dd><code>requestBody</code> - properties of the processing state</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void response</dd>
 </dl>
