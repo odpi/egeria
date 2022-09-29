@@ -94,8 +94,10 @@ org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements
 org.odpi.openmetadata.accessservices.digitalarchitecture.properties
 org.odpi.openmetadata.accessservices.digitalarchitecture.rest
 org.odpi.openmetadata.accessservices.digitalarchitecture.server.spring
+org.odpi.openmetadata.accessservices.digitalservice.api
 org.odpi.openmetadata.accessservices.digitalservice.events
 org.odpi.openmetadata.accessservices.digitalservice.ffdc
+org.odpi.openmetadata.accessservices.digitalservice.metadataelements
 org.odpi.openmetadata.accessservices.digitalservice.properties
 org.odpi.openmetadata.accessservices.digitalservice.rest
 org.odpi.openmetadata.accessservices.digitalservice.spring

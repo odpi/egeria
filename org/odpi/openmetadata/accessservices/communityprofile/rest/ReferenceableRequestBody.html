@@ -146,7 +146,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <hr>
 <pre>public class <span class="typeNameLabel">ReferenceableRequestBody</span>
 extends <a href="ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">ExternalSourceRequestBody</a></pre>
-<div class="block">RelationshipRequestBody describes the request body used when linking elements together.</div>
+<div class="block">ReferenceableRequestBody describes the request body used when working with referenceables.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody">Serialized Form</a></dd>
@@ -209,7 +209,7 @@ extends <a href="ExternalSourceRequestBody.html" title="class in org.odpi.openme
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAnchorGUID()">getAnchorGUID</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getParentGUID()">getParentGUID</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return an optional anchor GUID to attach the new element to.</div>
 </td>
@@ -230,7 +230,7 @@ extends <a href="ExternalSourceRequestBody.html" title="class in org.odpi.openme
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setAnchorGUID(java.lang.String)">setAnchorGUID</a></span>&#8203;(java.lang.String&nbsp;anchorGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setParentGUID(java.lang.String)">setParentGUID</a></span>&#8203;(java.lang.String&nbsp;parentGUID)</code></th>
 <td class="colLast">
 <div class="block">Set up an optional anchor GUID to attach the new element to.</div>
 </td>
@@ -342,13 +342,13 @@ extends <a href="ExternalSourceRequestBody.html" title="class in org.odpi.openme
 </dl>
 </li>
 </ul>
-<a id="getAnchorGUID()">
+<a id="getParentGUID()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getAnchorGUID</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getAnchorGUID()</pre>
+<h4>getParentGUID</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getParentGUID()</pre>
 <div class="block">Return an optional anchor GUID to attach the new element to.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -356,17 +356,17 @@ extends <a href="ExternalSourceRequestBody.html" title="class in org.odpi.openme
 </dl>
 </li>
 </ul>
-<a id="setAnchorGUID(java.lang.String)">
+<a id="setParentGUID(java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setAnchorGUID</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setAnchorGUID&#8203;(java.lang.String&nbsp;anchorGUID)</pre>
+<h4>setParentGUID</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setParentGUID&#8203;(java.lang.String&nbsp;parentGUID)</pre>
 <div class="block">Set up an optional anchor GUID to attach the new element to.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>anchorGUID</code> - guid</dd>
+<dd><code>parentGUID</code> - guid</dd>
 </dl>
 </li>
 </ul>

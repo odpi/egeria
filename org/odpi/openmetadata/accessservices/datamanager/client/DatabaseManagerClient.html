@@ -122,7 +122,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
+<li><a href="DataManagerBaseClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">org.odpi.openmetadata.accessservices.datamanager.client.DataManagerBaseClient</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -135,7 +140,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 <hr>
 <pre>public class <span class="typeNameLabel">DatabaseManagerClient</span>
-extends java.lang.Object
+extends <a href="DataManagerBaseClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerBaseClient</a>
 implements <a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></pre>
 <div class="block">DatabaseManagerClient is the client for managing resources from a relational database server.</div>
 </li>
@@ -184,11 +189,10 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </td>
 </tr>
 <tr class="rowColor">
-<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">DatabaseManagerClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient,int)">DatabaseManagerClient</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;serverPlatformURLRoot,
                      <a href="rest/DataManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client.rest">DataManagerRESTClient</a>&nbsp;restClient,
-                     int&nbsp;maxPageSize,
-                     <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></th>
+                     int&nbsp;maxPageSize)</code></th>
 <td class="colLast">
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
 </td>
@@ -616,55 +620,50 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </tr>
 <tr id="i39" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;databaseManagerGUID,
               java.lang.String&nbsp;databaseManagerName,
-              java.lang.String&nbsp;databaseGUID,
-              java.lang.String&nbsp;qualifiedName)</code></th>
+              java.lang.String&nbsp;databaseGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database.</div>
 </td>
 </tr>
 <tr id="i40" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
                     java.lang.String&nbsp;databaseManagerName,
-                    java.lang.String&nbsp;databaseColumnGUID,
-                    java.lang.String&nbsp;qualifiedName)</code></th>
+                    java.lang.String&nbsp;databaseColumnGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database column.</div>
 </td>
 </tr>
 <tr id="i41" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
                     java.lang.String&nbsp;databaseManagerName,
-                    java.lang.String&nbsp;databaseSchemaGUID,
-                    java.lang.String&nbsp;qualifiedName)</code></th>
+                    java.lang.String&nbsp;databaseSchemaGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database schema.</div>
 </td>
 </tr>
 <tr id="i42" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;databaseManagerGUID,
                    java.lang.String&nbsp;databaseManagerName,
-                   java.lang.String&nbsp;databaseTableGUID,
-                   java.lang.String&nbsp;qualifiedName)</code></th>
+                   java.lang.String&nbsp;databaseTableGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database table.</div>
 </td>
 </tr>
 <tr id="i43" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;databaseManagerGUID,
                   java.lang.String&nbsp;databaseManagerName,
-                  java.lang.String&nbsp;databaseViewGUID,
-                  java.lang.String&nbsp;qualifiedName)</code></th>
+                  java.lang.String&nbsp;databaseViewGUID)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database table.</div>
 </td>
@@ -703,10 +702,11 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </tr>
 <tr id="i47" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">updateDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">updateDatabase</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;databaseManagerGUID,
               java.lang.String&nbsp;databaseManagerName,
               java.lang.String&nbsp;databaseGUID,
+              boolean&nbsp;isMergeUpdate,
               <a href="../properties/DatabaseProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseProperties</a>&nbsp;databaseProperties)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database.</div>
@@ -714,10 +714,11 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </tr>
 <tr id="i48" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">updateDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">updateDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
                     java.lang.String&nbsp;databaseManagerName,
                     java.lang.String&nbsp;databaseColumnGUID,
+                    boolean&nbsp;isMergeUpdate,
                     <a href="../properties/DatabaseColumnProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseColumnProperties</a>&nbsp;databaseColumnProperties)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database column.</div>
@@ -725,10 +726,11 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </tr>
 <tr id="i49" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">updateDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">updateDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;databaseManagerGUID,
                     java.lang.String&nbsp;databaseManagerName,
                     java.lang.String&nbsp;databaseSchemaGUID,
+                    boolean&nbsp;isMergeUpdate,
                     <a href="../properties/DatabaseSchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseSchemaProperties</a>&nbsp;databaseSchemaProperties)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database schema.</div>
@@ -736,10 +738,11 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </tr>
 <tr id="i50" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">updateDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">updateDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;databaseManagerGUID,
                    java.lang.String&nbsp;databaseManagerName,
                    java.lang.String&nbsp;databaseTableGUID,
+                   boolean&nbsp;isMergeUpdate,
                    <a href="../properties/DatabaseTableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseTableProperties</a>&nbsp;databaseTableProperties)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database table.</div>
@@ -747,10 +750,11 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </tr>
 <tr id="i51" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">updateDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">updateDatabaseView</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;databaseManagerGUID,
                   java.lang.String&nbsp;databaseManagerName,
                   java.lang.String&nbsp;databaseViewGUID,
+                  boolean&nbsp;isMergeUpdate,
                   <a href="../properties/DatabaseViewProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseViewProperties</a>&nbsp;databaseViewProperties)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database table.</div>
@@ -773,6 +777,13 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </td>
 </tr>
 </table>
+<ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.datamanager.client.DataManagerBaseClient">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.datamanager.client.<a href="DataManagerBaseClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client">DataManagerBaseClient</a></h3>
+<code><a href="DataManagerBaseClient.html#removeReferenceable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeReferenceable</a></code></li>
+</ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
 <!--   -->
@@ -865,7 +876,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<a id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient,int)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -874,8 +885,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <pre>public&nbsp;DatabaseManagerClient&#8203;(java.lang.String&nbsp;serverName,
                              java.lang.String&nbsp;serverPlatformURLRoot,
                              <a href="rest/DataManagerRESTClient.html" title="class in org.odpi.openmetadata.accessservices.datamanager.client.rest">DataManagerRESTClient</a>&nbsp;restClient,
-                             int&nbsp;maxPageSize,
-                             <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)
+                             int&nbsp;maxPageSize)
                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></pre>
 <div class="block">Create a new client that is going to be used in an OMAG Server.</div>
 <dl>
@@ -884,7 +894,6 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST servers</dd>
 <dd><code>restClient</code> - client that issues the REST API calls</dd>
 <dd><code>maxPageSize</code> - maximum number of results supported by this server</dd>
-<dd><code>auditLog</code> - logging destination</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
@@ -990,7 +999,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">
+<a id="updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1000,6 +1009,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                            java.lang.String&nbsp;databaseManagerGUID,
                            java.lang.String&nbsp;databaseManagerName,
                            java.lang.String&nbsp;databaseGUID,
+                           boolean&nbsp;isMergeUpdate,
                            <a href="../properties/DatabaseProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseProperties</a>&nbsp;databaseProperties)
                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1007,12 +1017,13 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">updateDatabase</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">updateDatabase</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>databaseProperties</code> - new properties for this element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
@@ -1075,7 +1086,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1084,21 +1095,19 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <pre class="methodSignature">public&nbsp;void&nbsp;removeDatabase&#8203;(java.lang.String&nbsp;userId,
                            java.lang.String&nbsp;databaseManagerGUID,
                            java.lang.String&nbsp;databaseManagerName,
-                           java.lang.String&nbsp;databaseGUID,
-                           java.lang.String&nbsp;qualifiedName)
+                           java.lang.String&nbsp;databaseGUID)
                     throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                            <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                            <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the metadata element representing a database.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabase</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabase</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1298,7 +1307,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">
+<a id="updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1308,6 +1317,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                                  java.lang.String&nbsp;databaseManagerGUID,
                                  java.lang.String&nbsp;databaseManagerName,
                                  java.lang.String&nbsp;databaseSchemaGUID,
+                                 boolean&nbsp;isMergeUpdate,
                                  <a href="../properties/DatabaseSchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseSchemaProperties</a>&nbsp;databaseSchemaProperties)
                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1315,12 +1325,13 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database schema.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">updateDatabaseSchema</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">updateDatabaseSchema</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseSchemaGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>databaseSchemaProperties</code> - new properties for the metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
@@ -1383,7 +1394,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1392,21 +1403,19 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <pre class="methodSignature">public&nbsp;void&nbsp;removeDatabaseSchema&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;databaseManagerGUID,
                                  java.lang.String&nbsp;databaseManagerName,
-                                 java.lang.String&nbsp;databaseSchemaGUID,
-                                 java.lang.String&nbsp;qualifiedName)
+                                 java.lang.String&nbsp;databaseSchemaGUID)
                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the metadata element representing a database schema.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseSchema</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseSchema</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseSchemaGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -1581,7 +1590,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                                      throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                             <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+<div class="block">Link the schema type and asset.  This is called from outside AssetHandler.  The databaseAssetGUID is checked to ensure the
  asset exists and updates are allowed.  If there is already a schema attached, it is deleted.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
@@ -1700,7 +1709,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">
+<a id="updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1710,6 +1719,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                                 java.lang.String&nbsp;databaseManagerGUID,
                                 java.lang.String&nbsp;databaseManagerName,
                                 java.lang.String&nbsp;databaseTableGUID,
+                                boolean&nbsp;isMergeUpdate,
                                 <a href="../properties/DatabaseTableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseTableProperties</a>&nbsp;databaseTableProperties)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1717,12 +1727,13 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database table.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">updateDatabaseTable</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">updateDatabaseTable</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseTableGUID</code> - unique identifier of the database table to update</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>databaseTableProperties</code> - new properties for the database table</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
@@ -1731,7 +1742,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1740,21 +1751,19 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <pre class="methodSignature">public&nbsp;void&nbsp;removeDatabaseTable&#8203;(java.lang.String&nbsp;userId,
                                 java.lang.String&nbsp;databaseManagerGUID,
                                 java.lang.String&nbsp;databaseManagerName,
-                                java.lang.String&nbsp;databaseTableGUID,
-                                java.lang.String&nbsp;qualifiedName)
+                                java.lang.String&nbsp;databaseTableGUID)
                          throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the metadata element representing a database table.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseTable</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseTable</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseTableGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -2016,7 +2025,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">
+<a id="updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -2026,6 +2035,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                                java.lang.String&nbsp;databaseManagerGUID,
                                java.lang.String&nbsp;databaseManagerName,
                                java.lang.String&nbsp;databaseViewGUID,
+                               boolean&nbsp;isMergeUpdate,
                                <a href="../properties/DatabaseViewProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseViewProperties</a>&nbsp;databaseViewProperties)
                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2033,12 +2043,13 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database table.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">updateDatabaseView</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">updateDatabaseView</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseViewGUID</code> - unique identifier of the database view to update</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>databaseViewProperties</code> - properties for the new database view</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
@@ -2047,7 +2058,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -2056,21 +2067,19 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <pre class="methodSignature">public&nbsp;void&nbsp;removeDatabaseView&#8203;(java.lang.String&nbsp;userId,
                                java.lang.String&nbsp;databaseManagerGUID,
                                java.lang.String&nbsp;databaseManagerName,
-                               java.lang.String&nbsp;databaseViewGUID,
-                               java.lang.String&nbsp;qualifiedName)
+                               java.lang.String&nbsp;databaseViewGUID)
                         throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the metadata element representing a database table.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseView</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseView</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseViewGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -2299,7 +2308,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">
+<a id="updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -2309,6 +2318,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                                  java.lang.String&nbsp;databaseManagerGUID,
                                  java.lang.String&nbsp;databaseManagerName,
                                  java.lang.String&nbsp;databaseColumnGUID,
+                                 boolean&nbsp;isMergeUpdate,
                                  <a href="../properties/DatabaseColumnProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseColumnProperties</a>&nbsp;databaseColumnProperties)
                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2316,12 +2326,13 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <div class="block">Update the metadata element representing a database column.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">updateDatabaseColumn</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">updateDatabaseColumn</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseColumnGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
 <dd><code>databaseColumnProperties</code> - new properties for the metadata element</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
@@ -2330,7 +2341,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 </dl>
 </li>
 </ul>
-<a id="removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<a id="removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -2339,21 +2350,19 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
 <pre class="methodSignature">public&nbsp;void&nbsp;removeDatabaseColumn&#8203;(java.lang.String&nbsp;userId,
                                  java.lang.String&nbsp;databaseManagerGUID,
                                  java.lang.String&nbsp;databaseManagerName,
-                                 java.lang.String&nbsp;databaseColumnGUID,
-                                 java.lang.String&nbsp;qualifiedName)
+                                 java.lang.String&nbsp;databaseColumnGUID)
                           throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Remove the metadata element representing a database column.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseColumn</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
+<dd><code><a href="../api/DatabaseManagerInterface.html#removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">removeDatabaseColumn</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
 <dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
 <dd><code>databaseColumnGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -2498,7 +2507,7 @@ implements <a href="../api/DatabaseManagerInterface.html" title="interface in or
                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
 <div class="block">Classify a column in a database table as the primary key.  This means each row has a different value
- in this column and it can be used to uniquely identify the column.</div>
+ in this column, and it can be used to uniquely identify the column.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../api/DatabaseManagerInterface.html#setPrimaryKeyOnColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties)">setPrimaryKeyOnColumn</a></code>&nbsp;in interface&nbsp;<code><a href="../api/DatabaseManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.datamanager.api">DatabaseManagerInterface</a></code></dd>

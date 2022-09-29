@@ -134,7 +134,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/digital-service/users/{userId}")
 public class <span class="typeNameLabel">DigitalServiceResource</span>
 extends java.lang.Object</pre>
-<div class="block">The DigitalServiceResource provides the server-side implementation of the DigitalService Open Metadata
+<div class="block">The DigitalServiceResource provides the server-side implementation of the DigitalServiceProperties Open Metadata
  Assess Service (OMAS).</div>
 </li>
 </ul>
@@ -181,9 +181,9 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDigitalService(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.rest.DigitalServiceRequestBody)">createDigitalService</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDigitalService(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.rest.ReferenceableRequestBody)">createDigitalService</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
-                    <a href="../rest/DigitalServiceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">DigitalServiceRequestBody</a>&nbsp;requestBody)</code></th>
+                    <a href="../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </table>
@@ -230,19 +230,19 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createDigitalService(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.rest.DigitalServiceRequestBody)">
+<a id="createDigitalService(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>createDigitalService</h4>
 <pre class="methodSignature">@PostMapping(path="/digital-service")
-public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDigitalService&#8203;(@PathVariable("serverName")
+public&nbsp;<a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDigitalService&#8203;(@PathVariable
                                          java.lang.String&nbsp;serverName,
-                                         @PathVariable("userId")
+                                         @PathVariable
                                          java.lang.String&nbsp;userId,
                                          @RequestBody
-                                         <a href="../rest/DigitalServiceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">DigitalServiceRequestBody</a>&nbsp;requestBody)</pre>
+                                         <a href="../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 </li>
 </ul>
 </li>

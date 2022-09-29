@@ -11054,8 +11054,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
-<h4>anchorGUID</h4>
-<pre>java.lang.String anchorGUID</pre>
+<h4>parentGUID</h4>
+<pre>java.lang.String parentGUID</pre>
 </li>
 <li class="blockListLast">
 <h4>properties</h4>
@@ -14081,7 +14081,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseForeignKeyProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/datamanager/properties/DatabaseForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseForeignKeyProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/datamanager/properties/DatabaseForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseForeignKeyProperties</a> extends <a href="org/odpi/openmetadata/accessservices/datamanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -14126,7 +14126,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/datamanager/properties/DatabasePrimaryKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/datamanager/properties/DatabasePrimaryKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties</a> extends <a href="org/odpi/openmetadata/accessservices/datamanager/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ClassificationProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -14215,6 +14215,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
 </dl>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaTypeProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/datamanager/properties/DatabaseSchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaTypeProperties</a> extends <a href="org/odpi/openmetadata/accessservices/datamanager/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceableProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+</li>
+</ul>
+</li>
+</ul>
 </li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties">
 <!--   -->
@@ -16967,6 +16987,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h3>Serialized Fields</h3>
 <ul class="blockList">
+<li class="blockList">
+<h4>parentGUID</h4>
+<pre>java.lang.String parentGUID</pre>
+</li>
 <li class="blockListLast">
 <h4>properties</h4>
 <pre><a href="org/odpi/openmetadata/accessservices/datamanager/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceableProperties</a> properties</pre>
@@ -17339,9 +17363,13 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>externalSourceGUID</h4>
 <pre>java.lang.String externalSourceGUID</pre>
 </li>
-<li class="blockListLast">
+<li class="blockList">
 <h4>externalSourceName</h4>
 <pre>java.lang.String externalSourceName</pre>
+</li>
+<li class="blockListLast">
+<h4>parentGUID</h4>
+<pre>java.lang.String parentGUID</pre>
 </li>
 </ul>
 </li>
@@ -21359,34 +21387,6 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <section role="region">
 <h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.digitalservice.events</h2>
 <ul class="blockList">
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.events.DigitalServiceEvent">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/events/DigitalServiceEvent.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.events">org.odpi.openmetadata.accessservices.digitalservice.events.DigitalServiceEvent</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/events/DigitalServiceEventHeader.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.events">DigitalServiceEventHeader</a> implements Serializable</h3>
-<dl class="nameValue">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="blockList">
-<li class="blockList">
-<h3>Serialized Fields</h3>
-<ul class="blockList">
-<li class="blockList">
-<h4>digitalService</h4>
-<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalService.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalService</a> digitalService</pre>
-</li>
-<li class="blockList">
-<h4>eventType</h4>
-<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/events/DigitalServiceEventType.html" title="enum in org.odpi.openmetadata.accessservices.digitalservice.events">DigitalServiceEventType</a> eventType</pre>
-</li>
-<li class="blockListLast">
-<h4>originalDigitalService</h4>
-<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalService.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalService</a> originalDigitalService</pre>
-</li>
-</ul>
-</li>
-</ul>
-</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.events.DigitalServiceEventHeader">
 <!--   -->
 </a>
@@ -21407,17 +21407,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
-</ul>
-</section>
-</li>
-<li class="blockList">
-<section role="region">
-<h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.digitalservice.properties</h2>
-<ul class="blockList">
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.Classification">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.events.DigitalServiceOutboundEvent">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/Classification.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.Classification</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceElementHeader.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalServiceElementHeader</a> implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/events/DigitalServiceOutboundEvent.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.events">org.odpi.openmetadata.accessservices.digitalservice.events.DigitalServiceOutboundEvent</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/events/DigitalServiceEventHeader.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.events">DigitalServiceEventHeader</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -21430,18 +21423,601 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h4>classificationName</h4>
 <pre>java.lang.String classificationName</pre>
 </li>
+<li class="blockList">
+<h4>endOneElement</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a> endOneElement</pre>
+</li>
+<li class="blockList">
+<h4>endTwoElement</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a> endTwoElement</pre>
+</li>
+<li class="blockList">
+<h4>eventType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/events/DigitalServiceOutboundEventType.html" title="enum in org.odpi.openmetadata.accessservices.digitalservice.events">DigitalServiceOutboundEventType</a> eventType</pre>
+</li>
 <li class="blockListLast">
-<h4>classificationProperties</h4>
-<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; classificationProperties</pre>
+<h4>principleElement</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a> principleElement</pre>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalService">
+</ul>
+</section>
+</li>
+<li class="blockList">
+<section role="region">
+<h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.digitalservice.metadataelements</h2>
+<ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.Appointee">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalService.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalService</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceElementHeader.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalServiceElementHeader</a> implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/Appointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.Appointee</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>elementHeader</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="blockList">
+<h4>endDate</h4>
+<pre>java.util.Date endDate</pre>
+</li>
+<li class="blockList">
+<h4>profile</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/ProfileElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">ProfileElement</a> profile</pre>
+</li>
+<li class="blockListLast">
+<h4>startDate</h4>
+<pre>java.util.Date startDate</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.BusinessCapabilityElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/BusinessCapabilityElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.BusinessCapabilityElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>elementHeader</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="blockListLast">
+<h4>properties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/BusinessCapabilityProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">BusinessCapabilityProperties</a> properties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.ContactMethodElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.ContactMethodElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>elementHeader</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="blockListLast">
+<h4>properties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ContactMethodProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ContactMethodProperties</a> properties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.DigitalServiceElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/DigitalServiceElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.DigitalServiceElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>elementHeader</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="blockListLast">
+<h4>properties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalServiceProperties</a> properties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleAppointee">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/PersonRoleAppointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleAppointee</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleElement</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>currentAppointees</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/Appointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">Appointee</a>&gt; currentAppointees</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>elementHeader</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="blockList">
+<h4>properties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">PersonRoleProperties</a> properties</pre>
+</li>
+<li class="blockListLast">
+<h4>relatedElement</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">RelatedElement</a> relatedElement</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleHistory">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/PersonRoleHistory.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleHistory</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/PersonRoleAppointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleAppointee</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>predecessors</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/Appointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">Appointee</a>&gt; predecessors</pre>
+</li>
+<li class="blockListLast">
+<h4>successors</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/Appointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">Appointee</a>&gt; successors</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.ProfileElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/ProfileElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.ProfileElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>contactMethods</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">ContactMethodElement</a>&gt; contactMethods</pre>
+</li>
+<li class="blockList">
+<h4>elementHeader</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="blockList">
+<h4>profileProperties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ActorProfileProperties</a> profileProperties</pre>
+</li>
+<li class="blockListLast">
+<h4>userIdentities</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">UserIdentityElement</a>&gt; userIdentities</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.RelatedElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/RelatedElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.RelatedElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>relatedElement</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a> relatedElement</pre>
+</li>
+<li class="blockList">
+<h4>relationshipHeader</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> relationshipHeader</pre>
+</li>
+<li class="blockListLast">
+<h4>relationshipProperties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">RelationshipProperties</a> relationshipProperties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.TeamProfileElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/TeamProfileElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.TeamProfileElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>elementHeader</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="blockList">
+<h4>properties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/TeamProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">TeamProfileProperties</a> properties</pre>
+</li>
+<li class="blockList">
+<h4>subTeams</h4>
+<pre>java.util.List&lt;<a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt; subTeams</pre>
+</li>
+<li class="blockListLast">
+<h4>superTeam</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a> superTeam</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.metadataelements.UserIdentityElement">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/metadataelements/UserIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">org.odpi.openmetadata.accessservices.digitalservice.metadataelements.UserIdentityElement</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>elementHeader</h4>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="blockListLast">
+<h4>properties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/UserIdentityProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">UserIdentityProperties</a> properties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</li>
+<li class="blockList">
+<section role="region">
+<h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.digitalservice.properties</h2>
+<ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.ActorProfileProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.ActorProfileProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockListLast">
+<h4>knownName</h4>
+<pre>java.lang.String knownName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.AgreementProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/AgreementProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.AgreementProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>agreementType</h4>
+<pre>java.lang.String agreementType</pre>
+</li>
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockListLast">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.BusinessCapabilityProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/BusinessCapabilityProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.BusinessCapabilityProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+</li>
+<li class="blockListLast">
+<h4>identifier</h4>
+<pre>java.lang.String identifier</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.CertificationTypeProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/CertificationTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.CertificationTypeProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">GovernanceDefinitionProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>details</h4>
+<pre>java.lang.String details</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.ClassificationProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.ClassificationProperties</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>effectiveFrom</h4>
+<pre>java.util.Date effectiveFrom</pre>
+</li>
+<li class="blockList">
+<h4>effectiveTo</h4>
+<pre>java.util.Date effectiveTo</pre>
+</li>
+<li class="blockListLast">
+<h4>extendedProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; extendedProperties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.ContactMethodProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ContactMethodProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.ContactMethodProperties</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>contactMethodService</h4>
+<pre>java.lang.String contactMethodService</pre>
+</li>
+<li class="blockList">
+<h4>contactMethodType</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ContactMethodType.html" title="enum in org.odpi.openmetadata.accessservices.digitalservice.properties">ContactMethodType</a> contactMethodType</pre>
+</li>
+<li class="blockList">
+<h4>contactMethodValue</h4>
+<pre>java.lang.String contactMethodValue</pre>
+</li>
+<li class="blockList">
+<h4>contactType</h4>
+<pre>java.lang.String contactType</pre>
+</li>
+<li class="blockList">
+<h4>effectiveFrom</h4>
+<pre>java.util.Date effectiveFrom</pre>
+</li>
+<li class="blockList">
+<h4>effectiveTo</h4>
+<pre>java.util.Date effectiveTo</pre>
+</li>
+<li class="blockList">
+<h4>extendedProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; extendedProperties</pre>
+</li>
+<li class="blockList">
+<h4>name</h4>
+<pre>java.lang.String name</pre>
+</li>
+<li class="blockListLast">
+<h4>typeName</h4>
+<pre>java.lang.String typeName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalProductProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ClassificationProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>additionalProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; additionalProperties</pre>
+</li>
+<li class="blockList">
+<h4>currentVersion</h4>
+<pre>java.lang.String currentVersion</pre>
+</li>
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockList">
+<h4>introductionDate</h4>
+<pre>java.util.Date introductionDate</pre>
+</li>
+<li class="blockList">
+<h4>maturity</h4>
+<pre>java.lang.String maturity</pre>
+</li>
+<li class="blockList">
+<h4>nextVersion</h4>
+<pre>java.util.Date nextVersion</pre>
+</li>
+<li class="blockList">
+<h4>productName</h4>
+<pre>java.lang.String productName</pre>
+</li>
+<li class="blockList">
+<h4>productType</h4>
+<pre>java.lang.String productType</pre>
+</li>
+<li class="blockList">
+<h4>serviceLife</h4>
+<pre>java.lang.String serviceLife</pre>
+</li>
+<li class="blockListLast">
+<h4>withdrawDate</h4>
+<pre>java.util.Date withdrawDate</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceDependencyProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceDependencyProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceDependencyProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceElementHeader">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceElementHeader.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceElementHeader</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -21466,10 +22042,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceDependency">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalSubscriptionProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceDependency.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceDependency</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceElementHeader.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalServiceElementHeader</a> implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalSubscriptionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalSubscriptionProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/AgreementProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">AgreementProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -21479,21 +22055,30 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
-<h4>calledDigitalServiceGUID</h4>
-<pre>java.lang.String calledDigitalServiceGUID</pre>
+<h4>serviceLevels</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; serviceLevels</pre>
 </li>
 <li class="blockListLast">
-<h4>callerDigitalServiceGUID</h4>
-<pre>java.lang.String callerDigitalServiceGUID</pre>
+<h4>supportLevel</h4>
+<pre>java.lang.String supportLevel</pre>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceDependencyGraph">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalSupportProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceDependencyGraph.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceDependencyGraph</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceElementHeader.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalServiceElementHeader</a> implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalSupportProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalSupportProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.GovernanceDefinitionProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.GovernanceDefinitionProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -21503,38 +22088,49 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
-<h4>digitalServiceDependencies</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceDependency.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalServiceDependency</a>&gt; digitalServiceDependencies</pre>
+<h4>description</h4>
+<pre>java.lang.String description</pre>
 </li>
 <li class="blockList">
-<h4>direction</h4>
-<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceDependencyDirection.html" title="enum in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalServiceDependencyDirection</a> direction</pre>
+<h4>domainIdentifier</h4>
+<pre>int domainIdentifier</pre>
 </li>
 <li class="blockList">
-<h4>relatedDigitalServices</h4>
-<pre>java.util.List&lt;<a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalService.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalService</a>&gt; relatedDigitalServices</pre>
+<h4>implications</h4>
+<pre>java.util.List&lt;java.lang.String&gt; implications</pre>
+</li>
+<li class="blockList">
+<h4>outcomes</h4>
+<pre>java.util.List&lt;java.lang.String&gt; outcomes</pre>
+</li>
+<li class="blockList">
+<h4>priority</h4>
+<pre>java.lang.String priority</pre>
+</li>
+<li class="blockList">
+<h4>results</h4>
+<pre>java.util.List&lt;java.lang.String&gt; results</pre>
+</li>
+<li class="blockList">
+<h4>scope</h4>
+<pre>java.lang.String scope</pre>
+</li>
+<li class="blockList">
+<h4>summary</h4>
+<pre>java.lang.String summary</pre>
 </li>
 <li class="blockListLast">
-<h4>root</h4>
-<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalService.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalService</a> root</pre>
+<h4>title</h4>
+<pre>java.lang.String title</pre>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceElementHeader">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.LicenseProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalServiceElementHeader.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceElementHeader</a> extends java.lang.Object implements Serializable</h3>
-<dl class="nameValue">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-</li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.ReferenceValueAssignmentProperties">
-<!--   -->
-</a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.ReferenceValueAssignmentProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/LicenseProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.LicenseProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">RelationshipProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -21544,25 +22140,81 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
-<h4>confidence</h4>
-<pre>int confidence</pre>
+<h4>conditions</h4>
+<pre>java.lang.String conditions</pre>
+</li>
+<li class="blockList">
+<h4>custodian</h4>
+<pre>java.lang.String custodian</pre>
+</li>
+<li class="blockList">
+<h4>custodianPropertyName</h4>
+<pre>java.lang.String custodianPropertyName</pre>
+</li>
+<li class="blockList">
+<h4>custodianTypeName</h4>
+<pre>java.lang.String custodianTypeName</pre>
+</li>
+<li class="blockList">
+<h4>endDate</h4>
+<pre>java.util.Date endDate</pre>
+</li>
+<li class="blockList">
+<h4>entitlements</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; entitlements</pre>
+</li>
+<li class="blockList">
+<h4>licensedBy</h4>
+<pre>java.lang.String licensedBy</pre>
+</li>
+<li class="blockList">
+<h4>licensedByPropertyName</h4>
+<pre>java.lang.String licensedByPropertyName</pre>
+</li>
+<li class="blockList">
+<h4>licensedByTypeName</h4>
+<pre>java.lang.String licensedByTypeName</pre>
+</li>
+<li class="blockList">
+<h4>licensee</h4>
+<pre>java.lang.String licensee</pre>
+</li>
+<li class="blockList">
+<h4>licenseePropertyName</h4>
+<pre>java.lang.String licenseePropertyName</pre>
+</li>
+<li class="blockList">
+<h4>licenseeTypeName</h4>
+<pre>java.lang.String licenseeTypeName</pre>
+</li>
+<li class="blockList">
+<h4>licenseId</h4>
+<pre>java.lang.String licenseId</pre>
 </li>
 <li class="blockList">
 <h4>notes</h4>
 <pre>java.lang.String notes</pre>
 </li>
+<li class="blockList">
+<h4>obligations</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; obligations</pre>
+</li>
+<li class="blockList">
+<h4>restrictions</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; restrictions</pre>
+</li>
 <li class="blockListLast">
-<h4>steward</h4>
-<pre>java.lang.String steward</pre>
+<h4>startDate</h4>
+<pre>java.util.Date startDate</pre>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.ValidValueAssignmentProperties">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.LicenseTypeProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ValidValueAssignmentProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.ValidValueAssignmentProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/LicenseTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.LicenseTypeProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/GovernanceDefinitionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">GovernanceDefinitionProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -21572,17 +22224,37 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockListLast">
-<h4>strictRequirement</h4>
-<pre>boolean strictRequirement</pre>
+<h4>details</h4>
+<pre>java.lang.String details</pre>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.ValidValuesImplProperties">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.OrganizationalCapabilityProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ValidValuesImplProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.ValidValuesImplProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/OrganizationalCapabilityProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.OrganizationalCapabilityProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">RelationshipProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>scope</h4>
+<pre>java.lang.String scope</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.PersonalRoleProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/PersonalRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.PersonalRoleProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -21592,25 +22264,33 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
-<h4>additionalValues</h4>
-<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; additionalValues</pre>
+<h4>description</h4>
+<pre>java.lang.String description</pre>
 </li>
 <li class="blockList">
-<h4>implementationValue</h4>
-<pre>java.lang.String implementationValue</pre>
+<h4>domainIdentifier</h4>
+<pre>int domainIdentifier</pre>
+</li>
+<li class="blockList">
+<h4>roleId</h4>
+<pre>java.lang.String roleId</pre>
+</li>
+<li class="blockList">
+<h4>scope</h4>
+<pre>java.lang.String scope</pre>
 </li>
 <li class="blockListLast">
-<h4>symbolicName</h4>
-<pre>java.lang.String symbolicName</pre>
+<h4>title</h4>
+<pre>java.lang.String title</pre>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.ValidValuesMappingProperties">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ValidValuesMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.ValidValuesMappingProperties</a> extends java.lang.Object implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/PersonalRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">PersonalRoleProperties</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -21620,20 +22300,188 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockList">
-<h4>associationDescription</h4>
-<pre>java.lang.String associationDescription</pre>
-</li>
-<li class="blockList">
-<h4>confidence</h4>
-<pre>int confidence</pre>
-</li>
-<li class="blockList">
-<h4>notes</h4>
-<pre>java.lang.String notes</pre>
+<h4>headCount</h4>
+<pre>int headCount</pre>
 </li>
 <li class="blockListLast">
-<h4>steward</h4>
-<pre>java.lang.String steward</pre>
+<h4>headCountLimitSet</h4>
+<pre>boolean headCountLimitSet</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.ReferenceableProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.ReferenceableProperties</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>additionalProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; additionalProperties</pre>
+</li>
+<li class="blockList">
+<h4>effectiveFrom</h4>
+<pre>java.util.Date effectiveFrom</pre>
+</li>
+<li class="blockList">
+<h4>effectiveTo</h4>
+<pre>java.util.Date effectiveTo</pre>
+</li>
+<li class="blockList">
+<h4>extendedProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; extendedProperties</pre>
+</li>
+<li class="blockList">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+</li>
+<li class="blockListLast">
+<h4>typeName</h4>
+<pre>java.lang.String typeName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.RelationshipProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.RelationshipProperties</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>effectiveFrom</h4>
+<pre>java.util.Date effectiveFrom</pre>
+</li>
+<li class="blockList">
+<h4>effectiveTo</h4>
+<pre>java.util.Date effectiveTo</pre>
+</li>
+<li class="blockListLast">
+<h4>extendedProperties</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.Object&gt; extendedProperties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.SolutionComponentProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/SolutionComponentProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.SolutionComponentProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+</li>
+<li class="blockListLast">
+<h4>version</h4>
+<pre>java.lang.String version</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.TeamProfileProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/TeamProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.TeamProfileProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ActorProfileProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>identifier</h4>
+<pre>java.lang.String identifier</pre>
+</li>
+<li class="blockListLast">
+<h4>teamType</h4>
+<pre>java.lang.String teamType</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.TemplateProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.TemplateProperties</a> extends java.lang.Object implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>description</h4>
+<pre>java.lang.String description</pre>
+</li>
+<li class="blockList">
+<h4>displayName</h4>
+<pre>java.lang.String displayName</pre>
+</li>
+<li class="blockList">
+<h4>networkAddress</h4>
+<pre>java.lang.String networkAddress</pre>
+</li>
+<li class="blockListLast">
+<h4>qualifiedName</h4>
+<pre>java.lang.String qualifiedName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.properties.UserIdentityProperties">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/UserIdentityProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">org.odpi.openmetadata.accessservices.digitalservice.properties.UserIdentityProperties</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>distinguishedName</h4>
+<pre>java.lang.String distinguishedName</pre>
+</li>
+<li class="blockListLast">
+<h4>userId</h4>
+<pre>java.lang.String userId</pre>
 </li>
 </ul>
 </li>
@@ -21646,6 +22494,26 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <section role="region">
 <h2 title="Package">Package&nbsp;org.odpi.openmetadata.accessservices.digitalservice.rest</h2>
 <ul class="blockList">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.rest.ClassificationRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">org.odpi.openmetadata.accessservices.digitalservice.rest.ClassificationRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">ExternalSourceRequestBody</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockListLast">
+<h4>properties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ClassificationProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ClassificationProperties</a> properties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.rest.DigitalServiceOMASAPIRequestBody">
 <!--   -->
 </a>
@@ -21664,10 +22532,58 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd>1L</dd>
 </dl>
 </li>
-<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.rest.DigitalServiceRequestBody">
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.rest.ExternalSourceRequestBody">
 <!--   -->
 </a>
-<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/DigitalServiceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">org.odpi.openmetadata.accessservices.digitalservice.rest.DigitalServiceRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/DigitalServiceOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">DigitalServiceOMASAPIRequestBody</a> implements Serializable</h3>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">org.odpi.openmetadata.accessservices.digitalservice.rest.ExternalSourceRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/DigitalServiceOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">DigitalServiceOMASAPIRequestBody</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>externalSourceGUID</h4>
+<pre>java.lang.String externalSourceGUID</pre>
+</li>
+<li class="blockListLast">
+<h4>externalSourceName</h4>
+<pre>java.lang.String externalSourceName</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.rest.ReferenceableRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">org.odpi.openmetadata.accessservices.digitalservice.rest.ReferenceableRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">ExternalSourceRequestBody</a> implements Serializable</h3>
+<dl class="nameValue">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="blockList">
+<li class="blockList">
+<h3>Serialized Fields</h3>
+<ul class="blockList">
+<li class="blockList">
+<h4>parentGUID</h4>
+<pre>java.lang.String parentGUID</pre>
+</li>
+<li class="blockListLast">
+<h4>properties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">ReferenceableProperties</a> properties</pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="blockList"><a id="org.odpi.openmetadata.accessservices.digitalservice.rest.RelationshipRequestBody">
+<!--   -->
+</a>
+<h3>Class <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">org.odpi.openmetadata.accessservices.digitalservice.rest.RelationshipRequestBody</a> extends <a href="org/odpi/openmetadata/accessservices/digitalservice/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.rest">ExternalSourceRequestBody</a> implements Serializable</h3>
 <dl class="nameValue">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -21677,8 +22593,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h3>Serialized Fields</h3>
 <ul class="blockList">
 <li class="blockListLast">
-<h4>digitalService</h4>
-<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/DigitalService.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalService</a> digitalService</pre>
+<h4>properties</h4>
+<pre><a href="org/odpi/openmetadata/accessservices/digitalservice/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">RelationshipProperties</a> properties</pre>
 </li>
 </ul>
 </li>
@@ -26025,6 +26941,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>java.util.Date endDate</pre>
 </li>
 <li class="blockList">
+<h4>entitlements</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; entitlements</pre>
+</li>
+<li class="blockList">
 <h4>licensedBy</h4>
 <pre>java.lang.String licensedBy</pre>
 </li>
@@ -26055,6 +26975,14 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>notes</h4>
 <pre>java.lang.String notes</pre>
+</li>
+<li class="blockList">
+<h4>obligations</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; obligations</pre>
+</li>
+<li class="blockList">
+<h4>restrictions</h4>
+<pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; restrictions</pre>
 </li>
 <li class="blockListLast">
 <h4>startDate</h4>
@@ -38953,6 +39881,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <h4>additionalTranslations</h4>
 <pre>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt; additionalTranslations</pre>
+</li>
+<li class="blockList">
+<h4>codeSet</h4>
+<pre>java.lang.String codeSet</pre>
 </li>
 <li class="blockList">
 <h4>description</h4>

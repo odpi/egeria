@@ -181,184 +181,144 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseForeignKeyProperties)">addForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#addForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.RelationshipRequestBody)">addForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;userId,
-                         java.lang.String&nbsp;databaseManagerGUID,
-                         java.lang.String&nbsp;databaseManagerName,
                          java.lang.String&nbsp;primaryKeyColumnGUID,
                          java.lang.String&nbsp;foreignKeyColumnGUID,
-                         <a href="../../properties/DatabaseForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseForeignKeyProperties</a>&nbsp;databaseForeignKeyProperties)</code></th>
+                         <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a foreign relationship between two columns.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#attachSchemaTypeToDatabaseAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">attachSchemaTypeToDatabaseAsset</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#attachSchemaTypeToDatabaseAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.RelationshipRequestBody)">attachSchemaTypeToDatabaseAsset</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                java.lang.String&nbsp;userId,
-                               java.lang.String&nbsp;databaseManagerGUID,
-                               java.lang.String&nbsp;databaseManagerName,
                                java.lang.String&nbsp;databaseAssetGUID,
                                java.lang.String&nbsp;schemaTypeGUID,
-                               <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></th>
+                               <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Link the schema type and asset.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">createDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabase(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">createDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
-              java.lang.String&nbsp;databaseManagerGUID,
-              java.lang.String&nbsp;databaseManagerName,
-              <a href="../../properties/DatabaseProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseProperties</a>&nbsp;databaseProperties)</code></th>
+              <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">createDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseColumn(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">createDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
-                    java.lang.String&nbsp;databaseManagerGUID,
-                    java.lang.String&nbsp;databaseManagerName,
-                    java.lang.String&nbsp;databaseTableGUID,
-                    <a href="../../properties/DatabaseColumnProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseColumnProperties</a>&nbsp;databaseColumnProperties)</code></th>
+                    <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database column.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseColumnFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseColumnFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseColumnFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">createDatabaseColumnFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                 java.lang.String&nbsp;userId,
-                                java.lang.String&nbsp;databaseManagerGUID,
-                                java.lang.String&nbsp;databaseManagerName,
                                 java.lang.String&nbsp;templateGUID,
-                                java.lang.String&nbsp;databaseTableGUID,
-                                <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
+                                <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database column using an existing metadata element as a template.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">createDatabaseFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;userId,
-                          java.lang.String&nbsp;databaseManagerGUID,
-                          java.lang.String&nbsp;databaseManagerName,
                           java.lang.String&nbsp;templateGUID,
-                          <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
+                          <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database using an existing metadata element as a template.</div>
 </td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">createDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseSchema(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">createDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
-                    java.lang.String&nbsp;databaseManagerGUID,
-                    java.lang.String&nbsp;databaseManagerName,
-                    java.lang.String&nbsp;databaseGUID,
-                    <a href="../../properties/DatabaseSchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseSchemaProperties</a>&nbsp;databaseSchemaProperties)</code></th>
+                    <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database schema.</div>
 </td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseSchemaFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseSchemaFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseSchemaFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">createDatabaseSchemaFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                 java.lang.String&nbsp;userId,
-                                java.lang.String&nbsp;databaseManagerGUID,
-                                java.lang.String&nbsp;databaseManagerName,
                                 java.lang.String&nbsp;templateGUID,
-                                java.lang.String&nbsp;databaseGUID,
-                                <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
+                                <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database schema using an existing metadata element as a template.</div>
 </td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">createDatabaseSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseSchemaType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">createDatabaseSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                         java.lang.String&nbsp;userId,
-                        java.lang.String&nbsp;databaseManagerGUID,
-                        java.lang.String&nbsp;databaseManagerName,
-                        <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></th>
+                        <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a database top-level schema type used to attach tables and views to the database/database schema.</div>
 </td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">createDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTable(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">createDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
-                   java.lang.String&nbsp;databaseManagerGUID,
-                   java.lang.String&nbsp;databaseManagerName,
-                   java.lang.String&nbsp;databaseAssetGUID,
-                   <a href="../../properties/DatabaseTableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseTableProperties</a>&nbsp;databaseTableProperties)</code></th>
+                   <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database table.</div>
 </td>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTableForSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">createDatabaseTableForSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTableForSchemaType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">createDatabaseTableForSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                 java.lang.String&nbsp;userId,
-                                java.lang.String&nbsp;databaseManagerGUID,
-                                java.lang.String&nbsp;databaseManagerName,
-                                java.lang.String&nbsp;databaseSchemaTypeGUID,
-                                <a href="../../properties/DatabaseTableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseTableProperties</a>&nbsp;databaseTableProperties)</code></th>
+                                <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database table.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTableFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseTableFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseTableFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">createDatabaseTableFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                java.lang.String&nbsp;userId,
-                               java.lang.String&nbsp;databaseManagerGUID,
-                               java.lang.String&nbsp;databaseManagerName,
                                java.lang.String&nbsp;templateGUID,
-                               java.lang.String&nbsp;databaseAssetGUID,
-                               <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
+                               <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database table using an existing metadata element as a template.</div>
 </td>
 </tr>
 <tr id="i12" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">createDatabaseView</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseView(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">createDatabaseView</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;userId,
-                  java.lang.String&nbsp;databaseManagerGUID,
-                  java.lang.String&nbsp;databaseManagerName,
-                  java.lang.String&nbsp;databaseAssetGUID,
-                  <a href="../../properties/DatabaseViewProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseViewProperties</a>&nbsp;databaseViewProperties)</code></th>
+                  <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database view.</div>
 </td>
 </tr>
 <tr id="i13" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseViewForSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">createDatabaseViewForSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseViewForSchemaType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">createDatabaseViewForSchemaType</a></span>&#8203;(java.lang.String&nbsp;serverName,
                                java.lang.String&nbsp;userId,
-                               java.lang.String&nbsp;databaseManagerGUID,
-                               java.lang.String&nbsp;databaseManagerName,
-                               java.lang.String&nbsp;databaseSchemaTypeGUID,
-                               <a href="../../properties/DatabaseViewProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseViewProperties</a>&nbsp;databaseViewProperties)</code></th>
+                               <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database view.</div>
 </td>
 </tr>
 <tr id="i14" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseViewFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">createDatabaseViewFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDatabaseViewFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">createDatabaseViewFromTemplate</a></span>&#8203;(java.lang.String&nbsp;serverName,
                               java.lang.String&nbsp;userId,
-                              java.lang.String&nbsp;databaseManagerGUID,
-                              java.lang.String&nbsp;databaseManagerName,
                               java.lang.String&nbsp;templateGUID,
-                              java.lang.String&nbsp;databaseAssetGUID,
-                              <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</code></th>
+                              <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Create a new metadata element to represent a database view using an existing metadata element as a template.</div>
 </td>
@@ -576,202 +536,176 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i35" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">publishDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">publishDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;userId,
                java.lang.String&nbsp;databaseGUID,
-               <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+               <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the zones for the database asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
 <tr id="i36" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">publishDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#publishDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">publishDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;databaseSchemaGUID,
-                     <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+                     <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the zones for the database asset so that it becomes visible to consumers.</div>
 </td>
 </tr>
 <tr id="i37" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">removeDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">removeDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
-              java.lang.String&nbsp;databaseManagerGUID,
-              java.lang.String&nbsp;databaseManagerName,
               java.lang.String&nbsp;databaseGUID,
-              java.lang.String&nbsp;qualifiedName,
-              <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+              <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database.</div>
 </td>
 </tr>
 <tr id="i38" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">removeDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">removeDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
-                    java.lang.String&nbsp;databaseManagerGUID,
-                    java.lang.String&nbsp;databaseManagerName,
                     java.lang.String&nbsp;databaseColumnGUID,
-                    java.lang.String&nbsp;qualifiedName,
-                    <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+                    <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database column.</div>
 </td>
 </tr>
 <tr id="i39" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">removeDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">removeDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
-                    java.lang.String&nbsp;databaseManagerGUID,
-                    java.lang.String&nbsp;databaseManagerName,
                     java.lang.String&nbsp;databaseSchemaGUID,
-                    java.lang.String&nbsp;qualifiedName,
-                    <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+                    <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database schema.</div>
 </td>
 </tr>
 <tr id="i40" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">removeDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">removeDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
-                   java.lang.String&nbsp;databaseManagerGUID,
-                   java.lang.String&nbsp;databaseManagerName,
                    java.lang.String&nbsp;databaseTableGUID,
-                   java.lang.String&nbsp;qualifiedName,
-                   <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+                   <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database table.</div>
 </td>
 </tr>
 <tr id="i41" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">removeDatabaseView</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">removeDatabaseView</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;userId,
-                  java.lang.String&nbsp;databaseManagerGUID,
-                  java.lang.String&nbsp;databaseManagerName,
                   java.lang.String&nbsp;databaseViewGUID,
-                  java.lang.String&nbsp;qualifiedName,
-                  <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+                  <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Remove the metadata element representing a database table.</div>
 </td>
 </tr>
 <tr id="i42" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">removeForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removeForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">removeForeignKeyRelationship</a></span>&#8203;(java.lang.String&nbsp;serverName,
                             java.lang.String&nbsp;userId,
-                            java.lang.String&nbsp;databaseManagerGUID,
-                            java.lang.String&nbsp;databaseManagerName,
                             java.lang.String&nbsp;primaryKeyColumnGUID,
                             java.lang.String&nbsp;foreignKeyColumnGUID,
-                            <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+                            <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Remove the foreign key relationship for the requested columns.</div>
 </td>
 </tr>
 <tr id="i43" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removePrimaryKeyFromColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">removePrimaryKeyFromColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removePrimaryKeyFromColumn(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">removePrimaryKeyFromColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
                           java.lang.String&nbsp;userId,
-                          java.lang.String&nbsp;databaseManagerGUID,
-                          java.lang.String&nbsp;databaseManagerName,
                           java.lang.String&nbsp;databaseColumnGUID,
-                          <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+                          <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Remove the classification that this column is a primary key.</div>
 </td>
 </tr>
 <tr id="i44" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPrimaryKeyOnColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties)">setPrimaryKeyOnColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setPrimaryKeyOnColumn(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">setPrimaryKeyOnColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;userId,
-                     java.lang.String&nbsp;databaseManagerGUID,
-                     java.lang.String&nbsp;databaseManagerName,
                      java.lang.String&nbsp;databaseColumnGUID,
-                     <a href="../../properties/DatabasePrimaryKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabasePrimaryKeyProperties</a>&nbsp;databasePrimaryKeyProperties)</code></th>
+                     <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Classify a column in a database table as the primary key.</div>
 </td>
 </tr>
 <tr id="i45" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">updateDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabase(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">updateDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
-              java.lang.String&nbsp;databaseManagerGUID,
-              java.lang.String&nbsp;databaseManagerName,
               java.lang.String&nbsp;databaseGUID,
-              <a href="../../properties/DatabaseProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseProperties</a>&nbsp;databaseProperties)</code></th>
+              boolean&nbsp;isMergeUpdate,
+              <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database.</div>
 </td>
 </tr>
 <tr id="i46" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">updateDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">updateDatabaseColumn</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
-                    java.lang.String&nbsp;databaseManagerGUID,
-                    java.lang.String&nbsp;databaseManagerName,
                     java.lang.String&nbsp;databaseColumnGUID,
-                    <a href="../../properties/DatabaseColumnProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseColumnProperties</a>&nbsp;databaseColumnProperties)</code></th>
+                    boolean&nbsp;isMergeUpdate,
+                    <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database column.</div>
 </td>
 </tr>
 <tr id="i47" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">updateDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">updateDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
                     java.lang.String&nbsp;userId,
-                    java.lang.String&nbsp;databaseManagerGUID,
-                    java.lang.String&nbsp;databaseManagerName,
                     java.lang.String&nbsp;databaseSchemaGUID,
-                    <a href="../../properties/DatabaseSchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseSchemaProperties</a>&nbsp;databaseSchemaProperties)</code></th>
+                    boolean&nbsp;isMergeUpdate,
+                    <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database schema.</div>
 </td>
 </tr>
 <tr id="i48" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">updateDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">updateDatabaseTable</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
-                   java.lang.String&nbsp;databaseManagerGUID,
-                   java.lang.String&nbsp;databaseManagerName,
                    java.lang.String&nbsp;databaseTableGUID,
-                   <a href="../../properties/DatabaseTableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseTableProperties</a>&nbsp;databaseTableProperties)</code></th>
+                   boolean&nbsp;isMergeUpdate,
+                   <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database table.</div>
 </td>
 </tr>
 <tr id="i49" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">updateDatabaseView</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">updateDatabaseView</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;userId,
-                  java.lang.String&nbsp;databaseManagerGUID,
-                  java.lang.String&nbsp;databaseManagerName,
                   java.lang.String&nbsp;databaseViewGUID,
-                  <a href="../../properties/DatabaseViewProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseViewProperties</a>&nbsp;databaseViewProperties)</code></th>
+                  boolean&nbsp;isMergeUpdate,
+                  <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the metadata element representing a database table.</div>
 </td>
 </tr>
 <tr id="i50" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">withdrawDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">withdrawDatabase</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;databaseGUID,
-                <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+                <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the zones for the database asset so that it is no longer visible to consumers.</div>
 </td>
 </tr>
 <tr id="i51" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">withdrawDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#withdrawDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">withdrawDatabaseSchema</a></span>&#8203;(java.lang.String&nbsp;serverName,
                       java.lang.String&nbsp;userId,
                       java.lang.String&nbsp;databaseSchemaGUID,
-                      <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</code></th>
+                      <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</code></th>
 <td class="colLast">
 <div class="block">Update the zones for the database asset so that it is no longer visible to consumers.</div>
 </td>
@@ -820,31 +754,25 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">
+<a id="createDatabase(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabase</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases")
+<pre class="methodSignature">@PostMapping(path="/databases")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabase&#8203;(@PathVariable
                                    java.lang.String&nbsp;serverName,
                                    @PathVariable
                                    java.lang.String&nbsp;userId,
-                                   @PathVariable
-                                   java.lang.String&nbsp;databaseManagerGUID,
-                                   @PathVariable
-                                   java.lang.String&nbsp;databaseManagerName,
                                    @RequestBody
-                                   <a href="../../properties/DatabaseProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseProperties</a>&nbsp;databaseProperties)</pre>
+                                   <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
-<dd><code>databaseProperties</code> - properties to store</dd>
+<dd><code>requestBody</code> - properties to store</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element or
  InvalidParameterException  one of the parameters is invalid or
@@ -853,34 +781,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="createDatabaseFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">
+<a id="createDatabaseFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseFromTemplate</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/from-template/{templateGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/from-template/{templateGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseFromTemplate&#8203;(@PathVariable
                                                java.lang.String&nbsp;serverName,
                                                @PathVariable
                                                java.lang.String&nbsp;userId,
                                                @PathVariable
-                                               java.lang.String&nbsp;databaseManagerGUID,
-                                               @PathVariable
-                                               java.lang.String&nbsp;databaseManagerName,
-                                               @PathVariable
                                                java.lang.String&nbsp;templateGUID,
                                                @RequestBody
-                                               <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</pre>
+                                               <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database using an existing metadata element as a template.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>templateProperties</code> - properties that override the template</dd>
+<dd><code>requestBody</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element or
  InvalidParameterException  one of the parameters is invalid or
@@ -889,34 +811,31 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="updateDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties)">
+<a id="updateDatabase(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateDatabase</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/{databaseGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/{databaseGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateDatabase&#8203;(@PathVariable
                                    java.lang.String&nbsp;serverName,
                                    @PathVariable
                                    java.lang.String&nbsp;userId,
                                    @PathVariable
-                                   java.lang.String&nbsp;databaseManagerGUID,
-                                   @PathVariable
-                                   java.lang.String&nbsp;databaseManagerName,
-                                   @PathVariable
                                    java.lang.String&nbsp;databaseGUID,
+                                   @RequestParam(required=false)
+                                   boolean&nbsp;isMergeUpdate,
                                    @RequestBody
-                                   <a href="../../properties/DatabaseProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseProperties</a>&nbsp;databaseProperties)</pre>
+                                   <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update the metadata element representing a database.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>databaseProperties</code> - new properties for this element</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>requestBody</code> - new properties for this element</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -925,7 +844,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="publishDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="publishDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -939,7 +858,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                     @PathVariable
                                     java.lang.String&nbsp;databaseGUID,
                                     @RequestBody(required=false)
-                                    <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                    <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update the zones for the database asset so that it becomes visible to consumers.
  (The zones are set to the list of zones in the publishedZones option configured for each
  instance of the Data Manager OMAS).</div>
@@ -948,7 +867,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseGUID</code> - unique identifier of the metadata element to publish</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - classification request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -957,7 +876,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="withdrawDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="withdrawDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -971,7 +890,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                      @PathVariable
                                      java.lang.String&nbsp;databaseGUID,
                                      @RequestBody(required=false)
-                                     <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                     <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update the zones for the database asset so that it is no longer visible to consumers.
  (The zones are set to the list of zones in the defaultZones option configured for each
  instance of the Data Manager OMAS.  This is the setting when the database is first created).</div>
@@ -980,7 +899,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseGUID</code> - unique identifier of the metadata element to withdraw</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - classification request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -989,37 +908,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="removeDatabase(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="removeDatabase(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>removeDatabase</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/{databaseGUID}/{qualifiedName}/delete")
+<pre class="methodSignature">@PostMapping(path="/databases/{databaseGUID}/delete")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;removeDatabase&#8203;(@PathVariable
                                    java.lang.String&nbsp;serverName,
                                    @PathVariable
                                    java.lang.String&nbsp;userId,
                                    @PathVariable
-                                   java.lang.String&nbsp;databaseManagerGUID,
-                                   @PathVariable
-                                   java.lang.String&nbsp;databaseManagerName,
-                                   @PathVariable
                                    java.lang.String&nbsp;databaseGUID,
-                                   @PathVariable
-                                   java.lang.String&nbsp;qualifiedName,
                                    @RequestBody(required=false)
-                                   <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                   <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Remove the metadata element representing a database.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - empty request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -1159,34 +1069,25 @@ public&nbsp;<a href="../../rest/DatabaseResponse.html" title="class in org.odpi.
 </dl>
 </li>
 </ul>
-<a id="createDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">
+<a id="createDatabaseSchema(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseSchema</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/{databaseGUID}/schemas")
+<pre class="methodSignature">@PostMapping(path="/databases/schemas")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseSchema&#8203;(@PathVariable
                                          java.lang.String&nbsp;serverName,
                                          @PathVariable
                                          java.lang.String&nbsp;userId,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseManagerGUID,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseManagerName,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseGUID,
                                          @RequestBody
-                                         <a href="../../properties/DatabaseSchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseSchemaProperties</a>&nbsp;databaseSchemaProperties)</pre>
+                                         <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database schema.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
-<dd><code>databaseGUID</code> - unique identifier of the database where the schema is located</dd>
-<dd><code>databaseSchemaProperties</code> - properties about the database schema</dd>
+<dd><code>requestBody</code> - properties about the database schema</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new database schema or
  InvalidParameterException  one of the parameters is invalid or
@@ -1195,37 +1096,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="createDatabaseSchemaFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">
+<a id="createDatabaseSchemaFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseSchemaFromTemplate</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/{databaseGUID}/schemas/from-template/{templateGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/schemas/from-template/{templateGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseSchemaFromTemplate&#8203;(@PathVariable
                                                      java.lang.String&nbsp;serverName,
                                                      @PathVariable
                                                      java.lang.String&nbsp;userId,
                                                      @PathVariable
-                                                     java.lang.String&nbsp;databaseManagerGUID,
-                                                     @PathVariable
-                                                     java.lang.String&nbsp;databaseManagerName,
-                                                     @PathVariable
                                                      java.lang.String&nbsp;templateGUID,
-                                                     @PathVariable
-                                                     java.lang.String&nbsp;databaseGUID,
                                                      @RequestBody
-                                                     <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</pre>
+                                                     <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database schema using an existing metadata element as a template.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>databaseGUID</code> - unique identifier of the database where the schema is located</dd>
-<dd><code>templateProperties</code> - properties that override the template</dd>
+<dd><code>requestBody</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new database schema or
  InvalidParameterException  one of the parameters is invalid or
@@ -1234,34 +1126,31 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties)">
+<a id="updateDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateDatabaseSchema</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/schemas/{databaseSchemaGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateDatabaseSchema&#8203;(@PathVariable
                                          java.lang.String&nbsp;serverName,
                                          @PathVariable
                                          java.lang.String&nbsp;userId,
                                          @PathVariable
-                                         java.lang.String&nbsp;databaseManagerGUID,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseManagerName,
-                                         @PathVariable
                                          java.lang.String&nbsp;databaseSchemaGUID,
+                                         @RequestParam(required=false)
+                                         boolean&nbsp;isMergeUpdate,
                                          @RequestBody
-                                         <a href="../../properties/DatabaseSchemaProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseSchemaProperties</a>&nbsp;databaseSchemaProperties)</pre>
+                                         <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update the metadata element representing a database schema.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseSchemaGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>databaseSchemaProperties</code> - new properties for the metadata element</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>requestBody</code> - new properties for the metadata element</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -1270,7 +1159,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="publishDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="publishDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1284,7 +1173,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                           @PathVariable
                                           java.lang.String&nbsp;databaseSchemaGUID,
                                           @RequestBody(required=false)
-                                          <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                          <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update the zones for the database asset so that it becomes visible to consumers.
  (The zones are set to the list of zones in the publishedZones option configured for each
  instance of the Data Manager OMAS).</div>
@@ -1293,7 +1182,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseSchemaGUID</code> - unique identifier of the metadata element to publish</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - classification request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -1302,7 +1191,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="withdrawDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="withdrawDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -1316,7 +1205,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
                                            @PathVariable
                                            java.lang.String&nbsp;databaseSchemaGUID,
                                            @RequestBody(required=false)
-                                           <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                           <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update the zones for the database asset so that it is no longer visible to consumers.
  (The zones are set to the list of zones in the defaultZones option configured for each
  instance of the Data Manager OMAS.  This is the setting when the database is first created).</div>
@@ -1325,7 +1214,7 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>databaseSchemaGUID</code> - unique identifier of the metadata element to withdraw</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - classification request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -1334,37 +1223,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="removeDatabaseSchema(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>removeDatabaseSchema</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/schemas/{databaseSchemaGUID}/{qualifiedName}/delete")
+<pre class="methodSignature">@PostMapping(path="/databases/schemas/{databaseSchemaGUID}/delete")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;removeDatabaseSchema&#8203;(@PathVariable
                                          java.lang.String&nbsp;serverName,
                                          @PathVariable
                                          java.lang.String&nbsp;userId,
                                          @PathVariable
-                                         java.lang.String&nbsp;databaseManagerGUID,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseManagerName,
-                                         @PathVariable
                                          java.lang.String&nbsp;databaseSchemaGUID,
-                                         @PathVariable
-                                         java.lang.String&nbsp;qualifiedName,
                                          @RequestBody(required=false)
-                                         <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                         <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Remove the metadata element representing a database schema.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseSchemaGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - external source request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -1501,30 +1381,24 @@ public&nbsp;<a href="../../rest/DatabaseSchemaResponse.html" title="class in org
 </dl>
 </li>
 </ul>
-<a id="createDatabaseSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<a id="createDatabaseSchemaType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseSchemaType</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/schema-type")
+<pre class="methodSignature">@PostMapping(path="/databases/schema-type")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseSchemaType&#8203;(@PathVariable
                                              java.lang.String&nbsp;serverName,
                                              @PathVariable
                                              java.lang.String&nbsp;userId,
-                                             @PathVariable
-                                             java.lang.String&nbsp;databaseManagerGUID,
-                                             @PathVariable
-                                             java.lang.String&nbsp;databaseManagerName,
                                              @RequestBody
-                                             <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</pre>
+                                             <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a database top-level schema type used to attach tables and views to the database/database schema.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - guid of the software server capability entity that represented the external source - null for local</dd>
-<dd><code>databaseManagerName</code> - name of the software server capability entity that represented the external source - null for local</dd>
 <dd><code>requestBody</code> - qualified name of the schema type - suggest "SchemaOf:" + asset's qualified name</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the database schema type or
@@ -1534,35 +1408,29 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="attachSchemaTypeToDatabaseAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="attachSchemaTypeToDatabaseAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.RelationshipRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>attachSchemaTypeToDatabaseAsset</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/schema-type/{schemaTypeGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/{databaseAssetGUID}/schema-type/{schemaTypeGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;attachSchemaTypeToDatabaseAsset&#8203;(@PathVariable
                                                     java.lang.String&nbsp;serverName,
                                                     @PathVariable
                                                     java.lang.String&nbsp;userId,
                                                     @PathVariable
-                                                    java.lang.String&nbsp;databaseManagerGUID,
-                                                    @PathVariable
-                                                    java.lang.String&nbsp;databaseManagerName,
-                                                    @PathVariable
                                                     java.lang.String&nbsp;databaseAssetGUID,
                                                     @PathVariable
                                                     java.lang.String&nbsp;schemaTypeGUID,
                                                     @RequestBody(required=false)
-                                                    <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</pre>
+                                                    <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Link the schema type and asset.  This is called from outside the AssetHandler.  The databaseAssetGUID is checked to ensure the
  asset exists and updates are allowed.  If there is already a schema attached, it is deleted.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - guid of the software server capability entity that represented the external source - null for local</dd>
-<dd><code>databaseManagerName</code> - name of the software server capability entity that represented the external source - null for local</dd>
 <dd><code>databaseAssetGUID</code> - unique identifier of the asset to connect the schema to</dd>
 <dd><code>schemaTypeGUID</code> - identifier for schema Type object</dd>
 <dd><code>requestBody</code> - null request body</dd>
@@ -1574,34 +1442,25 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="createDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">
+<a id="createDatabaseTable(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseTable</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables")
+<pre class="methodSignature">@PostMapping(path="/databases/tables")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseTable&#8203;(@PathVariable
                                         java.lang.String&nbsp;serverName,
                                         @PathVariable
                                         java.lang.String&nbsp;userId,
-                                        @PathVariable
-                                        java.lang.String&nbsp;databaseManagerGUID,
-                                        @PathVariable
-                                        java.lang.String&nbsp;databaseManagerName,
-                                        @PathVariable
-                                        java.lang.String&nbsp;databaseAssetGUID,
                                         @RequestBody
-                                        <a href="../../properties/DatabaseTableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseTableProperties</a>&nbsp;databaseTableProperties)</pre>
+                                        <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database table.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
-<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database table is located.</dd>
-<dd><code>databaseTableProperties</code> - properties for the database table</dd>
+<dd><code>requestBody</code> - properties for the database table</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database table or
  InvalidParameterException  one of the parameters is invalid or
@@ -1610,37 +1469,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="createDatabaseTableFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">
+<a id="createDatabaseTableFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseTableFromTemplate</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables/from-template/{templateGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/from-template/{templateGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseTableFromTemplate&#8203;(@PathVariable
                                                     java.lang.String&nbsp;serverName,
                                                     @PathVariable
                                                     java.lang.String&nbsp;userId,
                                                     @PathVariable
-                                                    java.lang.String&nbsp;databaseManagerGUID,
-                                                    @PathVariable
-                                                    java.lang.String&nbsp;databaseManagerName,
-                                                    @PathVariable
                                                     java.lang.String&nbsp;templateGUID,
-                                                    @PathVariable
-                                                    java.lang.String&nbsp;databaseAssetGUID,
                                                     @RequestBody
-                                                    <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</pre>
+                                                    <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database table using an existing metadata element as a template.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database table is located.</dd>
-<dd><code>templateProperties</code> - properties that override the template</dd>
+<dd><code>requestBody</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new database table or
  InvalidParameterException  one of the parameters is invalid or
@@ -1649,34 +1499,25 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="createDatabaseTableForSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">
+<a id="createDatabaseTableForSchemaType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseTableForSchemaType</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/schema-type/{databaseSchemaTypeGUID}/tables")
+<pre class="methodSignature">@PostMapping(path="/databases/schema-type/tables")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseTableForSchemaType&#8203;(@PathVariable
                                                      java.lang.String&nbsp;serverName,
                                                      @PathVariable
                                                      java.lang.String&nbsp;userId,
-                                                     @PathVariable
-                                                     java.lang.String&nbsp;databaseManagerGUID,
-                                                     @PathVariable
-                                                     java.lang.String&nbsp;databaseManagerName,
-                                                     @PathVariable
-                                                     java.lang.String&nbsp;databaseSchemaTypeGUID,
                                                      @RequestBody
-                                                     <a href="../../properties/DatabaseTableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseTableProperties</a>&nbsp;databaseTableProperties)</pre>
+                                                     <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database table.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
-<dd><code>databaseSchemaTypeGUID</code> - unique identifier of the database or database schema where the database table is located</dd>
-<dd><code>databaseTableProperties</code> - properties for the database table</dd>
+<dd><code>requestBody</code> - properties for the database table</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database table or
   InvalidParameterException  one of the parameters is invalid
@@ -1685,34 +1526,31 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties)">
+<a id="updateDatabaseTable(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateDatabaseTable</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/{databaseTableGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateDatabaseTable&#8203;(@PathVariable
                                         java.lang.String&nbsp;serverName,
                                         @PathVariable
                                         java.lang.String&nbsp;userId,
                                         @PathVariable
-                                        java.lang.String&nbsp;databaseManagerGUID,
-                                        @PathVariable
-                                        java.lang.String&nbsp;databaseManagerName,
-                                        @PathVariable
                                         java.lang.String&nbsp;databaseTableGUID,
+                                        @RequestParam(required=false)
+                                        boolean&nbsp;isMergeUpdate,
                                         @RequestBody
-                                        <a href="../../properties/DatabaseTableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseTableProperties</a>&nbsp;databaseTableProperties)</pre>
+                                        <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update the metadata element representing a database table.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseTableGUID</code> - unique identifier of the database table to update</dd>
-<dd><code>databaseTableProperties</code> - new properties for the database table</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>requestBody</code> - new properties for the database table</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -1721,37 +1559,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="removeDatabaseTable(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>removeDatabaseTable</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}/{qualifiedName}/delete")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/{databaseTableGUID}/delete")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;removeDatabaseTable&#8203;(@PathVariable
                                         java.lang.String&nbsp;serverName,
                                         @PathVariable
                                         java.lang.String&nbsp;userId,
                                         @PathVariable
-                                        java.lang.String&nbsp;databaseManagerGUID,
-                                        @PathVariable
-                                        java.lang.String&nbsp;databaseManagerName,
-                                        @PathVariable
                                         java.lang.String&nbsp;databaseTableGUID,
-                                        @PathVariable
-                                        java.lang.String&nbsp;qualifiedName,
                                         @RequestBody(required=false)
-                                        <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                        <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Remove the metadata element representing a database table.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseTableGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - empty request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -1800,7 +1629,7 @@ public&nbsp;<a href="../../rest/DatabaseTablesResponse.html" title="class in org
 <ul class="blockList">
 <li class="blockList">
 <h4>getTablesForDatabaseAsset</h4>
-<pre class="methodSignature">@GetMapping(path="/databases/assets/{databaseAssetGUID}/tables")
+<pre class="methodSignature">@GetMapping(path="/databases/{databaseAssetGUID}/tables")
 public&nbsp;<a href="../../rest/DatabaseTablesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DatabaseTablesResponse</a>&nbsp;getTablesForDatabaseAsset&#8203;(@PathVariable
                                                         java.lang.String&nbsp;serverName,
                                                         @PathVariable
@@ -1888,34 +1717,25 @@ public&nbsp;<a href="../../rest/DatabaseTableResponse.html" title="class in org.
 </dl>
 </li>
 </ul>
-<a id="createDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">
+<a id="createDatabaseView(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseView</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables/views")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/views")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseView&#8203;(@PathVariable
                                        java.lang.String&nbsp;serverName,
                                        @PathVariable
                                        java.lang.String&nbsp;userId,
-                                       @PathVariable
-                                       java.lang.String&nbsp;databaseManagerGUID,
-                                       @PathVariable
-                                       java.lang.String&nbsp;databaseManagerName,
-                                       @PathVariable
-                                       java.lang.String&nbsp;databaseAssetGUID,
                                        @RequestBody
-                                       <a href="../../properties/DatabaseViewProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseViewProperties</a>&nbsp;databaseViewProperties)</pre>
+                                       <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database view.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
-<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database view is located.</dd>
-<dd><code>databaseViewProperties</code> - properties for the new view</dd>
+<dd><code>requestBody</code> - properties for the new view</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database view or
  InvalidParameterException  one of the parameters is invalid or
@@ -1924,37 +1744,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="createDatabaseViewFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">
+<a id="createDatabaseViewFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseViewFromTemplate</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/{databaseAssetGUID}/tables/views/from-template/{templateGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/views/from-template/{templateGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseViewFromTemplate&#8203;(@PathVariable
                                                    java.lang.String&nbsp;serverName,
                                                    @PathVariable
                                                    java.lang.String&nbsp;userId,
                                                    @PathVariable
-                                                   java.lang.String&nbsp;databaseManagerGUID,
-                                                   @PathVariable
-                                                   java.lang.String&nbsp;databaseManagerName,
-                                                   @PathVariable
                                                    java.lang.String&nbsp;templateGUID,
-                                                   @PathVariable
-                                                   java.lang.String&nbsp;databaseAssetGUID,
                                                    @RequestBody
-                                                   <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</pre>
+                                                   <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database view using an existing metadata element as a template.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>databaseAssetGUID</code> - unique identifier of the database or database schema where the database view is located.</dd>
-<dd><code>templateProperties</code> - properties that override the template</dd>
+<dd><code>requestBody</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database view or
  InvalidParameterException  one of the parameters is invalid or
@@ -1963,34 +1774,25 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="createDatabaseViewForSchemaType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">
+<a id="createDatabaseViewForSchemaType(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseViewForSchemaType</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/assets/schema-type/{databaseSchemaTypeGUID}/tables/views")
+<pre class="methodSignature">@PostMapping(path="/databases/schema-type/tables/views")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseViewForSchemaType&#8203;(@PathVariable
                                                     java.lang.String&nbsp;serverName,
                                                     @PathVariable
                                                     java.lang.String&nbsp;userId,
-                                                    @PathVariable
-                                                    java.lang.String&nbsp;databaseManagerGUID,
-                                                    @PathVariable
-                                                    java.lang.String&nbsp;databaseManagerName,
-                                                    @PathVariable
-                                                    java.lang.String&nbsp;databaseSchemaTypeGUID,
                                                     @RequestBody
-                                                    <a href="../../properties/DatabaseViewProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseViewProperties</a>&nbsp;databaseViewProperties)</pre>
+                                                    <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database view.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the DBMS</dd>
-<dd><code>databaseSchemaTypeGUID</code> - unique identifier of the schema type where the database view is located.</dd>
-<dd><code>databaseViewProperties</code> - properties for the new view</dd>
+<dd><code>requestBody</code> - properties for the new view</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database view or
   InvalidParameterException  one of the parameters is invalid
@@ -1999,34 +1801,31 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties)">
+<a id="updateDatabaseView(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateDatabaseView</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/views/{databaseViewGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/views/{databaseViewGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateDatabaseView&#8203;(@PathVariable
                                        java.lang.String&nbsp;serverName,
                                        @PathVariable
                                        java.lang.String&nbsp;userId,
                                        @PathVariable
-                                       java.lang.String&nbsp;databaseManagerGUID,
-                                       @PathVariable
-                                       java.lang.String&nbsp;databaseManagerName,
-                                       @PathVariable
                                        java.lang.String&nbsp;databaseViewGUID,
+                                       @RequestParam(required=false)
+                                       boolean&nbsp;isMergeUpdate,
                                        @RequestBody
-                                       <a href="../../properties/DatabaseViewProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseViewProperties</a>&nbsp;databaseViewProperties)</pre>
+                                       <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update the metadata element representing a database table.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseViewGUID</code> - unique identifier of the database view to update</dd>
-<dd><code>databaseViewProperties</code> - properties for the new database view</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>requestBody</code> - properties for the new database view</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -2035,37 +1834,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="removeDatabaseView(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>removeDatabaseView</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/views/{databaseViewGUID}/{qualifiedName}/delete")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/views/{databaseViewGUID}/delete")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;removeDatabaseView&#8203;(@PathVariable
                                        java.lang.String&nbsp;serverName,
                                        @PathVariable
                                        java.lang.String&nbsp;userId,
                                        @PathVariable
-                                       java.lang.String&nbsp;databaseManagerGUID,
-                                       @PathVariable
-                                       java.lang.String&nbsp;databaseManagerName,
-                                       @PathVariable
                                        java.lang.String&nbsp;databaseViewGUID,
-                                       @PathVariable
-                                       java.lang.String&nbsp;qualifiedName,
                                        @RequestBody(required=false)
-                                       <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                       <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Remove the metadata element representing a database table.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseViewGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - external source request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -2114,7 +1904,7 @@ public&nbsp;<a href="../../rest/DatabaseViewsResponse.html" title="class in org.
 <ul class="blockList">
 <li class="blockList">
 <h4>getViewsForDatabaseAsset</h4>
-<pre class="methodSignature">@GetMapping(path="/databases/assets/{databaseAssetGUID}/tables/views")
+<pre class="methodSignature">@GetMapping(path="/databases/{databaseAssetGUID}/tables/views")
 public&nbsp;<a href="../../rest/DatabaseViewsResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DatabaseViewsResponse</a>&nbsp;getViewsForDatabaseAsset&#8203;(@PathVariable
                                                       java.lang.String&nbsp;serverName,
                                                       @PathVariable
@@ -2202,34 +1992,25 @@ public&nbsp;<a href="../../rest/DatabaseViewResponse.html" title="class in org.o
 </dl>
 </li>
 </ul>
-<a id="createDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">
+<a id="createDatabaseColumn(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseColumn</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}/columns")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/columns")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseColumn&#8203;(@PathVariable
                                          java.lang.String&nbsp;serverName,
                                          @PathVariable
                                          java.lang.String&nbsp;userId,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseManagerGUID,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseManagerName,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseTableGUID,
                                          @RequestBody
-                                         <a href="../../properties/DatabaseColumnProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseColumnProperties</a>&nbsp;databaseColumnProperties)</pre>
+                                         <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database column.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
-<dd><code>databaseTableGUID</code> - unique identifier of the database table where this column is located</dd>
-<dd><code>databaseColumnProperties</code> - properties for the new column</dd>
+<dd><code>requestBody</code> - properties for the new column</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database column or
  InvalidParameterException  one of the parameters is invalid or
@@ -2238,37 +2019,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="createDatabaseColumnFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties)">
+<a id="createDatabaseColumnFromTemplate(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>createDatabaseColumnFromTemplate</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/{databaseTableGUID}/columns/from-template/{templateGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/columns/from-template/{templateGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a>&nbsp;createDatabaseColumnFromTemplate&#8203;(@PathVariable
                                                      java.lang.String&nbsp;serverName,
                                                      @PathVariable
                                                      java.lang.String&nbsp;userId,
                                                      @PathVariable
-                                                     java.lang.String&nbsp;databaseManagerGUID,
-                                                     @PathVariable
-                                                     java.lang.String&nbsp;databaseManagerName,
-                                                     @PathVariable
                                                      java.lang.String&nbsp;templateGUID,
-                                                     @PathVariable
-                                                     java.lang.String&nbsp;databaseTableGUID,
                                                      @RequestBody
-                                                     <a href="../../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">TemplateProperties</a>&nbsp;templateProperties)</pre>
+                                                     <a href="../../rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">TemplateRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a new metadata element to represent a database column using an existing metadata element as a template.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>databaseTableGUID</code> - unique identifier of the database table where this column is located</dd>
-<dd><code>templateProperties</code> - properties that override the template</dd>
+<dd><code>requestBody</code> - properties that override the template</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of the new metadata element for the database column
  InvalidParameterException  one of the parameters is invalid or
@@ -2277,34 +2049,31 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties)">
+<a id="updateDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>updateDatabaseColumn</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/columns/{databaseColumnGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;updateDatabaseColumn&#8203;(@PathVariable
                                          java.lang.String&nbsp;serverName,
                                          @PathVariable
                                          java.lang.String&nbsp;userId,
                                          @PathVariable
-                                         java.lang.String&nbsp;databaseManagerGUID,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseManagerName,
-                                         @PathVariable
                                          java.lang.String&nbsp;databaseColumnGUID,
+                                         @RequestParam(required=false)
+                                         boolean&nbsp;isMergeUpdate,
                                          @RequestBody
-                                         <a href="../../properties/DatabaseColumnProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseColumnProperties</a>&nbsp;databaseColumnProperties)</pre>
+                                         <a href="../../rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ReferenceableRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Update the metadata element representing a database column.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseColumnGUID</code> - unique identifier of the metadata element to update</dd>
-<dd><code>databaseColumnProperties</code> - new properties for the metadata element</dd>
+<dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
+<dd><code>requestBody</code> - new properties for the metadata element</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -2313,37 +2082,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="removeDatabaseColumn(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>removeDatabaseColumn</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}/{qualifiedName}/delete")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/columns/{databaseColumnGUID}/delete")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;removeDatabaseColumn&#8203;(@PathVariable
                                          java.lang.String&nbsp;serverName,
                                          @PathVariable
                                          java.lang.String&nbsp;userId,
                                          @PathVariable
-                                         java.lang.String&nbsp;databaseManagerGUID,
-                                         @PathVariable
-                                         java.lang.String&nbsp;databaseManagerName,
-                                         @PathVariable
                                          java.lang.String&nbsp;databaseColumnGUID,
-                                         @PathVariable
-                                         java.lang.String&nbsp;qualifiedName,
                                          @RequestBody(required=false)
-                                         <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                         <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Remove the metadata element representing a database column.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseColumnGUID</code> - unique identifier of the metadata element to remove</dd>
-<dd><code>qualifiedName</code> - unique name of the metadata element to remove</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - external source request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -2480,35 +2240,29 @@ public&nbsp;<a href="../../rest/DatabaseColumnResponse.html" title="class in org
 </dl>
 </li>
 </ul>
-<a id="setPrimaryKeyOnColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties)">
+<a id="setPrimaryKeyOnColumn(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setPrimaryKeyOnColumn</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}/primary-key")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/columns/{databaseColumnGUID}/primary-key")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;setPrimaryKeyOnColumn&#8203;(@PathVariable
                                           java.lang.String&nbsp;serverName,
                                           @PathVariable
                                           java.lang.String&nbsp;userId,
                                           @PathVariable
-                                          java.lang.String&nbsp;databaseManagerGUID,
-                                          @PathVariable
-                                          java.lang.String&nbsp;databaseManagerName,
-                                          @PathVariable
                                           java.lang.String&nbsp;databaseColumnGUID,
                                           @RequestBody
-                                          <a href="../../properties/DatabasePrimaryKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabasePrimaryKeyProperties</a>&nbsp;databasePrimaryKeyProperties)</pre>
+                                          <a href="../../rest/ClassificationRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ClassificationRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Classify a column in a database table as the primary key.  This means each row has a different value
- in this column and it can be used to uniquely identify the column.</div>
+ in this column, and it can be used to uniquely identify the column.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseColumnGUID</code> - unique identifier if the primary key column</dd>
-<dd><code>databasePrimaryKeyProperties</code> - properties to store</dd>
+<dd><code>requestBody</code> - properties to store</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -2517,34 +2271,28 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="removePrimaryKeyFromColumn(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="removePrimaryKeyFromColumn(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>removePrimaryKeyFromColumn</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{databaseColumnGUID}/primary-key/delete")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/columns/{databaseColumnGUID}/primary-key/delete")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;removePrimaryKeyFromColumn&#8203;(@PathVariable
                                                java.lang.String&nbsp;serverName,
                                                @PathVariable
                                                java.lang.String&nbsp;userId,
                                                @PathVariable
-                                               java.lang.String&nbsp;databaseManagerGUID,
-                                               @PathVariable
-                                               java.lang.String&nbsp;databaseManagerName,
-                                               @PathVariable
                                                java.lang.String&nbsp;databaseColumnGUID,
                                                @RequestBody(required=false)
-                                               <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                               <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Remove the classification that this column is a primary key.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>databaseColumnGUID</code> - unique identifier if the primary key column</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - external source request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -2553,38 +2301,32 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="addForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseForeignKeyProperties)">
+<a id="addForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.RelationshipRequestBody)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>addForeignKeyRelationship</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;addForeignKeyRelationship&#8203;(@PathVariable
                                               java.lang.String&nbsp;serverName,
                                               @PathVariable
                                               java.lang.String&nbsp;userId,
                                               @PathVariable
-                                              java.lang.String&nbsp;databaseManagerGUID,
-                                              @PathVariable
-                                              java.lang.String&nbsp;databaseManagerName,
-                                              @PathVariable
                                               java.lang.String&nbsp;primaryKeyColumnGUID,
                                               @PathVariable
                                               java.lang.String&nbsp;foreignKeyColumnGUID,
                                               @RequestBody
-                                              <a href="../../properties/DatabaseForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">DatabaseForeignKeyProperties</a>&nbsp;databaseForeignKeyProperties)</pre>
+                                              <a href="../../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Create a foreign relationship between two columns.  One of the columns holds the primary key of the other
  to form a link.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>primaryKeyColumnGUID</code> - unique identifier of the column containing the primary key</dd>
 <dd><code>foreignKeyColumnGUID</code> - unique identifier of the column containing the primary key from the other table</dd>
-<dd><code>databaseForeignKeyProperties</code> - properties about the foreign key relationship</dd>
+<dd><code>requestBody</code> - properties about the foreign key relationship</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
@@ -2593,37 +2335,31 @@ public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" tit
 </dl>
 </li>
 </ul>
-<a id="removeForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<a id="removeForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>removeForeignKeyRelationship</h4>
-<pre class="methodSignature">@PostMapping(path="/database-managers/{databaseManagerGUID}/{databaseManagerName}/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}/delete")
+<pre class="methodSignature">@PostMapping(path="/databases/tables/columns/{foreignKeyColumnGUID}/foreign-key/{primaryKeyColumnGUID}/delete")
 public&nbsp;<a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a>&nbsp;removeForeignKeyRelationship&#8203;(@PathVariable
                                                  java.lang.String&nbsp;serverName,
                                                  @PathVariable
                                                  java.lang.String&nbsp;userId,
                                                  @PathVariable
-                                                 java.lang.String&nbsp;databaseManagerGUID,
-                                                 @PathVariable
-                                                 java.lang.String&nbsp;databaseManagerName,
-                                                 @PathVariable
                                                  java.lang.String&nbsp;primaryKeyColumnGUID,
                                                  @PathVariable
                                                  java.lang.String&nbsp;foreignKeyColumnGUID,
                                                  @RequestBody(required=false)
-                                                 <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;nullRequestBody)</pre>
+                                                 <a href="../../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</pre>
 <div class="block">Remove the foreign key relationship for the requested columns.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>serverName</code> - name of the service to route the request to.</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>databaseManagerGUID</code> - unique identifier of software server capability representing the owning DBMS</dd>
-<dd><code>databaseManagerName</code> - unique name of software server capability representing the owning DBMS</dd>
 <dd><code>primaryKeyColumnGUID</code> - unique identifier of the column that is the linked primary key</dd>
 <dd><code>foreignKeyColumnGUID</code> - unique identifier of the column the contains the primary key from another table</dd>
-<dd><code>nullRequestBody</code> - empty request body</dd>
+<dd><code>requestBody</code> - external source request body</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>void or
  InvalidParameterException  one of the parameters is invalid or
