@@ -7,12 +7,16 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all the standard open metadata types.
@@ -155,6 +159,7 @@ public class OpenMetadataTypesArchive
          * Calls for new and changed types go here
          */
         add0053XRootSchemaType();
+        add0042ProcessingStateClassification();
 
 
     }
@@ -163,6 +168,51 @@ public class OpenMetadataTypesArchive
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    /**
+     * 0042  Add the Processing State Classification
+     */
+    private void add0042ProcessingStateClassification()
+    {
+        this.archiveBuilder.addClassificationDef(addProcessingStateClassification());
+    }
+
+    private ClassificationDef addProcessingStateClassification() {
+        final String guid = "261fb0aa-b884-4ee8-87ea-a60510e9751d";
+        final String name = "ProcessingState";
+        final String description = "Stores processing state information used by various SoftwareCapabilities.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "SoftwareCapability";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                name,
+                null,
+                description,
+                descriptionGUID,
+                this.archiveBuilder.getEntityDef(linkedToEntity),
+                true);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute property;
+
+        final String attribute1Name = "syncDatesByKey";
+        final String attribute1Description = "Collection of synchronization dates identified by a key";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
 
 
     private void add0053XRootSchemaType()

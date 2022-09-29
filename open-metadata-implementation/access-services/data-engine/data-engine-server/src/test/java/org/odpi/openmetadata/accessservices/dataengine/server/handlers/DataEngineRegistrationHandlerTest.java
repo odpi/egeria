@@ -8,38 +8,46 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.ExternalDataEnginePropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.service.ClockService;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.GUID_PROPERTY_NAME;
+import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler.SYNC_DATES_BY_KEY;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_GUID;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
@@ -69,7 +77,11 @@ class DataEngineRegistrationHandlerTest {
     @Mock
     private InvalidParameterHandler invalidParameterHandler;
 
+    @Mock
+    private ClockService clockService;
+
     @InjectMocks
+    @Spy
     private DataEngineRegistrationHandler registrationHandler;
 
     @BeforeEach
@@ -211,6 +223,84 @@ class DataEngineRegistrationHandlerTest {
         when(entityTypeDef.getGUID()).thenReturn(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID);
     }
 
+    @Test
+    void createDataEngineClassification() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, EntityNotKnownException {
+        String methodName = "createDataEngineClassification";
+        ProcessingState processingState = getProcessingState();
+        InstanceProperties properties = new InstanceProperties();
+        EntityDetail entityDetail = mock(EntityDetail.class);
+
+        SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
+
+        doReturn(GUID).when(registrationHandler).getExternalDataEngine(USER,
+                softwareServerCapability.getQualifiedName());
+
+        when(repositoryHelper.addLongMapPropertyToInstance(null, properties, SYNC_DATES_BY_KEY,
+                processingState.getSyncDatesByKey(), methodName)).thenReturn(properties);
+
+        when(softwareServerCapabilityHandler.getEntityByValue(USER, QUALIFIED_NAME, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
+                false, null, methodName)).thenReturn(entityDetail);
+
+        when(entityDetail.getClassifications()).thenReturn(null);
+
+        doNothing().when(softwareServerCapabilityHandler).setClassificationInRepository(USER, null,
+                null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, true, false, false,
+                null, methodName);
+
+        registrationHandler.createDataEngineClassification(USER, processingState, softwareServerCapability.getQualifiedName());
+
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(repositoryHelper, times(1)).addLongMapPropertyToInstance(null, properties,
+                SYNC_DATES_BY_KEY, processingState.getSyncDatesByKey(), methodName);
+        verify(softwareServerCapabilityHandler, times(1)).setClassificationInRepository(USER, null,
+                null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, true, false, false,
+                null, methodName);
+    }
+
+    @Test
+    void createDataEngineClassification_throwsUserNotAuthorizedException() throws UserNotAuthorizedException,
+            PropertyServerException,
+            InvocationTargetException,
+            NoSuchMethodException,
+            InstantiationException,
+            IllegalAccessException, InvalidParameterException {
+        String methodName = "createDataEngineClassification";
+        ProcessingState processingState = getProcessingState();
+        InstanceProperties properties = new InstanceProperties();
+        EntityDetail entityDetail = mock(EntityDetail.class);
+
+        SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
+
+        doReturn(GUID).when(registrationHandler).getExternalDataEngine(USER,
+                softwareServerCapability.getQualifiedName());
+
+        when(softwareServerCapabilityHandler.getEntityByValue(USER, QUALIFIED_NAME, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
+                false, null, methodName)).thenReturn(entityDetail);
+
+        when(entityDetail.getClassifications()).thenReturn(null);
+
+        when(repositoryHelper.addLongMapPropertyToInstance(null, properties, SYNC_DATES_BY_KEY,
+                processingState.getSyncDatesByKey(), methodName)).thenReturn(properties);
+
+        UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
+        doThrow(mockedException).when(softwareServerCapabilityHandler).setClassificationInRepository(USER, null,
+                null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, true, false, false,
+                null, methodName);
+
+        UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
+                registrationHandler.createDataEngineClassification(USER, processingState, softwareServerCapability.getQualifiedName()));
+
+        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
+    }
+
+
     private SoftwareServerCapability getSoftwareServerCapability() {
 
         SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
@@ -224,5 +314,11 @@ class DataEngineRegistrationHandlerTest {
         softwareServerCapability.setSource(SOURCE);
 
         return softwareServerCapability;
+    }
+
+    private ProcessingState getProcessingState() {
+        ProcessingState processingState = new ProcessingState();
+        processingState.setSyncDatesByKey(Collections.EMPTY_MAP);
+        return processingState;
     }
 }
