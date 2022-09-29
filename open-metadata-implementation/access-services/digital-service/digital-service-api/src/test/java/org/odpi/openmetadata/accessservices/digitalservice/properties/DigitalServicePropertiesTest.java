@@ -5,18 +5,13 @@ package org.odpi.openmetadata.accessservices.digitalservice.properties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
  * Validate that the Entity bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
-public class DigitalServiceTest
+public class DigitalServicePropertiesTest
 {
     private String                            displayName              = "TestDisplayName";
     private String                            description              = "Description of the new Egeria Digital Service";
@@ -25,7 +20,7 @@ public class DigitalServiceTest
     /**
      * Default constructor
      */
-    public DigitalServiceTest()
+    public DigitalServicePropertiesTest()
     {
 
     }
@@ -36,9 +31,9 @@ public class DigitalServiceTest
      *
      * @return filled in object
      */
-    private DigitalService getTestObject()
+    private DigitalServiceProperties getTestObject()
     {
-        DigitalService testObject = new DigitalService();
+        DigitalServiceProperties testObject = new DigitalServiceProperties();
 
         testObject.setDisplayName(displayName);
         testObject.setDescription(description);
@@ -52,7 +47,7 @@ public class DigitalServiceTest
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(DigitalService  resultObject)
+    private void validateResultObject(DigitalServiceProperties resultObject)
     {
         assertTrue(resultObject.getDisplayName().equals(displayName));
         assertTrue(resultObject.getDescription().equals(description));
@@ -65,13 +60,13 @@ public class DigitalServiceTest
      */
     @Test public void testNullObject()
     {
-        DigitalService    nullObject = new DigitalService();
+        DigitalServiceProperties nullObject = new DigitalServiceProperties();
 
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getVersion() == null);
 
-        nullObject = new DigitalService(null);
+        nullObject = new DigitalServiceProperties(null);
 
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
@@ -90,10 +85,10 @@ public class DigitalServiceTest
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        DigitalService  sameObject = getTestObject();
+        DigitalServiceProperties sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        DigitalService  differentObject = getTestObject();
+        DigitalServiceProperties differentObject = getTestObject();
         differentObject.setDescription("Different description for the different digital service");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -106,14 +101,14 @@ public class DigitalServiceTest
     {
         assertTrue(getTestObject().hashCode() == getTestObject().hashCode());
 
-        DigitalService  testObject = getTestObject();
+        DigitalServiceProperties testObject = getTestObject();
 
         assertTrue(testObject.hashCode() != 0);
 
         /*
          * set up a differebt object.
          */
-        DigitalService  differentObject = getTestObject();
+        DigitalServiceProperties differentObject = getTestObject();
         differentObject.setDisplayName("Digital Service 2");
         differentObject.setDescription("The second digital service");
 
@@ -126,7 +121,7 @@ public class DigitalServiceTest
      */
     @Test public void testClone()
     {
-        validateResultObject(new DigitalService(getTestObject()));
+        validateResultObject(new DigitalServiceProperties(getTestObject()));
     }
 
 
@@ -153,7 +148,7 @@ public class DigitalServiceTest
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, DigitalService.class));
+            validateResultObject(objectMapper.readValue(jsonString, DigitalServiceProperties.class));
         }
         catch (Exception  exc)
         {
@@ -168,6 +163,6 @@ public class DigitalServiceTest
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("DigitalService"));
+        assertTrue(getTestObject().toString().contains("DigitalServiceProperties"));
     }
 }

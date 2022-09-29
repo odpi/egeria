@@ -15,7 +15,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -153,7 +152,8 @@ public class DataEngineSchemaAttributeHandler {
                  attribute.getDefaultValueOverride(), dataEngineCommonHandler.getSortOrder(attribute), attribute.getMinimumLength(),
                  attribute.getLength(), attribute.getPrecision(), attribute.getIsNullable(), attribute.getNativeClass(), attribute.getAliases(),
                  attribute.getAdditionalProperties(), attribute.getTypeName() != null ? attribute.getTypeName() : TABULAR_COLUMN_TYPE_NAME,
-                 null, null, null, false, false, null, methodName);
+                 null, null, null, false, false,
+                dataEngineCommonHandler.getNow(), methodName);
     }
 
     private void updateSchemaAttribute(String userId, String externalSourceGUID, String externalSourceName, String schemaAttributeGUID,
@@ -162,6 +162,6 @@ public class DataEngineSchemaAttributeHandler {
 
         SchemaAttributeBuilder schemaAttributeBuilder = getSchemaAttributeBuilder(attribute);
         schemaAttributeHandler.updateSchemaAttribute(userId, externalSourceGUID, externalSourceName, schemaAttributeGUID,
-                schemaAttributeBuilder.getInstanceProperties(methodName), false, false, null, methodName);
+                schemaAttributeBuilder.getInstanceProperties(methodName), false, false, dataEngineCommonHandler.getNow(), methodName);
     }
 }

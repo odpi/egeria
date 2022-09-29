@@ -76,6 +76,7 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseProperties new properties for this element
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -86,6 +87,7 @@ public interface DatabaseManagerInterface
                         String             databaseManagerGUID,
                         String             databaseManagerName,
                         String             databaseGUID,
+                        boolean            isMergeUpdate,
                         DatabaseProperties databaseProperties) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException;
@@ -134,7 +136,6 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -143,10 +144,9 @@ public interface DatabaseManagerInterface
     void removeDatabase(String userId,
                         String databaseManagerGUID,
                         String databaseManagerName,
-                        String databaseGUID,
-                        String qualifiedName) throws InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException;
+                        String databaseGUID) throws InvalidParameterException,
+                                                    UserNotAuthorizedException,
+                                                    PropertyServerException;
 
 
     /**
@@ -298,6 +298,7 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseSchemaGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseSchemaProperties new properties for the metadata element
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -308,6 +309,7 @@ public interface DatabaseManagerInterface
                               String                   databaseManagerGUID,
                               String                   databaseManagerName,
                               String                   databaseSchemaGUID,
+                              boolean                  isMergeUpdate,
                               DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException;
@@ -356,7 +358,6 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -365,10 +366,9 @@ public interface DatabaseManagerInterface
     void removeDatabaseSchema(String userId,
                               String databaseManagerGUID,
                               String databaseManagerName,
-                              String databaseSchemaGUID,
-                              String qualifiedName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException;
+                              String databaseSchemaGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
 
 
     /**
@@ -473,17 +473,17 @@ public interface DatabaseManagerInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String createDatabaseSchemaType(String userId,
-                                           String databaseManagerGUID,
-                                           String databaseManagerName,
-                                           String qualifiedName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+    String createDatabaseSchemaType(String userId,
+                                    String databaseManagerGUID,
+                                    String databaseManagerName,
+                                    String qualifiedName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
 
 
 
     /**
-     * Link the schema type and asset.  This is called from outside of AssetHandler.  The databaseAssetGUID is checked to ensure the
+     * Link the schema type and asset.  This is called from outside AssetHandler.  The databaseAssetGUID is checked to ensure the
      * asset exists and updates are allowed.  If there is already a schema attached, it is deleted.
      *
      * @param userId calling user
@@ -585,6 +585,7 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseTableGUID unique identifier of the database table to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseTableProperties new properties for the database table
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -595,6 +596,7 @@ public interface DatabaseManagerInterface
                              String                  databaseManagerGUID,
                              String                  databaseManagerName,
                              String                  databaseTableGUID,
+                             boolean                 isMergeUpdate,
                              DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException;
@@ -607,7 +609,6 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseTableGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -616,10 +617,9 @@ public interface DatabaseManagerInterface
     void removeDatabaseTable(String userId,
                              String databaseManagerGUID,
                              String databaseManagerName,
-                             String databaseTableGUID,
-                             String qualifiedName) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException;
+                             String databaseTableGUID) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException;
 
 
     /**
@@ -814,6 +814,7 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseViewGUID unique identifier of the database view to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseViewProperties properties for the new database view
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -824,6 +825,7 @@ public interface DatabaseManagerInterface
                             String                 databaseManagerGUID,
                             String                 databaseManagerName,
                             String                 databaseViewGUID,
+                            boolean                isMergeUpdate,
                             DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException;
@@ -836,7 +838,6 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseViewGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -845,10 +846,9 @@ public interface DatabaseManagerInterface
     void removeDatabaseView(String userId,
                             String databaseManagerGUID,
                             String databaseManagerName,
-                            String databaseViewGUID,
-                            String qualifiedName) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException;
+                            String databaseViewGUID) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException;
 
 
     /**
@@ -1023,6 +1023,7 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseColumnGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param databaseColumnProperties new properties for the metadata element
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -1033,6 +1034,7 @@ public interface DatabaseManagerInterface
                               String                   databaseManagerGUID,
                               String                   databaseManagerName,
                               String                   databaseColumnGUID,
+                              boolean                  isMergeUpdate,
                               DatabaseColumnProperties databaseColumnProperties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException;
@@ -1045,7 +1047,6 @@ public interface DatabaseManagerInterface
      * @param databaseManagerGUID unique identifier of software server capability representing the caller
      * @param databaseManagerName unique name of software server capability representing the caller
      * @param databaseColumnGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1054,10 +1055,9 @@ public interface DatabaseManagerInterface
     void removeDatabaseColumn(String userId,
                               String databaseManagerGUID,
                               String databaseManagerName,
-                              String databaseColumnGUID,
-                              String qualifiedName) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException;
+                              String databaseColumnGUID) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
 
 
     /**
@@ -1152,7 +1152,7 @@ public interface DatabaseManagerInterface
 
     /**
      * Classify a column in a database table as the primary key.  This means each row has a different value
-     * in this column and it can be used to uniquely identify the column.
+     * in this column, and it can be used to uniquely identify the column.
      *
      * @param userId calling user
      * @param databaseManagerGUID unique identifier of software server capability representing the caller

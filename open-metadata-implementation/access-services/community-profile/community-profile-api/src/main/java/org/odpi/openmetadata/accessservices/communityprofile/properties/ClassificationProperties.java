@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelationshipProperties provides the base class for relationships items.  This provides extended properties with the ability to
+ * ClassificationProperties provides the base class for classification items.  This provides extended properties with the ability to
  * set effectivity dates.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -155,7 +155,7 @@ public class ClassificationProperties implements Serializable
     @Override
     public String toString()
     {
-        return "RelationshipProperties{" +
+        return "ClassificationProperties{" +
                        "effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", extendedProperties=" + extendedProperties +
@@ -187,7 +187,7 @@ public class ClassificationProperties implements Serializable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

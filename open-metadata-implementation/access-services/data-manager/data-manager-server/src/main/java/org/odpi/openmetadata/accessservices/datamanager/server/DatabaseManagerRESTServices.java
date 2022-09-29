@@ -11,7 +11,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
@@ -52,20 +51,16 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseProperties properties to store
+     * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabase(String             serverName,
-                                       String             userId,
-                                       String             databaseManagerGUID,
-                                       String             databaseManagerName,
-                                       DatabaseProperties databaseProperties)
+    public GUIDResponse createDatabase(String                   serverName,
+                                       String                   userId,
+                                       ReferenceableRequestBody requestBody)
     {
         final String methodName = "createDatabase";
 
@@ -85,35 +80,51 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            String databaseGUID = handler.createDatabase(userId,
-                                                         databaseManagerGUID,
-                                                         databaseManagerName,
-                                                         databaseProperties.getQualifiedName(),
-                                                         databaseProperties.getDisplayName(),
-                                                         databaseProperties.getDescription(),
-                                                         databaseProperties.getPathName(),
-                                                         databaseProperties.getCreateTime(),
-                                                         databaseProperties.getModifiedTime(),
-                                                         databaseProperties.getEncodingType(),
-                                                         databaseProperties.getEncodingLanguage(),
-                                                         databaseProperties.getEncodingDescription(),
-                                                         databaseProperties.getEncodingProperties(),
-                                                         databaseProperties.getDatabaseType(),
-                                                         databaseProperties.getDatabaseVersion(),
-                                                         databaseProperties.getDatabaseInstance(),
-                                                         databaseProperties.getDatabaseImportedFrom(),
-                                                         databaseProperties.getAdditionalProperties(),
-                                                         databaseProperties.getTypeName(),
-                                                         databaseProperties.getExtendedProperties(),
-                                                         databaseProperties.getVendorProperties(),
-                                                         null,
-                                                         null,
-                                                         false,
-                                                         false,
-                                                         new Date(),
-                                                         methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DatabaseProperties)
+                {
+                    DatabaseProperties databaseProperties = (DatabaseProperties)requestBody.getProperties();
 
-            response.setGUID(databaseGUID);
+                    String databaseGUID = handler.createDatabase(userId,
+                                                                 requestBody.getExternalSourceGUID(),
+                                                                 requestBody.getExternalSourceName(),
+                                                                 databaseProperties.getQualifiedName(),
+                                                                 databaseProperties.getDisplayName(),
+                                                                 databaseProperties.getDescription(),
+                                                                 databaseProperties.getPathName(),
+                                                                 databaseProperties.getCreateTime(),
+                                                                 databaseProperties.getModifiedTime(),
+                                                                 databaseProperties.getEncodingType(),
+                                                                 databaseProperties.getEncodingLanguage(),
+                                                                 databaseProperties.getEncodingDescription(),
+                                                                 databaseProperties.getEncodingProperties(),
+                                                                 databaseProperties.getDatabaseType(),
+                                                                 databaseProperties.getDatabaseVersion(),
+                                                                 databaseProperties.getDatabaseInstance(),
+                                                                 databaseProperties.getDatabaseImportedFrom(),
+                                                                 databaseProperties.getAdditionalProperties(),
+                                                                 databaseProperties.getTypeName(),
+                                                                 databaseProperties.getExtendedProperties(),
+                                                                 databaseProperties.getVendorProperties(),
+                                                                 databaseProperties.getEffectiveFrom(),
+                                                                 databaseProperties.getEffectiveTo(),
+                                                                 false,
+                                                                 false,
+                                                                 new Date(),
+                                                                 methodName);
+
+                    response.setGUID(databaseGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -131,22 +142,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabaseFromTemplate(String             serverName,
-                                                   String             userId,
-                                                   String             databaseManagerGUID,
-                                                   String             databaseManagerName,
-                                                   String             templateGUID,
-                                                   TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseFromTemplate(String              serverName,
+                                                   String              userId,
+                                                   String              templateGUID,
+                                                   TemplateRequestBody requestBody)
     {
         final String methodName = "createDatabaseFromTemplate";
 
@@ -166,18 +173,25 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            response.setGUID(handler.createDatabaseFromTemplate(userId,
-                                                                databaseManagerGUID,
-                                                                databaseManagerName,
-                                                                templateGUID,
-                                                                templateProperties.getQualifiedName(),
-                                                                templateProperties.getDisplayName(),
-                                                                templateProperties.getDescription(),
-                                                                templateProperties.getNetworkAddress(),
-                                                                false,
-                                                                false,
-                                                                new Date(),
-                                                                methodName));
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createDatabaseFromTemplate(userId,
+                                                                    requestBody.getExternalSourceGUID(),
+                                                                    requestBody.getExternalSourceName(),
+                                                                    templateGUID,
+                                                                    requestBody.getQualifiedName(),
+                                                                    requestBody.getDisplayName(),
+                                                                    requestBody.getDescription(),
+                                                                    requestBody.getNetworkAddress(),
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
+                                                                    methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -195,22 +209,20 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to update
-     * @param databaseProperties new properties for this element
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for this element
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateDatabase(String             serverName,
-                                       String             userId,
-                                       String             databaseManagerGUID,
-                                       String             databaseManagerName,
-                                       String             databaseGUID,
-                                       DatabaseProperties databaseProperties)
+    public VoidResponse updateDatabase(String                   serverName,
+                                       String                   userId,
+                                       String                   databaseGUID,
+                                       boolean                  isMergeUpdate,
+                                       ReferenceableRequestBody requestBody)
     {
         final String methodName = "updateDatabase";
 
@@ -230,34 +242,50 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.updateDatabase(userId,
-                                   databaseManagerGUID,
-                                   databaseManagerName,
-                                   databaseGUID,
-                                   databaseProperties.getQualifiedName(),
-                                   databaseProperties.getDisplayName(),
-                                   databaseProperties.getDescription(),
-                                   databaseProperties.getCreateTime(),
-                                   databaseProperties.getModifiedTime(),
-                                   databaseProperties.getEncodingType(),
-                                   databaseProperties.getEncodingLanguage(),
-                                   databaseProperties.getEncodingDescription(),
-                                   databaseProperties.getEncodingProperties(),
-                                   databaseProperties.getDatabaseType(),
-                                   databaseProperties.getDatabaseVersion(),
-                                   databaseProperties.getDatabaseInstance(),
-                                   databaseProperties.getDatabaseImportedFrom(),
-                                   databaseProperties.getAdditionalProperties(),
-                                   databaseProperties.getTypeName(),
-                                   databaseProperties.getExtendedProperties(),
-                                   databaseProperties.getVendorProperties(),
-                                   null,
-                                   null,
-                                   true,
-                                   false,
-                                   false,
-                                   new Date(),
-                                   methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DatabaseProperties)
+                {
+                    DatabaseProperties databaseProperties = (DatabaseProperties) requestBody.getProperties();
+
+                    handler.updateDatabase(userId,
+                                           requestBody.getExternalSourceGUID(),
+                                           requestBody.getExternalSourceName(),
+                                           databaseGUID,
+                                           databaseProperties.getQualifiedName(),
+                                           databaseProperties.getDisplayName(),
+                                           databaseProperties.getDescription(),
+                                           databaseProperties.getCreateTime(),
+                                           databaseProperties.getModifiedTime(),
+                                           databaseProperties.getEncodingType(),
+                                           databaseProperties.getEncodingLanguage(),
+                                           databaseProperties.getEncodingDescription(),
+                                           databaseProperties.getEncodingProperties(),
+                                           databaseProperties.getDatabaseType(),
+                                           databaseProperties.getDatabaseVersion(),
+                                           databaseProperties.getDatabaseInstance(),
+                                           databaseProperties.getDatabaseImportedFrom(),
+                                           databaseProperties.getAdditionalProperties(),
+                                           databaseProperties.getTypeName(),
+                                           databaseProperties.getExtendedProperties(),
+                                           databaseProperties.getVendorProperties(),
+                                           databaseProperties.getEffectiveFrom(),
+                                           databaseProperties.getEffectiveTo(),
+                                           isMergeUpdate,
+                                           false,
+                                           false,
+                                           new Date(),
+                                           methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -278,7 +306,7 @@ public class DatabaseManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseGUID unique identifier of the metadata element to publish
-     * @param nullRequestBody empty request body
+     * @param requestBody classification request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -286,10 +314,10 @@ public class DatabaseManagerRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse publishDatabase(String          serverName,
-                                        String          userId,
-                                        String          databaseGUID,
-                                        NullRequestBody nullRequestBody)
+    public VoidResponse publishDatabase(String                    serverName,
+                                        String                    userId,
+                                        String                    databaseGUID,
+                                        ClassificationRequestBody requestBody)
     {
         final String methodName = "publishDatabase";
 
@@ -335,7 +363,7 @@ public class DatabaseManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseGUID unique identifier of the metadata element to withdraw
-     * @param nullRequestBody empty request body
+     * @param requestBody classification request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -343,10 +371,10 @@ public class DatabaseManagerRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse withdrawDatabase(String          serverName,
-                                         String          userId,
-                                         String          databaseGUID,
-                                         NullRequestBody nullRequestBody)
+    public VoidResponse withdrawDatabase(String                    serverName,
+                                         String                    userId,
+                                         String                    databaseGUID,
+                                         ClassificationRequestBody requestBody)
     {
         final String methodName = "withdrawDatabase";
 
@@ -389,25 +417,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeDatabase(String          serverName,
-                                       String          userId,
-                                       String          databaseManagerGUID,
-                                       String          databaseManagerName,
-                                       String          databaseGUID,
-                                       String          qualifiedName,
-                                       NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabase(String                    serverName,
+                                       String                    userId,
+                                       String                    databaseGUID,
+                                       ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeDatabase";
 
@@ -427,15 +448,30 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabase(userId,
-                                   databaseManagerGUID,
-                                   databaseManagerName,
-                                   databaseGUID,
-                                   qualifiedName,
-                                   false,
-                                   false,
-                                   new Date(),
-                                   methodName);
+            if (requestBody != null)
+            {
+                handler.removeDatabase(userId,
+                                       requestBody.getExternalSourceGUID(),
+                                       requestBody.getExternalSourceName(),
+                                       databaseGUID,
+                                       null,
+                                       false,
+                                       false,
+                                       new Date(),
+                                       methodName);
+            }
+            else
+            {
+                handler.removeDatabase(userId,
+                                       null,
+                                       null,
+                                       databaseGUID,
+                                       null,
+                                       false,
+                                       false,
+                                       new Date(),
+                                       methodName);
+            }
         }
         catch (Exception error)
         {
@@ -710,10 +746,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseGUID unique identifier of the database where the schema is located
-     * @param databaseSchemaProperties properties about the database schema
+     * @param requestBody properties about the database schema
      *
      * @return unique identifier of the new database schema or
      * InvalidParameterException  one of the parameters is invalid or
@@ -722,10 +755,7 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseSchema(String                   serverName,
                                              String                   userId,
-                                             String                   databaseManagerGUID,
-                                             String                   databaseManagerName,
-                                             String                   databaseGUID,
-                                             DatabaseSchemaProperties databaseSchemaProperties)
+                                             ReferenceableRequestBody requestBody)
     {
         final String methodName = "createDatabaseSchema";
 
@@ -745,25 +775,41 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            String databaseSchemaGUID = handler.createDatabaseSchema(userId,
-                                                                     databaseManagerGUID,
-                                                                     databaseManagerName,
-                                                                     databaseGUID,
-                                                                     databaseSchemaProperties.getQualifiedName(),
-                                                                     databaseSchemaProperties.getDisplayName(),
-                                                                     databaseSchemaProperties.getDescription(),
-                                                                     databaseSchemaProperties.getAdditionalProperties(),
-                                                                     databaseSchemaProperties.getTypeName(),
-                                                                     databaseSchemaProperties.getExtendedProperties(),
-                                                                     databaseSchemaProperties.getVendorProperties(),
-                                                                     null,
-                                                                     null,
-                                                                     false,
-                                                                     false,
-                                                                     new Date(),
-                                                                     methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DatabaseSchemaProperties)
+                {
+                    DatabaseSchemaProperties databaseSchemaProperties = (DatabaseSchemaProperties) requestBody.getProperties();
 
-            response.setGUID(databaseSchemaGUID);
+                    String databaseSchemaGUID = handler.createDatabaseSchema(userId,
+                                                                             requestBody.getExternalSourceGUID(),
+                                                                             requestBody.getExternalSourceName(),
+                                                                             requestBody.getParentGUID(),
+                                                                             databaseSchemaProperties.getQualifiedName(),
+                                                                             databaseSchemaProperties.getDisplayName(),
+                                                                             databaseSchemaProperties.getDescription(),
+                                                                             databaseSchemaProperties.getAdditionalProperties(),
+                                                                             databaseSchemaProperties.getTypeName(),
+                                                                             databaseSchemaProperties.getExtendedProperties(),
+                                                                             databaseSchemaProperties.getVendorProperties(),
+                                                                             databaseSchemaProperties.getEffectiveFrom(),
+                                                                             databaseSchemaProperties.getEffectiveTo(),
+                                                                             false,
+                                                                             false,
+                                                                             new Date(),
+                                                                             methodName);
+
+                    response.setGUID(databaseSchemaGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseSchemaProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -781,24 +827,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseGUID unique identifier of the database where the schema is located
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new database schema or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabaseSchemaFromTemplate(String             serverName,
-                                                         String             userId,
-                                                         String             databaseManagerGUID,
-                                                         String             databaseManagerName,
-                                                         String             templateGUID,
-                                                         String             databaseGUID,
-                                                         TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseSchemaFromTemplate(String              serverName,
+                                                         String              userId,
+                                                         String              templateGUID,
+                                                         TemplateRequestBody requestBody)
     {
         final String methodName = "createDatabaseSchemaFromTemplate";
 
@@ -818,20 +858,27 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            response.setGUID(handler.createDatabaseSchemaFromTemplate(userId,
-                                                                      databaseManagerGUID,
-                                                                      databaseManagerName,
-                                                                      templateGUID,
-                                                                      databaseGUID,
-                                                                      templateProperties.getQualifiedName(),
-                                                                      templateProperties.getDisplayName(),
-                                                                      templateProperties.getDescription(),
-                                                                      null,
-                                                                      null,
-                                                                      false,
-                                                                      false,
-                                                                      new Date(),
-                                                                      methodName));
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createDatabaseSchemaFromTemplate(userId,
+                                                                          requestBody.getExternalSourceGUID(),
+                                                                          requestBody.getExternalSourceName(),
+                                                                          templateGUID,
+                                                                          requestBody.getParentGUID(),
+                                                                          requestBody.getQualifiedName(),
+                                                                          requestBody.getDisplayName(),
+                                                                          requestBody.getDescription(),
+                                                                          null,
+                                                                          null,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
+                                                                          methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -849,10 +896,9 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to update
-     * @param databaseSchemaProperties new properties for the metadata element
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for the metadata element
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -861,10 +907,9 @@ public class DatabaseManagerRESTServices
      */
     public VoidResponse updateDatabaseSchema(String                   serverName,
                                              String                   userId,
-                                             String                   databaseManagerGUID,
-                                             String                   databaseManagerName,
                                              String                   databaseSchemaGUID,
-                                             DatabaseSchemaProperties databaseSchemaProperties)
+                                             boolean                  isMergeUpdate,
+                                             ReferenceableRequestBody requestBody)
     {
         final String methodName = "updateDatabaseSchema";
 
@@ -884,30 +929,46 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.updateDatabaseSchema(userId,
-                                         databaseManagerGUID,
-                                         databaseManagerName,
-                                         databaseSchemaGUID,
-                                         databaseSchemaProperties.getQualifiedName(),
-                                         databaseSchemaProperties.getDisplayName(),
-                                         databaseSchemaProperties.getDescription(),
-                                         null,
-                                         0,
-                                         null,
-                                         null,
-                                         null,
-                                         null,
-                                         databaseSchemaProperties.getAdditionalProperties(),
-                                         databaseSchemaProperties.getTypeName(),
-                                         databaseSchemaProperties.getExtendedProperties(),
-                                         databaseSchemaProperties.getVendorProperties(),
-                                         null,
-                                         null,
-                                         true,
-                                         false,
-                                         false,
-                                         new Date(),
-                                         methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DatabaseSchemaProperties)
+                {
+                    DatabaseSchemaProperties databaseSchemaProperties = (DatabaseSchemaProperties) requestBody.getProperties();
+
+                    handler.updateDatabaseSchema(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 databaseSchemaGUID,
+                                                 databaseSchemaProperties.getQualifiedName(),
+                                                 databaseSchemaProperties.getDisplayName(),
+                                                 databaseSchemaProperties.getDescription(),
+                                                 null,
+                                                 0,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 databaseSchemaProperties.getAdditionalProperties(),
+                                                 databaseSchemaProperties.getTypeName(),
+                                                 databaseSchemaProperties.getExtendedProperties(),
+                                                 databaseSchemaProperties.getVendorProperties(),
+                                                 databaseSchemaProperties.getEffectiveFrom(),
+                                                 databaseSchemaProperties.getEffectiveTo(),
+                                                 isMergeUpdate,
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseSchemaProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -928,7 +989,7 @@ public class DatabaseManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseSchemaGUID unique identifier of the metadata element to publish
-     * @param nullRequestBody empty request body
+     * @param requestBody classification request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -936,10 +997,10 @@ public class DatabaseManagerRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse publishDatabaseSchema(String          serverName,
-                                              String          userId,
-                                              String          databaseSchemaGUID,
-                                              NullRequestBody nullRequestBody)
+    public VoidResponse publishDatabaseSchema(String                    serverName,
+                                              String                    userId,
+                                              String                    databaseSchemaGUID,
+                                              ClassificationRequestBody requestBody)
     {
         final String methodName = "publishDatabaseSchema";
 
@@ -985,7 +1046,7 @@ public class DatabaseManagerRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param databaseSchemaGUID unique identifier of the metadata element to withdraw
-     * @param nullRequestBody empty request body
+     * @param requestBody classification request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -993,10 +1054,10 @@ public class DatabaseManagerRESTServices
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse withdrawDatabaseSchema(String          serverName,
-                                               String          userId,
-                                               String          databaseSchemaGUID,
-                                               NullRequestBody nullRequestBody)
+    public VoidResponse withdrawDatabaseSchema(String                    serverName,
+                                               String                    userId,
+                                               String                    databaseSchemaGUID,
+                                               ClassificationRequestBody requestBody)
     {
         final String methodName = "withdrawDatabase";
 
@@ -1039,25 +1100,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeDatabaseSchema(String          serverName,
-                                             String          userId,
-                                             String          databaseManagerGUID,
-                                             String          databaseManagerName,
-                                             String          databaseSchemaGUID,
-                                             String          qualifiedName,
-                                             NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabaseSchema(String                    serverName,
+                                             String                    userId,
+                                             String                    databaseSchemaGUID,
+                                             ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeDatabaseSchema";
 
@@ -1077,15 +1131,30 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseSchema(userId,
-                                         databaseManagerGUID,
-                                         databaseManagerName,
-                                         databaseSchemaGUID,
-                                         qualifiedName,
-                                         false,
-                                         false,
-                                         new Date(),
-                                         methodName);
+            if (requestBody != null)
+            {
+                handler.removeDatabaseSchema(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             databaseSchemaGUID,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
+            }
+            else
+            {
+                handler.removeDatabaseSchema(userId,
+                                             null,
+                                             null,
+                                             databaseSchemaGUID,
+                                             null,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
+            }
         }
         catch (Exception error)
         {
@@ -1358,19 +1427,15 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
-     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
      * @param requestBody qualified name of the schema type - suggest "SchemaOf:" + asset's qualified name
      * @return unique identifier of the database schema type or
      *  InvalidParameterException the bean properties are invalid
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException problem accessing the property server
      */
-    public GUIDResponse createDatabaseSchemaType(String          serverName,
-                                                 String          userId,
-                                                 String          databaseManagerGUID,
-                                                 String          databaseManagerName,
-                                                 NameRequestBody requestBody)
+    public GUIDResponse createDatabaseSchemaType(String                   serverName,
+                                                 String                   userId,
+                                                 ReferenceableRequestBody requestBody)
     {
         final String methodName = "createDatabaseSchemaType";
 
@@ -1383,25 +1448,35 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            RelationalDataHandler<DatabaseElement,
+                                         DatabaseSchemaElement,
+                                         DatabaseTableElement,
+                                         DatabaseViewElement,
+                                         DatabaseColumnElement,
+                                         SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId,
+                                                                                                               serverName,
+                                                                                                               methodName);
             if (requestBody != null)
             {
-                RelationalDataHandler<DatabaseElement,
-                                             DatabaseSchemaElement,
-                                             DatabaseTableElement,
-                                             DatabaseViewElement,
-                                             DatabaseColumnElement,
-                                             SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+                if (requestBody.getProperties() instanceof DatabaseSchemaTypeProperties)
+                {
+                    DatabaseSchemaTypeProperties databaseSchemaTypeProperties = (DatabaseSchemaTypeProperties) requestBody.getProperties();
 
-                String databaseTableGUID = handler.createDatabaseSchemaType(userId,
-                                                                            databaseManagerGUID,
-                                                                            databaseManagerName,
-                                                                            requestBody.getName(),
-                                                                            null,
-                                                                            null,
-                                                                            new Date(),
-                                                                            methodName);
+                    String databaseTableGUID = handler.createDatabaseSchemaType(userId,
+                                                                                requestBody.getExternalSourceGUID(),
+                                                                                requestBody.getExternalSourceName(),
+                                                                                databaseSchemaTypeProperties.getQualifiedName(),
+                                                                                databaseSchemaTypeProperties.getEffectiveFrom(),
+                                                                                databaseSchemaTypeProperties.getEffectiveTo(),
+                                                                                new Date(),
+                                                                                methodName);
 
-                response.setGUID(databaseTableGUID);
+                    response.setGUID(databaseTableGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseSchemaTypeProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -1425,24 +1500,19 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID guid of the software server capability entity that represented the external source - null for local
-     * @param databaseManagerName name of the software server capability entity that represented the external source - null for local
      * @param databaseAssetGUID unique identifier of the asset to connect the schema to
      * @param schemaTypeGUID identifier for schema Type object
-     * @param requestBody null request body
+     * @param requestBody external source request body
      * @return void or
      *  InvalidParameterException the bean properties are invalid
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException problem accessing the property server
      */
-    @SuppressWarnings(value = "unused")
-    public  VoidResponse attachSchemaTypeToDatabaseAsset(String          serverName,
-                                                         String          userId,
-                                                         String          databaseManagerGUID,
-                                                         String          databaseManagerName,
-                                                         String          databaseAssetGUID,
-                                                         String          schemaTypeGUID,
-                                                         NullRequestBody requestBody)
+    public  VoidResponse attachSchemaTypeToDatabaseAsset(String                  serverName,
+                                                         String                  userId,
+                                                         String                  databaseAssetGUID,
+                                                         String                  schemaTypeGUID,
+                                                         RelationshipRequestBody requestBody)
     {
         final String methodName = "attachSchemaTypeToDatabaseAsset";
 
@@ -1462,17 +1532,34 @@ public class DatabaseManagerRESTServices
                                          DatabaseColumnElement,
                                          SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.attachSchemaTypeToDatabaseAsset(userId,
-                                                    databaseManagerGUID,
-                                                    databaseManagerName,
-                                                    databaseAssetGUID,
-                                                    schemaTypeGUID,
-                                                    null,
-                                                    null,
-                                                    false,
-                                                    false,
-                                                    new Date(),
-                                                    methodName);
+            if (requestBody != null)
+            {
+                handler.attachSchemaTypeToDatabaseAsset(userId,
+                                                        requestBody.getExternalSourceGUID(),
+                                                        requestBody.getExternalSourceName(),
+                                                        databaseAssetGUID,
+                                                        schemaTypeGUID,
+                                                        null,
+                                                        null,
+                                                        false,
+                                                        false,
+                                                        new Date(),
+                                                        methodName);
+            }
+            else
+            {
+                handler.attachSchemaTypeToDatabaseAsset(userId,
+                                                        null,
+                                                        null,
+                                                        databaseAssetGUID,
+                                                        schemaTypeGUID,
+                                                        null,
+                                                        null,
+                                                        false,
+                                                        false,
+                                                        new Date(),
+                                                        methodName);
+            }
         }
         catch (Exception error)
         {
@@ -1490,22 +1577,16 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseAssetGUID unique identifier of the database or database schema ASSET where the database table is located.
-     * @param databaseTableProperties properties for the database table
+     * @param requestBody properties for the database table
      *
      * @return unique identifier of the new metadata element for the database table or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabaseTable(String                  serverName,
-                                            String                  userId,
-                                            String                  databaseManagerGUID,
-                                            String                  databaseManagerName,
-                                            String                  databaseAssetGUID,
-                                            DatabaseTableProperties databaseTableProperties)
+    public GUIDResponse createDatabaseTable(String                   serverName,
+                                            String                   userId,
+                                            ReferenceableRequestBody requestBody)
     {
         final String methodName = "createDatabaseTable";
 
@@ -1525,27 +1606,43 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            String databaseTableGUID = handler.createDatabaseTable(userId,
-                                                                   databaseManagerGUID,
-                                                                   databaseManagerName,
-                                                                   databaseAssetGUID,
-                                                                   databaseTableProperties.getQualifiedName(),
-                                                                   databaseTableProperties.getDisplayName(),
-                                                                   databaseTableProperties.getDescription(),
-                                                                   databaseTableProperties.getIsDeprecated(),
-                                                                   databaseTableProperties.getAliases(),
-                                                                   databaseTableProperties.getAdditionalProperties(),
-                                                                   databaseTableProperties.getTypeName(),
-                                                                   databaseTableProperties.getExtendedProperties(),
-                                                                   databaseTableProperties.getVendorProperties(),
-                                                                   null,
-                                                                   null,
-                                                                   false,
-                                                                   false,
-                                                                   new Date(),
-                                                                   methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof  DatabaseTableProperties)
+                {
+                    DatabaseTableProperties databaseTableProperties = (DatabaseTableProperties) requestBody.getProperties();
 
-            response.setGUID(databaseTableGUID);
+                    String databaseTableGUID = handler.createDatabaseTable(userId,
+                                                                           requestBody.getExternalSourceGUID(),
+                                                                           requestBody.getExternalSourceName(),
+                                                                           requestBody.getParentGUID(),
+                                                                           databaseTableProperties.getQualifiedName(),
+                                                                           databaseTableProperties.getDisplayName(),
+                                                                           databaseTableProperties.getDescription(),
+                                                                           databaseTableProperties.getIsDeprecated(),
+                                                                           databaseTableProperties.getAliases(),
+                                                                           databaseTableProperties.getAdditionalProperties(),
+                                                                           databaseTableProperties.getTypeName(),
+                                                                           databaseTableProperties.getExtendedProperties(),
+                                                                           databaseTableProperties.getVendorProperties(),
+                                                                           databaseTableProperties.getEffectiveFrom(),
+                                                                           databaseTableProperties.getEffectiveTo(),
+                                                                           false,
+                                                                           false,
+                                                                           new Date(),
+                                                                           methodName);
+
+                    response.setGUID(databaseTableGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseTableProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1563,24 +1660,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new database table or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabaseTableFromTemplate(String             serverName,
-                                                        String             userId,
-                                                        String             databaseManagerGUID,
-                                                        String             databaseManagerName,
-                                                        String             templateGUID,
-                                                        String             databaseAssetGUID,
-                                                        TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseTableFromTemplate(String              serverName,
+                                                        String              userId,
+                                                        String              templateGUID,
+                                                        TemplateRequestBody requestBody)
     {
         final String methodName = "createDatabaseTableFromTemplate";
 
@@ -1600,20 +1691,27 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            response.setGUID(handler.createDatabaseTableFromTemplate(userId,
-                                                                     databaseManagerGUID,
-                                                                     databaseManagerName,
-                                                                     templateGUID,
-                                                                     databaseAssetGUID,
-                                                                     templateProperties.getQualifiedName(),
-                                                                     templateProperties.getDisplayName(),
-                                                                     templateProperties.getDescription(),
-                                                                     null,
-                                                                     null,
-                                                                     false,
-                                                                     false,
-                                                                     new Date(),
-                                                                     methodName));
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createDatabaseTableFromTemplate(userId,
+                                                                         requestBody.getExternalSourceGUID(),
+                                                                         requestBody.getExternalSourceName(),
+                                                                         templateGUID,
+                                                                         requestBody.getParentGUID(),
+                                                                         requestBody.getQualifiedName(),
+                                                                         requestBody.getDisplayName(),
+                                                                         requestBody.getDescription(),
+                                                                         null,
+                                                                         null,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1626,29 +1724,21 @@ public class DatabaseManagerRESTServices
     }
 
 
-
-
     /**
      * Create a new metadata element to represent a database table.
      *
      * @param serverName name of the service to route the request to
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseSchemaTypeGUID unique identifier of the database or database schema where the database table is located
-     * @param databaseTableProperties properties for the database table
+     * @param requestBody properties for the database table
      *
      * @return unique identifier of the new metadata element for the database table or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabaseTableForSchemaType(String                  serverName,
-                                                         String                  userId,
-                                                         String                  databaseManagerGUID,
-                                                         String                  databaseManagerName,
-                                                         String                  databaseSchemaTypeGUID,
-                                                         DatabaseTableProperties databaseTableProperties)
+    public GUIDResponse createDatabaseTableForSchemaType(String                   serverName,
+                                                         String                   userId,
+                                                         ReferenceableRequestBody requestBody)
     {
         final String methodName = "createDatabaseTableForSchemaType";
 
@@ -1668,27 +1758,43 @@ public class DatabaseManagerRESTServices
                                          DatabaseColumnElement,
                                          SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            String databaseTableGUID = handler.createDatabaseTableForSchemaType(userId,
-                                                                                databaseManagerGUID,
-                                                                                databaseManagerName,
-                                                                                databaseSchemaTypeGUID,
-                                                                                databaseTableProperties.getQualifiedName(),
-                                                                                databaseTableProperties.getDisplayName(),
-                                                                                databaseTableProperties.getDescription(),
-                                                                                databaseTableProperties.getIsDeprecated(),
-                                                                                databaseTableProperties.getAliases(),
-                                                                                databaseTableProperties.getAdditionalProperties(),
-                                                                                databaseTableProperties.getTypeName(),
-                                                                                databaseTableProperties.getExtendedProperties(),
-                                                                                databaseTableProperties.getVendorProperties(),
-                                                                                null,
-                                                                                null,
-                                                                                false,
-                                                                                false,
-                                                                                new Date(),
-                                                                                methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof  DatabaseTableProperties)
+                {
+                    DatabaseTableProperties databaseTableProperties = (DatabaseTableProperties) requestBody.getProperties();
 
-            response.setGUID(databaseTableGUID);
+                    String databaseTableGUID = handler.createDatabaseTableForSchemaType(userId,
+                                                                                        requestBody.getExternalSourceGUID(),
+                                                                                        requestBody.getExternalSourceName(),
+                                                                                        requestBody.getParentGUID(),
+                                                                                        databaseTableProperties.getQualifiedName(),
+                                                                                        databaseTableProperties.getDisplayName(),
+                                                                                        databaseTableProperties.getDescription(),
+                                                                                        databaseTableProperties.getIsDeprecated(),
+                                                                                        databaseTableProperties.getAliases(),
+                                                                                        databaseTableProperties.getAdditionalProperties(),
+                                                                                        databaseTableProperties.getTypeName(),
+                                                                                        databaseTableProperties.getExtendedProperties(),
+                                                                                        databaseTableProperties.getVendorProperties(),
+                                                                                        databaseTableProperties.getEffectiveFrom(),
+                                                                                        databaseTableProperties.getEffectiveTo(),
+                                                                                        false,
+                                                                                        false,
+                                                                                        new Date(),
+                                                                                        methodName);
+
+                    response.setGUID(databaseTableGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseTableProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1707,22 +1813,20 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the database table to update
-     * @param databaseTableProperties new properties for the database table
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for the database table
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateDatabaseTable(String                  serverName,
-                                            String                  userId,
-                                            String                  databaseManagerGUID,
-                                            String                  databaseManagerName,
-                                            String                  databaseTableGUID,
-                                            DatabaseTableProperties databaseTableProperties)
+    public VoidResponse updateDatabaseTable(String                   serverName,
+                                            String                   userId,
+                                            String                   databaseTableGUID,
+                                            boolean                  isMergeUpdate,
+                                            ReferenceableRequestBody requestBody)
     {
         final String methodName = "updateDatabaseTable";
 
@@ -1736,32 +1840,48 @@ public class DatabaseManagerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             RelationalDataHandler<DatabaseElement,
-                    DatabaseSchemaElement,
-                    DatabaseTableElement,
-                    DatabaseViewElement,
-                    DatabaseColumnElement,
-                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+                                         DatabaseSchemaElement,
+                                         DatabaseTableElement,
+                                         DatabaseViewElement,
+                                         DatabaseColumnElement,
+                                         SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.updateDatabaseTable(userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseTableGUID,
-                                        databaseTableProperties.getQualifiedName(),
-                                        databaseTableProperties.getDisplayName(),
-                                        databaseTableProperties.getDescription(),
-                                        databaseTableProperties.getIsDeprecated(),
-                                        databaseTableProperties.getAliases(),
-                                        databaseTableProperties.getAdditionalProperties(),
-                                        databaseTableProperties.getTypeName(),
-                                        databaseTableProperties.getExtendedProperties(),
-                                        databaseTableProperties.getVendorProperties(),
-                                        null,
-                                        null,
-                                        true,
-                                        false,
-                                        false,
-                                        new Date(),
-                                        methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof  DatabaseTableProperties)
+                {
+                    DatabaseTableProperties databaseTableProperties = (DatabaseTableProperties) requestBody.getProperties();
+
+                    handler.updateDatabaseTable(userId,
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
+                                                databaseTableGUID,
+                                                databaseTableProperties.getQualifiedName(),
+                                                databaseTableProperties.getDisplayName(),
+                                                databaseTableProperties.getDescription(),
+                                                databaseTableProperties.getIsDeprecated(),
+                                                databaseTableProperties.getAliases(),
+                                                databaseTableProperties.getAdditionalProperties(),
+                                                databaseTableProperties.getTypeName(),
+                                                databaseTableProperties.getExtendedProperties(),
+                                                databaseTableProperties.getVendorProperties(),
+                                                databaseTableProperties.getEffectiveFrom(),
+                                                databaseTableProperties.getEffectiveTo(),
+                                                isMergeUpdate,
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseTableProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -1779,25 +1899,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeDatabaseTable(String          serverName,
-                                            String          userId,
-                                            String          databaseManagerGUID,
-                                            String          databaseManagerName,
-                                            String          databaseTableGUID,
-                                            String          qualifiedName,
-                                            NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabaseTable(String                    serverName,
+                                            String                    userId,
+                                            String                    databaseTableGUID,
+                                            ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "removeDatabaseTable";
         final String elementGUIDParameterName    = "databaseTableGUID";
@@ -1818,16 +1931,32 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseTable(userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseTableGUID,
-                                        elementGUIDParameterName,
-                                        qualifiedName,
-                                        false,
-                                        false,
-                                        new Date(),
-                                        methodName);
+            if (requestBody != null)
+            {
+                handler.removeDatabaseTable(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            databaseTableGUID,
+                                            elementGUIDParameterName,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
+                                            methodName);
+            }
+            else
+            {
+                handler.removeDatabaseTable(userId,
+                                            null,
+                                            null,
+                                            databaseTableGUID,
+                                            elementGUIDParameterName,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
+                                            methodName);
+            }
         }
         catch (Exception error)
         {
@@ -2097,22 +2226,16 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
-     * @param databaseViewProperties properties for the new view
+     * @param requestBody properties for the new view
      *
      * @return unique identifier of the new metadata element for the database view or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabaseView(String                 serverName,
-                                           String                 userId,
-                                           String                 databaseManagerGUID,
-                                           String                 databaseManagerName,
-                                           String                 databaseSchemaGUID,
-                                           DatabaseViewProperties databaseViewProperties)
+    public GUIDResponse createDatabaseView(String                   serverName,
+                                           String                   userId,
+                                           ReferenceableRequestBody requestBody)
     {
         final String methodName = "createDatabaseView";
 
@@ -2132,28 +2255,44 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            String databaseViewGUID = handler.createDatabaseView(userId,
-                                                                 databaseManagerGUID,
-                                                                 databaseManagerName,
-                                                                 databaseSchemaGUID,
-                                                                 databaseViewProperties.getQualifiedName(),
-                                                                 databaseViewProperties.getDisplayName(),
-                                                                 databaseViewProperties.getDescription(),
-                                                                 databaseViewProperties.getIsDeprecated(),
-                                                                 databaseViewProperties.getAliases(),
-                                                                 databaseViewProperties.getFormula(),
-                                                                 databaseViewProperties.getAdditionalProperties(),
-                                                                 databaseViewProperties.getTypeName(),
-                                                                 databaseViewProperties.getExtendedProperties(),
-                                                                 databaseViewProperties.getVendorProperties(),
-                                                                 null,
-                                                                 null,
-                                                                 false,
-                                                                 false,
-                                                                 new Date(),
-                                                                 methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DatabaseViewProperties)
+                {
+                    DatabaseViewProperties databaseViewProperties = (DatabaseViewProperties) requestBody.getProperties();
 
-            response.setGUID(databaseViewGUID);
+                    String databaseViewGUID = handler.createDatabaseView(userId,
+                                                                         requestBody.getExternalSourceGUID(),
+                                                                         requestBody.getExternalSourceName(),
+                                                                         requestBody.getParentGUID(),
+                                                                         databaseViewProperties.getQualifiedName(),
+                                                                         databaseViewProperties.getDisplayName(),
+                                                                         databaseViewProperties.getDescription(),
+                                                                         databaseViewProperties.getIsDeprecated(),
+                                                                         databaseViewProperties.getAliases(),
+                                                                         databaseViewProperties.getFormula(),
+                                                                         databaseViewProperties.getAdditionalProperties(),
+                                                                         databaseViewProperties.getTypeName(),
+                                                                         databaseViewProperties.getExtendedProperties(),
+                                                                         databaseViewProperties.getVendorProperties(),
+                                                                         null,
+                                                                         null,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName);
+
+                    response.setGUID(databaseViewGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseViewProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2171,24 +2310,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the database view or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabaseViewFromTemplate(String             serverName,
-                                                       String             userId,
-                                                       String             databaseManagerGUID,
-                                                       String             databaseManagerName,
-                                                       String             templateGUID,
-                                                       String             databaseSchemaGUID,
-                                                       TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseViewFromTemplate(String              serverName,
+                                                       String              userId,
+                                                       String              templateGUID,
+                                                       TemplateRequestBody requestBody)
     {
         final String methodName = "createDatabaseViewFromTemplate";
 
@@ -2208,20 +2341,27 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            response.setGUID(handler.createDatabaseViewFromTemplate(userId,
-                                                                    databaseManagerGUID,
-                                                                    databaseManagerName,
-                                                                    templateGUID,
-                                                                    databaseSchemaGUID,
-                                                                    templateProperties.getQualifiedName(),
-                                                                    templateProperties.getDisplayName(),
-                                                                    templateProperties.getDescription(),
-                                                                    null,
-                                                                    null,
-                                                                    false,
-                                                                    false,
-                                                                    new Date(),
-                                                                    methodName));
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createDatabaseViewFromTemplate(userId,
+                                                                        requestBody.getExternalSourceGUID(),
+                                                                        requestBody.getExternalSourceName(),
+                                                                        templateGUID,
+                                                                        requestBody.getParentGUID(),
+                                                                        requestBody.getQualifiedName(),
+                                                                        requestBody.getDisplayName(),
+                                                                        requestBody.getDescription(),
+                                                                        null,
+                                                                        null,
+                                                                        false,
+                                                                        false,
+                                                                        new Date(),
+                                                                        methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2239,22 +2379,16 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseSchemaTypeGUID unique identifier of the schema type where the database view is located.
-     * @param databaseViewProperties properties for the new view
+     * @param requestBody properties for the new view
      *
      * @return unique identifier of the new metadata element for the database view or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabaseViewForSchemaType(String                 serverName,
-                                                        String                 userId,
-                                                        String                 databaseManagerGUID,
-                                                        String                 databaseManagerName,
-                                                        String                 databaseSchemaTypeGUID,
-                                                        DatabaseViewProperties databaseViewProperties)
+    public GUIDResponse createDatabaseViewForSchemaType(String                   serverName,
+                                                        String                   userId,
+                                                        ReferenceableRequestBody requestBody)
     {
         final String methodName = "createDatabaseViewForSchemaType";
 
@@ -2274,28 +2408,45 @@ public class DatabaseManagerRESTServices
                                          DatabaseColumnElement,
                                          SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            String databaseViewGUID = handler.createDatabaseViewForSchemaType(userId,
-                                                                              databaseManagerGUID,
-                                                                              databaseManagerName,
-                                                                              databaseSchemaTypeGUID,
-                                                                              databaseViewProperties.getQualifiedName(),
-                                                                              databaseViewProperties.getDisplayName(),
-                                                                              databaseViewProperties.getDescription(),
-                                                                              databaseViewProperties.getIsDeprecated(),
-                                                                              databaseViewProperties.getAliases(),
-                                                                              databaseViewProperties.getFormula(),
-                                                                              databaseViewProperties.getAdditionalProperties(),
-                                                                              databaseViewProperties.getTypeName(),
-                                                                              databaseViewProperties.getExtendedProperties(),
-                                                                              databaseViewProperties.getVendorProperties(),
-                                                                              null,
-                                                                              null,
-                                                                              false,
-                                                                              false,
-                                                                              new Date(),
-                                                                              methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DatabaseViewProperties)
+                {
+                    DatabaseViewProperties databaseViewProperties = (DatabaseViewProperties) requestBody.getProperties();
 
-            response.setGUID(databaseViewGUID);
+
+                    String databaseViewGUID = handler.createDatabaseViewForSchemaType(userId,
+                                                                                      requestBody.getExternalSourceGUID(),
+                                                                                      requestBody.getExternalSourceName(),
+                                                                                      requestBody.getParentGUID(),
+                                                                                      databaseViewProperties.getQualifiedName(),
+                                                                                      databaseViewProperties.getDisplayName(),
+                                                                                      databaseViewProperties.getDescription(),
+                                                                                      databaseViewProperties.getIsDeprecated(),
+                                                                                      databaseViewProperties.getAliases(),
+                                                                                      databaseViewProperties.getFormula(),
+                                                                                      databaseViewProperties.getAdditionalProperties(),
+                                                                                      databaseViewProperties.getTypeName(),
+                                                                                      databaseViewProperties.getExtendedProperties(),
+                                                                                      databaseViewProperties.getVendorProperties(),
+                                                                                      null,
+                                                                                      null,
+                                                                                      false,
+                                                                                      false,
+                                                                                      new Date(),
+                                                                                      methodName);
+
+                    response.setGUID(databaseViewGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseViewProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2308,27 +2459,25 @@ public class DatabaseManagerRESTServices
     }
 
 
-        /**
-         * Update the metadata element representing a database table.
-         *
-         * @param serverName name of the service to route the request to.
-         * @param userId calling user
-         * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-         * @param databaseManagerName unique name of software server capability representing the DBMS
-         * @param databaseViewGUID unique identifier of the database view to update
-         * @param databaseViewProperties properties for the new database view
-         *
-         * @return void or
-         * InvalidParameterException  one of the parameters is invalid or
-         * UserNotAuthorizedException the user is not authorized to issue this request or
-         * PropertyServerException    there is a problem reported in the open metadata server(s)
-         */
-    public VoidResponse updateDatabaseView(String                 serverName,
-                                           String                 userId,
-                                           String                 databaseManagerGUID,
-                                           String                 databaseManagerName,
-                                           String                 databaseViewGUID,
-                                           DatabaseViewProperties databaseViewProperties)
+    /**
+     * Update the metadata element representing a database table.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param databaseViewGUID unique identifier of the database view to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody properties for the new database view
+     *
+     * @return void or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse updateDatabaseView(String                   serverName,
+                                           String                   userId,
+                                           String                   databaseViewGUID,
+                                           boolean                  isMergeUpdate,
+                                           ReferenceableRequestBody requestBody)
     {
         final String methodName = "updateDatabaseView";
 
@@ -2348,27 +2497,43 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.updateDatabaseView(userId,
-                                       databaseManagerGUID,
-                                       databaseManagerName,
-                                       databaseViewGUID,
-                                       databaseViewProperties.getQualifiedName(),
-                                       databaseViewProperties.getDisplayName(),
-                                       databaseViewProperties.getDescription(),
-                                       databaseViewProperties.getIsDeprecated(),
-                                       databaseViewProperties.getAliases(),
-                                       databaseViewProperties.getFormula(),
-                                       databaseViewProperties.getAdditionalProperties(),
-                                       databaseViewProperties.getTypeName(),
-                                       databaseViewProperties.getExtendedProperties(),
-                                       databaseViewProperties.getVendorProperties(),
-                                       null,
-                                       null,
-                                       true,
-                                       false,
-                                       false,
-                                       new Date(),
-                                       methodName);
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DatabaseViewProperties)
+                {
+                    DatabaseViewProperties databaseViewProperties = (DatabaseViewProperties) requestBody.getProperties();
+
+                    handler.updateDatabaseView(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               databaseViewGUID,
+                                               databaseViewProperties.getQualifiedName(),
+                                               databaseViewProperties.getDisplayName(),
+                                               databaseViewProperties.getDescription(),
+                                               databaseViewProperties.getIsDeprecated(),
+                                               databaseViewProperties.getAliases(),
+                                               databaseViewProperties.getFormula(),
+                                               databaseViewProperties.getAdditionalProperties(),
+                                               databaseViewProperties.getTypeName(),
+                                               databaseViewProperties.getExtendedProperties(),
+                                               databaseViewProperties.getVendorProperties(),
+                                               databaseViewProperties.getEffectiveFrom(),
+                                               databaseViewProperties.getEffectiveTo(),
+                                               isMergeUpdate,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseViewProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2386,25 +2551,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseViewGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeDatabaseView(String          serverName,
-                                           String          userId,
-                                           String          databaseManagerGUID,
-                                           String          databaseManagerName,
-                                           String          databaseViewGUID,
-                                           String          qualifiedName,
-                                           NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabaseView(String                    serverName,
+                                           String                    userId,
+                                           String                    databaseViewGUID,
+                                           ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "removeDatabaseView";
         final String elementGUIDParameterName    = "databaseViewGUID";
@@ -2425,16 +2583,32 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseTable(userId,
-                                        databaseManagerGUID,
-                                        databaseManagerName,
-                                        databaseViewGUID,
-                                        elementGUIDParameterName,
-                                        qualifiedName,
-                                        false,
-                                        false,
-                                        new Date(),
-                                        methodName);
+            if (requestBody != null)
+            {
+                handler.removeDatabaseTable(userId,
+                                            requestBody.getExternalSourceGUID(),
+                                            requestBody.getExternalSourceName(),
+                                            databaseViewGUID,
+                                            elementGUIDParameterName,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
+                                            methodName);
+            }
+            else
+            {
+                handler.removeDatabaseTable(userId,
+                                            null,
+                                            null,
+                                            databaseViewGUID,
+                                            elementGUIDParameterName,
+                                            null,
+                                            false,
+                                            false,
+                                            new Date(),
+                                            methodName);
+            }
         }
         catch (Exception error)
         {
@@ -2712,10 +2886,7 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param databaseColumnProperties properties for the new column
+     * @param requestBody properties for the new column
      *
      * @return unique identifier of the new metadata element for the database column or
      * InvalidParameterException  one of the parameters is invalid or
@@ -2724,10 +2895,7 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseColumn(String                   serverName,
                                              String                   userId,
-                                             String                   databaseManagerGUID,
-                                             String                   databaseManagerName,
-                                             String                   databaseTableGUID,
-                                             DatabaseColumnProperties databaseColumnProperties)
+                                             ReferenceableRequestBody requestBody)
     {
         final String methodName = "createDatabaseColumn";
 
@@ -2747,75 +2915,91 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
-
-            if (databaseColumnProperties.getSortOrder() != null)
+            if (requestBody != null)
             {
-                sortOrder = databaseColumnProperties.getSortOrder().getOpenTypeOrdinal();
-            }
-
-            String databaseColumnGUID = handler.createDatabaseColumn(userId,
-                                                                     databaseManagerGUID,
-                                                                     databaseManagerName,
-                                                                     databaseTableGUID,
-                                                                     databaseColumnProperties.getQualifiedName(),
-                                                                     databaseColumnProperties.getDisplayName(),
-                                                                     databaseColumnProperties.getDescription(),
-                                                                     databaseColumnProperties.getExternalTypeGUID(),
-                                                                     databaseColumnProperties.getDataType(),
-                                                                     databaseColumnProperties.getDefaultValue(),
-                                                                     databaseColumnProperties.getFixedValue(),
-                                                                     databaseColumnProperties.getValidValuesSetGUID(),
-                                                                     databaseColumnProperties.getFormula(),
-                                                                     databaseColumnProperties.getIsDeprecated(),
-                                                                     databaseColumnProperties.getElementPosition(),
-                                                                     databaseColumnProperties.getMinCardinality(),
-                                                                     databaseColumnProperties.getMaxCardinality(),
-                                                                     databaseColumnProperties.getAllowsDuplicateValues(),
-                                                                     databaseColumnProperties.getOrderedValues(),
-                                                                     databaseColumnProperties.getDefaultValueOverride(),
-                                                                     sortOrder,
-                                                                     databaseColumnProperties.getMinimumLength(),
-                                                                     databaseColumnProperties.getLength(),
-                                                                     databaseColumnProperties.getPrecision(),
-                                                                     databaseColumnProperties.getIsNullable(),
-                                                                     databaseColumnProperties.getNativeJavaClass(),
-                                                                     databaseColumnProperties.getAliases(),
-                                                                     databaseColumnProperties.getAdditionalProperties(),
-                                                                     databaseColumnProperties.getTypeName(),
-                                                                     databaseColumnProperties.getExtendedProperties(),
-                                                                     databaseColumnProperties.getVendorProperties(),
-                                                                     null,
-                                                                     null,
-                                                                     false,
-                                                                     false,
-                                                                     new Date(),
-                                                                     methodName);
-
-            if ((databaseColumnGUID != null) && (databaseColumnProperties.getQueries() != null))
-            {
-                for (DatabaseQueryProperties queryProperties : databaseColumnProperties.getQueries())
+                if (requestBody.getProperties() instanceof DatabaseColumnProperties)
                 {
-                    if (queryProperties != null)
+                    DatabaseColumnProperties databaseColumnProperties = (DatabaseColumnProperties) requestBody.getProperties();
+
+                    int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+
+                    if (databaseColumnProperties.getSortOrder() != null)
                     {
-                        handler.createDatabaseColumnQuery(userId,
-                                                          databaseManagerGUID,
-                                                          databaseManagerName,
-                                                          databaseColumnGUID,
-                                                          queryProperties.getQueryId(),
-                                                          queryProperties.getQuery(),
-                                                          queryProperties.getQueryTargetGUID(),
-                                                          null,
-                                                          null,
-                                                          false,
-                                                          false,
-                                                          new Date(),
-                                                          methodName);
+                        sortOrder = databaseColumnProperties.getSortOrder().getOpenTypeOrdinal();
                     }
+
+                    String databaseColumnGUID = handler.createDatabaseColumn(userId,
+                                                                             requestBody.getExternalSourceGUID(),
+                                                                             requestBody.getExternalSourceName(),
+                                                                             requestBody.getParentGUID(),
+                                                                             databaseColumnProperties.getQualifiedName(),
+                                                                             databaseColumnProperties.getDisplayName(),
+                                                                             databaseColumnProperties.getDescription(),
+                                                                             databaseColumnProperties.getExternalTypeGUID(),
+                                                                             databaseColumnProperties.getDataType(),
+                                                                             databaseColumnProperties.getDefaultValue(),
+                                                                             databaseColumnProperties.getFixedValue(),
+                                                                             databaseColumnProperties.getValidValuesSetGUID(),
+                                                                             databaseColumnProperties.getFormula(),
+                                                                             databaseColumnProperties.getIsDeprecated(),
+                                                                             databaseColumnProperties.getElementPosition(),
+                                                                             databaseColumnProperties.getMinCardinality(),
+                                                                             databaseColumnProperties.getMaxCardinality(),
+                                                                             databaseColumnProperties.getAllowsDuplicateValues(),
+                                                                             databaseColumnProperties.getOrderedValues(),
+                                                                             databaseColumnProperties.getDefaultValueOverride(),
+                                                                             sortOrder,
+                                                                             databaseColumnProperties.getMinimumLength(),
+                                                                             databaseColumnProperties.getLength(),
+                                                                             databaseColumnProperties.getPrecision(),
+                                                                             databaseColumnProperties.getIsNullable(),
+                                                                             databaseColumnProperties.getNativeJavaClass(),
+                                                                             databaseColumnProperties.getAliases(),
+                                                                             databaseColumnProperties.getAdditionalProperties(),
+                                                                             databaseColumnProperties.getTypeName(),
+                                                                             databaseColumnProperties.getExtendedProperties(),
+                                                                             databaseColumnProperties.getVendorProperties(),
+                                                                             databaseColumnProperties.getEffectiveFrom(),
+                                                                             databaseColumnProperties.getEffectiveTo(),
+                                                                             false,
+                                                                             false,
+                                                                             new Date(),
+                                                                             methodName);
+
+                    if ((databaseColumnGUID != null) && (databaseColumnProperties.getQueries() != null))
+                    {
+                        for (DatabaseQueryProperties queryProperties : databaseColumnProperties.getQueries())
+                        {
+                            if (queryProperties != null)
+                            {
+                                handler.createDatabaseColumnQuery(userId,
+                                                                  requestBody.getExternalSourceGUID(),
+                                                                  requestBody.getExternalSourceName(),
+                                                                  databaseColumnGUID,
+                                                                  queryProperties.getQueryId(),
+                                                                  queryProperties.getQuery(),
+                                                                  queryProperties.getQueryTargetGUID(),
+                                                                  null,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
+                                                                  methodName);
+                            }
+                        }
+                    }
+
+                    response.setGUID(databaseColumnGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseColumnProperties.class.getName(), methodName);
                 }
             }
-
-            response.setGUID(databaseColumnGUID);
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2833,24 +3017,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param databaseTableGUID unique identifier of the database table where this column is located
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the database column
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createDatabaseColumnFromTemplate(String             serverName,
-                                                         String             userId,
-                                                         String             databaseManagerGUID,
-                                                         String             databaseManagerName,
-                                                         String             templateGUID,
-                                                         String             databaseTableGUID,
-                                                         TemplateProperties templateProperties)
+    public GUIDResponse createDatabaseColumnFromTemplate(String              serverName,
+                                                         String              userId,
+                                                         String              templateGUID,
+                                                         TemplateRequestBody requestBody)
     {
         final String methodName = "createDatabaseColumnFromTemplate";
 
@@ -2870,20 +3048,27 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            response.setGUID(handler.createDatabaseColumnFromTemplate(userId,
-                                                                      databaseManagerGUID,
-                                                                      databaseManagerName,
-                                                                      templateGUID,
-                                                                      databaseTableGUID,
-                                                                      templateProperties.getQualifiedName(),
-                                                                      templateProperties.getDisplayName(),
-                                                                      templateProperties.getDescription(),
-                                                                      null,
-                                                                      null,
-                                                                      false,
-                                                                      false,
-                                                                      new Date(),
-                                                                      methodName));
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createDatabaseColumnFromTemplate(userId,
+                                                                          requestBody.getExternalSourceGUID(),
+                                                                          requestBody.getExternalSourceName(),
+                                                                          templateGUID,
+                                                                          requestBody.getParentGUID(),
+                                                                          requestBody.getQualifiedName(),
+                                                                          requestBody.getDisplayName(),
+                                                                          requestBody.getDescription(),
+                                                                          null,
+                                                                          null,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
+                                                                          methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -2901,10 +3086,9 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to update
-     * @param databaseColumnProperties new properties for the metadata element
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param requestBody new properties for the metadata element
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
@@ -2913,10 +3097,9 @@ public class DatabaseManagerRESTServices
      */
     public VoidResponse updateDatabaseColumn(String                   serverName,
                                              String                   userId,
-                                             String                   databaseManagerGUID,
-                                             String                   databaseManagerName,
                                              String                   databaseColumnGUID,
-                                             DatabaseColumnProperties databaseColumnProperties)
+                                             boolean                  isMergeUpdate,
+                                             ReferenceableRequestBody requestBody)
     {
         final String methodName = "updateDatabaseColumn";
 
@@ -2936,73 +3119,89 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
-
-            if (databaseColumnProperties.getSortOrder() != null)
+            if (requestBody != null)
             {
-                sortOrder = databaseColumnProperties.getSortOrder().getOpenTypeOrdinal();
-            }
-
-            handler.updateDatabaseColumn(userId,
-                                         databaseManagerGUID,
-                                         databaseManagerName,
-                                         databaseColumnGUID,
-                                         databaseColumnProperties.getQualifiedName(),
-                                         databaseColumnProperties.getDisplayName(),
-                                         databaseColumnProperties.getDescription(),
-                                         databaseColumnProperties.getExternalTypeGUID(),
-                                         databaseColumnProperties.getDataType(),
-                                         databaseColumnProperties.getDefaultValue(),
-                                         databaseColumnProperties.getFixedValue(),
-                                         databaseColumnProperties.getValidValuesSetGUID(),
-                                         databaseColumnProperties.getFormula(),
-                                         databaseColumnProperties.getIsDeprecated(),
-                                         databaseColumnProperties.getElementPosition(),
-                                         databaseColumnProperties.getMinCardinality(),
-                                         databaseColumnProperties.getMaxCardinality(),
-                                         databaseColumnProperties.getAllowsDuplicateValues(),
-                                         databaseColumnProperties.getOrderedValues(),
-                                         databaseColumnProperties.getDefaultValueOverride(),
-                                         sortOrder,
-                                         databaseColumnProperties.getMinimumLength(),
-                                         databaseColumnProperties.getLength(),
-                                         databaseColumnProperties.getPrecision(),
-                                         databaseColumnProperties.getIsNullable(),
-                                         databaseColumnProperties.getNativeJavaClass(),
-                                         databaseColumnProperties.getAliases(),
-                                         databaseColumnProperties.getAdditionalProperties(),
-                                         databaseColumnProperties.getTypeName(),
-                                         databaseColumnProperties.getExtendedProperties(),
-                                         databaseColumnProperties.getVendorProperties(),
-                                         null,
-                                         null,
-                                         true,
-                                         false,
-                                         false,
-                                         new Date(),
-                                         methodName);
-
-            if (databaseColumnProperties.getQueries() != null)
-            {
-                for (DatabaseQueryProperties queryProperties : databaseColumnProperties.getQueries())
+                if (requestBody.getProperties() instanceof DatabaseColumnProperties)
                 {
-                    if (queryProperties != null)
+                    DatabaseColumnProperties databaseColumnProperties = (DatabaseColumnProperties) requestBody.getProperties();
+
+                    int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+
+                    if (databaseColumnProperties.getSortOrder() != null)
                     {
-                        handler.createDatabaseColumnQuery(userId,
-                                                          databaseManagerGUID,
-                                                          databaseManagerName,
-                                                          databaseColumnGUID,
-                                                          queryProperties.getQueryId(),
-                                                          queryProperties.getQuery(),
-                                                          queryProperties.getQueryTargetGUID(),
-                                                          null,
-                                                          null,
-                                                          false,
-                                                          false,
-                                                          new Date(),
-                                                          methodName);
+                        sortOrder = databaseColumnProperties.getSortOrder().getOpenTypeOrdinal();
+                    }
+
+                    handler.updateDatabaseColumn(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 databaseColumnGUID,
+                                                 databaseColumnProperties.getQualifiedName(),
+                                                 databaseColumnProperties.getDisplayName(),
+                                                 databaseColumnProperties.getDescription(),
+                                                 databaseColumnProperties.getExternalTypeGUID(),
+                                                 databaseColumnProperties.getDataType(),
+                                                 databaseColumnProperties.getDefaultValue(),
+                                                 databaseColumnProperties.getFixedValue(),
+                                                 databaseColumnProperties.getValidValuesSetGUID(),
+                                                 databaseColumnProperties.getFormula(),
+                                                 databaseColumnProperties.getIsDeprecated(),
+                                                 databaseColumnProperties.getElementPosition(),
+                                                 databaseColumnProperties.getMinCardinality(),
+                                                 databaseColumnProperties.getMaxCardinality(),
+                                                 databaseColumnProperties.getAllowsDuplicateValues(),
+                                                 databaseColumnProperties.getOrderedValues(),
+                                                 databaseColumnProperties.getDefaultValueOverride(),
+                                                 sortOrder,
+                                                 databaseColumnProperties.getMinimumLength(),
+                                                 databaseColumnProperties.getLength(),
+                                                 databaseColumnProperties.getPrecision(),
+                                                 databaseColumnProperties.getIsNullable(),
+                                                 databaseColumnProperties.getNativeJavaClass(),
+                                                 databaseColumnProperties.getAliases(),
+                                                 databaseColumnProperties.getAdditionalProperties(),
+                                                 databaseColumnProperties.getTypeName(),
+                                                 databaseColumnProperties.getExtendedProperties(),
+                                                 databaseColumnProperties.getVendorProperties(),
+                                                 databaseColumnProperties.getEffectiveFrom(),
+                                                 databaseColumnProperties.getEffectiveTo(),
+                                                 isMergeUpdate,
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
+
+                    if (databaseColumnProperties.getQueries() != null)
+                    {
+                        for (DatabaseQueryProperties queryProperties : databaseColumnProperties.getQueries())
+                        {
+                            if (queryProperties != null)
+                            {
+                                handler.createDatabaseColumnQuery(userId,
+                                                                  requestBody.getExternalSourceGUID(),
+                                                                  requestBody.getExternalSourceName(),
+                                                                  databaseColumnGUID,
+                                                                  queryProperties.getQueryId(),
+                                                                  queryProperties.getQuery(),
+                                                                  queryProperties.getQueryTargetGUID(),
+                                                                  null,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
+                                                                  methodName);
+                            }
+                        }
                     }
                 }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseColumnProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Exception error)
@@ -3021,25 +3220,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeDatabaseColumn(String          serverName,
-                                             String          userId,
-                                             String          databaseManagerGUID,
-                                             String          databaseManagerName,
-                                             String          databaseColumnGUID,
-                                             String          qualifiedName,
-                                             NullRequestBody nullRequestBody)
+    public VoidResponse removeDatabaseColumn(String                    serverName,
+                                             String                    userId,
+                                             String                    databaseColumnGUID,
+                                             ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeDatabaseColumn";
 
@@ -3059,15 +3251,28 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseColumn(userId,
-                                         databaseManagerGUID,
-                                         databaseManagerName,
-                                         databaseColumnGUID,
-                                         qualifiedName,
-                                         false,
-                                         false,
-                                         new Date(),
-                                         methodName);
+            if (requestBody != null)
+            {
+                handler.removeDatabaseColumn(userId,
+                                             requestBody.getExternalSourceGUID(),
+                                             requestBody.getExternalSourceName(),
+                                             databaseColumnGUID,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
+            }
+            else
+            {
+                handler.removeDatabaseColumn(userId,
+                                             null,
+                                             null,
+                                             databaseColumnGUID,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);
+            }
         }
         catch (Exception error)
         {
@@ -3340,22 +3545,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
-     * @param databasePrimaryKeyProperties properties to store
+     * @param requestBody properties to store
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setPrimaryKeyOnColumn(String                       serverName,
-                                              String                       userId,
-                                              String                       databaseManagerGUID,
-                                              String                       databaseManagerName,
-                                              String                       databaseColumnGUID,
-                                              DatabasePrimaryKeyProperties databasePrimaryKeyProperties)
+    public VoidResponse setPrimaryKeyOnColumn(String                    serverName,
+                                              String                    userId,
+                                              String                    databaseColumnGUID,
+                                              ClassificationRequestBody requestBody)
     {
         final String methodName = "setPrimaryKeyOnColumn";
 
@@ -3375,26 +3576,42 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            int keyPattern = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
-
-            if (databasePrimaryKeyProperties.getKeyPattern() != null)
+            if (requestBody != null)
             {
-                keyPattern = databasePrimaryKeyProperties.getKeyPattern().getOpenTypeOrdinal();
-            }
+                if (requestBody.getProperties() instanceof DatabasePrimaryKeyProperties)
+                {
+                    DatabasePrimaryKeyProperties databasePrimaryKeyProperties = (DatabasePrimaryKeyProperties) requestBody.getProperties();
 
-            handler.setPrimaryKeyOnColumn(userId,
-                                          databaseManagerGUID,
-                                          databaseManagerName,
-                                          databaseColumnGUID,
-                                          databasePrimaryKeyProperties.getName(),
-                                          keyPattern,
-                                          null,
-                                          null,
-                                          true,
-                                          false,
-                                          false,
-                                          new Date(),
-                                          methodName);
+                    int keyPattern = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+
+                    if (databasePrimaryKeyProperties.getKeyPattern() != null)
+                    {
+                        keyPattern = databasePrimaryKeyProperties.getKeyPattern().getOpenTypeOrdinal();
+                    }
+
+                    handler.setPrimaryKeyOnColumn(userId,
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
+                                                  databaseColumnGUID,
+                                                  databasePrimaryKeyProperties.getName(),
+                                                  keyPattern,
+                                                  databasePrimaryKeyProperties.getEffectiveFrom(),
+                                                  databasePrimaryKeyProperties.getEffectiveTo(),
+                                                  true,
+                                                  false,
+                                                  false,
+                                                  new Date(),
+                                                  methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabasePrimaryKeyProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -3412,23 +3629,18 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
-     * @param nullRequestBody empty request body
+     * @param requestBody external source request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removePrimaryKeyFromColumn(String          serverName,
-                                                   String          userId,
-                                                   String          databaseManagerGUID,
-                                                   String          databaseManagerName,
-                                                   String          databaseColumnGUID,
-                                                   NullRequestBody nullRequestBody)
+    public VoidResponse removePrimaryKeyFromColumn(String                    serverName,
+                                                   String                    userId,
+                                                   String                    databaseColumnGUID,
+                                                   ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removePrimaryKeyFromColumn";
 
@@ -3448,14 +3660,28 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removePrimaryKeyFromColumn(userId,
-                                               databaseManagerGUID,
-                                               databaseManagerName,
-                                               databaseColumnGUID,
-                                               false,
-                                               false,
-                                               new Date(),
-                                               methodName);
+            if (requestBody != null)
+            {
+                handler.removePrimaryKeyFromColumn(userId,
+                                                   requestBody.getExternalSourceGUID(),
+                                                   requestBody.getExternalSourceName(),
+                                                   databaseColumnGUID,
+                                                   false,
+                                                   false,
+                                                   new Date(),
+                                                   methodName);
+            }
+            else
+            {
+                handler.removePrimaryKeyFromColumn(userId,
+                                                   null,
+                                                   null,
+                                                   databaseColumnGUID,
+                                                   false,
+                                                   false,
+                                                   new Date(),
+                                                   methodName);
+            }
         }
         catch (Exception error)
         {
@@ -3474,24 +3700,20 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param primaryKeyColumnGUID unique identifier of the column containing the primary key
      * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from the other table
-     * @param databaseForeignKeyProperties properties about the foreign key relationship
+     * @param requestBody properties about the foreign key relationship
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse addForeignKeyRelationship(String                       serverName,
-                                                  String                       userId,
-                                                  String                       databaseManagerGUID,
-                                                  String                       databaseManagerName,
-                                                  String                       primaryKeyColumnGUID,
-                                                  String                       foreignKeyColumnGUID,
-                                                  DatabaseForeignKeyProperties databaseForeignKeyProperties)
+    public VoidResponse addForeignKeyRelationship(String                  serverName,
+                                                  String                  userId,
+                                                  String                  primaryKeyColumnGUID,
+                                                  String                  foreignKeyColumnGUID,
+                                                  RelationshipRequestBody requestBody)
     {
         final String methodName = "addForeignKeyRelationship";
 
@@ -3511,24 +3733,33 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            if (databaseForeignKeyProperties != null)
+            if (requestBody != null)
             {
-                handler.addForeignKeyRelationship(userId,
-                                                  databaseManagerGUID,
-                                                  databaseManagerName,
-                                                  primaryKeyColumnGUID,
-                                                  foreignKeyColumnGUID,
-                                                  databaseForeignKeyProperties.getName(),
-                                                  databaseForeignKeyProperties.getDescription(),
-                                                  databaseForeignKeyProperties.getConfidence(),
-                                                  databaseForeignKeyProperties.getSteward(),
-                                                  databaseForeignKeyProperties.getSource(),
-                                                  null,
-                                                  null,
-                                                  false,
-                                                  false,
-                                                  new Date(),
-                                                  methodName);
+                if (requestBody.getProperties() instanceof DatabaseForeignKeyProperties)
+                {
+                    DatabaseForeignKeyProperties databaseForeignKeyProperties = (DatabaseForeignKeyProperties) requestBody.getProperties();
+
+                    handler.addForeignKeyRelationship(userId,
+                                                      requestBody.getExternalSourceGUID(),
+                                                      requestBody.getExternalSourceName(),
+                                                      primaryKeyColumnGUID,
+                                                      foreignKeyColumnGUID,
+                                                      databaseForeignKeyProperties.getName(),
+                                                      databaseForeignKeyProperties.getDescription(),
+                                                      databaseForeignKeyProperties.getConfidence(),
+                                                      databaseForeignKeyProperties.getSteward(),
+                                                      databaseForeignKeyProperties.getSource(),
+                                                      databaseForeignKeyProperties.getEffectiveFrom(),
+                                                      databaseForeignKeyProperties.getEffectiveTo(),
+                                                      false,
+                                                      false,
+                                                      new Date(),
+                                                      methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(DatabaseForeignKeyProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -3551,25 +3782,20 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param primaryKeyColumnGUID unique identifier of the column that is the linked primary key
      * @param foreignKeyColumnGUID unique identifier of the column the contains the primary key from another table
-     * @param nullRequestBody empty request body
+     * @param requestBody empty request body
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid or
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeForeignKeyRelationship(String          serverName,
-                                                     String          userId,
-                                                     String          databaseManagerGUID,
-                                                     String          databaseManagerName,
-                                                     String          primaryKeyColumnGUID,
-                                                     String          foreignKeyColumnGUID,
-                                                     NullRequestBody nullRequestBody)
+    public VoidResponse removeForeignKeyRelationship(String                    serverName,
+                                                     String                    userId,
+                                                     String                    primaryKeyColumnGUID,
+                                                     String                    foreignKeyColumnGUID,
+                                                     ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeForeignKeyRelationship";
 
@@ -3589,15 +3815,30 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeForeignKeyRelationship(userId,
-                                                 databaseManagerGUID,
-                                                 databaseManagerName,
-                                                 primaryKeyColumnGUID,
-                                                 foreignKeyColumnGUID,
-                                                 false,
-                                                 false,
-                                                 new Date(),
-                                                 methodName);
+            if (requestBody != null)
+            {
+                handler.removeForeignKeyRelationship(userId,
+                                                     requestBody.getExternalSourceGUID(),
+                                                     requestBody.getExternalSourceName(),
+                                                     primaryKeyColumnGUID,
+                                                     foreignKeyColumnGUID,
+                                                     false,
+                                                     false,
+                                                     new Date(),
+                                                     methodName);
+            }
+            else
+            {
+                handler.removeForeignKeyRelationship(userId,
+                                                     null,
+                                                     null,
+                                                     primaryKeyColumnGUID,
+                                                     foreignKeyColumnGUID,
+                                                     false,
+                                                     false,
+                                                     new Date(),
+                                                     methodName);
+            }
         }
         catch (Exception error)
         {

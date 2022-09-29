@@ -98,7 +98,7 @@ public class OpenLineageDataQualityAssertionsInputDataSetFacet extends OpenLinea
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

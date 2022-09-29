@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.digitalservice.server;
 
 
 import org.odpi.openmetadata.accessservices.digitalservice.handlers.DigitalServiceEntityHandler;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalService;
-import org.odpi.openmetadata.accessservices.digitalservice.rest.DigitalServiceRequestBody;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceProperties;
+import org.odpi.openmetadata.accessservices.digitalservice.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -42,12 +42,12 @@ public class DigitalServiceRESTServices
      *
      * @param serverName                        the server name
      * @param userId                            the user id
-     * @param digitalServiceRequestBody the digital service request body
+     * @param requestBody the digital service request body
      * @return the guid response
      */
-    public GUIDResponse createDigitalService( String                    userId,
-                                              String                    serverName,
-                                              DigitalServiceRequestBody digitalServiceRequestBody)
+    public GUIDResponse createDigitalService( String                   userId,
+                                              String                   serverName,
+                                              ReferenceableRequestBody requestBody)
     {
         final String methodName = "createDigitalService";
 
@@ -59,15 +59,21 @@ public class DigitalServiceRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            if (digitalServiceRequestBody == null)
+
+            DigitalServiceEntityHandler handler = instanceHandler.getDigitalServiceEntityHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DigitalServiceProperties)
+                {
+                    DigitalServiceProperties digitalServiceProperties = (DigitalServiceProperties) requestBody.getProperties();
+                    response.setGUID(handler.createDigitalServiceEntity(userId, serverName, digitalServiceProperties));
+                }
+            }
+            else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-                return response;
             }
-
-            DigitalServiceEntityHandler handler        = instanceHandler.getDigitalServiceEntityHandler(userId, serverName, methodName);
-            DigitalService              digitalService = digitalServiceRequestBody.getDigitalService();
-            response.setGUID(handler.createDigitalServiceEntity(userId, serverName, digitalService));
         }
         catch (Exception error)
         {
