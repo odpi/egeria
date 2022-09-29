@@ -179,7 +179,7 @@ public class DataEngineRegistrationHandler {
 
         //Check if the entity has this classification and if it does then merge the syncDatesByKey
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ENGINE_TYPE_NAME);
         EntityDetail retrievedEntity = softwareServerCapabilityHandler.getEntityByValue(userId, externalSourceName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME),
                 false, false, null, methodName);
@@ -212,7 +212,7 @@ public class DataEngineRegistrationHandler {
                 null,
                 externalSourceGUID,
                 EXTERNAL_ENGINE_PARAMETER_NAME,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                ENGINE_TYPE_NAME,
                 PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
                 PROCESSING_STATE_CLASSIFICATION_TYPE_NAME,
                 instanceProperties,
