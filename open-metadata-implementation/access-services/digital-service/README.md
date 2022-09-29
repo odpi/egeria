@@ -5,7 +5,7 @@
 
 # Digital Service Open Metadata Access Service (OMAS)
 
-The Digital Service OMAS supports the business capability owners as they track the development and use of
+The Digital Service OMAS supports the business owners as they track the development and use of
 digital services that support the operation of the organization.
 
 Digital services are business services that are implemented in software.  An example of a digital service

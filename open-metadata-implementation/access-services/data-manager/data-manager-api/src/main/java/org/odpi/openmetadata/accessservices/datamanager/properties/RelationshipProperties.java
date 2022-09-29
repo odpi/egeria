@@ -24,6 +24,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = DatabaseForeignKeyProperties.class, name = "DatabaseForeignKeyProperties"),
+                @JsonSubTypes.Type(value = ReferenceValueAssignmentProperties.class, name = "ReferenceValueAssignmentProperties"),
+                @JsonSubTypes.Type(value = ValidValueAssignmentProperties.class, name = "ValidValueAssignmentProperties"),
+                @JsonSubTypes.Type(value = ValidValueMembershipProperties.class, name = "ValidValueMembershipProperties"),
+        })
 public class RelationshipProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
@@ -178,7 +188,7 @@ public class RelationshipProperties implements Serializable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

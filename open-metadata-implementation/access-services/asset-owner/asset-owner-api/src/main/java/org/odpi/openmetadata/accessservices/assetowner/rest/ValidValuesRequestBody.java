@@ -250,7 +250,7 @@ public class ValidValuesRequestBody extends ReferenceableRequestBody
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

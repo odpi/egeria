@@ -115,7 +115,7 @@ public class GovernanceResultsProperties extends RelationshipProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

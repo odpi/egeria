@@ -247,7 +247,7 @@ public class ValidValueSetProperties extends ReferenceableProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

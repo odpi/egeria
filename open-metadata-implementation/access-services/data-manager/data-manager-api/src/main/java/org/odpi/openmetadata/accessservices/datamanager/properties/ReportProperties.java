@@ -246,7 +246,7 @@ public class ReportProperties extends DataSetProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

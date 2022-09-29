@@ -1,72 +1,76 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.digitalservice.properties;
+package org.odpi.openmetadata.accessservices.digitalservice.rest;
+
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.ClassificationProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * ValidValueAssignmentProperties describes the properties between a referenceable and its valid values.
+ * ClassificationRequestBody describes the request body used when attaching classification to elements.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValueAssignmentProperties implements Serializable
+public class ClassificationRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private boolean              strictRequirement = true;
+    private ClassificationProperties properties = null;
 
 
     /**
      * Default constructor
      */
-    public ValidValueAssignmentProperties()
+    public ClassificationRequestBody()
     {
         super();
     }
 
 
     /**
-     * Copy/clone constructor
+     * Copy/clone constructor.
      *
      * @param template object to copy
      */
-    public ValidValueAssignmentProperties(ValidValueAssignmentProperties template)
+    public ClassificationRequestBody(ClassificationRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
-            strictRequirement = template.isStrictRequirement();
+            properties = template.getProperties();
         }
     }
 
 
     /**
-     * Return the strict requirement flag.
+     * Return the properties for the classification.
      *
-     * @return boolean
+     * @return properties object
      */
-    public boolean isStrictRequirement()
+    public ClassificationProperties getProperties()
     {
-        return strictRequirement;
+        return properties;
     }
 
 
     /**
-     * Set up the strict requirement flag.
+     * Set up the properties for the classification.
      *
-     * @param strictRequirement string type name
+     * @param properties properties object
      */
-    public void setStrictRequirement(boolean strictRequirement)
+    public void setProperties(ClassificationProperties properties)
     {
-        this.strictRequirement = strictRequirement;
+        this.properties = properties;
     }
 
 
@@ -78,7 +82,11 @@ public class ValidValueAssignmentProperties implements Serializable
     @Override
     public String toString()
     {
-        return "ValidValueAssignmentProperties{" + "strictRequirement=" + strictRequirement + '}';
+        return "ClassificationRequestBody{" +
+                       "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
+                       ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", properties=" + properties +
+                       '}';
     }
 
 
@@ -99,9 +107,14 @@ public class ValidValueAssignmentProperties implements Serializable
         {
             return false;
         }
-        ValidValueAssignmentProperties that = (ValidValueAssignmentProperties) objectToCompare;
-        return strictRequirement == that.strictRequirement;
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        ClassificationRequestBody that = (ClassificationRequestBody) objectToCompare;
+        return Objects.equals(getProperties(), that.getProperties());
     }
+
 
     /**
      * Return hash code for this object
@@ -111,6 +124,6 @@ public class ValidValueAssignmentProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(strictRequirement);
+        return Objects.hash(super.hashCode(), properties);
     }
 }
