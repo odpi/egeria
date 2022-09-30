@@ -52,6 +52,17 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
         "user": "admin",
         "password": "admin"
       },
+      "assetLineageTopicConnectionOverride": {
+        "class": "Connection",
+        "configurationProperties": {
+            "consumer": {
+                "bootstrap.servers": "server:port",
+                "key.deserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+                "value.deserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+                "group.id": "custom-consumer-group-id"
+            }
+        }
+    },
       "backgroundJobs": [
         {
           "jobName": "LineageGraphJob",
@@ -80,6 +91,7 @@ For example payloads and endpoints, see the [Postman samples](../samples/OLS.pos
     - `accessServiceConfig.serverPlatformUrlRoot` - the base URL where the Asset Lineage is running (mandatory value - exception will be thrown during configuration if null)
     - `accessServiceConfig.user` - the user needed for authentication in Asset Lineage (mandatory value - exception will be thrown during configuration if null)
     - `accessServiceConfig.password` - the password needed for authentication in Asset Lineage (not user at the moment)
+    - `assetLineageTopicConnectionOverride` - specifies the Connection properties of the Asset Lineage topic. Optional, if present it will override the `configurationProperties` for the `KafkaOpenMetadataTopicConnector`
     - `backgroundJobs.jobName` - should be the name of the job class name
     - `backgroundJobs.jobInterval` - interval for Open Lineage Services background processing job. The default is 120 if not specified
     - `backgroundJobs.jobEnabled` - enables or disables the job. The default is true if not specified
