@@ -209,7 +209,7 @@
         <micrometer-registry-prometheus.version>1.9.3</micrometer-registry-prometheus.version>
         <classgraph.version>4.8.149</classgraph.version>
         <groovy.version>3.0.12</groovy.version>
-        <jcl-over-slf4j.version>2.0.0</jcl-over-slf4j.version>
+        <jcl-over-slf4j.version>2.0.3</jcl-over-slf4j.version>
         <reflections.version>0.10.2</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
