@@ -202,7 +202,7 @@
         <joda.version>2.11.1</joda.version>
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
         <antlr.version>3.5.3</antlr.version>
-        <ST4.version>4.3.3</ST4.version>
+        <ST4.version>4.3.4</ST4.version>
         <snappy.version>1.1.8.4</snappy.version>
         <swagger.version>2.2.2</swagger.version>
         <snakeyaml.version>1.33</snakeyaml.version>
