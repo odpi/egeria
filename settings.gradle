@@ -21,7 +21,7 @@ pluginManagement {
         id 'org.siouan.frontend-jdk11' version '6.0.0'
         id 'com.github.johnrengelman.shadow' version '7.1.2'
         id 'com.github.psxpaul.execfork' version '0.2.0'
-        id 'de.jjohannes.java-ecosystem-capabilities' version '0.4'
+        id 'de.jjohannes.java-ecosystem-capabilities' version '0.5'
 
 
         // For reference we use these, but they are internal so no version spec needed
