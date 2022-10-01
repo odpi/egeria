@@ -141,7 +141,7 @@ allprojects {
         jnrVersion = '3.1.15'
         cassandraVersion = '4.0.6'
         osgiVersion = '8.0.0'
-        log4jVersion = '2.18.0'
+        log4jVersion = '2.19.0'
         jacksonjdk8Version = '2.13.3'
         reactivestreamsVersion = '1.0.4'
     }
