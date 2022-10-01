@@ -155,8 +155,8 @@
         <mockito.version>4.8.0</mockito.version>
         <slf4j.version>1.7.36</slf4j.version>
         <testng.version>7.5</testng.version>
-        <jackson.version>2.13.3</jackson.version>
         <jackson.databind.version>2.13.4</jackson.databind.version>
+        <jackson.version>2.13.4</jackson.version>
         <logback.version>1.2.11</logback.version>
         <kafka.version>3.3.0</kafka.version>
         <tomcat.version>9.0.65</tomcat.version>
