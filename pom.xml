@@ -147,7 +147,7 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.jupiter.version>5.9.0</junit.jupiter.version>
+        <junit.jupiter.version>5.9.1</junit.jupiter.version>
         <junit.platform.version>1.9.0</junit.platform.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
