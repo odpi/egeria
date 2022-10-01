@@ -100,7 +100,7 @@ allprojects {
         jodatimeVersion = '2.11.1'
         jsonldVersion = '0.13.4'
         junitVersion = '4.13.2'
-        junitjupiterVersion = '5.9.0'
+        junitjupiterVersion = '5.9.1'
         junitplatformVersion = '1.8.2'
         jwtVersion = '0.9.1'
         kafkaVersion = '3.2.1'
