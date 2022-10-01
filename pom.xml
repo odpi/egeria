@@ -168,7 +168,7 @@
         <gremlin.version>3.5.2</gremlin.version>
         <spring-data.version>2.7.2</spring-data.version>
         <springdoc.version>1.6.11</springdoc.version>
-        <spring.version>5.3.22</spring.version>
+        <spring.version>5.3.23</spring.version>
         <spring-security.version>5.7.3</spring-security.version>
         <springdoc-plugin.version>1.4</springdoc-plugin.version>
         <commons-io.version>2.11.0</commons-io.version>
