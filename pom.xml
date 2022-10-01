@@ -147,8 +147,8 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.jupiter.version>5.9.0</junit.jupiter.version>
         <junit.platform.version>1.9.1</junit.platform.version>
+        <junit.jupiter.version>5.9.1</junit.jupiter.version>
         <hamcrest.version>2.2</hamcrest.version>
         <junit.version>4.13.2</junit.version>
         <surefire.plugin.version>3.0.0-M7</surefire.plugin.version>
