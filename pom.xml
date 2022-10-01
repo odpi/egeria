@@ -267,7 +267,7 @@
         <jnr.version>3.1.15</jnr.version>
         <protobuf.version>3.21.5</protobuf.version>
         <osgi.version>8.0.0</osgi.version>
-        <log4j.version>2.18.0</log4j.version>
+        <log4j.version>2.19.0</log4j.version>
         <jacksonjdk8.version>2.13.3</jacksonjdk8.version>
         <reactivestreams.version>1.0.4</reactivestreams.version>
 
