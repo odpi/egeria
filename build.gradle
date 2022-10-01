@@ -109,7 +109,7 @@ allprojects {
         lettuceVersion = '6.2.0.RELEASE'
         luceneVersion = '8.11.1'
         nettyVersion = '4.1.80.Final'
-        ossVersion = '4.14.1'
+        ossVersion = '4.15.0'
         openlineageVersion = '0.13.1'
         mockitoVersion = '4.7.0'
         plexusVersion = '3.4.2'
