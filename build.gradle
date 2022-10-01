@@ -65,7 +65,7 @@ allprojects {
 
     ext {
         antlrVersion = '3.5.3'
-        ST4Version = '4.3.3'
+        ST4Version = '4.3.4'
         avroVersion = '1.11.1'
         classgraphVersion = '4.8.149'
         classmateVersion = '1.5.1'
