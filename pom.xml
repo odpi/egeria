@@ -267,8 +267,8 @@
         <jnr.version>3.1.15</jnr.version>
         <protobuf.version>3.21.7</protobuf.version>
         <osgi.version>8.0.0</osgi.version>
-        <log4j.version>2.18.0</log4j.version>
         <jacksonjdk8.version>2.13.4</jacksonjdk8.version>
+        <log4j.version>2.19.0</log4j.version>
         <reactivestreams.version>1.0.4</reactivestreams.version>
 
         <!-- Configuration of sonar code scanning-->
