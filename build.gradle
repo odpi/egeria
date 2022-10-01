@@ -131,7 +131,7 @@ allprojects {
         springsecurityVersion = '5.7.3'
         testngVersion = '7.6.1'
         springwebVersion = '5.3.22'
-        thriftVersion = '0.16.0'
+        thriftVersion = '0.17.0'
         tinkVersion = '1.7.0'
         tomcatVersion = '9.0.67'
         validationVersion = '2.0.1.Final'
