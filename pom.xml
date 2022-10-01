@@ -223,7 +223,7 @@
         <lombok-plugin.version>1.18.20.0</lombok-plugin.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <thrift.version>0.16.0</thrift.version>
-        <elasticsearch.version>8.4.1</elasticsearch.version>
+        <elasticsearch.version>8.4.2</elasticsearch.version>
         <hibernate-validator.version>6.2.4.Final</hibernate-validator.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
