@@ -111,7 +111,7 @@ allprojects {
         nettyVersion = '4.1.80.Final'
         openlineageVersion = '0.14.1'
         ossVersion = '4.15.0'
-        mockitoVersion = '4.7.0'
+        mockitoVersion = '4.8.0'
         plexusVersion = '3.4.2'
         prometheusVersion = '1.9.4'
         quartzVersion = '2.3.2'
