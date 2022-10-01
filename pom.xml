@@ -213,7 +213,7 @@
         <reflections.version>0.10.2</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <glassfish.json.version>1.1.4</glassfish.json.version>
-        <javassist.version>3.29.1-GA</javassist.version>
+        <javassist.version>3.29.2-GA</javassist.version>
         <httpcore.version>4.4.15</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
         <commons-configuration.version>1.10</commons-configuration.version>
