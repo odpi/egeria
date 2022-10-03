@@ -178,6 +178,9 @@
         <jena.version>4.2.0</jena.version>
         <commons-lang.version>3.12.0</commons-lang.version>
         <jwt.version>0.9.1</jwt.version>
+        <jjwt-api.version>0.11.5</jjwt-api.version>
+        <jjwt-impl.version>0.11.5</jjwt-impl.version>
+        <jjwt-jackson.version>0.11.5</jjwt-jackson.version>
         <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
         <jakarta-validation.version>3.0.2</jakarta-validation.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
@@ -1936,6 +1939,27 @@
                 <artifactId>metadata-security-apis</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <scope>compile</scope>
+                <version>${jjwt-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <scope>runtime</scope>
+                <version>${jjwt-impl.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <scope>runtime</scope>
+                <version>${jjwt-jackson.version}</version>
             </dependency>
 
             <dependency>
