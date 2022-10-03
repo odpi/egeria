@@ -213,7 +213,7 @@ public class ReferenceValueAssignmentProperties implements Serializable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

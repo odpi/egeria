@@ -1001,7 +1001,7 @@ public class OpenMetadataTypesArchive3_1
 
 
     /**
-     * These types were originally coded in release 1.7 - however the top-level method was not called ans so these types did not make the archive.
+     * These types were originally coded in release 1.7 - however the top-level method was not called and so these types did not make the archive.
      */
 
     private void add0485DataProcessingPurposes()

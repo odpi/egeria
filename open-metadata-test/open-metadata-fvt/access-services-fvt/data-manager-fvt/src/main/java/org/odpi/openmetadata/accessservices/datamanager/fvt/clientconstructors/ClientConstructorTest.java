@@ -128,7 +128,7 @@ public class ClientConstructorTest
 
         DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
 
-        new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+        new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
     }
 
 

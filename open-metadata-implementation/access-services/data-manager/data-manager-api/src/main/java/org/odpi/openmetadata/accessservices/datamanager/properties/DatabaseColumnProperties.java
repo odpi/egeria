@@ -161,7 +161,7 @@ public class DatabaseColumnProperties extends TabularColumnProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

@@ -127,7 +127,7 @@ public class CertificationTypeProperties extends GovernanceDefinitionProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

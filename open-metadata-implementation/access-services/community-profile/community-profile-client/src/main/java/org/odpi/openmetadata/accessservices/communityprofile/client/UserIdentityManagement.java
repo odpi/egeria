@@ -185,7 +185,7 @@ public class UserIdentityManagement extends CommunityProfileBaseClient implement
         final String propertiesParameterName = "newIdentity";
         final String urlTemplate             = serverPlatformURLRoot + urlTemplatePrefix;
 
-        return super.createReferenceableWithAnchor(userId, externalSourceGUID, externalSourceName, profileGUID, guidParameterName, newIdentity, propertiesParameterName, urlTemplate, methodName);
+        return super.createReferenceableWithParent(userId, externalSourceGUID, externalSourceName, profileGUID, guidParameterName, newIdentity, propertiesParameterName, urlTemplate, methodName);
     }
 
 

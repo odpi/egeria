@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "582b2a6f-c942-4bdf-b527-fb789bb13d19",
+		"_postman_id": "8099fb01-9085-42ff-8560-049eb7c9a8d4",
 		"name": "DataEngine - asset endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -3218,6 +3218,66 @@
 						"users",
 						"{{user-id}}",
 						"event-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10.1 Upsert Processing State Classification",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "showPassword",
+							"value": false,
+							"type": "boolean"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"externalSourceName\": \"(organization)=Company::(project)=ExternalDataPlatform\",\n    \"processingState\": {\n        \"syncDatesByKey\" : {\n            \"{{criticalElement}}\" : \"{{criticalElementLastSyncTimestampLong}}\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/processing-state",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"access-services",
+						"data-engine",
+						"users",
+						"{{user-id}}",
+						"processing-state"
 					]
 				}
 			},

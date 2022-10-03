@@ -559,7 +559,7 @@ public class InvalidParameterTest
         try
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
-            DatabaseManagerClient client = new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            DatabaseManagerClient client = new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             testCreateDatabase(userId, client);
         }

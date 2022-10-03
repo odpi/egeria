@@ -100,7 +100,7 @@ public class OpenLineageSQLJobFacet extends OpenLineageJobFacet
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

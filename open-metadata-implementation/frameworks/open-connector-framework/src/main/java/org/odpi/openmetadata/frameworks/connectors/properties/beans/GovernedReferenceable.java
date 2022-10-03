@@ -374,7 +374,7 @@ public class GovernedReferenceable extends Referenceable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The DigitalServiceErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
- * the DigitalService OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+ * the DigitalServiceProperties OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -30,10 +30,9 @@ public enum DigitalServiceErrorCode implements ExceptionMessageSet
     OMRS_NOT_INITIALIZED(404, "OMAS-DIGITAL-SERVICE-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to an open metadata repository.",
-            "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
+            "Check that the server where the Digital Service OMAS is running initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
         ;
-
 
 
     private final ExceptionMessageDefinition messageDefinition;
@@ -47,7 +46,7 @@ public enum DigitalServiceErrorCode implements ExceptionMessageSet
      * This will expand out to the 5 parameters shown below.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error

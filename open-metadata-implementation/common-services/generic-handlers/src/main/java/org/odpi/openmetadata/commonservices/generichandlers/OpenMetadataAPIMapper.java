@@ -2657,4 +2657,7 @@ public class OpenMetadataAPIMapper
 
     public static final String INCOMPLETE_CLASSIFICATION_TYPE_GUID = "078432fb-a889-4a51-8ebe-9797becea9f1";
     public static final String INCOMPLETE_CLASSIFICATION_TYPE_NAME = "Incomplete";
+
+    public static final String PROCESSING_STATE_CLASSIFICATION_TYPE_GUID = "261fb0aa-b884-4ee8-87ea-a60510e9751d";
+    public static final String PROCESSING_STATE_CLASSIFICATION_TYPE_NAME = "ProcessingState";
 }

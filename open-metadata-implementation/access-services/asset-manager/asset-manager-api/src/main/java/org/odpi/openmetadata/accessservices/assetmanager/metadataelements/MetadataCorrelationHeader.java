@@ -127,7 +127,7 @@ public class MetadataCorrelationHeader extends MetadataCorrelationProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
