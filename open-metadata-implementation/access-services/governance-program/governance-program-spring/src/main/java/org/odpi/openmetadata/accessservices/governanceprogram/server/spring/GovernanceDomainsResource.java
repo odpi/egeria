@@ -5,16 +5,16 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainSetListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainSetResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceDomainRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,14 +27,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 /**
- * GovernanceDomainRESTServices sets up the governance domains that are part of an organization governance.
+ * GovernanceDomainsResource sets up the governance domains that are part of an organization governance.
  * Each governance domain describes a focus for governance.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-program/users/{userId}")
 
-@Tag(name="Governance Program OMAS", description="The Governance Program OMAS provides APIs and events for tools and applications focused on defining a data strategy, planning support for a regulation and/or developing a governance program for the data landscape." +
-                                                         "\n",
+@Tag(name="Governance Program OMAS",
+     description="The Governance Program OMAS provides APIs and events for tools and applications focused on defining a data strategy, planning support for a regulation and/or developing a governance program for the data landscape.",
      externalDocs=@ExternalDocumentation(description="Governance Program Open Metadata Access Service (OMAS)",
                                          url="https://egeria-project.org/services/omas/governance-program/overview/"))
 
@@ -60,7 +60,7 @@ public class GovernanceDomainsResource
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param properties properties to store
+     * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
      *  InvalidParameterException  one of the parameters is invalid
@@ -69,11 +69,11 @@ public class GovernanceDomainsResource
      */
     @PostMapping(path = "/governance-domain-sets")
 
-    public GUIDResponse createGovernanceDomainSet(@PathVariable String                        serverName,
-                                                  @PathVariable String                        userId,
-                                                  @RequestBody  GovernanceDomainSetProperties properties)
+    public GUIDResponse createGovernanceDomainSet(@PathVariable String                   serverName,
+                                                  @PathVariable String                   userId,
+                                                  @RequestBody  ReferenceableRequestBody requestBody)
     {
-        return restAPI.createGovernanceDomainSet(serverName, userId, properties);
+        return restAPI.createGovernanceDomainSet(serverName, userId, requestBody);
     }
 
 
@@ -83,7 +83,7 @@ public class GovernanceDomainsResource
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param governanceDomainSetGUID unique identifier of the metadata element to remove
-     * @param properties new properties for this element
+     * @param requestBody new properties for this element
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -95,9 +95,9 @@ public class GovernanceDomainsResource
     public VoidResponse updateGovernanceDomainSet(@PathVariable String                        serverName,
                                                   @PathVariable String                        userId,
                                                   @PathVariable String                        governanceDomainSetGUID,
-                                                  @RequestBody  GovernanceDomainSetProperties properties)
+                                                  @RequestBody  ReferenceableRequestBody      requestBody)
     {
-        return restAPI.updateGovernanceDomainSet(serverName, userId, governanceDomainSetGUID, properties);
+        return restAPI.updateGovernanceDomainSet(serverName, userId, governanceDomainSetGUID, requestBody);
     }
 
 
@@ -107,7 +107,7 @@ public class GovernanceDomainsResource
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param governanceDomainSetGUID unique identifier of the metadata element to remove
-     * @param requestBody null request body
+     * @param requestBody external source request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -120,7 +120,7 @@ public class GovernanceDomainsResource
                                                   @PathVariable String          userId,
                                                   @PathVariable String          governanceDomainSetGUID,
                                                   @RequestBody(required = false)
-                                                                NullRequestBody requestBody)
+                                                                ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeGovernanceDomainSet(serverName, userId, governanceDomainSetGUID, requestBody);
     }
@@ -213,22 +213,20 @@ public class GovernanceDomainsResource
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param setGUID unique identifier of the set that this identifier belongs
-     * @param properties properties about the Governance Domain to store
+     * @param requestBody properties about the Governance Domain to store
      *
      * @return unique identifier of the new Governance Domain or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-domain-sets/{setGUID}/governance-domains")
+    @PostMapping(path = "/governance-domain-sets/governance-domains")
 
     public GUIDResponse createGovernanceDomain(@PathVariable String                     serverName,
                                                @PathVariable String                     userId,
-                                               @PathVariable String                     setGUID,
-                                               @RequestBody  GovernanceDomainProperties properties)
+                                               @RequestBody  ReferenceableRequestBody   requestBody)
     {
-        return restAPI.createGovernanceDomain(serverName, userId, setGUID, properties);
+        return restAPI.createGovernanceDomain(serverName, userId, requestBody);
     }
 
 
@@ -238,7 +236,7 @@ public class GovernanceDomainsResource
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param governanceDomainGUID unique identifier of the metadata element to update
-     * @param properties new properties for the metadata element
+     * @param requestBody new properties for the metadata element
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -250,9 +248,9 @@ public class GovernanceDomainsResource
     public VoidResponse updateGovernanceDomain(@PathVariable String                     serverName,
                                                @PathVariable String                     userId,
                                                @PathVariable String                     governanceDomainGUID,
-                                               @RequestBody  GovernanceDomainProperties properties)
+                                               @RequestBody  ReferenceableRequestBody   requestBody)
     {
-        return restAPI.updateGovernanceDomain(serverName, userId, governanceDomainGUID, properties);
+        return restAPI.updateGovernanceDomain(serverName, userId, governanceDomainGUID, requestBody);
     }
 
 
@@ -262,7 +260,7 @@ public class GovernanceDomainsResource
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param governanceDomainGUID unique identifier of the metadata element to remove
-     * @param requestBody null request body
+     * @param requestBody external source request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -275,7 +273,7 @@ public class GovernanceDomainsResource
                                                @PathVariable String          userId,
                                                @PathVariable String          governanceDomainGUID,
                                                @RequestBody(required = false)
-                                                             NullRequestBody requestBody)
+                                                       ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteGovernanceDomain(serverName, userId, governanceDomainGUID, requestBody);
     }
@@ -289,7 +287,7 @@ public class GovernanceDomainsResource
      * @param userId calling user
      * @param governanceDomainSetGUID unique identifier of the governance domain set
      * @param governanceDomainGUID unique identifier of the governance domain
-     * @param requestBody null request body
+     * @param requestBody relationship request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -303,7 +301,7 @@ public class GovernanceDomainsResource
                                        @PathVariable String          governanceDomainSetGUID,
                                        @PathVariable String          governanceDomainGUID,
                                        @RequestBody(required = false)
-                                                     NullRequestBody requestBody)
+                                               RelationshipRequestBody requestBody)
     {
         return restAPI.addDomainToSet(serverName, userId, governanceDomainSetGUID, governanceDomainGUID, requestBody);
     }
@@ -317,7 +315,7 @@ public class GovernanceDomainsResource
      * @param userId calling user
      * @param governanceDomainSetGUID unique identifier of the governance domain set
      * @param governanceDomainGUID unique identifier of the governance domain
-     * @param requestBody null request body
+     * @param requestBody relationship request body
      *
      * @return void or
      *  InvalidParameterException  one of the parameters is invalid
@@ -331,7 +329,7 @@ public class GovernanceDomainsResource
                                             @PathVariable String          governanceDomainSetGUID,
                                             @PathVariable String          governanceDomainGUID,
                                             @RequestBody(required = false)
-                                                          NullRequestBody requestBody)
+                                                    RelationshipRequestBody requestBody)
     {
         return restAPI.removeDomainFromSet(serverName, userId, governanceDomainSetGUID, governanceDomainGUID, requestBody);
 

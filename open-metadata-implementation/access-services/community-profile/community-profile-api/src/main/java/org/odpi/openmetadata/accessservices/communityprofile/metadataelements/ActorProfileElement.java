@@ -30,14 +30,15 @@ public class ActorProfileElement implements Serializable, MetadataElement
     private ElementHeader                elementHeader        = null;
     private ActorProfileProperties       profileProperties    = null;
     private List<ContactMethodElement>   contactMethods       = null;
-    private ContributionRecordElement    contributionRecord = null; /* Person only */
-    private List<ElementStub>            personRoles        = null; /* Person only */
-    private List<ProfileLocationElement> locations          = null;
+    private ContributionRecordElement    contributionRecord   = null; /* Person only */
+    private List<ElementStub>            personRoles          = null; /* Person only */
+    private List<ProfileLocationElement> locations            = null;
     private List<ProfileIdentityElement> userIdentities       = null;
     private ElementStub                  superTeam            = null; /* Team only */
     private List<ElementStub>            subTeams             = null; /* Team only */
     private List<ElementStub>            teamLeaderRoles      = null; /* Team only */
     private List<ElementStub>            teamMemberRoles      = null; /* Team only */
+    private List<RelatedElement>         businessCapability   = null; /* Team only */
     private List<ElementStub>            linkedInfrastructure = null; /* ITProfile only */
 
 
@@ -69,6 +70,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
             subTeams = template.getSubTeams();
             teamLeaderRoles = template.getTeamLeaderRoles();
             teamMemberRoles = template.getTeamMemberRoles();
+            businessCapability = template.getBusinessCapability();
             linkedInfrastructure = template.getLinkedInfrastructure();
         }
     }
@@ -318,6 +320,28 @@ public class ActorProfileElement implements Serializable, MetadataElement
 
 
     /**
+     * Return the business capability linked via the organizational capability relationship.
+     *
+     * @return list of capabilities
+     */
+    public List<RelatedElement> getBusinessCapability()
+    {
+        return businessCapability;
+    }
+
+
+    /**
+     * Set up the business capability linked via the organizational capability relationship.
+     *
+     * @param businessCapability list of capabilities
+     */
+    public void setBusinessCapability(List<RelatedElement> businessCapability)
+    {
+        this.businessCapability = businessCapability;
+    }
+
+
+    /**
      * Return the stubs of the pieces of IT infrastructure linked to the profile.
      *
      * @return list of element stubs
@@ -359,6 +383,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
                        ", subTeams=" + subTeams +
                        ", teamLeaderRoles=" + teamLeaderRoles +
                        ", teamMemberRoles=" + teamMemberRoles +
+                       ", businessCapability=" + businessCapability +
                        ", linkedInfrastructure=" + linkedInfrastructure +
                        '}';
     }
@@ -393,6 +418,7 @@ public class ActorProfileElement implements Serializable, MetadataElement
                        Objects.equals(subTeams, that.subTeams) &&
                        Objects.equals(teamLeaderRoles, that.teamLeaderRoles) &&
                        Objects.equals(teamMemberRoles, that.teamMemberRoles) &&
+                       Objects.equals(businessCapability, that.businessCapability) &&
                        Objects.equals(linkedInfrastructure, that.linkedInfrastructure);
     }
 
@@ -406,6 +432,6 @@ public class ActorProfileElement implements Serializable, MetadataElement
     public int hashCode()
     {
         return Objects.hash(elementHeader, profileProperties, contactMethods, contributionRecord, userIdentities, superTeam, subTeams,
-                            teamLeaderRoles, personRoles, locations, teamMemberRoles, linkedInfrastructure);
+                            teamLeaderRoles, personRoles, locations, teamMemberRoles, businessCapability,linkedInfrastructure);
     }
 }

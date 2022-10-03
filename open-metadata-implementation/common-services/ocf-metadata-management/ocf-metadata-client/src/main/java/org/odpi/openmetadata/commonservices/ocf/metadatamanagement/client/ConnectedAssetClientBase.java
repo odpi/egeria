@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.api.ConnectorFactoryInterface;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
@@ -16,11 +17,12 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+
 /**
  * ConnectedAssetClientBase provides a base calls for clients that support an OCF interface.
  * In particular, it manages the retrieval of connections for assets, and the creation of connectors.
  */
-public class ConnectedAssetClientBase
+public class ConnectedAssetClientBase implements ConnectorFactoryInterface
 {
     protected String   serverName;               /* Initialized in constructor */
     protected String   serverPlatformURLRoot;    /* Initialized in constructor */
@@ -30,18 +32,22 @@ public class ConnectedAssetClientBase
 
     protected static NullRequestBody         nullRequestBody         = new NullRequestBody();
 
+    private final String serviceURLMarker;
+    private final OCFRESTClient ocfrestClient;
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @param auditLog destination for log messages
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClientBase(String   serverName,
                                     String   serverPlatformURLRoot,
+                                    String   serviceURLMarker,
                                     AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
@@ -50,7 +56,11 @@ public class ConnectedAssetClientBase
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.serviceURLMarker = serviceURLMarker;
         this.auditLog = auditLog;
+
+        this.ocfrestClient = new OCFRESTClient(serverName, serverPlatformURLRoot, auditLog);
+
     }
 
 
@@ -60,12 +70,14 @@ public class ConnectedAssetClientBase
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param maxPageSize maximum page size for this process
+     * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @param auditLog destination for log messages
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClientBase(String   serverName,
                                     String   serverPlatformURLRoot,
+                                    String   serviceURLMarker,
                                     int      maxPageSize,
                                     AuditLog auditLog) throws InvalidParameterException
     {
@@ -76,7 +88,10 @@ public class ConnectedAssetClientBase
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.serviceURLMarker = serviceURLMarker;
         this.auditLog = auditLog;
+
+        this.ocfrestClient = new OCFRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -85,21 +100,84 @@ public class ConnectedAssetClientBase
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serviceURLMarker indicator of the OMAS that this client is supporting
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ConnectedAssetClientBase(String serverName,
-                                    String serverPlatformURLRoot) throws InvalidParameterException
+                                    String serverPlatformURLRoot,
+                                    String serviceURLMarker) throws InvalidParameterException
     {
-        this(serverName, serverPlatformURLRoot, null);
+        this(serverName, serverPlatformURLRoot, serviceURLMarker, null);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serviceURLMarker indicator of the OMAS that this client is supporting
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @param auditLog destination for log messages
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public ConnectedAssetClientBase(String   serverName,
+                                    String   serverPlatformURLRoot,
+                                    String   serviceURLMarker,
+                                    String   userId,
+                                    String   password,
+                                    AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.serviceURLMarker = serviceURLMarker;
+        this.auditLog = auditLog;
+
+        this.ocfrestClient = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param serviceURLMarker indicator of the OMAS that this client is supporting
+     * @param userId caller's userId embedded in all HTTP requests
+     * @param password caller's userId embedded in all HTTP requests
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public ConnectedAssetClientBase(String serverName,
+                                    String serverPlatformURLRoot,
+                                    String serviceURLMarker,
+                                    String userId,
+                                    String password) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.serviceURLMarker = serviceURLMarker;
+
+        this.ocfrestClient = new OCFRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
     /**
      * Return the basic properties of an asset.
      *
-     * @param restClient client that calls REST APIs
-     * @param serviceName name of the calling service
      * @param userId calling user
      * @param guid unique identifier of asset
      * @param methodName calling method
@@ -110,9 +188,7 @@ public class ConnectedAssetClientBase
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    protected Asset getAssetSummary(OCFRESTClient  restClient,
-                                    String         serviceName,
-                                    String         userId,
+    protected Asset getAssetSummary(String         userId,
                                     String         guid,
                                     String         methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
@@ -120,12 +196,12 @@ public class ConnectedAssetClientBase
     {
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}";
 
-        AssetResponse restResult = restClient.callOCFAssetGetRESTCall(methodName,
-                                                                      serverPlatformURLRoot + urlTemplate,
-                                                                      serverName,
-                                                                      serviceName,
-                                                                      userId,
-                                                                      guid);
+        AssetResponse restResult = ocfrestClient.callOCFAssetGetRESTCall(methodName,
+                                                                         serverPlatformURLRoot + urlTemplate,
+                                                                         serverName,
+                                                                         serviceURLMarker,
+                                                                         userId,
+                                                                         guid);
 
         return restResult.getAsset();
     }
@@ -345,7 +421,7 @@ public class ConnectedAssetClientBase
      * @param userId       userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository.
      *
-     * @return Connector   connector instance.
+     * @return   connector instance.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
@@ -404,5 +480,171 @@ public class ConnectedAssetClientBase
                                                                  connectionGUID);
 
         return restResult.getGUID();
+    }
+
+
+    /*
+     * ===============================================
+     * ConnectorFactoryInterface
+     * ===============================================
+     */
+
+
+    /**
+     * Returns the connector corresponding to the supplied connection name.
+     *
+     * @param userId           userId of user making request.
+     * @param connectionName   this may be the qualifiedName or displayName of the connection.
+     *
+     * @return   connector instance - or null if there is no connection
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public Connector getConnectorByName(String userId,
+                                        String connectionName) throws InvalidParameterException,
+                                                                      ConnectionCheckedException,
+                                                                      ConnectorCheckedException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "getConnectorByName";
+        final String nameParameter = "connectionName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(connectionName, nameParameter, methodName);
+
+        Connection connection = this.getConnectionByName(ocfrestClient, serviceURLMarker, userId, connectionName);
+
+        if (connection != null)
+        {
+            return this.getConnectorForConnection(ocfrestClient,
+                                                  serviceURLMarker,
+                                                  userId,
+                                                  connection,
+                                                  methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Returns the connector corresponding to the supplied asset GUID.
+     *
+     * @param userId       userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository.
+     *
+     * @return    connector instance - or null if there is no connection
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public Connector getConnectorForAsset(String userId,
+                                          String assetGUID) throws InvalidParameterException,
+                                                                   ConnectionCheckedException,
+                                                                   ConnectorCheckedException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final  String  methodName = "getConnectorForAsset";
+        final  String  guidParameter = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
+
+        Connection connection = this.getConnectionForAsset(ocfrestClient, serviceURLMarker, userId, assetGUID);
+
+        if (connection != null)
+        {
+            return this.getConnectorForConnection(ocfrestClient,
+                                                  serviceURLMarker,
+                                                  userId,
+                                                  connection,
+                                                  methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Returns the connector corresponding to the supplied connection GUID.
+     *
+     * @param userId           userId of user making request.
+     * @param connectionGUID   the unique id for the connection within the metadata repository.
+     *
+     * @return  connector instance - or null if there is no connection
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public Connector getConnectorByGUID(String userId,
+                                        String connectionGUID) throws InvalidParameterException,
+                                                                      ConnectionCheckedException,
+                                                                      ConnectorCheckedException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        final  String  methodName = "getConnectorByGUID";
+        final  String  guidParameter = "connectionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
+
+        Connection connection = this.getConnectionByGUID(ocfrestClient, serviceURLMarker, userId, connectionGUID);
+
+        if (connection != null)
+        {
+            return this.getConnectorForConnection(ocfrestClient,
+                                                  serviceURLMarker,
+                                                  userId,
+                                                  connection,
+                                                  methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Returns the connector corresponding to the supplied connection.
+     *
+     * @param userId       userId of user making request.
+     * @param connection   the connection object that contains the properties needed to create the connection.
+     *
+     * @return  connector instance
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     */
+    @Override
+    public Connector  getConnectorByConnection(String     userId,
+                                               Connection connection) throws InvalidParameterException,
+                                                                             ConnectionCheckedException,
+                                                                             ConnectorCheckedException
+    {
+        final  String  methodName = "getConnectorByConnection";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        return this.getConnectorForConnection(ocfrestClient, serviceURLMarker, userId, connection, methodName);
     }
 }

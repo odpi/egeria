@@ -19,7 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = UserIdentityRequestBody.class, name = "UserIdentityRequestBody"),
                 @JsonSubTypes.Type(value = MyProfileRequestBody.class, name = "MyProfileRequestBody"),
                 @JsonSubTypes.Type(value = PersonalProfileRequestBody.class, name = "PersonalProfileRequestBody"),
                 @JsonSubTypes.Type(value = PersonalProfileValidatorRequestBody.class, name = "PersonalProfileValidatorRequestBody")

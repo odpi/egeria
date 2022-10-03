@@ -154,8 +154,6 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -240,8 +238,6 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);

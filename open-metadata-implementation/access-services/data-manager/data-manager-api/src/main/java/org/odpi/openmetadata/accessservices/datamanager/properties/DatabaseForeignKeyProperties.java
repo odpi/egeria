@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DatabaseForeignKeyProperties implements Serializable
+public class DatabaseForeignKeyProperties extends RelationshipProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -49,6 +48,8 @@ public class DatabaseForeignKeyProperties implements Serializable
      */
     public DatabaseForeignKeyProperties(DatabaseForeignKeyProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             name        = template.getName();
@@ -179,12 +180,15 @@ public class DatabaseForeignKeyProperties implements Serializable
     public String toString()
     {
         return "DatabaseForeignKeyProperties{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", confidence=" + confidence +
-                ", steward='" + steward + '\'' +
-                ", source='" + source + '\'' +
-                '}';
+                       "name='" + name + '\'' +
+                       ", description='" + description + '\'' +
+                       ", confidence=" + confidence +
+                       ", steward='" + steward + '\'' +
+                       ", source='" + source + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 
@@ -201,27 +205,31 @@ public class DatabaseForeignKeyProperties implements Serializable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof DatabaseForeignKeyProperties))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         DatabaseForeignKeyProperties that = (DatabaseForeignKeyProperties) objectToCompare;
         return confidence == that.confidence &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(steward, that.steward) &&
-                Objects.equals(source, that.source);
+                       Objects.equals(name, that.name) &&
+                       Objects.equals(description, that.description) &&
+                       Objects.equals(steward, that.steward) &&
+                       Objects.equals(source, that.source);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, description, confidence, steward, source);
+        return Objects.hash(super.hashCode(), name, description, confidence, steward, source);
     }
 }

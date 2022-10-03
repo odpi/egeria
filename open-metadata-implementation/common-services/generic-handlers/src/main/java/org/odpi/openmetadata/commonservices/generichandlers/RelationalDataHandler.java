@@ -1149,7 +1149,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerGUID unique identifier of software capability representing the DBMS
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param qualifiedName optional unique name of the metadata element to remove
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -1172,11 +1172,9 @@ public class RelationalDataHandler<DATABASE,
                                                           PropertyServerException
     {
         final String elementGUIDParameterName    = "databaseGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         databaseHandler.removeLinkedDataSets(userId,
                                              databaseManagerGUID,
@@ -1188,19 +1186,38 @@ public class RelationalDataHandler<DATABASE,
                                              effectiveTime,
                                              methodName);
 
-        databaseHandler.deleteBeanInRepository(userId,
-                                               databaseManagerGUID,
-                                               databaseManagerName,
-                                               databaseGUID,
-                                               elementGUIDParameterName,
-                                               OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
-                                               OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
-                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                               qualifiedName,
-                                               forLineage,
-                                               forDuplicateProcessing,
-                                               effectiveTime,
-                                               methodName);
+        if (qualifiedName != null)
+        {
+            databaseHandler.deleteBeanInRepository(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerName,
+                                                   databaseGUID,
+                                                   elementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                   qualifiedName,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+        }
+        else
+        {
+            databaseHandler.deleteBeanInRepository(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerName,
+                                                   databaseGUID,
+                                                   elementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                   null,
+                                                   null,
+                                                   forLineage,
+                                                   forDuplicateProcessing,
+                                                   effectiveTime,
+                                                   methodName);
+        }
     }
 
 
@@ -2032,7 +2049,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerGUID unique identifier of software capability representing the DBMS
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
+     * @param qualifiedName optional unique name of the metadata element to remove
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -2055,25 +2072,42 @@ public class RelationalDataHandler<DATABASE,
                                                                 PropertyServerException
     {
         final String elementGUIDParameterName    = "databaseSchemaGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        databaseSchemaHandler.deleteBeanInRepository(userId,
-                                                     databaseManagerGUID,
-                                                     databaseManagerName,
-                                                     databaseSchemaGUID,
-                                                     elementGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                     qualifiedName,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     effectiveTime,
-                                                     methodName);
+        if (qualifiedName != null)
+        {
+            databaseSchemaHandler.deleteBeanInRepository(userId,
+                                                         databaseManagerGUID,
+                                                         databaseManagerName,
+                                                         databaseSchemaGUID,
+                                                         elementGUIDParameterName,
+                                                         OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                         qualifiedName,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         effectiveTime,
+                                                         methodName);
+        }
+        else
+        {
+            databaseSchemaHandler.deleteBeanInRepository(userId,
+                                                         databaseManagerGUID,
+                                                         databaseManagerName,
+                                                         databaseSchemaGUID,
+                                                         elementGUIDParameterName,
+                                                         OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                         null,
+                                                         null,
+                                                         forLineage,
+                                                         forDuplicateProcessing,
+                                                         effectiveTime,
+                                                         methodName);
+        }
     }
 
 
@@ -2322,8 +2356,6 @@ public class RelationalDataHandler<DATABASE,
                                                            databaseManagerName,
                                                            OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
                                                            OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
-                                                           qualifiedName,
-                                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                            builder,
                                                            effectiveTime,
                                                            methodName);
@@ -2993,23 +3025,38 @@ public class RelationalDataHandler<DATABASE,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException
     {
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        databaseTableHandler.deleteBeanInRepository(userId,
-                                                    databaseManagerGUID,
-                                                    databaseManagerName,
-                                                    databaseTableGUID,
-                                                    databaseTableGUIDParameterName,
-                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
-                                                    OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                    qualifiedName,
-                                                    forLineage,
-                                                    forDuplicateProcessing,
-                                                    effectiveTime,
-                                                    methodName);
+        if (qualifiedName != null)
+        {
+            databaseTableHandler.deleteBeanInRepository(userId,
+                                                        databaseManagerGUID,
+                                                        databaseManagerName,
+                                                        databaseTableGUID,
+                                                        databaseTableGUIDParameterName,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                        qualifiedName,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
+        }
+        else
+        {
+            databaseTableHandler.deleteBeanInRepository(userId,
+                                                        databaseManagerGUID,
+                                                        databaseManagerName,
+                                                        databaseTableGUID,
+                                                        databaseTableGUIDParameterName,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                        null,
+                                                        null,
+                                                        forLineage,
+                                                        forDuplicateProcessing,
+                                                        effectiveTime,
+                                                        methodName);
+        }
     }
 
 
@@ -4255,8 +4302,6 @@ public class RelationalDataHandler<DATABASE,
                                                                                      databaseManagerName,
                                                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
                                                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                                                     qualifiedName,
-                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                                      schemaAttributeBuilder,
                                                                                      effectiveTime,
                                                                                      methodName);
@@ -4876,7 +4921,6 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerGUID unique identifier of software capability representing the DBMS
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to remove
-     * @param qualifiedName unique name of the metadata element to remove
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -4890,7 +4934,6 @@ public class RelationalDataHandler<DATABASE,
                                      String  databaseManagerGUID,
                                      String  databaseManagerName,
                                      String  databaseColumnGUID,
-                                     String  qualifiedName,
                                      boolean forLineage,
                                      boolean forDuplicateProcessing,
                                      Date    effectiveTime,
@@ -4899,11 +4942,9 @@ public class RelationalDataHandler<DATABASE,
                                                                 PropertyServerException
     {
         final String elementGUIDParameterName    = "databaseColumnGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
         databaseColumnHandler.deleteBeanInRepository(userId,
                                                      databaseManagerGUID,
@@ -4912,8 +4953,8 @@ public class RelationalDataHandler<DATABASE,
                                                      elementGUIDParameterName,
                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
                                                      OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
-                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                     qualifiedName,
+                                                     null,
+                                                     null,
                                                      forLineage,
                                                      forDuplicateProcessing,
                                                      effectiveTime,

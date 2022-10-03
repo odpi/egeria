@@ -1851,7 +1851,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Add the requested classification to a specific entity.
+     * Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+     * created, classified, and stored in the repository by this method.
      *
      * @param userId unique identifier for requesting user.
      * @param entityProxy entity as a proxy
@@ -1863,7 +1864,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws EntityNotKnownException the entity proxy was not found and could not be created
      * @throws ClassificationErrorException the requested classification is either not known or not valid
      *                                         for the entity.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
@@ -1882,18 +1883,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                UserNotAuthorizedException,
                                                                                                FunctionNotSupportedException
     {
-        EntityDetail entityDetail = this.classifyEntity(userId,
-                                                        entityProxy.getGUID(),
-                                                        classificationName,
-                                                        classificationProperties);
-
-        for (Classification classification : entityDetail.getClassifications())
-        {
-            if (classification.getName().equals(classificationName))
-            {
-                return classification;
-            }
-        }
+        final String methodName = "classifyEntity";
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 
@@ -1946,7 +1937,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
-     * Add the requested classification to a specific entity.
+     * Add the requested classification to a specific entity. If the provided entityProxy does not exist, it should be
+     * created, classified, and stored in the repository by this method.
      *
      * @param userId unique identifier for requesting user.
      * @param entityProxy entity as a proxy
@@ -1985,22 +1977,8 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                UserNotAuthorizedException,
                                                                                                FunctionNotSupportedException
     {
-        EntityDetail entityDetail = this.classifyEntity(userId,
-                                                        entityProxy.getGUID(),
-                                                        classificationName,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        classificationOrigin,
-                                                        classificationOriginGUID,
-                                                        classificationProperties);
-
-        for (Classification classification : entityDetail.getClassifications())
-        {
-            if (classification.getName().equals(classificationName))
-            {
-                return classification;
-            }
-        }
+        final String methodName = "classifyEntity";
+        reportUnsupportedOptionalFunction(methodName);
         return null;
     }
 
@@ -2039,7 +2017,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws EntityNotKnownException the entity proxy was not found and could not be created
      * @throws ClassificationErrorException the requested classification is not set on the entity.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
@@ -3454,5 +3432,20 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                        methodName);
             }
         }
+    }
+
+    /**
+     * Return an exception to indicate that the method is unsupported but this is ok because it is optional.
+     *
+     * @param methodName calling method
+     * @throws FunctionNotSupportedException optional function not supported
+     */
+    protected void reportUnsupportedOptionalFunction(String methodName) throws FunctionNotSupportedException
+    {
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                this.getClass().getName(),
+                repositoryName),
+                this.getClass().getName(),
+                methodName);
     }
 }

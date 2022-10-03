@@ -10,7 +10,7 @@
     <parent>
         <artifactId>organization-integrator</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.11-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>

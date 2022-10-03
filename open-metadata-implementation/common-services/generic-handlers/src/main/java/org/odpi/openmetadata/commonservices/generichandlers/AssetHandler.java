@@ -15,6 +15,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -160,6 +161,109 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Add or replace the governance measurements results dataset classification to a dataset.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of bean
+     * @param beanGUIDParameterName name of parameter supplying the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param description of the  data set
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
+     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addGovernanceMeasurementsDataSetClassification(String                userId,
+                                                                String                externalSourceGUID,
+                                                                String                externalSourceName,
+                                                                String                beanGUID,
+                                                                String                beanGUIDParameterName,
+                                                                String                beanGUIDTypeName,
+                                                                String                description,
+                                                                boolean               forLineage,
+                                                                boolean               forDuplicateProcessing,
+                                                                Date                  effectiveFrom,
+                                                                Date                  effectiveTo,
+                                                                Date                  effectiveTime,
+                                                                String                methodName) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+
+        this.setClassificationInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_GUID,
+                                           OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_NAME,
+                                           this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                           true,
+                                           forLineage,
+                                           forDuplicateProcessing,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+
+    /**
+     * Remove the governance measurements results dataset classification from a dataset.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of the software capability that owns this project
+     * @param externalSourceName unique name of the software capability that owns this project
+     * @param beanGUID unique identifier of entity to update
+     * @param beanGUIDParameterName name of parameter providing beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeGovernanceMeasurementsDataSetClassification(String  userId,
+                                                                   String  externalSourceGUID,
+                                                                   String  externalSourceName,
+                                                                   String  beanGUID,
+                                                                   String  beanGUIDParameterName,
+                                                                   String  beanGUIDTypeName,
+                                                                   boolean forLineage,
+                                                                   boolean forDuplicateProcessing,
+                                                                   Date    effectiveTime,
+                                                                   String  methodName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        this.removeClassificationFromRepository(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                beanGUID,
+                                                beanGUIDParameterName,
+                                                beanGUIDTypeName,
+                                                OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_GUID,
+                                                OpenMetadataAPIMapper.GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_NAME,
+                                                forLineage,
+                                                forDuplicateProcessing,
+                                                effectiveTime,
+                                                methodName);
     }
 
 
@@ -722,8 +826,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -809,8 +911,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            assetTypeId,
                                            assetTypeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);
@@ -2516,6 +2616,74 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId calling user
      * @param zoneName name of zone to scan
+     * @param subTypeName type of asset to scan for (null for all asset types)
+     * @param startFrom scan pointer
+     * @param pageSize maximum number of results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of matching assets
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<B>  assetZoneScan(String       userId,
+                                  String       zoneName,
+                                  String       subTypeName,
+                                  int          startFrom,
+                                  int          pageSize,
+                                  boolean      forLineage,
+                                  boolean      forDuplicateProcessing,
+                                  Date         effectiveTime,
+                                  String       methodName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        if (subTypeName == null)
+        {
+            return this.assetZoneScan(userId,
+                                      zoneName,
+                                      null,
+                                      null,
+                                      supportedZones,
+                                      startFrom,
+                                      pageSize,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
+                                      methodName);
+        }
+        else
+        {
+            String subTypeGUID = invalidParameterHandler.validateTypeName(subTypeName,
+                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          serviceName,
+                                                                          methodName,
+                                                                          repositoryHelper);
+
+            return this.assetZoneScan(userId,
+                                      zoneName,
+                                      subTypeGUID,
+                                      subTypeName,
+                                      supportedZones,
+                                      startFrom,
+                                      pageSize,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
+                                      methodName);
+        }
+    }
+
+    /**
+     * Scan through the repository looking for assets by type and/or zone.  The type name
+     * may be null which means, all types of assets will be returned.  The zone name may be null
+     * which means all supportedZones for the service are returned.
+     *
+     * @param userId calling user
+     * @param zoneName name of zone to scan
      * @param subTypeGUID type of asset to scan for (null for all asset types)
      * @param subTypeName type of asset to scan for (null for all asset types)
      * @param suppliedSupportedZones list of supported zones from calling service
@@ -2585,11 +2753,27 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
                 if (entity != null)
                 {
-                    List<String>    assetZones = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                                         OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                                                         entity.getProperties(),
-                                                                                         methodName);
+                    List<String> assetZones;
 
+                    try
+                    {
+                        Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                     entity,
+                                                                                                     OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                                                                     methodName);
+
+                        assetZones = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                             OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                             classification.getProperties(),
+                                                                             methodName);
+                    }
+                    catch (ClassificationErrorException notPresent)
+                    {
+                        assetZones = repositoryHelper.getStringArrayProperty(serviceName,
+                                                                             OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                             entity.getProperties(),
+                                                                             methodName);
+                    }
 
                     if ((assetZones != null) && (assetZones.contains(zoneName)))
                     {

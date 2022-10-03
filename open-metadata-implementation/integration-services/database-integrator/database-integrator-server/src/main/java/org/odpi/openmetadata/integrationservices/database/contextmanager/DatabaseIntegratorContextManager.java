@@ -99,8 +99,7 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
         databaseManagerClient = new DatabaseManagerClient(partnerOMASServerName,
                                                             partnerOMASPlatformRootURL,
                                                             restClient,
-                                                            maxPageSize,
-                                                            auditLog);
+                                                            maxPageSize);
 
         connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName,
                                                               partnerOMASPlatformRootURL,
@@ -111,8 +110,7 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
         metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
                                                         partnerOMASPlatformRootURL,
                                                         restClient,
-                                                        maxPageSize,
-                                                        auditLog);
+                                                        maxPageSize);
     }
 
 

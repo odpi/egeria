@@ -166,7 +166,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             		//The connector queue is too big.  Wait until the size goes down until
             		//polling again.  If we let the events just accumulate, we will
             		//eventually run out of memory if the consumer cannot keep up.
-            		log.info("Skipping Kafka polling since unprocessed message queue size {} is greater than {}", nUnprocessedEvents, maxQueueSize);
+            		log.debug("Skipping Kafka polling since unprocessed message queue size {} is greater than {}", nUnprocessedEvents, maxQueueSize);
             		awaitNextPollingTime();
             		continue;
             	
@@ -183,7 +183,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     String json = consumerRecord.value();
                     log.debug("Received message: {}" ,json);
                     countReceivedMessages++;
-                    log.info("Metrics: receivedMessages: {}", countReceivedMessages);
+                    log.debug("Metrics: receivedMessages: {}", countReceivedMessages);
                     final KafkaIncomingEvent event = new KafkaIncomingEvent(json, consumerRecord.offset());
                     final String recordKey=consumerRecord.key();
                     final String recordValue=consumerRecord.value();
@@ -194,12 +194,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                             addUnprocessedEvent(consumerRecord.partition(), consumerRecord.topic(), event);
                             connector.distributeToListeners(event);
                             countMessagesToProcess++;
-                            log.info("Metrics: messagesToProcess: {}", countMessagesToProcess);
+                            log.debug("Metrics: messagesToProcess: {}", countMessagesToProcess);
                         }
                         catch (Exception error)
                         {
                             countMessagesFailedToProcess++;
-                            log.info("Metrics: messagesFailedToProcess: {}", countMessagesFailedToProcess);
+                            log.debug("Metrics: messagesFailedToProcess: {}", countMessagesFailedToProcess);
                             log.warn("Error distributing inbound event: {}", error.getMessage());
 
                             if (auditLog != null)
@@ -217,7 +217,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     {
                         log.debug("Ignoring message with key: {} and value: {}",recordKey, recordValue);
                         countIgnoredMessages++;
-                        log.info("Metrics: ignoredMessages: {}", countIgnoredMessages);
+                        log.debug("Metrics: ignoredMessages: {}", countIgnoredMessages);
                     }
 
                     if ( isAutoCommitEnabled) {
@@ -231,14 +231,14 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                         final TopicPartition partition = new TopicPartition(consumerRecord.topic(), consumerRecord.partition());
                         currentOffsets.put(partition, new OffsetAndMetadata(consumerRecord.offset() + 1));
                         countCommits++;
-                        log.info("Metrics: messageCommits: {}", countCommits);
+                        log.debug("Metrics: messageCommits: {}", countCommits);
                     
                     }
                 }
             }
             catch (WakeupException e)
             {
-                log.info("Received wakeup call, proceeding with graceful shutdown");
+                log.debug("Received wakeup call, proceeding with graceful shutdown");
             }
             catch (Exception error)
             {
@@ -313,7 +313,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             }
             consumer = null;
         }
-        log.debug("Exiting main loop for topic {} & cleaning up", this.topicToSubscribe);
+        log.info("Exiting main loop for topic {} & cleaning up", this.topicToSubscribe);
 
     }
 
@@ -358,7 +358,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         if (isAutoCommitEnabled) {
             return false;
         }
-        log.info("Checking for fully processed messages whose offsets need to be committed");
+        log.debug("Checking for fully processed messages whose offsets need to be committed");
 
         //Check all the queues to see they have events initial events
         //that are fully processed
@@ -375,7 +375,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         
         if (! commitData.isEmpty()) {
             currentOffsets.putAll(commitData);
-            log.info("Committing: {}", commitData);
+            log.debug("Committing: {}", commitData);
             try {
                 consumer.commitSync(commitData);
                 return true;
@@ -417,15 +417,15 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             //The message at the beginning of the queue has been fully processed.  Remove
             //it from the queue and repeat the check.
             lastRemoved = queue.remove();
-            log.info("Message with offset {} has been fully processed.",lastRemoved.getOffset() );
+            log.debug("Message with offset {} has been fully processed.",lastRemoved.getOffset() );
             countCommits++;
-            log.info("Metrics: commits: {}", countCommits);
+            log.debug("Metrics: commits: {}", countCommits);
         }
         KafkaIncomingEvent firstEvent = queue.peek();
         if (firstEvent != null) {
             //Queue is not empty, so we're waiting for the processing of first message in
             //the queue to finish
-            log.info("Waiting for completing of processing of message with offset {}",firstEvent.getOffset());
+            log.debug("Waiting for completing of processing of message with offset {}",firstEvent.getOffset());
         }
         return lastRemoved;
     }
@@ -551,12 +551,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             // Check if we need to rewind to handle initial startup case -- but only on first assignment
             try {
                 if (initialPartitionAssignment) {
-                    log.info("Received initial PartitionsAssigned event");
+                    log.debug("Received initial PartitionsAssigned event");
 
                     long partitionCount = partitions.size();
 
                     if (partitionCount != 1) {
-                        log.info("Received PartitionsAssigned event with {} partitions. This is not supported.",partitionCount);
+                        log.warn("Received PartitionsAssigned event with {} partitions. This is not supported.",partitionCount);
                     } else {
                         // there is only one partition, so we can just grab the first one - and we'll try this once only
                         initialPartitionAssignment = false;

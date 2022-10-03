@@ -120,8 +120,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                                                 null,
                                                                                 OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
                                                                                 OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
-                                                                                null,
-                                                                                null,
                                                                                 builder,
                                                                                 null,
                                                                                 methodName);

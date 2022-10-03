@@ -22,7 +22,7 @@ import java.util.List;
  * LicenseHandler manages License objects.  It runs server-side in
  * the OMAG Server Platform and retrieves License entities through the OMRSRepositoryConnector.
  */
-public class LicenseHandler<B> extends ReferenceableHandler<B>
+public class LicenseHandler<B> extends GovernanceDefinitionHandler<B>
 {
     /**
      * Construct the handler information needed to interact with the repository services

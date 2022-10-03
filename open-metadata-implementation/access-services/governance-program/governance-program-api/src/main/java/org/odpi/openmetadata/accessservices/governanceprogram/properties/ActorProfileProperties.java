@@ -43,7 +43,7 @@ public class ActorProfileProperties extends ReferenceableProperties
 
 
     /**
-     * Copy/clone Constructor - the resulting object.
+     * Copy/clone Constructor.
      *
      * @param template object being copied
      */

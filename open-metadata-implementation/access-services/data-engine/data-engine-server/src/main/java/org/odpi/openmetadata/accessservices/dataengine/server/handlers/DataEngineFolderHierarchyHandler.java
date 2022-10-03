@@ -144,16 +144,17 @@ public class DataEngineFolderHierarchyHandler {
     private void deleteExistingNestedFileRelationships(String fileGuid, String externalSourceGuid, String externalSourceName, String userId,
                                                        String methodName) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
+        Date now = dataEngineCommonHandler.getNow();
         List<Relationship> relationships = genericHandler.getAttachmentLinks(userId, fileGuid, CommonMapper.GUID_PROPERTY_NAME,
                 DATA_FILE_TYPE_NAME, NESTED_FILE_TYPE_GUID, NESTED_FILE_TYPE_NAME, null, null, 2,
-               false, false,0, invalidParameterHandler.getMaxPagingSize(),  null, methodName);
+               false, false,0, invalidParameterHandler.getMaxPagingSize(),  now, methodName);
 
         if (CollectionUtils.isEmpty(relationships)) {
             return;
         }
         for (Relationship relationship : relationships) {
             genericHandler.deleteRelationship(userId, externalSourceGuid, externalSourceName, relationship.getGUID(),
-                    CommonMapper.GUID_PROPERTY_NAME, relationship.getType().getTypeDefName(), false, false,null, methodName);
+                    CommonMapper.GUID_PROPERTY_NAME, relationship.getType().getTypeDefName(), false, false,now, methodName);
         }
     }
 
@@ -166,11 +167,11 @@ public class DataEngineFolderHierarchyHandler {
         }
 
         return folderHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
-                   folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
-                   folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
-                   null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
-                   FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME,  null,null, null, InstanceStatus.ACTIVE,
-                   null, methodName);
+                folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
+                folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
+                null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
+                FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME,  null, null, null,
+                InstanceStatus.ACTIVE, dataEngineCommonHandler.getNow(), methodName);
     }
 
     /**

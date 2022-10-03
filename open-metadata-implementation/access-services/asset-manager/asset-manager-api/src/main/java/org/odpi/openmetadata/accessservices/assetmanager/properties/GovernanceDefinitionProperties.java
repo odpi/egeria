@@ -526,7 +526,7 @@ public class GovernanceDefinitionProperties implements Serializable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

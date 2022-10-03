@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.Date;
 import java.util.Optional;
 
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.COLLECTION_TYPE_GUID;
@@ -82,13 +81,13 @@ public class DataEngineCollectionHandler {
 
         CollectionBuilder builder = getCollectionBuilder(collection);
 
-        return collectionOpenMetadataAPIGenericHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName, COLLECTION_TYPE_GUID,
-                 COLLECTION_TYPE_NAME, collection.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, builder, null, methodName);
+        return collectionOpenMetadataAPIGenericHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
+                COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, builder, dataEngineCommonHandler.getNow(), methodName);
     }
 
     CollectionBuilder getCollectionBuilder(Collection collection) {
         return new CollectionBuilder(collection.getQualifiedName(),
-                collection.getName(), COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
+                collection.getName(), COLLECTION_TYPE_GUID, COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 
     /**

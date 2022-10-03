@@ -1312,8 +1312,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                null,
                                                metadataElementTypeGUID,
                                                metadataElementTypeName,
-                                               null,
-                                               null,
                                                builder,
                                                effectiveTime,
                                                methodName);

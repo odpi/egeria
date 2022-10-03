@@ -25,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
                 @JsonSubTypes.Type(value = ConnectionProperties.class, name = "ConnectionProperties"),
                 @JsonSubTypes.Type(value = ConnectorTypeProperties.class, name = "ConnectorTypeProperties"),
+                @JsonSubTypes.Type(value = DatabaseSchemaTypeProperties.class, name = "DatabaseSchemaTypeProperties"),
                 @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties"),
                 @JsonSubTypes.Type(value = SoftwareCapabilitiesProperties.class, name = "SoftwareCapabilitiesProperties"),
@@ -318,7 +319,7 @@ public class ReferenceableProperties implements Serializable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

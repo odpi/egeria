@@ -152,8 +152,6 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            builder,
                                            effectiveTime,
                                            methodName);

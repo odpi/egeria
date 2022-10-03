@@ -746,6 +746,21 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return the properties from a named classification or null if classification not present or without properties.
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param classifications    list of classifications for an entity
+     * @param classificationName classification to retrieve
+     * @param methodName         calling method
+     * @return located properties - or null if none
+     */
+    InstanceProperties getClassificationProperties(String                sourceName,
+                                                   List<Classification>  classifications,
+                                                   String                classificationName,
+                                                   String                methodName);
+
+
+    /**
      * Return the named classification from an existing entity and throws an exception if it is not.
      *
      * @param sourceName          source of the request (used for logging)

@@ -26,6 +26,7 @@ the organization, and enumerating the implications of these decisions and the ex
 * Defining the organization's roles and responsibilities that will support the governance program.
 
 * Defining the classifications and governance zones that will organize the assets being governed.
+
 * Defining the subject areas that will organize the data-oriented definitions such as
   glossary terms, valid values and quality rules.
 

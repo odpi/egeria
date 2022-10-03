@@ -23,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = SchemaAttributeProperties.class, name = "SchemaAttributeProperties"),
                 @JsonSubTypes.Type(value = SchemaTypeProperties.class,      name = "SchemaTypeProperties"),
+                @JsonSubTypes.Type(value = DatabaseTableProperties.class,   name = "DatabaseTableProperties"),
         })
 public class SchemaElementProperties extends ReferenceableProperties
 {
@@ -173,7 +174,7 @@ public class SchemaElementProperties extends ReferenceableProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

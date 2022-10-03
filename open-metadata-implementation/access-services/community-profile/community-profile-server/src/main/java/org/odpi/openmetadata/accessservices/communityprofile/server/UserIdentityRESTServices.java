@@ -3,9 +3,12 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -54,11 +57,12 @@ public class UserIdentityRESTServices
      * PropertyServerException  - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createUserIdentity(String                  serverName,
-                                           String                  userId,
-                                           UserIdentityRequestBody requestBody)
+    public GUIDResponse createUserIdentity(String                   serverName,
+                                           String                   userId,
+                                           ReferenceableRequestBody requestBody)
     {
         final String methodName = "createUserIdentity";
+        final String profileGUIDParameterName = "profileGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -67,28 +71,37 @@ public class UserIdentityRESTServices
 
         try
         {
-            if ((requestBody != null) && (requestBody.getProperties() != null))
+            if (requestBody != null)
             {
-                UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
+                if (requestBody.getProperties() instanceof UserIdentityProperties)
+                {
+                    UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
 
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                String userIdentityGUID = handler.createUserIdentity(userId,
-                                                                     requestBody.getExternalSourceGUID(),
-                                                                     requestBody.getExternalSourceName(),
-                                                                     null,
-                                                                     null,
-                                                                     requestBody.getProperties().getQualifiedName(),
-                                                                     requestBody.getProperties().getUserId(),
-                                                                     requestBody.getProperties().getDistinguishedName(),
-                                                                     requestBody.getProperties().getAdditionalProperties(),
-                                                                     requestBody.getProperties().getTypeName(),
-                                                                     requestBody.getProperties().getExtendedProperties(),
-                                                                     false,
-                                                                     false,
-                                                                     new Date(),
-                                                                     methodName);
+                    UserIdentityProperties userIdentityProperties = (UserIdentityProperties) requestBody.getProperties();
 
-                response.setGUID(userIdentityGUID);
+                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                    String userIdentityGUID = handler.createUserIdentity(userId,
+                                                                         requestBody.getExternalSourceGUID(),
+                                                                         requestBody.getExternalSourceName(),
+                                                                         requestBody.getParentGUID(),
+                                                                         profileGUIDParameterName,
+                                                                         userIdentityProperties.getQualifiedName(),
+                                                                         userIdentityProperties.getUserId(),
+                                                                         userIdentityProperties.getDistinguishedName(),
+                                                                         userIdentityProperties.getAdditionalProperties(),
+                                                                         userIdentityProperties.getTypeName(),
+                                                                         userIdentityProperties.getExtendedProperties(),
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName);
+
+                    response.setGUID(userIdentityGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(UserIdentityProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -119,11 +132,11 @@ public class UserIdentityRESTServices
      *  PropertyServerException  there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse updateUserIdentity(String                  serverName,
-                                           String                  userId,
-                                           String                  userIdentityGUID,
-                                           boolean                 isMergeUpdate,
-                                           UserIdentityRequestBody requestBody)
+    public VoidResponse updateUserIdentity(String                   serverName,
+                                           String                   userId,
+                                           String                   userIdentityGUID,
+                                           boolean                  isMergeUpdate,
+                                           ReferenceableRequestBody requestBody)
     {
         final String methodName        = "updateUserIdentity";
         final String guidParameterName = "userIdentityGUID";
@@ -135,29 +148,38 @@ public class UserIdentityRESTServices
 
         try
         {
-            if ((requestBody != null) && (requestBody.getProperties() != null))
+            if (requestBody != null)
             {
-                UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
+                if (requestBody.getProperties() instanceof UserIdentityProperties)
+                {
+                    UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
 
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.updateUserIdentity(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
-                                           userIdentityGUID,
-                                           guidParameterName,
-                                           requestBody.getProperties().getQualifiedName(),
-                                           requestBody.getProperties().getUserId(),
-                                           requestBody.getProperties().getDistinguishedName(),
-                                           requestBody.getProperties().getAdditionalProperties(),
-                                           requestBody.getProperties().getTypeName(),
-                                           requestBody.getProperties().getExtendedProperties(),
-                                           isMergeUpdate,
-                                           null,
-                                           null,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
+                    UserIdentityProperties userIdentityProperties = (UserIdentityProperties) requestBody.getProperties();
+
+                    auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                    handler.updateUserIdentity(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               userIdentityGUID,
+                                               guidParameterName,
+                                               userIdentityProperties.getQualifiedName(),
+                                               userIdentityProperties.getUserId(),
+                                               userIdentityProperties.getDistinguishedName(),
+                                               userIdentityProperties.getAdditionalProperties(),
+                                               userIdentityProperties.getTypeName(),
+                                               userIdentityProperties.getExtendedProperties(),
+                                               isMergeUpdate,
+                                               userIdentityProperties.getEffectiveFrom(),
+                                               userIdentityProperties.getEffectiveTo(),
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                }
             }
             else
             {
@@ -202,11 +224,12 @@ public class UserIdentityRESTServices
 
         try
         {
+            UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.deleteUserIdentity(userId,
                                            requestBody.getExternalSourceGUID(),
                                            requestBody.getExternalSourceName(),
@@ -216,6 +239,110 @@ public class UserIdentityRESTServices
                                            false,
                                            new Date(),
                                            methodName);
+            }
+            else
+            {
+                handler.deleteUserIdentity(userId,
+                                           null,
+                                           null,
+                                           userIdentityGUID,
+                                           guidParameterName,
+                                           false,
+                                           false,
+                                           new Date(),
+                                           methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Link a user identity to a profile.
+     *
+     * @param serverName name of target server
+     * @param userId the name of the calling user.
+     * @param userIdentityGUID unique identifier of the UserIdentity
+     * @param profileGUID the profile to add the identity to.
+     * @param requestBody external source identifiers
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException  - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse  addIdentityToProfile(String                  serverName,
+                                              String                  userId,
+                                              String                  userIdentityGUID,
+                                              String                  profileGUID,
+                                              RelationshipRequestBody requestBody)
+    {
+        final String methodName                    = "addIdentityToProfile";
+        final String userIdentityGUIDParameterName = "userIdentityGUID";
+        final String profileGUIDParameterName      = "profileGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ProfileIdentityProperties)
+                {
+                    ProfileIdentityProperties properties = (ProfileIdentityProperties)requestBody.getProperties();
+                    handler.addIdentityToProfile(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 userIdentityGUID,
+                                                 userIdentityGUIDParameterName,
+                                                 profileGUID,
+                                                 profileGUIDParameterName,
+                                                 properties.getRoleTypeName(),
+                                                 properties.getRoleGUID(),
+                                                 properties.getDescription(),
+                                                 requestBody.getProperties().getEffectiveFrom(),
+                                                 requestBody.getProperties().getEffectiveTo(),
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.addIdentityToProfile(userId,
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
+                                                 userIdentityGUID,
+                                                 userIdentityGUIDParameterName,
+                                                 profileGUID,
+                                                 profileGUIDParameterName,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 false,
+                                                 false,
+                                                 new Date(),
+                                                 methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ProfileIdentityProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -233,6 +360,7 @@ public class UserIdentityRESTServices
 
 
 
+
     /**
      * Link a user identity to a profile.
      *
@@ -240,6 +368,7 @@ public class UserIdentityRESTServices
      * @param userId the name of the calling user.
      * @param userIdentityGUID unique identifier of the UserIdentity
      * @param profileGUID the profile to add the identity to.
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
      * @param requestBody external source identifiers
      *
      * @return void or
@@ -247,13 +376,14 @@ public class UserIdentityRESTServices
      * PropertyServerException  - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse  addIdentityToProfile(String                    serverName,
-                                              String                    userId,
-                                              String                    userIdentityGUID,
-                                              String                    profileGUID,
-                                              ExternalSourceRequestBody requestBody)
+    public VoidResponse  updateIdentityProfile(String                  serverName,
+                                               String                  userId,
+                                               String                  userIdentityGUID,
+                                               String                  profileGUID,
+                                               boolean                 isMergeUpdate,
+                                               RelationshipRequestBody requestBody)
     {
-        final String methodName                    = "addIdentityToProfile";
+        final String methodName                    = "updateIdentityProfile";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
         final String profileGUIDParameterName      = "profileGUID";
 
@@ -264,24 +394,57 @@ public class UserIdentityRESTServices
 
         try
         {
+            UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.addIdentityToProfile(userId,
-                                             requestBody.getExternalSourceGUID(),
-                                             requestBody.getExternalSourceName(),
-                                             userIdentityGUID,
-                                             userIdentityGUIDParameterName,
-                                             profileGUID,
-                                             profileGUIDParameterName,
-                                             null,
-                                             null,
-                                             false,
-                                             false,
-                                             new Date(),
-                                             methodName);
+                if (requestBody.getProperties() instanceof ProfileIdentityProperties)
+                {
+                    ProfileIdentityProperties properties = (ProfileIdentityProperties)requestBody.getProperties();
+                    handler.updateIdentityProfile(userId,
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
+                                                  profileGUID,
+                                                  profileGUIDParameterName,
+                                                  userIdentityGUID,
+                                                  userIdentityGUIDParameterName,
+                                                  properties.getRoleTypeName(),
+                                                  properties.getRoleGUID(),
+                                                  properties.getDescription(),
+                                                  requestBody.getProperties().getEffectiveFrom(),
+                                                  requestBody.getProperties().getEffectiveTo(),
+                                                  isMergeUpdate,
+                                                  false,
+                                                  false,
+                                                  new Date(),
+                                                  methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.updateIdentityProfile(userId,
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
+                                                  profileGUID,
+                                                  profileGUIDParameterName,
+                                                  userIdentityGUID,
+                                                  userIdentityGUIDParameterName,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  isMergeUpdate,
+                                                  false,
+                                                  false,
+                                                  new Date(),
+                                                  methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ProfileIdentityProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -329,11 +492,12 @@ public class UserIdentityRESTServices
 
         try
         {
+            UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.removeIdentifyFromProfile(userId,
                                                   requestBody.getExternalSourceGUID(),
                                                   requestBody.getExternalSourceName(),
@@ -348,8 +512,17 @@ public class UserIdentityRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+                handler.removeIdentifyFromProfile(userId,
+                                                  null,
+                                                  null,
+                                                  userIdentityGUID,
+                                                  userIdentityGUIDParameterName,
+                                                  profileGUID,
+                                                  profileGUIDParameterName,
+                                                  false,
+                                                  false,
+                                                  new Date(),
+                                                  methodName);            }
         }
         catch (Exception error)
         {

@@ -472,7 +472,7 @@ main you won’t, and you will need to perform a property-based search, such as:
 g.V().has('veReferenceablexqualifiedName','csv-asset-discovery-service-GovernanceServiceProvider')
 
 However, at the time of writing I cannot do that because the JanusGraph 0.5.2 assembly I am using has an older version of Lucene than 
-that used in the Egeria 3.11-SNAPSHOT build, so I am unable to use the index. I would need to build a JanusGraph assembly with a later 
+that used in the Egeria 3.13-SNAPSHOT build, so I am unable to use the index. I would need to build a JanusGraph assembly with a later 
 version of Lucene, so the above cuts a massive corner, for the sake of illustration, so that you can see what an entity looks like when 
 stored as a vertex in the graph database.
 
@@ -546,7 +546,7 @@ storage.backend=berkeleyje
 # Default:    (no default value)
 # Data Type:  String
 # Mutability: LOCAL
-storage.directory=../../../egeria-install/egeria-omag-3.11-SNAPSHOT/data/servers/Metadata_Server/repository/graph/berkeley
+storage.directory=../../../egeria-install/egeria-omag-3.13-SNAPSHOT/data/servers/Metadata_Server/repository/graph/berkeley
 
 # The indexing backend used to extend and optimize JanusGraph's query
 # functionality. This setting is optional.  JanusGraph can use multiple
@@ -573,7 +573,7 @@ index.search.backend=lucene
 # Default:    (no default value)
 # Data Type:  String
 # Mutability: MASKABLE
-index.search.directory=../../../egeria-install/egeria-omag-3.11-SNAPSHOT/data/servers/Metadata_Server/repository/graph/searchindex
+index.search.directory=../../../egeria-install/egeria-omag-3.13-SNAPSHOT/data/servers/Metadata_Server/repository/graph/searchindex
 ```
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

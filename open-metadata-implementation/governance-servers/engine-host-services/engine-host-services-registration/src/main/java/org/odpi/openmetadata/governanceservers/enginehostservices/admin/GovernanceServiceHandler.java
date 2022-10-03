@@ -53,6 +53,7 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @param requestType incoming request type
      * @param governanceServiceGUID unique identifier of the governance service
      * @param governanceServiceName name of this governance  service - used for message logging
+     * @param governanceService implementation of governance service
      * @param auditLog destination for log messages
      */
     protected GovernanceServiceHandler(GovernanceEngineProperties governanceEngineProperties,

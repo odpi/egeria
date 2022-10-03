@@ -111,7 +111,7 @@ public class InvalidParameterTest
         try
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
-            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            MetadataSourceClient  client     = new MetadataSourceClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             testCreateFileSystem(userId, client);
             testCreateFileManager(userId, client);
@@ -559,7 +559,7 @@ public class InvalidParameterTest
         try
         {
             DataManagerRESTClient restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
-            DatabaseManagerClient client = new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
+            DatabaseManagerClient client = new DatabaseManagerClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
 
             testCreateDatabase(userId, client);
         }

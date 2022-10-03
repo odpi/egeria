@@ -105,7 +105,7 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(obj, null, ctx);
 		try {
 			String guid = metadataHandler.createBeanInRepository(ctx.getUserId(), null, null,
-					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, null, null,
+					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
 					builder, new Date(), methodName);
 			
 			EntityDetail entity = omEntityDao.getEntityByGuid(guid);	
@@ -172,7 +172,7 @@ class AnalyticsMetadataPersistenceTest extends InMemoryRepositoryTest {
 		AnalyticsMetadataBuilder builder = new AnalyticsMetadataBuilder(obj, null, ctx);
 		try {
 			String guid = metadataHandler.createBeanInRepository(ctx.getUserId(), null, null,
-					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, null, null,
+					IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
 					builder, new Date(), methodName);
 			
 			EntityDetail entity = omEntityDao.getEntityByGuid(guid);	

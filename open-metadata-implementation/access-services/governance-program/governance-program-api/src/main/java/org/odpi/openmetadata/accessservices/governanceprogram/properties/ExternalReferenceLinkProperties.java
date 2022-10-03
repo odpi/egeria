@@ -5,9 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceProgramOMASAPIRequestBody;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,12 +17,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalReferenceLinkProperties implements Serializable
+public class ExternalReferenceLinkProperties extends RelationshipProperties
 {
     private static final long    serialVersionUID = 1L;
 
     private String linkId          = null;
     private String linkDescription = null;
+    private String pages           = null;
 
 
     /**
@@ -42,10 +41,13 @@ public class ExternalReferenceLinkProperties implements Serializable
      */
     public ExternalReferenceLinkProperties(ExternalReferenceLinkProperties template)
     {
+        super (template);
+
         if (template != null)
         {
             this.linkId = template.getLinkId();
             this.linkDescription = template.getLinkDescription();
+            this.pages = template.getPages();
         }
     }
 
@@ -95,6 +97,28 @@ public class ExternalReferenceLinkProperties implements Serializable
 
 
     /**
+     * Return the page range for the reference.
+     *
+     * @return string
+     */
+    public String getPages()
+    {
+        return pages;
+    }
+
+
+    /**
+     * Set up the page range for the reference.
+     *
+     * @param pages string
+     */
+    public void setPages(String pages)
+    {
+        this.pages = pages;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -105,6 +129,10 @@ public class ExternalReferenceLinkProperties implements Serializable
         return "ExternalReferenceLinkProperties{" +
                        "linkId='" + linkId + '\'' +
                        ", linkDescription='" + linkDescription + '\'' +
+                       ", pages='" + pages + '\'' +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -122,13 +150,17 @@ public class ExternalReferenceLinkProperties implements Serializable
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof ExternalReferenceLinkProperties))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ExternalReferenceLinkProperties that = (ExternalReferenceLinkProperties) objectToCompare;
-        return Objects.equals(linkId, that.linkId) &&
-                       Objects.equals(linkDescription, that.linkDescription);
+        return Objects.equals(linkId, that.linkId) && Objects.equals(linkDescription, that.linkDescription)
+                       && Objects.equals(pages, that.pages);
     }
 
 
@@ -140,6 +172,6 @@ public class ExternalReferenceLinkProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(linkId, linkDescription);
+        return Objects.hash(super.hashCode(), linkId, linkDescription, pages);
     }
 }

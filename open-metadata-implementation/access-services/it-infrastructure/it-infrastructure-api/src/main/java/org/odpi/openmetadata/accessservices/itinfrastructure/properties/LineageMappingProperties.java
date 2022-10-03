@@ -135,7 +135,7 @@ public class LineageMappingProperties extends ConfigurationItemRelationshipPrope
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

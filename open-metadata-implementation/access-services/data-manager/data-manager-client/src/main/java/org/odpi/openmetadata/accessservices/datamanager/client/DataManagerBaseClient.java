@@ -124,10 +124,10 @@ public class DataManagerBaseClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public DataManagerBaseClient(String serverName,
-                                 String serverPlatformURLRoot,
-                                 String userId,
-                                 String password,
+    public DataManagerBaseClient(String   serverName,
+                                 String   serverPlatformURLRoot,
+                                 String   userId,
+                                 String   password,
                                  AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
@@ -277,6 +277,119 @@ public class DataManagerBaseClient
 
 
     /**
+     * Create a new metadata element to represent a community using an existing metadata element as a template.
+     *
+     * @param userId             calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param parentGUID              unique identifier of the parent element
+     * @param parentGUIDParameterName name of parameter passing the parentGUID
+     * @param templateGUID       unique identifier of the metadata element to copy
+     * @param templateProperties properties that override the template
+     * @param urlTemplate        URL to call (with placeholders)
+     * @param methodName         calling method
+     *
+     * @return unique identifier of the new community
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createReferenceableFromTemplateWithParent(String             userId,
+                                                     String             externalSourceGUID,
+                                                     String             externalSourceName,
+                                                     String             parentGUID,
+                                                     String             parentGUIDParameterName,
+                                                     String             templateGUID,
+                                                     TemplateProperties templateProperties,
+                                                     String             urlTemplate,
+                                                     String             methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String templateGUIDParameterName  = "templateGUID";
+        final String propertiesParameterName    = "templateProperties";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setParentGUID(parentGUID);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  templateGUID);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create a new metadata element that is attached to the parent.
+     *
+     * @param userId                  calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param parentGUID              unique identifier of the parent element
+     * @param parentGUIDParameterName name of parameter passing the parentGUID
+     * @param properties              properties about the element to store
+     * @param propertiesParameterName name of parameter passing the properties
+     * @param urlTemplate             URL to call (no expected placeholders)
+     * @param methodName              calling method
+     *
+     * @return unique identifier of the new element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    String createReferenceableWithParent(String                  userId,
+                                         String                  externalSourceGUID,
+                                         String                  externalSourceName,
+                                         String                  parentGUID,
+                                         String                  parentGUIDParameterName,
+                                         ReferenceableProperties properties,
+                                         String                  propertiesParameterName,
+                                         String                  urlTemplate,
+                                         String                  methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        ReferenceableRequestBody requestBody = new ReferenceableRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setParentGUID(parentGUID);
+        requestBody.setProperties(properties);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
      * Update the metadata element.  It is possible to use the subtype property classes or
      * set up specialized properties in extended properties.
      *
@@ -373,7 +486,7 @@ public class DataManagerBaseClient
         requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,
@@ -416,7 +529,7 @@ public class DataManagerBaseClient
         requestBody.setExternalSourceName(externalSourceName);
 
         restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
+                                        urlTemplate,
                                         requestBody,
                                         serverName,
                                         userId,

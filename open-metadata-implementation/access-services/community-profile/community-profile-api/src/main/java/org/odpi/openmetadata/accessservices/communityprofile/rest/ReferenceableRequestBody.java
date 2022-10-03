@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * RelationshipRequestBody describes the request body used when linking elements together.
+ * ReferenceableRequestBody describes the request body used when working with referenceables.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,6 +24,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
+    private String                  parentGUID = null;
     private ReferenceableProperties properties = null;
 
 
@@ -47,6 +48,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
 
         if (template != null)
         {
+            parentGUID = template.getParentGUID();
             properties = template.getProperties();
         }
     }
@@ -75,6 +77,28 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
 
 
     /**
+     * Return an optional anchor GUID to attach the new element to.
+     *
+     * @return guid
+     */
+    public String getParentGUID()
+    {
+        return parentGUID;
+    }
+
+
+    /**
+     * Set up an optional anchor GUID to attach the new element to.
+     *
+     * @param parentGUID guid
+     */
+    public void setParentGUID(String parentGUID)
+    {
+        this.parentGUID = parentGUID;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -85,6 +109,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
         return "ReferenceableRequestBody{" +
                        "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
+                       ", anchorGUID='" + parentGUID + '\'' +
                        ", properties=" + properties +
                        '}';
     }
@@ -103,16 +128,16 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof ReferenceableRequestBody))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         ReferenceableRequestBody that = (ReferenceableRequestBody) objectToCompare;
-        return Objects.equals(getProperties(), that.getProperties());
+        return Objects.equals(parentGUID, that.parentGUID) && Objects.equals(properties, that.properties);
     }
 
 
@@ -124,6 +149,6 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(super.hashCode(), parentGUID, properties);
     }
 }

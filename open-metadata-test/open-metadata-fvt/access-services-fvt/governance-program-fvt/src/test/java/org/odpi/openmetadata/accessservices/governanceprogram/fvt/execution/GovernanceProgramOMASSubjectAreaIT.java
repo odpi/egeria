@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.odpi.openmetadata.accessservices.governanceprogram.samples.leadership.GovernanceLeadershipSample;
 import org.odpi.openmetadata.accessservices.governanceprogram.samples.subjectareas.CreateSubjectAreasSample;
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.http.HttpHelper;
@@ -26,13 +25,13 @@ public class GovernanceProgramOMASSubjectAreaIT
 
     @ParameterizedTest
     @ValueSource(strings = {"serverinmem"})
-    public void testGovernanceLeadership(String server)
+    public void testSubjectAreaSample(String server)
     {
-        assertDoesNotThrow(() -> runGovernanceLeadership(server));
+        assertDoesNotThrow(() -> runSubjectAreaSample(server));
     }
 
 
-    public void runGovernanceLeadership(String serverName)
+    public void runSubjectAreaSample(String serverName) throws Exception
     {
         CreateSubjectAreasSample sample = new CreateSubjectAreasSample(serverName,
                                                                        StringUtils.defaultIfEmpty(System.getProperty("fvt.url"),FVTConstants.SERVER_PLATFORM_URL_ROOT),

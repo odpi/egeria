@@ -154,8 +154,6 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                               externalSourceName,
                                                               typeGUID,
                                                               typeName,
-                                                              qualifiedName,
-                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                               builder,
                                                               effectiveTime,
                                                               methodName);
@@ -323,8 +321,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Link a user identity to a profile.  This will fail if the user identity is already connected to
-     * a profile.
+     * Link a user identity to a profile.
      *
      * @param userId calling user
      * @param externalSourceGUID     unique identifier of software capability representing the caller
@@ -333,6 +330,9 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
      * @param userIdentityGUIDParameterName parameter name supplying userIdentityGUID
      * @param profileGUID unique identifier of the profile
      * @param profileGUIDParameterName parameter name supplying profileGUID
+     * @param roleTypeName what is the type of the role that this identity is used for
+     * @param roleGUID what is the guid of the role that this identity is used for
+     * @param description describe how this identity is used
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -351,6 +351,9 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                      String  userIdentityGUIDParameterName,
                                      String  profileGUID,
                                      String  profileGUIDParameterName,
+                                     String  roleTypeName,
+                                     String  roleGUID,
+                                     String  description,
                                      Date    effectiveFrom,
                                      Date    effectiveTo,
                                      boolean forLineage,
@@ -360,15 +363,9 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        InstanceProperties properties = null;
-
-        if ((effectiveFrom != null) || (effectiveTo != null ))
-        {
-            properties = new InstanceProperties();
-
-            properties.setEffectiveFromTime(effectiveFrom);
-            properties.setEffectiveToTime(effectiveTo);
-        }
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.ROLE_TYPE_NAME_PROPERTY_NAME, roleTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.ROLE_GUID_PROPERTY_NAME, roleGUID, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
 
         this.relinkElementToNewElement(userId,
                                        externalSourceGUID,
@@ -376,7 +373,7 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                        userIdentityGUID,
                                        userIdentityGUIDParameterName,
                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                       true,
+                                       false,
                                        profileGUID,
                                        profileGUIDParameterName,
                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
@@ -385,9 +382,80 @@ public class UserIdentityHandler<B> extends ReferenceableHandler<B>
                                        supportedZones,
                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
-                                       properties,
+                                       this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                        effectiveTime,
                                        methodName);
+    }
+
+
+
+    /**
+     * Update the properties for the link between a user identity to a profile.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param userIdentityGUID  unique identifier of the user identity
+     * @param userIdentityGUIDParameterName parameter name supplying userIdentityGUID
+     * @param profileGUID unique identifier of the profile
+     * @param profileGUIDParameterName parameter name supplying profileGUID
+     * @param roleTypeName what is the type of the role that this identity is used for
+     * @param roleGUID what is the guid of the role that this identity is used for
+     * @param description describe how this identity is used
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param isMergeUpdate should the supplied properties be overlaid on the existing properties (true) or replace them (false
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateIdentityProfile(String  userId,
+                                      String  externalSourceGUID,
+                                      String  externalSourceName,
+                                      String  userIdentityGUID,
+                                      String  userIdentityGUIDParameterName,
+                                      String  profileGUID,
+                                      String  profileGUIDParameterName,
+                                      String  roleTypeName,
+                                      String  roleGUID,
+                                      String  description,
+                                      Date    effectiveFrom,
+                                      Date    effectiveTo,
+                                      boolean isMergeUpdate,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing,
+                                      Date    effectiveTime,
+                                      String  methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null, OpenMetadataAPIMapper.ROLE_TYPE_NAME_PROPERTY_NAME, roleTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.ROLE_GUID_PROPERTY_NAME, roleGUID, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+
+        this.updateElementToElementLink(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        profileGUID,
+                                        profileGUIDParameterName,
+                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                        userIdentityGUID,
+                                        userIdentityGUIDParameterName,
+                                        OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                        isMergeUpdate,
+                                        this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                        effectiveTime,
+                                        methodName);
     }
 
 

@@ -16,7 +16,6 @@ import java.util.List;
 
 /**
  * GovernanceRolesInterface covers the definition of governance roles and their appointments.
- *
  */
 public interface GovernanceRolesInterface
 {
@@ -55,78 +54,6 @@ public interface GovernanceRolesInterface
                               GovernanceRoleProperties properties) throws UserNotAuthorizedException,
                                                                           InvalidParameterException,
                                                                           PropertyServerException;
-
-
-    /**
-     * Link a governance role to a governance control that defines a governance responsibility that a person fulfils.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param responsibilityGUID unique identifier of the governance responsibility control
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void linkRoleToResponsibility(String userId,
-                                  String governanceRoleGUID,
-                                  String responsibilityGUID) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
-
-
-    /**
-     * Remove the link between a governance role and a governance responsibility.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param responsibilityGUID unique identifier of the governance responsibility control
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void unlinkRoleFromResponsibility(String userId,
-                                      String governanceRoleGUID,
-                                      String responsibilityGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
-
-
-    /**
-     * Link a governance role to the description of a resource that the role is responsible for.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param resourceGUID unique identifier of the resource description
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void linkRoleToResource(String userId,
-                            String governanceRoleGUID,
-                            String resourceGUID) throws InvalidParameterException,
-                                                        UserNotAuthorizedException,
-                                                        PropertyServerException;
-
-
-    /**
-     * Remove the link between a governance role and a resource.
-     *
-     * @param userId calling user
-     * @param governanceRoleGUID unique identifier of the governance role
-     * @param resourceGUID unique identifier of the resource description
-     *
-     * @throws InvalidParameterException one of the guids is null or not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    void unlinkRoleFromResource(String userId,
-                                String governanceRoleGUID,
-                                String resourceGUID) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
 
 
     /**

@@ -100,7 +100,7 @@ public class OpenLineageDocumentationDataSetFacet extends OpenLineageDataSetFace
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

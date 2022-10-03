@@ -11,7 +11,7 @@ plugins {
 dependencies {
 
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
-    implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
     runtimeOnly 'ch.qos.logback:logback-classic'
 }
 

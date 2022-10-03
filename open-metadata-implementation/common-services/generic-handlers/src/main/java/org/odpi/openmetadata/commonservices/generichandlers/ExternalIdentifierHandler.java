@@ -853,8 +853,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                             null,
                                                             OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
                                                             OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
-                                                            null,
-                                                            null,
                                                             builder,
                                                             effectiveTime,
                                                             methodName);

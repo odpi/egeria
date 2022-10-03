@@ -186,8 +186,6 @@ public class APIOperationHandler<B> extends ReferenceableHandler<B>
                                                               externalSourceName,
                                                               typeGUID,
                                                               typeName,
-                                                              qualifiedName,
-                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                               builder,
                                                               effectiveTime,
                                                               methodName);

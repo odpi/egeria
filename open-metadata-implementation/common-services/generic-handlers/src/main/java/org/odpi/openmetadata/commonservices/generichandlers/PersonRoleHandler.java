@@ -173,8 +173,6 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
-                                           qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                            roleBuilder,
                                            effectiveTime,
                                            methodName);
@@ -555,7 +553,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME,
-                                  relationshipProperties,
+                                  this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -674,7 +672,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                   supportedZones,
                                   OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
                                   OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
-                                  relationshipProperties,
+                                  this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
                                   effectiveTime,
@@ -733,6 +731,173 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                       OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
+    }
+
+
+
+    /**
+     * Link a role to a governance responsibility.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param personRoleGUID unique identifier of TeamMember role
+     * @param personRoleGUIDParameterName parameter name supplying personRoleGUID
+     * @param governanceResponsibilityGUID  unique identifier of the user identity
+     * @param governanceResponsibilityGUIDParameterName parameter name supplying governanceResponsibilityGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  addGovernanceResponsibility(String  userId,
+                               String  externalSourceGUID,
+                               String  externalSourceName,
+                               String  personRoleGUID,
+                               String  personRoleGUIDParameterName,
+                               String  governanceResponsibilityGUID,
+                               String  governanceResponsibilityGUIDParameterName,
+                               Date    effectiveFrom,
+                               Date    effectiveTo,
+                               boolean forLineage,
+                               boolean forDuplicateProcessing,
+                               Date    effectiveTime,
+                               String  methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  personRoleGUID,
+                                  personRoleGUIDParameterName,
+                                  OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                  governanceResponsibilityGUID,
+                                  governanceResponsibilityGUIDParameterName,
+                                  OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME,
+                                  this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Unlink a role from a governance responsibility.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
+     * @param personRoleGUID unique identifier of TeamMember role
+     * @param personRoleGUIDParameterName parameter name supplying personRoleGUID
+     * @param governanceResponsibilityGUID  unique identifier of the user identity
+     * @param governanceResponsibilityGUIDParameterName parameter name supplying governanceResponsibilityGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void removeGovernanceResponsibility(String  userId,
+                                               String  externalSourceGUID,
+                                               String  externalSourceName,
+                                               String  personRoleGUID,
+                                               String  personRoleGUIDParameterName,
+                                               String  governanceResponsibilityGUID,
+                                               String  governanceResponsibilityGUIDParameterName,
+                                               boolean forLineage,
+                                               boolean forDuplicateProcessing,
+                                               Date    effectiveTime,
+                                               String  methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        this.unlinkElementFromElement(userId,
+                                      false,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      personRoleGUID,
+                                      personRoleGUIDParameterName,
+                                      OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                      governanceResponsibilityGUID,
+                                      governanceResponsibilityGUIDParameterName,
+                                      OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_GUID,
+                                      OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      supportedZones,
+                                      OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                      OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                      effectiveTime,
+                                      methodName);
+    }
+
+
+
+    /**
+     * Returns the list of roles that are responsible for the supplied governance definition.
+     *
+     * @param userId       String   userId of user making request.
+     * @param governanceResponsibilityGUID    String   unique id for element.
+     * @param governanceResponsibilityGUIDParameterName name of parameter supplying the GUID
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getRolesWithGovernanceResponsibility(String       userId,
+                                                        String       governanceResponsibilityGUID,
+                                                        String       governanceResponsibilityGUIDParameterName,
+                                                        int          startFrom,
+                                                        int          pageSize,
+                                                        boolean      forLineage,
+                                                        boolean      forDuplicateProcessing,
+                                                        Date         effectiveTime,
+                                                        String       methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        governanceResponsibilityGUID,
+                                        governanceResponsibilityGUIDParameterName,
+                                        OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_TYPE_NAME,
+                                        OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_GUID,
+                                        OpenMetadataAPIMapper.GOVERNANCE_RESPONSIBILITY_ASSIGNMENT_TYPE_NAME,
+                                        OpenMetadataAPIMapper.PERSON_ROLE_TYPE_NAME,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
     }
 
 
@@ -864,6 +1029,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * the Anchors classifications are set up in these elements.
      *
      * @param userId calling user
+     * @param externalSourceGUID     unique identifier of software capability representing the caller
+     * @param externalSourceName     unique name of software capability representing the caller
      * @param roleGUID unique identifier of the metadata element to remove
      * @param roleGUIDParameterName parameter supplying the roleGUID
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -876,6 +1043,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removePersonRole(String  userId,
+                                 String  externalSourceGUID,
+                                 String  externalSourceName,
                                  String  roleGUID,
                                  String  roleGUIDParameterName,
                                  boolean forLineage,
@@ -886,8 +1055,8 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                                             PropertyServerException
     {
         this.deleteBeanInRepository(userId,
-                                    null,
-                                    null,
+                                    externalSourceGUID,
+                                    externalSourceName,
                                     roleGUID,
                                     roleGUIDParameterName,
                                     OpenMetadataAPIMapper.PERSON_ROLE_TYPE_GUID,

@@ -416,7 +416,7 @@ public class AnalyticsArtifactHandler {
 		                qualifiedName, "qualifiedName",
 		                createAnalyticsMetadataBuilder(container, anchorGUID, true),null, null,  false, false, null, methodName)
 				: metadataHandler.createBeanInRepository(ctx.getUserId(), null, null,
-						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, null, null,
+						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
 						createAnalyticsMetadataBuilder(container, anchorGUID, true), new Date(), methodName);
 		
 		if (!bNested) {
@@ -525,7 +525,7 @@ public class AnalyticsArtifactHandler {
 		                qualifiedName, "qualifiedName",
 		                createAnalyticsMetadataBuilder(item, anchorGUID, true), null, null, false, false, new Date(), methodName)
 				: metadataHandler.createBeanInRepository(ctx.getUserId(), ssc.getGUID(), ssc.getSource(),
-						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME, ssc.getGUID(), ssc.getSource(),
+						IdMap.SCHEMA_ATTRIBUTE_TYPE_GUID, IdMap.SCHEMA_ATTRIBUTE_TYPE_NAME,
 						createAnalyticsMetadataBuilder(item, anchorGUID, true), new Date(), methodName);
 
 		item.setGuid(guid);

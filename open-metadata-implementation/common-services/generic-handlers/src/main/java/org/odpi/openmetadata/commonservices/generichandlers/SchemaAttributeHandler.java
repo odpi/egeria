@@ -631,8 +631,6 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  externalSourceName,
                                                                  schemaAttributeBuilder.getTypeGUID(),
                                                                  schemaAttributeBuilder.getTypeName(),
-                                                                 qualifiedName,
-                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                  schemaAttributeBuilder,
                                                                  effectiveTime,
                                                                  methodName);

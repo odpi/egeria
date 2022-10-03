@@ -118,8 +118,6 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                             externalSourceName,
                                                             schemaTypeBuilder.getTypeGUID(),
                                                             schemaTypeBuilder.getTypeName(),
-                                                            schemaTypeBuilder.getQualifiedName(),
-                                                            OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             schemaTypeBuilder,
                                                             effectiveTime,
                                                             methodName);

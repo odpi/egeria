@@ -480,8 +480,6 @@ public class GovernanceActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   null,
                                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_GUID,
                                                                   OpenMetadataAPIMapper.GOVERNANCE_ACTION_TYPE_NAME,
-                                                                  qualifiedName,
-                                                                  OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                   builder,
                                                                   null,
                                                                   methodName);

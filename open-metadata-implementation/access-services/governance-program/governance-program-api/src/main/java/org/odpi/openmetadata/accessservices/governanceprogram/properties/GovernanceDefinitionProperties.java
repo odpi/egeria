@@ -42,7 +42,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = LicenseTypeProperties.class, name = "LicenseTypeProperties"),
-                @JsonSubTypes.Type(value = CertificationTypeProperties.class, name = "CertificationTypeProperties")
+                @JsonSubTypes.Type(value = CertificationTypeProperties.class, name = "CertificationTypeProperties"),
+                @JsonSubTypes.Type(value = SecurityGroupProperties.class, name = "SecurityGroupProperties")
         })
 public class GovernanceDefinitionProperties implements Serializable
 {
@@ -506,7 +507,7 @@ public class GovernanceDefinitionProperties implements Serializable
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

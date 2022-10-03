@@ -10,7 +10,7 @@
     <parent>
         <artifactId>digital-service</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>3.11-SNAPSHOT</version>
+        <version>3.13-SNAPSHOT</version>
     </parent>
 
     <groupId>org.odpi.egeria</groupId>
@@ -32,6 +32,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>audit-log-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>

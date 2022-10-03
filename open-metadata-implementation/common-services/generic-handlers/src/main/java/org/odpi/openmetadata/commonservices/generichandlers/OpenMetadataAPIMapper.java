@@ -154,6 +154,7 @@ public class OpenMetadataAPIMapper
     public static final String REFERENCE_VERSION_PROPERTY_NAME           = "referenceVersion";    /* from ExternalReference entity */
 
     public static final String REFERENCE_ID_PROPERTY_NAME                = "referenceId";         /* from ExternalReferenceLink relationship */
+    public static final String PAGES_PROPERTY_NAME                       = "pages";               /* from ExternalReferenceLink relationship */
     /* plus description property */
 
     public static final String RELATED_MEDIA_TYPE_GUID                   = "747f8b86-fe7c-4c9b-ba75-979e093cc307";
@@ -230,7 +231,7 @@ public class OpenMetadataAPIMapper
     public static final String MAP_PROJECTION_PROPERTY_NAME              = "mapProjection";
     public static final String POSTAL_ADDRESS_PROPERTY_NAME              = "postalAddress";
     public static final String POSTAL_ADDRESS_PROPERTY_NAME_DEP          = "address";
-    public static final String TIME_ZONE_PROPERTY_NAME                   = "timeZone";
+    public static final String TIME_ZONE_PROPERTY_NAME                   = "timezone";
 
     public static final String SECURE_LOCATION_CLASSIFICATION_TYPE_GUID  = "e7b563c0-fcdd-4ba7-a046-eecf5c4638b8";
     public static final String SECURE_LOCATION_CLASSIFICATION_TYPE_NAME  = "SecureLocation";
@@ -1407,6 +1408,9 @@ public class OpenMetadataAPIMapper
     public static final String GOVERNANCE_RESPONSE_TYPE_NAME             = "GovernanceResponse";  /* from Area 4 */
     /* End1 = GovernanceDriver; End 2 = GovernancePolicy */
 
+    public static final String GOVERNANCE_DRIVER_LINK_TYPE_NAME          = "GovernanceDriverLink";  /* from Area 4 */
+    /* End1 = GovernanceDriver; End 2 = GovernanceDriver */
+
     public static final String GOVERNANCE_POLICY_LINK_TYPE_GUID          = "0c42c999-4cac-4da4-afab-0e381f3a818e";
     public static final String GOVERNANCE_POLICY_LINK_TYPE_NAME          = "GovernancePolicyLink";  /* from Area 4 */
     /* End1 = GovernancePolicy; End 2 = GovernancePolicy */
@@ -1619,6 +1623,20 @@ public class OpenMetadataAPIMapper
     public static final int    PROFILE_ID_OWNER_TYPE_ORDINAL             = 1;
     public static final int    OTHER_OWNER_TYPE_ORDINAL                  = 99;
 
+    public static final String GOVERNANCE_METRIC_TYPE_GUID               = "9ada8e7b-823c-40f7-adf8-f164aabda77e";
+    public static final String GOVERNANCE_METRIC_TYPE_NAME               = "GovernanceMetric";
+    /* Referenceable */
+
+    public static final String MEASUREMENT_PROPERTY_NAME                 = "measurement";            /* from Area 4 */
+    public static final String TARGET_PROPERTY_NAME                      = "target";                 /* from Area 4 */
+
+    public static final String GOVERNANCE_RESULTS_TYPE_GUID              = "89c3c695-9e8d-4660-9f44-ed971fd55f88";
+    public static final String GOVERNANCE_RESULTS_TYPE_NAME              = "GovernanceResults";
+    /* End1 = GovernanceMetric; End 2 = DataSet */
+
+    public static final String GOVERNANCE_DEFINITION_METRIC_TYPE_GUID    = "e076fbb3-54f5-46b8-8f1e-a7cb7e792673";
+    public static final String GOVERNANCE_DEFINITION_METRIC_TYPE_NAME    = "GovernanceDefinitionMetric";
+    /* End1 = GovernanceDefinition; End 2 = GovernanceMetric */
 
     public static final String GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_GUID    = "fcda7261-865d-464d-b279-7d9880aaab39";
     public static final String GOVERNANCE_EXPECTATIONS_CLASSIFICATION_TYPE_NAME    = "GovernanceExpectations";
@@ -1636,6 +1654,10 @@ public class OpenMetadataAPIMapper
     public static final String MEASUREMENT_COUNTS_PROPERTY_NAME           = "measurementCounts";                 /* from Area 4 */
     public static final String MEASUREMENT_VALUES_PROPERTY_NAME           = "measurementValues";                 /* from Area 4 */
     public static final String MEASUREMENT_FLAGS_PROPERTY_NAME            = "measurementFlags";                  /* from Area 4 */
+
+    public static final String GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_GUID = "789f2e89-accd-4489-8eca-dc43b432c022";
+    public static final String GOVERNANCE_MEASUREMENTS_DATA_SET_CLASSIFICATION_TYPE_NAME = "GovernanceMeasurementsResultsDataSet";
+    /* Referenceable */
 
     public static final String EXECUTION_POINT_DEFINITION_TYPE_GUID      = "d7f8d1d2-8cec-4fd2-b9fd-c8307cad750d";
     public static final String EXECUTION_POINT_DEFINITION_TYPE_NAME      = "ExecutionPointDefinition";
@@ -1747,7 +1769,7 @@ public class OpenMetadataAPIMapper
     public static final int    REQUESTED_GA_STATUS_ORDINAL               = 0;
     public static final int    APPROVED_GA_STATUS_ORDINAL                = 1;
     public static final int    WAITING_GA_STATUS_ORDINAL                 = 2;
-    public static final int    IN_PROGRESS_GA_STATUS_ORDINAL             = 3;
+    public static final int    IN_PROGRESS_GA_STATUS_ORDINAL             = 4;
     public static final int    ACTIONED_GA_STATUS_ORDINAL                = 10;
     public static final int    INVALID_GA_STATUS_ORDINAL                 = 11;
     public static final int    IGNORED_GA_STATUS_ORDINAL                 = 12;
@@ -2635,4 +2657,7 @@ public class OpenMetadataAPIMapper
 
     public static final String INCOMPLETE_CLASSIFICATION_TYPE_GUID = "078432fb-a889-4a51-8ebe-9797becea9f1";
     public static final String INCOMPLETE_CLASSIFICATION_TYPE_NAME = "Incomplete";
+
+    public static final String PROCESSING_STATE_CLASSIFICATION_TYPE_GUID = "261fb0aa-b884-4ee8-87ea-a60510e9751d";
+    public static final String PROCESSING_STATE_CLASSIFICATION_TYPE_NAME = "ProcessingState";
 }

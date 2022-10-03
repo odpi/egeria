@@ -10,8 +10,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.Us
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -26,14 +24,8 @@ import java.util.List;
  * UserIdentityManagement is the client for explicitly managing the user identity entities and associating them with
  * profiles.  It is typically used when the relationship between user identities and profiles are many to one.
  */
-public class UserIdentityManagement implements UserIdentityManagementInterface
+public class UserIdentityManagement extends CommunityProfileBaseClient implements UserIdentityManagementInterface
 {
-    private final String                     serverName;               /* Initialized in constructor */
-    private final String                     serverPlatformURLRoot;    /* Initialized in constructor */
-    private final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
-
     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/user-identities";
 
     /**
@@ -47,13 +39,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
     public UserIdentityManagement(String serverName,
                                   String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -70,13 +56,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
                                   String   serverPlatformURLRoot,
                                   AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -96,13 +76,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
                                   String userId,
                                   String password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -124,13 +98,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
                                   String   password,
                                   AuditLog auditLog) throws  InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -149,14 +117,7 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
                                   CommunityProfileRESTClient restClient,
                                   int                        maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -186,25 +147,45 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        final String methodName                  = "createUserIdentity";
-        final String propertiesParameterName     = "newIdentity";
-        final String qualifiedNameParameterName  = "newIdentity.qualifiedName";
+        final String methodName              = "createUserIdentity";
+        final String propertiesParameterName = "newIdentity";
+        final String urlTemplate             = serverPlatformURLRoot + urlTemplatePrefix;
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(newIdentity, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(newIdentity.getQualifiedName(), qualifiedNameParameterName, methodName);
+        return super.createReferenceable(userId, externalSourceGUID, externalSourceName, newIdentity, propertiesParameterName, urlTemplate, methodName);
+    }
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix;
 
-        UserIdentityRequestBody requestBody = new UserIdentityRequestBody();
+    /**
+     * Create a UserIdentity that is for the sole use of a specific actor profile.  When the profile is deleted, the user identity is
+     * deleted.
+     *
+     * @param userId the name of the calling user.
+     * @param externalSourceGUID unique identifier of software server capability representing the caller
+     * @param externalSourceName unique name of software server capability representing the caller
+     * @param profileGUID unique identifier of the profile
+     * @param newIdentity properties for the new userIdentity
+     *
+     * @return unique identifier of the UserIdentity
+     *
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws PropertyServerException  there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public String createUserIdentityForProfile(String                 userId,
+                                               String                 externalSourceGUID,
+                                               String                 externalSourceName,
+                                               String                 profileGUID,
+                                               UserIdentityProperties newIdentity) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName              = "createUserIdentityForProfile";
+        final String guidParameterName       = "profileGUID";
+        final String propertiesParameterName = "newIdentity";
+        final String urlTemplate             = serverPlatformURLRoot + urlTemplatePrefix;
 
-        requestBody.setExternalSourceGUID(externalSourceGUID);
-        requestBody.setExternalSourceName(externalSourceName);
-        requestBody.setProperties(newIdentity);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId);
-
-        return restResult.getGUID();
+        return super.createReferenceableWithParent(userId, externalSourceGUID, externalSourceName, profileGUID, guidParameterName, newIdentity, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -235,31 +216,14 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
         final String methodName                  = "updateUserIdentity";
         final String guidParameterName           = "userIdentityGUID";
         final String propertiesParameterName     = "properties";
-        final String qualifiedNameParameterName  = "properties.qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(userIdentityGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        if (! isMergeUpdate)
-        {
-            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
-        }
-
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}?isMergeUpdate={3}";
 
-        UserIdentityRequestBody requestBody = new UserIdentityRequestBody();
-
-        requestBody.setExternalSourceGUID(externalSourceGUID);
-        requestBody.setExternalSourceName(externalSourceName);
-        requestBody.setProperties(properties);
-
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId, userIdentityGUID, isMergeUpdate);
+        super.updateReferenceable(userId, externalSourceGUID, externalSourceName, userIdentityGUID, guidParameterName, isMergeUpdate, properties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
     /**
-     * Remove a user identity object.  This will fail if the profile would be left without an
-     * associated user identity.
+     * Remove a user identity object.
      *
      * @param userId the name of the calling user
      * @param externalSourceGUID unique identifier of software server capability representing the caller
@@ -278,26 +242,16 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        final String methodName                  = "deleteUserIdentity";
-        final String guidParameterName           = "userIdentityGUID";
+        final String methodName        = "deleteUserIdentity";
+        final String guidParameterName = "userIdentityGUID";
+        final String urlTemplate       = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/delete";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(userIdentityGUID, guidParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/delete";
-
-        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
-
-        requestBody.setExternalSourceGUID(externalSourceGUID);
-        requestBody.setExternalSourceName(externalSourceName);
-
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId, userIdentityGUID);
+        super.removeReferenceable(userId, externalSourceGUID, externalSourceName, userIdentityGUID, guidParameterName, urlTemplate, methodName);
     }
 
 
     /**
-     * Link a user identity to a profile.  This will fail if the user identity is already connected to
-     * a profile.
+     * Link a user identity to a profile.
      *
      * @param userId the name of the calling user.
      * @param externalSourceGUID unique identifier of software server capability representing the caller
@@ -323,20 +277,9 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
         final String methodName                    = "addIdentityToProfile";
         final String profileGUIDParameterName      = "profileGUID";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
+        final String urlTemplate                   = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/profiles/{3}/link";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(userIdentityGUID, userIdentityGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/profiles/{3}/link";
-
-        ProfileIdentityRequestBody requestBody = new ProfileIdentityRequestBody();
-
-        requestBody.setExternalSourceGUID(externalSourceGUID);
-        requestBody.setExternalSourceName(externalSourceName);
-        requestBody.setProperties(properties);
-
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId, userIdentityGUID, profileGUID);
+        super.setupRelationship(userId, externalSourceGUID, externalSourceName, userIdentityGUID, userIdentityGUIDParameterName, properties, profileGUID, profileGUIDParameterName, urlTemplate, methodName);
     }
 
 
@@ -369,21 +312,9 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
         final String methodName                    = "updateProfileIdentity";
         final String profileGUIDParameterName      = "profileGUID";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
+        final String urlTemplate                   = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/profiles/{3}/link/update?isMergeUpdate={4}";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(userIdentityGUID, userIdentityGUIDParameterName, methodName);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/profiles/{3}/link/update?isMergeUpdate={4}";
-
-        ProfileIdentityRequestBody requestBody = new ProfileIdentityRequestBody();
-
-        requestBody.setExternalSourceGUID(externalSourceGUID);
-        requestBody.setExternalSourceName(externalSourceName);
-        requestBody.setProperties(properties);
-
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId, userIdentityGUID, profileGUID, isMergeUpdate);
-
+        super.updateRelationship(userId, externalSourceGUID, externalSourceName, userIdentityGUID, userIdentityGUIDParameterName, properties, profileGUID, profileGUIDParameterName, isMergeUpdate, urlTemplate, methodName);
     }
 
 
@@ -412,19 +343,9 @@ public class UserIdentityManagement implements UserIdentityManagementInterface
         final String methodName                    = "removeIdentityFromProfile";
         final String profileGUIDParameterName      = "profileGUID";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(userIdentityGUID, userIdentityGUIDParameterName, methodName);
-
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/profiles/{3}/unlink";
 
-        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
-
-        requestBody.setExternalSourceGUID(externalSourceGUID);
-        requestBody.setExternalSourceName(externalSourceName);
-
-        restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId, userIdentityGUID, profileGUID);
+        super.clearRelationship(userId, externalSourceGUID, externalSourceName, userIdentityGUID, userIdentityGUIDParameterName, profileGUID, profileGUIDParameterName, urlTemplate, methodName);
     }
 
 

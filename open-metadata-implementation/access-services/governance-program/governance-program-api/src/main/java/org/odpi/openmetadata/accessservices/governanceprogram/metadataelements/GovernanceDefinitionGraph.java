@@ -21,17 +21,16 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceDefinitionGraph implements Serializable, MetadataElement
+public class GovernanceDefinitionGraph extends GovernanceDefinitionElement
 {
     private static final long    serialVersionUID = 1L;
 
-    private ElementHeader                  elementHeader      = null;
-    private GovernanceDefinitionProperties properties         = null;
-    private List<GovernanceDelegation>     parents            = null;
-    private List<GovernanceLink>           peers              = null;
-    private List<GovernanceDelegation>     children           = null;
-    private List<GovernanceDelegation>     metrics            = null;
-    private List<ExternalReferenceElement> externalReferences = null;
+    private List<RelatedElement>           parents            = null;
+    private List<RelatedElement>           peers              = null;
+    private List<RelatedElement>           children           = null;
+    private List<RelatedElement>           metrics            = null;
+    private List<RelatedElement>           externalReferences = null;
+    private List<RelatedElement>           others             = null;
 
 
     /**
@@ -50,60 +49,17 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      */
     public GovernanceDefinitionGraph(GovernanceDefinitionGraph template)
     {
+        super (template);
+
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties = template.getProperties();
             parents = template.getParents();
             peers = template.getPeers();
             children = template.getChildren();
             metrics = template.getMetrics();
             externalReferences = template.getExternalReferences();
+            others = template.getOthers();
         }
-    }
-
-
-    /**
-     * Return the element header associated with the properties.
-     *
-     * @return element header object
-     */
-    public ElementHeader getElementHeader()
-    {
-        return elementHeader;
-    }
-
-
-    /**
-     * Set up the element header associated with the properties.
-     *
-     * @param elementHeader element header object
-     */
-    public void setElementHeader(ElementHeader elementHeader)
-    {
-        this.elementHeader = elementHeader;
-    }
-
-
-    /**
-     * Return the properties of this governance definition.
-     *
-     * @return properties bean
-     */
-    public GovernanceDefinitionProperties getProperties()
-    {
-        return properties;
-    }
-
-
-    /**
-     * Set up the properties of this governance definition.
-     *
-     * @param properties properties bean
-     */
-    public void setProperties(GovernanceDefinitionProperties properties)
-    {
-        this.properties = properties;
     }
 
 
@@ -112,7 +68,7 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @return list of governance definition stubs
      */
-    public List<GovernanceDelegation> getParents()
+    public List<RelatedElement> getParents()
     {
         if (parents == null)
         {
@@ -134,7 +90,7 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @param parents list of governance definition stubs
      */
-    public void setParents(List<GovernanceDelegation> parents)
+    public void setParents(List<RelatedElement> parents)
     {
         this.parents = parents;
     }
@@ -145,7 +101,7 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @return list of governance definition stubs
      */
-    public List<GovernanceLink> getPeers()
+    public List<RelatedElement> getPeers()
     {
         if (peers == null)
         {
@@ -167,7 +123,7 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @param peers list of governance definition stubs
      */
-    public void setPeers(List<GovernanceLink> peers)
+    public void setPeers(List<RelatedElement> peers)
     {
         this.peers = peers;
     }
@@ -178,7 +134,7 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @return list of governance definition stubs
      */
-    public List<GovernanceDelegation> getChildren()
+    public List<RelatedElement> getChildren()
     {
         if (children == null)
         {
@@ -200,7 +156,7 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @param children list of governance definition stubs
      */
-    public void setChildren(List<GovernanceDelegation> children)
+    public void setChildren(List<RelatedElement> children)
     {
         this.children = children;
     }
@@ -211,7 +167,7 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @return list of governance definition stubs
      */
-    public List<GovernanceDelegation> getMetrics()
+    public List<RelatedElement> getMetrics()
     {
         if (metrics == null)
         {
@@ -233,7 +189,7 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @param metrics list of governance definition stubs
      */
-    public void setMetrics(List<GovernanceDelegation> metrics)
+    public void setMetrics(List<RelatedElement> metrics)
     {
         this.metrics = metrics;
     }
@@ -244,7 +200,7 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @return list of links to external references
      */
-    public List<ExternalReferenceElement> getExternalReferences()
+    public List<RelatedElement> getExternalReferences()
     {
         if (externalReferences == null)
         {
@@ -266,9 +222,31 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
      *
      * @param externalReferences list of links to external references
      */
-    public void setExternalReferneces(List<ExternalReferenceElement> externalReferences)
+    public void setExternalReferences(List<RelatedElement> externalReferences)
     {
         this.externalReferences = externalReferences;
+    }
+
+
+    /**
+     * Return details of other relationships
+     *
+     * @return details of other related elements
+     */
+    public List<RelatedElement> getOthers()
+    {
+        return others;
+    }
+
+
+    /**
+     * Set details of other relationships.
+     *
+     * @param others details of other related elements
+     */
+    public void setOthers(List<RelatedElement> others)
+    {
+        this.others = others;
     }
 
 
@@ -281,13 +259,15 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
     public String toString()
     {
         return "GovernanceDefinitionGraph{" +
-                       "elementHeader=" + elementHeader +
-                       ", properties=" + properties +
+                       "relatedElement=" + getRelatedElement() +
+                       ", elementHeader=" + getElementHeader() +
+                       ", properties=" + getProperties() +
                        ", parents=" + parents +
                        ", peers=" + peers +
                        ", children=" + children +
                        ", metrics=" + metrics +
                        ", externalReferences=" + externalReferences +
+                       ", others=" + others +
                        '}';
     }
 
@@ -305,29 +285,31 @@ public class GovernanceDefinitionGraph implements Serializable, MetadataElement
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof GovernanceDefinitionGraph))
+        {
+            return false;
+        }
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
         GovernanceDefinitionGraph that = (GovernanceDefinitionGraph) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties) &&
-                       Objects.equals(parents, that.parents) &&
-                       Objects.equals(peers, that.peers) &&
+        return Objects.equals(parents, that.parents) && Objects.equals(peers, that.peers) &&
                        Objects.equals(children, that.children) &&
                        Objects.equals(metrics, that.metrics) &&
+                       Objects.equals(others, that.others) &&
                        Objects.equals(externalReferences, that.externalReferences);
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, parents, peers, children, metrics, externalReferences);
+        return Objects.hash(super.hashCode(), parents, peers, children, metrics, externalReferences, others);
     }
 }

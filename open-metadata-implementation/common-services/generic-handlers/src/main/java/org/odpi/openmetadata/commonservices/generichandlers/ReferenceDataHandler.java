@@ -214,25 +214,23 @@ public class ReferenceDataHandler<VALID_VALUE,
                                                                          methodName);
         }
 
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  validValueGUID,
-                                  validValueGUIDParameter,
-                                  OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                  assetGUID,
-                                  assetGUIDParameter,
-                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME,
-                                  setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
+        this.multiLinkElementToElement(userId,
+                                       externalSourceGUID,
+                                       externalSourceName,
+                                       validValueGUID,
+                                       validValueGUIDParameter,
+                                       OpenMetadataAPIMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                       assetGUID,
+                                       assetGUIDParameter,
+                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       supportedZones,
+                                       OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID,
+                                       OpenMetadataAPIMapper.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME,
+                                       setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
+                                       effectiveTime,
+                                       methodName);
     }
 
 

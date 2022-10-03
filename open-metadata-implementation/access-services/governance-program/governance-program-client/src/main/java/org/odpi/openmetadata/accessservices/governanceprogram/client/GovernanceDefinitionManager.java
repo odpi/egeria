@@ -6,11 +6,8 @@ import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceDefi
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -71,14 +68,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * along with the implications to the organization's operation when they adopt this.
  * These implications help to estimate the cost of the control's implementation and the activities that need to happen.
  */
-public class GovernanceDefinitionManager implements GovernanceDefinitionsInterface
+public class GovernanceDefinitionManager extends GovernanceProgramBaseClient implements GovernanceDefinitionsInterface
 {
-    private final String                      serverName;               /* Initialized in constructor */
-    private final String                      serverPlatformURLRoot;    /* Initialized in constructor */
-    private final GovernanceProgramRESTClient restClient;               /* Initialized in constructor */
-
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -91,13 +82,7 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
     public GovernanceDefinitionManager(String serverName,
                                        String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -117,15 +102,8 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                        String     userId,
                                        String     password) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
-
 
 
     /**
@@ -143,14 +121,7 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                        int      maxPageSize,
                                        AuditLog auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (no security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
     }
 
 
@@ -174,14 +145,7 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                        int        maxPageSize,
                                        AuditLog   auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = new GovernanceProgramRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
@@ -200,14 +164,7 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                        GovernanceProgramRESTClient restClient,
                                        int                         maxPageSize) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
-
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName            = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient            = restClient;
+        super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
     }
 
 
@@ -236,29 +193,10 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                                                                                   PropertyServerException
     {
         final String   methodName = "createGovernanceDefinition";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions";
-
-        final String   docIdParameterName = "documentIdentifier";
-        final String   titleParameterName = "title";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions";
         final String   propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
-
-        GovernanceDefinitionRequestBody requestBody = new GovernanceDefinitionRequestBody();
-
-        requestBody.setProperties(properties);
-        requestBody.setInitialStatus(initialStatus);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformURLRoot + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        return restResult.getGUID();
+        return super.createGovernanceDefinition(userId, properties, propertiesParameterName, initialStatus, urlTemplate, methodName);
     }
 
 
@@ -283,30 +221,12 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                                                                               PropertyServerException
     {
         final String methodName = "updateGovernanceDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/update?isMergeUpdate={3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/update?isMergeUpdate={3}";
 
         final String guidParameterName = "definitionGUID";
-        final String docIdParameterName = "documentIdentifier";
-        final String titleParameterName = "title";
         final String propertiesParameterName = "properties";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(definitionGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-
-        if (! isMergeUpdate)
-        {
-            invalidParameterHandler.validateName(properties.getDocumentIdentifier(), docIdParameterName, methodName);
-            invalidParameterHandler.validateName(properties.getTitle(), titleParameterName, methodName);
-        }
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        properties,
-                                        serverName,
-                                        userId,
-                                        definitionGUID,
-                                        isMergeUpdate);
+        super.updateGovernanceDefinition(userId, definitionGUID, guidParameterName, isMergeUpdate, properties, propertiesParameterName, urlTemplate, methodName);
     }
 
 
@@ -316,6 +236,10 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
      * @param userId calling user
      * @param definitionGUID unique identifier
      * @param newStatus new status
+     *
+     * @throws InvalidParameterException guid, documentIdentifier or userId is null; documentIdentifier is not unique; guid is not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
      */
     @Override
     public void setGovernanceDefinitionStatus(String                     userId,
@@ -325,21 +249,15 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                                                                            PropertyServerException
     {
         final String methodName = "setGovernanceDefinitionStatus";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/update-status";
-
         final String guidParameterName = "definitionGUID";
         final String propertiesParameterName = "newStatus";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(definitionGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateEnum(newStatus, propertiesParameterName, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        newStatus,
-                                        serverName,
-                                        userId,
-                                        definitionGUID);
+        super.updateGovernanceDefinitionStatus(userId,
+                                               definitionGUID,
+                                               guidParameterName,
+                                               newStatus,
+                                               propertiesParameterName,
+                                               methodName);
     }
 
 
@@ -360,18 +278,10 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                                                           PropertyServerException
     {
         final String methodName = "deleteGovernanceDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/delete";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/delete";
         final String guidParameterName = "definitionGUID";
 
-        invalidParameterHandler.validateGUID(definitionGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        definitionGUID);
+        super.removeReferenceable(userId, definitionGUID, guidParameterName, urlTemplate, methodName);
     }
 
 
@@ -388,45 +298,39 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
      * @param definitionOneGUID unique identifier of the first definition
      * @param definitionTwoGUID unique identifier of the second definition
      * @param relationshipTypeName the name of the relationship to create
-     * @param description description of their relationship
+     * @param properties description of their relationship
      *
      * @throws InvalidParameterException one of the guids is null or not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void linkPeerDefinitions(String userId,
-                                    String definitionOneGUID,
-                                    String definitionTwoGUID,
-                                    String relationshipTypeName,
-                                    String description) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void linkPeerDefinitions(String                   userId,
+                                    String                   definitionOneGUID,
+                                    String                   definitionTwoGUID,
+                                    String                   relationshipTypeName,
+                                    PeerDefinitionProperties properties) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName = "linkPeerDefinitions";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/peers/{3}/link-as/{4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/peers/{3}/link";
 
         final String definitionOneGUIDParameterName = "definitionOneGUID";
         final String definitionTwoGUIDParameterName = "definitionTwoGUID";
         final String relationshipTypeNameParameterName = "relationshipTypeName";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(definitionOneGUID, definitionOneGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(definitionTwoGUID, definitionTwoGUIDParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
 
-        StringRequestBody requestBody = new StringRequestBody();
-
-        requestBody.setString(description);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        definitionOneGUID,
-                                        definitionTwoGUID,
-                                        relationshipTypeName);
+        super.setupRelationship(userId,
+                               definitionOneGUID,
+                               definitionOneGUIDParameterName,
+                               relationshipTypeName,
+                               properties,
+                               definitionTwoGUID,
+                               definitionTwoGUIDParameterName,
+                               urlTemplate,
+                               methodName);
     }
 
 
@@ -451,26 +355,22 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                                                           PropertyServerException
     {
         final String methodName = "unlinkPeerDefinitions";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/peers/{3}/unlink-as/{4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/peers/{3}/unlink";
 
         final String definitionOneGUIDParameterName = "definitionOneGUID";
         final String definitionTwoGUIDParameterName = "definitionTwoGUID";
         final String relationshipTypeNameParameterName = "relationshipTypeName";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(definitionOneGUID, definitionOneGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(definitionTwoGUID, definitionTwoGUIDParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
 
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        null,
-                                        serverName,
-                                        userId,
-                                        definitionOneGUID,
-                                        definitionTwoGUID,
-                                        relationshipTypeName);
+        super.clearRelationship(userId,
+                                definitionOneGUID,
+                                definitionOneGUIDParameterName,
+                                relationshipTypeName,
+                                definitionTwoGUIDParameterName,
+                                definitionTwoGUIDParameterName,
+                                urlTemplate,
+                                methodName);
     }
 
 
@@ -487,45 +387,39 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
      * @param definitionGUID unique identifier of the governance definition
      * @param supportingDefinitionGUID unique identifier of the supporting governance definition
      * @param relationshipTypeName the name of the relationship to create
-     * @param rationale description of how the supporting definition provides support
+     * @param properties description of how the supporting definition provides support
      *
      * @throws InvalidParameterException one of the guids is null or not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public void setupSupportingDefinition(String userId,
-                                          String definitionGUID,
-                                          String supportingDefinitionGUID,
-                                          String relationshipTypeName,
-                                          String rationale) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void setupSupportingDefinition(String                         userId,
+                                          String                         definitionGUID,
+                                          String                         supportingDefinitionGUID,
+                                          String                         relationshipTypeName,
+                                          SupportingDefinitionProperties properties) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName = "setupSupportingDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/supporting-definitions/{3}/link-as/{4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/supporting-definitions/{3}/link";
 
         final String definitionOneGUIDParameterName = "definitionGUID";
         final String definitionTwoGUIDParameterName = "supportingDefinitionGUID";
         final String relationshipTypeNameParameterName = "relationshipTypeName";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(definitionGUID, definitionOneGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(supportingDefinitionGUID, definitionTwoGUIDParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
 
-        StringRequestBody requestBody = new StringRequestBody();
-
-        requestBody.setString(rationale);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        requestBody,
-                                        serverName,
-                                        userId,
-                                        definitionGUID,
-                                        supportingDefinitionGUID,
-                                        relationshipTypeName);
+        super.setupRelationship(userId,
+                                definitionGUID,
+                                definitionOneGUIDParameterName,
+                                relationshipTypeName,
+                                properties,
+                                supportingDefinitionGUID,
+                                definitionTwoGUIDParameterName,
+                                urlTemplate,
+                                methodName);
     }
 
 
@@ -550,24 +444,21 @@ public class GovernanceDefinitionManager implements GovernanceDefinitionsInterfa
                                                                               PropertyServerException
     {
         final String methodName = "clearSupportingDefinition";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/supporting-definitions/{3}/unlink-as/{4}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-definitions/{2}/supporting-definitions/{3}/unlink";
 
         final String definitionOneGUIDParameterName = "definitionGUID";
         final String definitionTwoGUIDParameterName = "supportingDefinitionGUID";
         final String relationshipTypeNameParameterName = "relationshipTypeName";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(definitionGUID, definitionOneGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(supportingDefinitionGUID, definitionTwoGUIDParameterName, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, relationshipTypeNameParameterName, methodName);
 
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformURLRoot + urlTemplate,
-                                        nullRequestBody,
-                                        serverName,
-                                        userId,
-                                        definitionGUID,
-                                        supportingDefinitionGUID,
-                                        relationshipTypeName);
+        super.clearRelationship(userId,
+                                definitionGUID,
+                                definitionOneGUIDParameterName,
+                                relationshipTypeName,
+                                definitionTwoGUIDParameterName,
+                                definitionTwoGUIDParameterName,
+                                urlTemplate,
+                                methodName);
     }
 }
