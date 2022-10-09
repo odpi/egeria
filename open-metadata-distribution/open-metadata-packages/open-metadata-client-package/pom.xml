@@ -65,6 +65,10 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>digital-service-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>it-infrastructure-client</artifactId>
         </dependency>
         <dependency>
