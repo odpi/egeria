@@ -7,29 +7,30 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.AgreementRoleProperties;
+
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PersonRoleHistory is the bean used to return a role definition and its appointees over time.
+ * PersonRoleAppointee is the bean used to return a role and current appointee(s).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonRoleHistory extends PersonRoleAppointee
+public class AgreementRoleAppointee extends PersonRoleAppointee
 {
     private static final long serialVersionUID = 1L;
 
-    private List<Appointee> predecessors = null;
-    private List<Appointee> successors   = null;
+    private AgreementRoleProperties agreementRoleProperties = null;
+
 
     /**
      * Default constructor
      */
-    public PersonRoleHistory()
+    public AgreementRoleAppointee()
     {
         super();
     }
@@ -40,14 +41,13 @@ public class PersonRoleHistory extends PersonRoleAppointee
      *
      * @param template object to copy
      */
-    public PersonRoleHistory(PersonRoleHistory template)
+    public AgreementRoleAppointee(AgreementRoleAppointee template)
     {
         super(template);
 
         if (template != null)
         {
-            predecessors = template.getPredecessors();
-            successors = template.getSuccessors();
+            agreementRoleProperties = template.getAgreementRoleProperties();
         }
     }
 
@@ -57,55 +57,32 @@ public class PersonRoleHistory extends PersonRoleAppointee
      *
      * @param template object to copy
      */
-    public PersonRoleHistory(PersonRoleElement template)
+    public AgreementRoleAppointee(PersonRoleElement template)
     {
         super(template);
     }
 
 
     /**
-     * Return the list of predecessors to this appointment.
+     * Return the role information from the agreement.
      *
-     * @return list of individuals who used to have this role
+     * @return agreement role properties
      */
-    public List<Appointee> getPredecessors()
+    public AgreementRoleProperties getAgreementRoleProperties()
     {
-        return predecessors;
+        return agreementRoleProperties;
     }
 
 
     /**
-     * Set up the list of predecessors to this appointment.
+     * Set up the role information from the agreement.
      *
-     * @param predecessors list of individuals who used to have this role
+     * @param agreementRoleProperties agreement role properties
      */
-    public void setPredecessors(List<Appointee> predecessors)
+    public void setAgreementRoleProperties(AgreementRoleProperties agreementRoleProperties)
     {
-        this.predecessors = predecessors;
+        this.agreementRoleProperties = agreementRoleProperties;
     }
-
-
-    /**
-     * Return the list of successors lined up to take over this appointment.
-     *
-     * @return list of individuals who will have this role in the future
-     */
-    public List<Appointee> getSuccessors()
-    {
-        return successors;
-    }
-
-
-    /**
-     * Set up the list of successors lined up to take over this appointment.
-     *
-     * @param successors list of individuals who will have this role in the future
-     */
-    public void setSuccessors(List<Appointee> successors)
-    {
-        this.successors = successors;
-    }
-
 
 
     /**
@@ -116,12 +93,11 @@ public class PersonRoleHistory extends PersonRoleAppointee
     @Override
     public String toString()
     {
-        return "PersonRoleHistory{" +
-                       "currentAppointees=" + getCurrentAppointees() +
+        return "AgreementRoleAppointee{" +
+                       "agreementRoleProperties=" + agreementRoleProperties +
+                       ", currentAppointees=" + getCurrentAppointees() +
                        ", elementHeader=" + getElementHeader() +
                        ", properties=" + getProperties() +
-                       ", predecessors=" + predecessors +
-                       ", successors=" + successors +
                        '}';
     }
 
@@ -147,9 +123,8 @@ public class PersonRoleHistory extends PersonRoleAppointee
         {
             return false;
         }
-        PersonRoleHistory that = (PersonRoleHistory) objectToCompare;
-        return Objects.equals(predecessors, that.predecessors) &&
-                       Objects.equals(successors, that.successors);
+        AgreementRoleAppointee that = (AgreementRoleAppointee) objectToCompare;
+        return Objects.equals(agreementRoleProperties, that.agreementRoleProperties);
     }
 
 
@@ -161,6 +136,6 @@ public class PersonRoleHistory extends PersonRoleAppointee
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), predecessors, successors);
+        return Objects.hash(super.hashCode(), agreementRoleProperties);
     }
 }

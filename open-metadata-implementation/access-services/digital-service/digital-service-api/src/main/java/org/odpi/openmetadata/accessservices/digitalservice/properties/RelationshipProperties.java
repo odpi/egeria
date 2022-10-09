@@ -29,9 +29,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = AgreementRoleProperties.class, name = "AgreementRoleProperties"),
                 @JsonSubTypes.Type(value = DigitalSupportProperties.class, name = "DigitalSupportProperties"),
-                @JsonSubTypes.Type(value = OrganizationalCapabilityProperties.class, name = "OrganizationalCapabilityProperties"),
                 @JsonSubTypes.Type(value = DigitalServiceDependencyProperties.class, name = "DigitalServiceDependencyProperties"),
+                @JsonSubTypes.Type(value = OrganizationalCapabilityProperties.class, name = "OrganizationalCapabilityProperties"),
         })
 public class RelationshipProperties implements Serializable
 {

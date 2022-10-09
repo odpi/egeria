@@ -6,8 +6,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <dependencies>
-    </dependencies>
 
     <parent>
         <artifactId>digital-service</artifactId>
@@ -22,8 +20,41 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/master</url>
     </scm>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>gaf-metadata-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>digital-service-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>

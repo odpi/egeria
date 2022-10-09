@@ -15,14 +15,14 @@
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
         <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
-        <url>http://github.com/odpi/egeria/tree/master</url>
+        <url>https://github.com/odpi/egeria/tree/master</url>
     </scm>
 
     <name>Digital Service OMAS</name>
     <description>
         The Digital Service Open Metadata Access Service (OMAS)
         provides APIs and notifications for tools and applications supporting
-        the lifecycle of the Egeria Digital Service.
+        the lifecycle of the Egeria Digital Service and digital products.
     </description>
 
     <artifactId>digital-service</artifactId>
@@ -30,6 +30,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>digital-service-api</module>
+        <module>digital-service-client</module>
         <module>digital-service-server</module>
         <module>digital-service-spring</module>
     </modules>

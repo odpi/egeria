@@ -16,6 +16,8 @@ import java.util.List;
 
 /**
  * BusinessCapabilityManagement supports the maintenance, linking and reporting associated with business capabilities.
+ * Business capabilities can be modelled at any level of granularity.  They provide business context to
+ * reports and measurements associated with the open metadata ecosystem and the data and technology it represents.
  */
 public interface BusinessCapabilityManagement
 {
@@ -136,7 +138,6 @@ public interface BusinessCapabilityManagement
                                                                PropertyServerException;
 
 
-
     /**
      * Create a relationship between a business capability and a team to show that the support provided by the team for the business capability.
      *
@@ -202,8 +203,6 @@ public interface BusinessCapabilityManagement
                                   String businessCapabilityGUID) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException;
-
-
 
 
     /**
@@ -292,7 +291,6 @@ public interface BusinessCapabilityManagement
                                                      int    pageSize) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException;
-
 
 
     /**
