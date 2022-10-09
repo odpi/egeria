@@ -36,11 +36,12 @@ public class OpenMetadataAPIMapper
     /* Asset */
 
     public static final String NAME_PROPERTY_NAME                        = "name";                                 /* from Asset entity */
+    public static final String VERSION_IDENTIFIER_PROPERTY_NAME          = "versionIdentifier";                    /* from Asset entity */
     public static final String FORMULA_PROPERTY_NAME                     = "formula";                              /* from Process entity */
 
     public static final String IS_PUBLIC_PROPERTY_NAME                   = "isPublic";              /* from feedback relationships - Area 1 */
     public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";           /* from many entities */
-    public static final String DESCRIPTION_PROPERTY_NAME                 = "description";                          /* from many entity */
+    public static final String DESCRIPTION_PROPERTY_NAME                 = "description";           /* from many entities */
 
     public static final String ANCHORS_CLASSIFICATION_TYPE_GUID                  = "aa44f302-2e43-4669-a1e7-edaae414fc6e";
     public static final String ANCHORS_CLASSIFICATION_TYPE_NAME                  = "Anchors";
@@ -979,6 +980,7 @@ public class OpenMetadataAPIMapper
     /* DataStore */
 
     public static final String FILE_TYPE_PROPERTY_NAME                   = "fileType";                   /* from DataFile entity */
+    public static final String FILE_NAME_PROPERTY_NAME                   = "fileName";                   /* from DataFile entity */
 
     public static final String MEDIA_FILE_TYPE_GUID                      = "c5ce5499-9582-42ea-936c-9771fbd475f8";  /* from Area 2 */
     public static final String MEDIA_FILE_TYPE_NAME                      = "MediaFile";

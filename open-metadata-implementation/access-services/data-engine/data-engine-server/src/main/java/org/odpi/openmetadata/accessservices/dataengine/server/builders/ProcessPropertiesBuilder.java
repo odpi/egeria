@@ -22,7 +22,7 @@ public class ProcessPropertiesBuilder extends AssetBuilder {
                                     String typeGUID, String typeName, String formula, String implementationLanguage,
                                     Map<String, String> additionalProperties, OMRSRepositoryHelper repositoryHelper, String serviceName,
                                     String serverName) {
-        super(qualifiedName, technicalName, technicalDescription, additionalProperties, typeGUID, typeName, null, repositoryHelper,
+        super(qualifiedName, technicalName, null, technicalDescription, additionalProperties, typeGUID, typeName, null, repositoryHelper,
                 serviceName, serverName);
 
         this.processDisplayName = processDisplayName;

@@ -1189,6 +1189,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the version identifier property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string name or null
+     */
+    protected String removeVersionIdentifier(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeVersionIdentifier";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.VERSION_IDENTIFIER_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the description property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

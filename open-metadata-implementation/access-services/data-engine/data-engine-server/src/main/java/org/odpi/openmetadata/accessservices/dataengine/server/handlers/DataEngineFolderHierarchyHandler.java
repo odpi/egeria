@@ -167,7 +167,7 @@ public class DataEngineFolderHierarchyHandler {
         }
 
         return folderHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
-                folder.getQualifiedName(), folder.getDisplayName(), folder.getDescription(), folder.getZoneMembership(),
+                folder.getQualifiedName(), folder.getDisplayName(), null, folder.getDescription(), folder.getZoneMembership(),
                 folder.getOwner(), folder.getOwnerType().getOpenTypeOrdinal(), null,
                 null, folder.getOtherOriginValues(), folder.getAdditionalProperties(),
                 FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME,  null, null, null,

@@ -74,6 +74,7 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
                     processProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     processProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     processProperties.setTechnicalName(this.removeName(instanceProperties));
+                    processProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     processProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
 
                     processProperties.setFormula(this.removeFormula(instanceProperties));

@@ -12,16 +12,11 @@ import org.odpi.openmetadata.accessservices.assetconsumer.properties.LikePropert
 import org.odpi.openmetadata.accessservices.stewardshipaction.client.StewardshipAction;
 import org.odpi.openmetadata.accessservices.stewardshipaction.client.rest.StewardshipActionRESTClient;
 import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.stewardshipaction.properties.PrimitiveSchemaTypeProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**

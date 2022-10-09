@@ -255,6 +255,7 @@ public class DataStoreProperties extends DataAssetProperties
                        ", encodingProperties=" + encodingProperties +
                        ", isReferenceAsset=" + getIsReferenceAsset() +
                        ", technicalName='" + getTechnicalName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +

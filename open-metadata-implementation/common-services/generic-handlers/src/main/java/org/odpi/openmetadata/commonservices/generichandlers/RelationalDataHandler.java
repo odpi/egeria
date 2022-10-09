@@ -195,7 +195,8 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
      * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param qualifiedName unique name for this database
-     * @param displayName the stored display name property for the database
+     * @param technicalName the stored name property for the database
+     * @param versionIdentifier version identifier for the database
      * @param description the stored description property associated with the database
      * @param owner identifier of the owner
      * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
@@ -235,7 +236,8 @@ public class RelationalDataHandler<DATABASE,
                                  String               databaseManagerGUID,
                                  String               databaseManagerName,
                                  String               qualifiedName,
-                                 String               displayName,
+                                 String               technicalName,
+                                 String               versionIdentifier,
                                  String               description,
                                  String               owner,
                                  int                  ownerTypeOrdinal,
@@ -316,7 +318,8 @@ public class RelationalDataHandler<DATABASE,
                                                                       databaseManagerGUID,
                                                                       databaseManagerName,
                                                                       qualifiedName,
-                                                                      displayName,
+                                                                      technicalName,
+                                                                      versionIdentifier,
                                                                       description,
                                                                       zoneMembership,
                                                                       owner,
@@ -409,9 +412,10 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerGUID unique identifier of software capability representing the DBMS
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param qualifiedName unique name for this database
-     * @param displayName the stored display name property for the database
+     * @param name the stored name property for the database
+     * @param versionIdentifier the stored version property for the database
      * @param description the stored description property associated with the database
-     * @param pathName the fully qualified physical location of the data store
+     * @param pathName the fully qualified physical location of the database
      * @param createTime the time that the database was created
      * @param modifiedTime the last known time the data store was modified
      * @param encodingType the name of the encoding style used in the database
@@ -443,7 +447,8 @@ public class RelationalDataHandler<DATABASE,
                                  String               databaseManagerGUID,
                                  String               databaseManagerName,
                                  String               qualifiedName,
-                                 String               displayName,
+                                 String               name,
+                                 String               versionIdentifier,
                                  String               description,
                                  String               pathName,
                                  Date                 createTime,
@@ -513,7 +518,8 @@ public class RelationalDataHandler<DATABASE,
                                                                       databaseManagerGUID,
                                                                       databaseManagerName,
                                                                       qualifiedName,
-                                                                      displayName,
+                                                                      name,
+                                                                      versionIdentifier,
                                                                       description,
                                                                       additionalProperties,
                                                                       assetTypeName,
@@ -600,8 +606,10 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param qualifiedName unique name for this database - must not be null
-     * @param displayName the stored display name property for the database - if null, the value from the template is used
+     * @param technicalName the stored name property for the database - if null, the value from the template is used
+     * @param versionIdentifier version identifier property for the database - if null, the value from the template is used
      * @param description the stored description property associated with the database - if null, the value from the template is used
+     * @param pathName the fully qualified physical location of the data store
      * @param networkAddress physical location of the database - used to connect to it
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
@@ -619,8 +627,10 @@ public class RelationalDataHandler<DATABASE,
                                              String               databaseManagerName,
                                              String               templateGUID,
                                              String               qualifiedName,
-                                             String               displayName,
+                                             String               technicalName,
+                                             String               versionIdentifier,
                                              String               description,
+                                             String               pathName,
                                              String               networkAddress,
                                              boolean              forLineage,
                                              boolean              forDuplicateProcessing,
@@ -645,8 +655,10 @@ public class RelationalDataHandler<DATABASE,
                                                     OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
                                                     qualifiedName,
                                                     qualifiedNameParameterName,
-                                                    displayName,
+                                                    technicalName,
+                                                    versionIdentifier,
                                                     description,
+                                                    pathName,
                                                     networkAddress,
                                                     forLineage,
                                                     forDuplicateProcessing,
@@ -663,7 +675,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for this database
-     * @param displayName the stored display name property for the database
+     * @param technicalName the stored name property for the database
      * @param description the stored description property associated with the database
      * @param owner identifier of the owner
      * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
@@ -702,7 +714,7 @@ public class RelationalDataHandler<DATABASE,
                                String               databaseManagerName,
                                String               databaseGUID,
                                String               qualifiedName,
-                               String               displayName,
+                               String               technicalName,
                                String               description,
                                String               owner,
                                int                  ownerTypeOrdinal,
@@ -741,8 +753,10 @@ public class RelationalDataHandler<DATABASE,
                             databaseManagerName,
                             databaseGUID,
                             qualifiedName,
-                            displayName,
+                            technicalName,
+                            null,
                             description,
+                            null,
                             createTime,
                             modifiedTime,
                             encodingType,
@@ -874,8 +888,10 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for this database
-     * @param displayName the stored display name property for the database
+     * @param technicalName the stored name property for the database
+     * @param versionIdentifier the stored version identifier for  the database
      * @param description the stored description property associated with the database
+     * @param pathName the fully qualified physical location of the database
      * @param createTime the time that the database was created
      * @param modifiedTime the last known time the data store was modified
      * @param encodingType the name of the encoding style used in the database
@@ -907,8 +923,10 @@ public class RelationalDataHandler<DATABASE,
                                String               databaseManagerName,
                                String               databaseGUID,
                                String               qualifiedName,
-                               String               displayName,
+                               String               technicalName,
+                               String               versionIdentifier,
                                String               description,
+                               String               pathName,
                                Date                 createTime,
                                Date                 modifiedTime,
                                String               encodingType,
@@ -959,6 +977,7 @@ public class RelationalDataHandler<DATABASE,
             assetExtendedProperties.putAll(extendedProperties);
         }
 
+        assetExtendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
         assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_CREATE_TIME_PROPERTY_NAME, createTime);
         assetExtendedProperties.put(OpenMetadataAPIMapper.STORE_UPDATE_TIME_PROPERTY_NAME, modifiedTime);
 
@@ -973,7 +992,8 @@ public class RelationalDataHandler<DATABASE,
                                     databaseGUID,
                                     elementGUIDParameterName,
                                     qualifiedName,
-                                    displayName,
+                                    technicalName,
+                                    versionIdentifier,
                                     description,
                                     additionalProperties,
                                     assetTypeId,
@@ -1461,8 +1481,9 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param qualifiedName unique name for this database schema
-     * @param displayName the stored display name property for the database schema
-     * @param description the stored description property associated with the database schema
+     * @param technicalName the stored name property for the database schema
+     * @param versionIdentifier versionIdentifier property
+     * @param technicalDescription the stored description property associated with the database schema
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
@@ -1485,8 +1506,9 @@ public class RelationalDataHandler<DATABASE,
                                        String               databaseManagerName,
                                        String               databaseGUID,
                                        String               qualifiedName,
-                                       String               displayName,
-                                       String               description,
+                                       String               technicalName,
+                                       String               versionIdentifier,
+                                       String               technicalDescription,
                                        Map<String, String>  additionalProperties,
                                        String               typeName,
                                        Map<String, Object>  extendedProperties,
@@ -1535,8 +1557,9 @@ public class RelationalDataHandler<DATABASE,
                                                                                   databaseManagerGUID,
                                                                                   databaseManagerName,
                                                                                   qualifiedName,
-                                                                                  displayName,
-                                                                                  description,
+                                                                                  technicalName,
+                                                                                  versionIdentifier,
+                                                                                  technicalDescription,
                                                                                   additionalProperties,
                                                                                   assetTypeName,
                                                                                   extendedProperties,
@@ -1594,8 +1617,9 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param qualifiedName unique name for this database schema
-     * @param displayName the stored display name property for the database schema
-     * @param description the stored description property associated with the database schema
+     * @param technicalName the stored  name property for the database schema
+     * @param versionIdentifier the stored versionIdentifier property for the database schema
+     * @param technicalDescription the stored description property associated with the database schema
      * @param owner identifier of the owner
      * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
      * @param zoneMembership governance zones for the database schema - null means use the default zones set for this service
@@ -1624,8 +1648,9 @@ public class RelationalDataHandler<DATABASE,
                                        String               databaseManagerName,
                                        String               databaseGUID,
                                        String               qualifiedName,
-                                       String               displayName,
-                                       String               description,
+                                       String               technicalName,
+                                       String               versionIdentifier,
+                                       String               technicalDescription,
                                        String               owner,
                                        int                  ownerTypeOrdinal,
                                        List<String>         zoneMembership,
@@ -1680,8 +1705,9 @@ public class RelationalDataHandler<DATABASE,
                                                                                   databaseManagerGUID,
                                                                                   databaseManagerName,
                                                                                   qualifiedName,
-                                                                                  displayName,
-                                                                                  description,
+                                                                                  technicalName,
+                                                                                  versionIdentifier,
+                                                                                  technicalDescription,
                                                                                   zoneMembership,
                                                                                   owner,
                                                                                   ownerTypeOrdinal,
@@ -1747,8 +1773,9 @@ public class RelationalDataHandler<DATABASE,
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param qualifiedName unique name for the database schema
-     * @param displayName the stored display name property for the database schema
-     * @param description the stored description property associated with the database schema
+     * @param technicalName the stored name property for the database schema
+     * @param versionIdentifier the stored versionIdentifier property for the database schema
+     * @param technicalDescription the stored description property associated with the database schema
      * @param effectiveFrom      starting time for this relationship (null for all time)
      * @param effectiveTo        ending time for this relationship (null for all time)
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -1768,8 +1795,9 @@ public class RelationalDataHandler<DATABASE,
                                                    String  templateGUID,
                                                    String  databaseGUID,
                                                    String  qualifiedName,
-                                                   String  displayName,
-                                                   String  description,
+                                                   String  technicalName,
+                                                   String  versionIdentifier,
+                                                   String  technicalDescription,
                                                    Date    effectiveFrom,
                                                    Date    effectiveTo,
                                                    boolean forLineage,
@@ -1797,8 +1825,10 @@ public class RelationalDataHandler<DATABASE,
                                                                                OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                                                qualifiedName,
                                                                                qualifiedNameParameterName,
-                                                                               displayName,
-                                                                               description,
+                                                                               technicalName,
+                                                                               versionIdentifier,
+                                                                               technicalDescription,
+                                                                               null,
                                                                                null,
                                                                                forLineage,
                                                                                forDuplicateProcessing,
@@ -1842,7 +1872,8 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for the database schema
-     * @param displayName the stored display name property for the database schema
+     * @param technicalName the stored name property for the database schema
+     * @param versionIdentifier the stored versionIdentifier property for the database schema
      * @param description the stored description property associated with the database schema
      * @param owner identifier of the owner
      * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
@@ -1871,7 +1902,8 @@ public class RelationalDataHandler<DATABASE,
                                      String              databaseManagerName,
                                      String              databaseSchemaGUID,
                                      String              qualifiedName,
-                                     String              displayName,
+                                     String              technicalName,
+                                     String              versionIdentifier,
                                      String              description,
                                      String              owner,
                                      int                 ownerTypeOrdinal,
@@ -1919,7 +1951,8 @@ public class RelationalDataHandler<DATABASE,
                                           databaseSchemaGUID,
                                           elementGUIDParameterName,
                                           qualifiedName,
-                                          displayName,
+                                          technicalName,
+                                          versionIdentifier,
                                           description,
                                           additionalProperties,
                                           assetTypeId,
@@ -1988,7 +2021,7 @@ public class RelationalDataHandler<DATABASE,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        final String elementGUIDParameterName    = "databaseSchemaGUID";
+        final String elementGUIDParameterName = "databaseSchemaGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
@@ -2727,7 +2760,7 @@ public class RelationalDataHandler<DATABASE,
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseAssetGUID unique identifier of the database or database schema where the database table is located.
      * @param qualifiedName unique name for the database schema
-     * @param displayName the stored display name property for the database table
+     * @param technicalName the stored name property for the database table
      * @param description the stored description property associated with the database table
      * @param effectiveFrom      starting time for this relationship (null for all time)
      * @param effectiveTo        ending time for this relationship (null for all time)
@@ -2748,7 +2781,7 @@ public class RelationalDataHandler<DATABASE,
                                                   String  templateGUID,
                                                   String  databaseAssetGUID,
                                                   String  qualifiedName,
-                                                  String  displayName,
+                                                  String  technicalName,
                                                   String  description,
                                                   Date    effectiveFrom,
                                                   Date    effectiveTo,
@@ -2790,7 +2823,7 @@ public class RelationalDataHandler<DATABASE,
         if (databaseSchemaTypeGUID != null)
         {
             SchemaAttributeBuilder builder = new SchemaAttributeBuilder(qualifiedName,
-                                                                        displayName,
+                                                                        technicalName,
                                                                         description,
                                                                         repositoryHelper,
                                                                         serviceName,

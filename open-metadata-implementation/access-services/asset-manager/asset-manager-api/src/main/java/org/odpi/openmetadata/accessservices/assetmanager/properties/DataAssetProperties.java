@@ -87,14 +87,10 @@ public class DataAssetProperties extends AssetProperties
     public String toString()
     {
         return "DataAssetProperties{" +
-                       "isReferenceAsset=" + isReferenceAsset +
-                       ", technicalName='" + getTechnicalName() + '\'' +
+                       "technicalName='" + getTechnicalName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", abbreviation='" + getAbbreviation() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
+                       ", isReferenceAsset=" + isReferenceAsset +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -102,6 +98,11 @@ public class DataAssetProperties extends AssetProperties
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", summary='" + getSummary() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", abbreviation='" + getAbbreviation() + '\'' +
+                       ", usage='" + getUsage() + '\'' +
                        '}';
     }
 

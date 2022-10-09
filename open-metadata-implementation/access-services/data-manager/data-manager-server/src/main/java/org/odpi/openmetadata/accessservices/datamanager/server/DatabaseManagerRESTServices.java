@@ -86,11 +86,18 @@ public class DatabaseManagerRESTServices
                 {
                     DatabaseProperties databaseProperties = (DatabaseProperties)requestBody.getProperties();
 
+                    String name = databaseProperties.getName();
+
+                    if (name == null)
+                    {
+                        name = databaseProperties.getDisplayName();
+                    }
                     String databaseGUID = handler.createDatabase(userId,
                                                                  requestBody.getExternalSourceGUID(),
                                                                  requestBody.getExternalSourceName(),
                                                                  databaseProperties.getQualifiedName(),
-                                                                 databaseProperties.getDisplayName(),
+                                                                 name,
+                                                                 databaseProperties.getVersionIdentifier(),
                                                                  databaseProperties.getDescription(),
                                                                  databaseProperties.getPathName(),
                                                                  databaseProperties.getCreateTime(),
@@ -181,7 +188,9 @@ public class DatabaseManagerRESTServices
                                                                     templateGUID,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
+                                                                    requestBody.getVersionIdentifier(),
                                                                     requestBody.getDescription(),
+                                                                    requestBody.getPathName(),
                                                                     requestBody.getNetworkAddress(),
                                                                     false,
                                                                     false,
@@ -254,7 +263,9 @@ public class DatabaseManagerRESTServices
                                            databaseGUID,
                                            databaseProperties.getQualifiedName(),
                                            databaseProperties.getDisplayName(),
+                                           databaseProperties.getVersionIdentifier(),
                                            databaseProperties.getDescription(),
+                                           databaseProperties.getPathName(),
                                            databaseProperties.getCreateTime(),
                                            databaseProperties.getModifiedTime(),
                                            databaseProperties.getEncodingType(),
@@ -787,6 +798,7 @@ public class DatabaseManagerRESTServices
                                                                              requestBody.getParentGUID(),
                                                                              databaseSchemaProperties.getQualifiedName(),
                                                                              databaseSchemaProperties.getDisplayName(),
+                                                                             databaseSchemaProperties.getVersionIdentifier(),
                                                                              databaseSchemaProperties.getDescription(),
                                                                              databaseSchemaProperties.getAdditionalProperties(),
                                                                              databaseSchemaProperties.getTypeName(),
@@ -867,6 +879,7 @@ public class DatabaseManagerRESTServices
                                                                           requestBody.getParentGUID(),
                                                                           requestBody.getQualifiedName(),
                                                                           requestBody.getDisplayName(),
+                                                                          requestBody.getVersionIdentifier(),
                                                                           requestBody.getDescription(),
                                                                           null,
                                                                           null,
@@ -941,6 +954,7 @@ public class DatabaseManagerRESTServices
                                                  databaseSchemaGUID,
                                                  databaseSchemaProperties.getQualifiedName(),
                                                  databaseSchemaProperties.getDisplayName(),
+                                                 databaseSchemaProperties.getVersionIdentifier(),
                                                  databaseSchemaProperties.getDescription(),
                                                  null,
                                                  0,

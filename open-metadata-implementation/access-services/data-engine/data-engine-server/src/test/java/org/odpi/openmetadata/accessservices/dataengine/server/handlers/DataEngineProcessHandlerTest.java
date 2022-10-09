@@ -125,7 +125,7 @@ class DataEngineProcessHandlerTest {
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         when(assetHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                process.getQualifiedName(), process.getName(), process.getDescription(), process.getZoneMembership(), process.getOwner(),
+                process.getQualifiedName(), process.getName(), null, process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 process.getOwnerType().getOpenTypeOrdinal(), process.getOriginOrganizationGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
                 PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, null, null, InstanceStatus.DRAFT, null, methodName)).thenReturn(GUID);
@@ -150,7 +150,7 @@ class DataEngineProcessHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(assetHandler).createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                process.getQualifiedName(), process.getName(), process.getDescription(), process.getZoneMembership(), process.getOwner(),
+                process.getQualifiedName(), process.getName(), null, process.getDescription(), process.getZoneMembership(), process.getOwner(),
                 process.getOwnerType().getOpenTypeOrdinal(), process.getOriginOrganizationGUID(),
                 process.getOriginBusinessCapabilityGUID(), process.getOtherOriginValues(), process.getAdditionalProperties(),
                 PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, null, null, InstanceStatus.DRAFT, null, methodName);
@@ -183,7 +183,7 @@ class DataEngineProcessHandlerTest {
         processHandler.updateProcess(USER, mockedOriginalProcessEntity, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(assetHandler, times(1)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                                                   PROCESS_GUID, "processGUID", process.getQualifiedName(), process.getName(), process.getDescription(),
+                                                   PROCESS_GUID, "processGUID", process.getQualifiedName(), process.getName(), null, process.getDescription(),
                                                    process.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties,
                                                    null, null, true, false, false, null, methodName);
 
@@ -211,7 +211,7 @@ class DataEngineProcessHandlerTest {
         processHandler.updateProcess(USER, mockedOriginalProcessEntity, process, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(assetHandler, times(0)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                PROCESS_GUID, CommonMapper.GUID_PROPERTY_NAME, process.getQualifiedName(), process.getName(), process.getDescription(),
+                PROCESS_GUID, CommonMapper.GUID_PROPERTY_NAME, process.getQualifiedName(), process.getName(), null, process.getDescription(),
                 process.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties,
                 null,null,  true,false, false, null, "updateProcess");
     }
@@ -246,7 +246,7 @@ class DataEngineProcessHandlerTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
 
         doThrow(mockedException).when(assetHandler).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                PROCESS_GUID, "processGUID", process.getQualifiedName(), process.getName(), process.getDescription(),
+                PROCESS_GUID, "processGUID", process.getQualifiedName(), process.getName(), null, process.getDescription(),
                 process.getAdditionalProperties(), PROCESS_TYPE_GUID, PROCESS_TYPE_NAME, extendedProperties, null, null,
                 true,false, false, null, methodName);
 

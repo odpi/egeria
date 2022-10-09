@@ -162,7 +162,7 @@ public class AvroFileAssetOwner extends AssetOwner implements AssetOnboardingAvr
         invalidParameterHandler.validateName(fullPath, pathParameter, methodName);
 
         NewFileAssetRequestBody requestBody = new NewFileAssetRequestBody();
-        requestBody.setDisplayName(displayName);
+        requestBody.setName(displayName);
         requestBody.setDescription(description);
         requestBody.setFullPath(fullPath);
 

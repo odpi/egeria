@@ -451,8 +451,8 @@ public class CreateEventsTest
      * @throws FVTUnexpectedCondition the test case failed
      */
     private String getTopic(EventBrokerClient client,
-                               String                eventBrokerGUID,
-                               String                userId) throws FVTUnexpectedCondition
+                            String            eventBrokerGUID,
+                            String             userId) throws FVTUnexpectedCondition
     {
         final String activityName = "getTopic";
 

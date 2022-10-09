@@ -23,7 +23,7 @@ public interface AssetConsumerAssetInterface
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
-     * @return list of assets that match the search string.
+     * @return list of unique identifiers (GUIDs) for the matching assets
      *
      * @throws InvalidParameterException the searchString is invalid
      * @throws PropertyServerException there is a problem access in the property server
@@ -45,7 +45,7 @@ public interface AssetConsumerAssetInterface
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
-     * @return list of unique identifiers of assets with matching name.
+     * @return list of unique identifiers (GUIDs) of assets with matching name.
      *
      * @throws InvalidParameterException the name is invalid
      * @throws PropertyServerException there is a problem access in the property server
@@ -67,7 +67,7 @@ public interface AssetConsumerAssetInterface
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
-     * @return a list of unique identifiers for the matching assets
+     * @return a list of unique identifiers (GUIDs) for the matching assets
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
@@ -87,7 +87,7 @@ public interface AssetConsumerAssetInterface
      * @param userId the userId of the requesting user.
      * @param connectionGUID  unique identifier for the connection.
      *
-     * @return unique identifier of asset.
+     * @return unique identifier (GUID) of asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server.
@@ -105,7 +105,7 @@ public interface AssetConsumerAssetInterface
      * @param userId           userId of user making request.
      * @param connectionName   this may be the qualifiedName or displayName of the connection.
      *
-     * @return unique identifier of asset.
+     * @return unique identifier (GUID) of asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).

@@ -120,7 +120,7 @@ public class AssetRequestBody extends AssetProperties
         return "AssetRequestBody{" +
                        "externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", displayName='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +

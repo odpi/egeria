@@ -199,7 +199,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
      * "one/two" and the last one called "one/two/three".
      *
      * @param userId calling user
-     * @param anchorGUID root object to connect the folder to
+     * @param parentGUID root object to connect the folder to
      * @param pathName pathname of the folder (or folders)
      *
      * @return list of GUIDs from the top level to the leaf of the supplied pathname
@@ -210,7 +210,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
      */
     @Override
     public List<String> createFolderStructureInCatalog(String   userId,
-                                                       String   anchorGUID,
+                                                       String   parentGUID,
                                                        String   pathName) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
@@ -230,7 +230,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
                                                                           requestBody,
                                                                           serverName,
                                                                           userId,
-                                                                          anchorGUID);
+                                                                          parentGUID);
 
         return restResult.getGUIDs();
     }
@@ -384,7 +384,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
 
         NewFileAssetRequestBody requestBody = new NewFileAssetRequestBody();
-        requestBody.setDisplayName(displayName);
+        requestBody.setName(displayName);
         requestBody.setDescription(description);
         requestBody.setFullPath(pathName);
 
@@ -434,7 +434,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
 
         NewFileAssetRequestBody requestBody = new NewFileAssetRequestBody();
-        requestBody.setDisplayName(displayName);
+        requestBody.setName(displayName);
         requestBody.setDescription(description);
         requestBody.setFullPath(pathName);
 
