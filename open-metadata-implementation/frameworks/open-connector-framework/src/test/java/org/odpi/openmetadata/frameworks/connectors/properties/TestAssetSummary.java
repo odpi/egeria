@@ -203,7 +203,7 @@ public class TestAssetSummary
         Map<String, Object>  propertyMap = new HashMap<>();
 
         propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", new Integer(2));
+        propertyMap.put("property2", 2);
 
         Asset assetBean = new Asset();
         assetBean.setExtendedProperties(propertyMap);
@@ -220,7 +220,7 @@ public class TestAssetSummary
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(assetProperties.get(propertyName).equals(new Integer(2)));
+        assertTrue(assetProperties.get(propertyName).equals(2));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));

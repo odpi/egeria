@@ -153,8 +153,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name for this asset
-     * @param technicalName the stored display name property for the asset
-     * @param technicalDescription the stored description property associated with the asset
+     * @param technicalName the stored name property for the process
+     * @param versionIdentifier the stored version identifier property for the process
+     * @param technicalDescription the stored description property associated with the process
      * @param formula the formula that characterize the processing behavior of the process
      * @param implementationLanguage the implementation language used to create the process
      * @param additionalProperties any arbitrary properties not part of the type system
@@ -177,6 +178,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                 String              externalSourceName,
                                 String              qualifiedName,
                                 String              technicalName,
+                                String              versionIdentifier,
                                 String              technicalDescription,
                                 String              formula,
                                 String              implementationLanguage,
@@ -231,6 +233,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                       externalSourceName,
                                                       qualifiedName,
                                                       technicalName,
+                                                      versionIdentifier,
                                                       technicalDescription,
                                                       additionalProperties,
                                                       typeName,
@@ -253,8 +256,9 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param templateGUIDParameterName parameter supplying templateGUID
      * @param qualifiedName unique name for the term - used in other configuration
      * @param qualifiedNameParameterName parameter supplying qualifiedName
-     * @param displayName short display name for the term
-     * @param description description of the  term
+     * @param technicalName short name for the process
+     * @param versionIdentifier version identifier for the process
+     * @param description description of the process
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -273,7 +277,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                             String  templateGUIDParameterName,
                                             String  qualifiedName,
                                             String  qualifiedNameParameterName,
-                                            String  displayName,
+                                            String  technicalName,
+                                            String  versionIdentifier,
                                             String  description,
                                             boolean forLineage,
                                             boolean forDuplicateProcessing,
@@ -291,8 +296,10 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                    OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
                                                    qualifiedName,
                                                    qualifiedNameParameterName,
-                                                   displayName,
+                                                   technicalName,
+                                                   versionIdentifier,
                                                    description,
+                                                   null,
                                                    null,
                                                    forLineage,
                                                    forDuplicateProcessing,
@@ -311,13 +318,16 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param processGUIDParameterName unique identifier of the process in the external process manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param qualifiedName unique name for this asset
-     * @param technicalName the stored display name property for the asset
-     * @param technicalDescription the stored description property associated with the asset
+     * @param technicalName the stored name property for the process
+     * @param versionIdentifier version identifier for the process
+     * @param technicalDescription the stored description property associated with the process
      * @param formula the formula that characterize the processing behavior of the process
      * @param implementationLanguage the implementation language used to create the process
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param suppliedTypeName name of the type that is a subtype of asset - or null to create standard type
      * @param suppliedExtendedProperties properties from any subtype
+     * @param effectiveFrom time when this process becomes visible to queries - null for any time
+     * @param effectiveTo time when this process stops being visible to queries - null for never
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -335,12 +345,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                               boolean             isMergeUpdate,
                               String              qualifiedName,
                               String              technicalName,
+                              String              versionIdentifier,
                               String              technicalDescription,
                               String              formula,
                               String              implementationLanguage,
                               Map<String, String> additionalProperties,
                               String              suppliedTypeName,
                               Map<String, Object> suppliedExtendedProperties,
+                              Date                effectiveFrom,
+                              Date                effectiveTo,
                               boolean             forLineage,
                               boolean             forDuplicateProcessing,
                               Date                effectiveTime,
@@ -390,14 +403,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    processGUIDParameterName,
                                    qualifiedName,
                                    technicalName,
+                                   versionIdentifier,
                                    technicalDescription,
                                    additionalProperties,
                                    typeGUID,
                                    typeName,
                                    supportedZones,
                                    extendedProperties,
-                                   null,
-                                   null,
+                                   effectiveFrom,
+                                   effectiveTo,
                                    isMergeUpdate,
                                    forLineage,
                                    forDuplicateProcessing,

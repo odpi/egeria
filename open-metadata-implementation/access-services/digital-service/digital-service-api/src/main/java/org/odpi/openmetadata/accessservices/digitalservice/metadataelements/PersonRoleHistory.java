@@ -120,7 +120,6 @@ public class PersonRoleHistory extends PersonRoleAppointee
                        "currentAppointees=" + getCurrentAppointees() +
                        ", elementHeader=" + getElementHeader() +
                        ", properties=" + getProperties() +
-                       ", relatedElement=" + getRelatedElement() +
                        ", predecessors=" + predecessors +
                        ", successors=" + successors +
                        '}';

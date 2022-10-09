@@ -256,7 +256,7 @@ public class AnalyticsArtifactHandler {
         asset.setQualifiedName(qualifiedName);
 		String assetGUID = assetHandler.createAssetInRepository(ctx.getUserId(),
 																ssc.getGUID(), ssc.getSource(),
-																qualifiedName, asset.getDisplayName(),
+																qualifiedName, asset.getDisplayName(), null,
 																asset.getDescription(),
 																ctx.getSupportedZones(), // zoneMembership,
 																null,    // owner
@@ -1127,7 +1127,7 @@ public class AnalyticsArtifactHandler {
 		if (!asset.equals(assetRepo)) {
 			assetHandler.updateAsset(ctx.getUserId(), ssc.getGUID(), ssc.getSource(),
 									 asset.getGuid(), Constants.PARAM_NAME_ASSET_GUID,
-									 asset.getQualifiedName(), asset.getDisplayName(), asset.getDescription(),
+									 asset.getQualifiedName(), asset.getDisplayName(), null, asset.getDescription(),
 									 AnalyticsAssetUtils.buildAdditionalProperties(asset), assetTypeGuid, assetTypeName, null,
 									 null,null, false, false, false, new Date(), methodName);
 			return true;

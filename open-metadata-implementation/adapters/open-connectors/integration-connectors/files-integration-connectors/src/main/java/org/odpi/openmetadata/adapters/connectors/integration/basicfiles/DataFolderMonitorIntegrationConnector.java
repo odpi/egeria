@@ -86,7 +86,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
                                   String methodName)
     {
         String directoryName = null;
-        String fileFolderQualifiedName = null;
+        String fileFolderPathName = null;
 
         try
         {
@@ -99,7 +99,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
             }
 
             directoryName = folderFile.getName();
-            fileFolderQualifiedName = folderElement.getFileFolderProperties().getQualifiedName();
+            fileFolderPathName = folderElement.getFileFolderProperties().getPathName();
 
             Date lastRecordedChange = folderElement.getFileFolderProperties().getModifiedTime();
 
@@ -116,14 +116,14 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
                     {
                         auditLog.logMessage(methodName,
                                             BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                              fileFolderQualifiedName,
+                                                                                                                              fileFolderPathName,
                                                                                                                               modifiedTime.toString()));
                     }
                     else
                     {
                         auditLog.logMessage(methodName,
                                             BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(connectorName,
-                                                                                                                                       fileFolderQualifiedName,
+                                                                                                                                       fileFolderPathName,
                                                                                                                                        modifiedTime.toString(),
                                                                                                                                        fileChanged.getAbsolutePath()));
                     }
@@ -137,7 +137,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
                 auditLog.logException(methodName,
                                       BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_FOLDER_UPDATE.getMessageDefinition(error.getClass().getName(),
                                                                                                                                  connectorName,
-                                                                                                                                 fileFolderQualifiedName,
+                                                                                                                                 fileFolderPathName,
                                                                                                                                  directoryName,
                                                                                                                                  error.getMessage()),
                                       error);
@@ -152,7 +152,7 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
      */
     class FileCataloguingListener extends FileAlterationListenerAdaptor
     {
-        private DataFolderMonitorIntegrationConnector connector;
+        private final DataFolderMonitorIntegrationConnector connector;
 
         FileCataloguingListener(DataFolderMonitorIntegrationConnector connector)
         {

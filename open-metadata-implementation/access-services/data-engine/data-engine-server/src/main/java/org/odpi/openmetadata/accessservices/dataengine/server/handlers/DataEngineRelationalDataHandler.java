@@ -109,7 +109,7 @@ public class DataEngineRelationalDataHandler {
         String databaseGUID;
         if (originalDatabaseEntity.isEmpty()) {
             databaseGUID = relationalDataHandler.createDatabase(userId, externalSourceGUID, externalSourceName, database.getQualifiedName(),
-                    database.getDisplayName(), database.getDescription(), database.getOwner(), ownerTypeOrdinal, database.getZoneMembership(),
+                    database.getDisplayName(), null, database.getDescription(), database.getOwner(), ownerTypeOrdinal, database.getZoneMembership(),
                     database.getOriginOrganizationGUID(), database.getOriginBusinessCapabilityGUID(), database.getOtherOriginValues(),
                     database.getPathName(), database.getCreateTime(), database.getModifiedTime(), database.getEncodingType(),
                     database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(), database.getDatabaseType(),
@@ -223,7 +223,7 @@ public class DataEngineRelationalDataHandler {
         Date now = dataEngineCommonHandler.getNow();
         if (originalDatabaseSchemaEntity.isEmpty()) {
             databaseSchemaGUID = relationalDataHandler.createDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseGUID,
-                    databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(), databaseSchema.getOwner(),
+                    databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), null, databaseSchema.getDescription(), databaseSchema.getOwner(),
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                     databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
@@ -231,7 +231,7 @@ public class DataEngineRelationalDataHandler {
         } else {
             databaseSchemaGUID = originalDatabaseSchemaEntity.get().getGUID();
             relationalDataHandler.updateDatabaseSchema(userId, externalSourceGUID, externalSourceName, databaseSchemaGUID,
-                    databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(), databaseSchema.getOwner(),
+                    databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), null, databaseSchema.getDescription(), databaseSchema.getOwner(),
                     ownerTypeOrdinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                     databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                     databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,

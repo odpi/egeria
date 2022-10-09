@@ -584,8 +584,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param expectedTypeName unique name of type (or super type of asset identified by templateGUID)
      * @param qualifiedName unique name for this asset - must not be null
      * @param qualifiedNameParameterName parameter name providing qualifiedName
-     * @param displayName the stored display name property for the database - if null, the value from the template is used
+     * @param name the stored name property for the asset - if null, the value from the template is used
+     * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param description the stored description property associated with the database - if null, the value from the template is used
+     * @param pathName the physical address of the storage where the data is held (for DataStore assets)
      * @param networkAddress if there is a connection object for this asset - update the endpoint network address
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
@@ -608,8 +610,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                        String  expectedTypeName,
                                        String  qualifiedName,
                                        String  qualifiedNameParameterName,
-                                       String  displayName,
+                                       String  name,
+                                       String  versionIdentifier,
                                        String  description,
+                                       String  pathName,
                                        String  networkAddress,
                                        boolean forLineage,
                                        boolean forDuplicateProcessing,
@@ -622,13 +626,23 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
+        Map<String, Object> extendedProperties = null;
+
+        if (pathName != null)
+        {
+            extendedProperties = new HashMap<>();
+
+            extendedProperties.put(OpenMetadataAPIMapper.PATH_NAME_PROPERTY_NAME, pathName);
+        }
+
         AssetBuilder builder = new AssetBuilder(qualifiedName,
-                                                displayName,
+                                                name,
+                                                versionIdentifier,
                                                 description,
                                                 null,
                                                 expectedTypeGUID,
                                                 expectedTypeName,
-                                                null,
+                                                extendedProperties,
                                                 repositoryHelper,
                                                 serviceName,
                                                 serverName);
@@ -728,7 +742,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name for this asset
-     * @param technicalName the stored display name property for the asset
+     * @param technicalName the stored name property for the asset
+     * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
      * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
      * @param owner identifier of the owner
@@ -757,6 +772,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String               externalSourceName,
                                            String               qualifiedName,
                                            String               technicalName,
+                                           String               versionIdentifier,
                                            String               technicalDescription,
                                            List<String>         zoneMembership,
                                            String               owner,
@@ -791,6 +807,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         AssetBuilder builder = new AssetBuilder(qualifiedName,
                                                 technicalName,
+                                                versionIdentifier,
                                                 technicalDescription,
                                                 additionalProperties,
                                                 assetTypeId,
@@ -840,7 +857,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name for this asset
-     * @param technicalName the stored display name property for the asset
+     * @param technicalName the stored name property for the asset
+     * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of asset - or null to create standard type
@@ -862,6 +880,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String               externalSourceName,
                                            String               qualifiedName,
                                            String               technicalName,
+                                           String               versionIdentifier,
                                            String               technicalDescription,
                                            Map<String, String>  additionalProperties,
                                            String               typeName,
@@ -889,6 +908,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         AssetBuilder builder = new AssetBuilder(qualifiedName,
                                                 technicalName,
+                                                versionIdentifier,
                                                 technicalDescription,
                                                 additionalProperties,
                                                 assetTypeId,
@@ -926,7 +946,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUIDParameterName parameter name of the resulting asset's GUID
      * @param assetQualifiedName unique name for this asset
-     * @param technicalName the stored display name property for the asset
+     * @param technicalName the stored name property for the asset
+     * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param assetTypeName name of the type that is a subtype of asset - or null to create standard type
@@ -958,6 +979,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                              String              assetGUIDParameterName,
                                              String              assetQualifiedName,
                                              String              technicalName,
+                                             String              versionIdentifier,
                                              String              technicalDescription,
                                              Map<String, String> additionalProperties,
                                              String              assetTypeName,
@@ -983,6 +1005,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                         externalSourceName,
                                                         assetQualifiedName,
                                                         technicalName,
+                                                        versionIdentifier,
                                                         technicalDescription,
                                                         additionalProperties,
                                                         assetTypeName,
@@ -1030,7 +1053,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this database
-     * @param technicalName the stored display name property for the asset
+     * @param technicalName the stored name property for the asset
+     * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
@@ -1054,6 +1078,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               assetGUIDParameterName,
                             String               qualifiedName,
                             String               technicalName,
+                            String               versionIdentifier,
                             String               technicalDescription,
                             Map<String, String>  additionalProperties,
                             String               typeName,
@@ -1081,6 +1106,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          assetGUIDParameterName,
                          qualifiedName,
                          technicalName,
+                         versionIdentifier,
                          technicalDescription,
                          additionalProperties,
                          typeGUID,
@@ -1106,7 +1132,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this database
-     * @param technicalName the stored display name property for the asset
+     * @param technicalName the stored  name property for the asset
+     * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeGUID identifier of the type that is a subtype of Database - or null to create standard type
@@ -1131,6 +1158,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               assetGUIDParameterName,
                             String               qualifiedName,
                             String               technicalName,
+                            String               versionIdentifier,
                             String               technicalDescription,
                             Map<String, String>  additionalProperties,
                             String               typeGUID,
@@ -1153,6 +1181,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          assetGUIDParameterName,
                          qualifiedName,
                          technicalName,
+                         versionIdentifier,
                          technicalDescription,
                          additionalProperties,
                          typeGUID,
@@ -1178,7 +1207,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this database
-     * @param technicalName the stored display name property for the asset
+     * @param technicalName the stored name property for the asset
+     * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeGUID identifier of the type that is a subtype of Asset - or null to create standard type
@@ -1204,6 +1234,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               assetGUIDParameterName,
                             String               qualifiedName,
                             String               technicalName,
+                            String               versionIdentifier,
                             String               technicalDescription,
                             Map<String, String>  additionalProperties,
                             String               typeGUID,
@@ -1222,6 +1253,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     {
         AssetBuilder builder = new AssetBuilder(qualifiedName,
                                                 technicalName,
+                                                versionIdentifier,
                                                 technicalDescription,
                                                 additionalProperties,
                                                 typeGUID,
@@ -1258,9 +1290,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
-     * @param qualifiedName unique name for this database
-     * @param displayName the stored display name property for the database
-     * @param description the stored description property associated with the database
+     * @param qualifiedName unique name for this asset
+     * @param name the stored name property for the asset
+     * @param versionIdentifier the stored versionIdentifier property for the asset
+     * @param description the stored description property associated with the asset
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeGUID identifier of the type that is a subtype of Database - or null to create standard type
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
@@ -1284,7 +1317,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                           String               assetGUID,
                                           String               assetGUIDParameterName,
                                           String               qualifiedName,
-                                          String               displayName,
+                                          String               name,
+                                          String               versionIdentifier,
                                           String               description,
                                           Map<String, String>  additionalProperties,
                                           String               typeGUID,
@@ -1307,7 +1341,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          assetGUID,
                          assetGUIDParameterName,
                          qualifiedName,
-                         displayName,
+                         name,
+                         versionIdentifier,
                          description,
                          additionalProperties,
                          typeGUID,

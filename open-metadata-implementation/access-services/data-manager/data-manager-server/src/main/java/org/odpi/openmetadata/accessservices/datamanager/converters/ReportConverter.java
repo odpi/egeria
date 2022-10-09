@@ -72,7 +72,9 @@ public class ReportConverter<B> extends DataManagerOMASConverter<B>
 
                     reportProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     reportProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    reportProperties.setDisplayName(this.removeName(instanceProperties));
+                    reportProperties.setName(this.removeName(instanceProperties));
+                    reportProperties.setDisplayName(reportProperties.getName());
+                    reportProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     reportProperties.setDescription(this.removeDescription(instanceProperties));
 
                     reportProperties.setId(this.removeId(instanceProperties));

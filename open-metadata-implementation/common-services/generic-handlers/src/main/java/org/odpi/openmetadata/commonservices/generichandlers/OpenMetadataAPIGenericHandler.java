@@ -5558,6 +5558,12 @@ public class OpenMetadataAPIGenericHandler<B>
             }
 
             /*
+             * Set the properties and classifications from the template entity as the default properties.
+             */
+            propertyBuilder.setTemplateProperties(templateEntity.getProperties());
+            propertyBuilder.setTemplateClassifications(userId, externalSourceGUID, externalSourceName, templateEntity.getClassifications(), methodName);
+
+            /*
              * Verify that the user is permitted to create a new bean.
              */
             validateNewEntityRequest(userId,

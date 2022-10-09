@@ -77,6 +77,7 @@ public class DataSetProperties extends DataAssetProperties
     {
         return "DataSetProperties{" +
                        "technicalName='" + getTechnicalName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", isReferenceAsset=" + getIsReferenceAsset() +
                        ", formula='" + formula + '\'' +

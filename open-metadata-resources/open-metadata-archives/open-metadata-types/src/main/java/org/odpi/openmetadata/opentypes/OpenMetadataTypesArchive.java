@@ -162,8 +162,11 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
+        update0010BaseModel();
         update0022Translations();
         addArea1Actors();
+        add0222DataFilesAndFolders();
+        add0223DataFeed();
         add0430ServiceLevelObjectives();
         update0481Licenses();
         add0483TermsAndConditions();
@@ -173,6 +176,47 @@ public class OpenMetadataTypesArchive
         update0715DigitalServiceOwnership();
     }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0010BaseModel()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateAsset());
+    }
+
+
+    private TypeDefPatch updateAsset()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Asset";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "versionIdentifier";
+        final String attribute1Description     = "Version identifier to allow different versions of the same resource to appear in the catalog as separate assets.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -445,6 +489,96 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void add0222DataFilesAndFolders()
+    {
+        this.archiveBuilder.addEntityDef(getParquetFileEntity());
+        this.archiveBuilder.addTypeDefPatch(updateDataFileEntity());
+    }
+
+
+    private TypeDefPatch updateDataFileEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataFile";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "fileName";
+        final String attribute1Description     = "The name of the file with extension.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+
+    private EntityDef getParquetFileEntity()
+    {
+        final String guid            = "97cba3a0-1dfd-4129-82b6-798de3eec0a4";
+        final String name            = "ParquetFile";
+        final String description     = "A data file which is formatted using the Apache Parquet format.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "DataFile";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void add0223DataFeed()
+    {
+        this.archiveBuilder.addEntityDef(getDataFeedEntity());
+
+    }
+
+    private EntityDef getDataFeedEntity()
+    {
+        final String guid            = "e87836ad-f8bd-4c52-aecd-0f1872c692e5";
+        final String name            = "DataFeed";
+        final String description     = "A data source that provides a constant stream of data, such as a sensor monitoring the environment.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Asset";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
 
 
     /*

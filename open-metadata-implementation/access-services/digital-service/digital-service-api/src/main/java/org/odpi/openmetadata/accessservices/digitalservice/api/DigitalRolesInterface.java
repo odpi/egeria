@@ -4,9 +4,11 @@ package org.odpi.openmetadata.accessservices.digitalservice.api;
 
 
 
+import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.AgreementRoleAppointee;
 import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleAppointee;
 import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleHistory;
+import org.odpi.openmetadata.accessservices.digitalservice.properties.AgreementRoleProperties;
 import org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -16,14 +18,20 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * DigitalRolesInterface covers the definition of person roles and their appointments.
+ * DigitalRolesInterface covers the definition of person roles and their appointments.  This is to define the digital service managers and
+ * the roles associated with agreement.
  */
 public interface DigitalRolesInterface
 {
     /**
-     * Create a definition of a new role.
+     * Create a definition of a new role for the manager of a digital service.  The role is anchored to the digital service and will be deleted
+     * automatically when the digital service is deleted.  It can be managed using the methods below before that.
+     * A person can be appointed to ths role using the <i>appointPersonRole</i> method.
+     *
+     * More general support for creating roles is found in Community Profile OMAS and Governance Program OMAS.
      *
      * @param userId calling user
+     * @param digitalServiceGUID unique identifier of the digital service to connect the new role to
      * @param properties role properties
      *
      * @return unique identifier of new role
@@ -32,13 +40,47 @@ public interface DigitalRolesInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    String createPersonRole(String               userId,
-                            PersonRoleProperties properties) throws UserNotAuthorizedException,
-                                                                    InvalidParameterException,
-                                                                    PropertyServerException;
+    String createDigitalServiceManagerRole(String               userId,
+                                           String               digitalServiceGUID,
+                                           PersonRoleProperties properties) throws UserNotAuthorizedException,
+                                                                                   InvalidParameterException,
+                                                                                   PropertyServerException;
 
 
     /**
+     * Create a definition of a new role that is part of an agreement such as a digital subscription.
+     *
+     * These roles are often referred to in the agreement.  For example, the agreement may refer to the subscriber, payer, data consumer.
+     * The name of such a role is stored in the <i>agreementRoleProperties</i>.  The properties of the person role that is created to represent
+     * the role is stored in <i>personRoleProperties</i>.  A person (or multiple people) can be appointed to the new role using the
+     * <i>appointPersonRole</i> method.
+     *
+     * The new person role created is anchored to the agreement and so it is deleted when the agreement is deleted.
+     * It can be managed using the methods below before that.
+     *
+     * More general support for creating roles is found in Community Profile OMAS and Governance Program OMAS.
+     *
+     * @param userId calling user
+     * @param agreementGUID unique identifier of the agreement
+     * @param agreementRoleProperties description of a role found in the agreement text
+     * @param personRoleProperties properties to use when creating the role.
+     *
+     * @return unique identifier of new role
+     *
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    String createAgreementRole(String                  userId,
+                               String                  agreementGUID,
+                               AgreementRoleProperties agreementRoleProperties,
+                               PersonRoleProperties    personRoleProperties) throws UserNotAuthorizedException,
+                                                                                    InvalidParameterException,
+                                                                                    PropertyServerException;
+
+
+    /**
+     * Update the properties of a specific person role.
      *
      * @param userId calling user
      * @param roleGUID identifier of the person role to update
@@ -58,7 +100,29 @@ public interface DigitalRolesInterface
 
 
     /**
-     * Delete the properties of the person role.
+     * Update the name of the role for a specific agreement.
+     *
+     * @param userId calling user
+     * @param agreementGUID unique identifier of the agreement
+     * @param roleGUID identifier of the person role
+     * @param isMergeUpdate are unspecified properties unchanged (true) or replaced with null?
+     * @param agreementRoleProperties properties to change
+     *
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void updateAgreementRole(String                  userId,
+                             String                  agreementGUID,
+                             String                  roleGUID,
+                             boolean                 isMergeUpdate,
+                             AgreementRoleProperties agreementRoleProperties) throws UserNotAuthorizedException,
+                                                                                     InvalidParameterException,
+                                                                                     PropertyServerException;
+
+
+    /**
+     * Delete the person role.
      *
      * @param userId calling user
      * @param personRoleGUID identifier of the person role to delete
@@ -154,25 +218,46 @@ public interface DigitalRolesInterface
      * Return all the person roles and their incumbents (if any).
      *
      * @param userId the name of the calling user.
-     * @param domainIdentifier identifier of domain - 0 means all
+     * @param digitalServiceGUID unique identifier of the digital service to connect the new role to
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
      *                 
-     * @return list of person role objects
+     * @return list of person role objects with details of the people appointed to the roles (if any)
      * @throws InvalidParameterException the userId is either null or invalid.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<PersonRoleAppointee> getCurrentPersonRoleAppointments(String userId,
-                                                               int    domainIdentifier,
-                                                               int    startFrom,
-                                                               int    pageSize) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException;
+    List<PersonRoleAppointee> getDigitalServiceManagers(String userId,
+                                                        String digitalServiceGUID,
+                                                        int    startFrom,
+                                                        int    pageSize) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException;
 
 
     /**
-     * Link a person to a person role.  Only one person may be appointed at any one time.
+     * Return all the person roles and their incumbents (if any).
+     *
+     * @param userId the name of the calling user.
+     * @param agreementGUID unique identifier of the agreement
+     * @param startFrom where to start from in the list of definitions
+     * @param pageSize max number of results to return in one call
+     *
+     * @return list of person role objects with details of the people appointed to the roles (if any)
+     * @throws InvalidParameterException the userId is either null or invalid.
+     * @throws PropertyServerException the server is not available.
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
+     */
+    List<AgreementRoleAppointee> getAgreementRoles(String userId,
+                                                   String agreementGUID,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException;
+
+
+    /**
+     * Link a person to a person role.
      *
      * @param userId the name of the calling user
      * @param roleGUID unique identifier (guid) of the person role
@@ -198,7 +283,9 @@ public interface DigitalRolesInterface
      * @param userId the name of the calling user
      * @param roleGUID unique identifier (guid) of the person role
      * @param profileGUID unique identifier for the profile
-     * @param appointmentGUID unique identifier (guid) of the appointment relationship
+     * @param appointmentGUID unique identifier (guid) of the appointment relationship created by <i>appointPersonRole</i> -
+     *                        this is returned by <i>appointPersonRole</i> and can be retrieved by the <i>getDigitalServiceManagers</i> or
+     *                        <i>getAgreementRoles</i> depending on the type of role.
      * @param endDate the official end of the appointment - null means effective immediately
      *
      * @throws InvalidParameterException the profile is not linked to this person role

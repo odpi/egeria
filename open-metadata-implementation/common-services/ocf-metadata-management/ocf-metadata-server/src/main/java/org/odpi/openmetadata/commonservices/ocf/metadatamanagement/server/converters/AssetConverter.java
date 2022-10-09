@@ -73,7 +73,8 @@ public class AssetConverter<B> extends OCFConverter<B>
 
                 bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
                 bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeName(instanceProperties));
+                bean.setName(this.removeName(instanceProperties));
+                bean.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                 bean.setDescription(this.removeDescription(instanceProperties));
 
                 /* Note this value should be in the classification */

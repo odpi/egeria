@@ -30,7 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties")
         })
-public abstract class ReferenceableProperties implements Serializable
+public class ReferenceableProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 

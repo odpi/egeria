@@ -602,7 +602,31 @@ public interface FilesAndFoldersInterface
 
 
     /**
-     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).
+     * Find data file by a full or partial path name. The wildcard is specified using regular expressions (RegEx) and the method matches on the
+     * pathName property.
+     *
+     * @param userId calling user
+     * @param pathName path name
+     * @param startFrom starting point in the list
+     * @param pageSize maximum number of results
+     *
+     * @return list of matching file properties
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<DataFileElement> getFilesByPathName(String userId,
+                                             String pathName,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
+
+
+    /**
+     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx) and the method matches on the
+     * qualifiedName, name and pathName property.
      *
      * @param userId calling user
      * @param pathName path name

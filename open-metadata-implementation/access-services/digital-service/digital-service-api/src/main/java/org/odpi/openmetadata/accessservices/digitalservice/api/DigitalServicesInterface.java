@@ -14,7 +14,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * The DigitalServicesInterface supports the management of digital services.
+ * The DigitalServicesInterface supports the management of digital services. The <i>DigitalRolesInterface</i> supports
+ * the appointment of digital service managers. The <i>BusinessCapabilityManagement</i> associates business capabilities
+ * with the digital services.
  */
 public interface DigitalServicesInterface
 {
@@ -125,10 +127,48 @@ public interface DigitalServicesInterface
      */
     void clearDigitalServiceDependency(String userId,
                                        String digitalServiceGUID,
-                                       String dependentDigitalServiceGUID,
-                                       String relationshipTypeName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException;
+                                       String dependentDigitalServiceGUID) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException;
+
+
+    /**
+     * Create a link to show that an organization has responsibility in operating a digital service.
+     * If the link already exists the properties are updated.
+     *
+     * @param userId calling user
+     * @param digitalServiceGUID unique identifier of the digital service
+     * @param organizationGUID unique identifier of the organization operating the digital service
+     * @param properties description of the scope of responsibilities that the organization has in the operation of the digital service
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void setupDigitalServiceOperator(String                             userId,
+                                     String                             digitalServiceGUID,
+                                     String                             organizationGUID,
+                                     DigitalServiceDependencyProperties properties) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
+
+
+    /**
+     * Remove the dependency link between two digital services.
+     *
+     * @param userId calling user
+     * @param digitalServiceGUID unique identifier of the digital service
+     * @param organizationGUID unique identifier of the organization operating the digital service
+     *
+     * @throws InvalidParameterException one of the guids is null or not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void clearDigitalServiceOperator(String userId,
+                                     String digitalServiceGUID,
+                                     String organizationGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
 
     /**
      * Retrieve the list of metadata elements that contain the search string.
