@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10};
+var data = {"i0":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -196,34 +196,6 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <th class="colLast" scope="col">Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>boolean</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#equals(java.lang.Object)">equals</a></span>&#8203;(java.lang.Object&nbsp;objectToCompare)</code></th>
-<td class="colLast">
-<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
-</td>
-</tr>
-<tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getQualifiedName()">getQualifiedName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the stored display name property for the asset.</div>
-</td>
-</tr>
-<tr id="i2" class="altColor">
-<td class="colFirst"><code>int</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return hash code based on properties.</div>
-</td>
-</tr>
-<tr id="i3" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setQualifiedName(java.lang.String)">setQualifiedName</a></span>&#8203;(java.lang.String&nbsp;qualifiedName)</code></th>
-<td class="colLast">
-<div class="block">Set up the stored display name property for the asset.</div>
-</td>
-</tr>
-<tr id="i4" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -236,7 +208,7 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.datamanager.properties.<a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceableProperties</a></h3>
-<code><a href="ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="ReferenceableProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="ReferenceableProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="ReferenceableProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="ReferenceableProperties.html#getTypeName()">getTypeName</a>, <a href="ReferenceableProperties.html#getVendorProperties()">getVendorProperties</a>, <a href="ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="ReferenceableProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="ReferenceableProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="ReferenceableProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="ReferenceableProperties.html#setTypeName(java.lang.String)">setTypeName</a>, <a href="ReferenceableProperties.html#setVendorProperties(java.util.Map)">setVendorProperties</a></code></li>
+<code><a href="ReferenceableProperties.html#equals(java.lang.Object)">equals</a>, <a href="ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="ReferenceableProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="ReferenceableProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="ReferenceableProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="ReferenceableProperties.html#getTypeName()">getTypeName</a>, <a href="ReferenceableProperties.html#getVendorProperties()">getVendorProperties</a>, <a href="ReferenceableProperties.html#hashCode()">hashCode</a>, <a href="ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="ReferenceableProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="ReferenceableProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="ReferenceableProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="ReferenceableProperties.html#setTypeName(java.lang.String)">setTypeName</a>, <a href="ReferenceableProperties.html#setVendorProperties(java.util.Map)">setVendorProperties</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -295,43 +267,10 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getQualifiedName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getQualifiedName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getQualifiedName()</pre>
-<div class="block">Returns the stored display name property for the asset.
- If no display name is available then null is returned.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceableProperties</a></code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>String name</dd>
-</dl>
-</li>
-</ul>
-<a id="setQualifiedName(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setQualifiedName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setQualifiedName&#8203;(java.lang.String&nbsp;qualifiedName)</pre>
-<div class="block">Set up the stored display name property for the asset.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceableProperties</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>qualifiedName</code> - String name</dd>
-</dl>
-</li>
-</ul>
 <a id="toString()">
 <!--   -->
 </a>
-<ul class="blockList">
+<ul class="blockListLast">
 <li class="blockList">
 <h4>toString</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;toString()</pre>
@@ -341,40 +280,6 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <dd><code><a href="ReferenceableProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceableProperties</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>print out of variables in a JSON-style</dd>
-</dl>
-</li>
-</ul>
-<a id="equals(java.lang.Object)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>equals</h4>
-<pre class="methodSignature">public&nbsp;boolean&nbsp;equals&#8203;(java.lang.Object&nbsp;objectToCompare)</pre>
-<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ReferenceableProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceableProperties</a></code></dd>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>objectToCompare</code> - supplied object</dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>boolean result of comparison</dd>
-</dl>
-</li>
-</ul>
-<a id="hashCode()">
-<!--   -->
-</a>
-<ul class="blockListLast">
-<li class="blockList">
-<h4>hashCode</h4>
-<pre class="methodSignature">public&nbsp;int&nbsp;hashCode()</pre>
-<div class="block">Return hash code based on properties.</div>
-<dl>
-<dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ReferenceableProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.datamanager.properties">ReferenceableProperties</a></code></dd>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>int</dd>
 </dl>
 </li>
 </ul>

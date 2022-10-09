@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6,"i13":6,"i14":6,"i15":6,"i16":6,"i17":6,"i18":6,"i19":6,"i20":6,"i21":6,"i22":6,"i23":6,"i24":6,"i25":6,"i26":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -323,6 +323,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </td>
 </tr>
 <tr id="i16" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/DataFileElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DataFileElement</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFilesByPathName(java.lang.String,java.lang.String,int,int)">getFilesByPathName</a></span>&#8203;(java.lang.String&nbsp;userId,
+                  java.lang.String&nbsp;pathName,
+                  int&nbsp;startFrom,
+                  int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Find data file by a full or partial path name.</div>
+</td>
+</tr>
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">FileFolderElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFolderByGUID(java.lang.String,java.lang.String)">getFolderByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                java.lang.String&nbsp;folderGUID)</code></th>
@@ -330,7 +340,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve a FolderProperties asset by its unique identifier (GUID).</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">FileFolderElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFolderByPathName(java.lang.String,java.lang.String)">getFolderByPathName</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;pathName)</code></th>
@@ -338,7 +348,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve a folder by its fully qualified path name.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/DataFileElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DataFileElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFolderFiles(java.lang.String,java.lang.String,int,int)">getFolderFiles</a></span>&#8203;(java.lang.String&nbsp;userId,
               java.lang.String&nbsp;folderGUID,
@@ -348,7 +358,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Get the data files inside a folder - both those that are nested and those that are linked.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">FileFolderElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedFolders(java.lang.String,java.lang.String,int,int)">getNestedFolders</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;parentFolderGUID,
@@ -358,7 +368,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return the list of folders nested inside a folder.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/DataFileElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DataFileElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTopLevelDataFiles(java.lang.String,java.lang.String,int,int)">getTopLevelDataFiles</a></span>&#8203;(java.lang.String&nbsp;userId,
                     java.lang.String&nbsp;fileSystemGUID,
@@ -368,7 +378,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return the list of folders nested inside a folder.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">FileFolderElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTopLevelFolders(java.lang.String,java.lang.String,int,int)">getTopLevelFolders</a></span>&#8203;(java.lang.String&nbsp;userId,
                   java.lang.String&nbsp;fileSystemGUID,
@@ -378,7 +388,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Return the list of folders linked to the file server capability.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#moveDataFileInCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">moveDataFileInCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;fileManagerCapabilityGUID,
@@ -390,7 +400,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  but not its unique identifier (guid).</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#moveDataFolderInCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">moveDataFolderInCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;fileManagerCapabilityGUID,
@@ -402,7 +412,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
  but not its unique identifier (guid).</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDataFileInCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties)">updateDataFileInCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
                        java.lang.String&nbsp;fileManagerCapabilityGUID,
@@ -414,7 +424,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Update the file asset description in the catalog.</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDataFolderInCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties)">updateDataFolderInCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
                          java.lang.String&nbsp;fileManagerCapabilityGUID,
@@ -1193,6 +1203,36 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
+<a id="getFilesByPathName(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getFilesByPathName</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/DataFileElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DataFileElement</a>&gt;&nbsp;getFilesByPathName&#8203;(java.lang.String&nbsp;userId,
+                                                   java.lang.String&nbsp;pathName,
+                                                   int&nbsp;startFrom,
+                                                   int&nbsp;pageSize)
+                                            throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                   <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Find data file by a full or partial path name. The wildcard is specified using regular expressions (RegEx) and the method matches on the
+ pathName property.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>pathName</code> - path name</dd>
+<dd><code>startFrom</code> - starting point in the list</dd>
+<dd><code>pageSize</code> - maximum number of results</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of matching file properties</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
 <a id="findFilesByPathName(java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
@@ -1206,7 +1246,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).</div>
+<div class="block">Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx) and the method matches on the
+ qualifiedName, name and pathName property.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>

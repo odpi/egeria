@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10,"i25":10,"i26":10,"i27":10,"i28":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -340,6 +340,17 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i16" class="altColor">
+<td class="colFirst"><code><a href="../../rest/DataFilesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DataFilesResponse</a></code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDataFilesByPathName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.accessservices.datamanager.rest.PathNameRequestBody)">getDataFilesByPathName</a></span>&#8203;(java.lang.String&nbsp;serverName,
+                      java.lang.String&nbsp;userId,
+                      int&nbsp;startingFrom,
+                      int&nbsp;maxPageSize,
+                      <a href="../../rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">PathNameRequestBody</a>&nbsp;requestBody)</code></th>
+<td class="colLast">
+<div class="block">Retrieve data files by the supplied wildcard name.</div>
+</td>
+</tr>
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/FileSystemResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">FileSystemResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFileSystemByGUID(java.lang.String,java.lang.String,java.lang.String)">getFileSystemByGUID</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
@@ -348,7 +359,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve a FileSystemProperties asset by its unique identifier (GUID).</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code><a href="../../rest/FileSystemResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">FileSystemResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFileSystemByUniqueName(java.lang.String,java.lang.String,java.lang.String)">getFileSystemByUniqueName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;userId,
@@ -357,7 +368,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve a FileSystemProperties asset by its unique name.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFileSystems(java.lang.String,java.lang.String,int,int)">getFileSystems</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
@@ -367,7 +378,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve a list of defined FileSystems assets.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code><a href="../../rest/FileFolderResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">FileFolderResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFolderByGUID(java.lang.String,java.lang.String,java.lang.String)">getFolderByGUID</a></span>&#8203;(java.lang.String&nbsp;serverName,
                java.lang.String&nbsp;userId,
@@ -376,7 +387,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve a folder asset by its unique identifier (GUID).</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code><a href="../../rest/FileFolderResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">FileFolderResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFolderByPathName(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.PathNameRequestBody)">getFolderByPathName</a></span>&#8203;(java.lang.String&nbsp;serverName,
                    java.lang.String&nbsp;userId,
@@ -385,7 +396,7 @@ extends java.lang.Object</pre>
 <div class="block">Retrieve a folder by its fully qualified path name.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFolderFiles(java.lang.String,java.lang.String,java.lang.String,int,int)">getFolderFiles</a></span>&#8203;(java.lang.String&nbsp;serverName,
               java.lang.String&nbsp;userId,
@@ -396,7 +407,7 @@ extends java.lang.Object</pre>
 <div class="block">Get the files inside a folder - both those that are nested and those that are linked.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getNestedFolders(java.lang.String,java.lang.String,java.lang.String,int,int)">getNestedFolders</a></span>&#8203;(java.lang.String&nbsp;serverName,
                 java.lang.String&nbsp;userId,
@@ -407,7 +418,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of folders nested inside a folder.</div>
 </td>
 </tr>
-<tr id="i23" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/GUIDListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDListResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTopLevelFolders(java.lang.String,java.lang.String,java.lang.String,int,int)">getTopLevelFolders</a></span>&#8203;(java.lang.String&nbsp;serverName,
                   java.lang.String&nbsp;userId,
@@ -418,7 +429,7 @@ extends java.lang.Object</pre>
 <div class="block">Return the list of folders nested inside a folder.</div>
 </td>
 </tr>
-<tr id="i24" class="altColor">
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#moveDataFileInCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.MetadataSourceRequestBody)">moveDataFileInCatalog</a></span>&#8203;(java.lang.String&nbsp;serverName,
                      java.lang.String&nbsp;userId,
@@ -430,7 +441,7 @@ extends java.lang.Object</pre>
  but not its unique identifier (guid).</div>
 </td>
 </tr>
-<tr id="i25" class="rowColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#moveDataFolderInCatalog(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.datamanager.rest.MetadataSourceRequestBody)">moveDataFolderInCatalog</a></span>&#8203;(java.lang.String&nbsp;serverName,
                        java.lang.String&nbsp;userId,
@@ -442,7 +453,7 @@ extends java.lang.Object</pre>
  but not its unique identifier (guid).</div>
 </td>
 </tr>
-<tr id="i26" class="altColor">
+<tr id="i27" class="rowColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDataFileInCatalog(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.DataFileRequestBody)">updateDataFileInCatalog</a></span>&#8203;(java.lang.String&nbsp;serverName,
                        java.lang.String&nbsp;userId,
@@ -453,7 +464,7 @@ extends java.lang.Object</pre>
 <div class="block">Update the file asset description in the catalog.</div>
 </td>
 </tr>
-<tr id="i27" class="rowColor">
+<tr id="i28" class="altColor">
 <td class="colFirst"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateDataFolderInCatalog(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.datamanager.rest.DataFolderRequestBody)">updateDataFolderInCatalog</a></span>&#8203;(java.lang.String&nbsp;serverName,
                          java.lang.String&nbsp;userId,
@@ -1354,13 +1365,46 @@ public&nbsp;<a href="../../rest/DataFileResponse.html" title="class in org.odpi.
 </dl>
 </li>
 </ul>
+<a id="getDataFilesByPathName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.accessservices.datamanager.rest.PathNameRequestBody)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getDataFilesByPathName</h4>
+<pre class="methodSignature">@PostMapping(path="/data-files/by-search-path-name")
+public&nbsp;<a href="../../rest/DataFilesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DataFilesResponse</a>&nbsp;getDataFilesByPathName&#8203;(@PathVariable
+                                                java.lang.String&nbsp;serverName,
+                                                @PathVariable
+                                                java.lang.String&nbsp;userId,
+                                                @RequestParam
+                                                int&nbsp;startingFrom,
+                                                @RequestParam
+                                                int&nbsp;maxPageSize,
+                                                @RequestBody
+                                                <a href="../../rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">PathNameRequestBody</a>&nbsp;requestBody)</pre>
+<div class="block">Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>serverName</code> - name of calling server</dd>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>startingFrom</code> - starting point in the list</dd>
+<dd><code>maxPageSize</code> - maximum number of results</dd>
+<dd><code>requestBody</code> - path name</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>data file properties or
+ InvalidParameterException one of the parameters is null or invalid or
+ PropertyServerException problem accessing property server or
+ UserNotAuthorizedException security access problem.</dd>
+</dl>
+</li>
+</ul>
 <a id="findDataFilesByPathName(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.accessservices.datamanager.rest.PathNameRequestBody)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>findDataFilesByPathName</h4>
-<pre class="methodSignature">@PostMapping(path="/data-files/by-search-path-name")
+<pre class="methodSignature">@PostMapping(path="/data-files/by-search-name")
 public&nbsp;<a href="../../rest/DataFilesResponse.html" title="class in org.odpi.openmetadata.accessservices.datamanager.rest">DataFilesResponse</a>&nbsp;findDataFilesByPathName&#8203;(@PathVariable
                                                  java.lang.String&nbsp;serverName,
                                                  @PathVariable

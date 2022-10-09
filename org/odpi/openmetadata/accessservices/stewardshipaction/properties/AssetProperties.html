@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -125,7 +125,12 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">org.odpi.openmetadata.accessservices.stewardshipaction.properties.ReferenceableProperties</a></li>
 <li>
 <ul class="inheritance">
+<li><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">org.odpi.openmetadata.accessservices.stewardshipaction.properties.SupplementaryProperties</a></li>
+<li>
+<ul class="inheritance">
 <li>org.odpi.openmetadata.accessservices.stewardshipaction.properties.AssetProperties</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -138,43 +143,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt>All Implemented Interfaces:</dt>
 <dd><code>java.io.Serializable</code></dd>
 </dl>
-<dl>
-<dt>Direct Known Subclasses:</dt>
-<dd><code><a href="DataStoreProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">DataStoreProperties</a></code></dd>
-</dl>
 <hr>
 <pre>public class <span class="typeNameLabel">AssetProperties</span>
-extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">ReferenceableProperties</a></pre>
-<div class="block">AssetProperties holds asset properties that are used for displaying details of
- an asset in summary lists or hover text.  It includes the following properties:
- <ul>
-     <li>type - metadata type information for the asset</li>
-     <li>guid - globally unique identifier for the asset</li>
-     <li>url - external link for the asset</li>
-     <li>qualifiedName - The official (unique) name for the asset. This is often defined by the IT systems
-     management organization and should be used (when available) on audit logs and error messages.
-     (qualifiedName from Referenceable - model 0010)</li>
-     <li>displayName - A consumable name for the asset.  Often a shortened form of the assetQualifiedName
-     for use on user interfaces and messages.   The assetDisplayName should only be used for audit logs and error
-     messages if the assetQualifiedName is not set. (Sourced from attribute name within Asset - model 0010)</li>
-     <li>shortDescription - short description about the asset.
-     (Sourced from assetSummary within ConnectionsToAsset - model 0205)</li>
-     <li>description - full description of the asset.
-     (Sourced from attribute description within Asset - model 0010)</li>
-     <li>owner - name of the person or organization that owns the asset.
-     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
-     <li>ownerTypeName - name of the element type identifying the person or organization that owns the asset.
-     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
-     <li>ownerPropertyName - name of the property identifying person or organization that owns the asset.
-     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
-     <li>zoneMembership - name of the person or organization that owns the asset.
-     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
-     <li>origin - origin identifiers describing the source of the asset.
-     (Sourced from classification AssetOrigin attached to Asset - model 0440)</li>
-     <li>classifications - list of all classifications assigned to the asset</li>
-     <li>extendedProperties - list of properties assigned to the asset from the Asset subclasses</li>
-     <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
- </ul></div>
+extends <a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">SupplementaryProperties</a></pre>
+<div class="block">AssetProperties is a java bean used to describe assets managed by the governance program.</div>
 <dl>
 <dt><span class="seeLabel">See Also:</span></dt>
 <dd><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.accessservices.stewardshipaction.properties.AssetProperties">Serialized Form</a></dd>
@@ -237,138 +209,54 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDescription()">getDescription</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTechnicalDescription()">getTechnicalDescription</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the stored description property for the asset.</div>
+<div class="block">Returns the stored technical description property for the asset.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDisplayName()">getDisplayName</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getTechnicalName()">getTechnicalName</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Returns the stored display name property for the asset.</div>
+<div class="block">Returns the stored technical name property for the asset.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOriginBusinessCapabilityGUID()">getOriginBusinessCapabilityGUID</a></span>()</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVersionIdentifier()">getVersionIdentifier</a></span>()</code></th>
 <td class="colLast">
-<div class="block">Return the unique identifier of the business capability that originated this asset.</div>
+<div class="block">Set up the version identifier of the resource.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOriginOrganizationGUID()">getOriginOrganizationGUID</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the unique identifier for the organization that originated this asset.</div>
-</td>
-</tr>
-<tr id="i5" class="rowColor">
-<td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOtherOriginValues()">getOtherOriginValues</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the properties that characterize where this asset is from.</div>
-</td>
-</tr>
-<tr id="i6" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwner()">getOwner</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the name of the owner for this asset.</div>
-</td>
-</tr>
-<tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwnerPropertyName()">getOwnerPropertyName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the property name used to identify the owner for this asset.</div>
-</td>
-</tr>
-<tr id="i8" class="altColor">
-<td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwnerTypeName()">getOwnerTypeName</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Returns the name of the type used to identify of the owner for this asset.</div>
-</td>
-</tr>
-<tr id="i9" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getZoneMembership()">getZoneMembership</a></span>()</code></th>
-<td class="colLast">
-<div class="block">Return the names of the zones that this asset is a member of.</div>
-</td>
-</tr>
-<tr id="i10" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code based on properties.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTechnicalDescription(java.lang.String)">setTechnicalDescription</a></span>&#8203;(java.lang.String&nbsp;technicalDescription)</code></th>
 <td class="colLast">
-<div class="block">Set up the stored description property associated with the asset.</div>
+<div class="block">Set up the stored technical description property associated with the asset.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;displayName)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTechnicalName(java.lang.String)">setTechnicalName</a></span>&#8203;(java.lang.String&nbsp;technicalName)</code></th>
 <td class="colLast">
-<div class="block">Set up the stored display name property for the asset.</div>
+<div class="block">Set up the stored technical name property for the asset.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOriginBusinessCapabilityGUID(java.lang.String)">setOriginBusinessCapabilityGUID</a></span>&#8203;(java.lang.String&nbsp;originBusinessCapabilityGUID)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></span>&#8203;(java.lang.String&nbsp;versionIdentifier)</code></th>
 <td class="colLast">
-<div class="block">Set up the unique identifier of the business capability that originated this asset.</div>
+<div class="block">Set up the version identifier of the resource.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOriginOrganizationGUID(java.lang.String)">setOriginOrganizationGUID</a></span>&#8203;(java.lang.String&nbsp;originOrganizationGUID)</code></th>
-<td class="colLast">
-<div class="block">Set up the unique identifier for the organization that originated this asset.</div>
-</td>
-</tr>
-<tr id="i15" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOtherOriginValues(java.util.Map)">setOtherOriginValues</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;otherOriginValues)</code></th>
-<td class="colLast">
-<div class="block">Set up the properties that characterize where this asset is from.</div>
-</td>
-</tr>
-<tr id="i16" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOwner(java.lang.String)">setOwner</a></span>&#8203;(java.lang.String&nbsp;owner)</code></th>
-<td class="colLast">
-<div class="block">Set up the name of the owner for this asset.</div>
-</td>
-</tr>
-<tr id="i17" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOwnerPropertyName(java.lang.String)">setOwnerPropertyName</a></span>&#8203;(java.lang.String&nbsp;ownerPropertyName)</code></th>
-<td class="colLast">
-<div class="block">Set up the property name used to identify the owner for this asset.</div>
-</td>
-</tr>
-<tr id="i18" class="altColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOwnerTypeName(java.lang.String)">setOwnerTypeName</a></span>&#8203;(java.lang.String&nbsp;ownerTypeName)</code></th>
-<td class="colLast">
-<div class="block">Set up the name of the type used to identify the owner for this asset.</div>
-</td>
-</tr>
-<tr id="i19" class="rowColor">
-<td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setZoneMembership(java.util.List)">setZoneMembership</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;zoneMembership)</code></th>
-<td class="colLast">
-<div class="block">Set up the names of the zones that this asset is a member of.</div>
-</td>
-</tr>
-<tr id="i20" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -377,11 +265,18 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 </tr>
 </table>
 <ul class="blockList">
+<li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.stewardshipaction.properties.SupplementaryProperties">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.stewardshipaction.properties.<a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">SupplementaryProperties</a></h3>
+<code><a href="SupplementaryProperties.html#getAbbreviation()">getAbbreviation</a>, <a href="SupplementaryProperties.html#getDescription()">getDescription</a>, <a href="SupplementaryProperties.html#getDisplayName()">getDisplayName</a>, <a href="SupplementaryProperties.html#getSummary()">getSummary</a>, <a href="SupplementaryProperties.html#getUsage()">getUsage</a>, <a href="SupplementaryProperties.html#setAbbreviation(java.lang.String)">setAbbreviation</a>, <a href="SupplementaryProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="SupplementaryProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="SupplementaryProperties.html#setSummary(java.lang.String)">setSummary</a>, <a href="SupplementaryProperties.html#setUsage(java.lang.String)">setUsage</a></code></li>
+</ul>
+<ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.org.odpi.openmetadata.accessservices.stewardshipaction.properties.ReferenceableProperties">
 <!--   -->
 </a>
 <h3>Methods inherited from class&nbsp;org.odpi.openmetadata.accessservices.stewardshipaction.properties.<a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">ReferenceableProperties</a></h3>
-<code><a href="ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="ReferenceableProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="ReferenceableProperties.html#getTypeName()">getTypeName</a>, <a href="ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="ReferenceableProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="ReferenceableProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></li>
+<code><a href="ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="ReferenceableProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="ReferenceableProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="ReferenceableProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="ReferenceableProperties.html#getTypeName()">getTypeName</a>, <a href="ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="ReferenceableProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="ReferenceableProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="ReferenceableProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="ReferenceableProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></li>
 </ul>
 <ul class="blockList">
 <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
@@ -440,43 +335,71 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="getDisplayName()">
+<a id="getTechnicalName()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getDisplayName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDisplayName()</pre>
-<div class="block">Returns the stored display name property for the asset.
- If no display name is available then null is returned.</div>
+<h4>getTechnicalName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getTechnicalName()</pre>
+<div class="block">Returns the stored technical name property for the asset.
+ If no technical name is available then null is returned.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>String name</dd>
 </dl>
 </li>
 </ul>
-<a id="setDisplayName(java.lang.String)">
+<a id="setTechnicalName(java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setDisplayName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setDisplayName&#8203;(java.lang.String&nbsp;displayName)</pre>
-<div class="block">Set up the stored display name property for the asset.</div>
+<h4>setTechnicalName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setTechnicalName&#8203;(java.lang.String&nbsp;technicalName)</pre>
+<div class="block">Set up the stored technical name property for the asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>displayName</code> - String name</dd>
+<dd><code>technicalName</code> - String name</dd>
 </dl>
 </li>
 </ul>
-<a id="getDescription()">
+<a id="getVersionIdentifier()">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getDescription</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDescription()</pre>
-<div class="block">Returns the stored description property for the asset.
+<h4>getVersionIdentifier</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getVersionIdentifier()</pre>
+<div class="block">Set up the version identifier of the resource.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string version name</dd>
+</dl>
+</li>
+</ul>
+<a id="setVersionIdentifier(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setVersionIdentifier</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setVersionIdentifier&#8203;(java.lang.String&nbsp;versionIdentifier)</pre>
+<div class="block">Set up the version identifier of the resource.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>versionIdentifier</code> - string version name</dd>
+</dl>
+</li>
+</ul>
+<a id="getTechnicalDescription()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getTechnicalDescription</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getTechnicalDescription()</pre>
+<div class="block">Returns the stored technical description property for the asset.
  If no description is provided then null is returned.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -484,213 +407,17 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 </dl>
 </li>
 </ul>
-<a id="setDescription(java.lang.String)">
+<a id="setTechnicalDescription(java.lang.String)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>setDescription</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setDescription&#8203;(java.lang.String&nbsp;description)</pre>
-<div class="block">Set up the stored description property associated with the asset.</div>
+<h4>setTechnicalDescription</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setTechnicalDescription&#8203;(java.lang.String&nbsp;technicalDescription)</pre>
+<div class="block">Set up the stored technical description property associated with the asset.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>description</code> - String text</dd>
-</dl>
-</li>
-</ul>
-<a id="getOwner()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOwner</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getOwner()</pre>
-<div class="block">Returns the name of the owner for this asset.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>owner String</dd>
-</dl>
-</li>
-</ul>
-<a id="setOwner(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setOwner</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setOwner&#8203;(java.lang.String&nbsp;owner)</pre>
-<div class="block">Set up the name of the owner for this asset.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>owner</code> - String name</dd>
-</dl>
-</li>
-</ul>
-<a id="getOwnerTypeName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOwnerTypeName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getOwnerTypeName()</pre>
-<div class="block">Returns the name of the type used to identify of the owner for this asset.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>owner String</dd>
-</dl>
-</li>
-</ul>
-<a id="setOwnerTypeName(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setOwnerTypeName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setOwnerTypeName&#8203;(java.lang.String&nbsp;ownerTypeName)</pre>
-<div class="block">Set up the name of the type used to identify the owner for this asset.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>ownerTypeName</code> - String name</dd>
-</dl>
-</li>
-</ul>
-<a id="getOwnerPropertyName()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOwnerPropertyName</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getOwnerPropertyName()</pre>
-<div class="block">Returns the property name used to identify the owner for this asset.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>owner String</dd>
-</dl>
-</li>
-</ul>
-<a id="setOwnerPropertyName(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setOwnerPropertyName</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setOwnerPropertyName&#8203;(java.lang.String&nbsp;ownerPropertyName)</pre>
-<div class="block">Set up the property name used to identify the owner for this asset.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>ownerPropertyName</code> - String name</dd>
-</dl>
-</li>
-</ul>
-<a id="getZoneMembership()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getZoneMembership</h4>
-<pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;getZoneMembership()</pre>
-<div class="block">Return the names of the zones that this asset is a member of.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of zone names</dd>
-</dl>
-</li>
-</ul>
-<a id="setZoneMembership(java.util.List)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setZoneMembership</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setZoneMembership&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;zoneMembership)</pre>
-<div class="block">Set up the names of the zones that this asset is a member of.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>zoneMembership</code> - list of zone names</dd>
-</dl>
-</li>
-</ul>
-<a id="getOriginOrganizationGUID()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOriginOrganizationGUID</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getOriginOrganizationGUID()</pre>
-<div class="block">Return the unique identifier for the organization that originated this asset.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string guid</dd>
-</dl>
-</li>
-</ul>
-<a id="setOriginOrganizationGUID(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setOriginOrganizationGUID</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setOriginOrganizationGUID&#8203;(java.lang.String&nbsp;originOrganizationGUID)</pre>
-<div class="block">Set up the unique identifier for the organization that originated this asset.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>originOrganizationGUID</code> - string guid</dd>
-</dl>
-</li>
-</ul>
-<a id="getOriginBusinessCapabilityGUID()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOriginBusinessCapabilityGUID</h4>
-<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getOriginBusinessCapabilityGUID()</pre>
-<div class="block">Return the unique identifier of the business capability that originated this asset.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>string guid</dd>
-</dl>
-</li>
-</ul>
-<a id="setOriginBusinessCapabilityGUID(java.lang.String)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setOriginBusinessCapabilityGUID</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setOriginBusinessCapabilityGUID&#8203;(java.lang.String&nbsp;originBusinessCapabilityGUID)</pre>
-<div class="block">Set up the unique identifier of the business capability that originated this asset.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>originBusinessCapabilityGUID</code> - string guid</dd>
-</dl>
-</li>
-</ul>
-<a id="getOtherOriginValues()">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>getOtherOriginValues</h4>
-<pre class="methodSignature">public&nbsp;java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;getOtherOriginValues()</pre>
-<div class="block">Return the properties that characterize where this asset is from.</div>
-<dl>
-<dt><span class="returnLabel">Returns:</span></dt>
-<dd>map of name value pairs, all strings</dd>
-</dl>
-</li>
-</ul>
-<a id="setOtherOriginValues(java.util.Map)">
-<!--   -->
-</a>
-<ul class="blockList">
-<li class="blockList">
-<h4>setOtherOriginValues</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setOtherOriginValues&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;otherOriginValues)</pre>
-<div class="block">Set up the properties that characterize where this asset is from.</div>
-<dl>
-<dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>otherOriginValues</code> - map of name value pairs, all strings</dd>
+<dd><code>technicalDescription</code> - String text</dd>
 </dl>
 </li>
 </ul>
@@ -704,7 +431,7 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <div class="block">Standard toString method.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ReferenceableProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="SupplementaryProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">SupplementaryProperties</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -720,7 +447,7 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ReferenceableProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="SupplementaryProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">SupplementaryProperties</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
@@ -738,7 +465,7 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <div class="block">Return hash code based on properties.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Overrides:</span></dt>
-<dd><code><a href="ReferenceableProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">ReferenceableProperties</a></code></dd>
+<dd><code><a href="SupplementaryProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="SupplementaryProperties.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.properties">SupplementaryProperties</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>int</dd>
 </dl>

@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6};
+var data = {"i0":6,"i1":6,"i2":6,"i3":6,"i4":6,"i5":6,"i6":6,"i7":6,"i8":6,"i9":6,"i10":6,"i11":6,"i12":6};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],4:["t3","Abstract Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -123,7 +123,8 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li class="blockList">
 <hr>
 <pre>public interface <span class="typeNameLabel">DigitalRolesInterface</span></pre>
-<div class="block">DigitalRolesInterface covers the definition of person roles and their appointments.</div>
+<div class="block">DigitalRolesInterface covers the definition of person roles and their appointments.  This is to define the digital service managers and
+ the roles associated with agreement.</div>
 </li>
 </ul>
 </div>
@@ -156,23 +157,44 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createPersonRole(java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties)">createPersonRole</a></span>&#8203;(java.lang.String&nbsp;userId,
-                <a href="../properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">PersonRoleProperties</a>&nbsp;properties)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createAgreementRole(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.AgreementRoleProperties,org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties)">createAgreementRole</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   java.lang.String&nbsp;agreementGUID,
+                   <a href="../properties/AgreementRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">AgreementRoleProperties</a>&nbsp;agreementRoleProperties,
+                   <a href="../properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">PersonRoleProperties</a>&nbsp;personRoleProperties)</code></th>
 <td class="colLast">
-<div class="block">Create a definition of a new role.</div>
+<div class="block">Create a definition of a new role that is part of an agreement such as a digital subscription.</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleAppointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleAppointee</a>&gt;</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCurrentPersonRoleAppointments(java.lang.String,int,int,int)">getCurrentPersonRoleAppointments</a></span>&#8203;(java.lang.String&nbsp;userId,
-                                int&nbsp;domainIdentifier,
-                                int&nbsp;startFrom,
-                                int&nbsp;pageSize)</code></th>
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createDigitalServiceManagerRole(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties)">createDigitalServiceManagerRole</a></span>&#8203;(java.lang.String&nbsp;userId,
+                               java.lang.String&nbsp;digitalServiceGUID,
+                               <a href="../properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">PersonRoleProperties</a>&nbsp;properties)</code></th>
+<td class="colLast">
+<div class="block">Create a definition of a new role for the manager of a digital service.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/AgreementRoleAppointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">AgreementRoleAppointee</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getAgreementRoles(java.lang.String,java.lang.String,int,int)">getAgreementRoles</a></span>&#8203;(java.lang.String&nbsp;userId,
+                 java.lang.String&nbsp;agreementGUID,
+                 int&nbsp;startFrom,
+                 int&nbsp;pageSize)</code></th>
 <td class="colLast">
 <div class="block">Return all the person roles and their incumbents (if any).</div>
 </td>
 </tr>
-<tr id="i3" class="rowColor">
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleAppointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleAppointee</a>&gt;</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getDigitalServiceManagers(java.lang.String,java.lang.String,int,int)">getDigitalServiceManagers</a></span>&#8203;(java.lang.String&nbsp;userId,
+                         java.lang.String&nbsp;digitalServiceGUID,
+                         int&nbsp;startFrom,
+                         int&nbsp;pageSize)</code></th>
+<td class="colLast">
+<div class="block">Return all the person roles and their incumbents (if any).</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleElement</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRoleByGUID(java.lang.String,java.lang.String)">getPersonRoleByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                    java.lang.String&nbsp;personRoleGUID)</code></th>
@@ -180,7 +202,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the properties of a person role using its unique identifier.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRoleByQualifiedName(java.lang.String,java.lang.String)">getPersonRoleByQualifiedName</a></span>&#8203;(java.lang.String&nbsp;userId,
                             java.lang.String&nbsp;qualifiedName)</code></th>
@@ -188,7 +210,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the properties of a person role using its unique name.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="../metadataelements/PersonRoleHistory.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleHistory</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRoleHistoryByGUID(java.lang.String,java.lang.String)">getPersonRoleHistoryByGUID</a></span>&#8203;(java.lang.String&nbsp;userId,
                           java.lang.String&nbsp;personRoleGUID)</code></th>
@@ -196,7 +218,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve the appointment history for a person role by unique guid.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleElement</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getPersonRolesByTitle(java.lang.String,java.lang.String,int,int)">getPersonRolesByTitle</a></span>&#8203;(java.lang.String&nbsp;userId,
                      java.lang.String&nbsp;title,
@@ -206,7 +228,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Retrieve all the person roles for a particular title.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#relievePersonRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date)">relievePersonRole</a></span>&#8203;(java.lang.String&nbsp;userId,
                  java.lang.String&nbsp;roleGUID,
@@ -217,21 +239,34 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Unlink a person from a person role appointment.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#removePersonRole(java.lang.String,java.lang.String)">removePersonRole</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;personRoleGUID)</code></th>
 <td class="colLast">
-<div class="block">Delete the properties of the person role.</div>
+<div class="block">Delete the person role.</div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updateAgreementRole(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.AgreementRoleProperties)">updateAgreementRole</a></span>&#8203;(java.lang.String&nbsp;userId,
+                   java.lang.String&nbsp;agreementGUID,
+                   java.lang.String&nbsp;roleGUID,
+                   boolean&nbsp;isMergeUpdate,
+                   <a href="../properties/AgreementRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">AgreementRoleProperties</a>&nbsp;agreementRoleProperties)</code></th>
+<td class="colLast">
+<div class="block">Update the name of the role for a specific agreement.</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#updatePersonRole(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties)">updatePersonRole</a></span>&#8203;(java.lang.String&nbsp;userId,
                 java.lang.String&nbsp;roleGUID,
                 boolean&nbsp;isMergeUpdate,
                 <a href="../properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">PersonRoleProperties</a>&nbsp;properties)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Update the properties of a specific person role.</div>
+</td>
 </tr>
 </table>
 </li>
@@ -250,22 +285,67 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a id="createPersonRole(java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties)">
+<a id="createDigitalServiceManagerRole(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>createPersonRole</h4>
-<pre class="methodSignature">java.lang.String&nbsp;createPersonRole&#8203;(java.lang.String&nbsp;userId,
-                                  <a href="../properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">PersonRoleProperties</a>&nbsp;properties)
-                           throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-                                  <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                  <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Create a definition of a new role.</div>
+<h4>createDigitalServiceManagerRole</h4>
+<pre class="methodSignature">java.lang.String&nbsp;createDigitalServiceManagerRole&#8203;(java.lang.String&nbsp;userId,
+                                                 java.lang.String&nbsp;digitalServiceGUID,
+                                                 <a href="../properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">PersonRoleProperties</a>&nbsp;properties)
+                                          throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a definition of a new role for the manager of a digital service.  The role is anchored to the digital service and will be deleted
+ automatically when the digital service is deleted.  It can be managed using the methods below before that.
+ A person can be appointed to ths role using the <i>appointPersonRole</i> method.
+
+ More general support for creating roles is found in Community Profile OMAS and Governance Program OMAS.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
+<dd><code>digitalServiceGUID</code> - unique identifier of the digital service to connect the new role to</dd>
 <dd><code>properties</code> - role properties</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>unique identifier of new role</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="createAgreementRole(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.AgreementRoleProperties,org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createAgreementRole</h4>
+<pre class="methodSignature">java.lang.String&nbsp;createAgreementRole&#8203;(java.lang.String&nbsp;userId,
+                                     java.lang.String&nbsp;agreementGUID,
+                                     <a href="../properties/AgreementRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">AgreementRoleProperties</a>&nbsp;agreementRoleProperties,
+                                     <a href="../properties/PersonRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">PersonRoleProperties</a>&nbsp;personRoleProperties)
+                              throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Create a definition of a new role that is part of an agreement such as a digital subscription.
+
+ These roles are often referred to in the agreement.  For example, the agreement may refer to the subscriber, payer, data consumer.
+ The name of such a role is stored in the <i>agreementRoleProperties</i>.  The properties of the person role that is created to represent
+ the role is stored in <i>personRoleProperties</i>.  A person (or multiple people) can be appointed to the new role using the
+ <i>appointPersonRole</i> method.
+
+ The new person role created is anchored to the agreement and so it is deleted when the agreement is deleted.
+ It can be managed using the methods below before that.
+
+ More general support for creating roles is found in Community Profile OMAS and Governance Program OMAS.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
+<dd><code>agreementRoleProperties</code> - description of a role found in the agreement text</dd>
+<dd><code>personRoleProperties</code> - properties to use when creating the role.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>unique identifier of new role</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
@@ -288,12 +368,42 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                       <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the properties of a specific person role.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>roleGUID</code> - identifier of the person role to update</dd>
 <dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or replaced with null?</dd>
 <dd><code>properties</code> - properties to change</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security access problem</dd>
+</dl>
+</li>
+</ul>
+<a id="updateAgreementRole(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.AgreementRoleProperties)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>updateAgreementRole</h4>
+<pre class="methodSignature">void&nbsp;updateAgreementRole&#8203;(java.lang.String&nbsp;userId,
+                         java.lang.String&nbsp;agreementGUID,
+                         java.lang.String&nbsp;roleGUID,
+                         boolean&nbsp;isMergeUpdate,
+                         <a href="../properties/AgreementRoleProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">AgreementRoleProperties</a>&nbsp;agreementRoleProperties)
+                  throws <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+                         <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
+<div class="block">Update the name of the role for a specific agreement.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
+<dd><code>roleGUID</code> - identifier of the person role</dd>
+<dd><code>isMergeUpdate</code> - are unspecified properties unchanged (true) or replaced with null?</dd>
+<dd><code>agreementRoleProperties</code> - properties to change</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -312,7 +422,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                       <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
                       <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></pre>
-<div class="block">Delete the properties of the person role.</div>
+<div class="block">Delete the person role.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
@@ -431,28 +541,57 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 </dl>
 </li>
 </ul>
-<a id="getCurrentPersonRoleAppointments(java.lang.String,int,int,int)">
+<a id="getDigitalServiceManagers(java.lang.String,java.lang.String,int,int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
-<h4>getCurrentPersonRoleAppointments</h4>
-<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/PersonRoleAppointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleAppointee</a>&gt;&nbsp;getCurrentPersonRoleAppointments&#8203;(java.lang.String&nbsp;userId,
-                                                                     int&nbsp;domainIdentifier,
-                                                                     int&nbsp;startFrom,
-                                                                     int&nbsp;pageSize)
-                                                              throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-                                                                     <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-                                                                     <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<h4>getDigitalServiceManagers</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/PersonRoleAppointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">PersonRoleAppointee</a>&gt;&nbsp;getDigitalServiceManagers&#8203;(java.lang.String&nbsp;userId,
+                                                              java.lang.String&nbsp;digitalServiceGUID,
+                                                              int&nbsp;startFrom,
+                                                              int&nbsp;pageSize)
+                                                       throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                              <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                              <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
 <div class="block">Return all the person roles and their incumbents (if any).</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user.</dd>
-<dd><code>domainIdentifier</code> - identifier of domain - 0 means all</dd>
+<dd><code>digitalServiceGUID</code> - unique identifier of the digital service to connect the new role to</dd>
 <dd><code>startFrom</code> - where to start from in the list of definitions</dd>
 <dd><code>pageSize</code> - max number of results to return in one call</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of person role objects</dd>
+<dd>list of person role objects with details of the people appointed to the roles (if any)</dd>
+<dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the userId is either null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the server is not available.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the calling user is not authorized to issue the call.</dd>
+</dl>
+</li>
+</ul>
+<a id="getAgreementRoles(java.lang.String,java.lang.String,int,int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAgreementRoles</h4>
+<pre class="methodSignature">java.util.List&lt;<a href="../metadataelements/AgreementRoleAppointee.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">AgreementRoleAppointee</a>&gt;&nbsp;getAgreementRoles&#8203;(java.lang.String&nbsp;userId,
+                                                         java.lang.String&nbsp;agreementGUID,
+                                                         int&nbsp;startFrom,
+                                                         int&nbsp;pageSize)
+                                                  throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+                                                         <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
+<div class="block">Return all the person roles and their incumbents (if any).</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>userId</code> - the name of the calling user.</dd>
+<dd><code>agreementGUID</code> - unique identifier of the agreement</dd>
+<dd><code>startFrom</code> - where to start from in the list of definitions</dd>
+<dd><code>pageSize</code> - max number of results to return in one call</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>list of person role objects with details of the people appointed to the roles (if any)</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the userId is either null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the server is not available.</dd>
@@ -473,7 +612,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
                             throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                    <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
                                    <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></pre>
-<div class="block">Link a person to a person role.  Only one person may be appointed at any one time.</div>
+<div class="block">Link a person to a person role.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - the name of the calling user</dd>
@@ -509,7 +648,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - the name of the calling user</dd>
 <dd><code>roleGUID</code> - unique identifier (guid) of the person role</dd>
 <dd><code>profileGUID</code> - unique identifier for the profile</dd>
-<dd><code>appointmentGUID</code> - unique identifier (guid) of the appointment relationship</dd>
+<dd><code>appointmentGUID</code> - unique identifier (guid) of the appointment relationship created by <i>appointPersonRole</i> -
+                        this is returned by <i>appointPersonRole</i> and can be retrieved by the <i>getDigitalServiceManagers</i> or
+                        <i>getAgreementRoles</i> depending on the type of role.</dd>
 <dd><code>endDate</code> - the official end of the appointment - null means effective immediately</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the profile is not linked to this person role</dd>

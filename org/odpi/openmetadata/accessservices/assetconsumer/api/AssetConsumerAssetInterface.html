@@ -242,7 +242,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of assets that match the search string.</dd>
+<dd>list of unique identifiers (GUIDs) for the matching assets</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the searchString is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem access in the property server</dd>
@@ -271,7 +271,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>list of unique identifiers of assets with matching name.</dd>
+<dd>list of unique identifiers (GUIDs) of assets with matching name.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the name is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem access in the property server</dd>
@@ -300,7 +300,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>a list of unique identifiers for the matching assets</dd>
+<dd>a list of unique identifiers (GUIDs) for the matching assets</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving the asset properties from the property servers).</dd>
@@ -325,7 +325,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - the userId of the requesting user.</dd>
 <dd><code>connectionGUID</code> - unique identifier for the connection.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of asset.</dd>
+<dd>unique identifier (GUID) of asset.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server.</dd>
@@ -350,7 +350,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dd><code>userId</code> - userId of user making request.</dd>
 <dd><code>connectionName</code> - this may be the qualifiedName or displayName of the connection.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>unique identifier of asset.</dd>
+<dd>unique identifier (GUID) of asset.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>

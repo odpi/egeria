@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -221,27 +221,55 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 </td>
 </tr>
 <tr id="i3" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the name of the resource that this asset represents.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVersionIdentifier()">getVersionIdentifier</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Set up the version identifier of the resource.</div>
+</td>
+</tr>
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code based on properties.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
 <div class="block">Set up the stored description property associated with the asset.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;displayName)</code></th>
 <td class="colLast">
 <div class="block">Set up the stored display name property for the asset.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i8" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setName(java.lang.String)">setName</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
+<td class="colLast">
+<div class="block">Set up the name of the resource that this asset represents.</div>
+</td>
+</tr>
+<tr id="i9" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></span>&#8203;(java.lang.String&nbsp;versionIdentifier)</code></th>
+<td class="colLast">
+<div class="block">Set up the version identifier of the resource.</div>
+</td>
+</tr>
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -313,6 +341,62 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getName()</pre>
+<div class="block">Return the name of the resource that this asset represents.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string resource name</dd>
+</dl>
+</li>
+</ul>
+<a id="setName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setName&#8203;(java.lang.String&nbsp;name)</pre>
+<div class="block">Set up the name of the resource that this asset represents.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>name</code> - string resource name</dd>
+</dl>
+</li>
+</ul>
+<a id="getVersionIdentifier()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getVersionIdentifier</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getVersionIdentifier()</pre>
+<div class="block">Set up the version identifier of the resource.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string version name</dd>
+</dl>
+</li>
+</ul>
+<a id="setVersionIdentifier(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setVersionIdentifier</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setVersionIdentifier&#8203;(java.lang.String&nbsp;versionIdentifier)</pre>
+<div class="block">Set up the version identifier of the resource.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>versionIdentifier</code> - string version name</dd>
+</dl>
+</li>
+</ul>
 <a id="getDisplayName()">
 <!--   -->
 </a>
@@ -321,7 +405,7 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <h4>getDisplayName</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDisplayName()</pre>
 <div class="block">Returns the stored display name property for the asset.
- If no display name is available then null is returned.</div>
+ If no display name is available then name is returned.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>String name</dd>

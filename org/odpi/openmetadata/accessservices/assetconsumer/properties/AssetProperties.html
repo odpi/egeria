@@ -26,7 +26,7 @@
     catch(err) {
     }
 //-->
-var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":42,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":42,"i20":10,"i21":10,"i22":10};
+var data = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":42,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":42,"i23":10,"i24":10,"i25":10,"i26":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"],32:["t6","Deprecated Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -142,7 +142,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public class <span class="typeNameLabel">AssetProperties</span>
 extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">ReferenceableProperties</a></pre>
 <div class="block">Asset holds asset properties that are used for displaying details of
- an asset in summary lists or hover text.  It includes the following properties:
+ an asset in summary lists or hover text.  The Asset represents a digital resource. It includes the following properties:
  <ul>
      <li>type - metadata type information for the asset</li>
      <li>guid - globally unique identifier for the asset</li>
@@ -150,11 +150,11 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
      <li>qualifiedName - The official (unique) name for the asset. This is often defined by the IT systems
      management organization and should be used (when available) on audit logs and error messages.
      (qualifiedName from Referenceable - model 0010)</li>
-     <li>displayName - A consumable name for the asset.  Often a shortened form of the assetQualifiedName
-     for use on user interfaces and messages.   The assetDisplayName should only be used for audit logs and error
-     messages if the assetQualifiedName is not set. (Sourced from attribute name within Asset - model 0010)</li>
+     <li>name - the name of the digital resource.   (Sourced from attribute name within Asset - model 0010)</li>
+     <li>versionIdentifier - the version of the digital resource.   (Sourced from attribute versionIdentifier within Asset - model 0010)</li>
+     <li>displayName - A consumable name for the asset. (Sourced from a linked glossary term - model 0395 - or the name property)</li>
      <li>shortDescription - short description about the asset.
-     (Sourced from assetSummary within ConnectionsToAsset - model 0205)</li>
+     (Sourced from assetSummary property within ConnectionsToAsset - model 0205)</li>
      <li>description - full description of the asset.
      (Sourced from attribute description within Asset - model 0010)</li>
      <li>owner - name of the person or organization that owns the asset.
@@ -253,138 +253,166 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getName()">getName</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Return the name of the resource that this asset represents.</div>
+</td>
+</tr>
+<tr id="i4" class="altColor">
+<td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOriginBusinessCapabilityGUID()">getOriginBusinessCapabilityGUID</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the unique identifier of the business capability that originated this asset.</div>
 </td>
 </tr>
-<tr id="i4" class="altColor">
+<tr id="i5" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOriginOrganizationGUID()">getOriginOrganizationGUID</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the unique identifier for the organization that originated this asset.</div>
 </td>
 </tr>
-<tr id="i5" class="rowColor">
+<tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOtherOriginValues()">getOtherOriginValues</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the properties that characterize where this asset is from.</div>
 </td>
 </tr>
-<tr id="i6" class="altColor">
+<tr id="i7" class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwner()">getOwner</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the name of the owner for this asset.</div>
 </td>
 </tr>
-<tr id="i7" class="rowColor">
+<tr id="i8" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwnerPropertyName()">getOwnerPropertyName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the property name used to identify the owner for this asset.</div>
 </td>
 </tr>
-<tr id="i8" class="altColor">
+<tr id="i9" class="rowColor">
 <td class="colFirst"><code><a href="OwnerType.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">OwnerType</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwnerType()">getOwnerType</a></span>()</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
-<tr id="i9" class="rowColor">
+<tr id="i10" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getOwnerTypeName()">getOwnerTypeName</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Returns the name of the type used to identify of the owner for this asset.</div>
 </td>
 </tr>
-<tr id="i10" class="altColor">
+<tr id="i11" class="rowColor">
+<td class="colFirst"><code>java.lang.String</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getVersionIdentifier()">getVersionIdentifier</a></span>()</code></th>
+<td class="colLast">
+<div class="block">Set up the version identifier of the resource.</div>
+</td>
+</tr>
+<tr id="i12" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getZoneMembership()">getZoneMembership</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return the names of the zones that this asset is a member of.</div>
 </td>
 </tr>
-<tr id="i11" class="rowColor">
+<tr id="i13" class="rowColor">
 <td class="colFirst"><code>int</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#hashCode()">hashCode</a></span>()</code></th>
 <td class="colLast">
 <div class="block">Return hash code based on properties.</div>
 </td>
 </tr>
-<tr id="i12" class="altColor">
+<tr id="i14" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDescription(java.lang.String)">setDescription</a></span>&#8203;(java.lang.String&nbsp;description)</code></th>
 <td class="colLast">
 <div class="block">Set up the stored description property associated with the asset.</div>
 </td>
 </tr>
-<tr id="i13" class="rowColor">
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setDisplayName(java.lang.String)">setDisplayName</a></span>&#8203;(java.lang.String&nbsp;displayName)</code></th>
 <td class="colLast">
 <div class="block">Set up the stored display name property for the asset.</div>
 </td>
 </tr>
-<tr id="i14" class="altColor">
+<tr id="i16" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setName(java.lang.String)">setName</a></span>&#8203;(java.lang.String&nbsp;name)</code></th>
+<td class="colLast">
+<div class="block">Set up the name of the resource that this asset represents.</div>
+</td>
+</tr>
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOriginBusinessCapabilityGUID(java.lang.String)">setOriginBusinessCapabilityGUID</a></span>&#8203;(java.lang.String&nbsp;originBusinessCapabilityGUID)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique identifier of the business capability that originated this asset.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOriginOrganizationGUID(java.lang.String)">setOriginOrganizationGUID</a></span>&#8203;(java.lang.String&nbsp;originOrganizationGUID)</code></th>
 <td class="colLast">
 <div class="block">Set up the unique identifier for the organization that originated this asset.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOtherOriginValues(java.util.Map)">setOtherOriginValues</a></span>&#8203;(java.util.Map&lt;java.lang.String,&#8203;java.lang.String&gt;&nbsp;otherOriginValues)</code></th>
 <td class="colLast">
 <div class="block">Set up the properties that characterize where this asset is from.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i20" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOwner(java.lang.String)">setOwner</a></span>&#8203;(java.lang.String&nbsp;owner)</code></th>
 <td class="colLast">
 <div class="block">Set up the name of the owner for this asset.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i21" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOwnerPropertyName(java.lang.String)">setOwnerPropertyName</a></span>&#8203;(java.lang.String&nbsp;ownerPropertyName)</code></th>
 <td class="colLast">
 <div class="block">Set up the property name used to identify the owner for this asset.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOwnerType(org.odpi.openmetadata.accessservices.assetconsumer.properties.OwnerType)">setOwnerType</a></span>&#8203;(<a href="OwnerType.html" title="enum in org.odpi.openmetadata.accessservices.assetconsumer.properties">OwnerType</a>&nbsp;ownerType)</code></th>
 <td class="colLast">
 <div class="block"><span class="deprecatedLabel">Deprecated.</span></div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setOwnerTypeName(java.lang.String)">setOwnerTypeName</a></span>&#8203;(java.lang.String&nbsp;ownerTypeName)</code></th>
 <td class="colLast">
 <div class="block">Set up the name of the type used to identify the owner for this asset.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i24" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></span>&#8203;(java.lang.String&nbsp;versionIdentifier)</code></th>
+<td class="colLast">
+<div class="block">Set up the version identifier of the resource.</div>
+</td>
+</tr>
+<tr id="i25" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setZoneMembership(java.util.List)">setZoneMembership</a></span>&#8203;(java.util.List&lt;java.lang.String&gt;&nbsp;zoneMembership)</code></th>
 <td class="colLast">
 <div class="block">Set up the names of the zones that this asset is a member of.</div>
 </td>
 </tr>
-<tr id="i22" class="altColor">
+<tr id="i26" class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#toString()">toString</a></span>()</code></th>
 <td class="colLast">
@@ -456,6 +484,62 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <!--   -->
 </a>
 <h3>Method Detail</h3>
+<a id="getName()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getName</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getName()</pre>
+<div class="block">Return the name of the resource that this asset represents.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string resource name</dd>
+</dl>
+</li>
+</ul>
+<a id="setName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setName</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setName&#8203;(java.lang.String&nbsp;name)</pre>
+<div class="block">Set up the name of the resource that this asset represents.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>name</code> - string resource name</dd>
+</dl>
+</li>
+</ul>
+<a id="getVersionIdentifier()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getVersionIdentifier</h4>
+<pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getVersionIdentifier()</pre>
+<div class="block">Set up the version identifier of the resource.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>string version name</dd>
+</dl>
+</li>
+</ul>
+<a id="setVersionIdentifier(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setVersionIdentifier</h4>
+<pre class="methodSignature">public&nbsp;void&nbsp;setVersionIdentifier&#8203;(java.lang.String&nbsp;versionIdentifier)</pre>
+<div class="block">Set up the version identifier of the resource.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>versionIdentifier</code> - string version name</dd>
+</dl>
+</li>
+</ul>
 <a id="getDisplayName()">
 <!--   -->
 </a>
@@ -464,7 +548,7 @@ extends <a href="ReferenceableProperties.html" title="class in org.odpi.openmeta
 <h4>getDisplayName</h4>
 <pre class="methodSignature">public&nbsp;java.lang.String&nbsp;getDisplayName()</pre>
 <div class="block">Returns the stored display name property for the asset.
- If no display name is available then null is returned.</div>
+ If no display name is available then name is returned.</div>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>String name</dd>

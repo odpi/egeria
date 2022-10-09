@@ -320,7 +320,7 @@ implements <a href="../api/AssetOnboardingFileSystem.html" title="interface in o
 <tr id="i6" class="altColor">
 <td class="colFirst"><code>java.util.List&lt;java.lang.String&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#createFolderStructureInCatalog(java.lang.String,java.lang.String,java.lang.String)">createFolderStructureInCatalog</a></span>&#8203;(java.lang.String&nbsp;userId,
-                              java.lang.String&nbsp;anchorGUID,
+                              java.lang.String&nbsp;parentGUID,
                               java.lang.String&nbsp;pathName)</code></th>
 <td class="colLast">
 <div class="block">Creates a new folder asset for each element in the pathName that is linked from the anchor entity.</div>
@@ -646,7 +646,7 @@ implements <a href="../api/AssetOnboardingFileSystem.html" title="interface in o
 <li class="blockList">
 <h4>createFolderStructureInCatalog</h4>
 <pre class="methodSignature">public&nbsp;java.util.List&lt;java.lang.String&gt;&nbsp;createFolderStructureInCatalog&#8203;(java.lang.String&nbsp;userId,
-                                                                       java.lang.String&nbsp;anchorGUID,
+                                                                       java.lang.String&nbsp;parentGUID,
                                                                        java.lang.String&nbsp;pathName)
                                                                 throws <a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
                                                                        <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -659,7 +659,7 @@ implements <a href="../api/AssetOnboardingFileSystem.html" title="interface in o
 <dd><code><a href="../api/AssetOnboardingFileSystem.html#createFolderStructureInCatalog(java.lang.String,java.lang.String,java.lang.String)">createFolderStructureInCatalog</a></code>&nbsp;in interface&nbsp;<code><a href="../api/AssetOnboardingFileSystem.html" title="interface in org.odpi.openmetadata.accessservices.assetowner.api">AssetOnboardingFileSystem</a></code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>anchorGUID</code> - root object to connect the folder to</dd>
+<dd><code>parentGUID</code> - root object to connect the folder to</dd>
 <dd><code>pathName</code> - pathname of the folder (or folders)</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>list of GUIDs from the top level to the leaf of the supplied pathname</dd>
