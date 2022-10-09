@@ -16,12 +16,12 @@ pluginManagement {
     }
     plugins {
         //id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-        id 'org.springframework.boot' version '2.7.3'
+        id 'org.springframework.boot' version '2.7.4'
         id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
         id 'org.siouan.frontend-jdk11' version '6.0.0'
         id 'com.github.johnrengelman.shadow' version '7.1.2'
         id 'com.github.psxpaul.execfork' version '0.2.0'
-        id 'de.jjohannes.java-ecosystem-capabilities' version '0.4'
+        id 'de.jjohannes.java-ecosystem-capabilities' version '0.5'
 
 
         // For reference we use these, but they are internal so no version spec needed
