@@ -749,7 +749,7 @@ public class StewardshipActionOMRSTopicListener extends OMRSTopicListenerBase
      * @param userId callers userId
      * @param entity entity to test
      * @param entityProxy entity proxy when entity is not available
-     * @return entity detail if it is to be send.
+     * @return entity detail if it is to be sent.
      */
     private EntityDetail entityOfInterest(String       userId,
                                           EntityDetail entity,
@@ -824,22 +824,22 @@ public class StewardshipActionOMRSTopicListener extends OMRSTopicListenerBase
     /**
      * Stewardship Action OMAS only publishes events of type Asset that
      *
-     * @param entityHeader entity element
+     * @param instanceHeader entity element
      * @return flag to say whether to publish the event.
      */
-    private boolean isTypeOfInterest(InstanceHeader entityHeader)
+    private boolean isTypeOfInterest(InstanceHeader instanceHeader)
     {
         final String interestingTypeName = "Referenceable";
 
-        if (entityHeader != null)
+        if (instanceHeader != null)
         {
             List<String> typeNames = new ArrayList<>();
 
-            typeNames.add(entityHeader.getType().getTypeDefName());
+            typeNames.add(instanceHeader.getType().getTypeDefName());
 
-            if (entityHeader.getType().getTypeDefSuperTypes() != null)
+            if (instanceHeader.getType().getTypeDefSuperTypes() != null)
             {
-                for (TypeDefLink superType : entityHeader.getType().getTypeDefSuperTypes())
+                for (TypeDefLink superType : instanceHeader.getType().getTypeDefSuperTypes())
                 {
                     if (superType != null)
                     {
@@ -848,7 +848,12 @@ public class StewardshipActionOMRSTopicListener extends OMRSTopicListenerBase
                 }
             }
 
-            return typeNames.contains(interestingTypeName);
+            if (typeNames.contains(OpenMetadataAPIMapper.TO_DO_TYPE_NAME))
+            {
+                return true;
+            }
+
+            return (typeNames.contains(OpenMetadataAPIMapper.INCIDENT_REPORT_TYPE_NAME));
         }
 
         return false;

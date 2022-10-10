@@ -27,9 +27,11 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private String       displayName        = null;
-    private String       description        = null;
-    private String       fullPath           = null;
+    private String name              = null;
+    private String displayName       = null;
+    private String versionIdentifier = null;
+    private String description       = null;
+    private String fullPath          = null;
 
 
     /**
@@ -51,6 +53,7 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
 
         if (template != null)
         {
+            name = template.getName();
             displayName = template.getDisplayName();
             description = template.getDescription();
             fullPath = template.getFullPath();
@@ -59,20 +62,75 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
 
 
     /**
-     * Return the display name of the file
+     * Return the name of the resource that this asset represents.
      *
-     * @return string name
+     * @return string resource name
+     */
+    public String getName()
+    {
+        if (name == null)
+        {
+            return displayName;
+        }
+
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the resource that this asset represents.
+     *
+     * @param name string resource name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
+     * Returns the stored display name property for the asset.
+     * If no display name is available then name is returned.
+     *
+     * @return String name
      */
     public String getDisplayName()
     {
+        if (displayName == null)
+        {
+            return name;
+        }
+
         return displayName;
     }
 
 
     /**
-     * Set up the display name of the file.
+     * Set up the stored display name property for the asset.
      *
-     * @param displayName string name
+     * @param displayName String name
      */
     public void setDisplayName(String displayName)
     {
@@ -133,10 +191,11 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
     public String toString()
     {
         return "NewFileAssetRequestBody{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", fullPath='" + fullPath +
-                '}';
+                       "name='" + name + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
+                       ", description='" + description + '\'' +
+                       ", fullPath='" + fullPath + '\'' +
+                       '}';
     }
 
 
@@ -158,7 +217,7 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
             return false;
         }
         NewFileAssetRequestBody that = (NewFileAssetRequestBody) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
+        return Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getFullPath(), that.getFullPath());
     }
@@ -172,6 +231,6 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(getDisplayName(), getDescription(), getFullPath());
+        return Objects.hash(getName(), getDescription(), getFullPath());
     }
 }

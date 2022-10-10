@@ -11,7 +11,7 @@
  * Following the header are the common properties for all asset events.   This includes the latest version of
  * the asset, its origin and the license associated with the Asset's metadata.
  *
- * Finally are the specialist extensions for each type of event.  New asset events include the creation time of the
+ * Finally, are the specialist extensions for each type of event.  New asset events include the creation time of the
  * asset.  Updated asset events include the update time and the original values of the asset (if available).
  */
 package org.odpi.openmetadata.accessservices.stewardshipaction.events;

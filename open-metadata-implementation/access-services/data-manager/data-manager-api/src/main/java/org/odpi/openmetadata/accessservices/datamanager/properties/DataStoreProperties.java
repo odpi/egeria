@@ -255,17 +255,21 @@ public class DataStoreProperties extends AssetProperties
     public String toString()
     {
         return "DataStoreProperties{" +
-                       "pathName=" + pathName +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", pathName='" + pathName + '\'' +
                        ", createTime=" + createTime +
                        ", modifiedTime=" + modifiedTime +
                        ", encodingType='" + encodingType + '\'' +
                        ", encodingLanguage='" + encodingLanguage + '\'' +
                        ", encodingDescription='" + encodingDescription + '\'' +
-                       ", encodingProperties='" + encodingProperties + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
+                       ", encodingProperties=" + encodingProperties +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
@@ -286,27 +290,47 @@ public class DataStoreProperties extends AssetProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof DataStoreProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         DataStoreProperties that = (DataStoreProperties) objectToCompare;
-        return Objects.equals(pathName, that.pathName) &&
-                       Objects.equals(createTime, that.createTime) &&
-                       Objects.equals(modifiedTime, that.modifiedTime) &&
-                       Objects.equals(encodingType, that.encodingType) &&
-                       Objects.equals(encodingLanguage, that.encodingLanguage) &&
-                       Objects.equals(encodingDescription, that.encodingDescription) &&
-                       Objects.equals(encodingProperties, that.encodingProperties);
+
+        if (pathName != null ? ! pathName.equals(that.pathName) : that.pathName != null)
+        {
+            return false;
+        }
+        if (createTime != null ? ! createTime.equals(that.createTime) : that.createTime != null)
+        {
+            return false;
+        }
+        if (modifiedTime != null ? ! modifiedTime.equals(that.modifiedTime) : that.modifiedTime != null)
+        {
+            return false;
+        }
+        if (encodingType != null ? ! encodingType.equals(that.encodingType) : that.encodingType != null)
+        {
+            return false;
+        }
+        if (encodingLanguage != null ? ! encodingLanguage.equals(that.encodingLanguage) : that.encodingLanguage != null)
+        {
+            return false;
+        }
+        if (encodingDescription != null ? ! encodingDescription.equals(that.encodingDescription) : that.encodingDescription != null)
+        {
+            return false;
+        }
+        return encodingProperties != null ? encodingProperties.equals(that.encodingProperties) : that.encodingProperties == null;
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

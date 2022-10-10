@@ -80,14 +80,18 @@ public class TopicProperties extends DataSetProperties
     public String toString()
     {
         return "TopicProperties{" +
-                       "topicType='" + topicType + '\'' +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", topicType='" + topicType + '\'' +
                        '}';
     }
 
@@ -105,21 +109,23 @@ public class TopicProperties extends DataSetProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof TopicProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         TopicProperties that = (TopicProperties) objectToCompare;
-        return Objects.equals(topicType, that.topicType);
+
+        return topicType != null ? topicType.equals(that.topicType) : that.topicType == null;
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

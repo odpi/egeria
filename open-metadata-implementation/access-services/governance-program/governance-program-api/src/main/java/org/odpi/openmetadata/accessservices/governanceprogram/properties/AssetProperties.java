@@ -21,6 +21,7 @@ public class AssetProperties extends SupplementaryProperties
     private static final long     serialVersionUID = 1L;
 
     private String technicalName = null;
+    private String versionIdentifier = null;
     private String technicalDescription = null;
 
     /**
@@ -43,6 +44,7 @@ public class AssetProperties extends SupplementaryProperties
         if (template != null)
         {
             technicalName = template.getDisplayName();
+            versionIdentifier = template.getVersionIdentifier();
             technicalDescription = template.getTechnicalDescription();
         }
     }
@@ -69,6 +71,29 @@ public class AssetProperties extends SupplementaryProperties
     {
         this.technicalName = technicalName;
     }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
 
 
     /**
@@ -104,16 +129,19 @@ public class AssetProperties extends SupplementaryProperties
     {
         return "AssetProperties{" +
                        "technicalName='" + technicalName + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
                        ", technicalDescription='" + technicalDescription + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", effectiveFrom=" + getEffectiveFrom() +
+                       ", effectiveTo=" + getEffectiveTo() +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", extendedProperties=" + getExtendedProperties() +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", abbreviation='" + getAbbreviation() + '\'' +
                        ", usage='" + getUsage() + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
 
@@ -131,27 +159,37 @@ public class AssetProperties extends SupplementaryProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof AssetProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         AssetProperties that = (AssetProperties) objectToCompare;
-        return Objects.equals(technicalName, that.technicalName) &&
-                Objects.equals(technicalDescription, that.technicalDescription);
+
+        if (technicalName != null ? ! technicalName.equals(that.technicalName) : that.technicalName != null)
+        {
+            return false;
+        }
+        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
+        {
+            return false;
+        }
+        return technicalDescription != null ? technicalDescription.equals(that.technicalDescription) : that.technicalDescription == null;
     }
 
+
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), technicalName, technicalDescription);
+        return Objects.hash(super.hashCode(), technicalName, versionIdentifier, technicalDescription);
     }
 }

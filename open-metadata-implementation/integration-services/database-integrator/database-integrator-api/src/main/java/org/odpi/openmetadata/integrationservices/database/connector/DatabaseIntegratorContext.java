@@ -154,12 +154,34 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public void updateDatabase(String             databaseGUID,
                                DatabaseProperties databaseProperties) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        databaseManagerClient.updateDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, databaseProperties);
+        databaseManagerClient.updateDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, false, databaseProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a database.
+     *
+     * @param databaseGUID unique identifier of the metadata element to update
+     * @param databaseProperties new properties for this element
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabase(String             databaseGUID,
+                               boolean            isMergeUpdate,
+                               DatabaseProperties databaseProperties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        databaseManagerClient.updateDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, isMergeUpdate, databaseProperties);
     }
 
 
@@ -211,12 +233,31 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
+    @SuppressWarnings(value="unused")
     public void removeDatabase(String databaseGUID,
                                String qualifiedName) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
-        databaseManagerClient.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, qualifiedName);
+        databaseManagerClient.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a database.
+     *
+     * @param databaseGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDatabase(String databaseGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        databaseManagerClient.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID);
     }
 
 
@@ -366,12 +407,34 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public void updateDatabaseSchema(String                   databaseSchemaGUID,
                                      DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, databaseSchemaProperties);
+        databaseManagerClient.updateDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, false, databaseSchemaProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a database schema.
+     *
+     * @param databaseSchemaGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param databaseSchemaProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabaseSchema(String                   databaseSchemaGUID,
+                                     boolean                  isMergeUpdate,
+                                     DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        databaseManagerClient.updateDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, isMergeUpdate, databaseSchemaProperties);
     }
 
 
@@ -423,12 +486,31 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
+    @SuppressWarnings(value="unused")
     public void removeDatabaseSchema(String databaseSchemaGUID,
                                      String qualifiedName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        databaseManagerClient.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, qualifiedName);
+        databaseManagerClient.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a database schema.
+     *
+     * @param databaseSchemaGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDatabaseSchema(String databaseSchemaGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        databaseManagerClient.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID);
     }
 
 
@@ -639,12 +721,34 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public void updateDatabaseTable(String                  databaseTableGUID,
                                     DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        databaseManagerClient.updateDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, databaseTableProperties);
+        databaseManagerClient.updateDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, false, databaseTableProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a database table.
+     *
+     * @param databaseTableGUID unique identifier of the database table to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param databaseTableProperties new properties for the database table
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabaseTable(String                  databaseTableGUID,
+                                    boolean                 isMergeUpdate,
+                                    DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        databaseManagerClient.updateDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, isMergeUpdate, databaseTableProperties);
     }
 
 
@@ -658,12 +762,32 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @SuppressWarnings(value = "unused")
+    @Deprecated
     public void removeDatabaseTable(String databaseTableGUID,
                                     String qualifiedName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
-        databaseManagerClient.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID, qualifiedName);
+        databaseManagerClient.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a database table.
+     *
+     * @param databaseTableGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDatabaseTable(String databaseTableGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        databaseManagerClient.removeDatabaseTable(userId, databaseManagerGUID, databaseManagerName, databaseTableGUID);
     }
 
 
@@ -856,13 +980,37 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public void updateDatabaseView(String                 databaseViewGUID,
                                    DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        databaseManagerClient.updateDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, databaseViewProperties);
+        databaseManagerClient.updateDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, false, databaseViewProperties);
     }
+
+
+
+    /**
+     * Update the metadata element representing a database table.
+     *
+     * @param databaseViewGUID unique identifier of the database view to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param databaseViewProperties properties for the new database view
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabaseView(String                 databaseViewGUID,
+                                   boolean                isMergeUpdate,
+                                   DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        databaseManagerClient.updateDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, isMergeUpdate, databaseViewProperties);
+    }
+
 
 
     /**
@@ -875,12 +1023,32 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @SuppressWarnings(value = "unused")
+    @Deprecated
     public void removeDatabaseView(String databaseViewGUID,
                                    String qualifiedName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
-        databaseManagerClient.removeDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID, qualifiedName);
+        databaseManagerClient.removeDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID);
+    }
+
+
+
+    /**
+     * Remove the metadata element representing a database table.
+     *
+     * @param databaseViewGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDatabaseView(String databaseViewGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        databaseManagerClient.removeDatabaseView(userId, databaseManagerGUID, databaseManagerName, databaseViewGUID);
     }
 
 
@@ -1059,12 +1227,34 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
     public void updateDatabaseColumn(String                   databaseColumnGUID,
                                      DatabaseColumnProperties databaseColumnProperties) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
-        databaseManagerClient.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, databaseColumnProperties);
+        databaseManagerClient.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, false, databaseColumnProperties);
+    }
+
+
+    /**
+     * Update the metadata element representing a database column.
+     *
+     * @param databaseColumnGUID unique identifier of the metadata element to update
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param databaseColumnProperties new properties for the metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabaseColumn(String                   databaseColumnGUID,
+                                     boolean                  isMergeUpdate,
+                                     DatabaseColumnProperties databaseColumnProperties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        databaseManagerClient.updateDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, isMergeUpdate, databaseColumnProperties);
     }
 
 
@@ -1078,12 +1268,31 @@ public class DatabaseIntegratorContext
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @Deprecated
+    @SuppressWarnings(value = "unused")
     public void removeDatabaseColumn(String databaseColumnGUID,
                                      String qualifiedName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        databaseManagerClient.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, qualifiedName);
+        databaseManagerClient.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID);
+    }
+
+
+    /**
+     * Remove the metadata element representing a database column.
+     *
+     * @param databaseColumnGUID unique identifier of the metadata element to remove
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDatabaseColumn(String databaseColumnGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        databaseManagerClient.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID);
     }
 
 

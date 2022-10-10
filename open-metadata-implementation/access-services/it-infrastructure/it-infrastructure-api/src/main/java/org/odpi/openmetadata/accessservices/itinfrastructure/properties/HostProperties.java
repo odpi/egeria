@@ -86,10 +86,13 @@ public class HostProperties extends ITInfrastructureProperties
     public String toString()
     {
         return "HostProperties{" +
-                       "displayName='" + getDisplayName() + '\'' +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
+                       ", cloneToAsset=" + cloneToAsset() +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", vendorProperties=" + getVendorProperties() +

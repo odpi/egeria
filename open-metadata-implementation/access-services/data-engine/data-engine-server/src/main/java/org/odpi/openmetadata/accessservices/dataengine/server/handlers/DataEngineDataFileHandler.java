@@ -165,7 +165,7 @@ public class DataEngineDataFileHandler {
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, DATA_FILE_TYPE_NAME);
 
         fileHandler.updateAsset(userId, externalSourceGuid, externalSourceName, fileAsEntity.getGUID(),
-               CommonMapper.GUID_PROPERTY_NAME, file.getQualifiedName(), file.getDisplayName(),
+               CommonMapper.GUID_PROPERTY_NAME, file.getQualifiedName(), file.getDisplayName(), null,
                file.getDescription(), file.getAdditionalProperties(), entityTypeDef.getGUID(),
                entityTypeDef.getName(), extendedProperties, null, null, true,
                false, false, dataEngineCommonHandler.getNow(), methodName);
@@ -179,7 +179,7 @@ public class DataEngineDataFileHandler {
         int ownerType = dataEngineCommonHandler.getOwnerTypeOrdinal(file.getOwnerType());
 
         return fileHandler.createAssetInRepository(userId, externalSourceGuid, externalSourceName,
-                file.getQualifiedName(), file.getDisplayName(), file.getDescription(), file.getZoneMembership(),
+                file.getQualifiedName(), file.getDisplayName(), null, file.getDescription(), file.getZoneMembership(),
                 file.getOwner(), ownerType, file.getOriginOrganizationGUID(),
                 file.getOriginBusinessCapabilityGUID(), file.getOtherOriginValues(), file.getAdditionalProperties(),
                 typeGuid, typeName, extendedProperties, null, null, InstanceStatus.ACTIVE,

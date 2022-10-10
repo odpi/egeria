@@ -20,6 +20,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.ProcessHierarchy;
+import org.odpi.openmetadata.accessservices.dataengine.model.ProcessingState;
 import org.odpi.openmetadata.accessservices.dataengine.model.Referenceable;
 import org.odpi.openmetadata.accessservices.dataengine.model.RelationalTable;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
@@ -39,6 +40,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessHierarchyRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessingStateRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.RelationalTableRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.TopicRequestBody;
@@ -97,6 +99,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
@@ -2170,6 +2173,55 @@ public class DataEngineRESTServices {
         String eventTypeGUID = getEntityGUID(userId, serverName, guid, qualifiedName, EVENT_TYPE_TYPE_NAME, methodName);
         dataEngineEventTypeHandler.removeEventType(userId, eventTypeGUID, qualifiedName, externalSourceName, deleteSemantic);
         log.debug(DEBUG_DELETE_MESSAGE, eventTypeGUID, TOPIC_TYPE_NAME);
+    }
+
+    /**
+     * Create or update the ProcessingState with provided map of critical elements and sync states
+     *
+     * @param serverName                 name of server instance to call
+     * @param userId                     the name of the calling user
+     * @param processingStateRequestBody map of critical elements and sync states
+     * @return void response
+     */
+    public VoidResponse upsertProcessingState(String userId, String serverName, ProcessingStateRequestBody processingStateRequestBody) {
+        final String methodName = "upsertProcessingState";
+
+        VoidResponse response = new VoidResponse();
+        try {
+            validateRequestBody(userId, serverName, processingStateRequestBody, methodName);
+
+            ProcessingState processingState = processingStateRequestBody.getProcessingState();
+            if (processingState == null) {
+                restExceptionHandler.handleMissingValue("processingState", methodName);
+                return response;
+            }
+            return upsertProcessingState(userId, serverName, processingState, processingStateRequestBody.getExternalSourceName());
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
+    }
+
+    /**
+     * Create or update the ProcessingState with provided map of critical elements and sync states
+     *
+     * @param serverName         name of server instance to call
+     * @param userId             the name of the calling user
+     * @param processingState    map of critical elements and sync states
+     * @param externalSourceName the unique name of the external source
+     * @return void response
+     */
+    public VoidResponse upsertProcessingState(String userId, String serverName, ProcessingState processingState, String externalSourceName) {
+        final String methodName = "upsertProcessingState";
+
+        VoidResponse response = new VoidResponse();
+        try {
+            DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName, methodName);
+            handler.createDataEngineClassification(userId, processingState, externalSourceName);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
+        return response;
     }
 
     private boolean isTopicRequestBodyValid(String userId, String serverName, TopicRequestBody topicRequestBody, String methodName) throws

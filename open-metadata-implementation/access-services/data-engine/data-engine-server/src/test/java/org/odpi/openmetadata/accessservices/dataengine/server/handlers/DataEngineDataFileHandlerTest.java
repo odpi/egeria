@@ -116,7 +116,7 @@ class DataEngineDataFileHandlerTest {
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, FILE_TYPE);
         verify(fileHandler, times(1)).
-                createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, DESCRIPTION,
+                createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null, DESCRIPTION,
                       null, OWNER, 0, null, null,
                       null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
                       getExtendedProperties(), null, null, InstanceStatus.ACTIVE, null, METHOD);
@@ -144,7 +144,7 @@ class DataEngineDataFileHandlerTest {
 
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, QUALIFIED_NAME, FILE_TYPE);
         verify(fileHandler, times(1)).
-                createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, DESCRIPTION,
+                createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, QUALIFIED_NAME, NAME, null, DESCRIPTION,
                         null, OWNER, 0, null, null,
                         null, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
                         getExtendedProperties(), null, null, InstanceStatus.ACTIVE, null, METHOD);
@@ -178,7 +178,7 @@ class DataEngineDataFileHandlerTest {
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, csvFile.getQualifiedName(), csvFile.getFileType());
         verify(fileHandler, times(1)).
                 updateAsset(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME, GUID_VALUE, CommonMapper.GUID_PROPERTY_NAME,
-                            QUALIFIED_NAME, NAME, DESCRIPTION, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
+                            QUALIFIED_NAME, NAME, null, DESCRIPTION, null, CSV_FILE_TYPE_GUID, CSV_FILE_TYPE_NAME,
                             getExtendedProperties(),null, null, true, false, false, null, METHOD);
         verify(dataEngineSchemaTypeHandler, times(1)).upsertSchemaType(USER, schemaType, EXTERNAL_SOURCE_NAME);
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, guid, SCHEMA_TYPE_GUID,

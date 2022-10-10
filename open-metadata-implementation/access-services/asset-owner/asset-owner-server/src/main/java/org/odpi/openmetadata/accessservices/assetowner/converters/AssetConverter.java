@@ -72,7 +72,9 @@ public class AssetConverter<B> extends AssetOwnerOMASConverter<B>
 
                     assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    assetProperties.setDisplayName(this.removeName(instanceProperties));
+                    assetProperties.setName(this.removeName(instanceProperties));
+                    assetProperties.setDisplayName(assetProperties.getName());
+                    assetProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     assetProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /* Note this value should be in the classification */

@@ -87,23 +87,31 @@ public class FileProperties extends DataStoreProperties
     public String toString()
     {
         return "FileProperties{" +
-                "fileType='" + fileType + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encodingType='" + getEncodingType() + '\'' +
-                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerType=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOtherOriginValues() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", owner='" + getOwner() + '\'' +
+                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
+                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
+                       ", ownerType=" + getOwnerType() +
+                       ", zoneMembership=" + getZoneMembership() +
+                       ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
+                       ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
+                       ", otherOriginValues=" + getOtherOriginValues() +
+                       ", pathName='" + getPathName() + '\'' +
+                       ", createTime=" + getCreateTime() +
+                       ", modifiedTime=" + getModifiedTime() +
+                       ", encodingType='" + getEncodingType() + '\'' +
+                       ", encodingLanguage='" + getEncodingLanguage() + '\'' +
+                       ", encodingDescription='" + getEncodingDescription() + '\'' +
+                       ", encodingProperties=" + getEncodingProperties() +
+                       ", fileType='" + fileType + '\'' +
+                       ", typeName='" + getTypeName() + '\'' +
+                       ", qualifiedName='" + getQualifiedName() + '\'' +
+                       ", additionalProperties=" + getAdditionalProperties() +
+                       ", extendedProperties=" + getExtendedProperties() +
+                       '}';
     }
 
 

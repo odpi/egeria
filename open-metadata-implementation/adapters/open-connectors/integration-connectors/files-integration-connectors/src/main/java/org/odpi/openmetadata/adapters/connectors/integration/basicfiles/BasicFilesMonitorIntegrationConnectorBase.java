@@ -36,9 +36,9 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
     private File              dataFolderFile    = null;
 
 
-    private Map<String, FileAlterationMonitor> monitors = new HashMap<>();
+    private final Map<String, FileAlterationMonitor> monitors = new HashMap<>();
 
-    private static int POLL_INTERVAL = 500; // milliseconds
+    private static final int POLL_INTERVAL = 500; // milliseconds
 
 
     /**

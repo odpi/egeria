@@ -30,7 +30,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -124,7 +123,7 @@ class DataEngineRelationalDataHandlerTest {
         when(registrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         when(relationalDataHandler.createDatabase(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, database.getQualifiedName(),
-                database.getDisplayName(), database.getDescription(), database.getOwner(), database.getOwnerType().getOpenTypeOrdinal(),
+                database.getDisplayName(), null, database.getDescription(), database.getOwner(), database.getOwnerType().getOpenTypeOrdinal(),
                 database.getZoneMembership(), database.getOriginOrganizationGUID(), database.getOriginBusinessCapabilityGUID(),
                 database.getOtherOriginValues(), database.getPathName(), database.getCreateTime(), database.getModifiedTime(),
                 database.getEncodingType(), database.getEncodingLanguage(), database.getEncodingDescription(), database.getEncodingProperties(),
@@ -141,7 +140,7 @@ class DataEngineRelationalDataHandlerTest {
 
         int ordinal = OwnerType.USER_ID.getOrdinal();
         when(relationalDataHandler.createDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, DATABASE_GUID,
-                databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(),
+                databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), null, databaseSchema.getDescription(),
                 databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                 databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
@@ -163,7 +162,7 @@ class DataEngineRelationalDataHandlerTest {
                 DATABASE_GUID, DATABASE_TYPE_NAME, PROTOCOL, NETWORK_ADDRESS, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, USER);
         verify(relationalDataHandler, times(1)).createDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_NAME, DATABASE_GUID, databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(),
-                databaseSchema.getDescription(), databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(),
+                null, databaseSchema.getDescription(), databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(),
                 databaseSchema.getOriginOrganizationGUID(), databaseSchema.getOriginBusinessCapabilityGUID(),
                 databaseSchema.getOtherOriginValues(), databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                 null, null, null, null,
@@ -212,7 +211,7 @@ class DataEngineRelationalDataHandlerTest {
 
         int ordinal = OwnerType.USER_ID.getOrdinal();
         when(relationalDataHandler.createDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, DATABASE_GUID,
-                databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(),
+                databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), null, databaseSchema.getDescription(),
                 databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                 databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
@@ -236,7 +235,7 @@ class DataEngineRelationalDataHandlerTest {
 
         int ordinal = OwnerType.USER_ID.getOrdinal();
         when(relationalDataHandler.createDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME, DATABASE_GUID,
-                databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(),
+                databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), null, databaseSchema.getDescription(),
                 databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                 databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, null,
@@ -268,7 +267,7 @@ class DataEngineRelationalDataHandlerTest {
 
         int ordinal = OwnerType.USER_ID.getOrdinal();
         doNothing().when(relationalDataHandler).updateDatabaseSchema(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_NAME,
-                SCHEMA_GUID, databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), databaseSchema.getDescription(),
+                SCHEMA_GUID, databaseSchema.getQualifiedName(), databaseSchema.getDisplayName(), null, databaseSchema.getDescription(),
                 databaseSchema.getOwner(), ordinal, databaseSchema.getZoneMembership(), databaseSchema.getOriginOrganizationGUID(),
                 databaseSchema.getOriginBusinessCapabilityGUID(), databaseSchema.getOtherOriginValues(),
                 databaseSchema.getAdditionalProperties(), DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,

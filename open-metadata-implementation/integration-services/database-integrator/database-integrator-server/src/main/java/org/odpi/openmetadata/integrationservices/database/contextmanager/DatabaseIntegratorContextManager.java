@@ -99,8 +99,7 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
         databaseManagerClient = new DatabaseManagerClient(partnerOMASServerName,
                                                             partnerOMASPlatformRootURL,
                                                             restClient,
-                                                            maxPageSize,
-                                                            auditLog);
+                                                            maxPageSize);
 
         connectionManagerClient = new ConnectionManagerClient(partnerOMASServerName,
                                                               partnerOMASPlatformRootURL,

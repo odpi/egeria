@@ -124,7 +124,7 @@ public class SoftwareServerRequestBody extends SoftwareServerProperties
                        ", softwareServerVersion='" + getSoftwareServerVersion() + '\'' +
                        ", softwareServerSource='" + getSoftwareServerSource() + '\'' +
                        ", softwareServerUserId='" + getSoftwareServerUserId() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", displayName='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +

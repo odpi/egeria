@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * RelationshipRequestBody describes the request body used when linking elements together.
+ * ReferenceableRequestBody describes the request body used when working with referenceables.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,7 +24,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                  anchorGUID = null;
+    private String                  parentGUID = null;
     private ReferenceableProperties properties = null;
 
 
@@ -48,7 +48,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
 
         if (template != null)
         {
-            anchorGUID = template.getAnchorGUID();
+            parentGUID = template.getParentGUID();
             properties = template.getProperties();
         }
     }
@@ -81,20 +81,20 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
      *
      * @return guid
      */
-    public String getAnchorGUID()
+    public String getParentGUID()
     {
-        return anchorGUID;
+        return parentGUID;
     }
 
 
     /**
      * Set up an optional anchor GUID to attach the new element to.
      *
-     * @param anchorGUID guid
+     * @param parentGUID guid
      */
-    public void setAnchorGUID(String anchorGUID)
+    public void setParentGUID(String parentGUID)
     {
-        this.anchorGUID = anchorGUID;
+        this.parentGUID = parentGUID;
     }
 
 
@@ -109,7 +109,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
         return "ReferenceableRequestBody{" +
                        "externalSourceGUID='" + getExternalSourceGUID() + '\'' +
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
-                       ", anchorGUID='" + anchorGUID + '\'' +
+                       ", anchorGUID='" + parentGUID + '\'' +
                        ", properties=" + properties +
                        '}';
     }
@@ -137,7 +137,7 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
             return false;
         }
         ReferenceableRequestBody that = (ReferenceableRequestBody) objectToCompare;
-        return Objects.equals(anchorGUID, that.anchorGUID) && Objects.equals(properties, that.properties);
+        return Objects.equals(parentGUID, that.parentGUID) && Objects.equals(properties, that.properties);
     }
 
 
@@ -149,6 +149,6 @@ public class ReferenceableRequestBody extends ExternalSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchorGUID, properties);
+        return Objects.hash(super.hashCode(), parentGUID, properties);
     }
 }

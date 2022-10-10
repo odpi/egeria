@@ -265,7 +265,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
                        ", softwareServerVersion='" + softwareServerVersion + '\'' +
                        ", softwareServerSource='" + softwareServerSource + '\'' +
                        ", softwareServerUserId='" + softwareServerUserId + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
+                       ", displayName='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
@@ -308,7 +308,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

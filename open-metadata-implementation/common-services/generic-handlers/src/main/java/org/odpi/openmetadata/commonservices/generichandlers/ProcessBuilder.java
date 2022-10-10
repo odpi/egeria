@@ -45,6 +45,7 @@ public class ProcessBuilder extends AssetBuilder
      *
      * @param qualifiedName unique name
      * @param technicalName new value for the name
+     * @param versionIdentifier new value for the versionIdentifier
      * @param technicalDescription new description for the process
      * @param formula description of the logic that is implemented by this process
      * @param implementationLanguage language used to implement this process (DeployedSoftwareComponent and subtypes only)
@@ -58,6 +59,7 @@ public class ProcessBuilder extends AssetBuilder
      */
     ProcessBuilder(String               qualifiedName,
                    String               technicalName,
+                   String               versionIdentifier,
                    String               technicalDescription,
                    String               formula,
                    String               implementationLanguage,
@@ -71,6 +73,7 @@ public class ProcessBuilder extends AssetBuilder
     {
         super(qualifiedName,
               technicalName,
+              versionIdentifier,
               technicalDescription,
               additionalProperties,
               typeGUID,

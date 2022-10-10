@@ -581,7 +581,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
                 APIProperties properties = new APIProperties();
 
                 properties.setQualifiedName(apiQualifiedName);
-                properties.setDisplayName(tag.getName());
+                properties.setName(tag.getName());
                 properties.setDescription(tag.getDescription());
 
                 apiGUID = myContext.createAPI(endpointGUID, properties);

@@ -734,6 +734,33 @@ public class FilesResource
      */
     @PostMapping(path = "/data-files/by-search-path-name")
 
+    public DataFilesResponse getDataFilesByPathName(@PathVariable String              serverName,
+                                                    @PathVariable String              userId,
+                                                    @RequestParam int                 startingFrom,
+                                                    @RequestParam int                 maxPageSize,
+                                                    @RequestBody  PathNameRequestBody requestBody)
+    {
+        return  restAPI.getDataFilesByPathName(serverName, userId, startingFrom, maxPageSize, requestBody);
+    }
+
+
+
+    /**
+     * Retrieve data files by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param startingFrom starting point in the list
+     * @param maxPageSize maximum number of results
+     * @param requestBody path name
+     *
+     * @return data file properties or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem.
+     */
+    @PostMapping(path = "/data-files/by-search-name")
+
     public DataFilesResponse findDataFilesByPathName(@PathVariable String              serverName,
                                                      @PathVariable String              userId,
                                                      @RequestParam int                 startingFrom,

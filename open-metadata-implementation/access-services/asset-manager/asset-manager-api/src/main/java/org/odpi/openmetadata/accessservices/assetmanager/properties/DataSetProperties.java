@@ -77,6 +77,7 @@ public class DataSetProperties extends DataAssetProperties
     {
         return "DataSetProperties{" +
                        "technicalName='" + getTechnicalName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", isReferenceAsset=" + getIsReferenceAsset() +
                        ", formula='" + formula + '\'' +
@@ -123,7 +124,7 @@ public class DataSetProperties extends DataAssetProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

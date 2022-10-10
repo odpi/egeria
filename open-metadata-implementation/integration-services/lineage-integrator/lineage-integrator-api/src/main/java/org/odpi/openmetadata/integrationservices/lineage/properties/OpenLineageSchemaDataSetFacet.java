@@ -101,7 +101,7 @@ public class OpenLineageSchemaDataSetFacet extends OpenLineageDataSetFacet
 
 
     /**
-     * Return has code basa``ed on properties.
+     * Return hash code basa``ed on properties.
      *
      * @return int
      */

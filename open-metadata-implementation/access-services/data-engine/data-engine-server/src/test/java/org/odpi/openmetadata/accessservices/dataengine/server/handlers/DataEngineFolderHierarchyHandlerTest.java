@@ -85,13 +85,13 @@ class DataEngineFolderHierarchyHandlerTest {
         verify(dataEngineCommonHandler, times(1)).findEntity(USER, EXTERNAL_SOURCE_NAME + "::/test",
                 FILE_FOLDER_TYPE_NAME);
         verify(folderHandler, times(1)).createAssetInRepository(USER, EXTERNAL_SOURCE_GUID,
-                EXTERNAL_SOURCE_NAME, EXTERNAL_SOURCE_NAME + "::/test", "test", null,
+                EXTERNAL_SOURCE_NAME, EXTERNAL_SOURCE_NAME + "::/test", "test", null, null,
                 null, null, 0, null, null,
                 null, null, FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null, null,
                 null, InstanceStatus.ACTIVE, null, METHOD);
         verify(folderHandler, times(1)).createAssetInRepository(USER, EXTERNAL_SOURCE_GUID,
                 EXTERNAL_SOURCE_NAME, EXTERNAL_SOURCE_NAME + "::/", "/", null,
-                null, null, 0, null, null,
+                null, null, null, 0, null, null,
                 null, null, FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null,
                 null, null, InstanceStatus.ACTIVE, null, METHOD);
         // verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, GUID_VALUE_1, GUID_VALUE_2,
@@ -135,13 +135,13 @@ class DataEngineFolderHierarchyHandlerTest {
 
     private void mockFolderHandler() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         when(folderHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
-                EXTERNAL_SOURCE_NAME + "::/test", "test", null, null,
+                EXTERNAL_SOURCE_NAME + "::/test", "test", null, null, null,
                 null, 0, null, null, null,
                 null, FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null, null,
                 null, InstanceStatus.ACTIVE, null, METHOD)).
                 thenReturn(GUID_VALUE_1);
         when(folderHandler.createAssetInRepository(USER, EXTERNAL_SOURCE_GUID, EXTERNAL_SOURCE_NAME,
-                EXTERNAL_SOURCE_NAME + "::/", "/", null, null,
+                EXTERNAL_SOURCE_NAME + "::/", "/", null, null, null,
                 null, 0, null, null, null,
                 null, FILE_FOLDER_TYPE_GUID, FILE_FOLDER_TYPE_NAME, null, null,
                 null, InstanceStatus.ACTIVE, null, METHOD)).

@@ -16,6 +16,7 @@ import java.util.Map;
 public class AssetBuilder extends ReferenceableBuilder
 {
     private String technicalName        = null;
+    private String versionIdentifier    = null;
     private String technicalDescription = null;
 
 
@@ -66,6 +67,7 @@ public class AssetBuilder extends ReferenceableBuilder
      *
      * @param qualifiedName unique name
      * @param technicalName new value for the name
+     * @param versionIdentifier new value for the versionIdentifier
      * @param technicalDescription new description for the asset
      * @param additionalProperties additional properties
      * @param typeGUID unique identifier for the type of this asset
@@ -77,6 +79,7 @@ public class AssetBuilder extends ReferenceableBuilder
      */
     protected AssetBuilder(String               qualifiedName,
                            String               technicalName,
+                           String               versionIdentifier,
                            String               technicalDescription,
                            Map<String, String>  additionalProperties,
                            String               typeGUID,
@@ -96,6 +99,7 @@ public class AssetBuilder extends ReferenceableBuilder
               serverName);
 
         this.technicalName = technicalName;
+        this.versionIdentifier = versionIdentifier;
         this.technicalDescription = technicalDescription;
     }
 
@@ -105,6 +109,7 @@ public class AssetBuilder extends ReferenceableBuilder
      *
      * @param qualifiedName unique name
      * @param technicalName new value for the name
+     * @param versionIdentifier new value for the versionIdentifier
      * @param technicalDescription new description for the asset
      * @param additionalProperties additional properties
      * @param typeGUID unique identifier for the type of this asset
@@ -117,6 +122,7 @@ public class AssetBuilder extends ReferenceableBuilder
      */
     protected AssetBuilder(String               qualifiedName,
                            String               technicalName,
+                           String               versionIdentifier,
                            String               technicalDescription,
                            Map<String, String>  additionalProperties,
                            String               typeGUID,
@@ -138,6 +144,7 @@ public class AssetBuilder extends ReferenceableBuilder
               serverName);
 
         this.technicalName = technicalName;
+        this.versionIdentifier = versionIdentifier;
         this.technicalDescription = technicalDescription;
     }
 
@@ -418,15 +425,20 @@ public class AssetBuilder extends ReferenceableBuilder
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
-                                                                      technicalName,
-                                                                      methodName);
-       properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      technicalDescription,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  technicalName,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.VERSION_IDENTIFIER_PROPERTY_NAME,
+                                                                  versionIdentifier,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  technicalDescription,
+                                                                  methodName);
 
         return properties;
     }

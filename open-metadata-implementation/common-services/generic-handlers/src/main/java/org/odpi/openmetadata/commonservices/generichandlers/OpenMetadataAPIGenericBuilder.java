@@ -387,7 +387,7 @@ public class OpenMetadataAPIGenericBuilder
      * @param attachmentTypeName type name of the attached entity
      * @param relationshipTypeName relationship used to attach the entity
      * @param userId userId making the change
-     * @param actionDescription human readable description of the change
+     * @param actionDescription human-readable description of the change
      * @param methodName calling method
      * @return properties for classification
      * @throws InvalidParameterException problem with the enum types

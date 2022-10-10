@@ -251,27 +251,33 @@ public class DataStoreProperties extends AssetProperties
      *
      * @return print out of variables in a JSON-style
      */
-    @Override
     @SuppressWarnings(value = "deprecation")
+    @Override
     public String toString()
     {
         return "DataStoreProperties{" +
-                       "pathName=" + pathName +
+                       "name='" + getName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                       ", displayName='" + getDisplayName() + '\'' +
+                       ", description='" + getDescription() + '\'' +
+                       ", owner='" + getOwner() + '\'' +
+                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
+                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
+                       ", ownerType=" + getOwnerType() +
+                       ", zoneMembership=" + getZoneMembership() +
+                       ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
+                       ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
+                       ", otherOriginValues=" + getOtherOriginValues() +
+                       ", pathName='" + pathName + '\'' +
                        ", createTime=" + createTime +
                        ", modifiedTime=" + modifiedTime +
                        ", encodingType='" + encodingType + '\'' +
                        ", encodingLanguage='" + encodingLanguage + '\'' +
                        ", encodingDescription='" + encodingDescription + '\'' +
-                       ", encodingProperties='" + encodingProperties + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", origin=" + getOtherOriginValues() +
+                       ", encodingProperties=" + encodingProperties +
+                       ", typeName='" + getTypeName() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        '}';
     }
@@ -310,7 +316,7 @@ public class DataStoreProperties extends AssetProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */

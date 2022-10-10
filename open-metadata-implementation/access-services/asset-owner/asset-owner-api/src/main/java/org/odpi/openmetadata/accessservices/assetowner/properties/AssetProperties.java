@@ -57,6 +57,8 @@ public class AssetProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
+    private String              name                         = null;
+    private String              versionIdentifier            = null;
     private String              displayName                  = null;
     private String              description                  = null;
     private String              owner                        = null;
@@ -88,6 +90,8 @@ public class AssetProperties extends ReferenceableProperties
 
         if (template != null)
         {
+            name                         = template.getName();
+            versionIdentifier            = template.getVersionIdentifier();
             displayName                  = template.getDisplayName();
             description                  = template.getDescription();
             owner                        = template.getOwner();
@@ -103,13 +107,67 @@ public class AssetProperties extends ReferenceableProperties
 
 
     /**
+     * Return the name of the resource that this asset represents.
+     *
+     * @return string resource name
+     */
+    public String getName()
+    {
+        if (name == null)
+        {
+            return displayName;
+        }
+
+        return name;
+    }
+
+
+    /**
+     * Set up the name of the resource that this asset represents.
+     *
+     * @param name string resource name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
      * Returns the stored display name property for the asset.
-     * If no display name is available then null is returned.
+     * If no display name is available then name is returned.
      *
      * @return String name
      */
     public String getDisplayName()
     {
+        if (displayName == null)
+        {
+            return name;
+        }
+
         return displayName;
     }
 
@@ -357,12 +415,14 @@ public class AssetProperties extends ReferenceableProperties
     public String toString()
     {
         return "AssetProperties{" +
-                       "displayName='" + displayName + '\'' +
+                       "name='" + name + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
+                       ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", owner='" + owner + '\'' +
-                       ", ownerTypeName=" + ownerTypeName +
-                       ", ownerPropertyName=" + ownerPropertyName+
                        ", ownerType=" + ownerType +
+                       ", ownerTypeName='" + ownerTypeName + '\'' +
+                       ", ownerPropertyName='" + ownerPropertyName + '\'' +
                        ", zoneMembership=" + zoneMembership +
                        ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
                        ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
@@ -388,38 +448,75 @@ public class AssetProperties extends ReferenceableProperties
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (! (objectToCompare instanceof AssetProperties))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
+        if (! super.equals(objectToCompare))
         {
             return false;
         }
+
         AssetProperties that = (AssetProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(owner, that.owner) &&
-                       Objects.equals(ownerTypeName, that.ownerTypeName) &&
-                       Objects.equals(ownerPropertyName, that.ownerPropertyName) &&
-                       ownerType == that.ownerType &&
-                       Objects.equals(zoneMembership, that.zoneMembership) &&
-                       Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
-                       Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
-                       Objects.equals(otherOriginValues, that.otherOriginValues);
+
+        if (name != null ? ! name.equals(that.name) : that.name != null)
+        {
+            return false;
+        }
+        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
+        {
+            return false;
+        }
+        if (displayName != null ? ! displayName.equals(that.displayName) : that.displayName != null)
+        {
+            return false;
+        }
+        if (description != null ? ! description.equals(that.description) : that.description != null)
+        {
+            return false;
+        }
+        if (owner != null ? ! owner.equals(that.owner) : that.owner != null)
+        {
+            return false;
+        }
+        if (ownerType != that.ownerType)
+        {
+            return false;
+        }
+        if (ownerTypeName != null ? ! ownerTypeName.equals(that.ownerTypeName) : that.ownerTypeName != null)
+        {
+            return false;
+        }
+        if (ownerPropertyName != null ? ! ownerPropertyName.equals(that.ownerPropertyName) : that.ownerPropertyName != null)
+        {
+            return false;
+        }
+        if (zoneMembership != null ? ! zoneMembership.equals(that.zoneMembership) : that.zoneMembership != null)
+        {
+            return false;
+        }
+        if (originOrganizationGUID != null ? ! originOrganizationGUID.equals(that.originOrganizationGUID) : that.originOrganizationGUID != null)
+        {
+            return false;
+        }
+        if (originBusinessCapabilityGUID != null ? ! originBusinessCapabilityGUID.equals(
+                that.originBusinessCapabilityGUID) : that.originBusinessCapabilityGUID != null)
+        {
+            return false;
+        }
+        return otherOriginValues != null ? otherOriginValues.equals(that.otherOriginValues) : that.otherOriginValues == null;
     }
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, owner, ownerTypeName, ownerPropertyName, ownerType,
-                            zoneMembership, originOrganizationGUID,
-                            originBusinessCapabilityGUID, otherOriginValues);
+        return Objects.hash(super.hashCode(), name, versionIdentifier,displayName, description, owner, ownerTypeName, ownerPropertyName, ownerType,
+                            zoneMembership, originOrganizationGUID, originBusinessCapabilityGUID, otherOriginValues);
     }
 }

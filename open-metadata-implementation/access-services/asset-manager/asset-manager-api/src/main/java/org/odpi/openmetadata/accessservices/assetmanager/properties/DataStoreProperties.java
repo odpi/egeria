@@ -255,6 +255,7 @@ public class DataStoreProperties extends DataAssetProperties
                        ", encodingProperties=" + encodingProperties +
                        ", isReferenceAsset=" + getIsReferenceAsset() +
                        ", technicalName='" + getTechnicalName() + '\'' +
+                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", summary='" + getSummary() + '\'' +
@@ -305,7 +306,7 @@ public class DataStoreProperties extends DataAssetProperties
 
 
     /**
-     * Return has code based on properties.
+     * Return hash code based on properties.
      *
      * @return int
      */
