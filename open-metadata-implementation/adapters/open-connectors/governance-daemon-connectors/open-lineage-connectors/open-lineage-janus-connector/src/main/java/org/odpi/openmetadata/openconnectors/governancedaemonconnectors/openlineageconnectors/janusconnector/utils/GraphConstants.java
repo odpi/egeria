@@ -75,6 +75,7 @@ public class GraphConstants {
     public static final String EDGE_LABEL_SYNONYM = "Synonym";
     public static final String EDGE_LABEL_ANTONYM = "Antonym";
     public static final String EDGE_LABEL_REPLACEMENT_TERM = "ReplacementTerm";
+    public static final String EDGE_LABEL_TERM_ANCHOR = "TermAnchor";
     public static final String EDGE_LABEL_TRANSLATION = "Translation";
     public static final String EDGE_LABEL_IS_A_RELATIONSHIP = "ISARelationship";
     public static final String EDGE_LABEL_CONDENSED = "condensed";
