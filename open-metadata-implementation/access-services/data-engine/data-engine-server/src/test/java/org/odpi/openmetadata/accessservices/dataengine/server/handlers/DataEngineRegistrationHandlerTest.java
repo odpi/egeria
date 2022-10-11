@@ -45,12 +45,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler.SYNC_DATES_BY_KEY;
 import static org.odpi.openmetadata.accessservices.dataengine.server.util.MockedExceptionUtil.mockException;
+import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENGINE_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_GUID;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -96,7 +96,7 @@ class DataEngineRegistrationHandlerTest {
         SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
 
         when(softwareServerCapabilityHandler.createSoftwareCapability(USER, null,
-                 null, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
+                 null, ENGINE_TYPE_NAME, null,
                  softwareServerCapability.getQualifiedName(),
                  softwareServerCapability.getName(), softwareServerCapability.getDescription(), softwareServerCapability.getEngineType(),
                  softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource(),
@@ -120,7 +120,7 @@ class DataEngineRegistrationHandlerTest {
         EntityDetail entityDetail = Mockito.mock(EntityDetail.class);
 
         when(softwareServerCapabilityHandler.getEntityByValue(USER, QUALIFIED_NAME, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, ENGINE_TYPE_NAME,
                 Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
                 false, null, "getExternalDataEngineByQualifiedName"))
                 .thenReturn(entityDetail);
@@ -129,7 +129,7 @@ class DataEngineRegistrationHandlerTest {
 
         doNothing().when(softwareServerCapabilityHandler).updateBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, GUID_PROPERTY_NAME,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, ENGINE_TYPE_NAME, null,
                 true, methodName);
 
         String response = registrationHandler.upsertExternalDataEngine(USER, softwareServerCapability);
@@ -156,7 +156,7 @@ class DataEngineRegistrationHandlerTest {
         SoftwareServerCapability softwareServerCapability = getSoftwareServerCapability();
 
         when(softwareServerCapabilityHandler.createSoftwareCapability(USER, null,
-                null, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, null,
+                null, ENGINE_TYPE_NAME, null,
                 softwareServerCapability.getQualifiedName(), softwareServerCapability.getName(), softwareServerCapability.getDescription(),
                 softwareServerCapability.getEngineType(), softwareServerCapability.getEngineVersion(), softwareServerCapability.getPatchLevel(),
                 softwareServerCapability.getSource(), softwareServerCapability.getAdditionalProperties(),
@@ -176,7 +176,7 @@ class DataEngineRegistrationHandlerTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
 
         when(softwareServerCapabilityHandler.getEntityByValue(USER, QUALIFIED_NAME, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, ENGINE_TYPE_NAME,
                 Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
                 false, null, methodName)).thenReturn(entityDetail);
 
@@ -197,7 +197,7 @@ class DataEngineRegistrationHandlerTest {
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
 
         when(softwareServerCapabilityHandler.getEntityByValue(USER, QUALIFIED_NAME, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, ENGINE_TYPE_NAME,
                 Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
                 false, null, methodName)).thenThrow(mockedException);
 
@@ -217,9 +217,9 @@ class DataEngineRegistrationHandlerTest {
 
     private void mockEntityTypeDef() {
         TypeDef entityTypeDef = mock(TypeDef.class);
-        when(repositoryHelper.getTypeDefByName(USER, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME)).thenReturn(entityTypeDef);
+        when(repositoryHelper.getTypeDefByName(USER, ENGINE_TYPE_NAME)).thenReturn(entityTypeDef);
 
-        when(entityTypeDef.getName()).thenReturn(SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        when(entityTypeDef.getName()).thenReturn(ENGINE_TYPE_NAME);
         when(entityTypeDef.getGUID()).thenReturn(SOFTWARE_SERVER_CAPABILITY_TYPE_GUID);
     }
 
@@ -239,14 +239,14 @@ class DataEngineRegistrationHandlerTest {
                 processingState.getSyncDatesByKey(), methodName)).thenReturn(properties);
 
         when(softwareServerCapabilityHandler.getEntityByValue(USER, QUALIFIED_NAME, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, ENGINE_TYPE_NAME,
                 Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
                 false, null, methodName)).thenReturn(entityDetail);
 
         when(entityDetail.getClassifications()).thenReturn(null);
 
         doNothing().when(softwareServerCapabilityHandler).setClassificationInRepository(USER, null,
-                null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                null, GUID, EXTERNAL_SOURCE_DE_GUID, ENGINE_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
                 PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, true, false, false,
                 null, methodName);
 
@@ -256,7 +256,7 @@ class DataEngineRegistrationHandlerTest {
         verify(repositoryHelper, times(1)).addLongMapPropertyToInstance(null, properties,
                 SYNC_DATES_BY_KEY, processingState.getSyncDatesByKey(), methodName);
         verify(softwareServerCapabilityHandler, times(1)).setClassificationInRepository(USER, null,
-                null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                null, GUID, EXTERNAL_SOURCE_DE_GUID, ENGINE_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
                 PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, true, false, false,
                 null, methodName);
     }
@@ -279,7 +279,7 @@ class DataEngineRegistrationHandlerTest {
                 softwareServerCapability.getQualifiedName());
 
         when(softwareServerCapabilityHandler.getEntityByValue(USER, QUALIFIED_NAME, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID, ENGINE_TYPE_NAME,
                 Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME), false,
                 false, null, methodName)).thenReturn(entityDetail);
 
@@ -290,7 +290,7 @@ class DataEngineRegistrationHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(softwareServerCapabilityHandler).setClassificationInRepository(USER, null,
-                null, GUID, EXTERNAL_SOURCE_DE_GUID, SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                null, GUID, EXTERNAL_SOURCE_DE_GUID, ENGINE_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
                 PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, properties, true, false, false,
                 null, methodName);
 
