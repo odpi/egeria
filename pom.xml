@@ -202,6 +202,7 @@
         <joda.version>2.11.2</joda.version>
         <jackson-asl.version>1.9.14-atlassian-6</jackson-asl.version>
         <antlr.version>3.5.3</antlr.version>
+        <antlr4.version>4.9.3</antlr4.version>
         <ST4.version>4.3.4</ST4.version>
         <snappy.version>1.1.8.4</snappy.version>
         <snakeyaml.version>1.33</snakeyaml.version>
@@ -3141,6 +3142,12 @@
                 <artifactId>antlr-runtime</artifactId>
                 <version>${antlr.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4</artifactId>
+                <version>${antlr4.version}</version>
             </dependency>
 
             <dependency>
