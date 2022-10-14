@@ -22,6 +22,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.concurrent.ExecutorService;
+
 /**
  * DataEngineInstanceHandler retrieves information from the instance map for the access service instances.
  * The instance map is thread-safe. Instances are added and removed by the DataEngineAdmin class.
@@ -328,6 +330,14 @@ public class DataEngineInstanceHandler extends OMASServiceInstanceHandler {
                                                                                                                  PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
         return instance.getDataEngineEventTypeHandler();
+    }
+
+    public ExecutorService getCustomExecutorService(String userId, String serverName, String serviceOperationName) throws
+                                                                                                                InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException {
+        DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        return instance.getExecutorService();
     }
 }
 

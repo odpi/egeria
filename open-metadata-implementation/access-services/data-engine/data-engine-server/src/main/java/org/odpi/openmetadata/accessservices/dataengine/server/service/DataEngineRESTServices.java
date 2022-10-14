@@ -79,6 +79,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.partitioningBy;
@@ -321,7 +322,8 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, schemaTypeRequestBody, methodName)) return response;
+            if (isRequestBodyInvalid(userId, serverName, schemaTypeRequestBody, methodName))
+                return response;
 
             String externalSourceName = schemaTypeRequestBody.getExternalSourceName();
             String schemasTypeGUID = upsertSchemaType(userId, serverName, null, schemaTypeRequestBody.getSchemaType(),
@@ -350,7 +352,8 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName))
+                return response;
 
             deleteSchemaType(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(),
                     requestBody.getDeleteSemantic());
@@ -404,7 +407,8 @@ public class DataEngineRESTServices {
 
         GUIDResponse response = new GUIDResponse();
         try {
-            if (isRequestBodyInvalid(userId, serverName, portImplementationRequestBody, methodName)) return response;
+            if (isRequestBodyInvalid(userId, serverName, portImplementationRequestBody, methodName))
+                return response;
 
             String processGUID = getEntityGUID(serverName, userId, portImplementationRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
                     .orElse(null);
@@ -440,7 +444,8 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, portAliasRequestBody, methodName)) return response;
+            if (isRequestBodyInvalid(userId, serverName, portAliasRequestBody, methodName))
+                return response;
 
             String processGUID = getEntityGUID(serverName, userId, portAliasRequestBody.getProcessQualifiedName(), PROCESS_TYPE_NAME)
                     .orElse(null);
@@ -472,7 +477,8 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName)) return response;
+            if (isRequestBodyInvalid(userId, serverName, requestBody, methodName))
+                return response;
 
             deletePort(userId, serverName, requestBody.getExternalSourceName(), requestBody.getGuid(), requestBody.getQualifiedName(), portType,
                     requestBody.getDeleteSemantic());
@@ -534,7 +540,8 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            if (isRequestBodyInvalid(userId, serverName, processHierarchyRequestBody, methodName)) return response;
+            if (isRequestBodyInvalid(userId, serverName, processHierarchyRequestBody, methodName))
+                return response;
 
             response.setGUID(addProcessHierarchyToProcess(userId, serverName, processHierarchyRequestBody.getProcessHierarchy(),
                     processHierarchyRequestBody.getExternalSourceName()));
@@ -663,7 +670,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Add a a ProcessHierarchy relationship to the process
+     * Add a ProcessHierarchy relationship to the process
      *
      * @param userId             the name of the calling user
      * @param serverName         name of server instance to call
@@ -761,7 +768,7 @@ public class DataEngineRESTServices {
      * @param serverName               name of server instance to call
      * @param softwareServerCapability the software server values
      *
-     * @return he unique identifier (guid) of the created external data engine
+           @return The unique identifier (guid) of the created external data engine
      *
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -812,18 +819,22 @@ public class DataEngineRESTServices {
         if (CollectionUtils.isEmpty(lineageMappings)) {
             return;
         }
-
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler = instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
+        ExecutorService customExecutorService = instanceHandler.getCustomExecutorService(userId, serverName, methodName);
+        customExecutorService.execute(
+                () -> lineageMappings.parallelStream()
+                                    .forEach(lineageMapping ->
+                                        addLineageMappings(userId, response, externalSourceName, methodName, dataEngineSchemaTypeHandler, lineageMapping)));
+    }
 
-        lineageMappings.parallelStream().forEach(lineageMapping -> {
-            try {
-                dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceAttribute(),
-                        lineageMapping.getTargetAttribute(), externalSourceName);
-            } catch (Exception error) {
-                log.error(EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING, lineageMapping.toString(), error.toString());
-                restExceptionHandler.captureExceptions(response, error, methodName);
-            }
-        });
+    private void addLineageMappings(String userId, FFDCResponseBase response, String externalSourceName, String methodName, DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler, LineageMapping lineageMapping) {
+        try {
+            dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceAttribute(),
+                    lineageMapping.getTargetAttribute(), externalSourceName);
+        } catch (Exception error) {
+            log.error(EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING, lineageMapping.toString(), error.toString());
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
     }
 
     /**
@@ -1005,7 +1016,6 @@ public class DataEngineRESTServices {
      * @param userId                the name of the calling user
      * @param serverName            name of server instance to call
      * @param databaseQualifiedName the database entity to which the database schema will be linked, if it exists
-     * @param incomplete            determines if the entity is virtual
      * @param databaseSchema        the database schema values
      * @param externalSourceName    the unique name of the external source
      *
@@ -1776,7 +1786,9 @@ public class DataEngineRESTServices {
 
 
     private void upsertPortImplementations(String userId, String serverName, List<PortImplementation> portImplementations, String processGUID,
-                                           GUIDResponse response, String externalSourceName) {
+                                           GUIDResponse response, String externalSourceName) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException {
         final String methodName = "upsertPortImplementations";
         if (CollectionUtils.isEmpty(portImplementations)) {
             return;
@@ -1793,15 +1805,20 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureExceptions(response, error, methodName);
         }
 
-        // then create the schema types with attributes in parallel
-        schemaTypeMap.keySet().parallelStream().forEach(portGUID ->
-        {
-            try {
-                upsertSchemaType(userId, serverName, portGUID, schemaTypeMap.get(portGUID), externalSourceName);
-            } catch (Exception error) {
-                restExceptionHandler.captureExceptions(response, error, methodName);
-            }
-        });
+        ExecutorService customExecutorService = instanceHandler.getCustomExecutorService(userId, serverName, methodName);
+
+        customExecutorService.execute(() -> schemaTypeMap
+                .entrySet()
+                .parallelStream()
+                .forEach(entry -> upsertSchemaType(userId, serverName, response, externalSourceName, methodName, entry)));
+    }
+
+    private void upsertSchemaType(String userId, String serverName, GUIDResponse response, String externalSourceName, String methodName, Map.Entry<String, SchemaType> entry) {
+        try {
+            upsertSchemaType(userId, serverName, entry.getKey(), entry.getValue(), externalSourceName);
+        } catch (Exception error) {
+            restExceptionHandler.captureExceptions(response, error, methodName);
+        }
     }
 
     private void upsertPortAliases(String userId, String serverName, List<PortAlias> portAliases, String processGUID, GUIDResponse response,
@@ -1908,6 +1925,8 @@ public class DataEngineRESTServices {
      * @param userId          user id
      * @param serverName      server name
      * @param findRequestBody contains find criteria
+     *
+     * @return a list of GUIDs
      */
     public GUIDListResponse find(String userId, String serverName, FindRequestBody findRequestBody) {
 

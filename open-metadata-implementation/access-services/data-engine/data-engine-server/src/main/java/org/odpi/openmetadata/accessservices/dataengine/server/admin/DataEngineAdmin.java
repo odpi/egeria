@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * DataEngineAdmin is the class that is called by the OMAG Server to initialize and terminate
@@ -30,6 +31,7 @@ import java.util.List;
  */
 public class DataEngineAdmin extends AccessServiceAdmin {
 
+    private static final String THREAD_POOL_SIZE = "customThreadPool.size";
     private AuditLog auditLog;
     private DataEngineServicesInstance instance;
     private String serverName;
@@ -48,7 +50,7 @@ public class DataEngineAdmin extends AccessServiceAdmin {
     @Override
     public void initialize(AccessServiceConfig accessServiceConfig, OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector repositoryConnector, AuditLog auditLog, String serverUserName) throws
-                                                                                                                  OMAGConfigurationErrorException {
+            OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
 
 
@@ -60,13 +62,15 @@ public class DataEngineAdmin extends AccessServiceAdmin {
                     accessServiceConfig.getAccessServiceName(), auditLog);
             List<String> defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
                     accessServiceConfig.getAccessServiceName(), auditLog);
-
-            instance = new DataEngineServicesInstance(repositoryConnector, supportedZones, defaultZones, auditLog, serverUserName,
-                    repositoryConnector.getMaxPageSize(),
-                    super.getOutTopicConnection(accessServiceConfig.getAccessServiceInTopic(),
-                            AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName(),
-                            DataEngineInTopicClientProvider.class.getName(),
-                            auditLog)); //TODO: using getOutTopicConnection temporary, we need getInTopicConnection... Check the correct way to create connection for the omas instance - using dedicated client provider class name (current impl.) or provided by the accessServiceConfig.getAccessServiceInTopic() (?)
+            Map<String, Object> accessServiceOptions = accessServiceConfig.getAccessServiceOptions();
+            Integer threadPoolSize = (Integer) accessServiceOptions.getOrDefault(THREAD_POOL_SIZE, 1);
+            Connection outTopicConnection = super.getOutTopicConnection(accessServiceConfig.getAccessServiceInTopic(),
+                    AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName(),
+                    DataEngineInTopicClientProvider.class.getName(),
+                    auditLog);
+            instance = new DataEngineServicesInstance(repositoryConnector, supportedZones, defaultZones, threadPoolSize,auditLog, serverUserName,
+                    repositoryConnector.getMaxPageSize(), outTopicConnection);
+            //TODO: using getOutTopicConnection temporary, we need getInTopicConnection... Check the correct way to create connection for the omas instance - using dedicated client provider class name (current impl.) or provided by the accessServiceConfig.getAccessServiceInTopic() (?)
 
             serverName = instance.getServerName();
 
@@ -115,11 +119,10 @@ public class DataEngineAdmin extends AccessServiceAdmin {
      * Returns the connector created from topic connection properties
      *
      * @param topicConnection properties of the topic connection
-     *
      * @return the connector created based on the topic connection properties
      */
     private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection) throws
-                                                                                     OMAGConfigurationErrorException {
+            OMAGConfigurationErrorException {
         try {
             ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 
@@ -143,7 +146,6 @@ public class DataEngineAdmin extends AccessServiceAdmin {
      * Returns the topic created based on connection properties
      *
      * @param topicConnection properties of the topic
-     *
      * @return the topic created based on the connection properties
      */
     private OpenMetadataTopicConnector initializeDataEngineTopicConnector(Connection topicConnection) throws OMAGConfigurationErrorException {

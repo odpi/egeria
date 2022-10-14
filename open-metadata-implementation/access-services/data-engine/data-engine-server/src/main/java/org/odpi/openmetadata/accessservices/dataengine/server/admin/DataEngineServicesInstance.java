@@ -70,6 +70,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * DataEngineServicesInstance caches references to OMRS objects for a specific server.
@@ -200,25 +202,33 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
     private final DataEngineSchemaAttributeHandler dataEngineSchemaAttributeHandler;
 
     /**
+     * -- GETTER --
+     * Returns a custom executor service to be used separate from the commonPool
+     * @return a custom executor service
+     */
+    @Getter(AccessLevel.PACKAGE)
+    private ExecutorService executorService;
+    /**
      * Sets up the local repository connector that will service the REST Calls
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls
      * @param supportedZones      list of zones that DataEngine is allowed to serve Assets from
      * @param defaultZones        list of zones that DataEngine sets up in new Asset instances
+     * @param threadPoolSize
      * @param auditLog            logging destination
      * @param localServerUserId   userId used for server initiated actions
      * @param maxPageSize         max number of results to return on single request
-     *
      * @throws NewInstanceException a problem occurred during initialization
      */
     DataEngineServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones, List<String> defaultZones,
-                               AuditLog auditLog, String localServerUserId, int maxPageSize, Connection inTopicConnection) throws
+                               Integer threadPoolSize, AuditLog auditLog, String localServerUserId, int maxPageSize, Connection inTopicConnection) throws
                                                                                                                            NewInstanceException {
 
 
         super(description.getAccessServiceFullName(), repositoryConnector, supportedZones, defaultZones, null, auditLog,
                 localServerUserId, maxPageSize);
 
+        this.executorService = Executors.newFixedThreadPool(threadPoolSize);
         this.inTopicConnection = inTopicConnection;
 
         if (repositoryHandler == null) {
