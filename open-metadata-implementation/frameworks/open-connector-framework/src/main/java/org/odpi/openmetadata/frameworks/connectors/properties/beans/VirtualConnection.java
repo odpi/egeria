@@ -41,19 +41,13 @@ public class VirtualConnection extends Connection
         final String        elementTypeName                 = "VirtualConnection";
         final long          elementTypeVersion              = 1;
         final String        elementTypeDescription          = "A connector for a virtual resource that needs to retrieve data from multiple places.";
-        final String        elementAccessServiceURL         = null;
-        final ElementOrigin elementOrigin                   = ElementOrigin.LOCAL_COHORT;
-        final String        elementHomeMetadataCollectionId = null;
 
         ElementType elementType = new ElementType();
 
-        elementType.setElementTypeId(elementTypeId);
-        elementType.setElementTypeName(elementTypeName);
-        elementType.setElementTypeVersion(elementTypeVersion);
-        elementType.setElementTypeDescription(elementTypeDescription);
-        elementType.setElementSourceServer(elementAccessServiceURL);
-        elementType.setElementOrigin(elementOrigin);
-        elementType.setElementMetadataCollectionId(elementHomeMetadataCollectionId);
+        elementType.setTypeId(elementTypeId);
+        elementType.setTypeName(elementTypeName);
+        elementType.setTypeVersion(elementTypeVersion);
+        elementType.setTypeDescription(elementTypeDescription);
 
         return elementType;
     }
@@ -138,15 +132,6 @@ public class VirtualConnection extends Connection
                        ", assetSummary='" + getAssetSummary() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", meanings=" + getMeanings() +
-                       ", securityTags=" + getSecurityTags() +
-                       ", searchKeywords=" + getSearchKeywords() +
-                       ", latestChange='" + getLatestChange() + '\'' +
-                       ", latestChangeDetails=" + getLatestChangeDetails() +
-                       ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
-                       ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
-                       ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
-                       ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
                        ", type=" + getType() +
                        ", GUID='" + getGUID() + '\'' +
                        ", URL='" + getURL() + '\'' +

@@ -2,16 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
-import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -594,17 +599,17 @@ public abstract class AccessServiceAdmin
         final String connectionDescription = "OMRS default cohort topic connection.";
         final String eventSource = "Server Event Bus";
 
-        ElementType elementType = VirtualConnection.getVirtualConnectionType();
-
-        elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
 
         String connectionName = "OutTopicConnector." + accessServiceFullName;
 
         VirtualConnection connection = new VirtualConnection();
 
-        elementType = VirtualConnection.getVirtualConnectionType();
+        ElementOrigin elementOrigin = new ElementOrigin();
+        elementOrigin.setOriginCategory(ElementOriginCategory.CONFIGURATION);
+        elementOrigin.setSourceServer(eventSource);
 
-        connection.setType(elementType);
+        connection.setOrigin(elementOrigin);
+        connection.setType(VirtualConnection.getVirtualConnectionType());
         connection.setGUID(UUID.randomUUID().toString());
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
