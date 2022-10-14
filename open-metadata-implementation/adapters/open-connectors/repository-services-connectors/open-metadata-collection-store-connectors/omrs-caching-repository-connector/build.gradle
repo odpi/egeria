@@ -1,0 +1,28 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation 'org.testng:testng'
+    testImplementation 'org.mockito:mockito-core'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+description = 'OMRS caching repository connector'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
+}
