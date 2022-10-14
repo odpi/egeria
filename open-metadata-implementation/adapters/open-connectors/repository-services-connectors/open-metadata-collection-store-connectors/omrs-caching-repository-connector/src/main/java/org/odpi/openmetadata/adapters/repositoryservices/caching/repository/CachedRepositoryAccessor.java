@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * This is a helper class providing methods to access the cached repository (the store). The methods here are a thin wrapper
- * around the metadata collection methods, normalising the Exceptions.
+ * around the metadata collection methods, normalising the Exceptions to ConnectorCheckedException.
  */
 public class CachedRepositoryAccessor {
 
@@ -33,8 +33,8 @@ public class CachedRepositoryAccessor {
      * Return the relationships for a specific entity.
      * @param  entityGUID – String unique identifier for the entity.
      * @param relationshipTypeGUID – String GUID of the type of relationship required (null for all).
-     * @return list of relationships assoviated with the entity
-     * @throws ConnectorCheckedException onnector Exception
+     * @return list of relationships associated with the entity
+     * @throws ConnectorCheckedException Connector Exception
      */
     public List<Relationship> getRelationshipsForEntityFromStore(
             String entityGUID,
@@ -95,8 +95,8 @@ public class CachedRepositoryAccessor {
       * 
       * @param guid String unique identifier for the relationship.
       * @return  relationship structure.
-     * @throws ConnectorCheckedException connector Excpetion
-     */
+      * @throws ConnectorCheckedException connector Excpetion
+      */
     public Relationship getRelationshipFromStore(String guid) throws ConnectorCheckedException {
         String methodName = " getRelationshipFromStore";
         Relationship relationship =null;
