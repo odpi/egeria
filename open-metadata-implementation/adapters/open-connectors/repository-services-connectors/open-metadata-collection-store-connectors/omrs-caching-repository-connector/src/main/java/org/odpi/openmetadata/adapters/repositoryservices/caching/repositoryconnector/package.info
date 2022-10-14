@@ -4,4 +4,4 @@
 /**
  * Defines and implements the caching repository connector that has an embedded caching omrs connector .
  */
-package org.odpi.egeria.connectors.hms.repositoryconnector;
+package org.odpi.openmetadata.adapters.repositoryservices.caching.repositoryconnector;

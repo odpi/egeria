@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.caching.repository;
 
 import org.odpi.openmetadata.adapters.repositoryservices.caching.auditlog.CachingOMRSErrorCode;
-import org.odpi.openmetadata.adapters.repositoryservices.caching.helpers.ExceptionHelper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -45,21 +44,21 @@ public class CachedRepositoryAccessor {
         try {
             relationships = metadataCollection.getRelationshipsForEntity(userId, entityGUID, relationshipTypeGUID, 0, null, null, null, null, 0);
         } catch (InvalidParameterException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e, serverName, methodName);
         } catch (RepositoryErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e, serverName, methodName);
         } catch (TypeErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.TYPE_ERROR_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.TYPE_ERROR_EXCEPTION, methodName, e, serverName, methodName);
         } catch (PropertyErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.PROPERTY_ERROR_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.PROPERTY_ERROR_EXCEPTION, methodName, e, serverName, methodName);
         } catch (PagingErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.PAGING_ERROR_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.PAGING_ERROR_EXCEPTION, methodName, e, serverName, methodName);
         } catch (FunctionNotSupportedException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.FUNCTION_NOT_SUPPORTED_ERROR_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.FUNCTION_NOT_SUPPORTED_ERROR_EXCEPTION, methodName, e, serverName, methodName);
         } catch (UserNotAuthorizedException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e, serverName, methodName);
         } catch (EntityNotKnownException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.ENTITY_NOT_KNOWN, methodName, e, serverName, methodName, entityGUID);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.ENTITY_NOT_KNOWN, methodName, e, serverName, methodName, entityGUID);
         }
         return relationships;
     }
@@ -76,15 +75,15 @@ public class CachedRepositoryAccessor {
         try {
             entityDetail = metadataCollection.getEntityDetail(userId, guid);
         } catch (InvalidParameterException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e, serverName, methodName);
         } catch (RepositoryErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e, serverName, methodName);
         } catch (UserNotAuthorizedException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e, serverName, methodName);
         } catch (EntityNotKnownException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.ENTITY_NOT_KNOWN, methodName, e, serverName, methodName, guid);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.ENTITY_NOT_KNOWN, methodName, e, serverName, methodName, guid);
         } catch (EntityProxyOnlyException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.ENTITY_PROXY_ONLY, methodName, e, serverName, methodName, guid);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.ENTITY_PROXY_ONLY, methodName, e, serverName, methodName, guid);
         }
         return entityDetail;
 
@@ -104,13 +103,13 @@ public class CachedRepositoryAccessor {
         try {
             relationship = metadataCollection.getRelationship(userId, guid);
         } catch (InvalidParameterException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e, serverName, methodName);
         } catch (RepositoryErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e, serverName, methodName);
         } catch (UserNotAuthorizedException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e, serverName, methodName);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e, serverName, methodName);
         } catch (RelationshipNotKnownException e ) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.RELATIONSHIP_NOT_KNOWN, methodName, e, serverName, methodName, guid);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.RELATIONSHIP_NOT_KNOWN, methodName, e, serverName, methodName, guid);
         }
         return relationship;
 
@@ -127,43 +126,43 @@ public class CachedRepositoryAccessor {
         try {
             // TODO more specific messages
             if (relationship.getGUID() == null) {
-                ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
+                raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
             }
             if (relationship.getEntityOneProxy() == null) {
-                ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
+                raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
             }
             if (relationship.getEntityOneProxy().getGUID() == null) {
-                ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
+                raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
             }
             if (relationship.getEntityTwoProxy() == null) {
-                ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
+                raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
             }
             if (relationship.getEntityTwoProxy().getGUID() == null) {
-                ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
+                raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
             }
             metadataCollection.saveRelationshipReferenceCopy(
                     userId,
                     relationship);
         } catch (InvalidParameterException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e);
         } catch (RepositoryErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e);
         } catch (TypeErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.TYPE_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.TYPE_ERROR_EXCEPTION, methodName, e);
         } catch (EntityNotKnownException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.ENTITY_NOT_KNOWN, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.ENTITY_NOT_KNOWN, methodName, e);
         } catch (PropertyErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.PROPERTY_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.PROPERTY_ERROR_EXCEPTION, methodName, e);
         } catch (HomeRelationshipException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.HOME_RELATIONSHIP_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.HOME_RELATIONSHIP_ERROR_EXCEPTION, methodName, e);
         } catch (RelationshipConflictException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.RELATIONSHIP_CONFLICT_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.RELATIONSHIP_CONFLICT_ERROR_EXCEPTION, methodName, e);
         } catch (InvalidRelationshipException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_RELATIONSHIP_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_RELATIONSHIP_ERROR_EXCEPTION, methodName, e);
         } catch (FunctionNotSupportedException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.FUNCTION_NOT_SUPPORTED_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.FUNCTION_NOT_SUPPORTED_ERROR_EXCEPTION, methodName, e);
         } catch (UserNotAuthorizedException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e);
         }
     }
 
@@ -177,7 +176,7 @@ public class CachedRepositoryAccessor {
         String methodName = "saveEntityReferenceCopy";
         if (entityToAdd.getGUID() == null) {
             // TODO more specific message
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, null);
         }
 
         try {
@@ -185,23 +184,44 @@ public class CachedRepositoryAccessor {
                     userId,
                     entityToAdd);
         } catch (InvalidParameterException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_PARAMETER_EXCEPTION, methodName, e);
         } catch (RepositoryErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.REPOSITORY_ERROR_EXCEPTION, methodName, e);
         } catch (TypeErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.TYPE_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.TYPE_ERROR_EXCEPTION, methodName, e);
         } catch (PropertyErrorException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.PROPERTY_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.PROPERTY_ERROR_EXCEPTION, methodName, e);
         } catch (HomeEntityException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.HOME_ENTITY_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.HOME_ENTITY_ERROR_EXCEPTION, methodName, e);
         } catch (EntityConflictException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.ENTITY_CONFLICT_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.ENTITY_CONFLICT_ERROR_EXCEPTION, methodName, e);
         } catch (InvalidEntityException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.INVALID_ENTITY_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.INVALID_ENTITY_ERROR_EXCEPTION, methodName, e);
         } catch (FunctionNotSupportedException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.FUNCTION_NOT_SUPPORTED_ERROR_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.FUNCTION_NOT_SUPPORTED_ERROR_EXCEPTION, methodName, e);
         } catch (UserNotAuthorizedException e) {
-            ExceptionHelper.raiseConnectorCheckedException(className, CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e);
+            raiseConnectorCheckedException(CachingOMRSErrorCode.USER_NOT_AUTHORIZED_EXCEPTION, methodName, e);
+        }
+    }
+    /**
+     * Throws a ConnectorCheckedException based on the provided parameters.
+     *
+     * @param errorCode  the error code for the exception
+     * @param methodName the method name throwing the exception
+     * @param cause      the underlying cause of the exception (if any, otherwise null)
+     * @param params     any additional parameters for formatting the error message
+     * @throws ConnectorCheckedException always
+     */
+    public void raiseConnectorCheckedException( CachingOMRSErrorCode errorCode, String methodName, Exception cause, String... params) throws ConnectorCheckedException {
+        if (cause == null) {
+            throw new ConnectorCheckedException(errorCode.getMessageDefinition(params),
+                    className,
+                    methodName);
+        } else {
+            throw new ConnectorCheckedException(errorCode.getMessageDefinition(params),
+                    className,
+                    methodName,
+                    cause);
         }
     }
 }
