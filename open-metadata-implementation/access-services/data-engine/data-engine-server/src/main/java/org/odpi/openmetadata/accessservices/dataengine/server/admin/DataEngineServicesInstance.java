@@ -386,4 +386,10 @@ public class DataEngineServicesInstance extends OMASServiceInstance {
         dataEngineEventTypeHandler = new DataEngineEventTypeHandler(invalidParameterHandler, eventTypeHandler, dataEngineRegistrationHandler,
                 dataEngineCommonHandler, dataEngineSchemaAttributeHandler);
     }
+
+    @Override
+    public void shutdown() {
+        super.shutdown();
+        executorService.shutdown();
+    }
 }

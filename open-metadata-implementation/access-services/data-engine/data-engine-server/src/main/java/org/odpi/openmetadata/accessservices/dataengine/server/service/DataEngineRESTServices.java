@@ -100,7 +100,6 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_ALIAS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
 import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUOTE_CHARACTER_PROPERTY_NAME;
@@ -1774,7 +1773,7 @@ public class DataEngineRESTServices {
 
 
     private void upsertPortImplementations(String userId, String serverName, List<PortImplementation> portImplementations, String processGUID,
-                                           GUIDResponse response, String externalSourceName) {
+                                           GUIDResponse response, String externalSourceName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "upsertPortImplementations";
         if (CollectionUtils.isEmpty(portImplementations)) {
             return;
